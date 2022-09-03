@@ -78,7 +78,7 @@ will cause their arguments to escape to the heap even though they do not esacpe.
 ## Contributing
 
 I'm no C/C++ whiz so you can help by identifying any CGO/unsafe issues. 
-Please open a issue if you do find anything *unsafe*! 
+Please open a issue if you do find anything *very unsafe*! 
 
 Alternatively if you have any ideas for performance improvements, be sure
 to let me know, and/or submit a pull request!
