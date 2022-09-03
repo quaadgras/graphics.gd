@@ -63,6 +63,11 @@ to have all memory leaks detectable at runtime (they will cause a panic).
 This is achieved with the `gd.Context` type which is responsible for 
 managing memory ownership of any Godot objects used within Go.
 
+## Non Goals
+
+* Godot 3.x support.
+* Inheritance.
+
 ## Performance
 
 No measurements have been taken. Do keep in mind that due to CGO there can be 
