@@ -8,19 +8,6 @@ import (
 	"sync/atomic"
 )
 
-// Context for an extension used to detect memory leaks, all objects created with New*
-// must be associated with an extension value and freed with Free before the extended
-// object is deleted. Failure to do this will leak memory and print an error message.
-type Context struct {
-	counter *uint32 // counter keeps track of allocations.
-
-	// TODO verbose mode. Track all allocations and keep them mapped.
-	// useful for non-release builds/runs.
-}
-
-func (ctx Context) count(ptr any) { *ctx.counter++ }
-func (ctx Context) freed(ptr any) { *ctx.counter-- }
-
 type Object struct {
 	_Object struct{}
 	obj     safeObject
@@ -31,17 +18,17 @@ type RefCounted struct {
 	obj         safeObject
 }
 
-func NewRefCounted(ctx Context, at *RefCounted) *RefCounted {
+func NewRefCounted(ctx InstanceOwner, at *RefCounted) *RefCounted {
 	if at == nil {
 		at = new(RefCounted)
 	}
 	at.obj.new(ctx, at.class(), true)
 	return at
 }
-func (gdClass RefCounted) Free(ctx Context) { gdClass.obj.free(ctx) }
-func (gdClass RefCounted) owner() cObject   { return gdClass.obj.get() }
-func (gdClass RefCounted) Object() Object   { return Object{obj: gdClass.obj} }
-func (RefCounted) class() string            { return "RefCounted\000" }
+func (gdClass RefCounted) Free()          { gdClass.obj.free() }
+func (gdClass RefCounted) owner() cObject { return gdClass.obj.get() }
+func (gdClass RefCounted) Object() Object { return Object{obj: gdClass.obj} }
+func (RefCounted) class() string          { return "RefCounted\000" }
 
 var methodRefCounted [3]cMethodBind
 
@@ -64,11 +51,13 @@ type safeObject struct {
 	self *safeObject // pointer to the 'owner'
 	cPtr cObject
 	refC atomic.Int64 // Go reference counter.
+
+	owner InstanceOwner
 }
 
 // new creates a new instance of the given class and takes
 // ownership of it.
-func (obj *safeObject) new(ctx Context, class string, ref bool) {
+func (obj *safeObject) new(ctx InstanceOwner, class string, ref bool) {
 	obj.take(ctx, classDB.construct_object(class))
 	if ref {
 		gdCounter := RefCounted{obj: *obj}
@@ -103,39 +92,54 @@ func (obj *safeObject) get() cObject {
 // take marks that ownership of the given pointer has been taken
 // from the engine. It may no longer be freed by the engine.
 // This function panics if the object is already initialised.
-func (obj *safeObject) take(ctx Context, ptr cObject) {
+func (obj *safeObject) take(ctx InstanceOwner, ptr cObject) {
 	if obj.self != nil || obj.cPtr != 0 {
 		panic("object already initialized")
 	}
 	obj.self = obj // take ownership.
 	obj.cPtr = ptr
-	ctx.count(obj)
+	obj.owner = ctx
+	ctx.children.Add(1)
 }
 
 // give marks that the object has been given back to the engine. It will
 // no longer be available for use in Go. This function panics if the object
 // is not owned by Go.
-func (obj *safeObject) give(ctx Context) cObject {
+func (obj *safeObject) give(ctx InstanceOwner) cObject {
 	obj = obj.self // ignore possible copy.
 	if obj == nil || obj.self == nil {
 		panic("object does not have Go ownership")
 	}
 	obj.self = nil
-	ctx.freed(obj)
+	ctx.children.Add(-1)
 	return obj.cPtr
+}
+
+// destroy the object, called from the engine.
+func (obj *safeObject) destroy() {
+	obj = obj.self // ignore possible copy.
+	if obj == nil || obj.self == nil {
+		panic("object does not have Go ownership")
+	}
+	obj.cPtr = 0
 }
 
 // free frees the underlying Godot object, free panics if
 // the object was already freed, or if it is not owned by
 // Go.
-func (obj *safeObject) free(ctx Context) {
+func (obj *safeObject) free() {
 	obj = obj.self // ignore possible copy.
 	if obj == nil || obj.self == nil {
 		panic("object does not have Go ownership")
 	}
-	if obj.cPtr == 0 {
-		panic("object already freed")
+
+	ctx := obj.owner
+
+	if obj.cPtr == 0 || ctx == belongsToGodot {
+		//panic("object already freed")
+		return
 	}
+
 	if obj.refC.Load() == 0 {
 		obj.cPtr.destroy()
 	} else {
@@ -150,8 +154,6 @@ func (obj *safeObject) free(ctx Context) {
 			}
 		}
 	}
-	obj.cPtr = 0
-	obj.self = nil
-	ctx.freed(obj)
+	ctx.children.Add(-1)
 	fmt.Println("free", obj)
 }

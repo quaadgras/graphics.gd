@@ -9,34 +9,44 @@ import (
 func main() {}
 
 type HelloWorld struct {
+	gd.Extension
+
 	object gd.Object
 
 	Message string
 }
 
-var NewHelloWorld = gd.Register(func(ctx gd.Context, hello *HelloWorld) gd.Object {
+var NewHelloWorld, NewHelloWorldAt = gd.Register(func(hello *HelloWorld) (*gd.Extension, *gd.Object) {
 	hello.Message = "Hello World!"
-	return gd.NewObject(ctx, &hello.object)
+	return &hello.Extension, gd.NewObjectAt(&hello.object, gd.BelongsTo(hello))
 })
 
-func (h HelloWorld) Print(ctx gd.Context) {
+func (h HelloWorld) Print() {
 	fmt.Println(h.Message)
 }
 
-func (h HelloWorld) Echo(ctx gd.Context, s string) {
+func (h HelloWorld) Echo(s string) {
 	fmt.Println(s + " from Go!")
 }
 
 type ExtendedNode struct {
-	ctx gd.Context
+	gd.Extension
 
-	node gd.Node2D
+	node  gd.Node2D
+	hello HelloWorld
 }
 
-var NewExtendedNode = gd.Register(func(ctx gd.Context, extended *ExtendedNode) gd.Node2D {
-	extended.ctx = ctx
-	return gd.NewNode2D(ctx, &extended.node)
+var NewExtendedNode, NewExtendedNodeAt = gd.Register(func(enode *ExtendedNode) (*gd.Extension, *gd.Node2D) {
+
+	NewHelloWorldAt(&enode.hello, gd.BelongsTo(enode))
+
+	return &enode.Extension, gd.NewNode2DAt(&enode.node, gd.BelongsTo(enode))
 })
+
+func (e ExtendedNode) Free() {
+	e.hello.Free()
+	e.Extension.Free()
+}
 
 func (e *ExtendedNode) Ready() {
 	if gd.Engine.IsEditorHint() {
@@ -46,15 +56,17 @@ func (e *ExtendedNode) Ready() {
 
 	fmt.Println(e.node.CanvasItem().Node().Object().GetClass())
 
-	var obj = gd.NewObject(e.ctx, nil)
+	var obj = gd.NewObject(gd.BelongsTo(e))
 	fmt.Println(obj.GetClass())
-	defer obj.Free(e.ctx)
+	defer obj.Free()
 
 	//gd.LoadSingletons()
 
 	fmt.Println(gd.Engine.GetSingletonList())
 
 	fmt.Println("Scene is ready!")
+
+	e.hello.Print()
 
 	fmt.Println("sin=", gd.Sin(1.5))
 

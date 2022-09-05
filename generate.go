@@ -420,10 +420,6 @@ func generate() error {
 			genEnum(code, class.Name, enum)
 		}
 
-		for _, constructor := range class.Constructors {
-			fmt.Println(class.Name, constructor.Arguments)
-		}
-
 		switch class.Name {
 		case "bool", "int", "float", "Nil", "String":
 			continue
@@ -499,10 +495,11 @@ func generate() error {
 		if class.Name != "Object" {
 			fmt.Fprintf(code, "type %[1]v struct{self *%[1]v; obj safeObject }\n", class.Name)
 		}
-		fmt.Fprintf(code, `func New%[1]v(ctx Context, at *%[1]v) %[1]v { if at == nil { at = new(%[1]v) }; at.obj.new(ctx, at.class(), %v); return *at }`+"\n", class.Name, isRefCounted(class))
-		fmt.Fprintf(code, `func (gdClass %v) Free(ctx Context) { gdClass.obj.free(ctx) }`+"\n", class.Name)
-		fmt.Fprintf(code, `func (gdClass %v) owner() cObject { return gdClass.obj.get() }`+"\n", class.Name)
-		fmt.Fprintf(code, `func (%v) class() string { return "%v\000" }`+"\n", class.Name, class.Name)
+		fmt.Fprintf(code, `func New%[1]v(owner InstanceOwner) *%[1]v { at := new(%[1]v); return New%[1]vAt(at, owner) }`+"\n", class.Name, isRefCounted(class))
+		fmt.Fprintf(code, `func New%[1]vAt(at *%[1]v, owner InstanceOwner) *%[1]v { at.obj.new(owner, at.className(), %v); return at }`+"\n", class.Name, isRefCounted(class))
+		fmt.Fprintf(code, `func (gdClass *%v) Free() { gdClass.obj.free() }`+"\n", class.Name)
+		fmt.Fprintf(code, `func (gdClass %v) object() safeObject { return gdClass.obj }`+"\n", class.Name)
+		fmt.Fprintf(code, `func (*%v) className() string { return "%v\000" }`+"\n", class.Name, class.Name)
 		fmt.Fprintln(code)
 		if class.Inherits != "" {
 			fmt.Fprintf(code, `func (gdClass %v) %[2]v() %[2]v { return %[2]v{obj:gdClass.obj} }`+"\n", class.Name, convertClass(class.Inherits))
@@ -525,7 +522,7 @@ func generate() error {
 
 		// check if a Go type implements that method and returns the method that implements the
 		// named virtual.
-		fmt.Fprintf(code, "func (gdClass %v) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {\n", class.Name)
+		fmt.Fprintf(code, "func (gdClass *%v) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {\n", class.Name)
 		if virtualCount > 0 {
 			fmt.Fprintln(code, "\tswitch name {")
 			for _, method := range class.Methods {
@@ -552,7 +549,7 @@ func generate() error {
 			fmt.Fprintln(code, "\t}")
 		}
 		if class.Inherits != "" {
-			fmt.Fprintf(code, "\treturn gdClass.%v().virtual(rtype, name)\n", convertClass(class.Inherits))
+			fmt.Fprintf(code, "\treturn new(%v).virtual(rtype, name)\n", convertClass(class.Inherits))
 		} else {
 			fmt.Fprintln(code, "\treturn")
 		}

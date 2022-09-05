@@ -13,17 +13,20 @@ https://github.com/godotengine/godot/pull/65018
     // HelloWorld is an extension that prints "Hello World" after it 
     // has been placed into a scene and is ready.
     type HelloWorld struct {
+        gd.Extension
+
         node gd.Node2D
     }
 
-    // NewHelloWorld registers the HelloWorld type as an extension of
-    // Godot's Node2D type. It will be available in the Godot editor
-    // and can be added to a scene. The Context type is used to track
-    // object lifetimes and any objects that are created against this
-    // context must be freed before the context is cancelled (when the
-    // extended class is destroyed).
-    var NewHelloWorld = gd.Register(func(ctx gd.Context, hello *HelloWorld) gd.Node2D {
-        return gd.NewNode2D(ctx, &hello.node)
+    // NewHelloWorld, NewHelloWorldAt constructors returned by the registration 
+    // of the HelloWorld type as an extension of Godot's Node2D type. It will 
+    // be available in the Godot editor and can be added to a scene. All Godot
+    // objects must be assigned an owner (gd.BelongsTo) and need to manually 
+    // freed before the owner is destroyed. The extended object (&hello.node 
+    // in this case) is automatically freed for you when Godot deletes an
+    // instance of the extension.
+    var NewHelloWorld, NewHelloWorldAt = gd.Register(func(hello *HelloWorld) (*gd.Extension, *gd.Node2D) {
+        return &hello.Extension, gd.NewNode2DAt(&hello.node, gd.BelongsTo(hello))
     })
 
     // Ready implements the Godot '_ready' interface (virtual method).
@@ -60,8 +63,9 @@ representation of them.
 
 The goal is for all single-threaded Go operations to be memory-safe and
 to have all memory leaks detectable at runtime (they will cause a panic).
-This is achieved with the `gd.Context` type which is responsible for 
-managing memory ownership of any Godot objects used within Go.
+This is achieved with an ownership model `gd.BelongsTo` which is 
+responsible for tracing the memory ownership of any Godot objects
+referenced in Go.
 
 ## Non Goals
 

@@ -5,146 +5,184 @@ package gd
 import "C"
 
 import (
-	"fmt"
 	"reflect"
+	"sync/atomic"
 	"unsafe"
 )
 
-var cOnLoad func() = func() {}
-
-var deferred []func()
-
-//export loadExtension
-func loadExtension(p_interface, p_library, p_init unsafe.Pointer) uint8 {
-	api = (*cInterface)(p_interface)
-	classDB = cClassLibrary(p_library)
-
-	ini := (*cInitialization)(p_init)
-	ini.cInit()
-
-	return 1
-}
-
-//export initialize
-func initialize(userdata unsafe.Pointer, level int64) {
-	if level == 4 {
-		cOnLoad()
-
-		for _, fn := range deferred {
-			fn()
-		}
-	}
-}
-
-//export deinitialize
-func deinitialize(userdata unsafe.Pointer, level int64) {}
-
-//export create_instance_func
-func create_instance_func(userdata uintptr) uintptr {
-	return uintptr(extensions[extensionID(userdata)-1].create())
-}
-
-//export free_instance_func
-func free_instance_func(userdata, instance uintptr) {
-	extensions[extensionID(userdata)-1].delete(loadInstanceID(instance))
-}
-
-//export get_virtual_index
-func get_virtual_index(userdata uintptr, p_name *C.char) uint8 {
-	name := C.GoString(p_name)
-	method, ok := extensions[extensionID(userdata)-1].lookup(name)
-	fmt.Println("lookup", name, ok)
-	if !ok {
-		return 0
-	}
-	if method.Index > 255 {
-		panic("too many exported methods")
-	}
-	return uint8(method.Index + 1)
-}
-
-//export call_virtual_index
-func call_virtual_index(index uint8, instance uintptr, args *unsafe.Pointer, result unsafe.Pointer) {
-	id := loadInstanceID(instance)
-	extensions[id.class-1].call(id.index, index, args, result)
-}
-
-type Class interface {
-	owner() cObject
-	class() string
+// Instance of a builtin Godot object or an [ExtensionInstance].
+type Instance interface {
+	object() safeObject
+	className() string
 	virtual(reflect.Type, string) (reflect.Method, bool)
+
+	// Free the instance, releasing any underlying resources.
+	// May panic if the [Instance] is an [Extension] that is
+	// leaking memory.
+	Free()
 }
 
-type Loadable interface {
-	load()
+// ExtensionInstance of a registered [Extension].
+type ExtensionInstance interface {
+	Instance
+
+	extension() *Extension
 }
 
-func Load[T Loadable](class T) T {
-	class.load()
-	return class
+// BelongsTo returns an [InstanceOwner] corresponding to the
+// given [ExtensionInstance].
+func BelongsTo(instance ExtensionInstance) InstanceOwner {
+	return InstanceOwner{
+		children: &instance.extension().count,
+	}
 }
 
-type extensionID uint32
-
-// Extension to a core class.
-type Extension[Type any, Extends Class] struct {
-	id extensionID
-
-	vtype reflect.Type // value type.
-	ptype reflect.Type // pointer type.
-
-	loader ExtensionLoader[Type, Extends]
-
-	class string             // base class name, cached on register.
-	owner string             // owner class name, cached on register.
-	slice []instanceOf[Type] // slice of instantiated instances.
+// InstanceOwner refers to an owner of an [Instance].
+// Exists primarily as a memory-leak detector.
+type InstanceOwner struct {
+	children *atomic.Int64 // pointer to children count.
 }
 
-type extensionInterface interface {
+// Extension can be added as a field in a Go struct to order to enable
+// that struct to be registered as a Godot extension that can create
+// new [Extension] instances.
+type Extension struct {
+	class extensionClassID
+	index extensionClassInstanceID
+	count atomic.Int64  // used as the InstanceOwner children count.
+	owner InstanceOwner // InstanceOwner of the Extension's instance (parent).
+
+	gdRef safeObject
+}
+
+func (ex Extension) virtual(reflect.Type, string) (method reflect.Method, ok bool) { return }
+func (ex Extension) object() safeObject                                            { return ex.gdRef }
+func (ex Extension) className() string                                             { return "" }
+
+func (ex *Extension) extension() *Extension { return ex }
+
+// Free the [Extension]'s instance, releasing any underlying resources.
+// May panic if the [Extension]'s instance is leaking memory.
+func (ex Extension) Free() {
+	ex.gdRef.free()
+}
+
+// extensionClassID identifies an [Extension] class that has been
+// registered with Godot. Whenever we register a class, we create
+// a global [extensionClassHandler] that handles any Godot -> Go
+// calls for any instances of that class.
+type extensionClassID uint32
+
+// extensionClassInstanceID is a unique identifier for an instance of
+// an [Extension] class.
+type extensionClassInstanceID uint32
+
+// extensionClassDB is the [extensionClassDatabase] singleton.
+var extensionClassDB extensionClassDatabase
+
+// extensionClassDatabase contains registered [Extension] classes.
+// [extensionClassID] will be a 1-based index into this array.
+type extensionClassDatabase []extensionClassHandler
+
+// add a new [Extension] class to the database.
+func (db *extensionClassDatabase) add(extension extensionClassHandler) extensionClassID {
+	*db = append(*db, extension)
+	return extensionClassID(len(*db))
+}
+
+// get the [extensionClassHandler] for the given [extensionClassID].
+func (db extensionClassDatabase) get(id extensionClassID) extensionClassHandler { return db[id-1] }
+
+// extensionClassInstances stores a list of [ExtensionInstance]s.
+type extensionClassInstances[Type Instance] []*Type
+
+func (instances extensionClassInstances[T]) get(id extensionClassInstanceID) *T {
+	return instances[id-1]
+}
+
+// extensionClassHandlerFor a given [Extension] that handles Godot -> Go function calls.
+type extensionClassHandlerFor[Type Instance, Extends Instance] struct {
+	id extensionClassID
+
+	class string // class name, cached on [Register].
+
+	vtype reflect.Type // [Instance] value type.
+	ptype reflect.Type // [Instance] pointer type.
+
+	build InstanceBuilder[Type, Extends]
+
+	slice extensionClassInstances[Type] // slice of instantiated instances.
+}
+
+// extensionClassHandler that handles Godot -> Go function calls.
+type extensionClassHandler interface {
 	create() cObject
-	delete(instanceID)
+	delete(extensionClassInstanceID)
 	lookup(name string) (reflect.Method, bool)
-	call(instanceID uint32, method uint8, args *unsafe.Pointer, result unsafe.Pointer)
+	call(instanceID extensionClassInstanceID, method uint8, args *unsafe.Pointer, result unsafe.Pointer)
 }
 
-var extensions []extensionInterface
+// InstanceBuilder is a function that intializes a new [Instance] of a particular
+// [Extension] 'Type'. This function should return a pointer to the [Instance]'s
+// [Extension] field and a pointer to the builtin Godot object that the [Instance]
+// is extending.
+type InstanceBuilder[Type Instance, Extends Instance] func(*Type) (*Extension, Extends)
 
-type ExtensionLoader[Type any, Extends Class] func(Context, *Type) Extends
+/*
+Register a new [Extension] type with Godot, an [InstanceBuilder] should be provided
+that will be used to initialize new instances of the [Extension]. Register returns
+both New and NewAt constructors. These should be used to create new instances of
+the [Extension] type.
 
-func Register[Type any, Extends Class](fn ExtensionLoader[Type, Extends]) *Extension[Type, Extends] {
+Example:
+
+	type HelloWorld struct {
+		gd.Extension
+
+		object gd.Object
+	}
+
+	var NewHelloWorld, NewHelloWorldAt = gd.Register(func(hello *HelloWorld) (*gd.Extension, *gd.Object) {
+		return &hello.Extension, gd.NewObjectAt(&hello.object, gd.BelongsTo(hello))
+	})
+*/
+func Register[Type Instance, Extends Instance](fn InstanceBuilder[Type, Extends]) (new func(InstanceOwner) *Type, newAt func(*Type, InstanceOwner) *Type) {
 	var zero Type
 	var parent Extends
 
 	var rtype = reflect.TypeOf(zero)
 
-	var extension = Extension[Type, Extends]{
-		loader: fn,
+	var extension = extensionClassHandlerFor[Type, Extends]{
+		build: fn,
 
 		vtype: rtype,
 		ptype: reflect.PtrTo(rtype),
 		class: rtype.Name() + "\000",
-		owner: parent.class(),
 	}
-
-	extensions = append(extensions, &extension)
-	extension.id = extensionID(len(extensions))
+	extension.id = extensionClassDB.add(&extension)
 
 	deferred = append(deferred, func() {
-		classDB.register_extension_class(extension.class, extension.owner, uintptr(extension.id))
+		classDB.register_extension_class(extension.class, parent.className(), uintptr(extension.id))
 	})
 
-	return &extension
+	return func(ctx InstanceOwner) *Type {
+			_, ptr := extension.new(ctx, nil)
+			return ptr
+		}, func(dst *Type, ctx InstanceOwner) *Type {
+			_, ptr := extension.new(ctx, dst)
+			return ptr
+		}
 }
 
 type instanceID struct {
-	class extensionID
-	index uint32
+	class extensionClassID
+	index extensionClassInstanceID
 }
 
 func loadInstanceID(id uintptr) instanceID {
 	return instanceID{
-		class: extensionID(id >> 32),
-		index: uint32(id),
+		class: extensionClassID(id >> 32),
+		index: extensionClassInstanceID(id),
 	}
 }
 
@@ -152,72 +190,64 @@ func (id instanceID) pack() uintptr {
 	return uintptr(id.class)<<32 | uintptr(id.index)
 }
 
-var extensionIDs uint32
-
-func nextExtensionID() uint32 {
-	extensionIDs++
-	return extensionIDs
-}
-
-type instanceOf[Type any] struct {
-	alive bool
-	alloc *uint32
-	value Type
-}
-
-func (i *instanceOf[T]) context() Context {
-	if i.alloc == nil {
-		i.alloc = new(uint32)
-	}
-	return Context{
-		counter: i.alloc,
-	}
-}
-
-func (ext *Extension[Type, Extends]) lookup(name string) (reflect.Method, bool) {
+func (ext *extensionClassHandlerFor[Type, Extends]) lookup(name string) (reflect.Method, bool) {
 	var zero Type
 	var core Extends
 	return core.virtual(reflect.PtrTo(reflect.TypeOf(zero)), name)
 }
 
-func (ext *Extension[Type, Extends]) create() cObject {
+func (ext *extensionClassHandlerFor[Type, Extends]) new(ctx InstanceOwner, dst *Type) (*Extension, *Type) {
 	var id instanceID
 	id.class = ext.id
 
 	// reuse existing slot if possible.
 	for i, slot := range ext.slice {
-		if !slot.alive {
-			id.index = uint32(i + 1)
+		if slot == nil {
+			id.index = extensionClassInstanceID(i + 1)
 			break
 		}
 	}
 
+	if dst == nil {
+		dst = new(Type)
+	}
+
 	if id.index == 0 {
-		ext.slice = append(ext.slice, instanceOf[Type]{})
-		id.index = uint32(len(ext.slice))
+		ext.slice = append(ext.slice, dst)
+		id.index = extensionClassInstanceID(len(ext.slice))
 	}
 
-	instance := &ext.slice[id.index-1]
-	instance.alive = true
+	instance, base := ext.build(ext.slice[id.index-1])
+	instance.class = ext.id
+	instance.index = id.index
+	instance.owner = ctx
 
-	obj := ext.loader(instance.context(), &instance.value).owner()
-	obj.set_instance(ext.class, id.pack())
+	obj := base.object()
+	obj.get().set_instance(ext.class, id.pack())
 
-	return obj
+	instance.gdRef = obj
+
+	return instance, ext.slice[id.index-1]
 }
 
-func (ext *Extension[Type, Extends]) delete(id instanceID) {
-	var zero Type
-	instance := &ext.slice[id.index-1]
-	*instance.alloc--
-	if *instance.alloc != 0 {
-		panic(reflect.TypeOf(zero).String() + " is leaking memory")
-	}
-	instance.alive = false
+var belongsToGodot = InstanceOwner{
+	children: new(atomic.Int64),
 }
 
-func (ext *Extension[Type, Extends]) call(instance uint32, index uint8, args *unsafe.Pointer, result unsafe.Pointer) {
-	rvalue := reflect.ValueOf(&ext.slice[instance-1].value)
+func (ext *extensionClassHandlerFor[Type, Extends]) create() cObject {
+	instance, _ := ext.new(belongsToGodot, nil)
+	return instance.gdRef.get()
+}
+
+func (ext *extensionClassHandlerFor[Type, Extends]) delete(id extensionClassInstanceID) {
+	obj := (*ext.slice[id-1]).object()
+	obj.destroy()
+	(*ext.slice[id-1]).Free()
+	ext.slice[id-1] = nil
+}
+
+func (ext *extensionClassHandlerFor[Type, Extends]) call(instance extensionClassInstanceID, index uint8, args *unsafe.Pointer, result unsafe.Pointer) {
+	rvalue := reflect.ValueOf(ext.slice[instance-1])
 	method := rvalue.Method(int(index) - 1)
 	rtype := method.Type()
 
@@ -241,7 +271,7 @@ func (ext *Extension[Type, Extends]) call(instance uint32, index uint8, args *un
 	}
 }
 
-func (ext *Extension[Type, Extends]) methods() []reflect.Method {
+func (ext *extensionClassHandlerFor[Type, Extends]) methods() []reflect.Method {
 	var methods []reflect.Method
 	for i := 0; i < ext.ptype.NumMethod(); i++ {
 		methods = append(methods, ext.ptype.Method(i))
