@@ -23,7 +23,7 @@ https://github.com/godotengine/godot/pull/65018
     // will be available in the Godot editor and can be added to a scene.
     var NewHelloWorld, NewHelloWorldAt = gd.Register(func(hello *HelloWorld) (*gd.Extension, *gd.Node2D) {
 
-        // objects must be assigned an owner (gd.BelongsTo) and need to manually 
+        // objects must be assigned an owner (gd.BelongsTo) and need to be manually 
         // freed before the owner is destroyed except for the extended object 
         // (&hello.node in this case) which will be automatically freed for you 
         // with HelloWorld.Free().
@@ -82,7 +82,7 @@ a higher cost to make calls to small Godot functions (that do little work).
 So try to do small calculations and tight loops in Go without calling out to Godot. 
 
 Additionally, arguments are passed to Godot as pointers so any function calls
-will cause their arguments to escape to the heap even though they do not esacpe. 
+will cause their arguments to escape to the heap even though they do not escape. 
 
 (https://github.com/golang/go/issues/27538)
 
