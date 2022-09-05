@@ -18,13 +18,19 @@ type RefCounted struct {
 	obj         safeObject
 }
 
-func NewRefCounted(ctx InstanceOwner, at *RefCounted) *RefCounted {
+func NewRefCounted(owner InstanceOwner, at *RefCounted) *RefCounted {
 	if at == nil {
 		at = new(RefCounted)
 	}
-	at.obj.new(ctx, at.class(), true)
+	at.obj.new(owner, at.class(), true)
 	return at
 }
+
+func NewRefCountedAt(at *RefCounted, owner InstanceOwner) *RefCounted {
+	at.obj.new(owner, at.class(), true)
+	return at
+}
+
 func (gdClass RefCounted) Free()          { gdClass.obj.free() }
 func (gdClass RefCounted) owner() cObject { return gdClass.obj.get() }
 func (gdClass RefCounted) Object() Object { return Object{obj: gdClass.obj} }
