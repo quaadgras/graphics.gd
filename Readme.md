@@ -42,7 +42,7 @@ https://github.com/godotengine/godot/pull/65018 (aiming to get this merged).
 * Exporting methods to GDScript.
 * Stability.
 * Import Godot Documentation?
-* gd.Context move semantics.
+* ownership move semantics.
 * go:noescape the C calls.
 
 ## Design Principles
@@ -69,6 +69,18 @@ to have all memory leaks detectable at runtime (they will cause a panic).
 This is achieved with an ownership model `gd.BelongsTo` which is 
 responsible for tracing the memory ownership of any Godot objects
 referenced in Go. 
+
+## Sub Packages
+
+All Godot classes have been organised into a set of sub packages that alias
+into the root `gd` package, prefixes of these classes are stripped so that
+for example `gd.AudioEffect` can be used as `audio.Effect`. These packages
+serve as a more digestable way to explore the Godot API. Unfortunately the
+methods of these classes are not available to view in the Go documentation.
+
+This is a limitation of the Go documentation tooling.
+
+    https://github.com/golang/go/issues/44905
 
 ## Non Goals
 

@@ -1,0 +1,30 @@
+package packages
+
+// Navigation & pathfinding.
+var Navigation = []string{
+	"AStar2D",
+	"AStar3D",
+	"AStarGrid2D",
+	"Curve",
+	"Curve2D",
+	"Curve3D",
+	"Line2D",
+	"NavigationAgent2D",
+	"NavigationAgent3D",
+	"NavigationLink2D",
+	"NavigationLink3D",
+	"NavigationMesh",
+	"NavigationMeshGenerator",
+	"NavigationObstacle2D",
+	"NavigationObstacle3D",
+	"NavigationPolygon",
+	"NavigationRegion2D",
+	"NavigationRegion3D",
+	"NavigationServer2D",
+	"NavigationServer3D",
+	"Path2D",
+	"Path3D",
+	"PathFollow2D",
+	"PathFollow3D",
+	"PolygonPathFinder",
+}

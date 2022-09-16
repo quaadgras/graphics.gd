@@ -420,15 +420,10 @@ func generate() error {
 			genEnum(code, class.Name, enum)
 		}
 
-		switch class.Name {
-		case "bool", "int", "float", "Nil", "String":
-			continue
-		case "StringName":
+		if class.Name == "StringName" {
 			class.Name = "Name"
 		}
-		if strings.HasPrefix(class.Name, "Packed") {
-			continue
-		}
+		class.Name = strings.Title(class.Name)
 
 		fmt.Fprintf(code, "type %v = c%v\n", class.Name, class.Name)
 

@@ -458,10 +458,10 @@ func (vec cVector[T]) len() int {
 }
 
 /*
-	These are the GDNative types and each type and they need to be kept in sync
-	with Godot's memory representation of them.
+These are the GDNative types and each type and they need to be kept in sync
+with Godot's memory representation of them.
 
-	For each release of Godot, only the default build options are supported.
+For each release of Godot, only the default build options are supported.
 */
 type (
 	cNil     struct{}
@@ -523,23 +523,41 @@ type (
 	cStringName uintptr
 	cName       string
 
-	cNodePath           uintptr
-	cRID                uint64
-	cObject             uintptr
-	cCallable           [3]uintptr
-	cSignal             [2]uintptr
-	cDictionary         uintptr
-	cArray              uintptr
-	cPackedByteArray    = cVector[byte]
-	cPackedInt32Array   = cVector[int32]
-	cPackedInt64Array   = cVector[int64]
-	cPackedFloat32Array = cVector[float32]
-	cPackedFloat64Array = cVector[float64]
-	cPackedStringArray  = cVector[cString]
-	cPackedVector2Array = cVector[cVector2]
-	cPackedVector3Array = cVector[cVector3]
-	cPackedColorArray   = cVector[cColor]
-	cVariant            [24]byte
+	cNodePath        uintptr
+	cRID             uint64
+	cObject          uintptr
+	cCallable        [3]uintptr
+	cSignal          [2]uintptr
+	cDictionary      uintptr
+	cArray           uintptr
+	cPackedByteArray struct {
+		cVector[byte]
+	}
+	cPackedInt32Array struct {
+		cVector[int32]
+	}
+	cPackedInt64Array struct {
+		cVector[int64]
+	}
+	cPackedFloat32Array struct {
+		cVector[float32]
+	}
+	cPackedFloat64Array struct {
+		cVector[float64]
+	}
+	cPackedStringArray struct {
+		cVector[cString]
+	}
+	cPackedVector2Array struct {
+		cVector[cVector2]
+	}
+	cPackedVector3Array struct {
+		cVector[cVector3]
+	}
+	cPackedColorArray struct {
+		cVector[cColor]
+	}
+	cVariant [24]byte
 )
 
 type cInitialization C.GDNativeInitialization
