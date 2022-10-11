@@ -200,16 +200,17 @@ func (ext *extensionClassHandlerFor[Type, Extends]) new(ctx InstanceOwner, dst *
 	var id instanceID
 	id.class = ext.id
 
+	if dst == nil {
+		dst = new(Type)
+	}
+
 	// reuse existing slot if possible.
 	for i, slot := range ext.slice {
 		if slot == nil {
 			id.index = extensionClassInstanceID(i + 1)
+			ext.slice[i] = dst
 			break
 		}
-	}
-
-	if dst == nil {
-		dst = new(Type)
 	}
 
 	if id.index == 0 {
