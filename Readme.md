@@ -1,6 +1,6 @@
 # Godot 4.0 Bindings for Go
 
-This package provides an interface for writing Godot 4.0 Extensions in Go. Currently requires Godot to be built with an additional PR
+This package provides an interface for writing Godot 4.0 Extensions in Go. Currently requires Godot ~master to be built with an additional PR
 https://github.com/godotengine/godot/pull/65018 (aiming to get this merged).
 
 ```go
