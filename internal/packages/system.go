@@ -3,8 +3,8 @@ package packages
 // System specific layers with shared components (Unix, Win32, Apple, etc.) in drivers.
 var System = []string{
 	"ConfigFile",
-	"Directory",
-	"File",
+	"DirAccess",
+	"FileAccess",
 	"Mutex",
 	"OS",
 	"Semaphore",

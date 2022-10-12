@@ -6,46 +6,48 @@ import (
 	"github.com/readykit/gd"
 )
 
+// main init function, where the extensions are exported so that
+// they are available to the engine.
 func main() {}
+func init() {
+	gd.Export(
+		&HelloWorld{},
+		&ExtendedNode{},
+	)
+}
 
+/*
+HelloWorld is a simple extension to demonstrate how to export
+Go methods so that they can be used in scripts.
+*/
 type HelloWorld struct {
+	gd.Object
 	gd.Extension
-
-	object gd.Object
-
-	Message string
+	gd.Scripting[struct {
+		Print gd.Method `gd:"print()"`
+		Echo  gd.Method `gd:"echo(s)"`
+	}]
 }
 
-var NewHelloWorld, NewHelloWorldAt = gd.Register(func(hello *HelloWorld) (*gd.Extension, *gd.Object) {
-	hello.Message = "Hello World!"
-	return &hello.Extension, gd.NewObjectAt(&hello.object, gd.BelongsTo(hello))
-})
-
+// Print prints "Hello World"
 func (h HelloWorld) Print() {
-	fmt.Println(h.Message)
+	fmt.Println("Hello World")
 }
 
+// Echo prints the given string, signalling that it
+// was printed by Go code.
 func (h HelloWorld) Echo(s string) {
 	fmt.Println(s + " from Go!")
 }
 
+/*
+ExtendedNode demonstrates how to call the methods of builtin objects.
+*/
 type ExtendedNode struct {
+	gd.Node2D
 	gd.Extension
 
-	node  gd.Node2D
 	hello HelloWorld
-}
-
-var NewExtendedNode, NewExtendedNodeAt = gd.Register(func(enode *ExtendedNode) (*gd.Extension, *gd.Node2D) {
-
-	NewHelloWorldAt(&enode.hello, gd.BelongsTo(enode))
-
-	return &enode.Extension, gd.NewNode2DAt(&enode.node, gd.BelongsTo(enode))
-})
-
-func (e ExtendedNode) Free() {
-	e.hello.Free()
-	e.Extension.Free()
 }
 
 func (e *ExtendedNode) Ready() {
@@ -54,40 +56,32 @@ func (e *ExtendedNode) Ready() {
 		return
 	}
 
-	fmt.Println(e.node.CanvasItem().Node().Object().GetClass())
+	fmt.Println(e.Node2D)
 
-	var obj = gd.NewObject(gd.BelongsTo(e))
-	fmt.Println(obj.GetClass())
-	defer obj.Free()
+	fmt.Println("class:", e.CanvasItem().Node().Object().GetClass())
 
-	//gd.LoadSingletons()
+	// var obj gd.Object
+	// e.Attach(&obj)
+	// fmt.Println(obj.GetClass())
+	// defer e.Detach(&obj)
 
 	fmt.Println(gd.Engine.GetSingletonList())
-
 	fmt.Println("Scene is ready!")
 
 	e.hello.Print()
 
 	fmt.Println("sin=", gd.Sin(1.5))
 
-	fmt.Println("rotation=", e.node.GetRotation())
-	e.node.SetRotation(3.14)
-	fmt.Println("rotation=", e.node.GetRotation())
+	fmt.Println("rotation=", e.GetRotation())
+	e.SetRotation(3.14)
+	fmt.Println("rotation=", e.GetRotation())
 
-	pos := e.node.GetPosition()
+	pos := e.GetPosition()
 
 	fmt.Println("position=", pos)
 
 	pos.X = 100
 
-	e.node.SetPosition(pos)
+	e.SetPosition(pos)
 	fmt.Println("position=", pos)
-
-	//gd.DisplayServerSingleton(gd.Engine.GetSingleton("DisplayServer"))
-
-	//fmt.Println(godot.Engine.GetSingletonList())
-
-	fmt.Println(gd.DisplayServer)
-
-	gd.DisplayServer.WindowSetCurrentScreen(1, 0)
 }

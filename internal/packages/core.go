@@ -42,7 +42,7 @@ var CoreScript = []string{
 	"int",
 	"JavaClass",
 	"JavaClassWrapper",
-	"JavaScript",
+	"JavaScriptBridge",
 	"JavaScriptObject",
 	"JNISingleton",
 	"NativeExtension",

@@ -9,26 +9,18 @@ https://github.com/godotengine/godot/pull/65018 (aiming to get this merged).
     import "github.com/readykit/gd"
 
     func main() {} // ignore this
+    func init() {
+        gd.Export(
+            new(HelloWorld), // export the extension so that it is available in Godot.
+        )
+    }
 
     // HelloWorld is an extension that prints "Hello World" after it 
     // has been placed into a scene and is ready.
     type HelloWorld struct {
+        gd.Node2D
         gd.Extension
-
-        node gd.Node2D
     }
-
-    // NewHelloWorld, NewHelloWorldAt constructors returned by the registration 
-    // of the HelloWorld type as an extension of Godot's Node2D type. [HelloWorld]
-    // will be available in the Godot editor and can be added to a scene.
-    var NewHelloWorld, NewHelloWorldAt = gd.Register(func(hello *HelloWorld) (*gd.Extension, *gd.Node2D) {
-
-        // objects must be assigned an owner (gd.BelongsTo) and need to be manually 
-        // freed before the owner is destroyed except for the extended object 
-        // (&hello.node in this case) which will be automatically freed for you 
-        // with HelloWorld.Free().
-        return &hello.Extension, gd.NewNode2DAt(&hello.node, gd.BelongsTo(hello))
-    })
 
     // Ready implements the Godot '_ready' interface (virtual method).
     // It will run after the node is added to the scene.
@@ -39,7 +31,6 @@ https://github.com/godotengine/godot/pull/65018 (aiming to get this merged).
 
 ## Roadmap
 
-* Exporting methods to GDScript.
 * Stability.
 * Import Godot Documentation?
 * ownership move semantics.
@@ -80,7 +71,7 @@ methods of these classes are not available to view in the Go documentation.
 
 This is a limitation of the Go documentation tooling.
 
-    https://github.com/golang/go/issues/44905
+https://github.com/golang/go/issues/44905
 
 ## Non Goals
 

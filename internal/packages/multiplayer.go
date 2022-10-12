@@ -20,6 +20,7 @@ var MultiplayerNetworking = []string{
 	"StreamPeer",
 	"StreamPeerBuffer",
 	"StreamPeerExtension",
+	"StreamPeerGZIP",
 }
 
 // MultiplayerNetworkingDTLS
@@ -47,9 +48,9 @@ var MultiplayerNetworkingIP = []string{
 	"IPUnix",
 }
 
-// MultiplayerNetworkingSSL
-var MultiplayerNetworkingSSL = []string{
-	"StreamPeerSSL",
+// MultiplayerNetworkingTLS
+var MultiplayerNetworkingTLS = []string{
+	"StreamPeerTLS",
 }
 
 // MultiplayerNetworkingTCP
@@ -81,8 +82,6 @@ var MultiplayerNetworkingWebRTC = []string{
 
 // MultiplayerNetworkingWebsocket
 var MultiplayerNetworkingWebsocket = []string{
-	"WebSocketClient",
 	"WebSocketMultiplayerPeer",
 	"WebSocketPeer",
-	"WebSocketServer",
 }

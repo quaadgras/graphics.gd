@@ -36,7 +36,7 @@ func (gdClass RefCounted) owner() cObject { return gdClass.obj.get() }
 func (gdClass RefCounted) Object() Object { return Object{obj: gdClass.obj} }
 func (RefCounted) class() string          { return "RefCounted\000" }
 
-var methodRefCounted [3]cMethodBind
+var methodRefCounted [4]cMethodBind
 
 func (gdClass RefCounted) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
 	return
@@ -50,12 +50,15 @@ func (gdClass RefCounted) Reference() bool {
 func (gdClass RefCounted) Unreference() bool {
 	return methodCall[bool](gdClass.obj.get(), methodRefCounted[2])
 }
+func (gdClass RefCounted) GetReferenceCount() int32 {
+	return methodCall[int32](gdClass.obj.get(), methodRefCounted[3])
+}
 
 // safeObject wraps an engine object and provides a memory-safe interface
 // that tracks ownership, references and panics on double-free.
 type safeObject struct {
-	self *safeObject // pointer to the 'owner'
 	cPtr cObject
+	self *safeObject  // pointer to the 'owner'
 	refC atomic.Int64 // Go reference counter.
 
 	owner InstanceOwner

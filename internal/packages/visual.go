@@ -4,13 +4,15 @@ package packages
 var Visual = []string{
 	"Color",
 	"Gradient",
-	"MovieWriter",
-	"MovieWriterMJPEG",
-	"MovieWriterPNGWAV",
 	"Image",
+	"ImageFormatLoader",
+	"ImageFormatLoaderExtension",
 	"ImageTexture",
 	"ImageTexture3D",
 	"ImageTextureLayered",
+	"MovieWriter",
+	"MovieWriterMJPEG",
+	"MovieWriterPNGWAV",
 	"TileData",
 	"TileMap",
 	"TileMapPattern",
@@ -336,6 +338,7 @@ var VisualModel = []string{
 	"PortableCompressedTexture2D",
 	"PrimitiveMesh",
 	"PrismMesh",
+	"QuadMesh",
 	"RibbonTrailMesh",
 	"Sky",
 	"SphereMesh",
@@ -381,6 +384,7 @@ var VisualModelGLTF = []string{
 	"GLTFSpecGloss",
 	"GLTFState",
 	"GLTFTexture",
+	"GLTFTextureSampler",
 }
 
 // VisualRendering server and RenderingDevice implementations (Vulkan, OpenGL), as well as any related
@@ -501,6 +505,7 @@ var VisualReality = []string{
 	"OpenXRAction",
 	"OpenXRActionMap",
 	"OpenXRActionSet",
+	"OpenXRHand",
 	"OpenXRInteractionProfile",
 	"OpenXRInterface",
 	"OpenXRIPBinding",

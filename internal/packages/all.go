@@ -28,7 +28,7 @@ var List = map[string][]string{
 	"multiplayer/networking/enet":      MultiplayerNetworkingENet,
 	"multiplayer/networking/http":      MultiplayerNetworkingHTTP,
 	"multiplayer/networking/ip":        MultiplayerNetworkingIP,
-	"multiplayer/networking/ssl":       MultiplayerNetworkingSSL,
+	"multiplayer/networking/tls":       MultiplayerNetworkingTLS,
 	"multiplayer/networking/tcp":       MultiplayerNetworkingTCP,
 	"multiplayer/networking/udp":       MultiplayerNetworkingUDP,
 	"multiplayer/networking/upnp":      MultiplayerNetworkingUPNP,

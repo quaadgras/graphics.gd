@@ -11,6 +11,12 @@ package gd
 	extern void free_instance_func(uintptr_t p_userdata, uintptr_t p_instance);
 	extern GDNativeExtensionClassCallVirtual get_virtual_func(void *p_userdata, const char *p_name);
 
+	extern void method_call(uintptr_t method_userdata, uintptr_t p_instance, const GDNativeVariantPtr *p_args, const GDNativeInt p_argument_count, GDNativeVariantPtr r_return, GDNativeCallError *r_error);
+	extern void method_call_ptr(uintptr_t method_userdata, uintptr_t p_instance, const GDNativeTypePtr *p_args, GDNativeTypePtr r_ret);
+	extern GDNativeVariantType method_args_type(uintptr_t p_method_userdata, int32_t p_argument);
+	extern void method_args_info(uintptr_t p_method_userdata, int32_t p_argument, GDNativePropertyInfo *r_info);
+	extern GDNativeExtensionClassMethodArgumentMetadata method_args_meta(uintptr_t p_method_userdata, int32_t p_argument);
+
 	static void *mem_alloc(GDNativeInterface *api, size_t p_bytes)
 	{
 		return api->mem_alloc(p_bytes);
@@ -168,18 +174,6 @@ package gd
 	static GDNativeBool variant_booleanize(GDNativeInterface *api, const GDNativeVariantPtr p_self)
 	{
 		return api->variant_booleanize(p_self);
-	}
-	static void variant_sub(GDNativeInterface *api, const GDNativeVariantPtr p_a, const GDNativeVariantPtr p_b, GDNativeVariantPtr r_dst)
-	{
-		api->variant_sub(p_a, p_b, r_dst);
-	}
-	static void variant_blend(GDNativeInterface *api, const GDNativeVariantPtr p_a, const GDNativeVariantPtr p_b, float p_c, GDNativeVariantPtr r_dst)
-	{
-		api->variant_blend(p_a, p_b, p_c, r_dst);
-	}
-	static void variant_interpolate(GDNativeInterface *api, const GDNativeVariantPtr p_a, const GDNativeVariantPtr p_b, float p_c, GDNativeVariantPtr r_dst)
-	{
-		api->variant_interpolate(p_a, p_b, p_c, r_dst);
 	}
 	static void variant_duplicate(GDNativeInterface *api, const GDNativeVariantPtr p_self, GDNativeVariantPtr r_ret, GDNativeBool p_deep)
 	{
@@ -358,8 +352,15 @@ package gd
 		p_extension_funcs.get_virtual_func = (GDNativeExtensionClassGetVirtual)get_virtual_func;
 		api->classdb_register_extension_class((GDNativeExtensionClassLibraryPtr*)p_library, p_class_name, p_parent_class_name, &p_extension_funcs);
 	}
-	void classdb_register_extension_class_method(GDNativeInterface *api, uintptr_t p_library, const char *p_class_name, const GDNativeExtensionClassMethodInfo *p_method_info)
+	void classdb_register_extension_class_method(GDNativeInterface *api, uintptr_t p_library, const char *p_class_name, uintptr_t userdata, GDNativeExtensionClassMethodInfo *p_method_info)
 	{
+		p_method_info->method_userdata = (void*)userdata;
+		p_method_info->call_func = (GDNativeExtensionClassMethodCall)method_call;
+		p_method_info->ptrcall_func = (GDNativeExtensionClassMethodPtrCall)method_call_ptr;
+		p_method_info->get_argument_type_func = (GDNativeExtensionClassMethodGetArgumentType)method_args_type;
+		p_method_info->get_argument_info_func = (GDNativeExtensionClassMethodGetArgumentInfo)method_args_info;
+		p_method_info->get_argument_metadata_func = (GDNativeExtensionClassMethodGetArgumentMetadata)method_args_meta;
+
 		api->classdb_register_extension_class_method((GDNativeExtensionClassLibraryPtr*)p_library, p_class_name, p_method_info);
 	}
 	void classdb_register_extension_class_integer_constant(GDNativeInterface *api, uintptr_t p_library, const char *p_class_name, const char *p_enum_name, const char *p_constant_name, GDNativeInt p_constant_value, GDNativeBool p_is_bitfield)
@@ -719,6 +720,8 @@ const (
 	cCallErrorMethodNotConst   = cCallErrorType(C.GDNATIVE_CALL_ERROR_METHOD_NOT_CONST)
 )
 
+type cExtensionClassMethodArgumentMetadata = C.GDNativeExtensionClassMethodArgumentMetadata
+
 type cExtensionClassMethodFlags = C.GDNativeExtensionClassMethodFlags
 
 const (
@@ -866,15 +869,6 @@ func (p_self *cVariant) hash_compare(p_other *cVariant) bool {
 }
 func (p_self *cVariant) booleanize() bool {
 	return C.variant_booleanize(api, C.GDNativeVariantPtr(p_self)) != 0
-}
-func (p_self *cVariant) sub(p_b, r_dst *cVariant) {
-	C.variant_sub(api, C.GDNativeVariantPtr(p_self), C.GDNativeVariantPtr(p_b), C.GDNativeVariantPtr(r_dst))
-}
-func (p_self *cVariant) blend(p_b *cVariant, p_c float64, r_dst *cVariant) {
-	C.variant_blend(api, C.GDNativeVariantPtr(p_self), C.GDNativeVariantPtr(p_b), C.float(p_c), C.GDNativeVariantPtr(r_dst))
-}
-func (p_self *cVariant) interpolate(p_b *cVariant, p_c float64, r_dst *cVariant) {
-	C.variant_interpolate(api, C.GDNativeVariantPtr(p_self), C.GDNativeVariantPtr(p_b), C.float(p_c), C.GDNativeVariantPtr(r_dst))
 }
 func (p_self *cVariant) duplicate(r_ret *cVariant, p_deep bool) {
 	var deep C.GDNativeBool = 0
@@ -1132,14 +1126,36 @@ func (p_library cClassLibrary) register_extension_class(p_classname, p_parent_cl
 	C.classdb_register_extension_class(api, C.uintptr_t(p_library), classname, parent, C.uintptr_t(userdata))
 }
 
-type cExtensionClassMethodInfo = C.GDNativeExtensionClassMethodInfo
+type cExtensionClassMethodInfo struct {
+	Name             string
+	MethodUserData   uintptr
+	MethodFlags      uint32
+	ArgumentCount    uint32
+	DefaultArguments []cVariant
+}
 
 func (p_library cClassLibrary) register_extension_class_method(p_classname string, p_method_info *cExtensionClassMethodInfo) {
 	classname, ok := cNewString(p_classname)
 	if !ok {
 		defer mem_free(unsafe.Pointer(classname))
 	}
-	C.classdb_register_extension_class_method(api, C.uintptr_t(p_library), classname, p_method_info)
+	methodName, ok := cNewString(p_method_info.Name)
+	if !ok {
+		defer mem_free(unsafe.Pointer(methodName))
+	}
+
+	var default_args *C.GDNativeVariantPtr
+	if len(p_method_info.DefaultArguments) > 0 {
+		default_args = (*C.GDNativeVariantPtr)(unsafe.Pointer(&p_method_info.DefaultArguments[0]))
+	}
+
+	C.classdb_register_extension_class_method(api, C.uintptr_t(p_library), classname, C.uintptr_t(p_method_info.MethodUserData), &C.GDNativeExtensionClassMethodInfo{
+		name:                   methodName,
+		method_flags:           C.uint32_t(p_method_info.MethodFlags),
+		argument_count:         C.uint32_t(p_method_info.ArgumentCount),
+		default_arguments:      default_args,
+		default_argument_count: C.uint32_t(len(p_method_info.DefaultArguments)),
+	})
 }
 
 func (p_library cClassLibrary) register_extension_class_integer_constant(p_classname string, p_enum_name string, p_constant_name string, p_constant_value int, p_is_bitfield bool) {
@@ -1242,6 +1258,38 @@ type ObjectID uint64
 type AudioFrame struct {
 	Left, Right float32
 }
+
+type PhysicsServer2DExtensionMotionResult struct {
+	Travel, Remainder, CollisionPoint, CollisionNormal, ColliderVelocity Vector2
+	CollisionDepth, CollisionSafeFraction, CollisionUnsafeFraction       float32
+	CollisionLocalShape                                                  int32
+	ColliderID                                                           ObjectID
+	ColliderRID                                                          RID
+	ColliderShape                                                        int32
+}
+
+type PhysicsServer2DExtensionRayResult struct {
+	Position, Normal Vector2
+	RID              RID
+	ColliderID       ObjectID
+	Collider         *Object
+	Shape            int32
+}
+
+type PhysicsServer2DExtensionShapeRestInfo struct {
+	Point, Normal, LinearVelocity Vector2
+	RID                           RID
+	ColliderID                    ObjectID
+	Shape                         int32
+}
+
+type PhysicsServer2DExtensionShapeResult struct {
+	RID        RID
+	ColliderID ObjectID
+	Collider   *Object
+	Shape      int32
+}
+
 type PhysicsServer3DExtensionRayResult struct {
 	Position, Normal cVector3
 	RID              cRID

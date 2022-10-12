@@ -187,7 +187,9 @@ func (spec *Specification) ClassDB() (ClassDB, error) {
 	}
 
 	if len(unused) > 0 {
-		//litter.Dump(unused)
+		for name := range unused {
+			fmt.Printf("missing class %s\n", name)
+		}
 		return nil, fmt.Errorf("unused classes found")
 	}
 

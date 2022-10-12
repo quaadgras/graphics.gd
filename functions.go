@@ -661,6 +661,53 @@ import (
 	"unsafe"
 )
 
+func cVariantTypeOf(t reflect.Type) cVariantType {
+	switch t.Kind() {
+	case reflect.Bool:
+		return C.GDNATIVE_VARIANT_TYPE_BOOL
+	case reflect.Int:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Int8:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Int16:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Int32:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Int64:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Uint:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Uint8:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Uint16:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Uint32:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Uint64:
+		return C.GDNATIVE_VARIANT_TYPE_INT
+	case reflect.Float32:
+		return C.GDNATIVE_VARIANT_TYPE_FLOAT
+	case reflect.Float64:
+		return C.GDNATIVE_VARIANT_TYPE_FLOAT
+	case reflect.String:
+		return C.GDNATIVE_VARIANT_TYPE_STRING
+	case reflect.Struct:
+		return C.GDNATIVE_VARIANT_TYPE_DICTIONARY
+	case reflect.Map:
+		return C.GDNATIVE_VARIANT_TYPE_DICTIONARY
+	case reflect.Slice:
+		return C.GDNATIVE_VARIANT_TYPE_ARRAY
+	case reflect.Array:
+		return C.GDNATIVE_VARIANT_TYPE_ARRAY
+	case reflect.Interface:
+		return C.GDNATIVE_VARIANT_TYPE_OBJECT
+	case reflect.Ptr:
+		return C.GDNATIVE_VARIANT_TYPE_OBJECT
+	default:
+		panic("unsupported type")
+	}
+}
+
 func toUnsafe(val any) (ptr unsafe.Pointer, free func()) {
 	switch v := val.(type) {
 	case *struct{}:

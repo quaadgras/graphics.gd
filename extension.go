@@ -43,30 +43,6 @@ type InstanceOwner struct {
 	children *atomic.Int64 // pointer to children count.
 }
 
-// Extension can be added as a field in a Go struct to order to enable
-// that struct to be registered as a Godot extension that can create
-// new [Extension] instances.
-type Extension struct {
-	class extensionClassID
-	index extensionClassInstanceID
-	count atomic.Int64  // used as the InstanceOwner children count.
-	owner InstanceOwner // InstanceOwner of the Extension's instance (parent).
-
-	gdRef safeObject
-}
-
-func (ex Extension) virtual(reflect.Type, string) (method reflect.Method, ok bool) { return }
-func (ex Extension) object() safeObject                                            { return ex.gdRef }
-func (ex Extension) className() string                                             { return "" }
-
-func (ex *Extension) extension() *Extension { return ex }
-
-// Free the [Extension]'s instance, releasing any underlying resources.
-// May panic if the [Extension]'s instance is leaking memory.
-func (ex Extension) Free() {
-	ex.gdRef.free()
-}
-
 // extensionClassID identifies an [Extension] class that has been
 // registered with Godot. Whenever we register a class, we create
 // a global [extensionClassHandler] that handles any Godot -> Go

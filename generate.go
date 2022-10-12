@@ -168,6 +168,10 @@ type Specification struct {
 }
 
 func convertType(meta string, gdType string) string {
+	if strings.HasPrefix(gdType, "typedarray::") {
+		gdType = "[]" + convertType("", strings.TrimPrefix(gdType, "typedarray::"))
+	}
+
 	switch gdType {
 	case "int":
 		/*switch meta {
@@ -488,7 +492,7 @@ func generate() error {
 
 		fmt.Fprintln(code)
 		if class.Name != "Object" {
-			fmt.Fprintf(code, "type %[1]v struct{self *%[1]v; obj safeObject }\n", class.Name)
+			fmt.Fprintf(code, "type %[1]v struct{_%[1]v struct{}; obj safeObject }\n", class.Name)
 		}
 		fmt.Fprintf(code, `func New%[1]v(owner InstanceOwner) *%[1]v { at := new(%[1]v); return New%[1]vAt(at, owner) }`+"\n", class.Name, isRefCounted(class))
 		fmt.Fprintf(code, `func New%[1]vAt(at *%[1]v, owner InstanceOwner) *%[1]v { at.obj.new(owner, at.className(), %v); return at }`+"\n", class.Name, isRefCounted(class))

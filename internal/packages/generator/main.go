@@ -152,11 +152,11 @@ func genEnum(pkg string, code io.Writer, prefix string, enum Enum) {
 type ClassDB map[string]Class
 
 func (db ClassDB) genPackage(name string, classes []string) error {
-	if err := os.MkdirAll("./"+name, 0755); err != nil {
+	if err := os.MkdirAll("./pkg/"+name, 0755); err != nil {
 		return err
 	}
 
-	code, err := os.Create("./" + name + "/api.go")
+	code, err := os.Create("./pkg/" + name + "/api.go")
 	if err != nil {
 		return err
 	}
