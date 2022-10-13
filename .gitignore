@@ -5,3 +5,4 @@
 /.vscode/settings.json
 /example/src/src
 /example/bin/example.so
+example/bin/

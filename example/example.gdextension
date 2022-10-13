@@ -4,4 +4,6 @@ entry_symbol = "loadExtension"
 
 [libraries]
 
-linux.64 = "bin/example.so"
+linux.64   =   "bin/example.so"
+windows.64 =   "bin/example.dll"
+macos.64   =   "bin/example.framework"

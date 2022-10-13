@@ -104,7 +104,7 @@ Run `make` in the example/src directory or manually build a C-shared library:
 
 ```sh
 cd example/src
-go build -o ../bin/example.so -buildmode=c-shared
+make
 ```
 
 Now open the example project in Godot from a terminal and you will be able to 
