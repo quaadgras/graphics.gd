@@ -1132,6 +1132,7 @@ type cExtensionClassMethodInfo struct {
 	MethodFlags      uint32
 	ArgumentCount    uint32
 	DefaultArguments []cVariant
+	HasReturnValue   bool
 }
 
 func (p_library cClassLibrary) register_extension_class_method(p_classname string, p_method_info *cExtensionClassMethodInfo) {
@@ -1149,12 +1150,18 @@ func (p_library cClassLibrary) register_extension_class_method(p_classname strin
 		default_args = (*C.GDNativeVariantPtr)(unsafe.Pointer(&p_method_info.DefaultArguments[0]))
 	}
 
+	var has_return_value C.GDNativeBool
+	if p_method_info.HasReturnValue {
+		has_return_value = 1
+	}
+
 	C.classdb_register_extension_class_method(api, C.uintptr_t(p_library), classname, C.uintptr_t(p_method_info.MethodUserData), &C.GDNativeExtensionClassMethodInfo{
 		name:                   methodName,
 		method_flags:           C.uint32_t(p_method_info.MethodFlags),
 		argument_count:         C.uint32_t(p_method_info.ArgumentCount),
 		default_arguments:      default_args,
 		default_argument_count: C.uint32_t(len(p_method_info.DefaultArguments)),
+		has_return_value:       C.GDNativeBool(has_return_value),
 	})
 }
 

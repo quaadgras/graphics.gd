@@ -6,6 +6,7 @@ var hello: HelloWorld = HelloWorld.new()
 func _ready():
 	hello.print()
 	hello.echo("Hello from GDScript")
+	print(hello.arch())
 	print(Engine.get_singleton("DisplayServer"))
 	pass # Replace with function body.
 

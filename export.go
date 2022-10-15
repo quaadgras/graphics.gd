@@ -3,7 +3,6 @@
 package gd
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 	"sync/atomic"
@@ -113,6 +112,7 @@ func (scripting Scripting[T]) register(extension reflect.Type, class string) {
 				Name:           name,
 				MethodUserData: uintptr(len(exportedMethods)),
 				ArgumentCount:  uint32(method.Type.NumIn() - 1), // exclude receiver.
+				HasReturnValue: method.Type.NumOut() > 0,
 			})
 
 		default:
@@ -238,8 +238,6 @@ func newServer(rtype reflect.Type) *unsafeExtensionServer {
 		panic("gd: extension must embed an extendable object")
 	}
 
-	fmt.Println(server)
-
 	return &server
 }
 
@@ -338,7 +336,16 @@ func (server *unsafeExtensionServer) call(id extensionClassInstanceID, methodNo 
 		panic(rtype.String() + "." + rtype.Method(int(methodNo)-1).Name + " returns too many values")
 	}
 	if len(results) == 1 {
-		toResult(results[0].Interface(), result)
+		if result == nil {
+			rtype := rvalue.Type()
+			panic(rtype.String() + "." + rtype.Method(int(methodNo)-1).Name + " returns a value but Godot expected no return value")
+		}
+		if !results[0].CanAddr() { // make it addressable
+			old := results[0]
+			results[0] = reflect.New(results[0].Type()).Elem()
+			results[0].Set(old)
+		}
+		toResult(results[0].Addr().Interface(), result)
 	}
 }
 

@@ -940,7 +940,7 @@ func toResult(val any, ptr unsafe.Pointer) {
 			native.from(*v)
 		}
 	default:
-		panic("toUnsafe: unsupported type " + reflect.TypeOf(val).String())
+		panic("toResult: unsupported type " + reflect.TypeOf(val).String())
 	}
 }
 

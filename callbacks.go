@@ -6,7 +6,6 @@ package gd
 import "C"
 
 import (
-	"fmt"
 	"unsafe"
 )
 
@@ -53,7 +52,6 @@ func free_instance_func(userdata, instance uintptr) {
 func get_virtual_index(userdata uintptr, p_name *C.char) uint8 {
 	name := C.GoString(p_name)
 	method, ok := extensionClassDB.get(extensionClassID(userdata)).lookup(name)
-	fmt.Println("lookup", name, ok)
 	if !ok {
 		return 0
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/readykit/gd"
 )
@@ -26,6 +27,7 @@ type HelloWorld struct {
 	gd.Scripting[struct {
 		Print gd.Method `gd:"print()"`
 		Echo  gd.Method `gd:"echo(s)"`
+		Arch  gd.Method `gd:"arch() GOARCH"`
 	}]
 }
 
@@ -38,6 +40,11 @@ func (h HelloWorld) Print() {
 // was printed by Go code.
 func (h HelloWorld) Echo(s string) {
 	fmt.Println(s + " from Go!")
+}
+
+// Arch returns the current GOARCH value.
+func (h HelloWorld) Arch() string {
+	return runtime.GOARCH
 }
 
 /*
