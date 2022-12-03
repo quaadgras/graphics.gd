@@ -25,7 +25,7 @@ https://github.com/godotengine/godot/pull/65018 (aiming to get this merged).
     // Ready implements the Godot '_ready' interface (virtual method).
     // It will run after the node is added to the scene.
     func (HelloWorld) Ready() {
-        fmt.Printn("Hello World")
+        fmt.Println("Hello World")
     }
 ```
 
