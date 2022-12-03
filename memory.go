@@ -18,6 +18,8 @@ type RefCounted struct {
 	obj         safeObject
 }
 
+type embedRefCounted = RefCounted
+
 func NewRefCounted(owner InstanceOwner, at *RefCounted) *RefCounted {
 	if at == nil {
 		at = new(RefCounted)
