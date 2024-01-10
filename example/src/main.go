@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/readykit/gd"
-	_ "github.com/readykit/gd/gdextension"
+	"grow.graphics/gd"
+	_ "grow.graphics/gd/gdextension"
 )
 
 var godot gd.API

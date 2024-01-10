@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/readykit/gd"
+	"grow.graphics/gd"
 	"runtime.link/api"
 	"runtime.link/api/call"
 )

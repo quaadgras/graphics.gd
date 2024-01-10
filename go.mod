@@ -1,4 +1,4 @@
-module github.com/readykit/gd
+module grow.graphics/gd
 
 go 1.21.0
 
