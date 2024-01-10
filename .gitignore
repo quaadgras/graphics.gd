@@ -6,3 +6,5 @@
 /example/src/src
 /example/bin/example.so
 example/bin/
+/bin/example.so
+/gdextension/header.h
