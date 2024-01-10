@@ -6,7 +6,6 @@ import (
 	"github.com/readykit/gd"
 	"runtime.link/api"
 	"runtime.link/api/call"
-	"runtime.link/ffi"
 )
 
 type API struct {
@@ -220,7 +219,7 @@ type ExtensionGodotVersion struct {
 	Major  uint32
 	Minor  uint32
 	Patch  uint32
-	String ffi.String
+	String *byte
 }
 
 type Iterator uintptr
