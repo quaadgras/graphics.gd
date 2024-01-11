@@ -5,6 +5,7 @@ import (
 	"runtime"
 
 	"grow.graphics/gd"
+	"grow.graphics/gd/gdextension"
 	_ "grow.graphics/gd/gdextension"
 )
 
@@ -89,7 +90,11 @@ func (e *ExtendedNode) Ready() {
 // main init function, where the extensions are exported so that
 // they are available to the engine.
 func main() {
-	//gdextension.Register[HelloWorld]("HelloWorld")
-	//gdextension.Register[ExtendedNode]("ExtendedNode")
 	fmt.Println("Hello World!")
+	extension, classdb, ok := gdextension.Link()
+	if !ok {
+		return
+	}
+	gdextension.RegisterStruct[HelloWorld, gd.Object](extension, classdb)
+	gdextension.RegisterStruct[ExtendedNode, gd.Node2D](extension, classdb)
 }

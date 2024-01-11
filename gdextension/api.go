@@ -24,7 +24,7 @@ type API struct {
 	PrintScriptError        func(code, function, file string, line int32, stackTrace string, notifyEditor bool)          `call:"print_script_error func(&char,&char,&char,int32_t,&char,bool)"`
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, stackTrace string, notifyEditor bool) `call:"print_script_error func(&char,&char,&char,&char,int32_t,&char,bool)"`
 
-	GetNativeStructSize func(name *gd.StringName) uint64 `call:"get_native_struct_size func(&char)size_t"`
+	GetNativeStructSize func(name *gd.StringName) uint64 `call:"get_native_struct_size func(&void)size_t"`
 
 	Free struct {
 		StringName func() func(*gd.StringName) `call:"variant_get_ptr_destructor func(-int=21)func($void)"`
@@ -36,15 +36,15 @@ type API struct {
 		// Zero dst must be unititialized
 		Zero          func(dst *gd.Variant)                                                                                 `call:"variant_new_nil func(+void)"`
 		Free          func(*gd.Variant)                                                                                     `call:"variant_destroy func($void)"`
-		Call          func(self *gd.Variant, method *gd.StringName, args []*gd.Variant, ret *gd.Variant, err CallError)     `call:"variant_call func($void,&char,&void,-int64_t=@3,+void,+void)"`
-		CallStatic    func(vtype gd.VariantType, method *gd.StringName, args []*gd.Variant, ret *gd.Variant, err CallError) `call:"variant_call_static func(int,&void,&char,&void,-int64_t=@3,+void,+void)"`
+		Call          func(self *gd.Variant, method *gd.StringName, args []*gd.Variant, ret *gd.Variant, err CallError)     `call:"variant_call func($void,&void,&void,-int64_t=@3,+void,+void)"`
+		CallStatic    func(vtype gd.VariantType, method *gd.StringName, args []*gd.Variant, ret *gd.Variant, err CallError) `call:"variant_call_static func(int,&void,&void,&void,-int64_t=@3,+void,+void)"`
 		Evaluate      func(operator Operator, a, b *gd.Variant, ret *gd.Variant, ok *bool)                                  `call:"variant_evaluate func(int,&void,&void,+void,+bool)"`
 		Set           func(self, key, val *gd.Variant, ok *bool)                                                            `call:"variant_set func(&void,&void,+bool)"`
-		SetNamed      func(self *gd.Variant, key *gd.StringName, val *gd.Variant, ok *bool)                                 `call:"variant_set_named func(&void,&char,+bool)"`
+		SetNamed      func(self *gd.Variant, key *gd.StringName, val *gd.Variant, ok *bool)                                 `call:"variant_set_named func(&void,&void,+bool)"`
 		SetKeyed      func(self, key, val *gd.Variant, ok *bool)                                                            `call:"variant_set_keyed func(&void,&void,+bool)"`
 		SetIndex      func(self *gd.Variant, index int64, val *gd.Variant, ok *bool)                                        `call:"variant_set_indexed func(&void,int64_t,+bool)"`
 		Get           func(self, key *gd.Variant, ret *gd.Variant, ok *bool)                                                `call:"variant_get func(&void,&void,+void,+bool)"`
-		GetNamed      func(self *gd.Variant, key *gd.StringName, ret *gd.Variant, ok *bool)                                 `call:"variant_get_named func(&void,&char,+void,+bool)"`
+		GetNamed      func(self *gd.Variant, key *gd.StringName, ret *gd.Variant, ok *bool)                                 `call:"variant_get_named func(&void,&void,+void,+bool)"`
 		GetKeyed      func(self *gd.Variant, key *gd.Variant, ret *gd.Variant, ok *bool)                                    `call:"variant_get_keyed func(&void,&void,+void,+bool)"`
 		GetIndex      func(self *gd.Variant, index int64, ret *gd.Variant, ok *bool)                                        `call:"variant_get_indexed func(&void,int64_t,+void,+bool)"`
 		Iterator      func(self *gd.Variant, iter *Iterator) bool                                                           `call:"variant_iter_init func(&void,+void,+bool)"`
@@ -55,13 +55,13 @@ type API struct {
 		Compare       func(self, variant *gd.Variant) bool                                                                  `call:"variant_hash_compare func(&void,&void)bool"`
 		ToBool        func(self *gd.Variant) bool                                                                           `call:"variant_booleanize func(&void)bool"`
 		Duplicate     func(self *gd.Variant, ret *gd.Variant, deep bool)                                                    `call:"variant_duplicate func(&void,+void,bool)"`
-		ToString      func(self *gd.Variant, out *gd.String)                                                                `call:"variant_stringify func(&void,+char)"`
+		ToString      func(self *gd.Variant, out *gd.String)                                                                `call:"variant_stringify func(&void,+void)"`
 		Type          func(self *gd.Variant) gd.VariantType                                                                 `call:"variant_get_type func(&void)int"`
-		HasMethod     func(self *gd.Variant, method *gd.StringName) bool                                                    `call:"variant_has_method func(&void,&char)bool"`
-		HasMember     func(self *gd.Variant, member *gd.StringName) bool                                                    `call:"variant_has_member func(&void,&char)bool"`
+		HasMethod     func(self *gd.Variant, method *gd.StringName) bool                                                    `call:"variant_has_method func(&void,&void)bool"`
+		HasMember     func(self *gd.Variant, member *gd.StringName) bool                                                    `call:"variant_has_member func(&void,&void)bool"`
 		HasKey        func(self *gd.Variant, key *gd.Variant) (bool, bool)                                                  `call:"variant_has_key func(&void,&void,+bool)bool"`
 		// TypeName dst must be unititialized
-		TypeName         func(self *gd.Variant, dst *gd.String)     `call:"variant_get_type_name func(&void,+char)"`
+		TypeName         func(self *gd.Variant, dst *gd.String)     `call:"variant_get_type_name func(&void,+void)"`
 		CanConvert       func(fromType, toType gd.VariantType) bool `call:"variant_can_convert func(int,int)bool"`
 		CanConvertStrict func(fromType, toType gd.VariantType) bool `call:"variant_can_convert_strict func(int,int)bool"`
 
@@ -70,21 +70,21 @@ type API struct {
 
 		Evaulator func(Operator) func(a *gd.Variant, b *gd.Variant, ret *gd.Variant) `call:"variant_get_ptr_operator_evaluator func(int)func(&void,&void,+void)"`
 
-		BuiltinMethodCaller func(gd.VariantType, *gd.StringName, int64) func(base *gd.Variant, args []*gd.Variant, ret *gd.Variant) `call:"variant_get_ptr_builtin_method func(int,&char,int64_t)func(&void,&void,+void,-int=@2)"`
+		BuiltinMethodCaller func(gd.VariantType, *gd.StringName, int64) func(base *gd.Variant, args []*gd.Variant, ret *gd.Variant) `call:"variant_get_ptr_builtin_method func(int,&void,int64_t)func(&void,&void,+void,-int=@2)"`
 		Constructor         func(gd.VariantType, int32) func(base unsafe.Pointer, args *unsafe.Pointer)                             `call:"variant_get_ptr_constructor func(int,int64_t)func(+void,-int=@1)"`
 		Destructor          func(gd.VariantType) func(unsafe.Pointer)                                                               `call:"variant_get_ptr_destructor func(int)func($void)"`
 
 		Construct func(t gd.VariantType, out *gd.Variant, args []*gd.Variant, err CallError) `call:"variant_construct func(int,+void,&void,-int64_t=@3,+void)"`
 
-		Setter      func(gd.VariantType, *gd.StringName) func(*gd.Variant, unsafe.Pointer)                `call:"variant_get_ptr_setter func(int,&char)func(&void,&void)"`
-		Getter      func(gd.VariantType, *gd.StringName) func(base *gd.Variant, ret unsafe.Pointer)       `call:"variant_get_ptr_getter func(int,&char)func(&void,+void)"`
+		Setter      func(gd.VariantType, *gd.StringName) func(*gd.Variant, unsafe.Pointer)                `call:"variant_get_ptr_setter func(int,&void)func(&void,&void)"`
+		Getter      func(gd.VariantType, *gd.StringName) func(base *gd.Variant, ret unsafe.Pointer)       `call:"variant_get_ptr_getter func(int,&void)func(&void,+void)"`
 		IndexSetter func(gd.VariantType) func(*gd.Variant, int64, unsafe.Pointer)                         `call:"variant_get_ptr_indexed_setter func(int)func(&void,int64_t,&void)"`
 		IndexGetter func(gd.VariantType) func(val *gd.Variant, idx int64, ret unsafe.Pointer)             `call:"variant_get_ptr_indexed_getter func(int)func(&void,int64_t)&void"`
 		KeySetter   func(gd.VariantType) func(*gd.Variant, *gd.Variant, unsafe.Pointer)                   `call:"variant_get_ptr_keyed_setter func(int)func(&void,&void,&void)"`
 		KeyGetter   func(gd.VariantType) func(val *gd.Variant, key *gd.Variant, ret unsafe.Pointer)       `call:"variant_get_ptr_keyed_getter func(int)func(&void,&void)&void"`
 		KeyChecker  func(gd.VariantType) func(*gd.Variant, *gd.Variant) uint32                            `call:"variant_get_ptr_keyed_checker func(int)func(&void,&void)uint32_t"`
-		Constant    func(t gd.VariantType, name *gd.StringName, ret *gd.Variant)                          `call:"variant_get_constant_value func(int,&char,+void)"`
-		Utility     func(gd.VariantType, *gd.StringName, int64) func(val *gd.Variant, args []*gd.Variant) `call:"variant_get_ptr_utility_function func(int,&char,int64_t)func(+void,&void,-int=@2)"`
+		Constant    func(t gd.VariantType, name *gd.StringName, ret *gd.Variant)                          `call:"variant_get_constant_value func(int,&void,+void)"`
+		Utility     func(gd.VariantType, *gd.StringName, int64) func(val *gd.Variant, args []*gd.Variant) `call:"variant_get_ptr_utility_function func(int,&void,int64_t)func(+void,&void,-int=@2)"`
 	}
 
 	Strings struct {
@@ -146,25 +146,25 @@ type API struct {
 	}
 
 	Object struct {
-		Call                func(method MethodBind, obj *Object, arg []*gd.Variant, ret *gd.Variant, err CallError) `call:"object_method_bind_call func(&void,&void,&void,-int64_t=@3,+void,+void)"`
-		UnsafeCall          func(method MethodBind, obj *Object, args []unsafe.Pointer, ret unsafe.Pointer)         `call:"object_method_bind_ptrcall func(&void,&void,&void,&void)"`
-		Destroy             func(obj *Object)                                                                       `call:"object_destroy func(&void)"`
-		GetSingleton        func(name *gd.StringName) Object                                                        `call:"global_get_singleton func(&void)&void"`
-		GetInstanceBinding  func(obj *Object, token unsafe.Pointer, callbacks *InstanceBindingCallbacks)            `call:"object_get_instance_binding func(&void,$void,&void)"`
-		SetInstanceBinding  func(obj *Object, token, binding unsafe.Pointer, callbacks *InstanceBindingCallbacks)   `call:"object_set_instance_binding func(&void,$void,&void)"`
-		FreeInstanceBinding func(obj *Object, token unsafe.Pointer)                                                 `call:"object_free_instance_binding func(&void,$void)"`
-		SetInstance         func(obj *Object, name *gd.StringName, value unsafe.Pointer)                            `call:"object_set_instance func(&void,&char,&void)"`
-		GetClassName        func(obj *Object, library unsafe.Pointer, out *gd.StringName)                           `call:"object_get_class_name func(&void,+void)"`
-		CastTo              func(obj *Object, class ClassTag) *Object                                               `call:"object_cast_to func(&void,&char)&void"`
-		GetFromID           func(id InstanceID) *Object                                                             `call:"object_get_instance_from_id func(uint64_t)&void"`
-		GetID               func(obj *Object) InstanceID                                                            `call:"object_get_instance_id func(&void)uint64_t"`
-		GetFromReference    func(ref unsafe.Pointer) *Object                                                        `call:"ref_get_object func(&void)&void"`
-		Reference           func(ref unsafe.Pointer, obj *Object)                                                   `call:"ref_set_object func(&void,&void)"`
+		Call                func(method MethodBind, obj Object, arg []*gd.Variant, ret *gd.Variant, err CallError) `call:"object_method_bind_call func(&void,&void,&void,-int64_t=@3,+void,+void)"`
+		UnsafeCall          func(method MethodBind, obj Object, args []unsafe.Pointer, ret unsafe.Pointer)         `call:"object_method_bind_ptrcall func(&void,&void,&void,&void)"`
+		Destroy             func(obj Object)                                                                       `call:"object_destroy func(&void)"`
+		GetSingleton        func(name *gd.StringName) Object                                                       `call:"global_get_singleton func(&void)&void"`
+		GetInstanceBinding  func(obj Object, token unsafe.Pointer, callbacks *InstanceBindingCallbacks)            `call:"object_get_instance_binding func(&void,$void,&void)"`
+		SetInstanceBinding  func(obj Object, token, binding unsafe.Pointer, callbacks *InstanceBindingCallbacks)   `call:"object_set_instance_binding func(&void,$void,&void)"`
+		FreeInstanceBinding func(obj Object, token unsafe.Pointer)                                                 `call:"object_free_instance_binding func(&void,$void)"`
+		SetInstance         func(obj Object, name *gd.StringName, value unsafe.Pointer)                            `call:"object_set_instance func(&void,&void,&void)"`
+		GetClassName        func(obj Object, library ClassDB, out *gd.StringName)                                  `call:"object_get_class_name func(&void,+void)"`
+		CastTo              func(obj Object, class ClassTag) Object                                                `call:"object_cast_to func(&void,&void)&void"`
+		GetFromID           func(id InstanceID) Object                                                             `call:"object_get_instance_from_id func(uint64_t)&void"`
+		GetID               func(obj Object) InstanceID                                                            `call:"object_get_instance_id func(&void)uint64_t"`
+		GetFromReference    func(ref unsafe.Pointer) Object                                                        `call:"ref_get_object func(&void)&void"`
+		Reference           func(ref unsafe.Pointer, obj Object)                                                   `call:"ref_set_object func(&void,&void)"`
 	}
 
 	Scripts struct {
-		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script                      `call:"script_instance_create2 func(&void,&char,&char)&void"`
-		CreatePlaceholder func(lang *gd.ScriptLanguage, script *gd.Script, owner *Object) Script            `call:"placeholder_script_instance_create func(&void,&char,&char)&void"`
+		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script                      `call:"script_instance_create2 func(&void,&void)&void"`
+		CreatePlaceholder func(lang *gd.ScriptLanguage, script *gd.Script, owner *Object) Script            `call:"placeholder_script_instance_create func(&void,&void,&void)&void"`
 		UpdatePlaceholder func(script Script, properties *gd.ArrayOf[gd.Dictionary], values *gd.Dictionary) `call:"placeholder_script_instance_update func(&void)"`
 		Get               func(obj *Object, lang *gd.ScriptLanguage) Script                                 `call:"object_get_script_instance func(&void)&void"`
 	}
@@ -179,16 +179,16 @@ type API struct {
 		GetMethodBind func(class *gd.StringName, method *gd.StringName, hash int64) MethodBind `call:"classdb_get_method_bind func(&void,&void,int)void"`
 		GetClassTag   func(class *gd.StringName) ClassTag                                      `call:"classdb_get_class_tag func(&void)void"`
 
-		RegisterClass                 func(library unsafe.Pointer, name, extends *gd.StringName, info *ClassCreationInfo)                                `call:"classdb_register_extension_class2 func(&void,&char,&void)"`
-		RegisterClassMethod           func(library unsafe.Pointer, class *gd.StringName, info *ClassMethodInfo)                                          `call:"classdb_register_extension_class_method func(&void,&char,&void)"`
-		RegisterClassIntegerConstant  func(library unsafe.Pointer, class, enum, name *gd.StringName, value int64, bitfield bool)                         `call:"classdb_register_extension_class_integer_constant func(&void,&void,&void,&void,&void,int64_t)"`
-		RegisterClassProperty         func(library unsafe.Pointer, class *gd.StringName, info *PropertyInfo, getter, setter *gd.StringName)              `call:"classdb_register_extension_class_property func(&void,&void,&void,&void,&void)"`
-		RegisterClassPropertyIndexed  func(library unsafe.Pointer, class *gd.StringName, info *PropertyInfo, getter, setter *gd.StringName, index int64) `call:"classdb_register_extension_class_property_indexed func(&void,&void,&void,&void,&void,int64_t)"`
-		RegisterClassPropertyGroup    func(library unsafe.Pointer, class *gd.StringName, group, prefix *gd.String)                                       `call:"classdb_register_extension_class_property_group func(&void,&void,&void,&void)"`
-		RegisterClassPropertySubGroup func(library unsafe.Pointer, class *gd.StringName, subGroup, prefix *gd.String)                                    `call:"classdb_register_extension_class_property_subgroup func(&void,&void,&void,&void,&void)"`
-		RegisterClassSignal           func(library unsafe.Pointer, class, signal *gd.StringName, args []PropertyInfo)                                    `call:"classdb_register_extension_class_signal func(&void,&void,&void,&void,-int64_t=@4)"`
-		UnregisterClass               func(library unsafe.Pointer, class *gd.StringName)                                                                 `call:"classdb_unregister_extension_class func(&void,&void)"`
-		GetLibraryPath                func(library unsafe.Pointer, out *gd.String)                                                                       `call:"get_library_path func(&void,&void)"`
+		RegisterClass                 func(library ClassDB, name, extends *gd.StringName, info *ClassCreationInfo)                                `call:"classdb_register_extension_class2 func(&void,&void,&void,&void)"`
+		RegisterClassMethod           func(library ClassDB, class *gd.StringName, info *ClassMethodInfo)                                          `call:"classdb_register_extension_class_method func(&void,&void,&void)"`
+		RegisterClassIntegerConstant  func(library ClassDB, class, enum, name *gd.StringName, value int64, bitfield bool)                         `call:"classdb_register_extension_class_integer_constant func(&void,&void,&void,&void,&void,int64_t)"`
+		RegisterClassProperty         func(library ClassDB, class *gd.StringName, info *PropertyInfo, getter, setter *gd.StringName)              `call:"classdb_register_extension_class_property func(&void,&void,&void,&void,&void)"`
+		RegisterClassPropertyIndexed  func(library ClassDB, class *gd.StringName, info *PropertyInfo, getter, setter *gd.StringName, index int64) `call:"classdb_register_extension_class_property_indexed func(&void,&void,&void,&void,&void,int64_t)"`
+		RegisterClassPropertyGroup    func(library ClassDB, class *gd.StringName, group, prefix *gd.String)                                       `call:"classdb_register_extension_class_property_group func(&void,&void,&void,&void)"`
+		RegisterClassPropertySubGroup func(library ClassDB, class *gd.StringName, subGroup, prefix *gd.String)                                    `call:"classdb_register_extension_class_property_subgroup func(&void,&void,&void,&void,&void)"`
+		RegisterClassSignal           func(library ClassDB, class, signal *gd.StringName, args []PropertyInfo)                                    `call:"classdb_register_extension_class_signal func(&void,&void,&void,&void,-int64_t=@4)"`
+		UnregisterClass               func(library ClassDB, class *gd.StringName)                                                                 `call:"classdb_unregister_extension_class func(&void,&void)"`
+		GetLibraryPath                func(library ClassDB, out *gd.String)                                                                       `call:"get_library_path func(&void,&void)"`
 	}
 
 	EditorPlugins struct {
@@ -227,6 +227,7 @@ type Iterator uintptr
 type MethodBind uintptr
 
 type ClassTag uintptr
+type ClassDB uintptr
 
 type Script uintptr
 
@@ -314,11 +315,13 @@ type ClassCreationInfo struct {
 	Unreference       call.Back[func(instance unsafe.Pointer)]
 
 	// Mandatory
-	CreateInstance   call.Back[func(userdata unsafe.Pointer) *gd.Object]
-	FreeInstance     call.Back[func(userdata unsafe.Pointer, instance *gd.Object)]
-	RecreateInstance call.Back[func(userdata unsafe.Pointer, instance *gd.Object) *gd.Object]
-	GetVirtual       call.Back[func(userdata unsafe.Pointer, name *gd.StringName) call.Back[func(instance unsafe.Pointer, name *gd.StringName, userdata unsafe.Pointer, args []unsafe.Pointer, ret unsafe.Pointer)]]
-	GetRID           call.Back[func(instance unsafe.Pointer) uint64]
+	CreateInstance         call.Back[func(userdata unsafe.Pointer) Object]
+	FreeInstance           call.Back[func(userdata unsafe.Pointer, instance Object)]
+	RecreateInstance       call.Back[func(userdata unsafe.Pointer, instance Object) Object]
+	GetVirtual             call.Back[func(userdata unsafe.Pointer, name *gd.StringName) call.Back[func(instance unsafe.Pointer, args unsafe.Pointer, ret unsafe.Pointer)]]
+	GetVirtualCallWithData call.Back[func(userdata unsafe.Pointer, name *gd.StringName) unsafe.Pointer]
+	CallVirtualWithData    call.Back[func(instance unsafe.Pointer, name *gd.StringName, userdata unsafe.Pointer, args unsafe.Pointer, ret unsafe.Pointer)]
+	GetRID                 call.Back[func(instance unsafe.Pointer) uint64]
 
 	UserData unsafe.Pointer
 }

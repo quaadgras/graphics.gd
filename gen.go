@@ -512,8 +512,8 @@ func generate() error {
 		for _, enum := range class.Enums {
 			genEnum("gd", val, class.Name, enum)
 		}
-		fmt.Fprintf(pub, "type %v = extends%v\n", class.Name, class.Name)
-		fmt.Fprintf(all, "type extends%[1]v struct{_ [0]*extends%[1]v; class }\n", class.Name)
+		fmt.Fprintf(pub, "type %v struct { methods%v }\n", class.Name, class.Name)
+		fmt.Fprintf(all, "type methods%[1]v struct{_ [0]*methods%[1]v; class }\n", class.Name)
 		if class.Inherits != "" {
 			fmt.Fprintf(all, "\nfunc (self %[1]v) %[2]v() %[2]v { var parent %[2]v; parent.class = self.class; return parent }\n", class.Name, class.Inherits)
 		}
@@ -541,7 +541,7 @@ func generate() error {
 			}
 			fmt.Fprintf(api, ") %v\t`hash:\"%v\"`\n", result, method.Hash)
 
-			fmt.Fprintf(all, "\tfunc (self %v) %v(", class.Name, convertName(method.Name))
+			fmt.Fprintf(all, "\tfunc (self methods%v) %v(", class.Name, convertName(method.Name))
 			for i, arg := range method.Arguments {
 				fmt.Fprintf(all, "%v %v", fixReserved(arg.Name), convertType("gd", arg.Meta, arg.Type))
 				if i < len(method.Arguments)-1 {
@@ -554,7 +554,7 @@ func generate() error {
 			} else {
 				fmt.Fprintf(all, "\t\t")
 			}
-			fmt.Fprintf(all, "self.Runtime.%v_%v(self", class.Name, method.Name)
+			fmt.Fprintf(all, "self.Runtime.%v_%v(%[1]v{self}", class.Name, method.Name)
 			for _, arg := range method.Arguments {
 				fmt.Fprint(all, ", ")
 				fmt.Fprintf(all, "%v", fixReserved(arg.Name))
