@@ -4,3 +4,5 @@ runtime.link v0.0.0-20240110113551-079696f1cf01 h1:Xj1myt4+CqNURsmK+6LgXoZww/H8i
 runtime.link v0.0.0-20240110113551-079696f1cf01/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
 runtime.link v0.0.0-20240110224804-b6121dffd2f0 h1:wj6eWHkwsE/3IhgM0NOTAkGHhSVsylX6bdlVSFgTtRg=
 runtime.link v0.0.0-20240110224804-b6121dffd2f0/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
+runtime.link v0.0.0-20240111034419-adfc47969471 h1:aHD3DtUpU3Wg9MJtxHOLF2LbnidOvd/Gv1KPds7kCTE=
+runtime.link v0.0.0-20240111034419-adfc47969471/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
