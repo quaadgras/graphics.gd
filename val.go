@@ -698,6 +698,15 @@ const (
 	AStarGrid2DDiagonalModeMax                AStarGrid2DDiagonalMode = 4
 )
 
+type AStarGrid2DCellShape int64
+
+const (
+	AStarGrid2DCellShapeSquare         AStarGrid2DCellShape = 0
+	AStarGrid2DCellShapeIsometricRight AStarGrid2DCellShape = 1
+	AStarGrid2DCellShapeIsometricDown  AStarGrid2DCellShape = 2
+	AStarGrid2DCellShapeMax            AStarGrid2DCellShape = 3
+)
+
 type AnimationTrackType int64
 
 const (
@@ -3396,6 +3405,14 @@ const (
 	OpenHandMotionRangeMax                 OpenXRHandMotionRange = 2
 )
 
+type OpenXRHandSkeletonRig int64
+
+const (
+	OpenHandSkeletonRigOpen     OpenXRHandSkeletonRig = 0
+	OpenHandSkeletonRigHumanoid OpenXRHandSkeletonRig = 1
+	OpenHandSkeletonRigMax      OpenXRHandSkeletonRig = 2
+)
+
 type OpenXRInterfaceHand int64
 
 const (
@@ -4590,22 +4607,25 @@ const (
 type RenderingDeviceInitialAction int64
 
 const (
-	RenderingDeviceInitialActionClear               RenderingDeviceInitialAction = 0
+	RenderingDeviceInitialActionLoad                RenderingDeviceInitialAction = 0
+	RenderingDeviceInitialActionClear               RenderingDeviceInitialAction = 1
+	RenderingDeviceInitialActionDiscard             RenderingDeviceInitialAction = 2
+	RenderingDeviceInitialActionMax                 RenderingDeviceInitialAction = 3
 	RenderingDeviceInitialActionClearRegion         RenderingDeviceInitialAction = 1
-	RenderingDeviceInitialActionClearRegionContinue RenderingDeviceInitialAction = 2
-	RenderingDeviceInitialActionKeep                RenderingDeviceInitialAction = 3
-	RenderingDeviceInitialActionDrop                RenderingDeviceInitialAction = 4
-	RenderingDeviceInitialActionContinue            RenderingDeviceInitialAction = 5
-	RenderingDeviceInitialActionMax                 RenderingDeviceInitialAction = 6
+	RenderingDeviceInitialActionClearRegionContinue RenderingDeviceInitialAction = 1
+	RenderingDeviceInitialActionKeep                RenderingDeviceInitialAction = 0
+	RenderingDeviceInitialActionDrop                RenderingDeviceInitialAction = 2
+	RenderingDeviceInitialActionContinue            RenderingDeviceInitialAction = 0
 )
 
 type RenderingDeviceFinalAction int64
 
 const (
-	RenderingDeviceFinalActionRead     RenderingDeviceFinalAction = 0
+	RenderingDeviceFinalActionStore    RenderingDeviceFinalAction = 0
 	RenderingDeviceFinalActionDiscard  RenderingDeviceFinalAction = 1
-	RenderingDeviceFinalActionContinue RenderingDeviceFinalAction = 2
-	RenderingDeviceFinalActionMax      RenderingDeviceFinalAction = 3
+	RenderingDeviceFinalActionMax      RenderingDeviceFinalAction = 2
+	RenderingDeviceFinalActionRead     RenderingDeviceFinalAction = 0
+	RenderingDeviceFinalActionContinue RenderingDeviceFinalAction = 0
 )
 
 type RenderingDeviceShaderStage int64
@@ -5883,6 +5903,14 @@ const (
 	TabBarCloseButtonShowActiveOnly TabBarCloseButtonDisplayPolicy = 1
 	TabBarCloseButtonShowAlways     TabBarCloseButtonDisplayPolicy = 2
 	TabBarCloseButtonMax            TabBarCloseButtonDisplayPolicy = 3
+)
+
+type TabContainerTabPosition int64
+
+const (
+	TabContainerPositionTop    TabContainerTabPosition = 0
+	TabContainerPositionBottom TabContainerTabPosition = 1
+	TabContainerPositionMax    TabContainerTabPosition = 2
 )
 
 type TextEditMenuItems int64

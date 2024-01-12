@@ -12,8 +12,9 @@ func _ready():
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		#hello.free()
+		hello.free()
 		pass
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
