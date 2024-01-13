@@ -88,6 +88,6 @@ func main() {
 	if !ok {
 		return
 	}
-	gdextension.RegisterClass[HelloWorld, gd.Object](extension, classdb)
-	gdextension.RegisterClass[ExtendedNode, gd.Node2D](extension, classdb)
+	gdextension.RegisterClass[HelloWorld](extension, classdb)
+	gdextension.RegisterClass[ExtendedNode](extension, classdb)
 }
