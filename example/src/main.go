@@ -15,7 +15,7 @@ HelloWorld is a simple extension to demonstrate how to export
 Go methods so that they can be used in scripts.
 */
 type HelloWorld struct {
-	gd.Object
+	gd.Class[HelloWorld, gd.Object]
 	/*gd.Scripting[struct {
 		Print gd.Method `gd:"print()"`
 		Echo  gd.Method `gd:"echo(s)"`
@@ -43,7 +43,7 @@ func (h *HelloWorld) Arch() string {
 ExtendedNode demonstrates how to call the methods of builtin objects.
 */
 type ExtendedNode struct {
-	gd.Node2D
+	gd.Class[ExtendedNode, gd.Node2D]
 
 	hello HelloWorld
 
@@ -52,16 +52,15 @@ type ExtendedNode struct {
 
 func (e *ExtendedNode) Ready() {
 	fmt.Println("Ready!")
-	fmt.Println(e.Node2D)
 
-	fmt.Println("class:", e.CanvasItem().Node().Object().GetClass().String())
+	node := e.Super()
 
-	var node = e
+	fmt.Println("class:", node.Object().GetClass().String())
 
 	//var obj = gd.New[gd.Object](node)
 	//obj.GetClass()
 
-	fmt.Println(e.engine.GetSingletonList())
+	fmt.Println(e.engine.GetSingletonList().Slice())
 	fmt.Println("Scene is ready!")
 
 	e.hello.Print()

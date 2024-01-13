@@ -4,64 +4,19 @@ package gd
 
 import "unsafe"
 
-type Singleton interface {
-	isSingleton()
-}
-
-type Pointer struct {
-	Val uintptr
-	API *API
-	src *Pointer
-}
-
-func MakePointer(class ClassContainer, ptr Pointer) {
-	class.init()
-	class.getPointer().src.Val = ptr.Val
-	class.getPointer().src.API = ptr.API
-}
-
-func ReadPointer(class ClassReference) uintptr {
-	return class.getPointer().src.Val
-}
-
-func FreePointer(class ClassReference) {
-	class.getPointer().src.Val = 0
-}
-
-type ClassReference interface {
-	getPointer() Pointer
-}
-
-type ClassContainer interface {
-	ClassReference
-
-	init()
-}
-
-type Class[T ClassReference] struct {
-	_   [0]*T
-	ptr Pointer
-}
-
-func (class Class[T]) getPointer() Pointer {
-	return class.ptr
-}
-
-func (class *Class[T]) init() { class.ptr = Pointer{}; class.ptr.src = &class.ptr }
-
 type Float = float32
 type Int = int64
 
 type String struct {
-	Class[String]
+	Class[String, Pointer]
 }
 
 func (s String) String() string {
-	if s.ptr.Val == 0 {
+	if s.super.Val == [2]uintptr{} {
 		return ""
 	}
-	var buf = make([]byte, s.ptr.API.String_length(&s))
-	s.ptr.API.Extension.Strings.Get(&s, buf)
+	var buf = make([]byte, s.super.API.String_length(&s))
+	s.super.API.Extension.Strings.Get(&s, buf)
 	return string(buf)
 }
 
@@ -136,21 +91,21 @@ type Color struct {
 }
 
 type StringName struct {
-	Class[String]
+	Class[String, Pointer]
 }
 
 func (s StringName) String() string {
-	if s.ptr.Val == 0 {
+	if s.super.Val == [2]uintptr{} {
 		return ""
 	}
 	var tmp String
-	s.ptr.API.String_NewFromStringName(s)
-	defer s.ptr.API.Extension.Variants.Destructor(TypeString)(unsafe.Pointer(&tmp))
+	s.super.API.String_NewFromStringName(s)
+	defer s.super.API.Extension.Variants.Destructor(TypeString)(unsafe.Pointer(&tmp))
 	return tmp.String()
 }
 
 type NodePath struct {
-	Class[String]
+	Class[String, Pointer]
 }
 
 type RID int64
@@ -166,51 +121,63 @@ type Signal struct {
 }
 
 type Dictionary struct {
-	Class[Dictionary]
+	Class[Dictionary, Pointer]
 }
 
 type Array struct {
-	Class[Array]
+	Class[Array, Pointer]
 }
 
 type ArrayOf[T any] struct {
-	Class[ArrayOf[T]]
+	Class[ArrayOf[T], Pointer]
 }
 
 type PackedByteArray struct {
-	Class[PackedByteArray]
+	Class[PackedByteArray, Pointer]
 }
 
 type PackedInt32Array struct {
-	Class[PackedInt32Array]
+	Class[PackedInt32Array, Pointer]
 }
 
 type PackedInt64Array struct {
-	Class[PackedInt64Array]
+	Class[PackedInt64Array, Pointer]
 }
 
 type PackedFloat32Array struct {
-	Class[PackedFloat32Array]
+	Class[PackedFloat32Array, Pointer]
 }
 
 type PackedFloat64Array struct {
-	Class[PackedFloat64Array]
+	Class[PackedFloat64Array, Pointer]
 }
 
 type PackedStringArray struct {
-	Class[PackedStringArray]
+	Class[PackedStringArray, Pointer]
+}
+
+func (array PackedStringArray) Slice() []string {
+	var slice = make([]string, array.super.API.PackedStringArray_size(&array))
+	for i := 0; i < len(slice); i++ {
+		elem := array.super.API.Extension.PackedStringArray.Index(&array, int64(i))
+		var tmp String
+		tmp.super.Val[0] = *elem
+		tmp.super.API = array.super.API
+		slice[i] = tmp.String()
+	}
+	return slice
 }
 
 type PackedVector2Array struct {
-	Class[PackedVector2Array]
+	Class[PackedVector2Array, Pointer]
 }
 
 type PackedVector3Array struct {
-	Class[PackedVector3Array]
+	Class[PackedVector3Array, Pointer]
 }
 
 type PackedColorArray struct {
-	Class[PackedColorArray]
+	Class[PackedColorArray, Pointer]
 }
 
 type Variant struct {

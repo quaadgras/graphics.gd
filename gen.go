@@ -564,13 +564,19 @@ func generate() error {
 		}
 		fmt.Fprintf(pub, "type %v = class%v \n", class.Name, class.Name)
 		if class.Inherits != "" {
-			fmt.Fprintf(all, "type class%[1]v struct {Class[class%[1]v]}\n", class.Name, class.Inherits)
+			fmt.Fprintf(all, "type class%[1]v struct {Class[class%[1]v, %v]}\n", class.Name, class.Inherits)
 		} else {
-			fmt.Fprintf(all, "type class%[1]v struct {Class[class%[1]v]}\n", class.Name)
+			fmt.Fprintf(all, "type class%[1]v struct {Class[class%[1]v, Pointer]}\n", class.Name)
 		}
 		if class.Inherits != "" {
-			fmt.Fprintf(all, "\nfunc (self class%[1]v) Super() %[2]v { var super %[2]v; super.ptr = self.ptr; return super }\n", class.Name, class.Inherits)
-			fmt.Fprintf(all, "\nfunc (self class%[1]v) %[2]v() %[2]v { return self.Super() }\n", class.Name, class.Inherits)
+			var i = 1
+			super := classDB[class.Inherits]
+			for super.Name != "" {
+				fmt.Fprintf(all, "\nfunc (self class%[1]v) %[2]v() %[2]v { return *self%s }\n", class.Name, super.Name, strings.Repeat(".Super()", i))
+				i++
+				super = classDB[super.Inherits]
+			}
+
 		}
 		if singletons[class.Name] {
 			fmt.Fprintf(all, "\nfunc (self class%[1]v) isSingleton() {}\n", class.Name)
@@ -603,7 +609,7 @@ func generate() error {
 			} else {
 				fmt.Fprintf(all, "\t\t")
 			}
-			fmt.Fprintf(all, "self.ptr.API.%v_%v(self", class.Name, method.Name)
+			fmt.Fprintf(all, "self.getPointer().API.%v_%v(self", class.Name, method.Name)
 			for _, arg := range method.Arguments {
 				fmt.Fprint(all, ", ")
 				fmt.Fprintf(all, "%v", fixReserved(arg.Name))

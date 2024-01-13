@@ -208,17 +208,17 @@ func link(extension gd.ExtensionAPI, godot *gd.API, structure api.Structure) {
 					ptrs[i-1] = copy.UnsafePointer()
 				}
 				if fn.NumOut() == 0 {
-					extension.Object.UnsafeCall(bind, self, ptrs, nil)
+					extension.Object.UnsafeCall(bind, self[0], ptrs, nil)
 					return []reflect.Value{}
 				}
 				var ret = reflect.New(fn.Type.Out(0))
 				container, ok := ret.Interface().(gd.ClassContainer)
 				if ok {
-					var ptr uintptr
-					extension.Object.UnsafeCall(bind, self, ptrs, unsafe.Pointer(&ptr))
+					var ptr [2]uintptr
+					extension.Object.UnsafeCall(bind, self[0], ptrs, unsafe.Pointer(&ptr))
 					gd.MakePointer(container, gd.Pointer{Val: ptr, API: godot})
 				} else {
-					extension.Object.UnsafeCall(bind, self, ptrs, ret.UnsafePointer())
+					extension.Object.UnsafeCall(bind, self[0], ptrs, ret.UnsafePointer())
 				}
 				return []reflect.Value{ret.Elem()}
 			})

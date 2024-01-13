@@ -32,7 +32,7 @@ All exported fields and methods will be exposed to Godot, so
 take caution when embedding types, as their fields and methods
 will be promoted.
 */
-func RegisterStruct[Struct, Parent any](extension gd.ExtensionAPI, db gd.ExtensionToken) {
+func RegisterStruct[Struct gd.Extends[Parent], Parent gd.IsClass](extension gd.ExtensionAPI, db gd.ExtensionToken) {
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
 	var superType = reflect.TypeOf([0]Parent{}).Elem()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
@@ -52,6 +52,10 @@ func RegisterStruct[Struct, Parent any](extension gd.ExtensionAPI, db gd.Extensi
 	info.CreateInstance.Set(func(userdata unsafe.Pointer) uintptr {
 		var super = extension.ClassDB.CreateObject(&superName)
 		var instance = reflect.New(classType)
+		gd.MakePointer(instance.Interface().(gd.ClassContainer), gd.Pointer{
+			Val: [2]uintptr{super, 0},
+			API: godot,
+		})
 		injectDependenciesInto(extension, instance.Elem(), super, superType)
 		var handle = cgo.NewHandle(instance.Interface())
 		extension.Object.SetInstance(super, &className, handle)
@@ -69,14 +73,14 @@ func RegisterStruct[Struct, Parent any](extension gd.ExtensionAPI, db gd.Extensi
 		extension.Strings.Get(&out, buf)
 		vname := string(buf)
 
-		var virtualType reflect.Type = superType
+		var virtualType reflect.Type = reflect.PtrTo(superType)
 		for {
 			superMethod, ok := virtualType.MethodByName("Super")
 			if !ok {
 				break
 			}
 			virtualType = superMethod.Type.Out(0)
-			virtualMethod, ok := godotFunctions.FieldByName(strings.TrimPrefix(virtualType.Name(), "class") + "_" + vname)
+			virtualMethod, ok := godotFunctions.FieldByName(strings.TrimPrefix(virtualType.Elem().Name(), "class") + "_" + vname)
 			if !ok {
 				continue
 			}
@@ -90,6 +94,7 @@ func RegisterStruct[Struct, Parent any](extension gd.ExtensionAPI, db gd.Extensi
 					panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", classType.Name(), GoName, virtualType.Name(), vname))
 				}
 			}
+			fmt.Println("Registering virtual function", classType.Name(), GoName, virtualType.Name(), vname)
 			var callMethod call.Back[func(instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer)]
 			callMethod.Set(func(instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer) {
 				var in = make([]reflect.Value, method.Type.NumIn())
@@ -142,22 +147,16 @@ func injectDependenciesInto(extension gd.ExtensionAPI, value reflect.Value, supe
 		fieldValue := reflect.NewAt(field.Type, unsafe.Add(value.Addr().UnsafePointer(), field.Offset)).Interface()
 
 		container, ok := fieldValue.(gd.ClassContainer)
-		if ok {
-			if field.Anonymous && field.Type == superType {
-				gd.MakePointer(container, gd.Pointer{
-					Val: uintptr(super),
-					API: godot,
-				})
-				continue
-			}
+		if ok && (gd.ReadPointer(container) == [2]uintptr{}) {
 			_, ok := fieldValue.(gd.Singleton)
 			if ok {
+				fmt.Println("making singleton")
 				var name gd.StringName
 				extension.StringNames.New(&name, strings.TrimPrefix(field.Type.Name(), "class"))
 				singleton := extension.Object.GetSingleton(&name)
 				extension.Variants.Destructor(gd.TypeStringName)(unsafe.Pointer(&name))
 				gd.MakePointer(container, gd.Pointer{
-					Val: uintptr(singleton),
+					Val: [2]uintptr{singleton, 0},
 					API: godot,
 				})
 			}

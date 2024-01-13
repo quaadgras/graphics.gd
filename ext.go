@@ -130,7 +130,7 @@ type ExtensionAPI struct {
 		Index func(*PackedInt64Array, int64) *int64 `call:"packed_int64_array_operator_index func(&void,int64_t)&int64_t"`
 	}
 	PackedStringArray struct {
-		Index func(*PackedStringArray, int64) *String `call:"packed_string_array_operator_index func(&void,int64_t)&char"`
+		Index func(*PackedStringArray, int64) *uintptr `call:"packed_string_array_operator_index func(&void,int64_t)$void"`
 	}
 	PackedVector2Array struct {
 		Index func(*PackedVector2Array, int64) *Vector2 `call:"packed_vector2_array_operator_index func(&void,int64_t)&Vector2"`
