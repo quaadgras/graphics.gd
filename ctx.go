@@ -27,9 +27,9 @@ func newContext(api *API) Context {
 	return ctx
 }
 
-// Make a new instance of the given class, which should be an uninitialised
+// Create a new instance of the given class, which should be an uninitialised
 // pointer to a value of that class. T must be a class from this package.
-func Make[T PointerToClass](ctx Context, ptr T) T {
+func Create[T PointerToClass](ctx Context, ptr T) T {
 	var godot = ctx.API()
 	var sname = ctx.StringName(strings.TrimPrefix(reflect.TypeOf(ptr).Elem().Name(), "class"))
 	var fresh = godot.ClassDB.CreateObject((StringNamePtr)(unsafe.Pointer(&sname)))
