@@ -48,7 +48,7 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 
 	fmt.Println("class:", node.Object().GetClass(godot).String())
 
-	var obj = gd.Make(godot, new(gd.Object))
+	var obj = gd.Create(godot, new(gd.Object))
 	fmt.Println(obj.GetClass(godot).String())
 
 	fmt.Println(e.engine.GetSingletonList(godot).AsSlice())
