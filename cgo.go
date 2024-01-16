@@ -2,186 +2,19 @@
 
 package gd
 
-import "unsafe"
+import (
+	"sync"
+	"unsafe"
+)
 
-type Float = float32
-type Int = int64
-
-type String struct {
-	Class[String, Pointer]
-}
-
-func (s String) String() string {
-	if s.super.Val == [2]uintptr{} {
-		return ""
-	}
-	var buf = make([]byte, s.super.API.String_length(&s))
-	s.super.API.Extension.Strings.Get(&s, buf)
-	return string(buf)
-}
-
-type Vector2 struct {
-	X, Y Float
-}
-
-type Vector2i struct {
-	X, Y int32
-}
-
-type Rect2 struct {
-	Position Vector2
-	Size     Vector2
-}
-
-type Rect2i struct {
-	Position Vector2i
-	Size     Vector2i
-}
-
-type Vector3 struct {
-	X, Y, Z Float
-}
-
-type Vector3i struct {
-	X, Y, Z int32
-}
-
-type Transform2D struct {
-	X Vector2
-	Y Vector2
-	O Vector2
-}
-
-type Vector4 struct {
-	X, Y, Z, W Float
-}
-
-type Vector4i struct {
-	X, Y, Z, W int32
-}
-
-type Plane struct {
-	Matrix Vector4
-}
-
-type Quaternion struct {
-	X, Y, Z, W Float
-}
-
-type AABB struct {
-	Position Vector3
-	Size     Vector3
-}
-
-type Basis struct {
-	Rows [3]Vector3
-}
-
-type Transform3D struct {
-	Basis  Basis
-	Origin Vector3
-}
-
-type Projection struct {
-	X, Y, Z, W Vector4
-}
-
-type Color struct {
-	R, G, B, A Float
-}
-
-type StringName struct {
-	Class[String, Pointer]
-}
-
-func (s StringName) String() string {
-	if s.super.Val == [2]uintptr{} {
-		return ""
-	}
-	var tmp String
-	s.super.API.String_NewFromStringName(s)
-	defer s.super.API.Extension.Variants.Destructor(TypeString)(unsafe.Pointer(&tmp))
-	return tmp.String()
-}
-
-type NodePath struct {
-	Class[String, Pointer]
-}
-
-type RID int64
-
-type Callable struct {
-	obj uintptr
-	ptr uintptr
-}
-
-type Signal struct {
-	obj uintptr
-	ptr uintptr
-}
-
-type Dictionary struct {
-	Class[Dictionary, Pointer]
-}
-
-type Array struct {
-	Class[Array, Pointer]
-}
-
-type ArrayOf[T any] struct {
-	Class[ArrayOf[T], Pointer]
-}
-
-type PackedByteArray struct {
-	Class[PackedByteArray, Pointer]
-}
-
-type PackedInt32Array struct {
-	Class[PackedInt32Array, Pointer]
-}
-
-type PackedInt64Array struct {
-	Class[PackedInt64Array, Pointer]
-}
-
-type PackedFloat32Array struct {
-	Class[PackedFloat32Array, Pointer]
-}
-
-type PackedFloat64Array struct {
-	Class[PackedFloat64Array, Pointer]
-}
-
-type PackedStringArray struct {
-	Class[PackedStringArray, Pointer]
-}
-
-func (array PackedStringArray) Slice() []string {
-	var slice = make([]string, array.super.API.PackedStringArray_size(&array))
-	for i := 0; i < len(slice); i++ {
-		elem := array.super.API.Extension.PackedStringArray.Index(&array, int64(i))
-		var tmp String
-		tmp.super.Val[0] = *elem
-		tmp.super.API = array.super.API
-		slice[i] = tmp.String()
-	}
-	return slice
-}
-
-type PackedVector2Array struct {
-	Class[PackedVector2Array, Pointer]
-}
-
-type PackedVector3Array struct {
-	Class[PackedVector3Array, Pointer]
-}
-
-type PackedColorArray struct {
-	Class[PackedColorArray, Pointer]
-}
-
-type Variant struct {
-	buf [24]byte
+// cache is responsible for keeping a local copy for the various
+// function pointers that are looked up at runtime and used for
+// calling methods on classes.
+type cache struct {
+	utility utility
+	builtin builtin
+	variant variant
+	methods methods
 }
 
 type AudioFrame struct {
@@ -279,4 +112,90 @@ type CaretInfo struct {
 	LeadingCaret, TrailingCaret Rect2
 
 	LeadingDirection, TrailingDirection int64
+}
+
+const maxMethodArgs = 14
+const maxArgWords = 6
+
+var callFrames sync.Pool
+
+type CallFrameArgs uintptr
+type CallFrameBack uintptr
+
+type unsafeCallFrame struct {
+	ptrs [maxMethodArgs]uintptr
+	back [maxArgWords]uintptr
+	data [maxMethodArgs * maxArgWords]uintptr
+}
+
+type callFrame struct {
+	ptr unsafe.Pointer
+}
+
+func (frame callFrame) Get(i int) CallFrameArgs {
+	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
+	return CallFrameArgs(unsafeFrame.ptrs[i])
+}
+
+func (frame callFrame) Args() CallFrameArgs {
+	return CallFrameArgs(frame.ptr)
+}
+
+func (frame callFrame) ArgsOffset(i Int) CallFrameArgs {
+	return CallFrameArgs(frame.ptr) + CallFrameArgs(i)
+}
+
+func (frame callFrame) Back() CallFrameBack {
+	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
+	return CallFrameBack(unsafe.Pointer(&unsafeFrame.back[0]))
+}
+
+func (Godot API) newFrame() callFrame {
+	frame, ok := callFrames.Get().(callFrame)
+	if !ok {
+		frame = callFrame{
+			ptr: Godot.Allocate(unsafe.Sizeof(unsafeCallFrame{})),
+		}
+		unsafeFrame := (*unsafeCallFrame)(frame.ptr)
+		*unsafeFrame = unsafeCallFrame{}
+		for i := 0; i < maxMethodArgs; i++ {
+			unsafeFrame.ptrs[i] = uintptr(unsafe.Pointer(&unsafeFrame.data[i*maxArgWords]))
+		}
+	}
+	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
+	unsafeFrame.back = [maxArgWords]uintptr{}
+	return frame
+}
+
+func (frame callFrame) free() { callFrames.Put(frame) }
+
+func frameSet[T any](index int, frame callFrame, value T) {
+	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
+	*(*T)(unsafe.Pointer(&unsafeFrame.data[index*maxArgWords])) = value
+}
+
+func frameGet[T any](frame callFrame) T {
+	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
+	return *(*T)(unsafe.Pointer(&unsafeFrame.back))
+}
+
+/*func (self classAESContext) Update(ctx context.Context, src PackedByteArray) PackedByteArray {
+	var frame = makeCallFrame()
+	setFrame[[2]uintptr](0, frame, src.Pointer())
+	self.API.UnsafeCall(self.API.Methods.AESContext_update, self.Pointer(), frame.Args, frame.Ret)
+	ret := getFrame[[2]uintptr](frame)
+	frame.Free()
+	return mmm.Make[gd.API, PackedByteArray](ctx, self.API, ret)
+}*/
+
+type godotArgs uintptr
+
+func godotGet[T any](frame godotArgs, index int) T {
+	return unsafe.Slice((*T)(unsafe.Pointer(frame)), index+1)[index]
+}
+
+type godotBack uintptr
+
+func godotSet[T any](frame godotBack, value T) {
+	*(*T)(unsafe.Pointer(frame)) = value
 }

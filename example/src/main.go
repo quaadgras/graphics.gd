@@ -8,35 +8,28 @@ import (
 	"grow.graphics/gd/gdextension"
 )
 
-var godot gd.API
-
 /*
 HelloWorld is a simple extension to demonstrate how to export
 Go methods so that they can be used in scripts.
 */
 type HelloWorld struct {
 	gd.Class[HelloWorld, gd.Object]
-	/*gd.Scripting[struct {
-		Print gd.Method `gd:"print()"`
-		Echo  gd.Method `gd:"echo(s)"`
-		Arch  gd.Method `gd:"arch() GOARCH"`
-	}]*/
 }
 
 // Print prints "Hello World"
-func (h *HelloWorld) Print() {
+func (h *HelloWorld) Print(gd.Context) {
 	fmt.Println("Hello World")
 }
 
 // Echo prints the given string, signalling that it
 // was printed by Go code.
-func (h *HelloWorld) Echo(s string) {
-	fmt.Println(s + " from Go!")
+func (h *HelloWorld) Echo(_ gd.Context, s gd.String) {
+	fmt.Println(s.String() + " from Go!")
 }
 
 // Arch returns the current GOARCH value.
-func (h *HelloWorld) Arch() string {
-	return runtime.GOARCH
+func (h *HelloWorld) Arch(godot gd.Context) gd.String {
+	return godot.String(runtime.GOARCH)
 }
 
 /*
@@ -45,25 +38,21 @@ ExtendedNode demonstrates how to call the methods of builtin objects.
 type ExtendedNode struct {
 	gd.Class[ExtendedNode, gd.Node2D]
 
-	hello HelloWorld
-
 	engine gd.Engine
 }
 
-func (e *ExtendedNode) Ready() {
+func (e *ExtendedNode) Ready(godot gd.Context) {
 	fmt.Println("Ready!")
 
 	node := e.Super()
 
-	fmt.Println("class:", node.Object().GetClass().String())
+	fmt.Println("class:", node.Object().GetClass(godot).String())
 
 	//var obj = gd.New[gd.Object](node)
 	//obj.GetClass()
 
-	fmt.Println(e.engine.GetSingletonList().Slice())
+	fmt.Println(e.engine.GetSingletonList(godot).AsSlice())
 	fmt.Println("Scene is ready!")
-
-	e.hello.Print()
 
 	//fmt.Println("sin=", godot.Utility_sin(1.5))
 

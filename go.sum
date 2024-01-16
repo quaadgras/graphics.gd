@@ -8,3 +8,5 @@ runtime.link v0.0.0-20240111034419-adfc47969471 h1:aHD3DtUpU3Wg9MJtxHOLF2LbnidOv
 runtime.link v0.0.0-20240111034419-adfc47969471/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
 runtime.link v0.0.0-20240112102017-1615f5b603f6 h1:emZgPLJF16J83oq/wCOQsjMYLVOmHKbubP47MXTlsts=
 runtime.link v0.0.0-20240112102017-1615f5b603f6/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
+runtime.link v0.0.0-20240116103901-69d00a21a88b h1:u4vgfWp3JAaG41/K9gcFq9iY/34J+rEFpg12RTrOJ9Q=
+runtime.link v0.0.0-20240116103901-69d00a21a88b/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=

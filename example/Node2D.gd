@@ -4,7 +4,7 @@ var hello: HelloWorld = HelloWorld.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#hello.print()
+	hello.print()
 	#hello.echo("Hello from GDScript")
 	#print(hello.arch())
 	#print(Engine.get_singleton("DisplayServer"))

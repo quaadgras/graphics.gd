@@ -1,6 +1,7 @@
 package gdextension
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"runtime/cgo"
@@ -8,7 +9,7 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd"
-	"runtime.link/api/call"
+	"runtime.link/mmm"
 )
 
 /*
@@ -29,89 +30,111 @@ All exported fields and methods will be exposed to Godot, so
 take caution when embedding types, as their fields and methods
 will be promoted.
 */
-func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](extension gd.ExtensionAPI, db gd.ExtensionToken) {
+func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](Godot *gd.API, db gd.ExtensionToken) {
+	registrationCtx := mmm.NewContext(context.Background())
+	//defer free()
+
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
 	var superType = reflect.TypeOf([0]Parent{}).Elem()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
 
-	var godotFunctions = reflect.TypeOf(gd.API{})
-
-	var className gd.StringName
-	var superName gd.StringName
-	extension.StringNames.New(&className, classType.Name())
-	extension.StringNames.New(&superName, strings.TrimPrefix(superType.Name(), "class"))
+	var className = Godot.StringName(registrationCtx, classType.Name())
+	var superName = Godot.StringName(registrationCtx, strings.TrimPrefix(superType.Name(), "class"))
 
 	var info gd.ClassCreationInfo
 	info.IsExposed = true
 
 	info.CreateInstance.Set(func(userdata unsafe.Pointer) uintptr {
-		var super = extension.ClassDB.CreateObject(&superName)
+		ctx := mmm.NewContext(context.Background())
+		var super = Godot.ClassDB.CreateObject((gd.StringNamePtr)(unsafe.Pointer(&superName)))
 		var instance = reflect.New(classType)
-		gd.MakePointer(instance.Interface().(gd.ClassContainer), gd.Pointer{
-			Val: [2]uintptr{super, 0},
-			API: godot,
-		})
-		injectDependenciesInto(extension, instance.Elem(), super, superType)
+		instance.Interface().(gd.PointerToClass).SetPointer(
+			mmm.Make[gd.API, gd.Pointer](ctx, Godot, super))
+		injectDependenciesInto(ctx, Godot, instance.Elem(), super, superType)
 		var handle = cgo.NewHandle(instance.Interface())
-		extension.Object.SetInstance(super, &className, handle)
+		Godot.Object.SetInstance(super, (gd.StringNamePtr)(unsafe.Pointer(&className)), handle)
 		return super
 	})
 	info.FreeInstance.Set(func(userdata unsafe.Pointer, handle cgo.Handle) {
+		class := handle.Value().(gd.IsClass)
+		gd.MarkFree(class)
+		class.Context().(interface{ Free() }).Free()
 		handle.Delete()
 	})
 
 	// Dispatch virtual functions, these are functions that structs can
 	// override with their own implementation.
-	info.GetVirtual.Set(func(userdata unsafe.Pointer, sname *gd.StringName) call.Back[func(instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer)] {
-		var out = godot.String_NewFromStringName(*sname)
-		var buf = make([]byte, godot.String_length(&out))
-		extension.Strings.Get(&out, buf)
-		vname := string(buf)
-
-		var virtualType reflect.Type = reflect.PtrTo(superType)
-		for {
-			superMethod, ok := virtualType.MethodByName("Super")
-			if !ok {
-				break
-			}
-			virtualType = superMethod.Type.Out(0)
-			virtualMethod, ok := godotFunctions.FieldByName(strings.TrimPrefix(virtualType.Elem().Name(), "class") + "_" + vname)
-			if !ok {
-				continue
-			}
-			GoName := convertName(vname)
-			method, ok := reflect.PtrTo(classType).MethodByName(GoName)
-			if !ok {
-				continue
-			}
-			for i := 1; i < method.Type.NumIn(); i++ {
-				if method.Type.In(i) != virtualMethod.Type.In(i) {
-					panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", classType.Name(), GoName, virtualType.Name(), vname))
-				}
-			}
-			fmt.Println("Registering virtual function", classType.Name(), GoName, virtualType.Name(), vname)
-			var callMethod call.Back[func(instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer)]
-			callMethod.Set(func(instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer) {
-				var in = make([]reflect.Value, method.Type.NumIn())
-				in[0] = reflect.ValueOf(instance.Value())
-				for i := 1; i < method.Type.NumIn(); i++ {
-					in[i] = reflect.NewAt(method.Type.In(i), args).Elem()
-				}
-				var out = method.Func.Call(in)
-				if len(out) > 0 {
-					reflect.NewAt(method.Type.Out(0), ret).Elem().Set(out[0])
-				}
-			})
-			// FIXME callMethod needs to be freed at some point?
-			return callMethod
+	info.GetVirtual.Set(func(userdata unsafe.Pointer, ptr_name gd.StringNamePtr) gd.ExtensionClassCallVirtualFunc {
+		sname := mmm.Make[gd.API, gd.StringName](nil, Godot, *ptr_name)
+		vname := sname.String()
+		var class Struct
+		var virtual = gd.VirtualByName(class, vname)
+		if !virtual.IsValid() {
+			return gd.ExtensionClassCallVirtualFunc{}
 		}
-
-		return call.Back[func(instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer)]{}
+		var vtype = virtual.Type().In(0)
+		GoName := convertName(vname)
+		method, ok := reflect.PtrTo(classType).MethodByName(GoName)
+		if !ok {
+			return gd.ExtensionClassCallVirtualFunc{}
+		}
+		if method.Type.NumIn() != vtype.NumIn() {
+			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", classType.Name(), GoName, virtual.Type().Name(), vname))
+		}
+		for i := 1; i < method.Type.NumIn(); i++ {
+			if method.Type.In(i) != vtype.In(i) {
+				panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", classType.Name(), GoName, virtual.Type().Name(), vname))
+			}
+		}
+		var copy = reflect.New(method.Type)
+		copy.Elem().Set(method.Func)
+		var fn = reflect.NewAt(vtype, copy.UnsafePointer()).Elem()
+		return virtual.Call([]reflect.Value{fn, reflect.ValueOf(Godot)})[0].Interface().(gd.ExtensionClassCallVirtualFunc)
 	})
 
-	extension.ClassDB.RegisterClass(db, &className, &superName, &info)
+	Godot.ClassDB.RegisterClass(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), (gd.StringNamePtr)(unsafe.Pointer(&superName)), &info)
+
+	// Register all exported methods.
+	classTypePtr := reflect.PointerTo(classType)
+
+	var methodName = (*gd.StringName)(Godot.Allocate(unsafe.Sizeof(gd.StringName{})))
+	defer Godot.Release(unsafe.Pointer(methodName))
+
+	var returnInfo = (*gd.PropertyInfo)(Godot.Allocate(unsafe.Sizeof(gd.PropertyInfo{})))
+
+	for i := 0; i < classTypePtr.NumMethod(); i++ {
+		method := classTypePtr.Method(i)
+		if !method.IsExported() {
+			continue
+		}
+		if method.Type.NumIn() > 2 || method.Type.NumOut() > 0 {
+			continue
+		}
+		if method.Type.In(1) != reflect.TypeOf(gd.Context{}) {
+			continue
+		}
+
+		var info = gd.ClassMethodInfo{
+			Name:            methodName,
+			HasReturnValue:  method.Type.NumOut() > 0,
+			ReturnValueInfo: returnInfo,
+		}
+		info.PointerCall.Set(func(userdata unsafe.Pointer, instance cgo.Handle, args, ret unsafe.Pointer, err *gd.CallError) {
+			var in = make([]reflect.Value, method.Type.NumIn())
+			in[0] = reflect.ValueOf(instance.Value())
+			in[1] = reflect.ValueOf(gd.NewContext(Godot))
+			var out = method.Func.Call(in)
+			if len(out) > 0 {
+				reflect.NewAt(method.Type.Out(0), ret).Elem().Set(out[0])
+			}
+		})
+
+		Godot.StringNames.New(gd.CallFrameBack(unsafe.Pointer(methodName)), strings.ToLower(method.Name))
+		Godot.ClassDB.RegisterClassMethod(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), &info)
+		//methodName.Free()
+	}
 }
 
 func convertName(fnName string) string {
@@ -133,29 +156,26 @@ func convertName(fnName string) string {
 // injectDependenciesInto the given freshly allocated value, this
 // function makes sure any [gd.Object] types are instantiated and
 // that any referenced singletons are injected.
-func injectDependenciesInto(extension gd.ExtensionAPI, value reflect.Value, super uintptr, superType reflect.Type) {
+func injectDependenciesInto(ctx context.Context, Godot *gd.API, value reflect.Value, super uintptr, superType reflect.Type) {
 	if value.CanAddr() && value.Kind() != reflect.Struct {
 		panic("gdextension.injectDependenciesInto: value must be an addressable struct")
 	}
+	localCtx := mmm.NewContext(context.Background())
+	defer localCtx.Free()
+
 	for i := 0; i < value.NumField(); i++ {
 		field := value.Type().Field(i)
 
 		// support private fields.
 		fieldValue := reflect.NewAt(field.Type, unsafe.Add(value.Addr().UnsafePointer(), field.Offset)).Interface()
 
-		container, ok := fieldValue.(gd.ClassContainer)
-		if ok && (gd.ReadPointer(container) == [2]uintptr{}) {
+		container, ok := fieldValue.(gd.PointerToClass)
+		if ok && container.Pointer() == 0 {
 			_, ok := fieldValue.(gd.Singleton)
 			if ok {
-				fmt.Println("making singleton")
-				var name gd.StringName
-				extension.StringNames.New(&name, strings.TrimPrefix(field.Type.Name(), "class"))
-				singleton := extension.Object.GetSingleton(&name)
-				extension.Variants.Destructor(gd.TypeStringName)(unsafe.Pointer(&name))
-				gd.MakePointer(container, gd.Pointer{
-					Val: [2]uintptr{singleton, 0},
-					API: godot,
-				})
+				var name = Godot.StringName(localCtx, strings.TrimPrefix(field.Type.Name(), "class"))
+				singleton := Godot.Object.GetSingleton((gd.StringNamePtr)(unsafe.Pointer(&name)))
+				container.SetPointer(mmm.Make[gd.API, gd.Pointer](nil, Godot, singleton))
 			}
 		}
 
