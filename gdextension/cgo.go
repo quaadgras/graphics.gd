@@ -18,12 +18,12 @@ var dlsymGD func(string) unsafe.Pointer
 // Link returns a handle to the [API] and the global [ClassDB].
 // The [bool] return value is [true] if the API has been
 // linked with Godot successfully.
-func Link() (*gd.API, gd.ExtensionToken, bool) {
+func Link() (gd.Context, gd.ExtensionToken, bool) {
 	if dlsymGD == nil {
 		*godot = api.Import[gd.API](stub.API, "", errors.New("gdextension not linked"))
-		return godot, 0, false
+		return gd.NewContext(godot), 0, false
 	}
-	return godot, classDB, true
+	return gd.NewContext(godot), classDB, true
 }
 
 var (

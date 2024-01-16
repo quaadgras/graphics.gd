@@ -30,8 +30,8 @@ All exported fields and methods will be exposed to Godot, so
 take caution when embedding types, as their fields and methods
 will be promoted.
 */
-func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](Godot *gd.API, db gd.ExtensionToken) {
-	registrationCtx := mmm.NewContext(context.Background())
+func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Context, db gd.ExtensionToken) {
+	register := gd.NewContext(godot.API())
 	//defer free()
 
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
@@ -40,21 +40,21 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](Godot *gd.API, 
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
 
-	var className = Godot.StringName(registrationCtx, classType.Name())
-	var superName = Godot.StringName(registrationCtx, strings.TrimPrefix(superType.Name(), "class"))
+	var className = register.StringName(classType.Name())
+	var superName = register.StringName(strings.TrimPrefix(superType.Name(), "class"))
 
 	var info gd.ClassCreationInfo
 	info.IsExposed = true
 
 	info.CreateInstance.Set(func(userdata unsafe.Pointer) uintptr {
 		ctx := mmm.NewContext(context.Background())
-		var super = Godot.ClassDB.CreateObject((gd.StringNamePtr)(unsafe.Pointer(&superName)))
+		var super = godot.API().ClassDB.CreateObject((gd.StringNamePtr)(unsafe.Pointer(&superName)))
 		var instance = reflect.New(classType)
 		instance.Interface().(gd.PointerToClass).SetPointer(
-			mmm.Make[gd.API, gd.Pointer](ctx, Godot, super))
-		injectDependenciesInto(ctx, Godot, instance.Elem(), super, superType)
+			mmm.Make[gd.API, gd.Pointer](ctx, godot.API(), super))
+		injectDependenciesInto(ctx, godot.API(), instance.Elem(), super, superType)
 		var handle = cgo.NewHandle(instance.Interface())
-		Godot.Object.SetInstance(super, (gd.StringNamePtr)(unsafe.Pointer(&className)), handle)
+		godot.API().Object.SetInstance(super, (gd.StringNamePtr)(unsafe.Pointer(&className)), handle)
 		return super
 	})
 	info.FreeInstance.Set(func(userdata unsafe.Pointer, handle cgo.Handle) {
@@ -67,7 +67,7 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](Godot *gd.API, 
 	// Dispatch virtual functions, these are functions that structs can
 	// override with their own implementation.
 	info.GetVirtual.Set(func(userdata unsafe.Pointer, ptr_name gd.StringNamePtr) gd.ExtensionClassCallVirtualFunc {
-		sname := mmm.Make[gd.API, gd.StringName](nil, Godot, *ptr_name)
+		sname := mmm.Make[gd.API, gd.StringName](nil, godot.API(), *ptr_name)
 		vname := sname.String()
 		var class Struct
 		var virtual = gd.VirtualByName(class, vname)
@@ -91,18 +91,18 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](Godot *gd.API, 
 		var copy = reflect.New(method.Type)
 		copy.Elem().Set(method.Func)
 		var fn = reflect.NewAt(vtype, copy.UnsafePointer()).Elem()
-		return virtual.Call([]reflect.Value{fn, reflect.ValueOf(Godot)})[0].Interface().(gd.ExtensionClassCallVirtualFunc)
+		return virtual.Call([]reflect.Value{fn, reflect.ValueOf(godot.API())})[0].Interface().(gd.ExtensionClassCallVirtualFunc)
 	})
 
-	Godot.ClassDB.RegisterClass(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), (gd.StringNamePtr)(unsafe.Pointer(&superName)), &info)
+	godot.API().ClassDB.RegisterClass(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), (gd.StringNamePtr)(unsafe.Pointer(&superName)), &info)
 
 	// Register all exported methods.
 	classTypePtr := reflect.PointerTo(classType)
 
-	var methodName = (*gd.StringName)(Godot.Allocate(unsafe.Sizeof(gd.StringName{})))
-	defer Godot.Release(unsafe.Pointer(methodName))
+	var methodName = (*gd.StringName)(godot.API().Allocate(unsafe.Sizeof(gd.StringName{})))
+	defer godot.API().Release(unsafe.Pointer(methodName))
 
-	var returnInfo = (*gd.PropertyInfo)(Godot.Allocate(unsafe.Sizeof(gd.PropertyInfo{})))
+	var returnInfo = (*gd.PropertyInfo)(godot.API().Allocate(unsafe.Sizeof(gd.PropertyInfo{})))
 
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		method := classTypePtr.Method(i)
@@ -122,17 +122,19 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](Godot *gd.API, 
 			ReturnValueInfo: returnInfo,
 		}
 		info.PointerCall.Set(func(userdata unsafe.Pointer, instance cgo.Handle, args, ret unsafe.Pointer, err *gd.CallError) {
+			ctx := gd.NewContext(godot.API())
 			var in = make([]reflect.Value, method.Type.NumIn())
 			in[0] = reflect.ValueOf(instance.Value())
-			in[1] = reflect.ValueOf(gd.NewContext(Godot))
+			in[1] = reflect.ValueOf(ctx)
 			var out = method.Func.Call(in)
 			if len(out) > 0 {
 				reflect.NewAt(method.Type.Out(0), ret).Elem().Set(out[0])
 			}
+			ctx.Free()
 		})
 
-		Godot.StringNames.New(gd.CallFrameBack(unsafe.Pointer(methodName)), strings.ToLower(method.Name))
-		Godot.ClassDB.RegisterClassMethod(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), &info)
+		godot.API().StringNames.New(gd.CallFrameBack(unsafe.Pointer(methodName)), strings.ToLower(method.Name))
+		godot.API().ClassDB.RegisterClassMethod(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), &info)
 		//methodName.Free()
 	}
 }
