@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"grow.graphics/gd"
+	"grow.graphics/gd/internal"
 	"runtime.link/mmm"
 )
 
@@ -30,8 +30,8 @@ All exported fields and methods will be exposed to Godot, so
 take caution when embedding types, as their fields and methods
 will be promoted.
 */
-func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Context, db gd.ExtensionToken) {
-	register := gd.NewContext(godot.API())
+func RegisterClass[Struct internal.Extends[Parent], Parent internal.IsClass](godot internal.Context, db internal.ExtensionToken) {
+	register := internal.NewContext(godot.API())
 	//defer free()
 
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
@@ -43,42 +43,42 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Contex
 	var className = register.StringName(classType.Name())
 	var superName = register.StringName(strings.TrimPrefix(superType.Name(), "class"))
 
-	var info gd.ClassCreationInfo
+	var info internal.ClassCreationInfo
 	info.IsExposed = true
 
 	info.CreateInstance.Set(func(userdata unsafe.Pointer) uintptr {
 		ctx := mmm.NewContext(context.Background())
-		var super = godot.API().ClassDB.CreateObject((gd.StringNamePtr)(unsafe.Pointer(&superName)))
+		var super = godot.API().ClassDB.CreateObject((internal.StringNamePtr)(unsafe.Pointer(&superName)))
 		var instance = reflect.New(classType)
-		instance.Interface().(gd.PointerToClass).SetPointer(
-			mmm.Make[gd.API, gd.Pointer](ctx, godot.API(), super))
+		instance.Interface().(internal.PointerToClass).SetPointer(
+			mmm.Make[internal.API, internal.Pointer](ctx, godot.API(), super))
 		injectDependenciesInto(ctx, godot.API(), instance.Elem(), super, superType)
 		var handle = cgo.NewHandle(instance.Interface())
-		godot.API().Object.SetInstance(super, (gd.StringNamePtr)(unsafe.Pointer(&className)), handle)
+		godot.API().Object.SetInstance(super, (internal.StringNamePtr)(unsafe.Pointer(&className)), handle)
 		return super
 	})
 	info.FreeInstance.Set(func(userdata unsafe.Pointer, handle cgo.Handle) {
-		class := handle.Value().(gd.IsClass)
-		gd.MarkFree(class) // godot frees the underlying object, so we need to mark it as free.
+		class := handle.Value().(internal.IsClass)
+		internal.MarkFree(class) // godot frees the underlying object, so we need to mark it as free.
 		class.Context().(interface{ Free() }).Free()
 		handle.Delete()
 	})
 
 	// Dispatch virtual functions, these are functions that structs can
 	// override with their own implementation.
-	info.GetVirtual.Set(func(userdata unsafe.Pointer, ptr_name gd.StringNamePtr) gd.ExtensionClassCallVirtualFunc {
-		sname := mmm.Make[gd.API, gd.StringName](nil, godot.API(), *ptr_name)
+	info.GetVirtual.Set(func(userdata unsafe.Pointer, ptr_name internal.StringNamePtr) internal.ExtensionClassCallVirtualFunc {
+		sname := mmm.Make[internal.API, internal.StringName](nil, godot.API(), *ptr_name)
 		vname := sname.String()
 		var class Struct
-		var virtual = gd.VirtualByName(class, vname)
+		var virtual = internal.VirtualByName(class, vname)
 		if !virtual.IsValid() {
-			return gd.ExtensionClassCallVirtualFunc{}
+			return internal.ExtensionClassCallVirtualFunc{}
 		}
 		var vtype = virtual.Type().In(0)
 		GoName := convertName(vname)
 		method, ok := reflect.PtrTo(classType).MethodByName(GoName)
 		if !ok {
-			return gd.ExtensionClassCallVirtualFunc{}
+			return internal.ExtensionClassCallVirtualFunc{}
 		}
 		if method.Type.NumIn() != vtype.NumIn() {
 			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", classType.Name(), GoName, virtual.Type().Name(), vname))
@@ -91,18 +91,18 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Contex
 		var copy = reflect.New(method.Type)
 		copy.Elem().Set(method.Func)
 		var fn = reflect.NewAt(vtype, copy.UnsafePointer()).Elem()
-		return virtual.Call([]reflect.Value{fn, reflect.ValueOf(godot.API())})[0].Interface().(gd.ExtensionClassCallVirtualFunc)
+		return virtual.Call([]reflect.Value{fn, reflect.ValueOf(godot.API())})[0].Interface().(internal.ExtensionClassCallVirtualFunc)
 	})
 
-	godot.API().ClassDB.RegisterClass(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), (gd.StringNamePtr)(unsafe.Pointer(&superName)), &info)
+	godot.API().ClassDB.RegisterClass(db, (internal.StringNamePtr)(unsafe.Pointer(&className)), (internal.StringNamePtr)(unsafe.Pointer(&superName)), &info)
 
 	// Register all exported methods.
 	classTypePtr := reflect.PointerTo(classType)
 
-	var methodName = (*gd.StringName)(godot.API().Allocate(unsafe.Sizeof(gd.StringName{})))
+	var methodName = (*internal.StringName)(godot.API().Allocate(unsafe.Sizeof(internal.StringName{})))
 	defer godot.API().Release(unsafe.Pointer(methodName))
 
-	var returnInfo = (*gd.PropertyInfo)(godot.API().Allocate(unsafe.Sizeof(gd.PropertyInfo{})))
+	var returnInfo = (*internal.PropertyInfo)(godot.API().Allocate(unsafe.Sizeof(internal.PropertyInfo{})))
 
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		method := classTypePtr.Method(i)
@@ -112,17 +112,17 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Contex
 		if method.Type.NumIn() > 2 || method.Type.NumOut() > 0 {
 			continue
 		}
-		if method.Type.In(1) != reflect.TypeOf(gd.Context{}) {
+		if method.Type.In(1) != reflect.TypeOf(internal.Context{}) {
 			continue
 		}
 
-		var info = gd.ClassMethodInfo{
+		var info = internal.ClassMethodInfo{
 			Name:            methodName,
 			HasReturnValue:  method.Type.NumOut() > 0,
 			ReturnValueInfo: returnInfo,
 		}
-		info.PointerCall.Set(func(userdata unsafe.Pointer, instance cgo.Handle, args, ret unsafe.Pointer, err *gd.CallError) {
-			ctx := gd.NewContext(godot.API())
+		info.PointerCall.Set(func(userdata unsafe.Pointer, instance cgo.Handle, args, ret unsafe.Pointer, err *internal.CallError) {
+			ctx := internal.NewContext(godot.API())
 			var in = make([]reflect.Value, method.Type.NumIn())
 			in[0] = reflect.ValueOf(instance.Value())
 			in[1] = reflect.ValueOf(ctx)
@@ -133,8 +133,8 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Contex
 			ctx.Free()
 		})
 
-		godot.API().StringNames.New(gd.CallFrameBack(unsafe.Pointer(methodName)), strings.ToLower(method.Name))
-		godot.API().ClassDB.RegisterClassMethod(db, (gd.StringNamePtr)(unsafe.Pointer(&className)), &info)
+		godot.API().StringNames.New(internal.CallFrameBack(unsafe.Pointer(methodName)), strings.ToLower(method.Name))
+		godot.API().ClassDB.RegisterClassMethod(db, (internal.StringNamePtr)(unsafe.Pointer(&className)), &info)
 		//methodName.Free()
 	}
 }
@@ -158,7 +158,7 @@ func convertName(fnName string) string {
 // injectDependenciesInto the given freshly allocated value, this
 // function makes sure any [gd.Object] types are instantiated and
 // that any referenced singletons are injected.
-func injectDependenciesInto(ctx context.Context, Godot *gd.API, value reflect.Value, super uintptr, superType reflect.Type) {
+func injectDependenciesInto(ctx context.Context, Godot *internal.API, value reflect.Value, super uintptr, superType reflect.Type) {
 	if value.CanAddr() && value.Kind() != reflect.Struct {
 		panic("gdextension.injectDependenciesInto: value must be an addressable struct")
 	}
@@ -171,13 +171,13 @@ func injectDependenciesInto(ctx context.Context, Godot *gd.API, value reflect.Va
 		// support private fields.
 		fieldValue := reflect.NewAt(field.Type, unsafe.Add(value.Addr().UnsafePointer(), field.Offset)).Interface()
 
-		container, ok := fieldValue.(gd.PointerToClass)
+		container, ok := fieldValue.(internal.PointerToClass)
 		if ok && container.Pointer() == 0 {
-			_, ok := fieldValue.(gd.Singleton)
+			_, ok := fieldValue.(internal.Singleton)
 			if ok {
 				var name = Godot.StringName(localCtx, strings.TrimPrefix(field.Type.Name(), "class"))
-				singleton := Godot.Object.GetSingleton((gd.StringNamePtr)(unsafe.Pointer(&name)))
-				container.SetPointer(mmm.Make[gd.API, gd.Pointer](nil, Godot, singleton))
+				singleton := Godot.Object.GetSingleton((internal.StringNamePtr)(unsafe.Pointer(&name)))
+				container.SetPointer(mmm.Make[internal.API, internal.Pointer](nil, Godot, singleton))
 			}
 		}
 

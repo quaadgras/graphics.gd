@@ -5,29 +5,29 @@ import (
 	"fmt"
 	"unsafe"
 
-	"grow.graphics/gd"
+	"grow.graphics/gd/internal"
 	"runtime.link/api"
 	"runtime.link/api/call"
 	"runtime.link/api/stub"
 )
 import "C"
 
-var classDB gd.ExtensionToken
+var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer
 
 // Link returns a handle to the [API] and the global [ClassDB].
 // The [bool] return value is [true] if the API has been
 // linked with Godot successfully.
-func Link() (gd.Context, gd.ExtensionToken, bool) {
+func Link() (internal.Context, internal.ExtensionToken, bool) {
 	if dlsymGD == nil {
-		*godot = api.Import[gd.API](stub.API, "", errors.New("gdextension not linked"))
-		return gd.NewContext(godot), 0, false
+		*godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
+		return internal.NewContext(godot), 0, false
 	}
-	return gd.NewContext(godot), classDB, true
+	return internal.NewContext(godot), classDB, true
 }
 
 var (
-	godot = new(gd.API)
+	godot = new(internal.API)
 )
 
 //export loadExtension
@@ -38,9 +38,9 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 		return 0
 	}
 	dlsymGD = dlsym
-	classDB = gd.ExtensionToken(classes)
+	classDB = internal.ExtensionToken(classes)
 
-	*godot = api.Import[gd.API](call.API, "", call.Options{
+	*godot = api.Import[internal.API](call.API, "", call.Options{
 		LookupSymbol: func(name string) (unsafe.Pointer, error) {
 			sym := dlsymGD(name)
 			if sym == nil {
@@ -50,10 +50,10 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 		},
 	})
 
-	init := (*gd.ExtensionInitialization[uintptr])(configuration)
-	*init = gd.ExtensionInitialization[uintptr]{}
-	init.MinimumInitializationLevel = gd.ExtensionInitializationLevelScene
-	init.Initialize.Set(func(userdata uintptr, level gd.ExtensionInitializationLevel) {
+	init := (*internal.ExtensionInitialization[uintptr])(configuration)
+	*init = internal.ExtensionInitialization[uintptr]{}
+	init.MinimumInitializationLevel = internal.ExtensionInitializationLevelScene
+	init.Initialize.Set(func(userdata uintptr, level internal.ExtensionInitializationLevel) {
 		godot.Link(level)
 		/*if level == 1 {
 			ctx, free := mmm.ContextWithCascade(context.Background())
@@ -96,7 +96,7 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 			fmt.Println(string(buf))
 		}*/
 	})
-	init.Deinitialize.Set(func(userdata uintptr, level gd.ExtensionInitializationLevel) {
+	init.Deinitialize.Set(func(userdata uintptr, level internal.ExtensionInitializationLevel) {
 		if level == 3 {
 			init.Initialize.Free()
 		}
