@@ -29,6 +29,11 @@ func (class Class[T, S]) Pointer() uintptr {
 	return class.super.Pointer()
 }
 
+// KeepAlive the class until the end of the specified context.
+func (class Class[T, S]) KeepAlive(ctx mmm.Context) {
+	mmm.Move(class.super.getPointer(), ctx)
+}
+
 func (class Class[T, S]) class() S { return class.super }
 
 func (class *Class[T, S]) Super() *S { return &class.super }
@@ -73,6 +78,10 @@ type IsClass interface {
 	Pointer() uintptr
 	getPointer() Pointer
 	virtual(string) reflect.Value
+}
+
+type IsPointer interface {
+	getPointer() Pointer
 }
 
 // MarkFree marks the given class as being freed.

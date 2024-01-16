@@ -59,7 +59,7 @@ func RegisterClass[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Contex
 	})
 	info.FreeInstance.Set(func(userdata unsafe.Pointer, handle cgo.Handle) {
 		class := handle.Value().(gd.IsClass)
-		gd.MarkFree(class)
+		gd.MarkFree(class) // godot frees the underlying object, so we need to mark it as free.
 		class.Context().(interface{ Free() }).Free()
 		handle.Delete()
 	})

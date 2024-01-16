@@ -13,10 +13,26 @@ import (
 
 type godotContext = mmm.ContextWith[API]
 
+// Context for ownership and a reference to the Godot API, apart from
+// its use as an ordinary [context.Context] to signal cancellation, this
+// value is not safe to use concurrently. Each goroutine should create
+// its own [Context] and use that instead.
+//
+//	newctx := gd.NewContext(oldctx.API())
+//
+// When a [Context] is freed, it will free all of the objects that were
+// created using it. A [Context] should not be used after free, as it
+// will be recycled and will cause values to be unexpectedly freed.
+//
+// When the context has been passed in as a function argument, always
+// assume that the [Context] will be freed when the function returns.
+// Classes can be moved between contexts using their [KeepAlive] method.
 type Context struct {
 	godotContext
 }
 
+// NewContext returns a new [Context] with the given API, the [Context]
+// will need to be freed manually by calling [Context.Free].
 func NewContext(api *API) Context {
 	return newContext(api)
 }
