@@ -580,7 +580,7 @@ func generate() error {
 
 	fmt.Fprintf(out, "type utility struct{\n")
 	for _, utility := range spec.UtilityFunctions {
-		fmt.Fprintf(out, "\t%v func(CallFrameBack,CallFrameArgs) `hash:\"%v\"`\n", utility.Name, utility.Hash)
+		fmt.Fprintf(out, "\t%v func(CallFrameBack,CallFrameArgs,int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
 	}
 	fmt.Fprintf(out, "}\n")
 

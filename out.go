@@ -4,120 +4,120 @@
 package gd
 
 type utility struct {
-	sin                             func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	cos                             func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	tan                             func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	sinh                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	cosh                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	tanh                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	asin                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	acos                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	atan                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	atan2                           func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	asinh                           func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	acosh                           func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	atanh                           func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	sqrt                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	fmod                            func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	fposmod                         func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	posmod                          func(CallFrameBack, CallFrameArgs) `hash:"3133453818"`
-	floor                           func(CallFrameBack, CallFrameArgs) `hash:"4776452"`
-	floorf                          func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	floori                          func(CallFrameBack, CallFrameArgs) `hash:"2780425386"`
-	ceil                            func(CallFrameBack, CallFrameArgs) `hash:"4776452"`
-	ceilf                           func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	ceili                           func(CallFrameBack, CallFrameArgs) `hash:"2780425386"`
-	round                           func(CallFrameBack, CallFrameArgs) `hash:"4776452"`
-	roundf                          func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	roundi                          func(CallFrameBack, CallFrameArgs) `hash:"2780425386"`
-	abs                             func(CallFrameBack, CallFrameArgs) `hash:"4776452"`
-	absf                            func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	absi                            func(CallFrameBack, CallFrameArgs) `hash:"2157319888"`
-	sign                            func(CallFrameBack, CallFrameArgs) `hash:"4776452"`
-	signf                           func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	signi                           func(CallFrameBack, CallFrameArgs) `hash:"2157319888"`
-	snapped                         func(CallFrameBack, CallFrameArgs) `hash:"459914704"`
-	snappedf                        func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	snappedi                        func(CallFrameBack, CallFrameArgs) `hash:"3570758393"`
-	pow                             func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	log                             func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	exp                             func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	is_nan                          func(CallFrameBack, CallFrameArgs) `hash:"3569215213"`
-	is_inf                          func(CallFrameBack, CallFrameArgs) `hash:"3569215213"`
-	is_equal_approx                 func(CallFrameBack, CallFrameArgs) `hash:"1400789633"`
-	is_zero_approx                  func(CallFrameBack, CallFrameArgs) `hash:"3569215213"`
-	is_finite                       func(CallFrameBack, CallFrameArgs) `hash:"3569215213"`
-	ease                            func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	step_decimals                   func(CallFrameBack, CallFrameArgs) `hash:"2780425386"`
-	lerp                            func(CallFrameBack, CallFrameArgs) `hash:"3389874542"`
-	lerpf                           func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	cubic_interpolate               func(CallFrameBack, CallFrameArgs) `hash:"1090965791"`
-	cubic_interpolate_angle         func(CallFrameBack, CallFrameArgs) `hash:"1090965791"`
-	cubic_interpolate_in_time       func(CallFrameBack, CallFrameArgs) `hash:"388121036"`
-	cubic_interpolate_angle_in_time func(CallFrameBack, CallFrameArgs) `hash:"388121036"`
-	bezier_interpolate              func(CallFrameBack, CallFrameArgs) `hash:"1090965791"`
-	bezier_derivative               func(CallFrameBack, CallFrameArgs) `hash:"1090965791"`
-	angle_difference                func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	lerp_angle                      func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	inverse_lerp                    func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	remap                           func(CallFrameBack, CallFrameArgs) `hash:"1090965791"`
-	smoothstep                      func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	move_toward                     func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	rotate_toward                   func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	deg_to_rad                      func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	rad_to_deg                      func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	linear_to_db                    func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	db_to_linear                    func(CallFrameBack, CallFrameArgs) `hash:"2140049587"`
-	wrap                            func(CallFrameBack, CallFrameArgs) `hash:"3389874542"`
-	wrapi                           func(CallFrameBack, CallFrameArgs) `hash:"650295447"`
-	wrapf                           func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	max                             func(CallFrameBack, CallFrameArgs) `hash:"3896050336"`
-	maxi                            func(CallFrameBack, CallFrameArgs) `hash:"3133453818"`
-	maxf                            func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	min                             func(CallFrameBack, CallFrameArgs) `hash:"3896050336"`
-	mini                            func(CallFrameBack, CallFrameArgs) `hash:"3133453818"`
-	minf                            func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	clamp                           func(CallFrameBack, CallFrameArgs) `hash:"3389874542"`
-	clampi                          func(CallFrameBack, CallFrameArgs) `hash:"650295447"`
-	clampf                          func(CallFrameBack, CallFrameArgs) `hash:"998901048"`
-	nearest_po2                     func(CallFrameBack, CallFrameArgs) `hash:"2157319888"`
-	pingpong                        func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	randomize                       func(CallFrameBack, CallFrameArgs) `hash:"1691721052"`
-	randi                           func(CallFrameBack, CallFrameArgs) `hash:"701202648"`
-	randf                           func(CallFrameBack, CallFrameArgs) `hash:"2086227845"`
-	randi_range                     func(CallFrameBack, CallFrameArgs) `hash:"3133453818"`
-	randf_range                     func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	randfn                          func(CallFrameBack, CallFrameArgs) `hash:"92296394"`
-	seed                            func(CallFrameBack, CallFrameArgs) `hash:"382931173"`
-	rand_from_seed                  func(CallFrameBack, CallFrameArgs) `hash:"1391063685"`
-	weakref                         func(CallFrameBack, CallFrameArgs) `hash:"4776452"`
-	typeof                          func(CallFrameBack, CallFrameArgs) `hash:"326422594"`
-	type_convert                    func(CallFrameBack, CallFrameArgs) `hash:"2453062746"`
-	str                             func(CallFrameBack, CallFrameArgs) `hash:"32569176"`
-	error_string                    func(CallFrameBack, CallFrameArgs) `hash:"942708242"`
-	type_string                     func(CallFrameBack, CallFrameArgs) `hash:"942708242"`
-	print                           func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	print_rich                      func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	printerr                        func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	printt                          func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	prints                          func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	printraw                        func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	print_verbose                   func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	push_error                      func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	push_warning                    func(CallFrameBack, CallFrameArgs) `hash:"2648703342"`
-	var_to_str                      func(CallFrameBack, CallFrameArgs) `hash:"866625479"`
-	str_to_var                      func(CallFrameBack, CallFrameArgs) `hash:"1891498491"`
-	var_to_bytes                    func(CallFrameBack, CallFrameArgs) `hash:"2947269930"`
-	bytes_to_var                    func(CallFrameBack, CallFrameArgs) `hash:"4249819452"`
-	var_to_bytes_with_objects       func(CallFrameBack, CallFrameArgs) `hash:"2947269930"`
-	bytes_to_var_with_objects       func(CallFrameBack, CallFrameArgs) `hash:"4249819452"`
-	hash                            func(CallFrameBack, CallFrameArgs) `hash:"326422594"`
-	instance_from_id                func(CallFrameBack, CallFrameArgs) `hash:"1156694636"`
-	is_instance_id_valid            func(CallFrameBack, CallFrameArgs) `hash:"2232439758"`
-	is_instance_valid               func(CallFrameBack, CallFrameArgs) `hash:"996128841"`
-	rid_allocate_id                 func(CallFrameBack, CallFrameArgs) `hash:"701202648"`
-	rid_from_int64                  func(CallFrameBack, CallFrameArgs) `hash:"3426892196"`
-	is_same                         func(CallFrameBack, CallFrameArgs) `hash:"1409423524"`
+	sin                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	cos                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	tan                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	sinh                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	cosh                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	tanh                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	asin                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	acos                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	atan                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	atan2                           func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	asinh                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	acosh                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	atanh                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	sqrt                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	fmod                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	fposmod                         func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	posmod                          func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
+	floor                           func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
+	floorf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	floori                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
+	ceil                            func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
+	ceilf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	ceili                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
+	round                           func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
+	roundf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	roundi                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
+	abs                             func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
+	absf                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	absi                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2157319888"`
+	sign                            func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
+	signf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	signi                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2157319888"`
+	snapped                         func(CallFrameBack, CallFrameArgs, int32) `hash:"459914704"`
+	snappedf                        func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	snappedi                        func(CallFrameBack, CallFrameArgs, int32) `hash:"3570758393"`
+	pow                             func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	log                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	exp                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	is_nan                          func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
+	is_inf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
+	is_equal_approx                 func(CallFrameBack, CallFrameArgs, int32) `hash:"1400789633"`
+	is_zero_approx                  func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
+	is_finite                       func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
+	ease                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	step_decimals                   func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
+	lerp                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3389874542"`
+	lerpf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	cubic_interpolate               func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
+	cubic_interpolate_angle         func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
+	cubic_interpolate_in_time       func(CallFrameBack, CallFrameArgs, int32) `hash:"388121036"`
+	cubic_interpolate_angle_in_time func(CallFrameBack, CallFrameArgs, int32) `hash:"388121036"`
+	bezier_interpolate              func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
+	bezier_derivative               func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
+	angle_difference                func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	lerp_angle                      func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	inverse_lerp                    func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	remap                           func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
+	smoothstep                      func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	move_toward                     func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	rotate_toward                   func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	deg_to_rad                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	rad_to_deg                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	linear_to_db                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	db_to_linear                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
+	wrap                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3389874542"`
+	wrapi                           func(CallFrameBack, CallFrameArgs, int32) `hash:"650295447"`
+	wrapf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	max                             func(CallFrameBack, CallFrameArgs, int32) `hash:"3896050336"`
+	maxi                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
+	maxf                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	min                             func(CallFrameBack, CallFrameArgs, int32) `hash:"3896050336"`
+	mini                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
+	minf                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	clamp                           func(CallFrameBack, CallFrameArgs, int32) `hash:"3389874542"`
+	clampi                          func(CallFrameBack, CallFrameArgs, int32) `hash:"650295447"`
+	clampf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
+	nearest_po2                     func(CallFrameBack, CallFrameArgs, int32) `hash:"2157319888"`
+	pingpong                        func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	randomize                       func(CallFrameBack, CallFrameArgs, int32) `hash:"1691721052"`
+	randi                           func(CallFrameBack, CallFrameArgs, int32) `hash:"701202648"`
+	randf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2086227845"`
+	randi_range                     func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
+	randf_range                     func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	randfn                          func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
+	seed                            func(CallFrameBack, CallFrameArgs, int32) `hash:"382931173"`
+	rand_from_seed                  func(CallFrameBack, CallFrameArgs, int32) `hash:"1391063685"`
+	weakref                         func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
+	typeof                          func(CallFrameBack, CallFrameArgs, int32) `hash:"326422594"`
+	type_convert                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2453062746"`
+	str                             func(CallFrameBack, CallFrameArgs, int32) `hash:"32569176"`
+	error_string                    func(CallFrameBack, CallFrameArgs, int32) `hash:"942708242"`
+	type_string                     func(CallFrameBack, CallFrameArgs, int32) `hash:"942708242"`
+	print                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	print_rich                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	printerr                        func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	printt                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	prints                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	printraw                        func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	print_verbose                   func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	push_error                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	push_warning                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
+	var_to_str                      func(CallFrameBack, CallFrameArgs, int32) `hash:"866625479"`
+	str_to_var                      func(CallFrameBack, CallFrameArgs, int32) `hash:"1891498491"`
+	var_to_bytes                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2947269930"`
+	bytes_to_var                    func(CallFrameBack, CallFrameArgs, int32) `hash:"4249819452"`
+	var_to_bytes_with_objects       func(CallFrameBack, CallFrameArgs, int32) `hash:"2947269930"`
+	bytes_to_var_with_objects       func(CallFrameBack, CallFrameArgs, int32) `hash:"4249819452"`
+	hash                            func(CallFrameBack, CallFrameArgs, int32) `hash:"326422594"`
+	instance_from_id                func(CallFrameBack, CallFrameArgs, int32) `hash:"1156694636"`
+	is_instance_id_valid            func(CallFrameBack, CallFrameArgs, int32) `hash:"2232439758"`
+	is_instance_valid               func(CallFrameBack, CallFrameArgs, int32) `hash:"996128841"`
+	rid_allocate_id                 func(CallFrameBack, CallFrameArgs, int32) `hash:"701202648"`
+	rid_from_int64                  func(CallFrameBack, CallFrameArgs, int32) `hash:"3426892196"`
+	is_same                         func(CallFrameBack, CallFrameArgs, int32) `hash:"1409423524"`
 }
 type builtin struct {
 	Nil struct {

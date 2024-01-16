@@ -74,15 +74,15 @@ type API struct {
 
 		Construct func(t VariantType, out *Variant, args []*Variant, err CallError) `call:"variant_construct func(int,+void,&void,-int64_t=@3,+void)"`
 
-		Setter      func(VariantType, StringNamePtr) func(*Variant, unsafe.Pointer)          `call:"variant_get_ptr_setter func(int,&void)func(&void,&void)"`
-		Getter      func(VariantType, StringNamePtr) func(base *Variant, ret unsafe.Pointer) `call:"variant_get_ptr_getter func(int,&void)func(&void,+void)"`
-		IndexSetter func(VariantType) func(*Variant, int64, unsafe.Pointer)                  `call:"variant_get_ptr_indexed_setter func(int)func(&void,int64_t,&void)"`
-		IndexGetter func(VariantType) func(val *Variant, idx int64, ret unsafe.Pointer)      `call:"variant_get_ptr_indexed_getter func(int)func(&void,int64_t)&void"`
-		KeySetter   func(VariantType) func(*Variant, *Variant, unsafe.Pointer)               `call:"variant_get_ptr_keyed_setter func(int)func(&void,&void,&void)"`
-		KeyGetter   func(VariantType) func(val *Variant, key *Variant, ret unsafe.Pointer)   `call:"variant_get_ptr_keyed_getter func(int)func(&void,&void)&void"`
-		KeyChecker  func(VariantType) func(*Variant, *Variant) uint32                        `call:"variant_get_ptr_keyed_checker func(int)func(&void,&void)uint32_t"`
-		Constant    func(t VariantType, name StringNamePtr, ret *Variant)                    `call:"variant_get_constant_value func(int,&void,+void)"`
-		Utility     func(StringNamePtr, int64) func(ret CallFrameBack, args CallFrameArgs)   `call:"variant_get_ptr_utility_function func(&void,int64_t)func(+void,&void,-int=@2)"`
+		Setter      func(VariantType, StringNamePtr) func(*Variant, unsafe.Pointer)                 `call:"variant_get_ptr_setter func(int,&void)func(&void,&void)"`
+		Getter      func(VariantType, StringNamePtr) func(base *Variant, ret unsafe.Pointer)        `call:"variant_get_ptr_getter func(int,&void)func(&void,+void)"`
+		IndexSetter func(VariantType) func(*Variant, int64, unsafe.Pointer)                         `call:"variant_get_ptr_indexed_setter func(int)func(&void,int64_t,&void)"`
+		IndexGetter func(VariantType) func(val *Variant, idx int64, ret unsafe.Pointer)             `call:"variant_get_ptr_indexed_getter func(int)func(&void,int64_t)&void"`
+		KeySetter   func(VariantType) func(*Variant, *Variant, unsafe.Pointer)                      `call:"variant_get_ptr_keyed_setter func(int)func(&void,&void,&void)"`
+		KeyGetter   func(VariantType) func(val *Variant, key *Variant, ret unsafe.Pointer)          `call:"variant_get_ptr_keyed_getter func(int)func(&void,&void)&void"`
+		KeyChecker  func(VariantType) func(*Variant, *Variant) uint32                               `call:"variant_get_ptr_keyed_checker func(int)func(&void,&void)uint32_t"`
+		Constant    func(t VariantType, name StringNamePtr, ret *Variant)                           `call:"variant_get_constant_value func(int,&void,+void)"`
+		Utility     func(StringNamePtr, int64) func(ret CallFrameBack, args CallFrameArgs, c int32) `call:"variant_get_ptr_utility_function func(&void,int64_t)func(+void,&void,int)"`
 	}
 
 	Strings struct {

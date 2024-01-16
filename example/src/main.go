@@ -48,13 +48,13 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 
 	fmt.Println("class:", node.Object().GetClass(godot).String())
 
-	//var obj = gd.New[gd.Object](node)
-	//obj.GetClass()
+	var obj = gd.Make(godot, new(gd.Object))
+	fmt.Println(obj.GetClass(godot).String())
 
 	fmt.Println(e.engine.GetSingletonList(godot).AsSlice())
 	fmt.Println("Scene is ready!")
 
-	//fmt.Println("sin=", godot.Utility_sin(1.5))
+	fmt.Println("sin=", godot.Sin(1.5))
 
 	fmt.Println("rotation=", node.GetRotation())
 	node.SetRotation(3.14)
@@ -73,10 +73,10 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 // main init function, where the extensions are exported so that
 // they are available to the engine.
 func main() {
-	extension, classdb, ok := gdextension.Link()
+	godot, classdb, ok := gdextension.Link()
 	if !ok {
 		return
 	}
-	gdextension.RegisterClass[HelloWorld](extension, classdb)
-	gdextension.RegisterClass[ExtendedNode](extension, classdb)
+	gdextension.RegisterClass[HelloWorld](godot, classdb)
+	gdextension.RegisterClass[ExtendedNode](godot, classdb)
 }
