@@ -9,3 +9,4 @@ example/bin/
 /bin/example.so
 /gdextension/header.h
 /go.work
+/extension_api.json

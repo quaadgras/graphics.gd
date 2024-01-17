@@ -1,6 +1,6 @@
-# Godot 4.3 + Go
+# Godot 4.2.1 + Go
 
-This module provides a safe and simple way to work with Godot 4.3, in Go.
+This module provides a safe and simple way to work with Godot 4.2.1, in Go.
 
 ```go
 package main
@@ -23,11 +23,11 @@ func (h *HelloWorld) Ready(gd.Context) {
 }
 
 func main() {
-	godot, classdb, ok := gdextension.Link()
+	godot, ok := gdextension.Link()
 	if !ok {
 		return
 	}
-	gdextension.RegisterClass[HelloWorld](godot, classdb)
+	gdextension.RegisterClass[HelloWorld](godot)
 }
 
 ```
@@ -81,6 +81,12 @@ After this, subsequent builds will be quite a bit faster!
 
 Now open the example project in Godot from a terminal and you will be able to 
 see Go printing things to the console.
+
+## Known Limitations
+
+* No support for indexed properties
+* No support for Godot functions with varargs.
+* No support for script extensions.
 
 ## Disclaimer
 

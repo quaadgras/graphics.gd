@@ -165,7 +165,7 @@ type Specification struct {
 // Load the specification, either from a local file or by downloading
 // it from the Godot Github repository.
 func (spec *Specification) Load() error {
-	file, err := os.Open("./api.json")
+	file, err := os.Open("../extension_api.json")
 	if os.IsNotExist(err) {
 		req, err := http.NewRequest("GET", "https://raw.githubusercontent.com/godotengine/godot-headers/master/extension_api.json", nil)
 		if err != nil {
@@ -177,7 +177,7 @@ func (spec *Specification) Load() error {
 			return err
 		}
 
-		file, err = os.Create("./api.json")
+		file, err = os.Create("../extension_api.json")
 		if err != nil {
 			return err
 		}
@@ -557,7 +557,7 @@ func generate() error {
 		classDB[class.Name] = class
 	}
 
-	file, err := os.Open("./api.json")
+	file, err := os.Open("../extension_api.json")
 	if os.IsNotExist(err) {
 		req, err := http.NewRequest("GET", "https://raw.githubusercontent.com/godotengine/godot-headers/master/extension_api.json", nil)
 		if err != nil {
@@ -569,7 +569,7 @@ func generate() error {
 			return err
 		}
 
-		file, err = os.Create("./api.json")
+		file, err = os.Create("../extension_api.json")
 		if err != nil {
 			return err
 		}
