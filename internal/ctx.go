@@ -70,14 +70,3 @@ func (ctx Context) StringName(s string) StringName {
 	frame.Free()
 	return mmm.Make[API, StringName](ctx, godot, str)
 }
-
-// Sin returns the sine of the given angle.
-func (ctx Context) Sin(x Float) Float {
-	var godot = ctx.API()
-	var frame = godot.NewFrame()
-	FrameSet[Float](0, frame, x)
-	godot.utility.sin(frame.Back(), frame.Args(), 1)
-	var ret = FrameGet[Float](frame)
-	frame.Free()
-	return ret
-}

@@ -92,6 +92,1089 @@ const (
 
 type VariantOperator int64
 
+func (ctx Context) Sin(angle_rad Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, angle_rad)
+	ctx.API().utility.sin(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Cos(angle_rad Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, angle_rad)
+	ctx.API().utility.cos(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Tan(angle_rad Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, angle_rad)
+	ctx.API().utility.tan(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Sinh(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.sinh(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Cosh(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.cosh(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Tanh(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.tanh(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Asin(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.asin(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Acos(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.acos(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Atan(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.atan(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Atan2(y Float, x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, y)
+	FrameSet[Float](1, abi, x)
+	ctx.API().utility.atan2(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Asinh(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.asinh(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Acosh(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.acosh(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Atanh(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.atanh(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Sqrt(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.sqrt(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Fmod(x Float, y Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	FrameSet[Float](1, abi, y)
+	ctx.API().utility.fmod(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Fposmod(x Float, y Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	FrameSet[Float](1, abi, y)
+	ctx.API().utility.fposmod(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Posmod(x Int, y Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, x)
+	FrameSet[Int](1, abi, y)
+	ctx.API().utility.posmod(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Floor(x Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, x.Pointer())
+	ctx.API().utility.floor(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Floorf(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.floorf(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Floori(x Float) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.floori(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Ceil(x Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, x.Pointer())
+	ctx.API().utility.ceil(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Ceilf(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.ceilf(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Ceili(x Float) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.ceili(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Round(x Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, x.Pointer())
+	ctx.API().utility.round(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Roundf(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.roundf(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Roundi(x Float) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.roundi(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Abs(x Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, x.Pointer())
+	ctx.API().utility.abs(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Absf(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.absf(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Absi(x Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, x)
+	ctx.API().utility.absi(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Sign(x Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, x.Pointer())
+	ctx.API().utility.sign(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Signf(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.signf(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Signi(x Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, x)
+	ctx.API().utility.signi(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Snapped(x Variant, step Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, x.Pointer())
+	FrameSet[[3]uintptr](1, abi, step.Pointer())
+	ctx.API().utility.snapped(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Snappedf(x Float, step Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	FrameSet[Float](1, abi, step)
+	ctx.API().utility.snappedf(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Snappedi(x Float, step Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	FrameSet[Int](1, abi, step)
+	ctx.API().utility.snappedi(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Pow(base Float, exp Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, base)
+	FrameSet[Float](1, abi, exp)
+	ctx.API().utility.pow(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Log(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.log(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Exp(x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.exp(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsNan(x Float) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.is_nan(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsInf(x Float) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.is_inf(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsEqualApprox(a Float, b Float) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, a)
+	FrameSet[Float](1, abi, b)
+	ctx.API().utility.is_equal_approx(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsZeroApprox(x Float) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.is_zero_approx(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsFinite(x Float) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.is_finite(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Ease(x Float, curve Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	FrameSet[Float](1, abi, curve)
+	ctx.API().utility.ease(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) StepDecimals(x Float) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, x)
+	ctx.API().utility.step_decimals(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Lerp(from Variant, to Variant, weight Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, from.Pointer())
+	FrameSet[[3]uintptr](1, abi, to.Pointer())
+	FrameSet[[3]uintptr](2, abi, weight.Pointer())
+	ctx.API().utility.lerp(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Lerpf(from Float, to Float, weight Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, weight)
+	ctx.API().utility.lerpf(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, pre)
+	FrameSet[Float](3, abi, post)
+	FrameSet[Float](4, abi, weight)
+	ctx.API().utility.cubic_interpolate(abi.Back(), abi.Args(), 5)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, pre)
+	FrameSet[Float](3, abi, post)
+	FrameSet[Float](4, abi, weight)
+	ctx.API().utility.cubic_interpolate_angle(abi.Back(), abi.Args(), 5)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, pre)
+	FrameSet[Float](3, abi, post)
+	FrameSet[Float](4, abi, weight)
+	FrameSet[Float](5, abi, to_t)
+	FrameSet[Float](6, abi, pre_t)
+	FrameSet[Float](7, abi, post_t)
+	ctx.API().utility.cubic_interpolate_in_time(abi.Back(), abi.Args(), 8)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, pre)
+	FrameSet[Float](3, abi, post)
+	FrameSet[Float](4, abi, weight)
+	FrameSet[Float](5, abi, to_t)
+	FrameSet[Float](6, abi, pre_t)
+	FrameSet[Float](7, abi, post_t)
+	ctx.API().utility.cubic_interpolate_angle_in_time(abi.Back(), abi.Args(), 8)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, start)
+	FrameSet[Float](1, abi, control_1)
+	FrameSet[Float](2, abi, control_2)
+	FrameSet[Float](3, abi, end)
+	FrameSet[Float](4, abi, t)
+	ctx.API().utility.bezier_interpolate(abi.Back(), abi.Args(), 5)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, start)
+	FrameSet[Float](1, abi, control_1)
+	FrameSet[Float](2, abi, control_2)
+	FrameSet[Float](3, abi, end)
+	FrameSet[Float](4, abi, t)
+	ctx.API().utility.bezier_derivative(abi.Back(), abi.Args(), 5)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) AngleDifference(from Float, to Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	ctx.API().utility.angle_difference(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) LerpAngle(from Float, to Float, weight Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, weight)
+	ctx.API().utility.lerp_angle(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) InverseLerp(from Float, to Float, weight Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, weight)
+	ctx.API().utility.inverse_lerp(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, value)
+	FrameSet[Float](1, abi, istart)
+	FrameSet[Float](2, abi, istop)
+	FrameSet[Float](3, abi, ostart)
+	FrameSet[Float](4, abi, ostop)
+	ctx.API().utility.remap(abi.Back(), abi.Args(), 5)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Smoothstep(from Float, to Float, x Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, x)
+	ctx.API().utility.smoothstep(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) MoveToward(from Float, to Float, delta Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, delta)
+	ctx.API().utility.move_toward(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) RotateToward(from Float, to Float, delta Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	FrameSet[Float](2, abi, delta)
+	ctx.API().utility.rotate_toward(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) DegToRad(deg Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, deg)
+	ctx.API().utility.deg_to_rad(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) RadToDeg(rad Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, rad)
+	ctx.API().utility.rad_to_deg(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) LinearToDb(lin Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, lin)
+	ctx.API().utility.linear_to_db(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) DbToLinear(db Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, db)
+	ctx.API().utility.db_to_linear(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Wrap(value Variant, min Variant, max Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, value.Pointer())
+	FrameSet[[3]uintptr](1, abi, min.Pointer())
+	FrameSet[[3]uintptr](2, abi, max.Pointer())
+	ctx.API().utility.wrap(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Wrapi(value Int, min Int, max Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, value)
+	FrameSet[Int](1, abi, min)
+	FrameSet[Int](2, abi, max)
+	ctx.API().utility.wrapi(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, value)
+	FrameSet[Float](1, abi, min)
+	FrameSet[Float](2, abi, max)
+	ctx.API().utility.wrapf(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Max(arg1 Variant, arg2 Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	FrameSet[[3]uintptr](1, abi, arg2.Pointer())
+	ctx.API().utility.max(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Maxi(a Int, b Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, a)
+	FrameSet[Int](1, abi, b)
+	ctx.API().utility.maxi(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Maxf(a Float, b Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, a)
+	FrameSet[Float](1, abi, b)
+	ctx.API().utility.maxf(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Min(arg1 Variant, arg2 Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	FrameSet[[3]uintptr](1, abi, arg2.Pointer())
+	ctx.API().utility.min(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Mini(a Int, b Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, a)
+	FrameSet[Int](1, abi, b)
+	ctx.API().utility.mini(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Minf(a Float, b Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, a)
+	FrameSet[Float](1, abi, b)
+	ctx.API().utility.minf(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Clamp(value Variant, min Variant, max Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, value.Pointer())
+	FrameSet[[3]uintptr](1, abi, min.Pointer())
+	FrameSet[[3]uintptr](2, abi, max.Pointer())
+	ctx.API().utility.clamp(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Clampi(value Int, min Int, max Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, value)
+	FrameSet[Int](1, abi, min)
+	FrameSet[Int](2, abi, max)
+	ctx.API().utility.clampi(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Clampf(value Float, min Float, max Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, value)
+	FrameSet[Float](1, abi, min)
+	FrameSet[Float](2, abi, max)
+	ctx.API().utility.clampf(abi.Back(), abi.Args(), 3)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) NearestPo2(value Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, value)
+	ctx.API().utility.nearest_po2(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Pingpong(value Float, length Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, value)
+	FrameSet[Float](1, abi, length)
+	ctx.API().utility.pingpong(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Randomize() {
+	var abi = ctx.API().NewFrame()
+	ctx.API().utility.randomize(abi.Back(), abi.Args(), 0)
+	abi.Free()
+}
+
+func (ctx Context) Randi() Int {
+	var abi = ctx.API().NewFrame()
+	ctx.API().utility.randi(abi.Back(), abi.Args(), 0)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Randf() Float {
+	var abi = ctx.API().NewFrame()
+	ctx.API().utility.randf(abi.Back(), abi.Args(), 0)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) RandiRange(from Int, to Int) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, from)
+	FrameSet[Int](1, abi, to)
+	ctx.API().utility.randi_range(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) RandfRange(from Float, to Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, from)
+	FrameSet[Float](1, abi, to)
+	ctx.API().utility.randf_range(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Randfn(mean Float, deviation Float) Float {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Float](0, abi, mean)
+	FrameSet[Float](1, abi, deviation)
+	ctx.API().utility.randfn(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[Float](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) Seed(base Int) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, base)
+	ctx.API().utility.seed(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) RandFromSeed(seed Int) PackedInt64Array {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, seed)
+	ctx.API().utility.rand_from_seed(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[2]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, PackedInt64Array, [2]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Weakref(obj Variant) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, obj.Pointer())
+	ctx.API().utility.weakref(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Typeof(variable Variant) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, variable.Pointer())
+	ctx.API().utility.typeof(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, variant.Pointer())
+	FrameSet[Int](1, abi, atype)
+	ctx.API().utility.type_convert(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Str(arg1 Variant) String {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.str(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) ErrorString(error Int) String {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, error)
+	ctx.API().utility.error_string(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) TypeToString(atype Int) String {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, atype)
+	ctx.API().utility.type_string(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Print(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.print(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) PrintRich(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.print_rich(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) Printerr(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.printerr(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) Printt(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.printt(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) Prints(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.prints(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) Printraw(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.printraw(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) PrintVerbose(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.print_verbose(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) PushError(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.push_error(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) PushWarning(arg1 Variant) {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
+	ctx.API().utility.push_warning(abi.Back(), abi.Args(), 1)
+	abi.Free()
+}
+
+func (ctx Context) VarToStr(variable Variant) String {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, variable.Pointer())
+	ctx.API().utility.var_to_str(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) StrToVar(s String) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[uintptr](0, abi, s.Pointer())
+	ctx.API().utility.str_to_var(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) VarToBytes(variable Variant) PackedByteArray {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, variable.Pointer())
+	ctx.API().utility.var_to_bytes(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[2]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, PackedByteArray, [2]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) BytesToVar(bytes PackedByteArray) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[2]uintptr](0, abi, bytes.Pointer())
+	ctx.API().utility.bytes_to_var(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) VarToBytesWithObjects(variable Variant) PackedByteArray {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, variable.Pointer())
+	ctx.API().utility.var_to_bytes_with_objects(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[2]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, PackedByteArray, [2]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) BytesToVarWithObjects(bytes PackedByteArray) Variant {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[2]uintptr](0, abi, bytes.Pointer())
+	ctx.API().utility.bytes_to_var_with_objects(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[[3]uintptr](abi)
+	abi.Free()
+	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+}
+
+func (ctx Context) Hash(variable Variant) Int {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, variable.Pointer())
+	ctx.API().utility.hash(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) InstanceFromId(instance_id Int) Object {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, instance_id)
+	ctx.API().utility.instance_from_id(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[Object](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsInstanceIdValid(id Int) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, id)
+	ctx.API().utility.is_instance_id_valid(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsInstanceValid(instance Variant) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, instance.Pointer())
+	ctx.API().utility.is_instance_valid(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) RidAllocateId() Int {
+	var abi = ctx.API().NewFrame()
+	ctx.API().utility.rid_allocate_id(abi.Back(), abi.Args(), 0)
+	var ret = FrameGet[Int](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) RidFromInt64(base Int) RID {
+	var abi = ctx.API().NewFrame()
+	FrameSet[Int](0, abi, base)
+	ctx.API().utility.rid_from_int64(abi.Back(), abi.Args(), 1)
+	var ret = FrameGet[RID](abi)
+	abi.Free()
+	return ret
+}
+
+func (ctx Context) IsSame(a Variant, b Variant) bool {
+	var abi = ctx.API().NewFrame()
+	FrameSet[[3]uintptr](0, abi, a.Pointer())
+	FrameSet[[3]uintptr](1, abi, b.Pointer())
+	ctx.API().utility.is_same(abi.Back(), abi.Args(), 2)
+	var ret = FrameGet[bool](abi)
+	abi.Free()
+	return ret
+}
+
 type Vector2Axis int64
 
 type Vector2iAxis int64
@@ -109,7 +1192,7 @@ type ProjectionPlanes int64
 func (self String) CasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.casecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -120,7 +1203,7 @@ func (self String) CasecmpTo(to String) Int {
 func (self String) NocasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.nocasecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -131,7 +1214,7 @@ func (self String) NocasecmpTo(to String) Int {
 func (self String) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.naturalcasecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -142,7 +1225,7 @@ func (self String) NaturalcasecmpTo(to String) Int {
 func (self String) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.naturalnocasecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -175,7 +1258,7 @@ func (self String) Substr(ctx Context, from Int, len Int) String {
 func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[Int](2, abi, slice)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.get_slice(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -199,7 +1282,7 @@ func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 func (self String) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.get_slice_count(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -210,7 +1293,7 @@ func (self String) GetSliceCount(delimiter String) Int {
 func (self String) Find(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.find(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -222,7 +1305,7 @@ func (self String) Find(what String, from Int) Int {
 func (self String) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet[Int](3, abi, to)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -235,7 +1318,7 @@ func (self String) Count(what String, from Int, to Int) Int {
 func (self String) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet[Int](3, abi, to)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -248,7 +1331,7 @@ func (self String) Countn(what String, from Int, to Int) Int {
 func (self String) Findn(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.findn(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -260,7 +1343,7 @@ func (self String) Findn(what String, from Int) Int {
 func (self String) Rfind(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.rfind(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -272,7 +1355,7 @@ func (self String) Rfind(what String, from Int) Int {
 func (self String) Rfindn(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.rfindn(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -284,7 +1367,7 @@ func (self String) Rfindn(what String, from Int) Int {
 func (self String) Match(expr String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, expr)
+	FrameSet[uintptr](1, abi, expr.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.match(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -295,7 +1378,7 @@ func (self String) Match(expr String) bool {
 func (self String) Matchn(expr String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, expr)
+	FrameSet[uintptr](1, abi, expr.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.matchn(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -306,7 +1389,7 @@ func (self String) Matchn(expr String) bool {
 func (self String) BeginsWith(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.begins_with(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -317,7 +1400,7 @@ func (self String) BeginsWith(text String) bool {
 func (self String) EndsWith(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.ends_with(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -328,7 +1411,7 @@ func (self String) EndsWith(text String) bool {
 func (self String) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.is_subsequence_of(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -339,7 +1422,7 @@ func (self String) IsSubsequenceOf(text String) bool {
 func (self String) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.is_subsequence_ofn(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -360,7 +1443,7 @@ func (self String) Bigrams(ctx Context) PackedStringArray {
 func (self String) Similarity(text String) Float {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.similarity(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Float](abi)
@@ -371,8 +1454,8 @@ func (self String) Similarity(text String) Float {
 func (self String) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, values)
-	FrameSet[String](2, abi, placeholder)
+	FrameSet[[3]uintptr](1, abi, values.Pointer())
+	FrameSet[uintptr](2, abi, placeholder.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.format(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -383,8 +1466,8 @@ func (self String) Format(ctx Context, values Variant, placeholder String) Strin
 func (self String) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
-	FrameSet[String](2, abi, forwhat)
+	FrameSet[uintptr](1, abi, what.Pointer())
+	FrameSet[uintptr](2, abi, forwhat.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.replace(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -395,8 +1478,8 @@ func (self String) Replace(ctx Context, what String, forwhat String) String {
 func (self String) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
-	FrameSet[String](2, abi, forwhat)
+	FrameSet[uintptr](1, abi, what.Pointer())
+	FrameSet[uintptr](2, abi, forwhat.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.replacen(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -429,7 +1512,7 @@ func (self String) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, position)
-	FrameSet[String](2, abi, what)
+	FrameSet[uintptr](2, abi, what.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.insert(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -492,7 +1575,7 @@ func (self String) ToSnakeCase(ctx Context) String {
 func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[bool](2, abi, allow_empty)
 	FrameSet[Int](3, abi, maxsplit)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -505,7 +1588,7 @@ func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxspl
 func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[bool](2, abi, allow_empty)
 	FrameSet[Int](3, abi, maxsplit)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -518,7 +1601,7 @@ func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsp
 func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[bool](2, abi, allow_empty)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.split_floats(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -530,7 +1613,7 @@ func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) 
 func (self String) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedStringArray](1, abi, parts)
+	FrameSet[[2]uintptr](1, abi, parts.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.join(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -605,7 +1688,7 @@ func (self String) StripEscapes(ctx Context) String {
 func (self String) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, chars)
+	FrameSet[uintptr](1, abi, chars.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.lstrip(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -616,7 +1699,7 @@ func (self String) Lstrip(ctx Context, chars String) String {
 func (self String) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, chars)
+	FrameSet[uintptr](1, abi, chars.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.rstrip(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -647,7 +1730,7 @@ func (self String) GetBasename(ctx Context) String {
 func (self String) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, file)
+	FrameSet[uintptr](1, abi, file.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.path_join(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -669,7 +1752,7 @@ func (self String) UnicodeAt(at Int) Int {
 func (self String) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, prefix)
+	FrameSet[uintptr](1, abi, prefix.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.indent(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -770,7 +1853,7 @@ func (self String) IsEmpty() bool {
 func (self String) Contains(what String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.contains(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1034,7 +2117,7 @@ func (self String) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, min_length)
-	FrameSet[String](2, abi, character)
+	FrameSet[uintptr](2, abi, character.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.lpad(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -1046,7 +2129,7 @@ func (self String) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, min_length)
-	FrameSet[String](2, abi, character)
+	FrameSet[uintptr](2, abi, character.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.rpad(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -1079,7 +2162,7 @@ func (self String) PadZeros(ctx Context, digits Int) String {
 func (self String) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, prefix)
+	FrameSet[uintptr](1, abi, prefix.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.trim_prefix(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1090,7 +2173,7 @@ func (self String) TrimPrefix(ctx Context, prefix String) String {
 func (self String) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, suffix)
+	FrameSet[uintptr](1, abi, suffix.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.String.trim_suffix(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1232,7 +2315,7 @@ func (self String) HumanizeSize(ctx Context, size Int) String {
 func (self StringName) CasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.casecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -1243,7 +2326,7 @@ func (self StringName) CasecmpTo(to String) Int {
 func (self StringName) NocasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.nocasecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -1254,7 +2337,7 @@ func (self StringName) NocasecmpTo(to String) Int {
 func (self StringName) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.naturalcasecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -1265,7 +2348,7 @@ func (self StringName) NaturalcasecmpTo(to String) Int {
 func (self StringName) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, to)
+	FrameSet[uintptr](1, abi, to.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.naturalnocasecmp_to(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -1298,7 +2381,7 @@ func (self StringName) Substr(ctx Context, from Int, len Int) String {
 func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[Int](2, abi, slice)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.get_slice(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -1322,7 +2405,7 @@ func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 func (self StringName) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.get_slice_count(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -1333,7 +2416,7 @@ func (self StringName) GetSliceCount(delimiter String) Int {
 func (self StringName) Find(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.find(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -1345,7 +2428,7 @@ func (self StringName) Find(what String, from Int) Int {
 func (self StringName) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet[Int](3, abi, to)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -1358,7 +2441,7 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 func (self StringName) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet[Int](3, abi, to)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -1371,7 +2454,7 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 func (self StringName) Findn(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.findn(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -1383,7 +2466,7 @@ func (self StringName) Findn(what String, from Int) Int {
 func (self StringName) Rfind(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.rfind(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -1395,7 +2478,7 @@ func (self StringName) Rfind(what String, from Int) Int {
 func (self StringName) Rfindn(what String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.rfindn(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -1407,7 +2490,7 @@ func (self StringName) Rfindn(what String, from Int) Int {
 func (self StringName) Match(expr String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, expr)
+	FrameSet[uintptr](1, abi, expr.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.match(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1418,7 +2501,7 @@ func (self StringName) Match(expr String) bool {
 func (self StringName) Matchn(expr String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, expr)
+	FrameSet[uintptr](1, abi, expr.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.matchn(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1429,7 +2512,7 @@ func (self StringName) Matchn(expr String) bool {
 func (self StringName) BeginsWith(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.begins_with(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1440,7 +2523,7 @@ func (self StringName) BeginsWith(text String) bool {
 func (self StringName) EndsWith(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.ends_with(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1451,7 +2534,7 @@ func (self StringName) EndsWith(text String) bool {
 func (self StringName) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.is_subsequence_of(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1462,7 +2545,7 @@ func (self StringName) IsSubsequenceOf(text String) bool {
 func (self StringName) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.is_subsequence_ofn(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -1483,7 +2566,7 @@ func (self StringName) Bigrams(ctx Context) PackedStringArray {
 func (self StringName) Similarity(text String) Float {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.similarity(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Float](abi)
@@ -1494,8 +2577,8 @@ func (self StringName) Similarity(text String) Float {
 func (self StringName) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, values)
-	FrameSet[String](2, abi, placeholder)
+	FrameSet[[3]uintptr](1, abi, values.Pointer())
+	FrameSet[uintptr](2, abi, placeholder.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.format(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -1506,8 +2589,8 @@ func (self StringName) Format(ctx Context, values Variant, placeholder String) S
 func (self StringName) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
-	FrameSet[String](2, abi, forwhat)
+	FrameSet[uintptr](1, abi, what.Pointer())
+	FrameSet[uintptr](2, abi, forwhat.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.replace(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -1518,8 +2601,8 @@ func (self StringName) Replace(ctx Context, what String, forwhat String) String 
 func (self StringName) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
-	FrameSet[String](2, abi, forwhat)
+	FrameSet[uintptr](1, abi, what.Pointer())
+	FrameSet[uintptr](2, abi, forwhat.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.replacen(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -1552,7 +2635,7 @@ func (self StringName) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, position)
-	FrameSet[String](2, abi, what)
+	FrameSet[uintptr](2, abi, what.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.insert(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -1615,7 +2698,7 @@ func (self StringName) ToSnakeCase(ctx Context) String {
 func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[bool](2, abi, allow_empty)
 	FrameSet[Int](3, abi, maxsplit)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -1628,7 +2711,7 @@ func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, ma
 func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[bool](2, abi, allow_empty)
 	FrameSet[Int](3, abi, maxsplit)
 	FrameSet(0, abi, selfPtr.Pointer())
@@ -1641,7 +2724,7 @@ func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, m
 func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, delimiter)
+	FrameSet[uintptr](1, abi, delimiter.Pointer())
 	FrameSet[bool](2, abi, allow_empty)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.split_floats(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -1653,7 +2736,7 @@ func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bo
 func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedStringArray](1, abi, parts)
+	FrameSet[[2]uintptr](1, abi, parts.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.join(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1728,7 +2811,7 @@ func (self StringName) StripEscapes(ctx Context) String {
 func (self StringName) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, chars)
+	FrameSet[uintptr](1, abi, chars.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.lstrip(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1739,7 +2822,7 @@ func (self StringName) Lstrip(ctx Context, chars String) String {
 func (self StringName) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, chars)
+	FrameSet[uintptr](1, abi, chars.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.rstrip(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1770,7 +2853,7 @@ func (self StringName) GetBasename(ctx Context) String {
 func (self StringName) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, file)
+	FrameSet[uintptr](1, abi, file.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.path_join(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1792,7 +2875,7 @@ func (self StringName) UnicodeAt(at Int) Int {
 func (self StringName) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, prefix)
+	FrameSet[uintptr](1, abi, prefix.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.indent(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -1883,7 +2966,7 @@ func (self StringName) IsEmpty() bool {
 func (self StringName) Contains(what String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, what)
+	FrameSet[uintptr](1, abi, what.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.contains(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -2147,7 +3230,7 @@ func (self StringName) Lpad(ctx Context, min_length Int, character String) Strin
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, min_length)
-	FrameSet[String](2, abi, character)
+	FrameSet[uintptr](2, abi, character.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.lpad(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -2159,7 +3242,7 @@ func (self StringName) Rpad(ctx Context, min_length Int, character String) Strin
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, min_length)
-	FrameSet[String](2, abi, character)
+	FrameSet[uintptr](2, abi, character.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.rpad(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[uintptr](abi)
@@ -2192,7 +3275,7 @@ func (self StringName) PadZeros(ctx Context, digits Int) String {
 func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, prefix)
+	FrameSet[uintptr](1, abi, prefix.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.trim_prefix(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -2203,7 +3286,7 @@ func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, suffix)
+	FrameSet[uintptr](1, abi, suffix.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.StringName.trim_suffix(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -2386,7 +3469,7 @@ func (self NodePath) IsEmpty() bool {
 func (self Callable) Callv(ctx Context, arguments Array) Variant {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Array](1, abi, arguments)
+	FrameSet[uintptr](1, abi, arguments.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Callable.callv(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[[3]uintptr](abi)
@@ -2497,7 +3580,7 @@ func (self Callable) Hash() Int {
 func (self Callable) Bindv(ctx Context, arguments Array) Callable {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Array](1, abi, arguments)
+	FrameSet[uintptr](1, abi, arguments.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Callable.bindv(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[[2]uintptr](abi)
@@ -2604,7 +3687,7 @@ func (self Signal) GetName(ctx Context) StringName {
 func (self Signal) Connect(callable Callable, flags Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	FrameSet[Int](2, abi, flags)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Signal.connect(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -2616,7 +3699,7 @@ func (self Signal) Connect(callable Callable, flags Int) Int {
 func (self Signal) Disconnect(callable Callable) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Signal.disconnect(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2625,7 +3708,7 @@ func (self Signal) Disconnect(callable Callable) {
 func (self Signal) IsConnected(callable Callable) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Signal.is_connected(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -2682,7 +3765,7 @@ func (self Dictionary) Clear() {
 func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Dictionary](1, abi, dictionary)
+	FrameSet[uintptr](1, abi, dictionary.Pointer())
 	FrameSet[bool](2, abi, overwrite)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.merge(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -2692,7 +3775,7 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 func (self Dictionary) Has(key Variant) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, key)
+	FrameSet[[3]uintptr](1, abi, key.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.has(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -2703,7 +3786,7 @@ func (self Dictionary) Has(key Variant) bool {
 func (self Dictionary) HasAll(keys Array) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Array](1, abi, keys)
+	FrameSet[uintptr](1, abi, keys.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.has_all(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -2714,7 +3797,7 @@ func (self Dictionary) HasAll(keys Array) bool {
 func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.find_key(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[[3]uintptr](abi)
@@ -2725,7 +3808,7 @@ func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 func (self Dictionary) Erase(key Variant) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, key)
+	FrameSet[[3]uintptr](1, abi, key.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.erase(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -2777,8 +3860,8 @@ func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, key)
-	FrameSet[Variant](2, abi, def)
+	FrameSet[[3]uintptr](1, abi, key.Pointer())
+	FrameSet[[3]uintptr](2, abi, def.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.get(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[[3]uintptr](abi)
@@ -2845,7 +3928,7 @@ func (self Array) Hash() Int {
 func (self Array) Assign(array Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Array](1, abi, array)
+	FrameSet[uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.assign(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2854,7 +3937,7 @@ func (self Array) Assign(array Array) {
 func (self Array) PushBack(value Variant) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.push_back(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2863,7 +3946,7 @@ func (self Array) PushBack(value Variant) {
 func (self Array) PushFront(value Variant) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.push_front(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2872,7 +3955,7 @@ func (self Array) PushFront(value Variant) {
 func (self Array) Append(value Variant) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.append(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2881,7 +3964,7 @@ func (self Array) Append(value Variant) {
 func (self Array) AppendArray(array Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Array](1, abi, array)
+	FrameSet[uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2902,7 +3985,7 @@ func (self Array) Insert(position Int, value Variant) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, position)
-	FrameSet[Variant](2, abi, value)
+	FrameSet[[3]uintptr](2, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.insert(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[Int](abi)
@@ -2922,7 +4005,7 @@ func (self Array) RemoveAt(position Int) {
 func (self Array) Fill(value Variant) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.fill(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2931,7 +4014,7 @@ func (self Array) Fill(value Variant) {
 func (self Array) Erase(value Variant) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.erase(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -2970,7 +4053,7 @@ func (self Array) PickRandom(ctx Context) Variant {
 func (self Array) Find(what Variant, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, what)
+	FrameSet[[3]uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.find(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -2982,7 +4065,7 @@ func (self Array) Find(what Variant, from Int) Int {
 func (self Array) Rfind(what Variant, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, what)
+	FrameSet[[3]uintptr](1, abi, what.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.rfind(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -2994,7 +4077,7 @@ func (self Array) Rfind(what Variant, from Int) Int {
 func (self Array) Count(value Variant) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.count(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -3005,7 +4088,7 @@ func (self Array) Count(value Variant) Int {
 func (self Array) Has(value Variant) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.has(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -3055,7 +4138,7 @@ func (self Array) Sort() {
 func (self Array) SortCustom(fn Callable) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, fn)
+	FrameSet[[2]uintptr](1, abi, fn.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.sort_custom(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -3072,7 +4155,7 @@ func (self Array) Shuffle() {
 func (self Array) Bsearch(value Variant, before bool) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	FrameSet[bool](2, abi, before)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.bsearch(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -3084,8 +4167,8 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](1, abi, value)
-	FrameSet[Callable](2, abi, fn)
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
+	FrameSet[[2]uintptr](2, abi, fn.Pointer())
 	FrameSet[bool](3, abi, before)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.bsearch_custom(abi.Get(0), abi.Get(1), abi.Back(), 3)
@@ -3130,7 +4213,7 @@ func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Ar
 func (self Array) Filter(ctx Context, method Callable) Array {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, method)
+	FrameSet[[2]uintptr](1, abi, method.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.filter(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -3141,7 +4224,7 @@ func (self Array) Filter(ctx Context, method Callable) Array {
 func (self Array) Map(ctx Context, method Callable) Array {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, method)
+	FrameSet[[2]uintptr](1, abi, method.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.map_(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[uintptr](abi)
@@ -3152,8 +4235,8 @@ func (self Array) Map(ctx Context, method Callable) Array {
 func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, method)
-	FrameSet[Variant](2, abi, accum)
+	FrameSet[[2]uintptr](1, abi, method.Pointer())
+	FrameSet[[3]uintptr](2, abi, accum.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.reduce(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[[3]uintptr](abi)
@@ -3164,7 +4247,7 @@ func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 func (self Array) Any(method Callable) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, method)
+	FrameSet[[2]uintptr](1, abi, method.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.any(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -3175,7 +4258,7 @@ func (self Array) Any(method Callable) bool {
 func (self Array) All(method Callable) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](1, abi, method)
+	FrameSet[[2]uintptr](1, abi, method.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.all(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -3216,7 +4299,7 @@ func (self Array) IsTyped() bool {
 func (self Array) IsSameTyped(array Array) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Array](1, abi, array)
+	FrameSet[uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.is_same_typed(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -3327,7 +4410,7 @@ func (self PackedByteArray) Append(value Int) bool {
 func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -3884,7 +4967,7 @@ func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_obje
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, byte_offset)
-	FrameSet[Variant](2, abi, value)
+	FrameSet[[3]uintptr](2, abi, value.Pointer())
 	FrameSet[bool](3, abi, allow_objects)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_var(abi.Get(0), abi.Get(1), abi.Back(), 3)
@@ -3948,7 +5031,7 @@ func (self PackedInt32Array) Append(value Int) bool {
 func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedInt32Array](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -4164,7 +5247,7 @@ func (self PackedInt64Array) Append(value Int) bool {
 func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedInt64Array](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -4380,7 +5463,7 @@ func (self PackedFloat32Array) Append(value Float) bool {
 func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedFloat32Array](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -4596,7 +5679,7 @@ func (self PackedFloat64Array) Append(value Float) bool {
 func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedFloat64Array](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -4781,7 +5864,7 @@ func (self PackedStringArray) Set(index Int, value String) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, index)
-	FrameSet[String](2, abi, value)
+	FrameSet[uintptr](2, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.set(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	abi.Free()
@@ -4790,7 +5873,7 @@ func (self PackedStringArray) Set(index Int, value String) {
 func (self PackedStringArray) PushBack(value String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.push_back(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -4801,7 +5884,7 @@ func (self PackedStringArray) PushBack(value String) bool {
 func (self PackedStringArray) Append(value String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.append(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -4812,7 +5895,7 @@ func (self PackedStringArray) Append(value String) bool {
 func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedStringArray](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -4831,7 +5914,7 @@ func (self PackedStringArray) Insert(at_index Int, value String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](1, abi, at_index)
-	FrameSet[String](2, abi, value)
+	FrameSet[uintptr](2, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.insert(abi.Get(0), abi.Get(1), abi.Back(), 2)
 	var ret = FrameGet[Int](abi)
@@ -4842,7 +5925,7 @@ func (self PackedStringArray) Insert(at_index Int, value String) Int {
 func (self PackedStringArray) Fill(value String) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.fill(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -4870,7 +5953,7 @@ func (self PackedStringArray) Clear() {
 func (self PackedStringArray) Has(value String) bool {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.has(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[bool](abi)
@@ -4919,7 +6002,7 @@ func (self PackedStringArray) Sort() {
 func (self PackedStringArray) Bsearch(value String, before bool) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet[bool](2, abi, before)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.bsearch(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -4941,7 +6024,7 @@ func (self PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 func (self PackedStringArray) Find(value String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.find(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -4953,7 +6036,7 @@ func (self PackedStringArray) Find(value String, from Int) Int {
 func (self PackedStringArray) Rfind(value String, from Int) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet[Int](2, abi, from)
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.rfind(abi.Get(0), abi.Get(1), abi.Back(), 2)
@@ -4965,7 +6048,7 @@ func (self PackedStringArray) Rfind(value String, from Int) Int {
 func (self PackedStringArray) Count(value String) Int {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](1, abi, value)
+	FrameSet[uintptr](1, abi, value.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.count(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	var ret = FrameGet[Int](abi)
@@ -5028,7 +6111,7 @@ func (self PackedVector2Array) Append(value Vector2) bool {
 func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -5244,7 +6327,7 @@ func (self PackedVector3Array) Append(value Vector3) bool {
 func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector3Array](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -5460,7 +6543,7 @@ func (self PackedColorArray) Append(value Color) bool {
 func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	var selfPtr = self
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedColorArray](1, abi, array)
+	FrameSet[[2]uintptr](1, abi, array.Pointer())
 	FrameSet(0, abi, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.append_array(abi.Get(0), abi.Get(1), abi.Back(), 1)
 	abi.Free()
@@ -5634,7 +6717,7 @@ func (self ArrayMesh) Object() Object { return *self.Super().Super().Super().Sup
 func (self ArrayMesh) AddBlendShape(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_add_blend_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -5662,7 +6745,7 @@ func (self ArrayMesh) SetBlendShapeName(index Int, name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, index)
-	FrameSet[StringName](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_set_blend_shape_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -5695,9 +6778,9 @@ func (self ArrayMesh) AddSurfaceFromArrays(primitive MeshPrimitiveType, arrays A
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[MeshPrimitiveType](0, abi, primitive)
-	FrameSet[Array](1, abi, arrays)
+	FrameSet[uintptr](1, abi, arrays.Pointer())
 	FrameSet[ArrayOf[Array]](2, abi, blend_shapes)
-	FrameSet[Dictionary](3, abi, lods)
+	FrameSet[uintptr](3, abi, lods.Pointer())
 	FrameSet[MeshArrayFormat](4, abi, flags)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_add_surface_from_arrays, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -5715,7 +6798,7 @@ func (self ArrayMesh) SurfaceUpdateVertexRegion(surf_idx Int, offset Int, data P
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, surf_idx)
 	FrameSet[Int](1, abi, offset)
-	FrameSet[PackedByteArray](2, abi, data)
+	FrameSet[[2]uintptr](2, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_update_vertex_region, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -5725,7 +6808,7 @@ func (self ArrayMesh) SurfaceUpdateAttributeRegion(surf_idx Int, offset Int, dat
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, surf_idx)
 	FrameSet[Int](1, abi, offset)
-	FrameSet[PackedByteArray](2, abi, data)
+	FrameSet[[2]uintptr](2, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_update_attribute_region, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -5735,7 +6818,7 @@ func (self ArrayMesh) SurfaceUpdateSkinRegion(surf_idx Int, offset Int, data Pac
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, surf_idx)
 	FrameSet[Int](1, abi, offset)
-	FrameSet[PackedByteArray](2, abi, data)
+	FrameSet[[2]uintptr](2, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_update_skin_region, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -5783,7 +6866,7 @@ func (self ArrayMesh) SurfaceGetPrimitiveType(surf_idx Int) MeshPrimitiveType {
 func (self ArrayMesh) SurfaceFindByName(name String) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_find_by_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -5794,7 +6877,7 @@ func (self ArrayMesh) SurfaceSetName(surf_idx Int, name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, surf_idx)
-	FrameSet[String](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_set_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -5847,7 +6930,7 @@ func (self ArrayMesh) GetCustomAabb() AABB {
 func (self ArrayMesh) SetShadowMesh(mesh ArrayMesh) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[ArrayMesh](0, abi, mesh)
+	FrameSet[uintptr](0, abi, mesh.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ArrayMesh.Bind_set_shadow_mesh, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -6170,7 +7253,7 @@ func (self Camera2D) GetZoom() Vector2 {
 func (self Camera2D) SetCustomViewport(viewport Node) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, viewport)
+	FrameSet[uintptr](0, abi, viewport.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Camera2D.Bind_set_custom_viewport, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -6642,7 +7725,7 @@ func (self Camera3D) GetCullMask() Int {
 func (self Camera3D) SetEnvironment(env Environment) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Environment](0, abi, env)
+	FrameSet[uintptr](0, abi, env.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Camera3D.Bind_set_environment, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -6659,7 +7742,7 @@ func (self Camera3D) GetEnvironment() Environment {
 func (self Camera3D) SetAttributes(env CameraAttributes) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[CameraAttributes](0, abi, env)
+	FrameSet[uintptr](0, abi, env.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Camera3D.Bind_set_attributes, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7120,7 +8203,7 @@ func (self CanvasItem) DrawDashedLine(from Vector2, to Vector2, color Color, wid
 func (self CanvasItem) DrawPolyline(points PackedVector2Array, color Color, width Float, antialiased bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
 	FrameSet[Color](1, abi, color)
 	FrameSet[Float](2, abi, width)
 	FrameSet[bool](3, abi, antialiased)
@@ -7131,8 +8214,8 @@ func (self CanvasItem) DrawPolyline(points PackedVector2Array, color Color, widt
 func (self CanvasItem) DrawPolylineColors(points PackedVector2Array, colors PackedColorArray, width Float, antialiased bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
-	FrameSet[PackedColorArray](1, abi, colors)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
+	FrameSet[[2]uintptr](1, abi, colors.Pointer())
 	FrameSet[Float](2, abi, width)
 	FrameSet[bool](3, abi, antialiased)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_polyline_colors, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -7157,7 +8240,7 @@ func (self CanvasItem) DrawArc(center Vector2, radius Float, start_angle Float, 
 func (self CanvasItem) DrawMultiline(points PackedVector2Array, color Color, width Float) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
 	FrameSet[Color](1, abi, color)
 	FrameSet[Float](2, abi, width)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multiline, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -7167,8 +8250,8 @@ func (self CanvasItem) DrawMultiline(points PackedVector2Array, color Color, wid
 func (self CanvasItem) DrawMultilineColors(points PackedVector2Array, colors PackedColorArray, width Float) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
-	FrameSet[PackedColorArray](1, abi, colors)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
+	FrameSet[[2]uintptr](1, abi, colors.Pointer())
 	FrameSet[Float](2, abi, width)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multiline_colors, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -7198,7 +8281,7 @@ func (self CanvasItem) DrawCircle(position Vector2, radius Float, color Color) {
 func (self CanvasItem) DrawTexture(texture Texture2D, position Vector2, modulate Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture2D](0, abi, texture)
+	FrameSet[uintptr](0, abi, texture.Pointer())
 	FrameSet[Vector2](1, abi, position)
 	FrameSet[Color](2, abi, modulate)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_texture, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -7208,7 +8291,7 @@ func (self CanvasItem) DrawTexture(texture Texture2D, position Vector2, modulate
 func (self CanvasItem) DrawTextureRect(texture Texture2D, rect Rect2, tile bool, modulate Color, transpose bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture2D](0, abi, texture)
+	FrameSet[uintptr](0, abi, texture.Pointer())
 	FrameSet[Rect2](1, abi, rect)
 	FrameSet[bool](2, abi, tile)
 	FrameSet[Color](3, abi, modulate)
@@ -7220,7 +8303,7 @@ func (self CanvasItem) DrawTextureRect(texture Texture2D, rect Rect2, tile bool,
 func (self CanvasItem) DrawTextureRectRegion(texture Texture2D, rect Rect2, src_rect Rect2, modulate Color, transpose bool, clip_uv bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture2D](0, abi, texture)
+	FrameSet[uintptr](0, abi, texture.Pointer())
 	FrameSet[Rect2](1, abi, rect)
 	FrameSet[Rect2](2, abi, src_rect)
 	FrameSet[Color](3, abi, modulate)
@@ -7233,7 +8316,7 @@ func (self CanvasItem) DrawTextureRectRegion(texture Texture2D, rect Rect2, src_
 func (self CanvasItem) DrawMsdfTextureRectRegion(texture Texture2D, rect Rect2, src_rect Rect2, modulate Color, outline Float, pixel_range Float, scale Float) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture2D](0, abi, texture)
+	FrameSet[uintptr](0, abi, texture.Pointer())
 	FrameSet[Rect2](1, abi, rect)
 	FrameSet[Rect2](2, abi, src_rect)
 	FrameSet[Color](3, abi, modulate)
@@ -7247,7 +8330,7 @@ func (self CanvasItem) DrawMsdfTextureRectRegion(texture Texture2D, rect Rect2, 
 func (self CanvasItem) DrawLcdTextureRectRegion(texture Texture2D, rect Rect2, src_rect Rect2, modulate Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture2D](0, abi, texture)
+	FrameSet[uintptr](0, abi, texture.Pointer())
 	FrameSet[Rect2](1, abi, rect)
 	FrameSet[Rect2](2, abi, src_rect)
 	FrameSet[Color](3, abi, modulate)
@@ -7258,7 +8341,7 @@ func (self CanvasItem) DrawLcdTextureRectRegion(texture Texture2D, rect Rect2, s
 func (self CanvasItem) DrawStyleBox(style_box StyleBox, rect Rect2) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StyleBox](0, abi, style_box)
+	FrameSet[uintptr](0, abi, style_box.Pointer())
 	FrameSet[Rect2](1, abi, rect)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_style_box, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -7267,10 +8350,10 @@ func (self CanvasItem) DrawStyleBox(style_box StyleBox, rect Rect2) {
 func (self CanvasItem) DrawPrimitive(points PackedVector2Array, colors PackedColorArray, uvs PackedVector2Array, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
-	FrameSet[PackedColorArray](1, abi, colors)
-	FrameSet[PackedVector2Array](2, abi, uvs)
-	FrameSet[Texture2D](3, abi, texture)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
+	FrameSet[[2]uintptr](1, abi, colors.Pointer())
+	FrameSet[[2]uintptr](2, abi, uvs.Pointer())
+	FrameSet[uintptr](3, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_primitive, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7278,10 +8361,10 @@ func (self CanvasItem) DrawPrimitive(points PackedVector2Array, colors PackedCol
 func (self CanvasItem) DrawPolygon(points PackedVector2Array, colors PackedColorArray, uvs PackedVector2Array, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
-	FrameSet[PackedColorArray](1, abi, colors)
-	FrameSet[PackedVector2Array](2, abi, uvs)
-	FrameSet[Texture2D](3, abi, texture)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
+	FrameSet[[2]uintptr](1, abi, colors.Pointer())
+	FrameSet[[2]uintptr](2, abi, uvs.Pointer())
+	FrameSet[uintptr](3, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_polygon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7289,10 +8372,10 @@ func (self CanvasItem) DrawPolygon(points PackedVector2Array, colors PackedColor
 func (self CanvasItem) DrawColoredPolygon(points PackedVector2Array, color Color, uvs PackedVector2Array, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, points)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
 	FrameSet[Color](1, abi, color)
-	FrameSet[PackedVector2Array](2, abi, uvs)
-	FrameSet[Texture2D](3, abi, texture)
+	FrameSet[[2]uintptr](2, abi, uvs.Pointer())
+	FrameSet[uintptr](3, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_colored_polygon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7300,9 +8383,9 @@ func (self CanvasItem) DrawColoredPolygon(points PackedVector2Array, color Color
 func (self CanvasItem) DrawString(font Font, pos Vector2, text String, alignment HorizontalAlignment, width Float, font_size Int, modulate Color, justification_flags TextServerJustificationFlag, direction TextServerDirection, orientation TextServerOrientation) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -7317,9 +8400,9 @@ func (self CanvasItem) DrawString(font Font, pos Vector2, text String, alignment
 func (self CanvasItem) DrawMultilineString(font Font, pos Vector2, text String, alignment HorizontalAlignment, width Float, font_size Int, max_lines Int, modulate Color, brk_flags TextServerLineBreakFlag, justification_flags TextServerJustificationFlag, direction TextServerDirection, orientation TextServerOrientation) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -7336,9 +8419,9 @@ func (self CanvasItem) DrawMultilineString(font Font, pos Vector2, text String, 
 func (self CanvasItem) DrawStringOutline(font Font, pos Vector2, text String, alignment HorizontalAlignment, width Float, font_size Int, size Int, modulate Color, justification_flags TextServerJustificationFlag, direction TextServerDirection, orientation TextServerOrientation) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -7354,9 +8437,9 @@ func (self CanvasItem) DrawStringOutline(font Font, pos Vector2, text String, al
 func (self CanvasItem) DrawMultilineStringOutline(font Font, pos Vector2, text String, alignment HorizontalAlignment, width Float, font_size Int, max_lines Int, size Int, modulate Color, brk_flags TextServerLineBreakFlag, justification_flags TextServerJustificationFlag, direction TextServerDirection, orientation TextServerOrientation) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -7374,9 +8457,9 @@ func (self CanvasItem) DrawMultilineStringOutline(font Font, pos Vector2, text S
 func (self CanvasItem) DrawChar(font Font, pos Vector2, char String, font_size Int, modulate Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, char)
+	FrameSet[uintptr](2, abi, char.Pointer())
 	FrameSet[Int](3, abi, font_size)
 	FrameSet[Color](4, abi, modulate)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_char, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -7386,9 +8469,9 @@ func (self CanvasItem) DrawChar(font Font, pos Vector2, char String, font_size I
 func (self CanvasItem) DrawCharOutline(font Font, pos Vector2, char String, font_size Int, size Int, modulate Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, char)
+	FrameSet[uintptr](2, abi, char.Pointer())
 	FrameSet[Int](3, abi, font_size)
 	FrameSet[Int](4, abi, size)
 	FrameSet[Color](5, abi, modulate)
@@ -7399,8 +8482,8 @@ func (self CanvasItem) DrawCharOutline(font Font, pos Vector2, char String, font
 func (self CanvasItem) DrawMesh(mesh Mesh, texture Texture2D, transform Transform2D, modulate Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Mesh](0, abi, mesh)
-	FrameSet[Texture2D](1, abi, texture)
+	FrameSet[uintptr](0, abi, mesh.Pointer())
+	FrameSet[uintptr](1, abi, texture.Pointer())
 	FrameSet[Transform2D](2, abi, transform)
 	FrameSet[Color](3, abi, modulate)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_mesh, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -7410,8 +8493,8 @@ func (self CanvasItem) DrawMesh(mesh Mesh, texture Texture2D, transform Transfor
 func (self CanvasItem) DrawMultimesh(multimesh MultiMesh, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[MultiMesh](0, abi, multimesh)
-	FrameSet[Texture2D](1, abi, texture)
+	FrameSet[uintptr](0, abi, multimesh.Pointer())
+	FrameSet[uintptr](1, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multimesh, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7554,7 +8637,7 @@ func (self CanvasItem) GetWorld2d() World2D {
 func (self CanvasItem) SetMaterial(material Material) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Material](0, abi, material)
+	FrameSet[uintptr](0, abi, material.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_set_material, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7639,7 +8722,7 @@ func (self CanvasItem) MakeCanvasPositionLocal(screen_point Vector2) Vector2 {
 func (self CanvasItem) MakeInputLocal(event InputEvent) InputEvent {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[InputEvent](0, abi, event)
+	FrameSet[uintptr](0, abi, event.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.CanvasItem.Bind_make_input_local, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[InputEvent](abi)
 	abi.Free()
@@ -7757,7 +8840,7 @@ func (self ConcavePolygonShape3D) Object() Object { return *self.Super().Super()
 func (self ConcavePolygonShape3D) SetFaces(faces PackedVector3Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector3Array](0, abi, faces)
+	FrameSet[[2]uintptr](0, abi, faces.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ConcavePolygonShape3D.Bind_set_faces, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -7837,8 +8920,8 @@ func (Control) _has_point(impl func(ptr unsafe.Pointer, ctx Context, point Vecto
 func (Control) _structured_text_parser(impl func(ptr unsafe.Pointer, ctx Context, args Array, text String) ArrayOf[Vector3i], api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var args = UnsafeGet[Array](p_args, 0)
-		var text = UnsafeGet[String](p_args, 1)
+		var args = mmm.Make[API, Array](ctx, api, UnsafeGet[uintptr](p_args, 0))
+		var text = mmm.Make[API, String](ctx, api, UnsafeGet[uintptr](p_args, 1))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		ret := impl(self, ctx, args, text)
 		ctx.Free()
@@ -7888,7 +8971,7 @@ func (Control) _can_drop_data(impl func(ptr unsafe.Pointer, ctx Context, at_posi
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var at_position = UnsafeGet[Vector2](p_args, 0)
-		var data = UnsafeGet[Variant](p_args, 1)
+		var data = mmm.Make[API, Variant](ctx, api, UnsafeGet[[3]uintptr](p_args, 1))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		ret := impl(self, ctx, at_position, data)
 		ctx.Free()
@@ -7901,7 +8984,7 @@ func (Control) _drop_data(impl func(ptr unsafe.Pointer, ctx Context, at_position
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var at_position = UnsafeGet[Vector2](p_args, 0)
-		var data = UnsafeGet[Variant](p_args, 1)
+		var data = mmm.Make[API, Variant](ctx, api, UnsafeGet[[3]uintptr](p_args, 1))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, at_position, data)
 		ctx.Free()
@@ -7912,7 +8995,7 @@ func (Control) _drop_data(impl func(ptr unsafe.Pointer, ctx Context, at_position
 func (Control) _make_custom_tooltip(impl func(ptr unsafe.Pointer, ctx Context, for_text String) Object, api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var for_text = UnsafeGet[String](p_args, 0)
+		var for_text = mmm.Make[API, String](ctx, api, UnsafeGet[uintptr](p_args, 0))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		ret := impl(self, ctx, for_text)
 		ctx.Free()
@@ -7924,7 +9007,8 @@ func (Control) _make_custom_tooltip(impl func(ptr unsafe.Pointer, ctx Context, f
 func (Control) _gui_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var event = UnsafeGet[InputEvent](p_args, 0)
+		var event InputEvent
+		event.SetPointer(mmm.Make[API, Pointer, uintptr](ctx, api, UnsafeGet[uintptr](p_args, 0)))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.Free()
@@ -8375,7 +9459,7 @@ func (self Control) GetVSizeFlags() ControlSizeFlags {
 func (self Control) SetTheme(theme Theme) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Theme](0, abi, theme)
+	FrameSet[uintptr](0, abi, theme.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_theme, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8392,7 +9476,7 @@ func (self Control) GetTheme() Theme {
 func (self Control) SetThemeTypeVariation(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_theme_type_variation, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8423,8 +9507,8 @@ func (self Control) EndBulkThemeOverride() {
 func (self Control) AddThemeIconOverride(name StringName, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Texture2D](1, abi, texture)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_add_theme_icon_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8432,8 +9516,8 @@ func (self Control) AddThemeIconOverride(name StringName, texture Texture2D) {
 func (self Control) AddThemeStyleboxOverride(name StringName, stylebox StyleBox) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StyleBox](1, abi, stylebox)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, stylebox.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_add_theme_stylebox_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8441,8 +9525,8 @@ func (self Control) AddThemeStyleboxOverride(name StringName, stylebox StyleBox)
 func (self Control) AddThemeFontOverride(name StringName, font Font) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Font](1, abi, font)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, font.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_add_theme_font_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8450,7 +9534,7 @@ func (self Control) AddThemeFontOverride(name StringName, font Font) {
 func (self Control) AddThemeFontSizeOverride(name StringName, font_size Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Int](1, abi, font_size)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_add_theme_font_size_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -8459,7 +9543,7 @@ func (self Control) AddThemeFontSizeOverride(name StringName, font_size Int) {
 func (self Control) AddThemeColorOverride(name StringName, color Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Color](1, abi, color)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_add_theme_color_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -8468,7 +9552,7 @@ func (self Control) AddThemeColorOverride(name StringName, color Color) {
 func (self Control) AddThemeConstantOverride(name StringName, constant Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Int](1, abi, constant)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_add_theme_constant_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -8477,7 +9561,7 @@ func (self Control) AddThemeConstantOverride(name StringName, constant Int) {
 func (self Control) RemoveThemeIconOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_remove_theme_icon_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8485,7 +9569,7 @@ func (self Control) RemoveThemeIconOverride(name StringName) {
 func (self Control) RemoveThemeStyleboxOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_remove_theme_stylebox_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8493,7 +9577,7 @@ func (self Control) RemoveThemeStyleboxOverride(name StringName) {
 func (self Control) RemoveThemeFontOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_remove_theme_font_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8501,7 +9585,7 @@ func (self Control) RemoveThemeFontOverride(name StringName) {
 func (self Control) RemoveThemeFontSizeOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_remove_theme_font_size_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8509,7 +9593,7 @@ func (self Control) RemoveThemeFontSizeOverride(name StringName) {
 func (self Control) RemoveThemeColorOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_remove_theme_color_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8517,7 +9601,7 @@ func (self Control) RemoveThemeColorOverride(name StringName) {
 func (self Control) RemoveThemeConstantOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_remove_theme_constant_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8525,8 +9609,8 @@ func (self Control) RemoveThemeConstantOverride(name StringName) {
 func (self Control) GetThemeIcon(name StringName, theme_type StringName) Texture2D {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_get_theme_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Texture2D](abi)
 	abi.Free()
@@ -8536,8 +9620,8 @@ func (self Control) GetThemeIcon(name StringName, theme_type StringName) Texture
 func (self Control) GetThemeStylebox(name StringName, theme_type StringName) StyleBox {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_get_theme_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[StyleBox](abi)
 	abi.Free()
@@ -8547,8 +9631,8 @@ func (self Control) GetThemeStylebox(name StringName, theme_type StringName) Sty
 func (self Control) GetThemeFont(name StringName, theme_type StringName) Font {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_get_theme_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Font](abi)
 	abi.Free()
@@ -8558,8 +9642,8 @@ func (self Control) GetThemeFont(name StringName, theme_type StringName) Font {
 func (self Control) GetThemeFontSize(name StringName, theme_type StringName) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_get_theme_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -8569,8 +9653,8 @@ func (self Control) GetThemeFontSize(name StringName, theme_type StringName) Int
 func (self Control) GetThemeColor(name StringName, theme_type StringName) Color {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_get_theme_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Color](abi)
 	abi.Free()
@@ -8580,8 +9664,8 @@ func (self Control) GetThemeColor(name StringName, theme_type StringName) Color 
 func (self Control) GetThemeConstant(name StringName, theme_type StringName) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_get_theme_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -8591,7 +9675,7 @@ func (self Control) GetThemeConstant(name StringName, theme_type StringName) Int
 func (self Control) HasThemeIconOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_icon_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8601,7 +9685,7 @@ func (self Control) HasThemeIconOverride(name StringName) bool {
 func (self Control) HasThemeStyleboxOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_stylebox_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8611,7 +9695,7 @@ func (self Control) HasThemeStyleboxOverride(name StringName) bool {
 func (self Control) HasThemeFontOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_font_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8621,7 +9705,7 @@ func (self Control) HasThemeFontOverride(name StringName) bool {
 func (self Control) HasThemeFontSizeOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_font_size_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8631,7 +9715,7 @@ func (self Control) HasThemeFontSizeOverride(name StringName) bool {
 func (self Control) HasThemeColorOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_color_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8641,7 +9725,7 @@ func (self Control) HasThemeColorOverride(name StringName) bool {
 func (self Control) HasThemeConstantOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_constant_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8651,8 +9735,8 @@ func (self Control) HasThemeConstantOverride(name StringName) bool {
 func (self Control) HasThemeIcon(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8662,8 +9746,8 @@ func (self Control) HasThemeIcon(name StringName, theme_type StringName) bool {
 func (self Control) HasThemeStylebox(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8673,8 +9757,8 @@ func (self Control) HasThemeStylebox(name StringName, theme_type StringName) boo
 func (self Control) HasThemeFont(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8684,8 +9768,8 @@ func (self Control) HasThemeFont(name StringName, theme_type StringName) bool {
 func (self Control) HasThemeFontSize(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8695,8 +9779,8 @@ func (self Control) HasThemeFontSize(name StringName, theme_type StringName) boo
 func (self Control) HasThemeColor(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8706,8 +9790,8 @@ func (self Control) HasThemeColor(name StringName, theme_type StringName) bool {
 func (self Control) HasThemeConstant(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_has_theme_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -8787,7 +9871,7 @@ func (self Control) GetVGrowDirection() ControlGrowDirection {
 func (self Control) SetTooltipText(hint String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, hint)
+	FrameSet[uintptr](0, abi, hint.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_tooltip_text, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8842,7 +9926,7 @@ func (self Control) SetFocusNeighbor(side Side, neighbor NodePath) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Side](0, abi, side)
-	FrameSet[NodePath](1, abi, neighbor)
+	FrameSet[uintptr](1, abi, neighbor.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_focus_neighbor, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8860,7 +9944,7 @@ func (self Control) GetFocusNeighbor(ctx Context, side Side) NodePath {
 func (self Control) SetFocusNext(next NodePath) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, next)
+	FrameSet[uintptr](0, abi, next.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_focus_next, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8877,7 +9961,7 @@ func (self Control) GetFocusNext(ctx Context) NodePath {
 func (self Control) SetFocusPrevious(previous NodePath) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, previous)
+	FrameSet[uintptr](0, abi, previous.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_focus_previous, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8894,8 +9978,8 @@ func (self Control) GetFocusPrevious(ctx Context) NodePath {
 func (self Control) ForceDrag(data Variant, preview Control) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, data)
-	FrameSet[Control](1, abi, preview)
+	FrameSet[[3]uintptr](0, abi, data.Pointer())
+	FrameSet[uintptr](1, abi, preview.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_force_drag, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8961,9 +10045,9 @@ func (self Control) GrabClickFocus() {
 func (self Control) SetDragForwarding(drag_func Callable, can_drop_func Callable, drop_func Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, drag_func)
-	FrameSet[Callable](1, abi, can_drop_func)
-	FrameSet[Callable](2, abi, drop_func)
+	FrameSet[[2]uintptr](0, abi, drag_func.Pointer())
+	FrameSet[[2]uintptr](1, abi, can_drop_func.Pointer())
+	FrameSet[[2]uintptr](2, abi, drop_func.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_drag_forwarding, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8971,7 +10055,7 @@ func (self Control) SetDragForwarding(drag_func Callable, can_drop_func Callable
 func (self Control) SetDragPreview(control Control) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Control](0, abi, control)
+	FrameSet[uintptr](0, abi, control.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_drag_preview, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -8996,7 +10080,7 @@ func (self Control) WarpMouse(position Vector2) {
 func (self Control) SetShortcutContext(node Node) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Control.Bind_set_shortcut_context, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9117,7 +10201,7 @@ func (self ConvexPolygonShape3D) Object() Object { return *self.Super().Super().
 func (self ConvexPolygonShape3D) SetPoints(points PackedVector3Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector3Array](0, abi, points)
+	FrameSet[[2]uintptr](0, abi, points.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ConvexPolygonShape3D.Bind_set_points, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9189,9 +10273,9 @@ func (self DisplayServer) GetName(ctx Context) String {
 func (self DisplayServer) GlobalMenuSetPopupCallbacks(menu_root String, open_callback Callable, close_callback Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[Callable](1, abi, open_callback)
-	FrameSet[Callable](2, abi, close_callback)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[[2]uintptr](1, abi, open_callback.Pointer())
+	FrameSet[[2]uintptr](2, abi, close_callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_popup_callbacks, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9199,9 +10283,9 @@ func (self DisplayServer) GlobalMenuSetPopupCallbacks(menu_root String, open_cal
 func (self DisplayServer) GlobalMenuAddSubmenuItem(menu_root String, label String, submenu String, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[String](1, abi, label)
-	FrameSet[String](2, abi, submenu)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, label.Pointer())
+	FrameSet[uintptr](2, abi, submenu.Pointer())
 	FrameSet[Int](3, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_submenu_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
@@ -9212,11 +10296,11 @@ func (self DisplayServer) GlobalMenuAddSubmenuItem(menu_root String, label Strin
 func (self DisplayServer) GlobalMenuAddItem(menu_root String, label String, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[String](1, abi, label)
-	FrameSet[Callable](2, abi, callback)
-	FrameSet[Callable](3, abi, key_callback)
-	FrameSet[Variant](4, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, label.Pointer())
+	FrameSet[[2]uintptr](2, abi, callback.Pointer())
+	FrameSet[[2]uintptr](3, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](4, abi, tag.Pointer())
 	FrameSet[Key](5, abi, accelerator)
 	FrameSet[Int](6, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9228,11 +10312,11 @@ func (self DisplayServer) GlobalMenuAddItem(menu_root String, label String, call
 func (self DisplayServer) GlobalMenuAddCheckItem(menu_root String, label String, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[String](1, abi, label)
-	FrameSet[Callable](2, abi, callback)
-	FrameSet[Callable](3, abi, key_callback)
-	FrameSet[Variant](4, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, label.Pointer())
+	FrameSet[[2]uintptr](2, abi, callback.Pointer())
+	FrameSet[[2]uintptr](3, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](4, abi, tag.Pointer())
 	FrameSet[Key](5, abi, accelerator)
 	FrameSet[Int](6, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_check_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9244,12 +10328,12 @@ func (self DisplayServer) GlobalMenuAddCheckItem(menu_root String, label String,
 func (self DisplayServer) GlobalMenuAddIconItem(menu_root String, icon Texture2D, label String, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[Texture2D](1, abi, icon)
-	FrameSet[String](2, abi, label)
-	FrameSet[Callable](3, abi, callback)
-	FrameSet[Callable](4, abi, key_callback)
-	FrameSet[Variant](5, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, icon.Pointer())
+	FrameSet[uintptr](2, abi, label.Pointer())
+	FrameSet[[2]uintptr](3, abi, callback.Pointer())
+	FrameSet[[2]uintptr](4, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](5, abi, tag.Pointer())
 	FrameSet[Key](6, abi, accelerator)
 	FrameSet[Int](7, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_icon_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9261,12 +10345,12 @@ func (self DisplayServer) GlobalMenuAddIconItem(menu_root String, icon Texture2D
 func (self DisplayServer) GlobalMenuAddIconCheckItem(menu_root String, icon Texture2D, label String, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[Texture2D](1, abi, icon)
-	FrameSet[String](2, abi, label)
-	FrameSet[Callable](3, abi, callback)
-	FrameSet[Callable](4, abi, key_callback)
-	FrameSet[Variant](5, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, icon.Pointer())
+	FrameSet[uintptr](2, abi, label.Pointer())
+	FrameSet[[2]uintptr](3, abi, callback.Pointer())
+	FrameSet[[2]uintptr](4, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](5, abi, tag.Pointer())
 	FrameSet[Key](6, abi, accelerator)
 	FrameSet[Int](7, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_icon_check_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9278,11 +10362,11 @@ func (self DisplayServer) GlobalMenuAddIconCheckItem(menu_root String, icon Text
 func (self DisplayServer) GlobalMenuAddRadioCheckItem(menu_root String, label String, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[String](1, abi, label)
-	FrameSet[Callable](2, abi, callback)
-	FrameSet[Callable](3, abi, key_callback)
-	FrameSet[Variant](4, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, label.Pointer())
+	FrameSet[[2]uintptr](2, abi, callback.Pointer())
+	FrameSet[[2]uintptr](3, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](4, abi, tag.Pointer())
 	FrameSet[Key](5, abi, accelerator)
 	FrameSet[Int](6, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_radio_check_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9294,12 +10378,12 @@ func (self DisplayServer) GlobalMenuAddRadioCheckItem(menu_root String, label St
 func (self DisplayServer) GlobalMenuAddIconRadioCheckItem(menu_root String, icon Texture2D, label String, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[Texture2D](1, abi, icon)
-	FrameSet[String](2, abi, label)
-	FrameSet[Callable](3, abi, callback)
-	FrameSet[Callable](4, abi, key_callback)
-	FrameSet[Variant](5, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, icon.Pointer())
+	FrameSet[uintptr](2, abi, label.Pointer())
+	FrameSet[[2]uintptr](3, abi, callback.Pointer())
+	FrameSet[[2]uintptr](4, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](5, abi, tag.Pointer())
 	FrameSet[Key](6, abi, accelerator)
 	FrameSet[Int](7, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_icon_radio_check_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9311,13 +10395,13 @@ func (self DisplayServer) GlobalMenuAddIconRadioCheckItem(menu_root String, icon
 func (self DisplayServer) GlobalMenuAddMultistateItem(menu_root String, label String, max_states Int, default_state Int, callback Callable, key_callback Callable, tag Variant, accelerator Key, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[String](1, abi, label)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, label.Pointer())
 	FrameSet[Int](2, abi, max_states)
 	FrameSet[Int](3, abi, default_state)
-	FrameSet[Callable](4, abi, callback)
-	FrameSet[Callable](5, abi, key_callback)
-	FrameSet[Variant](6, abi, tag)
+	FrameSet[[2]uintptr](4, abi, callback.Pointer())
+	FrameSet[[2]uintptr](5, abi, key_callback.Pointer())
+	FrameSet[[3]uintptr](6, abi, tag.Pointer())
 	FrameSet[Key](7, abi, accelerator)
 	FrameSet[Int](8, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_multistate_item, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9329,7 +10413,7 @@ func (self DisplayServer) GlobalMenuAddMultistateItem(menu_root String, label St
 func (self DisplayServer) GlobalMenuAddSeparator(menu_root String, index Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_add_separator, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
@@ -9340,8 +10424,8 @@ func (self DisplayServer) GlobalMenuAddSeparator(menu_root String, index Int) In
 func (self DisplayServer) GlobalMenuGetItemIndexFromText(menu_root String, text String) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[uintptr](1, abi, text.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_index_from_text, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -9351,8 +10435,8 @@ func (self DisplayServer) GlobalMenuGetItemIndexFromText(menu_root String, text 
 func (self DisplayServer) GlobalMenuGetItemIndexFromTag(menu_root String, tag Variant) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
-	FrameSet[Variant](1, abi, tag)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
+	FrameSet[[3]uintptr](1, abi, tag.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_index_from_tag, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -9362,7 +10446,7 @@ func (self DisplayServer) GlobalMenuGetItemIndexFromTag(menu_root String, tag Va
 func (self DisplayServer) GlobalMenuIsItemChecked(menu_root String, idx Int) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_is_item_checked, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -9373,7 +10457,7 @@ func (self DisplayServer) GlobalMenuIsItemChecked(menu_root String, idx Int) boo
 func (self DisplayServer) GlobalMenuIsItemCheckable(menu_root String, idx Int) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_is_item_checkable, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -9384,7 +10468,7 @@ func (self DisplayServer) GlobalMenuIsItemCheckable(menu_root String, idx Int) b
 func (self DisplayServer) GlobalMenuIsItemRadioCheckable(menu_root String, idx Int) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_is_item_radio_checkable, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -9395,7 +10479,7 @@ func (self DisplayServer) GlobalMenuIsItemRadioCheckable(menu_root String, idx I
 func (self DisplayServer) GlobalMenuGetItemCallback(ctx Context, menu_root String, idx Int) Callable {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
@@ -9406,7 +10490,7 @@ func (self DisplayServer) GlobalMenuGetItemCallback(ctx Context, menu_root Strin
 func (self DisplayServer) GlobalMenuGetItemKeyCallback(ctx Context, menu_root String, idx Int) Callable {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_key_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
@@ -9417,7 +10501,7 @@ func (self DisplayServer) GlobalMenuGetItemKeyCallback(ctx Context, menu_root St
 func (self DisplayServer) GlobalMenuGetItemTag(ctx Context, menu_root String, idx Int) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_tag, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
@@ -9428,7 +10512,7 @@ func (self DisplayServer) GlobalMenuGetItemTag(ctx Context, menu_root String, id
 func (self DisplayServer) GlobalMenuGetItemText(ctx Context, menu_root String, idx Int) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_text, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
@@ -9439,7 +10523,7 @@ func (self DisplayServer) GlobalMenuGetItemText(ctx Context, menu_root String, i
 func (self DisplayServer) GlobalMenuGetItemSubmenu(ctx Context, menu_root String, idx Int) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_submenu, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
@@ -9450,7 +10534,7 @@ func (self DisplayServer) GlobalMenuGetItemSubmenu(ctx Context, menu_root String
 func (self DisplayServer) GlobalMenuGetItemAccelerator(menu_root String, idx Int) Key {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_accelerator, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Key](abi)
@@ -9461,7 +10545,7 @@ func (self DisplayServer) GlobalMenuGetItemAccelerator(menu_root String, idx Int
 func (self DisplayServer) GlobalMenuIsItemDisabled(menu_root String, idx Int) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_is_item_disabled, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -9472,7 +10556,7 @@ func (self DisplayServer) GlobalMenuIsItemDisabled(menu_root String, idx Int) bo
 func (self DisplayServer) GlobalMenuIsItemHidden(menu_root String, idx Int) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_is_item_hidden, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -9483,7 +10567,7 @@ func (self DisplayServer) GlobalMenuIsItemHidden(menu_root String, idx Int) bool
 func (self DisplayServer) GlobalMenuGetItemTooltip(ctx Context, menu_root String, idx Int) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_tooltip, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
@@ -9494,7 +10578,7 @@ func (self DisplayServer) GlobalMenuGetItemTooltip(ctx Context, menu_root String
 func (self DisplayServer) GlobalMenuGetItemState(menu_root String, idx Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_state, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
@@ -9505,7 +10589,7 @@ func (self DisplayServer) GlobalMenuGetItemState(menu_root String, idx Int) Int 
 func (self DisplayServer) GlobalMenuGetItemMaxStates(menu_root String, idx Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_max_states, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
@@ -9516,7 +10600,7 @@ func (self DisplayServer) GlobalMenuGetItemMaxStates(menu_root String, idx Int) 
 func (self DisplayServer) GlobalMenuGetItemIcon(menu_root String, idx Int) Texture2D {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Texture2D](abi)
@@ -9527,7 +10611,7 @@ func (self DisplayServer) GlobalMenuGetItemIcon(menu_root String, idx Int) Textu
 func (self DisplayServer) GlobalMenuGetItemIndentationLevel(menu_root String, idx Int) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_indentation_level, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
@@ -9538,7 +10622,7 @@ func (self DisplayServer) GlobalMenuGetItemIndentationLevel(menu_root String, id
 func (self DisplayServer) GlobalMenuSetItemChecked(menu_root String, idx Int, checked bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[bool](2, abi, checked)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_checked, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9548,7 +10632,7 @@ func (self DisplayServer) GlobalMenuSetItemChecked(menu_root String, idx Int, ch
 func (self DisplayServer) GlobalMenuSetItemCheckable(menu_root String, idx Int, checkable bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[bool](2, abi, checkable)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_checkable, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9558,7 +10642,7 @@ func (self DisplayServer) GlobalMenuSetItemCheckable(menu_root String, idx Int, 
 func (self DisplayServer) GlobalMenuSetItemRadioCheckable(menu_root String, idx Int, checkable bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[bool](2, abi, checkable)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_radio_checkable, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9568,9 +10652,9 @@ func (self DisplayServer) GlobalMenuSetItemRadioCheckable(menu_root String, idx 
 func (self DisplayServer) GlobalMenuSetItemCallback(menu_root String, idx Int, callback Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[Callable](2, abi, callback)
+	FrameSet[[2]uintptr](2, abi, callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9578,9 +10662,9 @@ func (self DisplayServer) GlobalMenuSetItemCallback(menu_root String, idx Int, c
 func (self DisplayServer) GlobalMenuSetItemHoverCallbacks(menu_root String, idx Int, callback Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[Callable](2, abi, callback)
+	FrameSet[[2]uintptr](2, abi, callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_hover_callbacks, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9588,9 +10672,9 @@ func (self DisplayServer) GlobalMenuSetItemHoverCallbacks(menu_root String, idx 
 func (self DisplayServer) GlobalMenuSetItemKeyCallback(menu_root String, idx Int, key_callback Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[Callable](2, abi, key_callback)
+	FrameSet[[2]uintptr](2, abi, key_callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_key_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9598,9 +10682,9 @@ func (self DisplayServer) GlobalMenuSetItemKeyCallback(menu_root String, idx Int
 func (self DisplayServer) GlobalMenuSetItemTag(menu_root String, idx Int, tag Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[Variant](2, abi, tag)
+	FrameSet[[3]uintptr](2, abi, tag.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_tag, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9608,9 +10692,9 @@ func (self DisplayServer) GlobalMenuSetItemTag(menu_root String, idx Int, tag Va
 func (self DisplayServer) GlobalMenuSetItemText(menu_root String, idx Int, text String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_text, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9618,9 +10702,9 @@ func (self DisplayServer) GlobalMenuSetItemText(menu_root String, idx Int, text 
 func (self DisplayServer) GlobalMenuSetItemSubmenu(menu_root String, idx Int, submenu String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[String](2, abi, submenu)
+	FrameSet[uintptr](2, abi, submenu.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_submenu, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9628,7 +10712,7 @@ func (self DisplayServer) GlobalMenuSetItemSubmenu(menu_root String, idx Int, su
 func (self DisplayServer) GlobalMenuSetItemAccelerator(menu_root String, idx Int, keycode Key) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[Key](2, abi, keycode)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_accelerator, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9638,7 +10722,7 @@ func (self DisplayServer) GlobalMenuSetItemAccelerator(menu_root String, idx Int
 func (self DisplayServer) GlobalMenuSetItemDisabled(menu_root String, idx Int, disabled bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[bool](2, abi, disabled)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_disabled, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9648,7 +10732,7 @@ func (self DisplayServer) GlobalMenuSetItemDisabled(menu_root String, idx Int, d
 func (self DisplayServer) GlobalMenuSetItemHidden(menu_root String, idx Int, hidden bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[bool](2, abi, hidden)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_hidden, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9658,9 +10742,9 @@ func (self DisplayServer) GlobalMenuSetItemHidden(menu_root String, idx Int, hid
 func (self DisplayServer) GlobalMenuSetItemTooltip(menu_root String, idx Int, tooltip String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[String](2, abi, tooltip)
+	FrameSet[uintptr](2, abi, tooltip.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_tooltip, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9668,7 +10752,7 @@ func (self DisplayServer) GlobalMenuSetItemTooltip(menu_root String, idx Int, to
 func (self DisplayServer) GlobalMenuSetItemState(menu_root String, idx Int, state Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[Int](2, abi, state)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_state, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9678,7 +10762,7 @@ func (self DisplayServer) GlobalMenuSetItemState(menu_root String, idx Int, stat
 func (self DisplayServer) GlobalMenuSetItemMaxStates(menu_root String, idx Int, max_states Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[Int](2, abi, max_states)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_max_states, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9688,9 +10772,9 @@ func (self DisplayServer) GlobalMenuSetItemMaxStates(menu_root String, idx Int, 
 func (self DisplayServer) GlobalMenuSetItemIcon(menu_root String, idx Int, icon Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
-	FrameSet[Texture2D](2, abi, icon)
+	FrameSet[uintptr](2, abi, icon.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9698,7 +10782,7 @@ func (self DisplayServer) GlobalMenuSetItemIcon(menu_root String, idx Int, icon 
 func (self DisplayServer) GlobalMenuSetItemIndentationLevel(menu_root String, idx Int, level Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	FrameSet[Int](2, abi, level)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_indentation_level, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -9708,7 +10792,7 @@ func (self DisplayServer) GlobalMenuSetItemIndentationLevel(menu_root String, id
 func (self DisplayServer) GlobalMenuGetItemCount(menu_root String) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_get_item_count, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -9718,7 +10802,7 @@ func (self DisplayServer) GlobalMenuGetItemCount(menu_root String) Int {
 func (self DisplayServer) GlobalMenuRemoveItem(menu_root String, idx Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	FrameSet[Int](1, abi, idx)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_remove_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -9727,7 +10811,7 @@ func (self DisplayServer) GlobalMenuRemoveItem(menu_root String, idx Int) {
 func (self DisplayServer) GlobalMenuClear(menu_root String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, menu_root)
+	FrameSet[uintptr](0, abi, menu_root.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_clear, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9762,7 +10846,7 @@ func (self DisplayServer) TtsGetVoices() ArrayOf[Dictionary] {
 func (self DisplayServer) TtsGetVoicesForLanguage(ctx Context, language String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, language)
+	FrameSet[uintptr](0, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_tts_get_voices_for_language, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -9772,8 +10856,8 @@ func (self DisplayServer) TtsGetVoicesForLanguage(ctx Context, language String) 
 func (self DisplayServer) TtsSpeak(text String, voice String, volume Int, pitch Float, rate Float, utterance_id Int, interrupt bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, text)
-	FrameSet[String](1, abi, voice)
+	FrameSet[uintptr](0, abi, text.Pointer())
+	FrameSet[uintptr](1, abi, voice.Pointer())
 	FrameSet[Int](2, abi, volume)
 	FrameSet[Float](3, abi, pitch)
 	FrameSet[Float](4, abi, rate)
@@ -9808,7 +10892,7 @@ func (self DisplayServer) TtsSetUtteranceCallback(event DisplayServerTTSUtteranc
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[DisplayServerTTSUtteranceEvent](0, abi, event)
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_tts_set_utterance_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9886,7 +10970,7 @@ func (self DisplayServer) MouseGetButtonState() MouseButtonMask {
 func (self DisplayServer) ClipboardSet(clipboard String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, clipboard)
+	FrameSet[uintptr](0, abi, clipboard.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_clipboard_set, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -9930,7 +11014,7 @@ func (self DisplayServer) ClipboardHasImage() bool {
 func (self DisplayServer) ClipboardSetPrimary(clipboard_primary String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, clipboard_primary)
+	FrameSet[uintptr](0, abi, clipboard_primary.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_clipboard_set_primary, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -10194,7 +11278,7 @@ func (self DisplayServer) WindowGetPopupSafeRect(window Int) Rect2i {
 func (self DisplayServer) WindowSetTitle(title String, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, title)
+	FrameSet[uintptr](0, abi, title.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_title, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10203,7 +11287,7 @@ func (self DisplayServer) WindowSetTitle(title String, window_id Int) {
 func (self DisplayServer) WindowGetTitleSize(title String, window_id Int) Vector2i {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, title)
+	FrameSet[uintptr](0, abi, title.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_get_title_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Vector2i](abi)
@@ -10214,7 +11298,7 @@ func (self DisplayServer) WindowGetTitleSize(title String, window_id Int) Vector
 func (self DisplayServer) WindowSetMousePassthrough(region PackedVector2Array, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, region)
+	FrameSet[[2]uintptr](0, abi, region.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_mouse_passthrough, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10290,7 +11374,7 @@ func (self DisplayServer) WindowSetSize(size Vector2i, window_id Int) {
 func (self DisplayServer) WindowSetRectChangedCallback(callback Callable, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callback)
+	FrameSet[[2]uintptr](0, abi, callback.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_rect_changed_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10299,7 +11383,7 @@ func (self DisplayServer) WindowSetRectChangedCallback(callback Callable, window
 func (self DisplayServer) WindowSetWindowEventCallback(callback Callable, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callback)
+	FrameSet[[2]uintptr](0, abi, callback.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_window_event_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10308,7 +11392,7 @@ func (self DisplayServer) WindowSetWindowEventCallback(callback Callable, window
 func (self DisplayServer) WindowSetInputEventCallback(callback Callable, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callback)
+	FrameSet[[2]uintptr](0, abi, callback.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_input_event_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10317,7 +11401,7 @@ func (self DisplayServer) WindowSetInputEventCallback(callback Callable, window_
 func (self DisplayServer) WindowSetInputTextCallback(callback Callable, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callback)
+	FrameSet[[2]uintptr](0, abi, callback.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_input_text_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10326,7 +11410,7 @@ func (self DisplayServer) WindowSetInputTextCallback(callback Callable, window_i
 func (self DisplayServer) WindowSetDropFilesCallback(callback Callable, window_id Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callback)
+	FrameSet[[2]uintptr](0, abi, callback.Pointer())
 	FrameSet[Int](1, abi, window_id)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_drop_files_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -10589,7 +11673,7 @@ func (self DisplayServer) ImeGetText(ctx Context) String {
 func (self DisplayServer) VirtualKeyboardShow(existing_text String, position Rect2, atype DisplayServerVirtualKeyboardType, max_length Int, cursor_start Int, cursor_end Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, existing_text)
+	FrameSet[uintptr](0, abi, existing_text.Pointer())
 	FrameSet[Rect2](1, abi, position)
 	FrameSet[DisplayServerVirtualKeyboardType](2, abi, atype)
 	FrameSet[Int](3, abi, max_length)
@@ -10635,7 +11719,7 @@ func (self DisplayServer) CursorGetShape() DisplayServerCursorShape {
 func (self DisplayServer) CursorSetCustomImage(cursor Resource, shape DisplayServerCursorShape, hotspot Vector2) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Resource](0, abi, cursor)
+	FrameSet[uintptr](0, abi, cursor.Pointer())
 	FrameSet[DisplayServerCursorShape](1, abi, shape)
 	FrameSet[Vector2](2, abi, hotspot)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_cursor_set_custom_image, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -10662,10 +11746,10 @@ func (self DisplayServer) EnableForStealingFocus(process_id Int) {
 func (self DisplayServer) DialogShow(title String, description String, buttons PackedStringArray, callback Callable) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, title)
-	FrameSet[String](1, abi, description)
-	FrameSet[PackedStringArray](2, abi, buttons)
-	FrameSet[Callable](3, abi, callback)
+	FrameSet[uintptr](0, abi, title.Pointer())
+	FrameSet[uintptr](1, abi, description.Pointer())
+	FrameSet[[2]uintptr](2, abi, buttons.Pointer())
+	FrameSet[[2]uintptr](3, abi, callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_dialog_show, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -10675,10 +11759,10 @@ func (self DisplayServer) DialogShow(title String, description String, buttons P
 func (self DisplayServer) DialogInputText(title String, description String, existing_text String, callback Callable) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, title)
-	FrameSet[String](1, abi, description)
-	FrameSet[String](2, abi, existing_text)
-	FrameSet[Callable](3, abi, callback)
+	FrameSet[uintptr](0, abi, title.Pointer())
+	FrameSet[uintptr](1, abi, description.Pointer())
+	FrameSet[uintptr](2, abi, existing_text.Pointer())
+	FrameSet[[2]uintptr](3, abi, callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_dialog_input_text, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -10688,13 +11772,13 @@ func (self DisplayServer) DialogInputText(title String, description String, exis
 func (self DisplayServer) FileDialogShow(title String, current_directory String, filename String, show_hidden bool, mode DisplayServerFileDialogMode, filters PackedStringArray, callback Callable) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, title)
-	FrameSet[String](1, abi, current_directory)
-	FrameSet[String](2, abi, filename)
+	FrameSet[uintptr](0, abi, title.Pointer())
+	FrameSet[uintptr](1, abi, current_directory.Pointer())
+	FrameSet[uintptr](2, abi, filename.Pointer())
 	FrameSet[bool](3, abi, show_hidden)
 	FrameSet[DisplayServerFileDialogMode](4, abi, mode)
-	FrameSet[PackedStringArray](5, abi, filters)
-	FrameSet[Callable](6, abi, callback)
+	FrameSet[[2]uintptr](5, abi, filters.Pointer())
+	FrameSet[[2]uintptr](6, abi, callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_file_dialog_show, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -10784,7 +11868,7 @@ func (self DisplayServer) ForceProcessAndDropEvents() {
 func (self DisplayServer) SetNativeIcon(filename String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, filename)
+	FrameSet[uintptr](0, abi, filename.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_set_native_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -10792,7 +11876,7 @@ func (self DisplayServer) SetNativeIcon(filename String) {
 func (self DisplayServer) SetIcon(image Image) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, image)
+	FrameSet[uintptr](0, abi, image.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_set_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -10828,7 +11912,7 @@ func (self DisplayServer) TabletGetCurrentDriver(ctx Context) String {
 func (self DisplayServer) TabletSetCurrentDriver(name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.DisplayServer.Bind_tablet_set_current_driver, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -11060,7 +12144,7 @@ func (self Engine) IsInPhysicsFrame() bool {
 func (self Engine) HasSingleton(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Engine.Bind_has_singleton, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -11070,7 +12154,7 @@ func (self Engine) HasSingleton(name StringName) bool {
 func (self Engine) GetSingleton(name StringName) Object {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Engine.Bind_get_singleton, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Object](abi)
 	abi.Free()
@@ -11080,8 +12164,8 @@ func (self Engine) GetSingleton(name StringName) Object {
 func (self Engine) RegisterSingleton(name StringName, instance Object) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Object](1, abi, instance)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, instance.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Engine.Bind_register_singleton, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -11089,7 +12173,7 @@ func (self Engine) RegisterSingleton(name StringName, instance Object) {
 func (self Engine) UnregisterSingleton(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Engine.Bind_unregister_singleton, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -11106,7 +12190,7 @@ func (self Engine) GetSingletonList(ctx Context) PackedStringArray {
 func (self Engine) RegisterScriptLanguage(language ScriptLanguage) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[ScriptLanguage](0, abi, language)
+	FrameSet[uintptr](0, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Engine.Bind_register_script_language, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -11116,7 +12200,7 @@ func (self Engine) RegisterScriptLanguage(language ScriptLanguage) int64 {
 func (self Engine) UnregisterScriptLanguage(language ScriptLanguage) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[ScriptLanguage](0, abi, language)
+	FrameSet[uintptr](0, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Engine.Bind_unregister_script_language, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -11223,7 +12307,7 @@ func (self Environment) GetBackground() EnvironmentBGMode {
 func (self Environment) SetSky(sky Sky) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Sky](0, abi, sky)
+	FrameSet[uintptr](0, abi, sky.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Environment.Bind_set_sky, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -12228,7 +13312,7 @@ func (self Environment) GetGlowMapStrength() Float {
 func (self Environment) SetGlowMap(mode Texture) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture](0, abi, mode)
+	FrameSet[uintptr](0, abi, mode.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Environment.Bind_set_glow_map, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -12687,7 +13771,7 @@ func (self Environment) GetAdjustmentSaturation() Float {
 func (self Environment) SetAdjustmentColorCorrection(color_correction Texture) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture](0, abi, color_correction)
+	FrameSet[uintptr](0, abi, color_correction.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Environment.Bind_set_adjustment_color_correction, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -12722,7 +13806,7 @@ func (self FileAccess) Object() Object { return *self.Super().Super() }
 func (self FileAccess) Open(path String, flags FileAccessModeFlags) FileAccess {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[FileAccessModeFlags](1, abi, flags)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_open, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[FileAccess](abi)
@@ -12733,9 +13817,9 @@ func (self FileAccess) Open(path String, flags FileAccessModeFlags) FileAccess {
 func (self FileAccess) OpenEncrypted(path String, mode_flags FileAccessModeFlags, key PackedByteArray) FileAccess {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[FileAccessModeFlags](1, abi, mode_flags)
-	FrameSet[PackedByteArray](2, abi, key)
+	FrameSet[[2]uintptr](2, abi, key.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_open_encrypted, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[FileAccess](abi)
 	abi.Free()
@@ -12745,9 +13829,9 @@ func (self FileAccess) OpenEncrypted(path String, mode_flags FileAccessModeFlags
 func (self FileAccess) OpenEncryptedWithPass(path String, mode_flags FileAccessModeFlags, pass String) FileAccess {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[FileAccessModeFlags](1, abi, mode_flags)
-	FrameSet[String](2, abi, pass)
+	FrameSet[uintptr](2, abi, pass.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_open_encrypted_with_pass, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[FileAccess](abi)
 	abi.Free()
@@ -12757,7 +13841,7 @@ func (self FileAccess) OpenEncryptedWithPass(path String, mode_flags FileAccessM
 func (self FileAccess) OpenCompressed(path String, mode_flags FileAccessModeFlags, compression_mode FileAccessCompressionMode) FileAccess {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[FileAccessModeFlags](1, abi, mode_flags)
 	FrameSet[FileAccessCompressionMode](2, abi, compression_mode)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_open_compressed, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -12778,7 +13862,7 @@ func (self FileAccess) GetOpenError() int64 {
 func (self FileAccess) GetFileAsBytes(ctx Context, path String) PackedByteArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_file_as_bytes, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -12788,7 +13872,7 @@ func (self FileAccess) GetFileAsBytes(ctx Context, path String) PackedByteArray 
 func (self FileAccess) GetFileAsString(ctx Context, path String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_file_as_string, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -12957,7 +14041,7 @@ func (self FileAccess) GetLine(ctx Context) String {
 func (self FileAccess) GetCsvLine(ctx Context, delim String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, delim)
+	FrameSet[uintptr](0, abi, delim.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_csv_line, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -12977,7 +14061,7 @@ func (self FileAccess) GetAsText(ctx Context, skip_cr bool) String {
 func (self FileAccess) GetMd5(ctx Context, path String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_md5, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -12987,7 +14071,7 @@ func (self FileAccess) GetMd5(ctx Context, path String) String {
 func (self FileAccess) GetSha256(ctx Context, path String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_sha256, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -13089,7 +14173,7 @@ func (self FileAccess) StoreReal(value Float) {
 func (self FileAccess) StoreBuffer(buffer PackedByteArray) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_store_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -13097,7 +14181,7 @@ func (self FileAccess) StoreBuffer(buffer PackedByteArray) {
 func (self FileAccess) StoreLine(line String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, line)
+	FrameSet[uintptr](0, abi, line.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_store_line, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -13105,8 +14189,8 @@ func (self FileAccess) StoreLine(line String) {
 func (self FileAccess) StoreCsvLine(values PackedStringArray, delim String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedStringArray](0, abi, values)
-	FrameSet[String](1, abi, delim)
+	FrameSet[[2]uintptr](0, abi, values.Pointer())
+	FrameSet[uintptr](1, abi, delim.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_store_csv_line, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -13114,7 +14198,7 @@ func (self FileAccess) StoreCsvLine(values PackedStringArray, delim String) {
 func (self FileAccess) StoreString(s String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
+	FrameSet[uintptr](0, abi, s.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_store_string, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -13122,7 +14206,7 @@ func (self FileAccess) StoreString(s String) {
 func (self FileAccess) StoreVar(value Variant, full_objects bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, value)
+	FrameSet[[3]uintptr](0, abi, value.Pointer())
 	FrameSet[bool](1, abi, full_objects)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_store_var, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -13131,7 +14215,7 @@ func (self FileAccess) StoreVar(value Variant, full_objects bool) {
 func (self FileAccess) StorePascalString(s String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
+	FrameSet[uintptr](0, abi, s.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_store_pascal_string, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -13155,7 +14239,7 @@ func (self FileAccess) Close() {
 func (self FileAccess) FileExists(path String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_file_exists, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -13165,7 +14249,7 @@ func (self FileAccess) FileExists(path String) bool {
 func (self FileAccess) GetModifiedTime(file String) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_modified_time, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -13175,7 +14259,7 @@ func (self FileAccess) GetModifiedTime(file String) Int {
 func (self FileAccess) GetUnixPermissions(file String) FileAccessUnixPermissionFlags {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_unix_permissions, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[FileAccessUnixPermissionFlags](abi)
 	abi.Free()
@@ -13185,7 +14269,7 @@ func (self FileAccess) GetUnixPermissions(file String) FileAccessUnixPermissionF
 func (self FileAccess) SetUnixPermissions(file String, permissions FileAccessUnixPermissionFlags) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	FrameSet[FileAccessUnixPermissionFlags](1, abi, permissions)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_set_unix_permissions, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -13196,7 +14280,7 @@ func (self FileAccess) SetUnixPermissions(file String, permissions FileAccessUni
 func (self FileAccess) GetHiddenAttribute(file String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_hidden_attribute, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -13206,7 +14290,7 @@ func (self FileAccess) GetHiddenAttribute(file String) bool {
 func (self FileAccess) SetHiddenAttribute(file String, hidden bool) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	FrameSet[bool](1, abi, hidden)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_set_hidden_attribute, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -13217,7 +14301,7 @@ func (self FileAccess) SetHiddenAttribute(file String, hidden bool) int64 {
 func (self FileAccess) SetReadOnlyAttribute(file String, ro bool) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	FrameSet[bool](1, abi, ro)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_set_read_only_attribute, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -13228,7 +14312,7 @@ func (self FileAccess) SetReadOnlyAttribute(file String, ro bool) int64 {
 func (self FileAccess) GetReadOnlyAttribute(file String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.FileAccess.Bind_get_read_only_attribute, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -13270,7 +14354,7 @@ func (self Font) GetFallbacks() ArrayOf[Font] {
 func (self Font) FindVariation(variation_coordinates Dictionary, face_index Int, strength Float, transform Transform2D, spacing_top Int, spacing_bottom Int, spacing_space Int, spacing_glyph Int) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Dictionary](0, abi, variation_coordinates)
+	FrameSet[uintptr](0, abi, variation_coordinates.Pointer())
 	FrameSet[Int](1, abi, face_index)
 	FrameSet[Float](2, abi, strength)
 	FrameSet[Transform2D](3, abi, transform)
@@ -13428,7 +14512,7 @@ func (self Font) SetCacheCapacity(single_line Int, multi_line Int) {
 func (self Font) GetStringSize(text String, alignment HorizontalAlignment, width Float, font_size Int, justification_flags TextServerJustificationFlag, direction TextServerDirection, orientation TextServerOrientation) Vector2 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, text)
+	FrameSet[uintptr](0, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](1, abi, alignment)
 	FrameSet[Float](2, abi, width)
 	FrameSet[Int](3, abi, font_size)
@@ -13444,7 +14528,7 @@ func (self Font) GetStringSize(text String, alignment HorizontalAlignment, width
 func (self Font) GetMultilineStringSize(text String, alignment HorizontalAlignment, width Float, font_size Int, max_lines Int, brk_flags TextServerLineBreakFlag, justification_flags TextServerJustificationFlag, direction TextServerDirection, orientation TextServerOrientation) Vector2 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, text)
+	FrameSet[uintptr](0, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](1, abi, alignment)
 	FrameSet[Float](2, abi, width)
 	FrameSet[Int](3, abi, font_size)
@@ -13464,7 +14548,7 @@ func (self Font) DrawString(canvas_item RID, pos Vector2, text String, alignment
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, canvas_item)
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -13481,7 +14565,7 @@ func (self Font) DrawMultilineString(canvas_item RID, pos Vector2, text String, 
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, canvas_item)
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -13500,7 +14584,7 @@ func (self Font) DrawStringOutline(canvas_item RID, pos Vector2, text String, al
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, canvas_item)
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -13518,7 +14602,7 @@ func (self Font) DrawMultilineStringOutline(canvas_item RID, pos Vector2, text S
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, canvas_item)
 	FrameSet[Vector2](1, abi, pos)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](2, abi, text.Pointer())
 	FrameSet[HorizontalAlignment](3, abi, alignment)
 	FrameSet[Float](4, abi, width)
 	FrameSet[Int](5, abi, font_size)
@@ -13595,7 +14679,7 @@ func (self Font) GetSupportedChars(ctx Context) String {
 func (self Font) IsLanguageSupported(language String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, language)
+	FrameSet[uintptr](0, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Font.Bind_is_language_supported, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -13605,7 +14689,7 @@ func (self Font) IsLanguageSupported(language String) bool {
 func (self Font) IsScriptSupported(script String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, script)
+	FrameSet[uintptr](0, abi, script.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Font.Bind_is_script_supported, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -13666,8 +14750,8 @@ func (self GDExtension) Object() Object { return *self.Super().Super().Super() }
 func (self GDExtension) OpenLibrary(path String, entry_symbol String) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
-	FrameSet[String](1, abi, entry_symbol)
+	FrameSet[uintptr](0, abi, path.Pointer())
+	FrameSet[uintptr](1, abi, entry_symbol.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.GDExtension.Bind_open_library, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -13902,7 +14986,7 @@ func (self Image) CreateFromData(width Int, height Int, use_mipmaps bool, format
 	FrameSet[Int](1, abi, height)
 	FrameSet[bool](2, abi, use_mipmaps)
 	FrameSet[ImageFormat](3, abi, format)
-	FrameSet[PackedByteArray](4, abi, data)
+	FrameSet[[2]uintptr](4, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_create_from_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Image](abi)
 	abi.Free()
@@ -13916,7 +15000,7 @@ func (self Image) SetData(width Int, height Int, use_mipmaps bool, format ImageF
 	FrameSet[Int](1, abi, height)
 	FrameSet[bool](2, abi, use_mipmaps)
 	FrameSet[ImageFormat](3, abi, format)
-	FrameSet[PackedByteArray](4, abi, data)
+	FrameSet[[2]uintptr](4, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_set_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -13933,7 +15017,7 @@ func (self Image) IsEmpty() bool {
 func (self Image) Load(path String) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -13943,7 +15027,7 @@ func (self Image) Load(path String) int64 {
 func (self Image) LoadFromFile(path String) Image {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_from_file, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Image](abi)
 	abi.Free()
@@ -13953,7 +15037,7 @@ func (self Image) LoadFromFile(path String) Image {
 func (self Image) SavePng(path String) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_save_png, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -13972,7 +15056,7 @@ func (self Image) SavePngToBuffer(ctx Context) PackedByteArray {
 func (self Image) SaveJpg(path String, quality Float) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[Float](1, abi, quality)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_save_jpg, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -13993,7 +15077,7 @@ func (self Image) SaveJpgToBuffer(ctx Context, quality Float) PackedByteArray {
 func (self Image) SaveExr(path String, grayscale bool) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[bool](1, abi, grayscale)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_save_exr, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -14014,7 +15098,7 @@ func (self Image) SaveExrToBuffer(ctx Context, grayscale bool) PackedByteArray {
 func (self Image) SaveWebp(path String, lossy bool, quality Float) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	FrameSet[bool](1, abi, lossy)
 	FrameSet[Float](2, abi, quality)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_save_webp, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -14167,7 +15251,7 @@ func (self Image) BumpMapToNormalMap(bump_scale Float) {
 func (self Image) ComputeImageMetrics(ctx Context, compared_image Image, use_luma bool) Dictionary {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, compared_image)
+	FrameSet[uintptr](0, abi, compared_image.Pointer())
 	FrameSet[bool](1, abi, use_luma)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_compute_image_metrics, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
@@ -14178,7 +15262,7 @@ func (self Image) ComputeImageMetrics(ctx Context, compared_image Image, use_lum
 func (self Image) BlitRect(src Image, src_rect Rect2i, dst Vector2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, src)
+	FrameSet[uintptr](0, abi, src.Pointer())
 	FrameSet[Rect2i](1, abi, src_rect)
 	FrameSet[Vector2i](2, abi, dst)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_blit_rect, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -14188,8 +15272,8 @@ func (self Image) BlitRect(src Image, src_rect Rect2i, dst Vector2i) {
 func (self Image) BlitRectMask(src Image, mask Image, src_rect Rect2i, dst Vector2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, src)
-	FrameSet[Image](1, abi, mask)
+	FrameSet[uintptr](0, abi, src.Pointer())
+	FrameSet[uintptr](1, abi, mask.Pointer())
 	FrameSet[Rect2i](2, abi, src_rect)
 	FrameSet[Vector2i](3, abi, dst)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_blit_rect_mask, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -14199,7 +15283,7 @@ func (self Image) BlitRectMask(src Image, mask Image, src_rect Rect2i, dst Vecto
 func (self Image) BlendRect(src Image, src_rect Rect2i, dst Vector2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, src)
+	FrameSet[uintptr](0, abi, src.Pointer())
 	FrameSet[Rect2i](1, abi, src_rect)
 	FrameSet[Vector2i](2, abi, dst)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_blend_rect, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -14209,8 +15293,8 @@ func (self Image) BlendRect(src Image, src_rect Rect2i, dst Vector2i) {
 func (self Image) BlendRectMask(src Image, mask Image, src_rect Rect2i, dst Vector2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, src)
-	FrameSet[Image](1, abi, mask)
+	FrameSet[uintptr](0, abi, src.Pointer())
+	FrameSet[uintptr](1, abi, mask.Pointer())
 	FrameSet[Rect2i](2, abi, src_rect)
 	FrameSet[Vector2i](3, abi, dst)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_blend_rect_mask, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -14256,7 +15340,7 @@ func (self Image) GetRegion(region Rect2i) Image {
 func (self Image) CopyFrom(src Image) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, src)
+	FrameSet[uintptr](0, abi, src.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_copy_from, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -14314,7 +15398,7 @@ func (self Image) AdjustBcs(brightness Float, contrast Float, saturation Float) 
 func (self Image) LoadPngFromBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_png_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -14324,7 +15408,7 @@ func (self Image) LoadPngFromBuffer(buffer PackedByteArray) int64 {
 func (self Image) LoadJpgFromBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_jpg_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -14334,7 +15418,7 @@ func (self Image) LoadJpgFromBuffer(buffer PackedByteArray) int64 {
 func (self Image) LoadWebpFromBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_webp_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -14344,7 +15428,7 @@ func (self Image) LoadWebpFromBuffer(buffer PackedByteArray) int64 {
 func (self Image) LoadTgaFromBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_tga_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -14354,7 +15438,7 @@ func (self Image) LoadTgaFromBuffer(buffer PackedByteArray) int64 {
 func (self Image) LoadBmpFromBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_bmp_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -14364,7 +15448,7 @@ func (self Image) LoadBmpFromBuffer(buffer PackedByteArray) int64 {
 func (self Image) LoadKtxFromBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_ktx_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -14374,7 +15458,7 @@ func (self Image) LoadKtxFromBuffer(buffer PackedByteArray) int64 {
 func (self Image) LoadSvgFromBuffer(buffer PackedByteArray, scale Float) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	FrameSet[Float](1, abi, scale)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_svg_from_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -14385,7 +15469,7 @@ func (self Image) LoadSvgFromBuffer(buffer PackedByteArray, scale Float) int64 {
 func (self Image) LoadSvgFromString(svg_str String, scale Float) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, svg_str)
+	FrameSet[uintptr](0, abi, svg_str.Pointer())
 	FrameSet[Float](1, abi, scale)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Image.Bind_load_svg_from_string, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -14428,7 +15512,7 @@ func (self InputEvent) GetDevice() Int {
 func (self InputEvent) IsAction(action StringName, exact_match bool) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, action)
+	FrameSet[uintptr](0, abi, action.Pointer())
 	FrameSet[bool](1, abi, exact_match)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.InputEvent.Bind_is_action, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -14439,7 +15523,7 @@ func (self InputEvent) IsAction(action StringName, exact_match bool) bool {
 func (self InputEvent) IsActionPressed(action StringName, allow_echo bool, exact_match bool) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, action)
+	FrameSet[uintptr](0, abi, action.Pointer())
 	FrameSet[bool](1, abi, allow_echo)
 	FrameSet[bool](2, abi, exact_match)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.InputEvent.Bind_is_action_pressed, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -14451,7 +15535,7 @@ func (self InputEvent) IsActionPressed(action StringName, allow_echo bool, exact
 func (self InputEvent) IsActionReleased(action StringName, exact_match bool) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, action)
+	FrameSet[uintptr](0, abi, action.Pointer())
 	FrameSet[bool](1, abi, exact_match)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.InputEvent.Bind_is_action_released, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -14462,7 +15546,7 @@ func (self InputEvent) IsActionReleased(action StringName, exact_match bool) boo
 func (self InputEvent) GetActionStrength(action StringName, exact_match bool) Float {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, action)
+	FrameSet[uintptr](0, abi, action.Pointer())
 	FrameSet[bool](1, abi, exact_match)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.InputEvent.Bind_get_action_strength, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Float](abi)
@@ -14518,7 +15602,7 @@ func (self InputEvent) AsText(ctx Context) String {
 func (self InputEvent) IsMatch(event InputEvent, exact_match bool) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[InputEvent](0, abi, event)
+	FrameSet[uintptr](0, abi, event.Pointer())
 	FrameSet[bool](1, abi, exact_match)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.InputEvent.Bind_is_match, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
@@ -14538,7 +15622,7 @@ func (self InputEvent) IsActionType() bool {
 func (self InputEvent) Accumulate(with_event InputEvent) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[InputEvent](0, abi, with_event)
+	FrameSet[uintptr](0, abi, with_event.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.InputEvent.Bind_accumulate, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -14698,7 +15782,7 @@ func (Material) _can_use_render_priority(impl func(ptr unsafe.Pointer, ctx Conte
 func (self Material) SetNextPass(next_pass Material) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Material](0, abi, next_pass)
+	FrameSet[uintptr](0, abi, next_pass.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Material.Bind_set_next_pass, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -14878,7 +15962,8 @@ func (Mesh) _surface_set_material(impl func(ptr unsafe.Pointer, ctx Context, ind
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		var material = UnsafeGet[Material](p_args, 1)
+		var material Material
+		material.SetPointer(mmm.Make[API, Pointer, uintptr](ctx, api, UnsafeGet[uintptr](p_args, 1)))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, index, material)
 		ctx.Free()
@@ -14926,7 +16011,7 @@ func (Mesh) _set_blend_shape_name(impl func(ptr unsafe.Pointer, ctx Context, ind
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		var name = UnsafeGet[StringName](p_args, 1)
+		var name = mmm.Make[API, StringName](ctx, api, UnsafeGet[uintptr](p_args, 1))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, index, name)
 		ctx.Free()
@@ -15013,7 +16098,7 @@ func (self Mesh) SurfaceSetMaterial(surf_idx Int, material Material) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, surf_idx)
-	FrameSet[Material](1, abi, material)
+	FrameSet[uintptr](1, abi, material.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Mesh.Bind_surface_set_material, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15168,7 +16253,7 @@ func (self MultiMesh) Object() Object { return *self.Super().Super().Super() }
 func (self MultiMesh) SetMesh(mesh Mesh) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Mesh](0, abi, mesh)
+	FrameSet[uintptr](0, abi, mesh.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiMesh.Bind_set_mesh, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15364,7 +16449,7 @@ func (self MultiMesh) GetBuffer(ctx Context) PackedFloat32Array {
 func (self MultiMesh) SetBuffer(buffer PackedFloat32Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedFloat32Array](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiMesh.Bind_set_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15406,7 +16491,7 @@ func (self MultiplayerAPI) GetMultiplayerPeer() MultiplayerPeer {
 func (self MultiplayerAPI) SetMultiplayerPeer(peer MultiplayerPeer) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[MultiplayerPeer](0, abi, peer)
+	FrameSet[uintptr](0, abi, peer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiplayerAPI.Bind_set_multiplayer_peer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15451,9 +16536,9 @@ func (self MultiplayerAPI) Rpc(peer Int, object Object, method StringName, argum
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, peer)
-	FrameSet[Object](1, abi, object)
-	FrameSet[StringName](2, abi, method)
-	FrameSet[Array](3, abi, arguments)
+	FrameSet[uintptr](1, abi, object.Pointer())
+	FrameSet[uintptr](2, abi, method.Pointer())
+	FrameSet[uintptr](3, abi, arguments.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiplayerAPI.Bind_rpc, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -15463,8 +16548,8 @@ func (self MultiplayerAPI) Rpc(peer Int, object Object, method StringName, argum
 func (self MultiplayerAPI) ObjectConfigurationAdd(object Object, configuration Variant) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Object](0, abi, object)
-	FrameSet[Variant](1, abi, configuration)
+	FrameSet[uintptr](0, abi, object.Pointer())
+	FrameSet[[3]uintptr](1, abi, configuration.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiplayerAPI.Bind_object_configuration_add, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -15474,8 +16559,8 @@ func (self MultiplayerAPI) ObjectConfigurationAdd(object Object, configuration V
 func (self MultiplayerAPI) ObjectConfigurationRemove(object Object, configuration Variant) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Object](0, abi, object)
-	FrameSet[Variant](1, abi, configuration)
+	FrameSet[uintptr](0, abi, object.Pointer())
+	FrameSet[[3]uintptr](1, abi, configuration.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiplayerAPI.Bind_object_configuration_remove, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -15494,7 +16579,7 @@ func (self MultiplayerAPI) GetPeers(ctx Context) PackedInt32Array {
 func (self MultiplayerAPI) SetDefaultInterface(interface_name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, interface_name)
+	FrameSet[uintptr](0, abi, interface_name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.MultiplayerAPI.Bind_set_default_interface, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15769,7 +16854,8 @@ func (Node) _get_configuration_warnings(impl func(ptr unsafe.Pointer, ctx Contex
 func (Node) _input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var event = UnsafeGet[InputEvent](p_args, 0)
+		var event InputEvent
+		event.SetPointer(mmm.Make[API, Pointer, uintptr](ctx, api, UnsafeGet[uintptr](p_args, 0)))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.Free()
@@ -15780,7 +16866,8 @@ func (Node) _input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent),
 func (Node) _shortcut_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var event = UnsafeGet[InputEvent](p_args, 0)
+		var event InputEvent
+		event.SetPointer(mmm.Make[API, Pointer, uintptr](ctx, api, UnsafeGet[uintptr](p_args, 0)))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.Free()
@@ -15791,7 +16878,8 @@ func (Node) _shortcut_input(impl func(ptr unsafe.Pointer, ctx Context, event Inp
 func (Node) _unhandled_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var event = UnsafeGet[InputEvent](p_args, 0)
+		var event InputEvent
+		event.SetPointer(mmm.Make[API, Pointer, uintptr](ctx, api, UnsafeGet[uintptr](p_args, 0)))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.Free()
@@ -15802,7 +16890,8 @@ func (Node) _unhandled_input(impl func(ptr unsafe.Pointer, ctx Context, event In
 func (Node) _unhandled_key_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
 	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		var event = UnsafeGet[InputEvent](p_args, 0)
+		var event InputEvent
+		event.SetPointer(mmm.Make[API, Pointer, uintptr](ctx, api, UnsafeGet[uintptr](p_args, 0)))
 		self := reflect.ValueOf(class.Value()).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.Free()
@@ -15820,7 +16909,7 @@ func (self Node) PrintOrphanNodes() {
 func (self Node) AddSibling(sibling Node, force_readable_name bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, sibling)
+	FrameSet[uintptr](0, abi, sibling.Pointer())
 	FrameSet[bool](1, abi, force_readable_name)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_add_sibling, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -15829,7 +16918,7 @@ func (self Node) AddSibling(sibling Node, force_readable_name bool) {
 func (self Node) SetName(name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15846,7 +16935,7 @@ func (self Node) GetName(ctx Context) StringName {
 func (self Node) AddChild(node Node, force_readable_name bool, internal_ NodeInternalMode) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	FrameSet[bool](1, abi, force_readable_name)
 	FrameSet[NodeInternalMode](2, abi, internal_)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_add_child, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -15856,7 +16945,7 @@ func (self Node) AddChild(node Node, force_readable_name bool, internal_ NodeInt
 func (self Node) RemoveChild(node Node) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_remove_child, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -15864,7 +16953,7 @@ func (self Node) RemoveChild(node Node) {
 func (self Node) Reparent(new_parent Node, keep_global_transform bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, new_parent)
+	FrameSet[uintptr](0, abi, new_parent.Pointer())
 	FrameSet[bool](1, abi, keep_global_transform)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_reparent, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -15904,7 +16993,7 @@ func (self Node) GetChild(idx Int, include_internal bool) Node {
 func (self Node) HasNode(path NodePath) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_has_node, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -15914,7 +17003,7 @@ func (self Node) HasNode(path NodePath) bool {
 func (self Node) GetNode(path NodePath) Node {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_get_node, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Node](abi)
 	abi.Free()
@@ -15924,7 +17013,7 @@ func (self Node) GetNode(path NodePath) Node {
 func (self Node) GetNodeOrNull(path NodePath) Node {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_get_node_or_null, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Node](abi)
 	abi.Free()
@@ -15943,7 +17032,7 @@ func (self Node) GetParent() Node {
 func (self Node) FindChild(pattern String, recursive bool, owned bool) Node {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, pattern)
+	FrameSet[uintptr](0, abi, pattern.Pointer())
 	FrameSet[bool](1, abi, recursive)
 	FrameSet[bool](2, abi, owned)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_find_child, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -15955,8 +17044,8 @@ func (self Node) FindChild(pattern String, recursive bool, owned bool) Node {
 func (self Node) FindChildren(pattern String, atype String, recursive bool, owned bool) ArrayOf[Node] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, pattern)
-	FrameSet[String](1, abi, atype)
+	FrameSet[uintptr](0, abi, pattern.Pointer())
+	FrameSet[uintptr](1, abi, atype.Pointer())
 	FrameSet[bool](2, abi, recursive)
 	FrameSet[bool](3, abi, owned)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_find_children, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -15968,7 +17057,7 @@ func (self Node) FindChildren(pattern String, atype String, recursive bool, owne
 func (self Node) FindParent(pattern String) Node {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, pattern)
+	FrameSet[uintptr](0, abi, pattern.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_find_parent, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Node](abi)
 	abi.Free()
@@ -15978,7 +17067,7 @@ func (self Node) FindParent(pattern String) Node {
 func (self Node) HasNodeAndResource(path NodePath) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_has_node_and_resource, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -15988,7 +17077,7 @@ func (self Node) HasNodeAndResource(path NodePath) bool {
 func (self Node) GetNodeAndResource(ctx Context, path NodePath) Array {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_get_node_and_resource, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -16007,7 +17096,7 @@ func (self Node) IsInsideTree() bool {
 func (self Node) IsAncestorOf(node Node) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_is_ancestor_of, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -16017,7 +17106,7 @@ func (self Node) IsAncestorOf(node Node) bool {
 func (self Node) IsGreaterThan(node Node) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_is_greater_than, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -16036,7 +17125,7 @@ func (self Node) GetPath(ctx Context) NodePath {
 func (self Node) GetPathTo(ctx Context, node Node, use_unique_path bool) NodePath {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	FrameSet[bool](1, abi, use_unique_path)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_get_path_to, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
@@ -16047,7 +17136,7 @@ func (self Node) GetPathTo(ctx Context, node Node, use_unique_path bool) NodePat
 func (self Node) AddToGroup(group StringName, persistent bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
+	FrameSet[uintptr](0, abi, group.Pointer())
 	FrameSet[bool](1, abi, persistent)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_add_to_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -16056,7 +17145,7 @@ func (self Node) AddToGroup(group StringName, persistent bool) {
 func (self Node) RemoveFromGroup(group StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
+	FrameSet[uintptr](0, abi, group.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_remove_from_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -16064,7 +17153,7 @@ func (self Node) RemoveFromGroup(group StringName) {
 func (self Node) IsInGroup(group StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
+	FrameSet[uintptr](0, abi, group.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_is_in_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -16074,7 +17163,7 @@ func (self Node) IsInGroup(group StringName) bool {
 func (self Node) MoveChild(child_node Node, to_index Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, child_node)
+	FrameSet[uintptr](0, abi, child_node.Pointer())
 	FrameSet[Int](1, abi, to_index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_move_child, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -16092,7 +17181,7 @@ func (self Node) GetGroups() ArrayOf[StringName] {
 func (self Node) SetOwner(owner Node) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, owner)
+	FrameSet[uintptr](0, abi, owner.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_owner, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -16151,7 +17240,7 @@ func (self Node) GetTreeStringPretty(ctx Context) String {
 func (self Node) SetSceneFilePath(scene_file_path String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, scene_file_path)
+	FrameSet[uintptr](0, abi, scene_file_path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_scene_file_path, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -16176,8 +17265,8 @@ func (self Node) PropagateNotification(what Int) {
 func (self Node) PropagateCall(method StringName, args Array, parent_first bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
-	FrameSet[Array](1, abi, args)
+	FrameSet[uintptr](0, abi, method.Pointer())
+	FrameSet[uintptr](1, abi, args.Pointer())
 	FrameSet[bool](2, abi, parent_first)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_propagate_call, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -16514,7 +17603,7 @@ func (self Node) Duplicate(flags Int) Node {
 func (self Node) ReplaceBy(node Node, keep_groups bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	FrameSet[bool](1, abi, keep_groups)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_replace_by, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -16540,7 +17629,7 @@ func (self Node) GetSceneInstanceLoadPlaceholder() bool {
 func (self Node) SetEditableInstance(node Node, is_editable bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	FrameSet[bool](1, abi, is_editable)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_editable_instance, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -16549,7 +17638,7 @@ func (self Node) SetEditableInstance(node Node, is_editable bool) {
 func (self Node) IsEditableInstance(node Node) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_is_editable_instance, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -16627,8 +17716,8 @@ func (self Node) GetMultiplayer() MultiplayerAPI {
 func (self Node) RpcConfig(method StringName, config Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
-	FrameSet[Variant](1, abi, config)
+	FrameSet[uintptr](0, abi, method.Pointer())
+	FrameSet[[3]uintptr](1, abi, config.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_rpc_config, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -16636,7 +17725,7 @@ func (self Node) RpcConfig(method StringName, config Variant) {
 func (self Node) SetEditorDescription(editor_description String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, editor_description)
+	FrameSet[uintptr](0, abi, editor_description.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_editor_description, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -16670,7 +17759,7 @@ func (self Node) IsUniqueNameInOwner() bool {
 func (self Node) Rpc(method StringName) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
+	FrameSet[uintptr](0, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_rpc, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -16681,7 +17770,7 @@ func (self Node) RpcId(peer_id Int, method StringName) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, peer_id)
-	FrameSet[StringName](1, abi, method)
+	FrameSet[uintptr](1, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_rpc_id, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -16698,7 +17787,7 @@ func (self Node) UpdateConfigurationWarnings() {
 func (self Node) CallDeferredThreadGroup(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
+	FrameSet[uintptr](0, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_call_deferred_thread_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -16708,8 +17797,8 @@ func (self Node) CallDeferredThreadGroup(ctx Context, method StringName) Variant
 func (self Node) SetDeferredThreadGroup(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, property.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_deferred_thread_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -16725,7 +17814,7 @@ func (self Node) NotifyDeferredThreadGroup(what Int) {
 func (self Node) CallThreadSafe(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
+	FrameSet[uintptr](0, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_call_thread_safe, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -16735,8 +17824,8 @@ func (self Node) CallThreadSafe(ctx Context, method StringName) Variant {
 func (self Node) SetThreadSafe(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, property.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node.Bind_set_thread_safe, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17061,7 +18150,7 @@ func (self Node2D) ToGlobal(local_point Vector2) Vector2 {
 func (self Node2D) GetRelativeTransformToParent(parent Node) Transform2D {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, parent)
+	FrameSet[uintptr](0, abi, parent.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node2D.Bind_get_relative_transform_to_parent, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Transform2D](abi)
 	abi.Free()
@@ -17390,7 +18479,7 @@ func (self Node3D) ForceUpdateTransform() {
 func (self Node3D) SetVisibilityParent(path NodePath) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node3D.Bind_set_visibility_parent, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17414,7 +18503,7 @@ func (self Node3D) UpdateGizmos() {
 func (self Node3D) AddGizmo(gizmo Node3DGizmo) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node3DGizmo](0, abi, gizmo)
+	FrameSet[uintptr](0, abi, gizmo.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node3D.Bind_add_gizmo, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17438,7 +18527,7 @@ func (self Node3D) ClearGizmos() {
 func (self Node3D) SetSubgizmoSelection(gizmo Node3DGizmo, id Int, transform Transform3D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node3DGizmo](0, abi, gizmo)
+	FrameSet[uintptr](0, abi, gizmo.Pointer())
 	FrameSet[Int](1, abi, id)
 	FrameSet[Transform3D](2, abi, transform)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Node3D.Bind_set_subgizmo_selection, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -17707,7 +18796,7 @@ func (self Object) GetClass(ctx Context) String {
 func (self Object) IsClass(class String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, class)
+	FrameSet[uintptr](0, abi, class.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_is_class, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -17717,8 +18806,8 @@ func (self Object) IsClass(class String) bool {
 func (self Object) Set(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, property.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_set, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17726,7 +18815,7 @@ func (self Object) Set(property StringName, value Variant) {
 func (self Object) Get(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
+	FrameSet[uintptr](0, abi, property.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_get, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17736,8 +18825,8 @@ func (self Object) Get(ctx Context, property StringName) Variant {
 func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, property_path)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, property_path.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_set_indexed, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17745,7 +18834,7 @@ func (self Object) SetIndexed(property_path NodePath, value Variant) {
 func (self Object) GetIndexed(ctx Context, property_path NodePath) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, property_path)
+	FrameSet[uintptr](0, abi, property_path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_get_indexed, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17773,7 +18862,7 @@ func (self Object) GetMethodList() ArrayOf[Dictionary] {
 func (self Object) PropertyCanRevert(property StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
+	FrameSet[uintptr](0, abi, property.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_property_can_revert, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -17783,7 +18872,7 @@ func (self Object) PropertyCanRevert(property StringName) bool {
 func (self Object) PropertyGetRevert(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
+	FrameSet[uintptr](0, abi, property.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_property_get_revert, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17820,7 +18909,7 @@ func (self Object) GetInstanceId() Int {
 func (self Object) SetScript(script Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, script)
+	FrameSet[[3]uintptr](0, abi, script.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_set_script, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17837,8 +18926,8 @@ func (self Object) GetScript(ctx Context) Variant {
 func (self Object) SetMeta(name StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_set_meta, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17846,7 +18935,7 @@ func (self Object) SetMeta(name StringName, value Variant) {
 func (self Object) RemoveMeta(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_remove_meta, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17854,8 +18943,8 @@ func (self Object) RemoveMeta(name StringName) {
 func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Variant](1, abi, def)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[[3]uintptr](1, abi, def.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_get_meta, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17865,7 +18954,7 @@ func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
 func (self Object) HasMeta(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_has_meta, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -17884,8 +18973,8 @@ func (self Object) GetMetaList() ArrayOf[StringName] {
 func (self Object) AddUserSignal(signal String, arguments Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, signal)
-	FrameSet[Array](1, abi, arguments)
+	FrameSet[uintptr](0, abi, signal.Pointer())
+	FrameSet[uintptr](1, abi, arguments.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_add_user_signal, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17893,7 +18982,7 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 func (self Object) HasUserSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
+	FrameSet[uintptr](0, abi, signal.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_has_user_signal, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -17903,7 +18992,7 @@ func (self Object) HasUserSignal(signal StringName) bool {
 func (self Object) EmitSignal(signal StringName) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
+	FrameSet[uintptr](0, abi, signal.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_emit_signal, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -17913,7 +19002,7 @@ func (self Object) EmitSignal(signal StringName) int64 {
 func (self Object) Call(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
+	FrameSet[uintptr](0, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_call, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17923,7 +19012,7 @@ func (self Object) Call(ctx Context, method StringName) Variant {
 func (self Object) CallDeferred(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
+	FrameSet[uintptr](0, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_call_deferred, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17933,8 +19022,8 @@ func (self Object) CallDeferred(ctx Context, method StringName) Variant {
 func (self Object) SetDeferred(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, property.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_set_deferred, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -17942,8 +19031,8 @@ func (self Object) SetDeferred(property StringName, value Variant) {
 func (self Object) Callv(ctx Context, method StringName, arg_array Array) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
-	FrameSet[Array](1, abi, arg_array)
+	FrameSet[uintptr](0, abi, method.Pointer())
+	FrameSet[uintptr](1, abi, arg_array.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_callv, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -17953,7 +19042,7 @@ func (self Object) Callv(ctx Context, method StringName, arg_array Array) Varian
 func (self Object) HasMethod(method StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, method)
+	FrameSet[uintptr](0, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_has_method, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -17963,7 +19052,7 @@ func (self Object) HasMethod(method StringName) bool {
 func (self Object) HasSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
+	FrameSet[uintptr](0, abi, signal.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_has_signal, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -17982,7 +19071,7 @@ func (self Object) GetSignalList() ArrayOf[Dictionary] {
 func (self Object) GetSignalConnectionList(signal StringName) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
+	FrameSet[uintptr](0, abi, signal.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_get_signal_connection_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Dictionary]](abi)
 	abi.Free()
@@ -18001,8 +19090,8 @@ func (self Object) GetIncomingConnections() ArrayOf[Dictionary] {
 func (self Object) Connect(signal StringName, callable Callable, flags Int) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[uintptr](0, abi, signal.Pointer())
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	FrameSet[Int](2, abi, flags)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_connect, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -18013,8 +19102,8 @@ func (self Object) Connect(signal StringName, callable Callable, flags Int) int6
 func (self Object) Disconnect(signal StringName, callable Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[uintptr](0, abi, signal.Pointer())
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_disconnect, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -18022,8 +19111,8 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal)
-	FrameSet[Callable](1, abi, callable)
+	FrameSet[uintptr](0, abi, signal.Pointer())
+	FrameSet[[2]uintptr](1, abi, callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_is_connected, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -18074,8 +19163,8 @@ func (self Object) CanTranslateMessages() bool {
 func (self Object) Tr(ctx Context, message StringName, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, message)
-	FrameSet[StringName](1, abi, context)
+	FrameSet[uintptr](0, abi, message.Pointer())
+	FrameSet[uintptr](1, abi, context.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_tr, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -18085,10 +19174,10 @@ func (self Object) Tr(ctx Context, message StringName, context StringName) Strin
 func (self Object) TrN(ctx Context, message StringName, plural_message StringName, n Int, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, message)
-	FrameSet[StringName](1, abi, plural_message)
+	FrameSet[uintptr](0, abi, message.Pointer())
+	FrameSet[uintptr](1, abi, plural_message.Pointer())
 	FrameSet[Int](2, abi, n)
-	FrameSet[StringName](3, abi, context)
+	FrameSet[uintptr](3, abi, context.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Object.Bind_tr_n, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -18130,7 +19219,7 @@ func (self PackedScene) Object() Object { return *self.Super().Super().Super() }
 func (self PackedScene) Pack(path Node) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PackedScene.Bind_pack, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -18191,7 +19280,7 @@ func (self PacketPeer) GetVar(ctx Context, allow_objects bool) Variant {
 func (self PacketPeer) PutVar(v Variant, full_objects bool) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, v)
+	FrameSet[[3]uintptr](0, abi, v.Pointer())
 	FrameSet[bool](1, abi, full_objects)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PacketPeer.Bind_put_var, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -18211,7 +19300,7 @@ func (self PacketPeer) GetPacket(ctx Context) PackedByteArray {
 func (self PacketPeer) PutPacket(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PacketPeer.Bind_put_packet, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -18269,7 +19358,7 @@ func (self PhysicsDirectSpaceState2D) Object() Object { return *self.Super() }
 func (self PhysicsDirectSpaceState2D) IntersectPoint(parameters PhysicsPointQueryParameters2D, max_results Int) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsPointQueryParameters2D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	FrameSet[Int](1, abi, max_results)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState2D.Bind_intersect_point, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Dictionary]](abi)
@@ -18280,7 +19369,7 @@ func (self PhysicsDirectSpaceState2D) IntersectPoint(parameters PhysicsPointQuer
 func (self PhysicsDirectSpaceState2D) IntersectRay(ctx Context, parameters PhysicsRayQueryParameters2D) Dictionary {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsRayQueryParameters2D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState2D.Bind_intersect_ray, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -18290,7 +19379,7 @@ func (self PhysicsDirectSpaceState2D) IntersectRay(ctx Context, parameters Physi
 func (self PhysicsDirectSpaceState2D) IntersectShape(parameters PhysicsShapeQueryParameters2D, max_results Int) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters2D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	FrameSet[Int](1, abi, max_results)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState2D.Bind_intersect_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Dictionary]](abi)
@@ -18301,7 +19390,7 @@ func (self PhysicsDirectSpaceState2D) IntersectShape(parameters PhysicsShapeQuer
 func (self PhysicsDirectSpaceState2D) CastMotion(ctx Context, parameters PhysicsShapeQueryParameters2D) PackedFloat32Array {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters2D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState2D.Bind_cast_motion, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -18311,7 +19400,7 @@ func (self PhysicsDirectSpaceState2D) CastMotion(ctx Context, parameters Physics
 func (self PhysicsDirectSpaceState2D) CollideShape(parameters PhysicsShapeQueryParameters2D, max_results Int) ArrayOf[Vector2] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters2D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	FrameSet[Int](1, abi, max_results)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState2D.Bind_collide_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Vector2]](abi)
@@ -18322,7 +19411,7 @@ func (self PhysicsDirectSpaceState2D) CollideShape(parameters PhysicsShapeQueryP
 func (self PhysicsDirectSpaceState2D) GetRestInfo(ctx Context, parameters PhysicsShapeQueryParameters2D) Dictionary {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters2D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState2D.Bind_get_rest_info, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -18345,7 +19434,7 @@ func (self PhysicsDirectSpaceState3D) Object() Object { return *self.Super() }
 func (self PhysicsDirectSpaceState3D) IntersectPoint(parameters PhysicsPointQueryParameters3D, max_results Int) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsPointQueryParameters3D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	FrameSet[Int](1, abi, max_results)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState3D.Bind_intersect_point, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Dictionary]](abi)
@@ -18356,7 +19445,7 @@ func (self PhysicsDirectSpaceState3D) IntersectPoint(parameters PhysicsPointQuer
 func (self PhysicsDirectSpaceState3D) IntersectRay(ctx Context, parameters PhysicsRayQueryParameters3D) Dictionary {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsRayQueryParameters3D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState3D.Bind_intersect_ray, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -18366,7 +19455,7 @@ func (self PhysicsDirectSpaceState3D) IntersectRay(ctx Context, parameters Physi
 func (self PhysicsDirectSpaceState3D) IntersectShape(parameters PhysicsShapeQueryParameters3D, max_results Int) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters3D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	FrameSet[Int](1, abi, max_results)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState3D.Bind_intersect_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Dictionary]](abi)
@@ -18377,7 +19466,7 @@ func (self PhysicsDirectSpaceState3D) IntersectShape(parameters PhysicsShapeQuer
 func (self PhysicsDirectSpaceState3D) CastMotion(ctx Context, parameters PhysicsShapeQueryParameters3D) PackedFloat32Array {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters3D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState3D.Bind_cast_motion, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -18387,7 +19476,7 @@ func (self PhysicsDirectSpaceState3D) CastMotion(ctx Context, parameters Physics
 func (self PhysicsDirectSpaceState3D) CollideShape(parameters PhysicsShapeQueryParameters3D, max_results Int) ArrayOf[Vector3] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters3D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	FrameSet[Int](1, abi, max_results)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState3D.Bind_collide_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Vector3]](abi)
@@ -18398,7 +19487,7 @@ func (self PhysicsDirectSpaceState3D) CollideShape(parameters PhysicsShapeQueryP
 func (self PhysicsDirectSpaceState3D) GetRestInfo(ctx Context, parameters PhysicsShapeQueryParameters3D) Dictionary {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PhysicsShapeQueryParameters3D](0, abi, parameters)
+	FrameSet[uintptr](0, abi, parameters.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsDirectSpaceState3D.Bind_get_rest_info, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -18951,7 +20040,7 @@ func (self PhysicsShapeQueryParameters2D) Object() Object { return *self.Super()
 func (self PhysicsShapeQueryParameters2D) SetShape(shape Resource) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Resource](0, abi, shape)
+	FrameSet[uintptr](0, abi, shape.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -19119,7 +20208,7 @@ func (self PhysicsShapeQueryParameters3D) Object() Object { return *self.Super()
 func (self PhysicsShapeQueryParameters3D) SetShape(shape Resource) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Resource](0, abi, shape)
+	FrameSet[uintptr](0, abi, shape.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -19289,7 +20378,7 @@ func (self PropertyTweener) Object() Object { return *self.Super().Super().Super
 func (self PropertyTweener) From(value Variant) PropertyTweener {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, value)
+	FrameSet[[3]uintptr](0, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.PropertyTweener.Bind_from, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[PropertyTweener](abi)
 	abi.Free()
@@ -19428,7 +20517,7 @@ func (self RDFramebufferPass) Object() Object { return *self.Super().Super() }
 func (self RDFramebufferPass) SetColorAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedInt32Array](0, abi, p_member)
+	FrameSet[[2]uintptr](0, abi, p_member.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_color_attachments, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -19445,7 +20534,7 @@ func (self RDFramebufferPass) GetColorAttachments(ctx Context) PackedInt32Array 
 func (self RDFramebufferPass) SetInputAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedInt32Array](0, abi, p_member)
+	FrameSet[[2]uintptr](0, abi, p_member.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_input_attachments, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -19462,7 +20551,7 @@ func (self RDFramebufferPass) GetInputAttachments(ctx Context) PackedInt32Array 
 func (self RDFramebufferPass) SetResolveAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedInt32Array](0, abi, p_member)
+	FrameSet[[2]uintptr](0, abi, p_member.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_resolve_attachments, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -19479,7 +20568,7 @@ func (self RDFramebufferPass) GetResolveAttachments(ctx Context) PackedInt32Arra
 func (self RDFramebufferPass) SetPreserveAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedInt32Array](0, abi, p_member)
+	FrameSet[[2]uintptr](0, abi, p_member.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_preserve_attachments, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -20511,7 +21600,7 @@ func (self RDPipelineSpecializationConstant) Object() Object { return *self.Supe
 func (self RDPipelineSpecializationConstant) SetValue(value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, value)
+	FrameSet[[3]uintptr](0, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDPipelineSpecializationConstant.Bind_set_value, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -20831,7 +21920,7 @@ func (self RDShaderSPIRV) SetStageBytecode(stage RenderingDeviceShaderStage, byt
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RenderingDeviceShaderStage](0, abi, stage)
-	FrameSet[PackedByteArray](1, abi, bytecode)
+	FrameSet[[2]uintptr](1, abi, bytecode.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDShaderSPIRV.Bind_set_stage_bytecode, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -20850,7 +21939,7 @@ func (self RDShaderSPIRV) SetStageCompileError(stage RenderingDeviceShaderStage,
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RenderingDeviceShaderStage](0, abi, stage)
-	FrameSet[String](1, abi, compile_error)
+	FrameSet[uintptr](1, abi, compile_error.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDShaderSPIRV.Bind_set_stage_compile_error, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -20884,7 +21973,7 @@ func (self RDShaderSource) SetStageSource(stage RenderingDeviceShaderStage, sour
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RenderingDeviceShaderStage](0, abi, stage)
-	FrameSet[String](1, abi, source)
+	FrameSet[uintptr](1, abi, source.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RDShaderSource.Bind_set_stage_source, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -21495,8 +22584,8 @@ func (self RenderingDevice) Object() Object { return *self.Super() }
 func (self RenderingDevice) TextureCreate(format RDTextureFormat, view RDTextureView, data ArrayOf[PackedByteArray]) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDTextureFormat](0, abi, format)
-	FrameSet[RDTextureView](1, abi, view)
+	FrameSet[uintptr](0, abi, format.Pointer())
+	FrameSet[uintptr](1, abi, view.Pointer())
 	FrameSet[ArrayOf[PackedByteArray]](2, abi, data)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_texture_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -21507,7 +22596,7 @@ func (self RenderingDevice) TextureCreate(format RDTextureFormat, view RDTexture
 func (self RenderingDevice) TextureCreateShared(view RDTextureView, with_texture RID) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDTextureView](0, abi, view)
+	FrameSet[uintptr](0, abi, view.Pointer())
 	FrameSet[RID](1, abi, with_texture)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_texture_create_shared, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -21518,7 +22607,7 @@ func (self RenderingDevice) TextureCreateShared(view RDTextureView, with_texture
 func (self RenderingDevice) TextureCreateSharedFromSlice(view RDTextureView, with_texture RID, layer Int, mipmap Int, mipmaps Int, slice_type RenderingDeviceTextureSliceType) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDTextureView](0, abi, view)
+	FrameSet[uintptr](0, abi, view.Pointer())
 	FrameSet[RID](1, abi, with_texture)
 	FrameSet[Int](2, abi, layer)
 	FrameSet[Int](3, abi, mipmap)
@@ -21553,7 +22642,7 @@ func (self RenderingDevice) TextureUpdate(texture RID, layer Int, data PackedByt
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, texture)
 	FrameSet[Int](1, abi, layer)
-	FrameSet[PackedByteArray](2, abi, data)
+	FrameSet[[2]uintptr](2, abi, data.Pointer())
 	FrameSet[RenderingDeviceBarrierMask](3, abi, post_barrier)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_texture_update, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -21774,7 +22863,7 @@ func (self RenderingDevice) FramebufferIsValid(framebuffer RID) bool {
 func (self RenderingDevice) SamplerCreate(state RDSamplerState) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDSamplerState](0, abi, state)
+	FrameSet[uintptr](0, abi, state.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_sampler_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
 	abi.Free()
@@ -21796,7 +22885,7 @@ func (self RenderingDevice) VertexBufferCreate(size_bytes Int, data PackedByteAr
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, size_bytes)
-	FrameSet[PackedByteArray](1, abi, data)
+	FrameSet[[2]uintptr](1, abi, data.Pointer())
 	FrameSet[bool](2, abi, use_as_storage)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_vertex_buffer_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -21820,7 +22909,7 @@ func (self RenderingDevice) VertexArrayCreate(vertex_count Int, vertex_format In
 	FrameSet[Int](0, abi, vertex_count)
 	FrameSet[Int](1, abi, vertex_format)
 	FrameSet[ArrayOf[RID]](2, abi, src_buffers)
-	FrameSet[PackedInt64Array](3, abi, offsets)
+	FrameSet[[2]uintptr](3, abi, offsets.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_vertex_array_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
 	abi.Free()
@@ -21832,7 +22921,7 @@ func (self RenderingDevice) IndexBufferCreate(size_indices Int, format Rendering
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, size_indices)
 	FrameSet[RenderingDeviceIndexBufferFormat](1, abi, format)
-	FrameSet[PackedByteArray](2, abi, data)
+	FrameSet[[2]uintptr](2, abi, data.Pointer())
 	FrameSet[bool](3, abi, use_restart_indices)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_index_buffer_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -21855,7 +22944,7 @@ func (self RenderingDevice) IndexArrayCreate(index_buffer RID, index_offset Int,
 func (self RenderingDevice) ShaderCompileSpirvFromSource(shader_source RDShaderSource, allow_cache bool) RDShaderSPIRV {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDShaderSource](0, abi, shader_source)
+	FrameSet[uintptr](0, abi, shader_source.Pointer())
 	FrameSet[bool](1, abi, allow_cache)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_shader_compile_spirv_from_source, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RDShaderSPIRV](abi)
@@ -21866,8 +22955,8 @@ func (self RenderingDevice) ShaderCompileSpirvFromSource(shader_source RDShaderS
 func (self RenderingDevice) ShaderCompileBinaryFromSpirv(ctx Context, spirv_data RDShaderSPIRV, name String) PackedByteArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDShaderSPIRV](0, abi, spirv_data)
-	FrameSet[String](1, abi, name)
+	FrameSet[uintptr](0, abi, spirv_data.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_shader_compile_binary_from_spirv, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -21877,8 +22966,8 @@ func (self RenderingDevice) ShaderCompileBinaryFromSpirv(ctx Context, spirv_data
 func (self RenderingDevice) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV, name String) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[RDShaderSPIRV](0, abi, spirv_data)
-	FrameSet[String](1, abi, name)
+	FrameSet[uintptr](0, abi, spirv_data.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_shader_create_from_spirv, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
 	abi.Free()
@@ -21888,7 +22977,7 @@ func (self RenderingDevice) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV, name
 func (self RenderingDevice) ShaderCreateFromBytecode(binary_data PackedByteArray, placeholder_rid RID) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, binary_data)
+	FrameSet[[2]uintptr](0, abi, binary_data.Pointer())
 	FrameSet[RID](1, abi, placeholder_rid)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_shader_create_from_bytecode, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -21919,7 +23008,7 @@ func (self RenderingDevice) UniformBufferCreate(size_bytes Int, data PackedByteA
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, size_bytes)
-	FrameSet[PackedByteArray](1, abi, data)
+	FrameSet[[2]uintptr](1, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_uniform_buffer_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
 	abi.Free()
@@ -21930,7 +23019,7 @@ func (self RenderingDevice) StorageBufferCreate(size_bytes Int, data PackedByteA
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, size_bytes)
-	FrameSet[PackedByteArray](1, abi, data)
+	FrameSet[[2]uintptr](1, abi, data.Pointer())
 	FrameSet[RenderingDeviceStorageBufferUsage](2, abi, usage)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_storage_buffer_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -21943,7 +23032,7 @@ func (self RenderingDevice) TextureBufferCreate(size_bytes Int, format Rendering
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, size_bytes)
 	FrameSet[RenderingDeviceDataFormat](1, abi, format)
-	FrameSet[PackedByteArray](2, abi, data)
+	FrameSet[[2]uintptr](2, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_texture_buffer_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
 	abi.Free()
@@ -21978,7 +23067,7 @@ func (self RenderingDevice) BufferUpdate(buffer RID, offset Int, size_bytes Int,
 	FrameSet[RID](0, abi, buffer)
 	FrameSet[Int](1, abi, offset)
 	FrameSet[Int](2, abi, size_bytes)
-	FrameSet[PackedByteArray](3, abi, data)
+	FrameSet[[2]uintptr](3, abi, data.Pointer())
 	FrameSet[RenderingDeviceBarrierMask](4, abi, post_barrier)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_buffer_update, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
@@ -22018,10 +23107,10 @@ func (self RenderingDevice) RenderPipelineCreate(shader RID, framebuffer_format 
 	FrameSet[Int](1, abi, framebuffer_format)
 	FrameSet[Int](2, abi, vertex_format)
 	FrameSet[RenderingDeviceRenderPrimitive](3, abi, primitive)
-	FrameSet[RDPipelineRasterizationState](4, abi, rasterization_state)
-	FrameSet[RDPipelineMultisampleState](5, abi, multisample_state)
-	FrameSet[RDPipelineDepthStencilState](6, abi, stencil_state)
-	FrameSet[RDPipelineColorBlendState](7, abi, color_blend_state)
+	FrameSet[uintptr](4, abi, rasterization_state.Pointer())
+	FrameSet[uintptr](5, abi, multisample_state.Pointer())
+	FrameSet[uintptr](6, abi, stencil_state.Pointer())
+	FrameSet[uintptr](7, abi, color_blend_state.Pointer())
 	FrameSet[RenderingDevicePipelineDynamicStateFlags](8, abi, dynamic_state_flags)
 	FrameSet[Int](9, abi, for_render_pass)
 	FrameSet[ArrayOf[RDPipelineSpecializationConstant]](10, abi, specialization_constants)
@@ -22110,7 +23199,7 @@ func (self RenderingDevice) DrawListBegin(framebuffer RID, initial_color_action 
 	FrameSet[RenderingDeviceFinalAction](2, abi, final_color_action)
 	FrameSet[RenderingDeviceInitialAction](3, abi, initial_depth_action)
 	FrameSet[RenderingDeviceFinalAction](4, abi, final_depth_action)
-	FrameSet[PackedColorArray](5, abi, clear_color_values)
+	FrameSet[[2]uintptr](5, abi, clear_color_values.Pointer())
 	FrameSet[Float](6, abi, clear_depth)
 	FrameSet[Int](7, abi, clear_stencil)
 	FrameSet[Rect2](8, abi, region)
@@ -22130,7 +23219,7 @@ func (self RenderingDevice) DrawListBeginSplit(ctx Context, framebuffer RID, spl
 	FrameSet[RenderingDeviceFinalAction](3, abi, final_color_action)
 	FrameSet[RenderingDeviceInitialAction](4, abi, initial_depth_action)
 	FrameSet[RenderingDeviceFinalAction](5, abi, final_depth_action)
-	FrameSet[PackedColorArray](6, abi, clear_color_values)
+	FrameSet[[2]uintptr](6, abi, clear_color_values.Pointer())
 	FrameSet[Float](7, abi, clear_depth)
 	FrameSet[Int](8, abi, clear_stencil)
 	FrameSet[Rect2](9, abi, region)
@@ -22191,7 +23280,7 @@ func (self RenderingDevice) DrawListSetPushConstant(draw_list Int, buffer Packed
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, draw_list)
-	FrameSet[PackedByteArray](1, abi, buffer)
+	FrameSet[[2]uintptr](1, abi, buffer.Pointer())
 	FrameSet[Int](2, abi, size_bytes)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_set_push_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -22275,7 +23364,7 @@ func (self RenderingDevice) ComputeListSetPushConstant(compute_list Int, buffer 
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, compute_list)
-	FrameSet[PackedByteArray](1, abi, buffer)
+	FrameSet[[2]uintptr](1, abi, buffer.Pointer())
 	FrameSet[Int](2, abi, size_bytes)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_set_push_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -22329,7 +23418,7 @@ func (self RenderingDevice) FreeRid(rid RID) {
 func (self RenderingDevice) CaptureTimestamp(name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_capture_timestamp, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -22444,7 +23533,7 @@ func (self RenderingDevice) SetResourceName(id RID, name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, id)
-	FrameSet[String](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_set_resource_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -22452,7 +23541,7 @@ func (self RenderingDevice) SetResourceName(id RID, name String) {
 func (self RenderingDevice) DrawCommandBeginLabel(name String, color Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Color](1, abi, color)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_command_begin_label, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -22461,7 +23550,7 @@ func (self RenderingDevice) DrawCommandBeginLabel(name String, color Color) {
 func (self RenderingDevice) DrawCommandInsertLabel(name String, color Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Color](1, abi, color)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_command_insert_label, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -22686,7 +23775,7 @@ func (self RenderingServer) isSingleton() {}
 func (self RenderingServer) Texture2dCreate(image Image) RID {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, image)
+	FrameSet[uintptr](0, abi, image.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_texture_2d_create, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
 	abi.Free()
@@ -22733,7 +23822,7 @@ func (self RenderingServer) Texture2dUpdate(texture RID, image Image, layer Int)
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, texture)
-	FrameSet[Image](1, abi, image)
+	FrameSet[uintptr](1, abi, image.Pointer())
 	FrameSet[Int](2, abi, layer)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_texture_2d_update, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -22839,7 +23928,7 @@ func (self RenderingServer) TextureSetPath(texture RID, path String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, texture)
-	FrameSet[String](1, abi, path)
+	FrameSet[uintptr](1, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_texture_set_path, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -22919,7 +24008,7 @@ func (self RenderingServer) ShaderSetCode(shader RID, code String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shader)
-	FrameSet[String](1, abi, code)
+	FrameSet[uintptr](1, abi, code.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_shader_set_code, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -22928,7 +24017,7 @@ func (self RenderingServer) ShaderSetPathHint(shader RID, path String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shader)
-	FrameSet[String](1, abi, path)
+	FrameSet[uintptr](1, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_shader_set_path_hint, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -22957,7 +24046,7 @@ func (self RenderingServer) ShaderGetParameterDefault(ctx Context, shader RID, n
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shader)
-	FrameSet[StringName](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_shader_get_parameter_default, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -22968,7 +24057,7 @@ func (self RenderingServer) ShaderSetDefaultTextureParameter(shader RID, name St
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shader)
-	FrameSet[StringName](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	FrameSet[RID](2, abi, texture)
 	FrameSet[Int](3, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_shader_set_default_texture_parameter, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -22979,7 +24068,7 @@ func (self RenderingServer) ShaderGetDefaultTextureParameter(shader RID, name St
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shader)
-	FrameSet[StringName](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	FrameSet[Int](2, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_shader_get_default_texture_parameter, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RID](abi)
@@ -23009,8 +24098,8 @@ func (self RenderingServer) MaterialSetParam(material RID, parameter StringName,
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, material)
-	FrameSet[StringName](1, abi, parameter)
-	FrameSet[Variant](2, abi, value)
+	FrameSet[uintptr](1, abi, parameter.Pointer())
+	FrameSet[[3]uintptr](2, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_material_set_param, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -23019,7 +24108,7 @@ func (self RenderingServer) MaterialGetParam(ctx Context, material RID, paramete
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, material)
-	FrameSet[StringName](1, abi, parameter)
+	FrameSet[uintptr](1, abi, parameter.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_material_get_param, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -23124,7 +24213,7 @@ func (self RenderingServer) MeshAddSurface(mesh RID, surface Dictionary) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, mesh)
-	FrameSet[Dictionary](1, abi, surface)
+	FrameSet[uintptr](1, abi, surface.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_add_surface, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -23134,9 +24223,9 @@ func (self RenderingServer) MeshAddSurfaceFromArrays(mesh RID, primitive Renderi
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, mesh)
 	FrameSet[RenderingServerPrimitiveType](1, abi, primitive)
-	FrameSet[Array](2, abi, arrays)
-	FrameSet[Array](3, abi, blend_shapes)
-	FrameSet[Dictionary](4, abi, lods)
+	FrameSet[uintptr](2, abi, arrays.Pointer())
+	FrameSet[uintptr](3, abi, blend_shapes.Pointer())
+	FrameSet[uintptr](4, abi, lods.Pointer())
 	FrameSet[RenderingServerArrayFormat](5, abi, compress_format)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -23268,7 +24357,7 @@ func (self RenderingServer) MeshSurfaceUpdateVertexRegion(mesh RID, surface Int,
 	FrameSet[RID](0, abi, mesh)
 	FrameSet[Int](1, abi, surface)
 	FrameSet[Int](2, abi, offset)
-	FrameSet[PackedByteArray](3, abi, data)
+	FrameSet[[2]uintptr](3, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_update_vertex_region, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -23279,7 +24368,7 @@ func (self RenderingServer) MeshSurfaceUpdateAttributeRegion(mesh RID, surface I
 	FrameSet[RID](0, abi, mesh)
 	FrameSet[Int](1, abi, surface)
 	FrameSet[Int](2, abi, offset)
-	FrameSet[PackedByteArray](3, abi, data)
+	FrameSet[[2]uintptr](3, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_update_attribute_region, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -23290,7 +24379,7 @@ func (self RenderingServer) MeshSurfaceUpdateSkinRegion(mesh RID, surface Int, o
 	FrameSet[RID](0, abi, mesh)
 	FrameSet[Int](1, abi, surface)
 	FrameSet[Int](2, abi, offset)
-	FrameSet[PackedByteArray](3, abi, data)
+	FrameSet[[2]uintptr](3, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_update_skin_region, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -23471,7 +24560,7 @@ func (self RenderingServer) MultimeshSetBuffer(multimesh RID, buffer PackedFloat
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, multimesh)
-	FrameSet[PackedFloat32Array](1, abi, buffer)
+	FrameSet[[2]uintptr](1, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_set_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -24017,10 +25106,10 @@ func (self RenderingServer) VoxelGiAllocateData(voxel_gi RID, to_cell_xform Tran
 	FrameSet[Transform3D](1, abi, to_cell_xform)
 	FrameSet[AABB](2, abi, aabb)
 	FrameSet[Vector3i](3, abi, octree_size)
-	FrameSet[PackedByteArray](4, abi, octree_cells)
-	FrameSet[PackedByteArray](5, abi, data_cells)
-	FrameSet[PackedByteArray](6, abi, distance_field)
-	FrameSet[PackedInt32Array](7, abi, level_counts)
+	FrameSet[[2]uintptr](4, abi, octree_cells.Pointer())
+	FrameSet[[2]uintptr](5, abi, data_cells.Pointer())
+	FrameSet[[2]uintptr](6, abi, distance_field.Pointer())
+	FrameSet[[2]uintptr](7, abi, level_counts.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_allocate_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -24206,10 +25295,10 @@ func (self RenderingServer) LightmapSetProbeCaptureData(lightmap RID, points Pac
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, lightmap)
-	FrameSet[PackedVector3Array](1, abi, points)
-	FrameSet[PackedColorArray](2, abi, point_sh)
-	FrameSet[PackedInt32Array](3, abi, tetrahedra)
-	FrameSet[PackedInt32Array](4, abi, bsp_tree)
+	FrameSet[[2]uintptr](1, abi, points.Pointer())
+	FrameSet[[2]uintptr](2, abi, point_sh.Pointer())
+	FrameSet[[2]uintptr](3, abi, tetrahedra.Pointer())
+	FrameSet[[2]uintptr](4, abi, bsp_tree.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -24740,8 +25829,8 @@ func (self RenderingServer) VisibilityNotifierSetCallbacks(notifier RID, enter_c
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, notifier)
-	FrameSet[Callable](1, abi, enter_callable)
-	FrameSet[Callable](2, abi, exit_callable)
+	FrameSet[[2]uintptr](1, abi, enter_callable.Pointer())
+	FrameSet[[2]uintptr](2, abi, exit_callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -24759,8 +25848,8 @@ func (self RenderingServer) OccluderSetMesh(occluder RID, vertices PackedVector3
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, occluder)
-	FrameSet[PackedVector3Array](1, abi, vertices)
-	FrameSet[PackedInt32Array](2, abi, indices)
+	FrameSet[[2]uintptr](1, abi, vertices.Pointer())
+	FrameSet[[2]uintptr](2, abi, indices.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_occluder_set_mesh, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -25456,7 +26545,7 @@ func (self RenderingServer) EnvironmentSetGlow(env RID, enable bool, levels Pack
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, env)
 	FrameSet[bool](1, abi, enable)
-	FrameSet[PackedFloat32Array](2, abi, levels)
+	FrameSet[[2]uintptr](2, abi, levels.Pointer())
 	FrameSet[Float](3, abi, intensity)
 	FrameSet[Float](4, abi, strength)
 	FrameSet[Float](5, abi, mix)
@@ -26036,8 +27125,8 @@ func (self RenderingServer) InstanceGeometrySetShaderParameter(instance RID, par
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, instance)
-	FrameSet[StringName](1, abi, parameter)
-	FrameSet[Variant](2, abi, value)
+	FrameSet[uintptr](1, abi, parameter.Pointer())
+	FrameSet[[3]uintptr](2, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -26046,7 +27135,7 @@ func (self RenderingServer) InstanceGeometryGetShaderParameter(ctx Context, inst
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, instance)
-	FrameSet[StringName](1, abi, parameter)
+	FrameSet[uintptr](1, abi, parameter.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -26057,7 +27146,7 @@ func (self RenderingServer) InstanceGeometryGetShaderParameterDefaultValue(ctx C
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, instance)
-	FrameSet[StringName](1, abi, parameter)
+	FrameSet[uintptr](1, abi, parameter.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -26347,8 +27436,8 @@ func (self RenderingServer) CanvasItemAddPolyline(item RID, points PackedVector2
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, item)
-	FrameSet[PackedVector2Array](1, abi, points)
-	FrameSet[PackedColorArray](2, abi, colors)
+	FrameSet[[2]uintptr](1, abi, points.Pointer())
+	FrameSet[[2]uintptr](2, abi, colors.Pointer())
 	FrameSet[Float](3, abi, width)
 	FrameSet[bool](4, abi, antialiased)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_polyline, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -26359,8 +27448,8 @@ func (self RenderingServer) CanvasItemAddMultiline(item RID, points PackedVector
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, item)
-	FrameSet[PackedVector2Array](1, abi, points)
-	FrameSet[PackedColorArray](2, abi, colors)
+	FrameSet[[2]uintptr](1, abi, points.Pointer())
+	FrameSet[[2]uintptr](2, abi, colors.Pointer())
 	FrameSet[Float](3, abi, width)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_multiline, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -26462,9 +27551,9 @@ func (self RenderingServer) CanvasItemAddPrimitive(item RID, points PackedVector
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, item)
-	FrameSet[PackedVector2Array](1, abi, points)
-	FrameSet[PackedColorArray](2, abi, colors)
-	FrameSet[PackedVector2Array](3, abi, uvs)
+	FrameSet[[2]uintptr](1, abi, points.Pointer())
+	FrameSet[[2]uintptr](2, abi, colors.Pointer())
+	FrameSet[[2]uintptr](3, abi, uvs.Pointer())
 	FrameSet[RID](4, abi, texture)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_primitive, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -26474,9 +27563,9 @@ func (self RenderingServer) CanvasItemAddPolygon(item RID, points PackedVector2A
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, item)
-	FrameSet[PackedVector2Array](1, abi, points)
-	FrameSet[PackedColorArray](2, abi, colors)
-	FrameSet[PackedVector2Array](3, abi, uvs)
+	FrameSet[[2]uintptr](1, abi, points.Pointer())
+	FrameSet[[2]uintptr](2, abi, colors.Pointer())
+	FrameSet[[2]uintptr](3, abi, uvs.Pointer())
 	FrameSet[RID](4, abi, texture)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_polygon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -26486,12 +27575,12 @@ func (self RenderingServer) CanvasItemAddTriangleArray(item RID, indices PackedI
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, item)
-	FrameSet[PackedInt32Array](1, abi, indices)
-	FrameSet[PackedVector2Array](2, abi, points)
-	FrameSet[PackedColorArray](3, abi, colors)
-	FrameSet[PackedVector2Array](4, abi, uvs)
-	FrameSet[PackedInt32Array](5, abi, bones)
-	FrameSet[PackedFloat32Array](6, abi, weights)
+	FrameSet[[2]uintptr](1, abi, indices.Pointer())
+	FrameSet[[2]uintptr](2, abi, points.Pointer())
+	FrameSet[[2]uintptr](3, abi, colors.Pointer())
+	FrameSet[[2]uintptr](4, abi, uvs.Pointer())
+	FrameSet[[2]uintptr](5, abi, bones.Pointer())
+	FrameSet[[2]uintptr](6, abi, weights.Pointer())
 	FrameSet[RID](7, abi, texture)
 	FrameSet[Int](8, abi, count)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_triangle_array, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -26638,8 +27727,8 @@ func (self RenderingServer) CanvasItemSetVisibilityNotifier(item RID, enable boo
 	FrameSet[RID](0, abi, item)
 	FrameSet[bool](1, abi, enable)
 	FrameSet[Rect2](2, abi, area)
-	FrameSet[Callable](3, abi, enter_callable)
-	FrameSet[Callable](4, abi, exit_callable)
+	FrameSet[[2]uintptr](3, abi, enter_callable.Pointer())
+	FrameSet[[2]uintptr](4, abi, exit_callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -26915,7 +28004,7 @@ func (self RenderingServer) CanvasOccluderPolygonSetShape(occluder_polygon RID, 
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, occluder_polygon)
-	FrameSet[PackedVector2Array](1, abi, shape)
+	FrameSet[[2]uintptr](1, abi, shape.Pointer())
 	FrameSet[bool](2, abi, closed)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -26941,9 +28030,9 @@ func (self RenderingServer) CanvasSetShadowTextureSize(size Int) {
 func (self RenderingServer) GlobalShaderParameterAdd(name StringName, atype RenderingServerGlobalShaderParameterType, default_value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[RenderingServerGlobalShaderParameterType](1, abi, atype)
-	FrameSet[Variant](2, abi, default_value)
+	FrameSet[[3]uintptr](2, abi, default_value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_add, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -26951,7 +28040,7 @@ func (self RenderingServer) GlobalShaderParameterAdd(name StringName, atype Rend
 func (self RenderingServer) GlobalShaderParameterRemove(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_remove, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -26968,8 +28057,8 @@ func (self RenderingServer) GlobalShaderParameterGetList() ArrayOf[StringName] {
 func (self RenderingServer) GlobalShaderParameterSet(name StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_set, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -26977,8 +28066,8 @@ func (self RenderingServer) GlobalShaderParameterSet(name StringName, value Vari
 func (self RenderingServer) GlobalShaderParameterSetOverride(name StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Variant](1, abi, value)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[[3]uintptr](1, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_set_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -26986,7 +28075,7 @@ func (self RenderingServer) GlobalShaderParameterSetOverride(name StringName, va
 func (self RenderingServer) GlobalShaderParameterGet(ctx Context, name StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_get, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -26996,7 +28085,7 @@ func (self RenderingServer) GlobalShaderParameterGet(ctx Context, name StringNam
 func (self RenderingServer) GlobalShaderParameterGetType(name StringName) RenderingServerGlobalShaderParameterType {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_get_type, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[RenderingServerGlobalShaderParameterType](abi)
 	abi.Free()
@@ -27014,7 +28103,7 @@ func (self RenderingServer) FreeRid(rid RID) {
 func (self RenderingServer) RequestFrameDrawnCallback(callable Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callable)
+	FrameSet[[2]uintptr](0, abi, callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_request_frame_drawn_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27116,7 +28205,7 @@ func (self RenderingServer) GetWhiteTexture() RID {
 func (self RenderingServer) SetBootImage(image Image, color Color, scale bool, use_filter bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Image](0, abi, image)
+	FrameSet[uintptr](0, abi, image.Pointer())
 	FrameSet[Color](1, abi, color)
 	FrameSet[bool](2, abi, scale)
 	FrameSet[bool](3, abi, use_filter)
@@ -27154,7 +28243,7 @@ func (self RenderingServer) HasFeature(feature RenderingServerFeatures) bool {
 func (self RenderingServer) HasOsFeature(feature String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, feature)
+	FrameSet[uintptr](0, abi, feature.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_has_os_feature, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -27232,7 +28321,7 @@ func (self RenderingServer) CreateLocalRenderingDevice() RenderingDevice {
 func (self RenderingServer) CallOnRenderThread(callable Callable) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callable)
+	FrameSet[[2]uintptr](0, abi, callable.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.RenderingServer.Bind_call_on_render_thread, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27263,7 +28352,7 @@ func (Resource) _setup_local_to_scene(impl func(ptr unsafe.Pointer, ctx Context)
 func (self Resource) SetPath(path String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Resource.Bind_set_path, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27271,7 +28360,7 @@ func (self Resource) SetPath(path String) {
 func (self Resource) TakeOverPath(path String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Resource.Bind_take_over_path, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27288,7 +28377,7 @@ func (self Resource) GetPath(ctx Context) String {
 func (self Resource) SetName(name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Resource.Bind_set_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27614,7 +28703,7 @@ func (self SceneTree) GetRoot() Window {
 func (self SceneTree) HasGroup(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_has_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -27709,7 +28798,7 @@ func (self SceneTree) IsDebuggingNavigationHint() bool {
 func (self SceneTree) SetEditedSceneRoot(scene Node) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, scene)
+	FrameSet[uintptr](0, abi, scene.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_set_edited_scene_root, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27800,7 +28889,7 @@ func (self SceneTree) Quit(exit_code Int) {
 func (self SceneTree) QueueDelete(obj Object) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Object](0, abi, obj)
+	FrameSet[uintptr](0, abi, obj.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_queue_delete, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27809,8 +28898,8 @@ func (self SceneTree) CallGroupFlags(flags Int, group StringName, method StringN
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, flags)
-	FrameSet[StringName](1, abi, group)
-	FrameSet[StringName](2, abi, method)
+	FrameSet[uintptr](1, abi, group.Pointer())
+	FrameSet[uintptr](2, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_call_group_flags, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27819,7 +28908,7 @@ func (self SceneTree) NotifyGroupFlags(call_flags Int, group StringName, notific
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, call_flags)
-	FrameSet[StringName](1, abi, group)
+	FrameSet[uintptr](1, abi, group.Pointer())
 	FrameSet[Int](2, abi, notification)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_notify_group_flags, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -27829,9 +28918,9 @@ func (self SceneTree) SetGroupFlags(call_flags Int, group StringName, property S
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[Int](0, abi, call_flags)
-	FrameSet[StringName](1, abi, group)
-	FrameSet[String](2, abi, property)
-	FrameSet[Variant](3, abi, value)
+	FrameSet[uintptr](1, abi, group.Pointer())
+	FrameSet[uintptr](2, abi, property.Pointer())
+	FrameSet[[3]uintptr](3, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_set_group_flags, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27839,8 +28928,8 @@ func (self SceneTree) SetGroupFlags(call_flags Int, group StringName, property S
 func (self SceneTree) CallGroup(group StringName, method StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
-	FrameSet[StringName](1, abi, method)
+	FrameSet[uintptr](0, abi, group.Pointer())
+	FrameSet[uintptr](1, abi, method.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_call_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27848,7 +28937,7 @@ func (self SceneTree) CallGroup(group StringName, method StringName) {
 func (self SceneTree) NotifyGroup(group StringName, notification Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
+	FrameSet[uintptr](0, abi, group.Pointer())
 	FrameSet[Int](1, abi, notification)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_notify_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -27857,9 +28946,9 @@ func (self SceneTree) NotifyGroup(group StringName, notification Int) {
 func (self SceneTree) SetGroup(group StringName, property String, value Variant) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
-	FrameSet[String](1, abi, property)
-	FrameSet[Variant](2, abi, value)
+	FrameSet[uintptr](0, abi, group.Pointer())
+	FrameSet[uintptr](1, abi, property.Pointer())
+	FrameSet[[3]uintptr](2, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_set_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27867,7 +28956,7 @@ func (self SceneTree) SetGroup(group StringName, property String, value Variant)
 func (self SceneTree) GetNodesInGroup(group StringName) ArrayOf[Node] {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
+	FrameSet[uintptr](0, abi, group.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_get_nodes_in_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Node]](abi)
 	abi.Free()
@@ -27877,7 +28966,7 @@ func (self SceneTree) GetNodesInGroup(group StringName) ArrayOf[Node] {
 func (self SceneTree) GetFirstNodeInGroup(group StringName) Node {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, group)
+	FrameSet[uintptr](0, abi, group.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_get_first_node_in_group, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Node](abi)
 	abi.Free()
@@ -27887,7 +28976,7 @@ func (self SceneTree) GetFirstNodeInGroup(group StringName) Node {
 func (self SceneTree) SetCurrentScene(child_node Node) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, child_node)
+	FrameSet[uintptr](0, abi, child_node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_set_current_scene, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27904,7 +28993,7 @@ func (self SceneTree) GetCurrentScene() Node {
 func (self SceneTree) ChangeSceneToFile(path String) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_change_scene_to_file, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -27914,7 +29003,7 @@ func (self SceneTree) ChangeSceneToFile(path String) int64 {
 func (self SceneTree) ChangeSceneToPacked(packed_scene PackedScene) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedScene](0, abi, packed_scene)
+	FrameSet[uintptr](0, abi, packed_scene.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_change_scene_to_packed, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -27940,8 +29029,8 @@ func (self SceneTree) UnloadCurrentScene() {
 func (self SceneTree) SetMultiplayer(multiplayer MultiplayerAPI, root_path NodePath) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[MultiplayerAPI](0, abi, multiplayer)
-	FrameSet[NodePath](1, abi, root_path)
+	FrameSet[uintptr](0, abi, multiplayer.Pointer())
+	FrameSet[uintptr](1, abi, root_path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_set_multiplayer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -27949,7 +29038,7 @@ func (self SceneTree) SetMultiplayer(multiplayer MultiplayerAPI, root_path NodeP
 func (self SceneTree) GetMultiplayer(for_path NodePath) MultiplayerAPI {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, for_path)
+	FrameSet[uintptr](0, abi, for_path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.SceneTree.Bind_get_multiplayer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[MultiplayerAPI](abi)
 	abi.Free()
@@ -28032,7 +29121,7 @@ func (self Script) CanInstantiate() bool {
 func (self Script) InstanceHas(base_object Object) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Object](0, abi, base_object)
+	FrameSet[uintptr](0, abi, base_object.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Script.Bind_instance_has, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -28060,7 +29149,7 @@ func (self Script) GetSourceCode(ctx Context) String {
 func (self Script) SetSourceCode(source String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, source)
+	FrameSet[uintptr](0, abi, source.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Script.Bind_set_source_code, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -28096,7 +29185,7 @@ func (self Script) GetInstanceBaseType(ctx Context) StringName {
 func (self Script) HasScriptSignal(signal_name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, signal_name)
+	FrameSet[uintptr](0, abi, signal_name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Script.Bind_has_script_signal, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -28142,7 +29231,7 @@ func (self Script) GetScriptConstantMap(ctx Context) Dictionary {
 func (self Script) GetPropertyDefaultValue(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, property)
+	FrameSet[uintptr](0, abi, property.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Script.Bind_get_property_default_value, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -28206,7 +29295,7 @@ func (self Shader) GetMode() ShaderMode {
 func (self Shader) SetCode(code String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, code)
+	FrameSet[uintptr](0, abi, code.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Shader.Bind_set_code, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -28223,8 +29312,8 @@ func (self Shader) GetCode(ctx Context) String {
 func (self Shader) SetDefaultTextureParameter(name StringName, texture Texture2D, index Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Texture2D](1, abi, texture)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, texture.Pointer())
 	FrameSet[Int](2, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Shader.Bind_set_default_texture_parameter, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -28233,7 +29322,7 @@ func (self Shader) SetDefaultTextureParameter(name StringName, texture Texture2D
 func (self Shader) GetDefaultTextureParameter(name StringName, index Int) Texture2D {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Int](1, abi, index)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Shader.Bind_get_default_texture_parameter, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Texture2D](abi)
@@ -28364,7 +29453,7 @@ func (self Sky) GetProcessMode() SkyProcessMode {
 func (self Sky) SetMaterial(material Material) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Material](0, abi, material)
+	FrameSet[uintptr](0, abi, material.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Sky.Bind_set_material, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -28614,7 +29703,7 @@ func (self TextServer) GetFeatures() Int {
 func (self TextServer) LoadSupportData(filename String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, filename)
+	FrameSet[uintptr](0, abi, filename.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_load_support_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -28642,7 +29731,7 @@ func (self TextServer) GetSupportDataInfo(ctx Context) String {
 func (self TextServer) SaveSupportData(filename String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, filename)
+	FrameSet[uintptr](0, abi, filename.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_save_support_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -28652,7 +29741,7 @@ func (self TextServer) SaveSupportData(filename String) bool {
 func (self TextServer) IsLocaleRightToLeft(locale String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, locale)
+	FrameSet[uintptr](0, abi, locale.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_is_locale_right_to_left, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -28662,7 +29751,7 @@ func (self TextServer) IsLocaleRightToLeft(locale String) bool {
 func (self TextServer) NameToTag(name String) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_name_to_tag, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -28720,7 +29809,7 @@ func (self TextServer) FontSetData(font_rid RID, data PackedByteArray) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[PackedByteArray](1, abi, data)
+	FrameSet[[2]uintptr](1, abi, data.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_data, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -28777,7 +29866,7 @@ func (self TextServer) FontSetName(font_rid RID, name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -28806,7 +29895,7 @@ func (self TextServer) FontSetStyleName(font_rid RID, name String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, name)
+	FrameSet[uintptr](1, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_style_name, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29131,7 +30220,7 @@ func (self TextServer) FontSetVariationCoordinates(font_rid RID, variation_coord
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[Dictionary](1, abi, variation_coordinates)
+	FrameSet[uintptr](1, abi, variation_coordinates.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_variation_coordinates, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29333,7 +30422,7 @@ func (self TextServer) FontSetTextureImage(font_rid RID, size Vector2i, texture_
 	FrameSet[RID](0, abi, font_rid)
 	FrameSet[Vector2i](1, abi, size)
 	FrameSet[Int](2, abi, texture_index)
-	FrameSet[Image](3, abi, image)
+	FrameSet[uintptr](3, abi, image.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_texture_image, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29356,7 +30445,7 @@ func (self TextServer) FontSetTextureOffsets(font_rid RID, size Vector2i, textur
 	FrameSet[RID](0, abi, font_rid)
 	FrameSet[Vector2i](1, abi, size)
 	FrameSet[Int](2, abi, texture_index)
-	FrameSet[PackedInt32Array](3, abi, offset)
+	FrameSet[[2]uintptr](3, abi, offset.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_texture_offsets, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29705,7 +30794,7 @@ func (self TextServer) FontIsLanguageSupported(font_rid RID, language String) bo
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_is_language_supported, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -29716,7 +30805,7 @@ func (self TextServer) FontSetLanguageSupportOverride(font_rid RID, language Str
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](1, abi, language.Pointer())
 	FrameSet[bool](2, abi, supported)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_language_support_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -29726,7 +30815,7 @@ func (self TextServer) FontGetLanguageSupportOverride(font_rid RID, language Str
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_get_language_support_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -29737,7 +30826,7 @@ func (self TextServer) FontRemoveLanguageSupportOverride(font_rid RID, language 
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_remove_language_support_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29756,7 +30845,7 @@ func (self TextServer) FontIsScriptSupported(font_rid RID, script String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, script)
+	FrameSet[uintptr](1, abi, script.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_is_script_supported, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -29767,7 +30856,7 @@ func (self TextServer) FontSetScriptSupportOverride(font_rid RID, script String,
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, script)
+	FrameSet[uintptr](1, abi, script.Pointer())
 	FrameSet[bool](2, abi, supported)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_script_support_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -29777,7 +30866,7 @@ func (self TextServer) FontGetScriptSupportOverride(font_rid RID, script String)
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, script)
+	FrameSet[uintptr](1, abi, script.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_get_script_support_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -29788,7 +30877,7 @@ func (self TextServer) FontRemoveScriptSupportOverride(font_rid RID, script Stri
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[String](1, abi, script)
+	FrameSet[uintptr](1, abi, script.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_remove_script_support_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29807,7 +30896,7 @@ func (self TextServer) FontSetOpentypeFeatureOverrides(font_rid RID, overrides D
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, font_rid)
-	FrameSet[Dictionary](1, abi, overrides)
+	FrameSet[uintptr](1, abi, overrides.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_font_set_opentype_feature_overrides, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29934,7 +31023,7 @@ func (self TextServer) ShapedTextSetBidiOverride(shaped RID, override Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[Array](1, abi, override)
+	FrameSet[uintptr](1, abi, override.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_bidi_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -29943,7 +31032,7 @@ func (self TextServer) ShapedTextSetCustomPunctuation(shaped RID, punct String) 
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[String](1, abi, punct)
+	FrameSet[uintptr](1, abi, punct.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_custom_punctuation, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -30040,12 +31129,12 @@ func (self TextServer) ShapedTextAddString(shaped RID, text String, fonts ArrayO
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[String](1, abi, text)
+	FrameSet[uintptr](1, abi, text.Pointer())
 	FrameSet[ArrayOf[RID]](2, abi, fonts)
 	FrameSet[Int](3, abi, size)
-	FrameSet[Dictionary](4, abi, opentype_features)
-	FrameSet[String](5, abi, language)
-	FrameSet[Variant](6, abi, meta)
+	FrameSet[uintptr](4, abi, opentype_features.Pointer())
+	FrameSet[uintptr](5, abi, language.Pointer())
+	FrameSet[[3]uintptr](6, abi, meta.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_add_string, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -30056,7 +31145,7 @@ func (self TextServer) ShapedTextAddObject(shaped RID, key Variant, size Vector2
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[Variant](1, abi, key)
+	FrameSet[[3]uintptr](1, abi, key.Pointer())
 	FrameSet[Vector2](2, abi, size)
 	FrameSet[InlineAlignment](3, abi, inline_align)
 	FrameSet[Int](4, abi, length)
@@ -30071,7 +31160,7 @@ func (self TextServer) ShapedTextResizeObject(shaped RID, key Variant, size Vect
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[Variant](1, abi, key)
+	FrameSet[[3]uintptr](1, abi, key.Pointer())
 	FrameSet[Vector2](2, abi, size)
 	FrameSet[InlineAlignment](3, abi, inline_align)
 	FrameSet[Float](4, abi, baseline)
@@ -30109,7 +31198,7 @@ func (self TextServer) ShapedSetSpanUpdateFont(shaped RID, index Int, fonts Arra
 	FrameSet[Int](1, abi, index)
 	FrameSet[ArrayOf[RID]](2, abi, fonts)
 	FrameSet[Int](3, abi, size)
-	FrameSet[Dictionary](4, abi, opentype_features)
+	FrameSet[uintptr](4, abi, opentype_features.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_shaped_set_span_update_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -30152,7 +31241,7 @@ func (self TextServer) ShapedTextTabAlign(shaped RID, tab_stops PackedFloat32Arr
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[PackedFloat32Array](1, abi, tab_stops)
+	FrameSet[[2]uintptr](1, abi, tab_stops.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_tab_align, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Float](abi)
 	abi.Free()
@@ -30233,7 +31322,7 @@ func (self TextServer) ShapedTextGetLineBreaksAdv(ctx Context, shaped RID, width
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[PackedFloat32Array](1, abi, width)
+	FrameSet[[2]uintptr](1, abi, width.Pointer())
 	FrameSet[Int](2, abi, start)
 	FrameSet[bool](3, abi, once)
 	FrameSet[TextServerLineBreakFlag](4, abi, break_flags)
@@ -30331,7 +31420,7 @@ func (self TextServer) ShapedTextGetObjectRect(shaped RID, key Variant) Rect2 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[RID](0, abi, shaped)
-	FrameSet[Variant](1, abi, key)
+	FrameSet[[3]uintptr](1, abi, key.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_get_object_rect, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Rect2](abi)
 	abi.Free()
@@ -30561,8 +31650,8 @@ func (self TextServer) ShapedTextGetDominantDirectionInRange(shaped RID, start I
 func (self TextServer) FormatNumber(ctx Context, number String, language String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, number)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](0, abi, number.Pointer())
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_format_number, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -30572,8 +31661,8 @@ func (self TextServer) FormatNumber(ctx Context, number String, language String)
 func (self TextServer) ParseNumber(ctx Context, number String, language String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, number)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](0, abi, number.Pointer())
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_parse_number, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -30583,7 +31672,7 @@ func (self TextServer) ParseNumber(ctx Context, number String, language String) 
 func (self TextServer) PercentSign(ctx Context, language String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, language)
+	FrameSet[uintptr](0, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_percent_sign, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -30593,8 +31682,8 @@ func (self TextServer) PercentSign(ctx Context, language String) String {
 func (self TextServer) StringGetWordBreaks(ctx Context, s String, language String, chars_per_line Int) PackedInt32Array {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](0, abi, s.Pointer())
+	FrameSet[uintptr](1, abi, language.Pointer())
 	FrameSet[Int](2, abi, chars_per_line)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_string_get_word_breaks, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
@@ -30605,8 +31694,8 @@ func (self TextServer) StringGetWordBreaks(ctx Context, s String, language Strin
 func (self TextServer) StringGetCharacterBreaks(ctx Context, s String, language String) PackedInt32Array {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](0, abi, s.Pointer())
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_string_get_character_breaks, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -30616,8 +31705,8 @@ func (self TextServer) StringGetCharacterBreaks(ctx Context, s String, language 
 func (self TextServer) IsConfusable(s String, dict PackedStringArray) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
-	FrameSet[PackedStringArray](1, abi, dict)
+	FrameSet[uintptr](0, abi, s.Pointer())
+	FrameSet[[2]uintptr](1, abi, dict.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_is_confusable, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -30627,7 +31716,7 @@ func (self TextServer) IsConfusable(s String, dict PackedStringArray) Int {
 func (self TextServer) SpoofCheck(s String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
+	FrameSet[uintptr](0, abi, s.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_spoof_check, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -30637,7 +31726,7 @@ func (self TextServer) SpoofCheck(s String) bool {
 func (self TextServer) StripDiacritics(ctx Context, s String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
+	FrameSet[uintptr](0, abi, s.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_strip_diacritics, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -30647,7 +31736,7 @@ func (self TextServer) StripDiacritics(ctx Context, s String) String {
 func (self TextServer) IsValidIdentifier(s String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
+	FrameSet[uintptr](0, abi, s.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_is_valid_identifier, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -30657,8 +31746,8 @@ func (self TextServer) IsValidIdentifier(s String) bool {
 func (self TextServer) StringToUpper(ctx Context, s String, language String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](0, abi, s.Pointer())
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_string_to_upper, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -30668,8 +31757,8 @@ func (self TextServer) StringToUpper(ctx Context, s String, language String) Str
 func (self TextServer) StringToLower(ctx Context, s String, language String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, s)
-	FrameSet[String](1, abi, language)
+	FrameSet[uintptr](0, abi, s.Pointer())
+	FrameSet[uintptr](1, abi, language.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_string_to_lower, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -30680,8 +31769,8 @@ func (self TextServer) ParseStructuredText(parser_type TextServerStructuredTextP
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[TextServerStructuredTextParser](0, abi, parser_type)
-	FrameSet[Array](1, abi, args)
-	FrameSet[String](2, abi, text)
+	FrameSet[uintptr](1, abi, args.Pointer())
+	FrameSet[uintptr](2, abi, text.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.TextServer.Bind_parse_structured_text, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[ArrayOf[Vector3i]](abi)
 	abi.Free()
@@ -30934,9 +32023,9 @@ func (self Theme) Object() Object { return *self.Super().Super().Super() }
 func (self Theme) SetIcon(name StringName, theme_type StringName, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
-	FrameSet[Texture2D](2, abi, texture)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
+	FrameSet[uintptr](2, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -30944,8 +32033,8 @@ func (self Theme) SetIcon(name StringName, theme_type StringName, texture Textur
 func (self Theme) GetIcon(name StringName, theme_type StringName) Texture2D {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Texture2D](abi)
 	abi.Free()
@@ -30955,8 +32044,8 @@ func (self Theme) GetIcon(name StringName, theme_type StringName) Texture2D {
 func (self Theme) HasIcon(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -30966,9 +32055,9 @@ func (self Theme) HasIcon(name StringName, theme_type StringName) bool {
 func (self Theme) RenameIcon(old_name StringName, name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, old_name)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](0, abi, old_name.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -30976,8 +32065,8 @@ func (self Theme) RenameIcon(old_name StringName, name StringName, theme_type St
 func (self Theme) ClearIcon(name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -30985,7 +32074,7 @@ func (self Theme) ClearIcon(name StringName, theme_type StringName) {
 func (self Theme) GetIconList(ctx Context, theme_type String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_icon_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31004,9 +32093,9 @@ func (self Theme) GetIconTypeList(ctx Context) PackedStringArray {
 func (self Theme) SetStylebox(name StringName, theme_type StringName, texture StyleBox) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
-	FrameSet[StyleBox](2, abi, texture)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
+	FrameSet[uintptr](2, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31014,8 +32103,8 @@ func (self Theme) SetStylebox(name StringName, theme_type StringName, texture St
 func (self Theme) GetStylebox(name StringName, theme_type StringName) StyleBox {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[StyleBox](abi)
 	abi.Free()
@@ -31025,8 +32114,8 @@ func (self Theme) GetStylebox(name StringName, theme_type StringName) StyleBox {
 func (self Theme) HasStylebox(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31036,9 +32125,9 @@ func (self Theme) HasStylebox(name StringName, theme_type StringName) bool {
 func (self Theme) RenameStylebox(old_name StringName, name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, old_name)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](0, abi, old_name.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31046,8 +32135,8 @@ func (self Theme) RenameStylebox(old_name StringName, name StringName, theme_typ
 func (self Theme) ClearStylebox(name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31055,7 +32144,7 @@ func (self Theme) ClearStylebox(name StringName, theme_type StringName) {
 func (self Theme) GetStyleboxList(ctx Context, theme_type String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_stylebox_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31074,9 +32163,9 @@ func (self Theme) GetStyleboxTypeList(ctx Context) PackedStringArray {
 func (self Theme) SetFont(name StringName, theme_type StringName, font Font) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
-	FrameSet[Font](2, abi, font)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
+	FrameSet[uintptr](2, abi, font.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31084,8 +32173,8 @@ func (self Theme) SetFont(name StringName, theme_type StringName, font Font) {
 func (self Theme) GetFont(name StringName, theme_type StringName) Font {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Font](abi)
 	abi.Free()
@@ -31095,8 +32184,8 @@ func (self Theme) GetFont(name StringName, theme_type StringName) Font {
 func (self Theme) HasFont(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31106,9 +32195,9 @@ func (self Theme) HasFont(name StringName, theme_type StringName) bool {
 func (self Theme) RenameFont(old_name StringName, name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, old_name)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](0, abi, old_name.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31116,8 +32205,8 @@ func (self Theme) RenameFont(old_name StringName, name StringName, theme_type St
 func (self Theme) ClearFont(name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31125,7 +32214,7 @@ func (self Theme) ClearFont(name StringName, theme_type StringName) {
 func (self Theme) GetFontList(ctx Context, theme_type String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_font_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31144,8 +32233,8 @@ func (self Theme) GetFontTypeList(ctx Context) PackedStringArray {
 func (self Theme) SetFontSize(name StringName, theme_type StringName, font_size Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	FrameSet[Int](2, abi, font_size)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -31154,8 +32243,8 @@ func (self Theme) SetFontSize(name StringName, theme_type StringName, font_size 
 func (self Theme) GetFontSize(name StringName, theme_type StringName) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -31165,8 +32254,8 @@ func (self Theme) GetFontSize(name StringName, theme_type StringName) Int {
 func (self Theme) HasFontSize(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31176,9 +32265,9 @@ func (self Theme) HasFontSize(name StringName, theme_type StringName) bool {
 func (self Theme) RenameFontSize(old_name StringName, name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, old_name)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](0, abi, old_name.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31186,8 +32275,8 @@ func (self Theme) RenameFontSize(old_name StringName, name StringName, theme_typ
 func (self Theme) ClearFontSize(name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31195,7 +32284,7 @@ func (self Theme) ClearFontSize(name StringName, theme_type StringName) {
 func (self Theme) GetFontSizeList(ctx Context, theme_type String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_font_size_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31214,8 +32303,8 @@ func (self Theme) GetFontSizeTypeList(ctx Context) PackedStringArray {
 func (self Theme) SetColor(name StringName, theme_type StringName, color Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	FrameSet[Color](2, abi, color)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -31224,8 +32313,8 @@ func (self Theme) SetColor(name StringName, theme_type StringName, color Color) 
 func (self Theme) GetColor(name StringName, theme_type StringName) Color {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Color](abi)
 	abi.Free()
@@ -31235,8 +32324,8 @@ func (self Theme) GetColor(name StringName, theme_type StringName) Color {
 func (self Theme) HasColor(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31246,9 +32335,9 @@ func (self Theme) HasColor(name StringName, theme_type StringName) bool {
 func (self Theme) RenameColor(old_name StringName, name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, old_name)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](0, abi, old_name.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31256,8 +32345,8 @@ func (self Theme) RenameColor(old_name StringName, name StringName, theme_type S
 func (self Theme) ClearColor(name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31265,7 +32354,7 @@ func (self Theme) ClearColor(name StringName, theme_type StringName) {
 func (self Theme) GetColorList(ctx Context, theme_type String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_color_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31284,8 +32373,8 @@ func (self Theme) GetColorTypeList(ctx Context) PackedStringArray {
 func (self Theme) SetConstant(name StringName, theme_type StringName, constant Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	FrameSet[Int](2, abi, constant)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -31294,8 +32383,8 @@ func (self Theme) SetConstant(name StringName, theme_type StringName, constant I
 func (self Theme) GetConstant(name StringName, theme_type StringName) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -31305,8 +32394,8 @@ func (self Theme) GetConstant(name StringName, theme_type StringName) Int {
 func (self Theme) HasConstant(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31316,9 +32405,9 @@ func (self Theme) HasConstant(name StringName, theme_type StringName) bool {
 func (self Theme) RenameConstant(old_name StringName, name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, old_name)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](0, abi, old_name.Pointer())
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31326,8 +32415,8 @@ func (self Theme) RenameConstant(old_name StringName, name StringName, theme_typ
 func (self Theme) ClearConstant(name StringName, theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31335,7 +32424,7 @@ func (self Theme) ClearConstant(name StringName, theme_type StringName) {
 func (self Theme) GetConstantList(ctx Context, theme_type String) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_constant_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31380,7 +32469,7 @@ func (self Theme) HasDefaultBaseScale() bool {
 func (self Theme) SetDefaultFont(font Font) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Font](0, abi, font)
+	FrameSet[uintptr](0, abi, font.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_default_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31433,9 +32522,9 @@ func (self Theme) SetThemeItem(data_type ThemeDataType, name StringName, theme_t
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[ThemeDataType](0, abi, data_type)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
-	FrameSet[Variant](3, abi, value)
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
+	FrameSet[[3]uintptr](3, abi, value.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_theme_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31444,8 +32533,8 @@ func (self Theme) GetThemeItem(ctx Context, data_type ThemeDataType, name String
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[ThemeDataType](0, abi, data_type)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_theme_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[3]uintptr](abi)
 	abi.Free()
@@ -31456,8 +32545,8 @@ func (self Theme) HasThemeItem(data_type ThemeDataType, name StringName, theme_t
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[ThemeDataType](0, abi, data_type)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_has_theme_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31468,9 +32557,9 @@ func (self Theme) RenameThemeItem(data_type ThemeDataType, old_name StringName, 
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[ThemeDataType](0, abi, data_type)
-	FrameSet[StringName](1, abi, old_name)
-	FrameSet[StringName](2, abi, name)
-	FrameSet[StringName](3, abi, theme_type)
+	FrameSet[uintptr](1, abi, old_name.Pointer())
+	FrameSet[uintptr](2, abi, name.Pointer())
+	FrameSet[uintptr](3, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_rename_theme_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31479,8 +32568,8 @@ func (self Theme) ClearThemeItem(data_type ThemeDataType, name StringName, theme
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[ThemeDataType](0, abi, data_type)
-	FrameSet[StringName](1, abi, name)
-	FrameSet[StringName](2, abi, theme_type)
+	FrameSet[uintptr](1, abi, name.Pointer())
+	FrameSet[uintptr](2, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_theme_item, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31489,7 +32578,7 @@ func (self Theme) GetThemeItemList(ctx Context, data_type ThemeDataType, theme_t
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
 	FrameSet[ThemeDataType](0, abi, data_type)
-	FrameSet[String](1, abi, theme_type)
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_theme_item_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31509,8 +32598,8 @@ func (self Theme) GetThemeItemTypeList(ctx Context, data_type ThemeDataType) Pac
 func (self Theme) SetTypeVariation(theme_type StringName, base_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
-	FrameSet[StringName](1, abi, base_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
+	FrameSet[uintptr](1, abi, base_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_set_type_variation, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31518,8 +32607,8 @@ func (self Theme) SetTypeVariation(theme_type StringName, base_type StringName) 
 func (self Theme) IsTypeVariation(theme_type StringName, base_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
-	FrameSet[StringName](1, abi, base_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
+	FrameSet[uintptr](1, abi, base_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_is_type_variation, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -31529,7 +32618,7 @@ func (self Theme) IsTypeVariation(theme_type StringName, base_type StringName) b
 func (self Theme) ClearTypeVariation(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_clear_type_variation, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31537,7 +32626,7 @@ func (self Theme) ClearTypeVariation(theme_type StringName) {
 func (self Theme) GetTypeVariationBase(ctx Context, theme_type StringName) StringName {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_type_variation_base, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -31547,7 +32636,7 @@ func (self Theme) GetTypeVariationBase(ctx Context, theme_type StringName) Strin
 func (self Theme) GetTypeVariationList(ctx Context, base_type StringName) PackedStringArray {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, base_type)
+	FrameSet[uintptr](0, abi, base_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_get_type_variation_list, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[[2]uintptr](abi)
 	abi.Free()
@@ -31557,7 +32646,7 @@ func (self Theme) GetTypeVariationList(ctx Context, base_type StringName) Packed
 func (self Theme) AddType(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_add_type, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31565,7 +32654,7 @@ func (self Theme) AddType(theme_type StringName) {
 func (self Theme) RemoveType(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_remove_type, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31582,7 +32671,7 @@ func (self Theme) GetTypeList(ctx Context) PackedStringArray {
 func (self Theme) MergeWith(other Theme) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Theme](0, abi, other)
+	FrameSet[uintptr](0, abi, other.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Theme.Bind_merge_with, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -31632,9 +32721,9 @@ func (self Tween) Object() Object { return *self.Super().Super() }
 func (self Tween) TweenProperty(object Object, property NodePath, final_val Variant, duration Float) PropertyTweener {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Object](0, abi, object)
-	FrameSet[NodePath](1, abi, property)
-	FrameSet[Variant](2, abi, final_val)
+	FrameSet[uintptr](0, abi, object.Pointer())
+	FrameSet[uintptr](1, abi, property.Pointer())
+	FrameSet[[3]uintptr](2, abi, final_val.Pointer())
 	FrameSet[Float](3, abi, duration)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Tween.Bind_tween_property, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[PropertyTweener](abi)
@@ -31655,7 +32744,7 @@ func (self Tween) TweenInterval(time Float) IntervalTweener {
 func (self Tween) TweenCallback(callback Callable) CallbackTweener {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, callback)
+	FrameSet[[2]uintptr](0, abi, callback.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Tween.Bind_tween_callback, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[CallbackTweener](abi)
 	abi.Free()
@@ -31665,9 +32754,9 @@ func (self Tween) TweenCallback(callback Callable) CallbackTweener {
 func (self Tween) TweenMethod(method Callable, from Variant, to Variant, duration Float) MethodTweener {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Callable](0, abi, method)
-	FrameSet[Variant](1, abi, from)
-	FrameSet[Variant](2, abi, to)
+	FrameSet[[2]uintptr](0, abi, method.Pointer())
+	FrameSet[[3]uintptr](1, abi, from.Pointer())
+	FrameSet[[3]uintptr](2, abi, to.Pointer())
 	FrameSet[Float](3, abi, duration)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Tween.Bind_tween_method, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[MethodTweener](abi)
@@ -31743,7 +32832,7 @@ func (self Tween) IsValid() bool {
 func (self Tween) BindNode(node Node) Tween {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, node)
+	FrameSet[uintptr](0, abi, node.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Tween.Bind_bind_node, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Tween](abi)
 	abi.Free()
@@ -31850,8 +32939,8 @@ func (self Tween) Chain() Tween {
 func (self Tween) InterpolateValue(ctx Context, initial_value Variant, delta_value Variant, elapsed_time Float, duration Float, trans_type TweenTransitionType, ease_type TweenEaseType) Variant {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Variant](0, abi, initial_value)
-	FrameSet[Variant](1, abi, delta_value)
+	FrameSet[[3]uintptr](0, abi, initial_value.Pointer())
+	FrameSet[[3]uintptr](1, abi, delta_value.Pointer())
 	FrameSet[Float](2, abi, elapsed_time)
 	FrameSet[Float](3, abi, duration)
 	FrameSet[TweenTransitionType](4, abi, trans_type)
@@ -31914,7 +33003,7 @@ func (self Viewport) Object() Object { return *self.Super().Super() }
 func (self Viewport) SetWorld2d(world_2d World2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[World2D](0, abi, world_2d)
+	FrameSet[uintptr](0, abi, world_2d.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Viewport.Bind_set_world_2d, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -32217,7 +33306,7 @@ func (self Viewport) GetViewportRid() RID {
 func (self Viewport) PushTextInput(text String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, text)
+	FrameSet[uintptr](0, abi, text.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Viewport.Bind_push_text_input, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -32225,7 +33314,7 @@ func (self Viewport) PushTextInput(text String) {
 func (self Viewport) PushInput(event InputEvent, in_local_coords bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[InputEvent](0, abi, event)
+	FrameSet[uintptr](0, abi, event.Pointer())
 	FrameSet[bool](1, abi, in_local_coords)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Viewport.Bind_push_input, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -32234,7 +33323,7 @@ func (self Viewport) PushInput(event InputEvent, in_local_coords bool) {
 func (self Viewport) PushUnhandledInput(event InputEvent, in_local_coords bool) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[InputEvent](0, abi, event)
+	FrameSet[uintptr](0, abi, event.Pointer())
 	FrameSet[bool](1, abi, in_local_coords)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Viewport.Bind_push_unhandled_input, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -32637,7 +33726,7 @@ func (self Viewport) GetMeshLodThreshold() Float {
 func (self Viewport) SetWorld3d(world_3d World3D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[World3D](0, abi, world_3d)
+	FrameSet[uintptr](0, abi, world_3d.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Viewport.Bind_set_world_3d, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -32825,7 +33914,7 @@ func (self Viewport) GetVrsMode() ViewportVRSMode {
 func (self Viewport) SetVrsTexture(texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Texture2D](0, abi, texture)
+	FrameSet[uintptr](0, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Viewport.Bind_set_vrs_texture, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -32863,7 +33952,7 @@ func (self ViewportTexture) Object() Object { return *self.Super().Super().Super
 func (self ViewportTexture) SetViewportPathInScene(path NodePath) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[NodePath](0, abi, path)
+	FrameSet[uintptr](0, abi, path.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.ViewportTexture.Bind_set_viewport_path_in_scene, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -32919,7 +34008,7 @@ func (Window) _get_contents_minimum_size(impl func(ptr unsafe.Pointer, ctx Conte
 func (self Window) SetTitle(title String) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, title)
+	FrameSet[uintptr](0, abi, title.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_set_title, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33389,7 +34478,7 @@ func (self Window) IsUsingFontOversampling() bool {
 func (self Window) SetMousePassthroughPolygon(polygon PackedVector2Array) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedVector2Array](0, abi, polygon)
+	FrameSet[[2]uintptr](0, abi, polygon.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_set_mouse_passthrough_polygon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33430,7 +34519,7 @@ func (self Window) ChildControlsChanged() {
 func (self Window) SetTheme(theme Theme) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Theme](0, abi, theme)
+	FrameSet[uintptr](0, abi, theme.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_set_theme, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33447,7 +34536,7 @@ func (self Window) GetTheme() Theme {
 func (self Window) SetThemeTypeVariation(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, theme_type)
+	FrameSet[uintptr](0, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_set_theme_type_variation, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33478,8 +34567,8 @@ func (self Window) EndBulkThemeOverride() {
 func (self Window) AddThemeIconOverride(name StringName, texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Texture2D](1, abi, texture)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, texture.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_add_theme_icon_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33487,8 +34576,8 @@ func (self Window) AddThemeIconOverride(name StringName, texture Texture2D) {
 func (self Window) AddThemeStyleboxOverride(name StringName, stylebox StyleBox) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StyleBox](1, abi, stylebox)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, stylebox.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_add_theme_stylebox_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33496,8 +34585,8 @@ func (self Window) AddThemeStyleboxOverride(name StringName, stylebox StyleBox) 
 func (self Window) AddThemeFontOverride(name StringName, font Font) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[Font](1, abi, font)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, font.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_add_theme_font_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33505,7 +34594,7 @@ func (self Window) AddThemeFontOverride(name StringName, font Font) {
 func (self Window) AddThemeFontSizeOverride(name StringName, font_size Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Int](1, abi, font_size)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_add_theme_font_size_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33514,7 +34603,7 @@ func (self Window) AddThemeFontSizeOverride(name StringName, font_size Int) {
 func (self Window) AddThemeColorOverride(name StringName, color Color) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Color](1, abi, color)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_add_theme_color_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33523,7 +34612,7 @@ func (self Window) AddThemeColorOverride(name StringName, color Color) {
 func (self Window) AddThemeConstantOverride(name StringName, constant Int) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	FrameSet[Int](1, abi, constant)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_add_theme_constant_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33532,7 +34621,7 @@ func (self Window) AddThemeConstantOverride(name StringName, constant Int) {
 func (self Window) RemoveThemeIconOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_remove_theme_icon_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33540,7 +34629,7 @@ func (self Window) RemoveThemeIconOverride(name StringName) {
 func (self Window) RemoveThemeStyleboxOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_remove_theme_stylebox_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33548,7 +34637,7 @@ func (self Window) RemoveThemeStyleboxOverride(name StringName) {
 func (self Window) RemoveThemeFontOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_remove_theme_font_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33556,7 +34645,7 @@ func (self Window) RemoveThemeFontOverride(name StringName) {
 func (self Window) RemoveThemeFontSizeOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_remove_theme_font_size_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33564,7 +34653,7 @@ func (self Window) RemoveThemeFontSizeOverride(name StringName) {
 func (self Window) RemoveThemeColorOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_remove_theme_color_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33572,7 +34661,7 @@ func (self Window) RemoveThemeColorOverride(name StringName) {
 func (self Window) RemoveThemeConstantOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_remove_theme_constant_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -33580,8 +34669,8 @@ func (self Window) RemoveThemeConstantOverride(name StringName) {
 func (self Window) GetThemeIcon(name StringName, theme_type StringName) Texture2D {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_get_theme_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Texture2D](abi)
 	abi.Free()
@@ -33591,8 +34680,8 @@ func (self Window) GetThemeIcon(name StringName, theme_type StringName) Texture2
 func (self Window) GetThemeStylebox(name StringName, theme_type StringName) StyleBox {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_get_theme_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[StyleBox](abi)
 	abi.Free()
@@ -33602,8 +34691,8 @@ func (self Window) GetThemeStylebox(name StringName, theme_type StringName) Styl
 func (self Window) GetThemeFont(name StringName, theme_type StringName) Font {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_get_theme_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Font](abi)
 	abi.Free()
@@ -33613,8 +34702,8 @@ func (self Window) GetThemeFont(name StringName, theme_type StringName) Font {
 func (self Window) GetThemeFontSize(name StringName, theme_type StringName) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_get_theme_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -33624,8 +34713,8 @@ func (self Window) GetThemeFontSize(name StringName, theme_type StringName) Int 
 func (self Window) GetThemeColor(name StringName, theme_type StringName) Color {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_get_theme_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Color](abi)
 	abi.Free()
@@ -33635,8 +34724,8 @@ func (self Window) GetThemeColor(name StringName, theme_type StringName) Color {
 func (self Window) GetThemeConstant(name StringName, theme_type StringName) Int {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_get_theme_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[Int](abi)
 	abi.Free()
@@ -33646,7 +34735,7 @@ func (self Window) GetThemeConstant(name StringName, theme_type StringName) Int 
 func (self Window) HasThemeIconOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_icon_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33656,7 +34745,7 @@ func (self Window) HasThemeIconOverride(name StringName) bool {
 func (self Window) HasThemeStyleboxOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_stylebox_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33666,7 +34755,7 @@ func (self Window) HasThemeStyleboxOverride(name StringName) bool {
 func (self Window) HasThemeFontOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_font_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33676,7 +34765,7 @@ func (self Window) HasThemeFontOverride(name StringName) bool {
 func (self Window) HasThemeFontSizeOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_font_size_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33686,7 +34775,7 @@ func (self Window) HasThemeFontSizeOverride(name StringName) bool {
 func (self Window) HasThemeColorOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_color_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33696,7 +34785,7 @@ func (self Window) HasThemeColorOverride(name StringName) bool {
 func (self Window) HasThemeConstantOverride(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_constant_override, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33706,8 +34795,8 @@ func (self Window) HasThemeConstantOverride(name StringName) bool {
 func (self Window) HasThemeIcon(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_icon, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33717,8 +34806,8 @@ func (self Window) HasThemeIcon(name StringName, theme_type StringName) bool {
 func (self Window) HasThemeStylebox(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_stylebox, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33728,8 +34817,8 @@ func (self Window) HasThemeStylebox(name StringName, theme_type StringName) bool
 func (self Window) HasThemeFont(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_font, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33739,8 +34828,8 @@ func (self Window) HasThemeFont(name StringName, theme_type StringName) bool {
 func (self Window) HasThemeFontSize(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_font_size, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33750,8 +34839,8 @@ func (self Window) HasThemeFontSize(name StringName, theme_type StringName) bool
 func (self Window) HasThemeColor(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_color, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33761,8 +34850,8 @@ func (self Window) HasThemeColor(name StringName, theme_type StringName) bool {
 func (self Window) HasThemeConstant(name StringName, theme_type StringName) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[StringName](0, abi, name)
-	FrameSet[StringName](1, abi, theme_type)
+	FrameSet[uintptr](0, abi, name.Pointer())
+	FrameSet[uintptr](1, abi, theme_type.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_has_theme_constant, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -33883,7 +34972,7 @@ func (self Window) PopupCenteredClamped(minsize Vector2i, fallback_ratio Float) 
 func (self Window) PopupExclusive(from_node Node, rect Rect2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, from_node)
+	FrameSet[uintptr](0, abi, from_node.Pointer())
 	FrameSet[Rect2i](1, abi, rect)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_popup_exclusive, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33892,7 +34981,7 @@ func (self Window) PopupExclusive(from_node Node, rect Rect2i) {
 func (self Window) PopupExclusiveOnParent(from_node Node, parent_rect Rect2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, from_node)
+	FrameSet[uintptr](0, abi, from_node.Pointer())
 	FrameSet[Rect2i](1, abi, parent_rect)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_on_parent, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33901,7 +34990,7 @@ func (self Window) PopupExclusiveOnParent(from_node Node, parent_rect Rect2i) {
 func (self Window) PopupExclusiveCentered(from_node Node, minsize Vector2i) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, from_node)
+	FrameSet[uintptr](0, abi, from_node.Pointer())
 	FrameSet[Vector2i](1, abi, minsize)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_centered, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33910,7 +34999,7 @@ func (self Window) PopupExclusiveCentered(from_node Node, minsize Vector2i) {
 func (self Window) PopupExclusiveCenteredRatio(from_node Node, ratio Float) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, from_node)
+	FrameSet[uintptr](0, abi, from_node.Pointer())
 	FrameSet[Float](1, abi, ratio)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_centered_ratio, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
@@ -33919,7 +35008,7 @@ func (self Window) PopupExclusiveCenteredRatio(from_node Node, ratio Float) {
 func (self Window) PopupExclusiveCenteredClamped(from_node Node, minsize Vector2i, fallback_ratio Float) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Node](0, abi, from_node)
+	FrameSet[uintptr](0, abi, from_node.Pointer())
 	FrameSet[Vector2i](1, abi, minsize)
 	FrameSet[Float](2, abi, fallback_ratio)
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_centered_clamped, selfPtr.Pointer(), abi.Args(), abi.Back())
@@ -34024,7 +35113,7 @@ func (self World3D) GetScenario() RID {
 func (self World3D) SetEnvironment(env Environment) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Environment](0, abi, env)
+	FrameSet[uintptr](0, abi, env.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.World3D.Bind_set_environment, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -34041,7 +35130,7 @@ func (self World3D) GetEnvironment() Environment {
 func (self World3D) SetFallbackEnvironment(env Environment) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[Environment](0, abi, env)
+	FrameSet[uintptr](0, abi, env.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.World3D.Bind_set_fallback_environment, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -34058,7 +35147,7 @@ func (self World3D) GetFallbackEnvironment() Environment {
 func (self World3D) SetCameraAttributes(attributes CameraAttributes) {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[CameraAttributes](0, abi, attributes)
+	FrameSet[uintptr](0, abi, attributes.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.World3D.Bind_set_camera_attributes, selfPtr.Pointer(), abi.Args(), abi.Back())
 	abi.Free()
 }
@@ -34172,7 +35261,7 @@ func (self XMLParser) GetAttributeValue(ctx Context, idx Int) String {
 func (self XMLParser) HasAttribute(name String) bool {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.XMLParser.Bind_has_attribute, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[bool](abi)
 	abi.Free()
@@ -34182,7 +35271,7 @@ func (self XMLParser) HasAttribute(name String) bool {
 func (self XMLParser) GetNamedAttributeValue(ctx Context, name String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.XMLParser.Bind_get_named_attribute_value, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -34192,7 +35281,7 @@ func (self XMLParser) GetNamedAttributeValue(ctx Context, name String) String {
 func (self XMLParser) GetNamedAttributeValueSafe(ctx Context, name String) String {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, name)
+	FrameSet[uintptr](0, abi, name.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.XMLParser.Bind_get_named_attribute_value_safe, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[uintptr](abi)
 	abi.Free()
@@ -34237,7 +35326,7 @@ func (self XMLParser) SeekTo(position Int) int64 {
 func (self XMLParser) Open(file String) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[String](0, abi, file)
+	FrameSet[uintptr](0, abi, file.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.XMLParser.Bind_open, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()
@@ -34247,7 +35336,7 @@ func (self XMLParser) Open(file String) int64 {
 func (self XMLParser) OpenBuffer(buffer PackedByteArray) int64 {
 	var selfPtr = self.AsPointer()
 	var abi = selfPtr.API.NewFrame()
-	FrameSet[PackedByteArray](0, abi, buffer)
+	FrameSet[[2]uintptr](0, abi, buffer.Pointer())
 	selfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.XMLParser.Bind_open_buffer, selfPtr.Pointer(), abi.Args(), abi.Back())
 	var ret = FrameGet[int64](abi)
 	abi.Free()

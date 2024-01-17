@@ -671,6 +671,55 @@ func generate() error {
 	fmt.Fprintf(out, "type utility struct{\n")
 	for _, utility := range spec.UtilityFunctions {
 		fmt.Fprintf(out, "\t%v func(CallFrameBack,CallFrameArgs,int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
+
+		fmt.Fprintf(core, "\nfunc (ctx Context) %v(", convertName(utility.Name))
+		for i, arg := range utility.Arguments {
+			if i > 0 {
+				fmt.Fprintf(core, ", ")
+			}
+			fmt.Fprintf(core, "%v %v", fixReserved(arg.Name), classDB.convertType("internal", arg.Meta, arg.Type))
+		}
+		fmt.Fprintf(core, ")")
+		result := classDB.convertType("internal", "", utility.ReturnType)
+		ptrKind, isPtr := isPointer(result)
+		if result != "" {
+			fmt.Fprintf(core, " %v {\n", result)
+		} else {
+			fmt.Fprintf(core, " {\n")
+		}
+		fmt.Fprintf(core, "\tvar abi = ctx.API().NewFrame()\n")
+		for i, arg := range utility.Arguments {
+			_, ok := classDB[arg.Type]
+			if ok {
+				fmt.Fprintf(core, "\tFrameSet[uintptr](%[1]v, abi, %[2]v.Pointer())\n", i, fixReserved(arg.Name))
+				continue
+			}
+
+			argType := classDB.convertType("internal", arg.Meta, arg.Type)
+			argPtrKind, argIsPtr := isPointer(argType)
+			if argIsPtr {
+				fmt.Fprintf(core, "\tFrameSet[%[2]v](%[1]v, abi, %[3]v.Pointer())\n", i, argPtrKind, fixReserved(arg.Name))
+			} else {
+				fmt.Fprintf(core, "\tFrameSet[%[2]v](%[1]v, abi, %[3]v)\n", i, argType, fixReserved(arg.Name))
+			}
+		}
+		fmt.Fprintf(core, "\tctx.API().utility.%v(abi.Back(), abi.Args(), %d)\n", utility.Name, len(utility.Arguments))
+		if isPtr {
+			fmt.Fprintf(core, "\tvar ret = FrameGet[%v](abi)\n", ptrKind)
+		} else {
+			if result != "" {
+				fmt.Fprintf(core, "\tvar ret = FrameGet[%v](abi)\n", result)
+			}
+		}
+		fmt.Fprintf(core, "\tabi.Free()\n")
+		if result != "" {
+			if isPtr {
+				fmt.Fprintf(core, "\treturn mmm.Make[API,%v,%v](ctx,ctx.API(),ret)", result, ptrKind)
+			} else {
+				fmt.Fprintf(core, "\treturn ret\n")
+			}
+		}
+		fmt.Fprintf(core, "}\n")
 	}
 	fmt.Fprintf(out, "}\n")
 
@@ -877,7 +926,21 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		fmt.Fprintf(w, "\tcb.Set(func(class cgo.Handle, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
 		fmt.Fprintf(w, "\tctx := %vNewContext(api)\n", prefix)
 		for i, arg := range method.Arguments {
-			fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type), i)
+			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
+
+			_, ok := classDB[arg.Type]
+			if ok {
+				fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), argType)
+				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Make["+prefix+"API, "+prefix+"Pointer, uintptr](ctx, api, "+prefix+"UnsafeGet[uintptr](p_args,%d)))\n", fixReserved(arg.Name), i)
+				continue
+			}
+
+			argPtrKind, argIsPtr := isPointer(argType)
+			if argIsPtr {
+				fmt.Fprintf(w, "\t\tvar %v = mmm.Make["+prefix+"API, %v](ctx, api, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
+			} else {
+				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
+			}
 		}
 		fmt.Fprintf(w, "\tself := reflect.ValueOf(class.Value()).UnsafePointer()\n")
 		if result != "" {
@@ -930,16 +993,30 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		fmt.Fprintf(w, "\tvar selfPtr = self.AsPointer()\n")
 	}
 	fmt.Fprintf(w, "\tvar abi = selfPtr.API.NewFrame()\n")
-	if ctype == callBuiltin {
-		for i, arg := range method.Arguments {
-			fmt.Fprintf(w, "\t"+prefix+"FrameSet[%[2]v](%[1]v, abi, %[3]v)\n", i+1, classDB.convertType(pkg, arg.Meta, arg.Type), fixReserved(arg.Name))
+	for i, arg := range method.Arguments {
+		i := i
+		if ctype == callBuiltin {
+			i++
 		}
+
+		_, ok := classDB[arg.Type]
+		if ok {
+			fmt.Fprintf(w, "\t"+prefix+"FrameSet[uintptr](%[1]v, abi, %[2]v.Pointer())\n", i, fixReserved(arg.Name))
+			continue
+		}
+
+		argType := classDB.convertType(pkg, arg.Meta, arg.Type)
+		argPtrKind, argIsPtr := isPointer(argType)
+		if argIsPtr {
+			fmt.Fprintf(w, "\t"+prefix+"FrameSet[%[2]v](%[1]v, abi, %[3]v.Pointer())\n", i, argPtrKind, fixReserved(arg.Name))
+		} else {
+			fmt.Fprintf(w, "\t"+prefix+"FrameSet[%[2]v](%[1]v, abi, %[3]v)\n", i, argType, fixReserved(arg.Name))
+		}
+	}
+	if ctype == callBuiltin {
 		fmt.Fprintf(w, "\t"+prefix+"FrameSet(0, abi, selfPtr.Pointer())\n")
 		fmt.Fprintf(w, "\tselfPtr.API.builtin.%v.%v(abi.Get(0), abi.Get(1), abi.Back(), %d)\n", class.Name, method.Name, len(method.Arguments))
 	} else {
-		for i, arg := range method.Arguments {
-			fmt.Fprintf(w, "\t"+prefix+"FrameSet[%[2]v](%[1]v, abi, %[3]v)\n", i, classDB.convertType(pkg, arg.Meta, arg.Type), fixReserved(arg.Name))
-		}
 		fmt.Fprintf(w, "\tselfPtr.API.Object.UnsafeCall(selfPtr.API.Methods.%v.Bind_%v, selfPtr.Pointer(), abi.Args(), abi.Back())\n", class.Name, method.Name)
 	}
 
