@@ -12,3 +12,5 @@ runtime.link v0.0.0-20240116103901-69d00a21a88b h1:u4vgfWp3JAaG41/K9gcFq9iY/34J+
 runtime.link v0.0.0-20240116103901-69d00a21a88b/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
 runtime.link v0.0.0-20240117091458-745c858008ba h1:8EW56Y5m0jtRdbc/R+7xvgQTxtrVeKwJ+F+2gAehaGY=
 runtime.link v0.0.0-20240117091458-745c858008ba/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
+runtime.link v0.0.0-20240117231028-430f1464728d h1:wwGqTTaYy66IbI+B8N7Rjof7wFKiClglnlI4kBh02KA=
+runtime.link v0.0.0-20240117231028-430f1464728d/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
