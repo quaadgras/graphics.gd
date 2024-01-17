@@ -94,7 +94,7 @@ func FrameGet[T any](frame callFrame) T {
 type UnsafeArgs uintptr
 
 func UnsafeGet[T any](frame UnsafeArgs, index int) T {
-	return unsafe.Slice((*T)(unsafe.Pointer(frame)), index+1)[index]
+	return *unsafe.Slice((**T)(unsafe.Pointer(frame)), index+1)[index]
 }
 
 type UnsafeBack uintptr

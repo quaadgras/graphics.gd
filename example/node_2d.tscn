@@ -1,8 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqpyg2q0mjic1"]
+[gd_scene load_steps=3 format=3 uid="uid://bqpyg2q0mjic1"]
 
 [ext_resource type="Script" path="res://Node2D.gd" id="1_a3cok"]
+[ext_resource type="Texture2D" uid="uid://b84dyvvwdpxrs" path="res://icon.png" id="2_2ga2i"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_a3cok")
 
 [node name="ExtendedNode" type="ExtendedNode" parent="."]
+position = Vector2(100, 0)
+rotation = 3.14
+
+[node name="Rotator" type="Rotator" parent="."]
+position = Vector2(567, 325)
+texture = ExtResource("2_2ga2i")

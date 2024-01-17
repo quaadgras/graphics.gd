@@ -32,6 +32,15 @@ func (h *HelloWorld) Arch(godot gd.Context) gd.String {
 	return godot.String(runtime.GOARCH)
 }
 
+type Rotator struct {
+	gd.Class[Rotator, gd.Sprite2D]
+}
+
+func (r *Rotator) Process(_ gd.Context, delta gd.Float) {
+	node2D := r.Super().Node2D()
+	node2D.SetRotation(node2D.GetRotation() + delta)
+}
+
 /*
 ExtendedNode demonstrates how to call the methods of builtin objects.
 */
@@ -79,4 +88,5 @@ func main() {
 	}
 	gdextension.RegisterClass[HelloWorld](godot, classdb)
 	gdextension.RegisterClass[ExtendedNode](godot, classdb)
+	gdextension.RegisterClass[Rotator](godot, classdb)
 }
