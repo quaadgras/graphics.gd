@@ -4,7 +4,7 @@
 package gd
 
 import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/internal/classdb"
+import classdb "grow.graphics/gd/internal/classdb"
 
 type AESContext = classdb.AESContext 
 type AStar2D = classdb.AStar2D 

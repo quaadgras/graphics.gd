@@ -12,4 +12,7 @@ rotation = 3.14
 
 [node name="Rotator" type="Rotator" parent="."]
 position = Vector2(567, 325)
+rotation = 178.921
 texture = ExtResource("2_2ga2i")
+
+[node name="StartedSignalEmitter" type="StartedSignalEmitter" parent="."]

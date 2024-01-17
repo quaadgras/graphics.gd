@@ -1,6 +1,6 @@
 //go:build !generate
 
-package internal
+package gd
 
 import (
 	"context"
@@ -18,7 +18,7 @@ type String mmm.Pointer[API, String, uintptr]
 func (s String) Free() {
 	var frame = s.API.NewFrame()
 	FrameSet[uintptr](0, frame, s.Pointer())
-	s.API.variant.destruct.String(frame.Args())
+	s.API.typeset.destruct.String(frame.Args())
 	frame.Free()
 }
 
@@ -37,7 +37,7 @@ func (s String) String() string {
 func (Godot *API) StringFromStringName(ctx context.Context, s StringName) String {
 	var frame = Godot.NewFrame()
 	FrameSet[uintptr](0, frame, s.Pointer())
-	Godot.variant.creation.String[2](frame.Back(), frame.Args())
+	Godot.typeset.creation.String[2](frame.Back(), frame.Args())
 	var raw = FrameGet[uintptr](frame)
 	frame.Free()
 	return mmm.Make[API, String](ctx, Godot, raw)
@@ -128,7 +128,7 @@ func (Godot *API) StringName(ctx context.Context, s string) StringName {
 func (Godot *API) StringNameFromString(ctx context.Context, s String) StringName {
 	var frame = Godot.NewFrame()
 	FrameSet[uintptr](0, frame, s.Pointer())
-	Godot.variant.creation.StringName[2](frame.Back(), frame.Args())
+	Godot.typeset.creation.StringName[2](frame.Back(), frame.Args())
 	var raw = FrameGet[uintptr](frame)
 	frame.Free()
 	return mmm.Make[API, StringName](ctx, Godot, raw)
@@ -137,7 +137,7 @@ func (Godot *API) StringNameFromString(ctx context.Context, s String) StringName
 func (s StringName) Free() {
 	var frame = s.API.NewFrame()
 	FrameSet[uintptr](0, frame, s.Pointer())
-	s.API.variant.destruct.StringName(frame.Get(0))
+	s.API.typeset.destruct.StringName(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(s)
 }
@@ -146,8 +146,9 @@ func (s StringName) String() string {
 	if s.Pointer() == 0 {
 		return ""
 	}
-	var tmp = s.API.StringFromStringName(s.Context(), s)
-	defer tmp.Free()
+	ctx := NewContext(s.API)
+	var tmp = s.API.StringFromStringName(ctx, s)
+	defer ctx.Free()
 	return tmp.String()
 }
 
@@ -156,7 +157,7 @@ type NodePath mmm.Pointer[API, NodePath, uintptr]
 func (n NodePath) Free() {
 	var frame = n.API.NewFrame()
 	FrameSet[uintptr](0, frame, n.Pointer())
-	n.API.variant.destruct.NodePath(frame.Get(0))
+	n.API.typeset.destruct.NodePath(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(n)
 }
@@ -168,17 +169,21 @@ type Callable mmm.Pointer[API, Callable, [2]uintptr]
 func (c Callable) Free() {
 	var frame = c.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, c.Pointer())
-	c.API.variant.destruct.Callable(frame.Get(0))
+	c.API.typeset.destruct.Callable(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(c)
 }
 
 type Signal mmm.Pointer[API, Signal, [2]uintptr]
 
+type IsSignal interface{ signal() }
+
+func (s Signal) signal() {}
+
 func (s Signal) Free() {
 	var frame = s.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, s.Pointer())
-	s.API.variant.destruct.Signal(frame.Get(0))
+	s.API.typeset.destruct.Signal(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(s)
 }
@@ -188,7 +193,7 @@ type Dictionary mmm.Pointer[API, Dictionary, uintptr]
 func (d Dictionary) Free() {
 	var frame = d.API.NewFrame()
 	FrameSet[uintptr](0, frame, d.Pointer())
-	d.API.variant.destruct.Dictionary(frame.Get(0))
+	d.API.typeset.destruct.Dictionary(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(d)
 }
@@ -198,7 +203,7 @@ type Array mmm.Pointer[API, Array, uintptr]
 func (a Array) Free() {
 	var frame = a.API.NewFrame()
 	FrameSet[uintptr](0, frame, a.Pointer())
-	a.API.variant.destruct.Array(frame.Get(0))
+	a.API.typeset.destruct.Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(a)
 }
@@ -210,7 +215,7 @@ type PackedByteArray mmm.Pointer[API, PackedByteArray, [2]uintptr]
 func (p PackedByteArray) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedByteArray(frame.Get(0))
+	p.API.typeset.destruct.PackedByteArray(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -220,7 +225,7 @@ type PackedInt32Array mmm.Pointer[API, PackedInt32Array, [2]uintptr]
 func (p PackedInt32Array) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedInt32Array(frame.Get(0))
+	p.API.typeset.destruct.PackedInt32Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -230,7 +235,7 @@ type PackedInt64Array mmm.Pointer[API, PackedInt64Array, [2]uintptr]
 func (p PackedInt64Array) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedInt64Array(frame.Get(0))
+	p.API.typeset.destruct.PackedInt64Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -240,7 +245,7 @@ type PackedFloat32Array mmm.Pointer[API, PackedFloat32Array, [2]uintptr]
 func (p PackedFloat32Array) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedFloat32Array(frame.Get(0))
+	p.API.typeset.destruct.PackedFloat32Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -250,7 +255,7 @@ type PackedFloat64Array mmm.Pointer[API, PackedFloat64Array, [2]uintptr]
 func (p PackedFloat64Array) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedFloat64Array(frame.Get(0))
+	p.API.typeset.destruct.PackedFloat64Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -269,7 +274,7 @@ func (p PackedStringArray) AsSlice() []string {
 func (p PackedStringArray) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedStringArray(frame.Get(0))
+	p.API.typeset.destruct.PackedStringArray(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -279,7 +284,7 @@ type PackedVector2Array mmm.Pointer[API, PackedVector2Array, [2]uintptr]
 func (p PackedVector2Array) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedVector2Array(frame.Get(0))
+	p.API.typeset.destruct.PackedVector2Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -289,7 +294,7 @@ type PackedVector3Array mmm.Pointer[API, PackedVector3Array, [2]uintptr]
 func (p PackedVector3Array) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedVector3Array(frame.Get(0))
+	p.API.typeset.destruct.PackedVector3Array(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }
@@ -299,7 +304,7 @@ type PackedColorArray mmm.Pointer[API, PackedColorArray, [2]uintptr]
 func (p PackedColorArray) Free() {
 	var frame = p.API.NewFrame()
 	FrameSet[[2]uintptr](0, frame, p.Pointer())
-	p.API.variant.destruct.PackedColorArray(frame.Get(0))
+	p.API.typeset.destruct.PackedColorArray(frame.Get(0))
 	frame.Free()
 	mmm.MarkFree(p)
 }

@@ -4,7 +4,7 @@
 package gd
 
 import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/internal/classdb"
+import classdb "grow.graphics/gd/internal/classdb"
 
 
 type Side = gd.Side

@@ -1,6 +1,6 @@
 //go:build !generate
 
-package internal
+package gd
 
 import (
 	"context"
@@ -49,6 +49,16 @@ func Create[T PointerToClass](ctx Context, ptr T) T {
 	var fresh = godot.ClassDB.CreateObject((StringNamePtr)(unsafe.Pointer(&sname)))
 	ptr.SetPointer(mmm.Make[API, Pointer](ctx, godot, fresh))
 	return ptr
+}
+
+// GetLibraryPath returns the path to the library that was loaded.
+func (ctx Context) GetLibraryPath() string {
+	var godot = ctx.API()
+	var frame = godot.NewFrame()
+	ctx.API().ClassDB.GetLibraryPath(godot.ExtensionToken, frame.Back())
+	var path = FrameGet[uintptr](frame)
+	frame.Free()
+	return mmm.Make[API, String](ctx, godot, path).String()
 }
 
 // String returns a [String] from a standard UTF8 Go string.

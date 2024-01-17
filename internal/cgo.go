@@ -1,6 +1,6 @@
 //go:build !generate
 
-package internal
+package gd
 
 import (
 	"sync"
@@ -13,8 +13,14 @@ import (
 type cache struct {
 	utility utility
 	builtin builtin
+	typeset typeset
 	variant variant
 	Methods methods
+}
+
+type variant struct {
+	FromType [TypeMax]func(CallFrameBack, CallFrameArgs)
+	IntoType [TypeMax]func(CallFrameBack, CallFrameArgs)
 }
 
 const maxMethodArgs = 14

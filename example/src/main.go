@@ -37,8 +37,20 @@ type Rotator struct {
 }
 
 func (r *Rotator) Process(_ gd.Context, delta gd.Float) {
-	node2D := r.Super().Node2D()
+	node2D := r.Super().AsNode2D()
 	node2D.SetRotation(node2D.GetRotation() + delta)
+}
+
+type StartedSignalEmitter struct {
+	gd.Class[StartedSignalEmitter, gd.Node]
+
+	started gd.Signal[func()]
+}
+
+func (r *StartedSignalEmitter) Ready(gd.Context) {
+	if r.started.Emit != nil {
+		r.started.Emit()
+	}
 }
 
 /*
@@ -46,6 +58,8 @@ ExtendedNode demonstrates how to call the methods of builtin objects.
 */
 type ExtendedNode struct {
 	gd.Class[ExtendedNode, gd.Node2D]
+
+	StringField gd.String
 
 	engine gd.Engine
 }
@@ -55,7 +69,7 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 
 	node := e.Super()
 
-	fmt.Println("class:", node.Object().GetClass(godot).String())
+	fmt.Println("class:", node.AsObject().GetClass(godot).String())
 
 	var obj = gd.Create(godot, new(gd.Object))
 	fmt.Println(obj.GetClass(godot).String())
@@ -82,11 +96,13 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 // main init function, where the extensions are exported so that
 // they are available to the engine.
 func main() {
-	godot, classdb, ok := gdextension.Link()
+	godot, ok := gdextension.Link()
 	if !ok {
 		return
 	}
-	gdextension.RegisterClass[HelloWorld](godot, classdb)
-	gdextension.RegisterClass[ExtendedNode](godot, classdb)
-	gdextension.RegisterClass[Rotator](godot, classdb)
+	fmt.Println("Extension: ", godot.GetLibraryPath())
+	gdextension.Register[HelloWorld](godot)
+	gdextension.Register[ExtendedNode](godot)
+	gdextension.Register[Rotator](godot)
+	gdextension.Register[StartedSignalEmitter](godot)
 }

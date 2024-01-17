@@ -1,6 +1,6 @@
 //go:build !generate
 
-package internal
+package gd
 
 import (
 	"runtime/cgo"
@@ -30,9 +30,9 @@ type API struct {
 
 	Variants struct {
 		// Copy dst must be unititialized
-		Copy func(dst, src *Variant) `call:"variant_new_copy func(+void,$void)"`
+		Copy func(dst CallFrameBack, src CallFrameArgs) `call:"variant_new_copy func(+void,$void)"`
 		// Zero dst must be unititialized
-		Zero          func(dst *Variant)                                                                          `call:"variant_new_nil func(+void)"`
+		Zero          func(dst CallFrameBack)                                                                     `call:"variant_new_nil func(+void)"`
 		Free          func(CallFrameArgs)                                                                         `call:"variant_destroy func($void)"`
 		Call          func(self *Variant, method StringNamePtr, args []*Variant, ret *Variant, err CallError)     `call:"variant_call func($void,&void,&void,-int64_t=@3,+void,+void)"`
 		CallStatic    func(vtype VariantType, method StringNamePtr, args []*Variant, ret *Variant, err CallError) `call:"variant_call_static func(int,&void,&void,&void,-int64_t=@3,+void,+void)"`
@@ -54,7 +54,7 @@ type API struct {
 		ToBool        func(self *Variant) bool                                                                    `call:"variant_booleanize func(&void)bool"`
 		Duplicate     func(self *Variant, ret *Variant, deep bool)                                                `call:"variant_duplicate func(&void,+void,bool)"`
 		ToString      func(self *Variant, out *String)                                                            `call:"variant_stringify func(&void,+void)"`
-		Type          func(self *Variant) VariantType                                                             `call:"variant_get_type func(&void)int"`
+		Type          func(self CallFrameArgs) VariantType                                                        `call:"variant_get_type func(&void)int"`
 		HasMethod     func(self *Variant, method StringNamePtr) bool                                              `call:"variant_has_method func(&void,&void)bool"`
 		HasMember     func(self *Variant, member StringNamePtr) bool                                              `call:"variant_has_member func(&void,&void)bool"`
 		HasKey        func(self *Variant, key *Variant) (bool, bool)                                              `call:"variant_has_key func(&void,&void,+bool)bool"`
@@ -63,8 +63,8 @@ type API struct {
 		CanConvert       func(fromType, toType VariantType) bool `call:"variant_can_convert func(int,int)bool"`
 		CanConvertStrict func(fromType, toType VariantType) bool `call:"variant_can_convert_strict func(int,int)bool"`
 
-		Encoder func(VariantType) func(out *Variant, in unsafe.Pointer) `call:"get_variant_from_type_constructor func(int)func(+void,&void)"`
-		Decoder func(VariantType) func(out unsafe.Pointer, in *Variant) `call:"get_variant_to_type_constructor func(int)func(+void,&void)"`
+		Encoder func(VariantType) func(out CallFrameBack, in CallFrameArgs) `call:"get_variant_from_type_constructor func(int)func(+void,&void)"`
+		Decoder func(VariantType) func(out CallFrameBack, in CallFrameArgs) `call:"get_variant_to_type_constructor func(int)func(+void,&void)"`
 
 		Evaulator func(op Operator, a, b VariantType) func(a, b, ret uintptr) `call:"variant_get_ptr_operator_evaluator func(int,int,int)func(&void,&void,+void)"`
 
@@ -86,7 +86,7 @@ type API struct {
 	}
 
 	Strings struct {
-		New        func(dst CallFrameBack, s string) `call:"string_new_with_utf8_chars_and_len func(+void,&char,int64_t=@2)"`
+		New        func(dst CallFrameBack, s string) `call:"string_new_with_utf8_chars_and_len func(+void,&char,-int64_t=@2)"`
 		Get        func(CallFrameArgs, []byte)       `call:"string_to_utf8_chars func(&void,&char,-int64_t=@2)"`
 		Index      func(StringPtr, int64) rune       `call:"string_operator_index func(&void,int64_t)&char32_t"`
 		Append     func(StringPtr, *String)          `call:"string_operator_plus_eq_string func(&void,&void)"`
@@ -182,11 +182,11 @@ type API struct {
 		RegisterClassIntegerConstant  func(library ExtensionToken, class, enum, name StringNamePtr, value int64, bitfield bool)                        `call:"classdb_register_extension_class_integer_constant func(&void,&void,&void,&void,&void,int64_t)"`
 		RegisterClassProperty         func(library ExtensionToken, class StringNamePtr, info *PropertyInfo, getter, setter StringNamePtr)              `call:"classdb_register_extension_class_property func(&void,&void,&void,&void,&void)"`
 		RegisterClassPropertyIndexed  func(library ExtensionToken, class StringNamePtr, info *PropertyInfo, getter, setter StringNamePtr, index int64) `call:"classdb_register_extension_class_property_indexed func(&void,&void,&void,&void,&void,int64_t)"`
-		RegisterClassPropertyGroup    func(library ExtensionToken, class StringNamePtr, group, prefix *String)                                         `call:"classdb_register_extension_class_property_group func(&void,&void,&void,&void)"`
-		RegisterClassPropertySubGroup func(library ExtensionToken, class StringNamePtr, subGroup, prefix *String)                                      `call:"classdb_register_extension_class_property_subgroup func(&void,&void,&void,&void,&void)"`
+		RegisterClassPropertyGroup    func(library ExtensionToken, class CallFrameArgs, group, prefix CallFrameArgs)                                   `call:"classdb_register_extension_class_property_group func(&void,&void,&void,&void)"`
+		RegisterClassPropertySubGroup func(library ExtensionToken, class CallFrameArgs, subGroup, prefix CallFrameArgs)                                `call:"classdb_register_extension_class_property_subgroup func(&void,&void,&void,&void,&void)"`
 		RegisterClassSignal           func(library ExtensionToken, class, signal StringNamePtr, args []PropertyInfo)                                   `call:"classdb_register_extension_class_signal func(&void,&void,&void,&void,-int64_t=@4)"`
 		UnregisterClass               func(library ExtensionToken, class StringNamePtr)                                                                `call:"classdb_unregister_extension_class func(&void,&void)"`
-		GetLibraryPath                func(library ExtensionToken, out *String)                                                                        `call:"get_library_path func(&void,&void)"`
+		GetLibraryPath                func(library ExtensionToken, out CallFrameBack)                                                                  `call:"get_library_path func(&void,&void)"`
 	}
 
 	EditorPlugins struct {
@@ -194,11 +194,16 @@ type API struct {
 		Remove func(plugin StringNamePtr) `call:"editor_remove_plugin func(&void)"`
 	}
 
+	ExtensionToken
+
 	cache
 }
 
-type StringPtr *uintptr
-type StringNamePtr *uintptr
+type (
+	StringPtr     *uintptr
+	StringNamePtr *uintptr
+	VariantPtr    *[3]uintptr
+)
 
 type CallErrorType int32
 
@@ -278,11 +283,11 @@ type InstanceBindingCallbacks struct {
 }
 
 type PropertyInfo struct {
-	Type       VariantType
-	Name       StringName
-	ClassName  StringName
+	Type       uint32 // VariantType
+	Name       StringNamePtr
+	ClassName  StringNamePtr
 	Hint       uint32 // PropertyHint
-	HintString String
+	HintString StringPtr
 	Usage      uint32 // PropertyUsageFlags
 }
 
@@ -302,13 +307,13 @@ type ClassCreationInfo struct {
 	IsAbstract bool
 	IsExposed  bool
 
-	Set call.Back[func(instance cgo.Handle, name StringNamePtr, value *Variant)]
-	Get call.Back[func(instance cgo.Handle, name StringNamePtr, ret *Variant)]
+	Set call.Back[func(instance cgo.Handle, name StringNamePtr, value VariantPtr) bool]
+	Get call.Back[func(instance cgo.Handle, name StringNamePtr, ret VariantPtr) bool]
 
 	GetPropertyList   call.Back[func(instance cgo.Handle, len *uint32) *PropertyInfo]
 	FreePropertyList  call.Back[func(instance cgo.Handle, list *PropertyInfo)]
 	PropertyCanRevert call.Back[func(instance cgo.Handle, name StringNamePtr) bool]
-	PropertyGetRevert call.Back[func(instance cgo.Handle, name StringNamePtr, ret *Variant)]
+	PropertyGetRevert call.Back[func(instance cgo.Handle, name StringNamePtr, ret VariantPtr)]
 	ValidateProperty  call.Back[func(instance cgo.Handle, name StringNamePtr, property *PropertyInfo) bool]
 	Notification      call.Back[func(instance cgo.Handle, notification int32, reversed bool)]
 	ToString          call.Back[func(instance cgo.Handle, valid *bool, out *String)]
@@ -346,7 +351,7 @@ const (
 )
 
 type ClassMethodInfo struct {
-	Name                *StringName
+	Name                StringNamePtr
 	MethodUserdata      unsafe.Pointer
 	Call                call.Back[func(userdata unsafe.Pointer, instance cgo.Handle, args *Variant, arg_count int64, ret *Variant, err *CallError)]
 	PointerCall         call.Back[func(userdata unsafe.Pointer, instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer, err *CallError)]

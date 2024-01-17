@@ -1,81 +1,81 @@
-package classdb
+package gd
 
-import "grow.graphics/gd/internal"
+import gd "grow.graphics/gd/internal"
 
 type AudioFrame struct {
 	Left, Right float32
 }
 
 type PhysicsServer2DExtensionMotionResult struct {
-	Travel, Remainder, CollisionPoint, CollisionNormal, ColliderVelocity internal.Vector2
+	Travel, Remainder, CollisionPoint, CollisionNormal, ColliderVelocity gd.Vector2
 	CollisionDepth, CollisionSafeFraction, CollisionUnsafeFraction       float32
 	CollisionLocalShape                                                  int32
 	ColliderID                                                           uint64
-	ColliderRID                                                          internal.RID
+	ColliderRID                                                          gd.RID
 	ColliderShape                                                        int32
 }
 
 type PhysicsServer2DExtensionRayResult struct {
-	Position, Normal internal.Vector2
-	RID              internal.RID
+	Position, Normal gd.Vector2
+	RID              gd.RID
 	ColliderID       uint64
-	Collider         *internal.Object
+	Collider         *gd.Object
 	Shape            int32
 }
 
 type PhysicsServer2DExtensionShapeRestInfo struct {
-	Point, Normal, LinearVelocity internal.Vector2
-	RID                           internal.RID
+	Point, Normal, LinearVelocity gd.Vector2
+	RID                           gd.RID
 	ColliderID                    uint64
 	Shape                         int32
 }
 
 type PhysicsServer2DExtensionShapeResult struct {
-	RID        internal.RID
+	RID        gd.RID
 	ColliderID uint64
-	Collider   *internal.Object
+	Collider   *gd.Object
 	Shape      int32
 }
 
 type PhysicsServer3DExtensionRayResult struct {
-	Position, Normal internal.Vector3
-	RID              internal.RID
+	Position, Normal gd.Vector3
+	RID              gd.RID
 	ColliderID       uint64
 	Collider         uintptr
 	Shape            int32
 }
 type PhysicsServer3DExtensionShapeResult struct {
-	RID        internal.RID
+	RID        gd.RID
 	ColliderID uint64
 	Collider   uintptr
 	Shape      int32
 }
 type PhysicsServer3DExtensionShapeRestInfo struct {
-	Point, Normal  internal.Vector3
-	RID            internal.RID
+	Point, Normal  gd.Vector3
+	RID            gd.RID
 	ColliderID     uint64
 	Shape          int32
-	LinearVelocity internal.Vector3
+	LinearVelocity gd.Vector3
 }
 type PhysicsServer3DExtensionMotionCollision struct {
-	Position, Normal internal.Vector3
-	ColliderVelocity internal.Vector3
+	Position, Normal gd.Vector3
+	ColliderVelocity gd.Vector3
 	Depth            float32
 	LocalShape       int32
 	ColliderID       uint64
-	Collider         internal.RID
+	Collider         gd.RID
 	ColliderShape    int32
 }
 type PhysicsServer3DExtensionMotionResult struct {
-	Travel                  internal.Vector3
-	Remainder               internal.Vector3
+	Travel                  gd.Vector3
+	Remainder               gd.Vector3
 	CollisionSafeFraction   float32
 	CollisionUnsafeFraction float32
 	Collisions              [32]PhysicsServer3DExtensionMotionCollision
 	CollisionCount          int32
 }
 type ScriptLanguageExtensionProfilingInfo struct {
-	Signature  internal.StringName
+	Signature  gd.StringName
 	Call_count uint64
 	TotalTime  uint64
 	SelfTime   uint64
@@ -89,12 +89,12 @@ type Glyph struct {
 	Xoffset  float32
 	Yoffset  float32
 	Advance  float32
-	FontRID  internal.RID
+	FontRID  gd.RID
 	FontSize int32
 	Index    int32
 }
 type CaretInfo struct {
-	LeadingCaret, TrailingCaret internal.Rect2
+	LeadingCaret, TrailingCaret gd.Rect2
 
 	LeadingDirection, TrailingDirection int64
 }

@@ -1,6 +1,6 @@
 //go:build !generate
 
-package internal
+package gd
 
 import (
 	"reflect"

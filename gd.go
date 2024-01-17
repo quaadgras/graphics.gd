@@ -1,7 +1,7 @@
 package gd
 
 import (
-	"grow.graphics/gd/internal"
+	internal "grow.graphics/gd/internal"
 )
 
 // Class can be embedded inside of a struct to represent a new Class type.
@@ -60,7 +60,14 @@ type (
 	RID        = internal.RID
 	Object     = internal.Object
 	Callable   = internal.Callable
-	Signal     = internal.Signal
+
+	// Signal's T must be a function type.
+	Signal[T any] struct {
+		internal.Signal
+
+		Emit T
+	}
+
 	Dictionary = internal.Dictionary
 	Array      = internal.Array
 

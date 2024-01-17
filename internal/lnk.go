@@ -1,6 +1,6 @@
 //go:build !generate
 
-package internal
+package gd
 
 import (
 	"context"
@@ -18,6 +18,7 @@ import (
 // care of this (and you won't need to call it yourself).
 func (Godot *API) Link(level GDExtensionInitializationLevel) {
 	if level == GDExtensionInitializationLevelCore {
+		Godot.linkTypeset()
 		Godot.linkVariant()
 		Godot.linkUtility()
 		Godot.linkBuiltin()
@@ -102,15 +103,15 @@ func (Godot *API) linkMethods() {
 	}
 }
 
-func (Godot *API) linkVariant() {
-	Godot.linkVariantCreation()
-	Godot.linkVariantOperator()
-	Godot.linkVariantDestruct()
+func (Godot *API) linkTypeset() {
+	Godot.linkTypesetCreation()
+	Godot.linkTypesetOperator()
+	Godot.linkTypesetDestruct()
 }
 
-// linkVariantCreation, each field is an array of constructors.
-func (Godot *API) linkVariantCreation() {
-	rvalue := reflect.ValueOf(&Godot.variant.creation).Elem()
+// linkTypesetCreation, each field is an array of constructors.
+func (Godot *API) linkTypesetCreation() {
+	rvalue := reflect.ValueOf(&Godot.typeset.creation).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
 		esize := field.Type.Elem().Size()
@@ -122,11 +123,11 @@ func (Godot *API) linkVariantCreation() {
 	}
 }
 
-// linkVariantOperator, each field is a struct named after a builtin type, with a list of
+// linkTypesetOperator, each field is a struct named after a builtin type, with a list of
 // operator fields, named after the operator, each field is either a function (no right
 // hand side) or a struct with a function field for each right hand side type.
-func (Godot *API) linkVariantOperator() {
-	rvalue := reflect.ValueOf(&Godot.variant.operator).Elem()
+func (Godot *API) linkTypesetOperator() {
+	rvalue := reflect.ValueOf(&Godot.typeset.operator).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
 		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
@@ -152,13 +153,20 @@ func (Godot *API) linkVariantOperator() {
 	}
 }
 
-// linkVariantDestruct, each field is a function value that needs to be loaded in dynamically.
-func (Godot *API) linkVariantDestruct() {
-	rvalue := reflect.ValueOf(&Godot.variant.destruct).Elem()
+// linkTypesetDestruct, each field is a function value that needs to be loaded in dynamically.
+func (Godot *API) linkTypesetDestruct() {
+	rvalue := reflect.ValueOf(&Godot.typeset.destruct).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
 		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
 		vtype, _ := variantTypeFromName(field.Name)
 		*(value.Interface().(*func(CallFrameArgs))) = Godot.Variants.Destructor(vtype)
+	}
+}
+
+func (Godot *API) linkVariant() {
+	for i := VariantType(1); i < TypeMax-1; i++ {
+		Godot.variant.FromType[i] = Godot.Variants.Encoder(i)
+		Godot.variant.IntoType[i] = Godot.Variants.Decoder(i)
 	}
 }

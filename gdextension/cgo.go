@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	"grow.graphics/gd/internal"
+	internal "grow.graphics/gd/internal"
 	"runtime.link/api"
 	"runtime.link/api/call"
 	"runtime.link/api/stub"
@@ -15,15 +15,17 @@ import "C"
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer
 
+var background internal.Context
+
 // Link returns a handle to the [API] and the global [ClassDB].
 // The [bool] return value is [true] if the API has been
 // linked with Godot successfully.
-func Link() (internal.Context, internal.ExtensionToken, bool) {
+func Link() (internal.Context, bool) {
 	if dlsymGD == nil {
 		*godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
-		return internal.NewContext(godot), 0, false
+		return internal.NewContext(godot), false
 	}
-	return internal.NewContext(godot), classDB, true
+	return background, true
 }
 
 var (
@@ -49,58 +51,25 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 			return sym, nil
 		},
 	})
+	godot.ExtensionToken = classDB
+
+	background = internal.NewContext(godot)
 
 	init := (*internal.ExtensionInitialization[uintptr])(configuration)
 	*init = internal.ExtensionInitialization[uintptr]{}
 	init.MinimumInitializationLevel = internal.GDExtensionInitializationLevelScene
 	init.Initialize.Set(func(userdata uintptr, level internal.GDExtensionInitializationLevel) {
 		godot.Link(level)
-		/*if level == 1 {
-			ctx, free := mmm.ContextWithCascade(context.Background())
-			defer free()
-
-			fmt.Println("lol")
-			name := Godot.StringName(ctx, "GDextension")
-
-			fmt.Println("here")
-			fmt.Println(name.String())
-			os.Exit(0)
-
-		}*/
 		if level == 2 {
 			main()
 		}
-		/*if level == 3 {
-
-			// playground
-			GDextension.StringNames.New(&name, "Engine")
-			var Engine = GDextension.Object.GetSingleton(&name)
-
-			var method gd.StringName
-			GDextension.StringNames.New(&method, "get_license_text")
-			var bind = GDextension.ClassDB.GetMethodBind(&name, &method, 201670096)
-
-			GDextension.Variants.Destructor(gd.TypeStringName)(unsafe.Pointer(&name))
-			GDextension.Variants.Destructor(gd.TypeStringName)(unsafe.Pointer(&method))
-
-			fmt.Println("bind", bind)
-
-			fmt.Println(Engine)
-
-			var result gd.String
-			GDextension.Object.UnsafeCall(bind, Engine, nil, unsafe.Pointer(&result))
-			fmt.Println("result=", result)
-
-			var buf = make([]byte, 1024)
-			GDextension.Strings.Get(&result, buf)
-			fmt.Println(string(buf))
-		}*/
 	})
 	init.Deinitialize.Set(func(userdata uintptr, level internal.GDExtensionInitializationLevel) {
 		if level == 3 {
 			init.Initialize.Free()
 		}
 		if level == 0 {
+			background.Free()
 			init.Deinitialize.Free()
 		}
 	})
