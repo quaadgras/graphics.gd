@@ -16,7 +16,7 @@ import (
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
-func (Godot *API) Link(level GDExtensionInitializationLevel) {
+func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	if level == GDExtensionInitializationLevelCore {
 		Godot.linkTypeset()
 		Godot.linkVariant()

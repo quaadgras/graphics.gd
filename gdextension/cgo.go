@@ -53,13 +53,15 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 	})
 	godot.ExtensionToken = classDB
 
+	linkCGO(godot)
+
 	background = internal.NewContext(godot)
 
 	init := (*internal.ExtensionInitialization[uintptr])(configuration)
 	*init = internal.ExtensionInitialization[uintptr]{}
 	init.MinimumInitializationLevel = internal.GDExtensionInitializationLevelScene
 	init.Initialize.Set(func(userdata uintptr, level internal.GDExtensionInitializationLevel) {
-		godot.Link(level)
+		godot.Init(level)
 		if level == 2 {
 			main()
 		}

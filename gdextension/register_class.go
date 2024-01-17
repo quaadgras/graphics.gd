@@ -51,15 +51,16 @@ func Register[Struct internal.Extends[Parent], Parent internal.IsClass](godot in
 	info.IsExposed = true
 
 	info.CreateInstance.Set(func(userdata unsafe.Pointer) uintptr {
-		ctx := mmm.NewContext(context.Background())
-		var super = godot.API().ClassDB.CreateObject((internal.StringNamePtr)(unsafe.Pointer(&superName)))
+		ctx := internal.NewContext(godot.API())
+		var super = godot.API().ClassDB.ConstructObject(ctx, superName)
 		var instance = reflect.New(classType)
 		instance.Interface().(internal.PointerToClass).SetPointer(
-			mmm.Make[internal.API, internal.Pointer](ctx, godot.API(), super))
-		injectDependenciesInto(ctx, godot.API(), instance.Elem(), super, superType)
+			mmm.Make[internal.API, internal.Pointer](ctx, godot.API(), super.Pointer()))
+		mmm.MarkFree(super.AsPointer())
+		injectDependenciesInto(ctx, godot.API(), instance.Elem(), superType)
 		var handle = cgo.NewHandle(instance.Interface())
-		godot.API().Object.SetInstance(super, (internal.StringNamePtr)(unsafe.Pointer(&className)), handle)
-		return super
+		godot.API().Object.SetInstance(super.Pointer(), (internal.StringNamePtr)(unsafe.Pointer(&className)), handle)
+		return super.Pointer()
 	})
 	info.FreeInstance.Set(func(userdata unsafe.Pointer, handle cgo.Handle) {
 		class := handle.Value().(internal.IsClass)
@@ -133,7 +134,7 @@ func convertName(fnName string) string {
 // injectDependenciesInto the given freshly allocated value, this
 // function makes sure any [gd.Object] types are instantiated and
 // that any referenced singletons are injected.
-func injectDependenciesInto(ctx context.Context, Godot *internal.API, value reflect.Value, super uintptr, superType reflect.Type) {
+func injectDependenciesInto(ctx context.Context, Godot *internal.API, value reflect.Value, superType reflect.Type) {
 	if value.CanAddr() && value.Kind() != reflect.Struct {
 		panic("gdextension.injectDependenciesInto: value must be an addressable struct")
 	}

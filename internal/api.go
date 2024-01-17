@@ -173,9 +173,9 @@ type API struct {
 	}
 
 	ClassDB struct {
-		CreateObject  func(class StringNamePtr) uintptr                        `call:"classdb_construct_object func(&void)$void"`
-		GetMethodBind func(class, method StringNamePtr, hash int64) MethodBind `call:"classdb_get_method_bind func(&void,&void,int64_t)void"`
-		GetClassTag   func(class StringNamePtr) ClassTag                       `call:"classdb_get_class_tag func(&void)void"`
+		ConstructObject func(Context, StringName) Object
+		GetMethodBind   func(class, method StringNamePtr, hash int64) MethodBind `call:"classdb_get_method_bind func(&void,&void,int64_t)void"`
+		GetClassTag     func(class StringNamePtr) ClassTag                       `call:"classdb_get_class_tag func(&void)void"`
 
 		RegisterClass                 func(library ExtensionToken, name, extends StringNamePtr, info *ClassCreationInfo)                               `call:"classdb_register_extension_class2 func(&void,&void,&void,&void)"`
 		RegisterClassMethod           func(library ExtensionToken, class StringNamePtr, info *ClassMethodInfo)                                         `call:"classdb_register_extension_class_method func(&void,&void,&void)"`

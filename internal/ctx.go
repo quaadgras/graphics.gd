@@ -6,7 +6,6 @@ import (
 	"context"
 	"reflect"
 	"strings"
-	"unsafe"
 
 	"runtime.link/mmm"
 )
@@ -44,10 +43,9 @@ func newContext(api *API) Context {
 }
 
 func Create[T PointerToClass](ctx Context, ptr T) T {
-	var godot = ctx.API()
-	var sname = ctx.StringName(strings.TrimPrefix(reflect.TypeOf(ptr).Elem().Name(), "class"))
-	var fresh = godot.ClassDB.CreateObject((StringNamePtr)(unsafe.Pointer(&sname)))
-	ptr.SetPointer(mmm.Make[API, Pointer](ctx, godot, fresh))
+	object := ctx.API().ClassDB.ConstructObject(ctx, ctx.StringName(strings.TrimPrefix(reflect.TypeOf(ptr).Elem().Name(), "class")))
+	ptr.SetPointer(mmm.Make[API, Pointer](ctx, ctx.API(), object.Pointer()))
+	mmm.MarkFree(object.AsPointer())
 	return ptr
 }
 
