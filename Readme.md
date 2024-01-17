@@ -2,7 +2,7 @@
 
 This module provides a safe and simple way to work with Godot 4.3, in Go.
 
-```
+```go
 package main
 
 import (
