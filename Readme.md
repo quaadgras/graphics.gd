@@ -1,6 +1,6 @@
 # Godot 4.3 + Go
 
-This module provides a safe Go representation for the Godot 4.3 Extension API.
+This module provides a safe and simple way to work with Godot 4.3, in Go.
 
 ```
 package main
@@ -57,7 +57,8 @@ control. All values are tied to a [gd.Context] type, which is either:
 
 This module aims to offer memory safety for race-free extensions, if you discover
 a way to unintentionally do something unsafe (like double free, use-after-free or
-a segfault), please open an issue. 
+a segfault), using methods on types exported by the root `gd` package please open 
+an issue. 
 
 ## Performance
 
@@ -74,6 +75,9 @@ Run `make` in the example/src directory or manually build a C-shared library:
 cd example/src
 make # go build -o ./bin/example.so -buildmode=c-shared
 ```
+
+**NOTE:** the first time you build a project, it will take a little while to compile.
+After this, subsequent builds will be quite a bit faster!
 
 Now open the example project in Godot from a terminal and you will be able to 
 see Go printing things to the console.

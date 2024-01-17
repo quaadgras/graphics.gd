@@ -54,30 +54,30 @@ func Create[T PointerToClass](ctx Context, ptr T) T {
 // String returns a [String] from a standard UTF8 Go string.
 func (ctx Context) String(s string) String {
 	var godot = ctx.API()
-	var frame = godot.newFrame()
+	var frame = godot.NewFrame()
 	ctx.API().Strings.New(frame.Back(), s)
-	var str = frameGet[uintptr](frame)
-	frame.free()
+	var str = FrameGet[uintptr](frame)
+	frame.Free()
 	return mmm.Make[API, String](ctx, godot, str)
 }
 
 // StringName returns a [StringName] from a standard UTF8 Go string.
 func (ctx Context) StringName(s string) StringName {
 	var godot = ctx.API()
-	var frame = godot.newFrame()
+	var frame = godot.NewFrame()
 	ctx.API().StringNames.New(frame.Back(), s)
-	var str = frameGet[uintptr](frame)
-	frame.free()
+	var str = FrameGet[uintptr](frame)
+	frame.Free()
 	return mmm.Make[API, StringName](ctx, godot, str)
 }
 
 // Sin returns the sine of the given angle.
 func (ctx Context) Sin(x Float) Float {
 	var godot = ctx.API()
-	var frame = godot.newFrame()
-	frameSet[Float](0, frame, x)
+	var frame = godot.NewFrame()
+	FrameSet[Float](0, frame, x)
 	godot.utility.sin(frame.Back(), frame.Args(), 1)
-	var ret = frameGet[Float](frame)
-	frame.free()
+	var ret = FrameGet[Float](frame)
+	frame.Free()
 	return ret
 }

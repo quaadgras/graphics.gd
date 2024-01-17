@@ -14,104 +14,7 @@ type cache struct {
 	utility utility
 	builtin builtin
 	variant variant
-	methods methods
-}
-
-type AudioFrame struct {
-	Left, Right float32
-}
-
-type PhysicsServer2DExtensionMotionResult struct {
-	Travel, Remainder, CollisionPoint, CollisionNormal, ColliderVelocity Vector2
-	CollisionDepth, CollisionSafeFraction, CollisionUnsafeFraction       float32
-	CollisionLocalShape                                                  int32
-	ColliderID                                                           uint64
-	ColliderRID                                                          RID
-	ColliderShape                                                        int32
-}
-
-type PhysicsServer2DExtensionRayResult struct {
-	Position, Normal Vector2
-	RID              RID
-	ColliderID       uint64
-	Collider         *Object
-	Shape            int32
-}
-
-type PhysicsServer2DExtensionShapeRestInfo struct {
-	Point, Normal, LinearVelocity Vector2
-	RID                           RID
-	ColliderID                    uint64
-	Shape                         int32
-}
-
-type PhysicsServer2DExtensionShapeResult struct {
-	RID        RID
-	ColliderID uint64
-	Collider   *Object
-	Shape      int32
-}
-
-type PhysicsServer3DExtensionRayResult struct {
-	Position, Normal Vector3
-	RID              RID
-	ColliderID       uint64
-	Collider         uintptr
-	Shape            int32
-}
-type PhysicsServer3DExtensionShapeResult struct {
-	RID        RID
-	ColliderID uint64
-	Collider   uintptr
-	Shape      int32
-}
-type PhysicsServer3DExtensionShapeRestInfo struct {
-	Point, Normal  Vector3
-	RID            RID
-	ColliderID     uint64
-	Shape          int32
-	LinearVelocity Vector3
-}
-type PhysicsServer3DExtensionMotionCollision struct {
-	Position, Normal Vector3
-	ColliderVelocity Vector3
-	Depth            float32
-	LocalShape       int32
-	ColliderID       uint64
-	Collider         RID
-	ColliderShape    int32
-}
-type PhysicsServer3DExtensionMotionResult struct {
-	Travel                  Vector3
-	Remainder               Vector3
-	CollisionSafeFraction   float32
-	CollisionUnsafeFraction float32
-	Collisions              [32]PhysicsServer3DExtensionMotionCollision
-	CollisionCount          int32
-}
-type ScriptLanguageExtensionProfilingInfo struct {
-	Signature  StringName
-	Call_count uint64
-	TotalTime  uint64
-	SelfTime   uint64
-}
-type Glyph struct {
-	Start    int32
-	End      int32
-	Count    uint8
-	Repeat   uint8
-	Flags    uint16
-	Xoffset  float32
-	Yoffset  float32
-	Advance  float32
-	FontRID  RID
-	FontSize int32
-	Index    int32
-}
-type CaretInfo struct {
-	LeadingCaret, TrailingCaret Rect2
-
-	LeadingDirection, TrailingDirection int64
+	Methods methods
 }
 
 const maxMethodArgs = 14
@@ -150,7 +53,7 @@ func (frame callFrame) Back() CallFrameBack {
 	return CallFrameBack(unsafe.Pointer(&unsafeFrame.back[0]))
 }
 
-func (Godot API) newFrame() callFrame {
+func (Godot API) NewFrame() callFrame {
 	frame, ok := callFrames.Get().(callFrame)
 	if !ok {
 		frame = callFrame{
@@ -167,14 +70,14 @@ func (Godot API) newFrame() callFrame {
 	return frame
 }
 
-func (frame callFrame) free() { callFrames.Put(frame) }
+func (frame callFrame) Free() { callFrames.Put(frame) }
 
-func frameSet[T any](index int, frame callFrame, value T) {
+func FrameSet[T any](index int, frame callFrame, value T) {
 	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
 	*(*T)(unsafe.Pointer(&unsafeFrame.data[index*maxArgWords])) = value
 }
 
-func frameGet[T any](frame callFrame) T {
+func FrameGet[T any](frame callFrame) T {
 	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
 	return *(*T)(unsafe.Pointer(&unsafeFrame.back))
 }
@@ -188,14 +91,14 @@ func frameGet[T any](frame callFrame) T {
 	return mmm.Make[gd.API, PackedByteArray](ctx, self.API, ret)
 }*/
 
-type godotArgs uintptr
+type UnsafeArgs uintptr
 
-func godotGet[T any](frame godotArgs, index int) T {
+func UnsafeGet[T any](frame UnsafeArgs, index int) T {
 	return unsafe.Slice((*T)(unsafe.Pointer(frame)), index+1)[index]
 }
 
-type godotBack uintptr
+type UnsafeBack uintptr
 
-func godotSet[T any](frame godotBack, value T) {
+func UnsafeSet[T any](frame UnsafeBack, value T) {
 	*(*T)(unsafe.Pointer(frame)) = value
 }

@@ -16,13 +16,13 @@ import (
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
-func (Godot *API) Link(level ExtensionInitializationLevel) {
-	if level == ExtensionInitializationLevelCore {
+func (Godot *API) Link(level GDExtensionInitializationLevel) {
+	if level == GDExtensionInitializationLevelCore {
 		Godot.linkVariant()
 		Godot.linkUtility()
 		Godot.linkBuiltin()
 	}
-	if level == ExtensionInitializationLevelEditor {
+	if level == GDExtensionInitializationLevelEditor {
 		Godot.linkMethods()
 	}
 }
@@ -78,13 +78,14 @@ func (Godot *API) linkMethods() {
 	ctx := mmm.NewContext(context.Background())
 	defer ctx.Free()
 
-	rvalue := reflect.ValueOf(&Godot.methods).Elem()
+	rvalue := reflect.ValueOf(&Godot.Methods).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
 		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
 		for j := 0; j < class.Type.NumField(); j++ {
 			method := class.Type.Field(j)
 			method.Name = strings.TrimSuffix(method.Name, "_")
+			method.Name = strings.TrimPrefix(method.Name, "Bind_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
 			className := Godot.StringName(ctx, class.Name)
 			methodName := Godot.StringName(ctx, method.Name)

@@ -12,9 +12,9 @@ func TestCallFrame(t *testing.T) {
 	Godot.Allocate = func(size uintptr) unsafe.Pointer {
 		return unsafe.Pointer(unsafe.SliceData(make([]byte, size)))
 	}
-	var frame = Godot.newFrame()
+	var frame = Godot.NewFrame()
 	for i := 0; i < maxMethodArgs; i++ {
-		frameSet[uintptr](i, frame, 0x12345678+uintptr(i))
+		FrameSet[uintptr](i, frame, 0x12345678+uintptr(i))
 		if *(*uintptr)(unsafe.Pointer(frame.Get(i))) != 0x12345678+uintptr(i) {
 			t.Fail()
 		}

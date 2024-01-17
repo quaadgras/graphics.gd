@@ -17,8 +17,8 @@ func (class *Class[T, S]) SetPointer(ptr Pointer) {
 	any(&class.super).(PointerToClass).SetPointer(ptr)
 }
 
-func (class Class[T, S]) getPointer() Pointer {
-	return class.super.getPointer()
+func (class Class[T, S]) AsPointer() Pointer {
+	return class.super.AsPointer()
 }
 
 func (class Class[T, S]) Context() mmm.Context {
@@ -31,7 +31,7 @@ func (class Class[T, S]) Pointer() uintptr {
 
 // KeepAlive the class until the end of the specified context.
 func (class Class[T, S]) KeepAlive(ctx mmm.Context) {
-	mmm.Move(class.super.getPointer(), ctx)
+	mmm.Move(class.super.AsPointer(), ctx)
 }
 
 func (class Class[T, S]) class() S { return class.super }
@@ -60,7 +60,7 @@ func (ptr Pointer) virtual(string) reflect.Value {
 	return reflect.Value{}
 }
 
-func (ptr Pointer) getPointer() Pointer    { return ptr }
+func (ptr Pointer) AsPointer() Pointer     { return ptr }
 func (ptr *Pointer) SetPointer(to Pointer) { *ptr = to }
 
 type Extends[T IsClass] interface {
@@ -76,15 +76,15 @@ type PointerToClass interface {
 type IsClass interface {
 	Context() mmm.Context
 	Pointer() uintptr
-	getPointer() Pointer
+	AsPointer() Pointer
 	virtual(string) reflect.Value
 }
 
 type IsPointer interface {
-	getPointer() Pointer
+	AsPointer() Pointer
 }
 
 // MarkFree marks the given class as being freed.
 func MarkFree(class IsClass) {
-	mmm.MarkFree(class.getPointer())
+	mmm.MarkFree(class.AsPointer())
 }

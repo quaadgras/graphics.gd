@@ -265,10 +265,10 @@ const (
 )
 
 type ExtensionInitialization[T any] struct {
-	MinimumInitializationLevel ExtensionInitializationLevel
+	MinimumInitializationLevel GDExtensionInitializationLevel
 	Userdata                   T
-	Initialize                 call.Back[func(userdata T, level ExtensionInitializationLevel)]
-	Deinitialize               call.Back[func(userdata T, level ExtensionInitializationLevel)]
+	Initialize                 call.Back[func(userdata T, level GDExtensionInitializationLevel)]
+	Deinitialize               call.Back[func(userdata T, level GDExtensionInitializationLevel)]
 }
 
 type InstanceBindingCallbacks struct {
@@ -327,7 +327,7 @@ type ClassCreationInfo struct {
 	UserData unsafe.Pointer
 }
 
-type ExtensionClassCallVirtualFunc = call.Back[func(cgo.Handle, godotArgs, godotBack)]
+type ExtensionClassCallVirtualFunc = call.Back[func(cgo.Handle, UnsafeArgs, UnsafeBack)]
 
 type ClassMethodArgumentMetadata uint32
 

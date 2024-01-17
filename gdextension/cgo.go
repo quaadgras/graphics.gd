@@ -52,8 +52,8 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 
 	init := (*internal.ExtensionInitialization[uintptr])(configuration)
 	*init = internal.ExtensionInitialization[uintptr]{}
-	init.MinimumInitializationLevel = internal.ExtensionInitializationLevelScene
-	init.Initialize.Set(func(userdata uintptr, level internal.ExtensionInitializationLevel) {
+	init.MinimumInitializationLevel = internal.GDExtensionInitializationLevelScene
+	init.Initialize.Set(func(userdata uintptr, level internal.GDExtensionInitializationLevel) {
 		godot.Link(level)
 		/*if level == 1 {
 			ctx, free := mmm.ContextWithCascade(context.Background())
@@ -96,7 +96,7 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 			fmt.Println(string(buf))
 		}*/
 	})
-	init.Deinitialize.Set(func(userdata uintptr, level internal.ExtensionInitializationLevel) {
+	init.Deinitialize.Set(func(userdata uintptr, level internal.GDExtensionInitializationLevel) {
 		if level == 3 {
 			init.Initialize.Free()
 		}
