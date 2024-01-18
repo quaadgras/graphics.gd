@@ -91,6 +91,7 @@ see Go printing things to the console.
 * No support for indexed properties
 * No support for Godot functions with varargs.
 * No support for script extensions.
+* No methods for Godot math types, Vectors, Transforms, etc.
 * 64bit support only.
 
 ## Licensing
