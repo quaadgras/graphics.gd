@@ -10,6 +10,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
@@ -67,7 +68,7 @@ func (Godot *API) linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*func(base, args CallFrameArgs, ret CallFrameBack, c int32))) = Godot.Variants.BuiltinMethodCaller(vtype, (StringNamePtr)(unsafe.Pointer(&methodName)), hash)
+			*(direct.Interface().(*func(base call.Any, args call.Args, ret call.Any, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, hash)
 		}
 	}
 }
@@ -137,16 +138,16 @@ func (Godot *API) linkTypesetOperator() {
 			otype := operatoTypeFromName(op.Name)
 			switch op.Type.Kind() {
 			case reflect.Func:
-				direct := value.Elem().Field(j).Addr().Interface().(*func(a, b, ret uintptr))
-				*direct = Godot.Variants.Evaulator(otype, vtype, TypeNil)
+				direct := value.Elem().Field(j).Addr().Interface().(*func(a, b, ret call.Any))
+				*direct = Godot.Variants.PointerOperatorEvaluator(otype, vtype, TypeNil)
 			default:
 				for k := 0; k < op.Type.NumField(); k++ {
 					rhs := op.Type.Field(k)
 					rhsType, _ := variantTypeFromName(rhs.Name)
 					unsafe := reflect.NewAt(rhs.Type,
 						unsafe.Add(value.Elem().Field(j).Addr().UnsafePointer(), rhs.Offset))
-					direct := unsafe.Interface().(*func(a, b, ret uintptr))
-					*direct = Godot.Variants.Evaulator(otype, vtype, rhsType)
+					direct := unsafe.Interface().(*func(a, b, ret call.Any))
+					*direct = Godot.Variants.PointerOperatorEvaluator(otype, vtype, rhsType)
 				}
 			}
 		}
@@ -166,7 +167,7 @@ func (Godot *API) linkTypesetDestruct() {
 
 func (Godot *API) linkVariant() {
 	for i := VariantType(1); i < TypeMax-1; i++ {
-		Godot.variant.FromType[i] = Godot.Variants.Encoder(i)
-		Godot.variant.IntoType[i] = Godot.Variants.Decoder(i)
+		Godot.variant.FromType[i] = Godot.Variants.FromTypeConstructor(i)
+		Godot.variant.IntoType[i] = Godot.Variants.ToTypeConstructor(i)
 	}
 }

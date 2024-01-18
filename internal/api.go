@@ -30,46 +30,45 @@ type API struct {
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
 
 	Variants struct {
-		NewCopy            func(ctx Context, src Variant) Variant
-		NewNil             func(ctx Context) Variant
-		Destroy            func(self Variant)
-		Call               func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
-		CallStatic         func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
-		Evaluate           func(ctx Context, operator Operator, a, b Variant) (ret Variant, ok bool)
-		Set                func(self, key, val Variant) bool
-		SetNamed           func(self Variant, key StringName, val Variant) bool
-		SetKeyed           func(self, key, val Variant) bool
-		SetIndexed         func(self Variant, index int64, val Variant) (ok, oob bool)
-		Get                func(ctx Context, self, key Variant) (Variant, bool)
-		GetNamed           func(ctx Context, self Variant, key StringName) (Variant, bool)
-		GetKeyed           func(ctx Context, self, key Variant) (Variant, bool)
-		GetIndexed         func(ctx Context, self Variant, index int64) (val Variant, ok, oob bool)
-		IteratorInitialize func(ctx Context, self Variant) (Variant, bool)
-		IteratorNext       func(self Variant, iterator Variant) bool
-		IteratorGet        func(ctx Context, self Variant, iterator Variant) (Variant, bool)
-		Hash               func(self Variant) int64
-		RecursiveHash      func(self Variant, count Int) int64
-		HashCompare        func(self, variant Variant) bool
-		Booleanize         func(self Variant) bool
-		Duplicate          func(self Variant, deep bool) Variant
-		Stringify          func(self Variant) String
-		GetType            func(self Variant) VariantType
-
-		HasMethod        func(self Variant, method StringName) bool
-		HasMember        func(self Variant, member StringName) bool
-		HasKey           func(self Variant, key Variant) (hasKey, valid bool)
-		GetTypeName      func(ctx Context, self VariantType) String
-		CanConvert       func(self Variant, to VariantType) bool
-		CanConvertStrict func(self Variant, to VariantType) bool
-
-		Encoder func(VariantType) func(out CallFrameBack, in CallFrameArgs) `call:"get_variant_from_type_constructor func(int)func(+void,&void)"`
-		Decoder func(VariantType) func(out CallFrameBack, in CallFrameArgs) `call:"get_variant_to_type_constructor func(int)func(+void,&void)"`
-
-		Evaulator func(op Operator, a, b VariantType) func(a, b, ret uintptr) `call:"variant_get_ptr_operator_evaluator func(int,int,int)func(&void,&void,+void)"`
+		NewCopy                  func(ctx Context, src Variant) Variant
+		NewNil                   func(ctx Context) Variant
+		Destroy                  func(self Variant)
+		Call                     func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
+		CallStatic               func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
+		Evaluate                 func(ctx Context, operator Operator, a, b Variant) (ret Variant, ok bool)
+		Set                      func(self, key, val Variant) bool
+		SetNamed                 func(self Variant, key StringName, val Variant) bool
+		SetKeyed                 func(self, key, val Variant) bool
+		SetIndexed               func(self Variant, index int64, val Variant) (ok, oob bool)
+		Get                      func(ctx Context, self, key Variant) (Variant, bool)
+		GetNamed                 func(ctx Context, self Variant, key StringName) (Variant, bool)
+		GetKeyed                 func(ctx Context, self, key Variant) (Variant, bool)
+		GetIndexed               func(ctx Context, self Variant, index int64) (val Variant, ok, oob bool)
+		IteratorInitialize       func(ctx Context, self Variant) (Variant, bool)
+		IteratorNext             func(self Variant, iterator Variant) bool
+		IteratorGet              func(ctx Context, self Variant, iterator Variant) (Variant, bool)
+		Hash                     func(self Variant) int64
+		RecursiveHash            func(self Variant, count Int) int64
+		HashCompare              func(self, variant Variant) bool
+		Booleanize               func(self Variant) bool
+		Duplicate                func(self Variant, deep bool) Variant
+		Stringify                func(self Variant) String
+		GetType                  func(self Variant) VariantType
+		HasMethod                func(self Variant, method StringName) bool
+		HasMember                func(self Variant, member StringName) bool
+		HasKey                   func(self Variant, key Variant) (hasKey, valid bool)
+		GetTypeName              func(ctx Context, self VariantType) String
+		CanConvert               func(self Variant, to VariantType) bool
+		CanConvertStrict         func(self Variant, to VariantType) bool
+		FromTypeConstructor      func(VariantType) func(ret call.Ptr[[3]uintptr], arg call.Any)
+		ToTypeConstructor        func(VariantType) func(ret call.Any, arg call.Ptr[[3]uintptr])
+		PointerOperatorEvaluator func(op Operator, a, b VariantType) func(a, b, ret call.Any)
+		GetPointerBuiltinMethod  func(VariantType, StringName, Int) func(base call.Any, args call.Args, ret call.Any, c int32)
 
 		BuiltinMethodCaller func(VariantType, StringNamePtr, int64) func(base, args CallFrameArgs, ret CallFrameBack, c int32) `call:"variant_get_ptr_builtin_method func(int,&void,int64_t)func(&void,&void,+void,int)"`
-		Constructor         func(VariantType, int32) func(base CallFrameBack, args CallFrameArgs)                              `call:"variant_get_ptr_constructor func(int,int32_t)func(+void,&void)"`
-		Destructor          func(VariantType) func(CallFrameArgs)                                                              `call:"variant_get_ptr_destructor func(int)func($void)"`
+
+		Constructor func(VariantType, int32) func(base CallFrameBack, args CallFrameArgs) `call:"variant_get_ptr_constructor func(int,int32_t)func(+void,&void)"`
+		Destructor  func(VariantType) func(CallFrameArgs)                                 `call:"variant_get_ptr_destructor func(int)func($void)"`
 
 		Construct func(t VariantType, out *Variant, args []*Variant, err CallError) `call:"variant_construct func(int,+void,&void,-int64_t=@3,+void)"`
 
@@ -143,6 +142,8 @@ type API struct {
 	}
 
 	Object struct {
+		MethodBindPointerCall func(method MethodBind, obj Object, arg call.Args, ret call.Any)
+
 		Call                func(method MethodBind, obj uintptr, arg []*Variant, ret *Variant, err CallError)     `call:"object_method_bind_call func(&void,&void,&void,-int64_t=@3,+void,+void)"`
 		UnsafeCall          func(method MethodBind, obj uintptr, args CallFrameArgs, ret CallFrameBack)           `call:"object_method_bind_ptrcall func(&void,&void,&void,&void)"`
 		Destroy             func(obj uintptr)                                                                     `call:"object_destroy func(&void)"`

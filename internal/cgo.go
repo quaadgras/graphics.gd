@@ -5,6 +5,8 @@ package gd
 import (
 	"sync"
 	"unsafe"
+
+	"runtime.link/api/call"
 )
 
 // cache is responsible for keeping a local copy for the various
@@ -19,8 +21,8 @@ type cache struct {
 }
 
 type variant struct {
-	FromType [TypeMax]func(CallFrameBack, CallFrameArgs)
-	IntoType [TypeMax]func(CallFrameBack, CallFrameArgs)
+	FromType [TypeMax]func(ret call.Ptr[[3]uintptr], arg call.Any)
+	IntoType [TypeMax]func(ret call.Any, arg call.Ptr[[3]uintptr])
 }
 
 const maxMethodArgs = 14

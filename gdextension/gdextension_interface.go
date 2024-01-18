@@ -121,6 +121,34 @@ GDExtensionBool variant_can_convert(pointer fn, pointer p_self, GDExtensionVaria
 GDExtensionBool variant_can_convert_strict(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
 	return ((GDExtensionInterfaceVariantCanConvertStrict)fn)((GDExtensionVariantType)p_self, p_type);
 }
+pointer get_variant_from_type_constructor(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceGetVariantFromTypeConstructor)fn)(p_type);
+}
+void call_variant_from_type_constructor(pointer fn, pointer r_ret, pointer r_arg) {
+	((GDExtensionVariantFromTypeConstructorFunc)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
+}
+pointer get_variant_to_type_constructor(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceGetVariantToTypeConstructor)fn)(p_type);
+}
+void call_variant_to_type_constructor(pointer fn, pointer r_ret, const pointer r_arg) {
+	((GDExtensionTypeFromVariantConstructorFunc)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
+}
+pointer variant_get_ptr_operator_evaluator(pointer fn, GDExtensionVariantOperator p_operator, GDExtensionVariantType p_type, GDExtensionVariantType p_rhs_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrOperatorEvaluator)fn)(p_operator, p_type, p_rhs_type);
+}
+void call_variant_ptr_operator_evaluator(pointer fn, pointer r_ret, pointer r_a, pointer r_b) {
+	((GDExtensionPtrOperatorEvaluator)fn)((GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionConstVariantPtr)r_a, (void*)r_b);
+}
+pointer variant_get_ptr_builtin_method(pointer fn, GDExtensionVariantType p_type, pointer p_method, GDExtensionInt p_hash) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrBuiltinMethod)fn)(p_type, (GDExtensionConstStringNamePtr)p_method, p_hash);
+}
+void call_variant_ptr_builtin_method(pointer fn, pointer p_base, pointer r_arg, pointer r_ret, int count) {
+	((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionTypePtr)r_ret, count);
+}
+
+void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
+	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
+}
 
 pointer classdb_construct_object(pointer fn, pointer p_classname) {
 	return (pointer)((GDExtensionInterfaceClassdbConstructObject)fn)((GDExtensionConstStringNamePtr)p_classname);
@@ -783,6 +811,87 @@ func linkCGO(API *gd.API) {
 			return true
 		}
 		return false
+	}
+	get_variant_from_type_constructor := dlsymGD("get_variant_from_type_constructor")
+	API.Variants.FromTypeConstructor = func(vt gd.VariantType) func(ret call.Ptr[[3]uintptr], arg call.Any) {
+		fn := C.get_variant_from_type_constructor(
+			C.uintptr_t(uintptr(get_variant_from_type_constructor)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(ret call.Ptr[[3]uintptr], arg call.Any) {
+			C.call_variant_from_type_constructor(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(ret.Uintptr()),
+				C.uintptr_t(arg.Uintptr()),
+			)
+		}
+	}
+	get_variant_to_type_constructor := dlsymGD("get_variant_to_type_constructor")
+	API.Variants.ToTypeConstructor = func(vt gd.VariantType) func(ret call.Any, arg call.Ptr[[3]uintptr]) {
+		fn := C.get_variant_to_type_constructor(
+			C.uintptr_t(uintptr(get_variant_to_type_constructor)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(ret call.Any, arg call.Ptr[[3]uintptr]) {
+			C.call_variant_to_type_constructor(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(ret.Uintptr()),
+				C.uintptr_t(arg.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_operator_evaluator := dlsymGD("variant_get_ptr_operator_evaluator")
+	API.Variants.PointerOperatorEvaluator = func(op gd.Operator, a, b gd.VariantType) func(a, b, ret call.Any) {
+		fn := C.variant_get_ptr_operator_evaluator(
+			C.uintptr_t(uintptr(variant_get_ptr_operator_evaluator)),
+			C.GDExtensionVariantOperator(op),
+			C.GDExtensionVariantType(a),
+			C.GDExtensionVariantType(b),
+		)
+		return func(a, b, ret call.Any) {
+			C.call_variant_ptr_operator_evaluator(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(a.Uintptr()),
+				C.uintptr_t(b.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_builtin_method := dlsymGD("variant_get_ptr_builtin_method")
+	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, i gd.Int) func(base call.Any, args call.Args, ret call.Any, c int32) {
+		var frame = call.New()
+		p_method := call.Arg(frame, sn.Pointer())
+		fn := C.variant_get_ptr_builtin_method(
+			C.uintptr_t(uintptr(variant_get_ptr_builtin_method)),
+			C.GDExtensionVariantType(vt),
+			C.uintptr_t(p_method.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		frame.Free()
+		return func(base call.Any, args call.Args, ret call.Any, c int32) {
+			C.call_variant_ptr_builtin_method(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(args.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
+				C.int32_t(c),
+			)
+		}
+	}
+
+	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
+	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg call.Args, ret call.Any) {
+		var r_ret uintptr
+		if ret != nil {
+			r_ret = ret.Uintptr()
+		}
+		C.object_method_bind_ptrcall(
+			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
+			C.uintptr_t(method),
+			C.uintptr_t(obj.Pointer()),
+			C.uintptr_t(arg.Uintptr()),
+			C.uintptr_t(r_ret),
+		)
 	}
 
 	classdb_construct_object := dlsymGD("classdb_construct_object")

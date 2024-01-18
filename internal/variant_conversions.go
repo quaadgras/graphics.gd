@@ -3,9 +3,9 @@
 package gd
 
 import (
-	"context"
 	"reflect"
 
+	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
@@ -16,565 +16,240 @@ func (ctx Context) Variant(v any) Variant {
 	if v == nil {
 		return godot.Variants.NewNil(ctx)
 	}
-	var frame = godot.NewFrame()
+	var frame = call.New()
+	var ret = call.Ret[[3]uintptr](frame)
 	switch val := v.(type) {
 	case Variant:
 		frame.Free()
 		return godot.Variants.NewCopy(ctx, val)
 	case bool:
-		FrameSet[bool](0, frame, val)
-		godot.variant.FromType[TypeBool](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeBool](ret, arg)
 	case Int:
-		FrameSet[Int](0, frame, val)
-		godot.variant.FromType[TypeInt](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeInt](ret, arg)
 	case Float:
-		FrameSet[Float](0, frame, val)
-		godot.variant.FromType[TypeFloat](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeFloat](ret, arg)
 	case String:
-		FrameSet[uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeString](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeString](ret, arg)
 	case Vector2:
-		FrameSet[Vector2](0, frame, val)
-		godot.variant.FromType[TypeVector2](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeVector2](ret, arg)
 	case Vector2i:
-		FrameSet[Vector2i](0, frame, val)
-		godot.variant.FromType[TypeVector2i](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeVector2i](ret, arg)
 	case Rect2:
-		FrameSet[Rect2](0, frame, val)
-		godot.variant.FromType[TypeRect2](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeRect2](ret, arg)
 	case Rect2i:
-		FrameSet[Rect2i](0, frame, val)
-		godot.variant.FromType[TypeRect2i](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeRect2i](ret, arg)
 	case Vector3:
-		FrameSet[Vector3](0, frame, val)
-		godot.variant.FromType[TypeVector3](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeVector3](ret, arg)
 	case Vector3i:
-		FrameSet[Vector3i](0, frame, val)
-		godot.variant.FromType[TypeVector3i](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeVector3i](ret, arg)
 	case Transform2D:
-		FrameSet[Transform2D](0, frame, val)
-		godot.variant.FromType[TypeTransform2d](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeTransform2d](ret, arg)
 	case Vector4:
-		FrameSet[Vector4](0, frame, val)
-		godot.variant.FromType[TypeVector4](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeVector4](ret, arg)
 	case Vector4i:
-		FrameSet[Vector4i](0, frame, val)
-		godot.variant.FromType[TypeVector4i](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeVector4i](ret, arg)
 	case Plane:
-		FrameSet[Plane](0, frame, val)
-		godot.variant.FromType[TypePlane](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypePlane](ret, arg)
 	case Quaternion:
-		FrameSet[Quaternion](0, frame, val)
-		godot.variant.FromType[TypeQuaternion](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeQuaternion](ret, arg)
 	case AABB:
-		FrameSet[AABB](0, frame, val)
-		godot.variant.FromType[TypeAabb](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeAabb](ret, arg)
 	case Basis:
-		FrameSet[Basis](0, frame, val)
-		godot.variant.FromType[TypeBasis](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeBasis](ret, arg)
 	case Transform3D:
-		FrameSet[Transform3D](0, frame, val)
-		godot.variant.FromType[TypeTransform3d](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeTransform3d](ret, arg)
 	case Projection:
-		FrameSet[Projection](0, frame, val)
-		godot.variant.FromType[TypeProjection](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeProjection](ret, arg)
 	case Color:
-		FrameSet[Color](0, frame, val)
-		godot.variant.FromType[TypeColor](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeColor](ret, arg)
 	case StringName:
-		FrameSet[uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeStringName](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeStringName](ret, arg)
 	case NodePath:
-		FrameSet[uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeNodePath](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeStringName](ret, arg)
 	case RID:
-		FrameSet[RID](0, frame, val)
-		godot.variant.FromType[TypeRid](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val)
+		godot.variant.FromType[TypeRid](ret, arg)
 	case Object:
-		FrameSet[uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeObject](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeObject](ret, arg)
 	case Callable:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeCallable](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeCallable](ret, arg)
 	case Signal:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeSignal](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeSignal](ret, arg)
 	case Dictionary:
-		FrameSet[uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeDictionary](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeDictionary](ret, arg)
 	case Array:
-		FrameSet[uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypeArray](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypeArray](ret, arg)
 	case PackedByteArray:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedByteArray](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedByteArray](ret, arg)
 	case PackedInt32Array:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedInt32Array](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedInt32Array](ret, arg)
 	case PackedInt64Array:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedInt64Array](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedInt64Array](ret, arg)
 	case PackedFloat32Array:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedFloat32Array](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedFloat32Array](ret, arg)
 	case PackedFloat64Array:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedFloat64Array](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedFloat64Array](ret, arg)
 	case PackedStringArray:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedStringArray](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedStringArray](ret, arg)
 	case PackedVector2Array:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedVector2Array](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedVector2Array](ret, arg)
 	case PackedVector3Array:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedVector3Array](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedVector3Array](ret, arg)
 	case PackedColorArray:
-		FrameSet[[2]uintptr](0, frame, val.Pointer())
-		godot.variant.FromType[TypePackedColorArray](frame.Back(), frame.Get(0))
+		var arg = call.Arg(frame, val.Pointer())
+		godot.variant.FromType[TypePackedColorArray](ret, arg)
 	default:
 		class, ok := v.(IsClass)
 		if ok {
-			FrameSet[uintptr](0, frame, class.AsPointer().Pointer())
-			godot.variant.FromType[TypeObject](frame.Back(), frame.Get(0))
+			var arg = call.Arg(frame, class.AsPointer().Pointer())
+			godot.variant.FromType[TypeObject](ret, arg)
 		} else {
 			panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 		}
 	}
+	var variant = mmm.Make[API, Variant](ctx, godot, ret.Get())
 	frame.Free()
-	return mmm.Make[API, Variant](ctx, godot, FrameGet[[3]uintptr](frame))
+	return variant
 }
 
 // Interface returns the variant's value as one of the the native Godot values
 // (as defined) in the gd package.
 func (variant Variant) Interface(ctx mmm.Context) any {
-	switch variant.Type() {
+	switch vtype := variant.Type(); vtype {
 	case TypeNil:
 		return nil
 	case TypeBool:
-		return variant.asBool()
+		return variantAsValueType[bool](variant, vtype)
 	case TypeInt:
-		return variant.asInt()
+		return variantAsValueType[Int](variant, vtype)
 	case TypeFloat:
-		return variant.asFloat()
+		return variantAsValueType[Float](variant, vtype)
 	case TypeString:
-		return variant.asString(ctx)
+		return variantAsPointerType[String](ctx, variant, vtype)
 	case TypeVector2:
-		return variant.asVector2()
+		return variantAsValueType[Vector2](variant, vtype)
 	case TypeVector2i:
-		return variant.asVector2i()
+		return variantAsValueType[Vector2i](variant, vtype)
 	case TypeRect2:
-		return variant.asRect2()
+		return variantAsValueType[Rect2](variant, vtype)
 	case TypeRect2i:
-		return variant.asRect2i()
+		return variantAsValueType[Rect2i](variant, vtype)
 	case TypeVector3:
-		return variant.asVector3()
+		return variantAsValueType[Vector3](variant, vtype)
 	case TypeVector3i:
-		return variant.asVector3i()
+		return variantAsValueType[Vector3i](variant, vtype)
 	case TypeTransform2d:
-		return variant.asTransform2D()
+		return variantAsValueType[Transform2D](variant, vtype)
 	case TypeVector4:
-		return variant.asVector4()
+		return variantAsValueType[Vector4](variant, vtype)
 	case TypeVector4i:
-		return variant.asVector4i()
+		return variantAsValueType[Vector4i](variant, vtype)
 	case TypePlane:
-		return variant.asPlane()
+		return variantAsValueType[Plane](variant, vtype)
 	case TypeQuaternion:
-		return variant.asQuaternion()
+		return variantAsValueType[Quaternion](variant, vtype)
 	case TypeAabb:
-		return variant.asAABB()
+		return variantAsValueType[AABB](variant, vtype)
 	case TypeBasis:
-		return variant.asBasis()
+		return variantAsValueType[Basis](variant, vtype)
 	case TypeTransform3d:
-		return variant.asTransform3D()
+		return variantAsValueType[Transform3D](variant, vtype)
 	case TypeProjection:
-		return variant.asProjection()
+		return variantAsValueType[Projection](variant, vtype)
 	case TypeColor:
-		return variant.asColor()
+		return variantAsValueType[Color](variant, vtype)
 	case TypeStringName:
-		return variant.asStringName(ctx)
+		return variantAsPointerType[StringName](ctx, variant, vtype)
 	case TypeNodePath:
-		return variant.asNodePath(ctx)
+		return variantAsPointerType[NodePath](ctx, variant, vtype)
 	case TypeRid:
-		return variant.asRID()
+		return variantAsValueType[RID](variant, vtype)
 	case TypeObject:
-		return variant.asObject(ctx)
+		var obj Object
+		obj.SetPointer(variantAsPointerType[Pointer](ctx, variant, vtype))
+		return obj
 	case TypeCallable:
-		return variant.asCallable(ctx)
+		return variantAsPointerType[Callable](ctx, variant, vtype)
 	case TypeSignal:
-		return variant.asSignal(ctx)
+		return variantAsPointerType[Signal](ctx, variant, vtype)
 	case TypeDictionary:
-		return variant.asDictionary(ctx)
+		return variantAsPointerType[Dictionary](ctx, variant, vtype)
 	case TypeArray:
-		return variant.asArray(ctx)
+		return variantAsPointerType[Array](ctx, variant, vtype)
 	case TypePackedByteArray:
-		return variant.asPackedByteArray(ctx)
+		return variantAsPointerType[PackedByteArray](ctx, variant, vtype)
 	case TypePackedInt32Array:
-		return variant.asPackedInt32Array(ctx)
+		return variantAsPointerType[PackedInt32Array](ctx, variant, vtype)
 	case TypePackedInt64Array:
-		return variant.asPackedInt64Array(ctx)
+		return variantAsPointerType[PackedInt64Array](ctx, variant, vtype)
 	case TypePackedFloat32Array:
-		return variant.asPackedFloat32Array(ctx)
+		return variantAsPointerType[PackedFloat32Array](ctx, variant, vtype)
 	case TypePackedFloat64Array:
-		return variant.asPackedFloat64Array(ctx)
+		return variantAsPointerType[PackedFloat64Array](ctx, variant, vtype)
 	case TypePackedStringArray:
-		return variant.asPackedStringArray(ctx)
+		return variantAsPointerType[PackedStringArray](ctx, variant, vtype)
 	case TypePackedVector2Array:
-		return variant.asPackedVector2Array(ctx)
+		return variantAsPointerType[PackedVector2Array](ctx, variant, vtype)
 	case TypePackedVector3Array:
-		return variant.asPackedVector3Array(ctx)
+		return variantAsPointerType[PackedVector3Array](ctx, variant, vtype)
 	case TypePackedColorArray:
-		return variant.asPackedColorArray(ctx)
+		return variantAsPointerType[PackedColorArray](ctx, variant, vtype)
 	default:
 		panic("gd.Variant.Interface: invalid variant type")
 	}
 }
 
-func (variant Variant) asBool() bool {
+func variantAsValueType[T comparable](variant Variant, vtype VariantType) T {
 	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeBool](frame.Back(), frame.Get(0))
-	var ret = FrameGet[bool](frame)
+	var frame = call.New()
+	var r_ret = call.Ret[T](frame)
+	godot.variant.IntoType[vtype](r_ret, call.Arg(frame, variant.Pointer()))
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func (variant Variant) asInt() Int {
+func variantAsPointerType[T mmm.IsPointerAlias[API, Kind], Kind comparable](ctx mmm.Context, variant Variant, vtype VariantType) T {
 	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeInt](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Int](frame)
+	var frame = call.New()
+	var r_ret = call.Ret[Kind](frame)
+	godot.variant.IntoType[vtype](r_ret, call.Arg(frame, variant.Pointer()))
+	var ret = r_ret.Get()
 	frame.Free()
-	return ret
-}
-
-func (variant Variant) asFloat() Float {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeFloat](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Float](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asString(ctx context.Context) String {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeString](frame.Back(), frame.Get(0))
-	var ret = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, String](ctx, godot, ret)
-}
-
-func (variant Variant) asVector2() Vector2 {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeVector2](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Vector2](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asVector2i() Vector2i {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeVector2i](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Vector2i](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asRect2() Rect2 {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeRect2](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Rect2](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asRect2i() Rect2i {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeRect2i](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Rect2i](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asVector3() Vector3 {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeVector3](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Vector3](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asVector3i() Vector3i {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeVector3i](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Vector3i](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asTransform2D() Transform2D {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeTransform2d](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Transform2D](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asVector4() Vector4 {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeVector4](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Vector4](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asVector4i() Vector4i {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypeVector4i](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Vector4i](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asPlane() Plane {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	godot.variant.IntoType[TypePlane](frame.Back(), frame.Get(0))
-	var ret = FrameGet[Plane](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asQuaternion() Quaternion {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[Quaternion](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asAABB() AABB {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[AABB](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asBasis() Basis {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[Basis](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asTransform3D() Transform3D {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[Transform3D](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asProjection() Projection {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[Projection](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asColor() Color {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[Color](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asStringName(ctx context.Context) StringName {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, StringName](ctx, godot, ret)
-}
-
-func (variant Variant) asNodePath(ctx context.Context) NodePath {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, NodePath](ctx, godot, ret)
-}
-
-func (variant Variant) asRID() RID {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[RID](frame)
-	frame.Free()
-	return ret
-}
-
-func (variant Variant) asObject(ctx context.Context) Object {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[uintptr](frame)
-	frame.Free()
-	var object Object
-	object.SetPointer(mmm.Make[API, Pointer](ctx, godot, ret))
-	return object
-}
-
-func (variant Variant) asCallable(ctx context.Context) Callable {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, Callable](ctx, godot, ret)
-}
-
-func (variant Variant) asSignal(ctx context.Context) Signal {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, Signal](ctx, godot, ret)
-}
-
-func (variant Variant) asDictionary(ctx context.Context) Dictionary {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, Dictionary](ctx, godot, ret)
-}
-
-func (variant Variant) asArray(ctx context.Context) Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedByteArray(ctx context.Context) PackedByteArray {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedByteArray](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedInt32Array(ctx context.Context) PackedInt32Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedInt32Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedInt64Array(ctx context.Context) PackedInt64Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedInt64Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedFloat32Array(ctx context.Context) PackedFloat32Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedFloat32Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedFloat64Array(ctx context.Context) PackedFloat64Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedFloat64Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedStringArray(ctx context.Context) PackedStringArray {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedStringArray](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedVector2Array(ctx context.Context) PackedVector2Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedVector2Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedVector3Array(ctx context.Context) PackedVector3Array {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedVector3Array](ctx, godot, ret)
-}
-
-func (variant Variant) asPackedColorArray(ctx context.Context) PackedColorArray {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var ret = FrameGet[[2]uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, PackedColorArray](ctx, godot, ret)
+	return mmm.Make[API, T, Kind](ctx, godot, ret)
 }

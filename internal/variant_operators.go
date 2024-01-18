@@ -11,7 +11,7 @@ func (variant Variant) evaluateIntoBool(op Operator, other Variant) bool {
 	if !ok {
 		panic("variants not comparable")
 	}
-	var ret = val.asBool()
+	var ret = variantAsValueType[bool](val, TypeBool)
 	val.Free()
 	return ret
 }
