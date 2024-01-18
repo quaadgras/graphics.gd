@@ -13,17 +13,14 @@ import (
 // basic godot types defined in the gd package.
 func (ctx Context) Variant(v any) Variant {
 	var godot = ctx.API()
-	var frame = godot.NewFrame()
 	if v == nil {
-		godot.Variants.Zero(frame.Back())
-		var variant = FrameGet[[3]uintptr](frame)
-		frame.Free()
-		return mmm.Make[API, Variant](ctx, godot, variant)
+		return godot.Variants.NewNil(ctx)
 	}
+	var frame = godot.NewFrame()
 	switch val := v.(type) {
 	case Variant:
-		FrameSet[[3]uintptr](0, frame, val.Pointer())
-		godot.Variants.Copy(frame.Back(), frame.Get(0))
+		frame.Free()
+		return godot.Variants.NewCopy(ctx, val)
 	case bool:
 		FrameSet[bool](0, frame, val)
 		godot.variant.FromType[TypeBool](frame.Back(), frame.Get(0))

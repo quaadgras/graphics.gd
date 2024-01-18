@@ -9,7 +9,7 @@ import (
 
 func TestCallFrame(t *testing.T) {
 	var Godot = new(API)
-	Godot.Allocate = func(size uintptr) unsafe.Pointer {
+	Godot.Memory.Allocate = func(size uintptr) unsafe.Pointer {
 		return unsafe.Pointer(unsafe.SliceData(make([]byte, size)))
 	}
 	var frame = Godot.NewFrame()

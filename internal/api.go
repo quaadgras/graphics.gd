@@ -16,25 +16,28 @@ type API struct {
 	GetGodotVersion     func() Version
 	GetNativeStructSize func(StringName) uint64
 
-	Allocate   func(uintptr) unsafe.Pointer                 `call:"mem_alloc func(size_t)$void"`
-	Reallocate func(unsafe.Pointer, uintptr) unsafe.Pointer `call:"mem_realloc func($void,size_t)$void"`
-	Release    func(unsafe.Pointer)                         `call:"mem_free func($void)"`
+	Memory struct {
+		Allocate   func(uintptr) unsafe.Pointer
+		Reallocate func(unsafe.Pointer, uintptr) unsafe.Pointer
+		Free       func(unsafe.Pointer)
+	}
 
-	PrintError              func(code, function, file string, line int32, notifyEditor bool)                             `call:"print_error func(&char,&char,&char,int32_t,bool)"`
-	PrintErrorMessage       func(code, message, function, file string, line int32, notifyEditor bool)                    `call:"print_error func(&char,&char,&char,&char,int32_t,bool)"`
-	PrintWarning            func(code, function, file string, line int32, notifyEditor bool)                             `call:"print_warning func(&char,&char,&char,int32_t,bool)"`
-	PrintWarningMessage     func(code, message, function, file string, line int32, notifyEditor bool)                    `call:"print_warning func(&char,&char,&char,&char,int32_t,bool)"`
-	PrintScriptError        func(code, function, file string, line int32, stackTrace string, notifyEditor bool)          `call:"print_script_error func(&char,&char,&char,int32_t,&char,bool)"`
-	PrintScriptErrorMessage func(code, message, function, file string, line int32, stackTrace string, notifyEditor bool) `call:"print_script_error func(&char,&char,&char,&char,int32_t,&char,bool)"`
+	PrintError              func(code, function, file string, line int32, notifyEditor bool)
+	PrintErrorMessage       func(code, message, function, file string, line int32, notifyEditor bool)
+	PrintWarning            func(code, function, file string, line int32, notifyEditor bool)
+	PrintWarningMessage     func(code, message, function, file string, line int32, notifyEditor bool)
+	PrintScriptError        func(code, function, file string, line int32, notifyEditor bool)
+	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
 
 	Variants struct {
+		NewCopy func(ctx Context, src Variant) Variant
+		NewNil  func(ctx Context) Variant
+		Destroy func(self Variant)
+
 		Get func(ctx Context, self, key Variant) (Variant, bool)
 		Set func(ctx Context, self, key, val Variant) bool
 
-		// Copy dst must be unititialized
-		Copy func(dst CallFrameBack, src CallFrameArgs) `call:"variant_new_copy func(+void,$void)"`
 		// Zero dst must be unititialized
-		Zero       func(dst CallFrameBack)                                                                     `call:"variant_new_nil func(+void)"`
 		Free       func(CallFrameArgs)                                                                         `call:"variant_destroy func($void)"`
 		Call       func(self *Variant, method StringNamePtr, args []*Variant, ret *Variant, err CallError)     `call:"variant_call func($void,&void,&void,-int64_t=@3,+void,+void)"`
 		CallStatic func(vtype VariantType, method StringNamePtr, args []*Variant, ret *Variant, err CallError) `call:"variant_call_static func(int,&void,&void,&void,-int64_t=@3,+void,+void)"`

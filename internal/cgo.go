@@ -63,7 +63,7 @@ func (Godot API) NewFrame() callFrame {
 	frame, ok := callFrames.Get().(callFrame)
 	if !ok {
 		frame = callFrame{
-			ptr: Godot.Allocate(unsafe.Sizeof(unsafeCallFrame{})),
+			ptr: Godot.Memory.Allocate(unsafe.Sizeof(unsafeCallFrame{})),
 		}
 		unsafeFrame := (*unsafeCallFrame)(frame.ptr)
 		*unsafeFrame = unsafeCallFrame{}

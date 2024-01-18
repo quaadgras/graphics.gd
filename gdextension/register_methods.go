@@ -21,7 +21,7 @@ func registerMethods(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 
 	classTypePtr := reflect.PointerTo(rtype)
 
-	var returnInfo = (*internal.PropertyInfo)(godot.API().Allocate(unsafe.Sizeof(internal.PropertyInfo{})))
+	var returnInfo = (*internal.PropertyInfo)(godot.API().Memory.Allocate(unsafe.Sizeof(internal.PropertyInfo{})))
 
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		method := classTypePtr.Method(i)
