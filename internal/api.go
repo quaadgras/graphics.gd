@@ -29,35 +29,38 @@ type API struct {
 	GetNativeStructSize func(name StringNamePtr) uint64 `call:"get_native_struct_size func(&void)size_t"`
 
 	Variants struct {
+		Get func(ctx Context, self, key Variant) (Variant, bool)
+		Set func(ctx Context, self, key, val Variant) bool
+
 		// Copy dst must be unititialized
 		Copy func(dst CallFrameBack, src CallFrameArgs) `call:"variant_new_copy func(+void,$void)"`
 		// Zero dst must be unititialized
-		Zero          func(dst CallFrameBack)                                                                     `call:"variant_new_nil func(+void)"`
-		Free          func(CallFrameArgs)                                                                         `call:"variant_destroy func($void)"`
-		Call          func(self *Variant, method StringNamePtr, args []*Variant, ret *Variant, err CallError)     `call:"variant_call func($void,&void,&void,-int64_t=@3,+void,+void)"`
-		CallStatic    func(vtype VariantType, method StringNamePtr, args []*Variant, ret *Variant, err CallError) `call:"variant_call_static func(int,&void,&void,&void,-int64_t=@3,+void,+void)"`
-		Evaluate      func(operator Operator, a, b *Variant, ret *Variant, ok *bool)                              `call:"variant_evaluate func(int,&void,&void,+void,+bool)"`
-		Set           func(self, key, val *Variant, ok *bool)                                                     `call:"variant_set func(&void,&void,+bool)"`
-		SetNamed      func(self *Variant, key StringNamePtr, val *Variant, ok *bool)                              `call:"variant_set_named func(&void,&void,+bool)"`
-		SetKeyed      func(self, key, val *Variant, ok *bool)                                                     `call:"variant_set_keyed func(&void,&void,+bool)"`
-		SetIndex      func(self *Variant, index int64, val *Variant, ok *bool)                                    `call:"variant_set_indexed func(&void,int64_t,+bool)"`
-		Get           func(self, key *Variant, ret *Variant, ok *bool)                                            `call:"variant_get func(&void,&void,+void,+bool)"`
-		GetNamed      func(self *Variant, key StringNamePtr, ret *Variant, ok *bool)                              `call:"variant_get_named func(&void,&void,+void,+bool)"`
-		GetKeyed      func(self *Variant, key *Variant, ret *Variant, ok *bool)                                   `call:"variant_get_keyed func(&void,&void,+void,+bool)"`
-		GetIndex      func(self *Variant, index int64, ret *Variant, ok *bool)                                    `call:"variant_get_indexed func(&void,int64_t,+void,+bool)"`
-		Iterator      func(self *Variant, iter *Iterator) bool                                                    `call:"variant_iter_init func(&void,+void,+bool)"`
-		Next          func(self *Variant, iterator Iterator, ret *Variant) bool                                   `call:"variant_iter_next func(&void,&void,+void,+bool)"`
-		IteratorValue func(self *Variant, iterator Iterator, ret *Variant) bool                                   `call:"variant_iter_get func(&void,&void,+void,+bool)"`
-		Hash          func(self *Variant) int64                                                                   `call:"variant_hash func(&void)int64_t"`
-		RecursiveHash func(self *Variant) int64                                                                   `call:"variant_recursive_hash func(&void)int64_t"`
-		Compare       func(self, variant *Variant) bool                                                           `call:"variant_hash_compare func(&void,&void)bool"`
-		ToBool        func(self *Variant) bool                                                                    `call:"variant_booleanize func(&void)bool"`
-		Duplicate     func(self *Variant, ret *Variant, deep bool)                                                `call:"variant_duplicate func(&void,+void,bool)"`
-		ToString      func(self *Variant, out *String)                                                            `call:"variant_stringify func(&void,+void)"`
-		Type          func(self CallFrameArgs) VariantType                                                        `call:"variant_get_type func(&void)int"`
-		HasMethod     func(self *Variant, method StringNamePtr) bool                                              `call:"variant_has_method func(&void,&void)bool"`
-		HasMember     func(self *Variant, member StringNamePtr) bool                                              `call:"variant_has_member func(&void,&void)bool"`
-		HasKey        func(self *Variant, key *Variant) (bool, bool)                                              `call:"variant_has_key func(&void,&void,+bool)bool"`
+		Zero       func(dst CallFrameBack)                                                                     `call:"variant_new_nil func(+void)"`
+		Free       func(CallFrameArgs)                                                                         `call:"variant_destroy func($void)"`
+		Call       func(self *Variant, method StringNamePtr, args []*Variant, ret *Variant, err CallError)     `call:"variant_call func($void,&void,&void,-int64_t=@3,+void,+void)"`
+		CallStatic func(vtype VariantType, method StringNamePtr, args []*Variant, ret *Variant, err CallError) `call:"variant_call_static func(int,&void,&void,&void,-int64_t=@3,+void,+void)"`
+		Evaluate   func(operator Operator, a, b *Variant, ret *Variant, ok *bool)                              `call:"variant_evaluate func(int,&void,&void,+void,+bool)"`
+
+		SetNamed func(self *Variant, key StringNamePtr, val *Variant, ok *bool) `call:"variant_set_named func(&void,&void,+bool)"`
+		SetKeyed func(self, key, val *Variant, ok *bool)                        `call:"variant_set_keyed func(&void,&void,+bool)"`
+		SetIndex func(self *Variant, index int64, val *Variant, ok *bool)       `call:"variant_set_indexed func(&void,int64_t,+bool)"`
+
+		GetNamed      func(self *Variant, key StringNamePtr, ret *Variant, ok *bool) `call:"variant_get_named func(&void,&void,+void,+bool)"`
+		GetKeyed      func(self *Variant, key *Variant, ret *Variant, ok *bool)      `call:"variant_get_keyed func(&void,&void,+void,+bool)"`
+		GetIndex      func(self *Variant, index int64, ret *Variant, ok *bool)       `call:"variant_get_indexed func(&void,int64_t,+void,+bool)"`
+		Iterator      func(self *Variant, iter *Iterator) bool                       `call:"variant_iter_init func(&void,+void,+bool)"`
+		Next          func(self *Variant, iterator Iterator, ret *Variant) bool      `call:"variant_iter_next func(&void,&void,+void,+bool)"`
+		IteratorValue func(self *Variant, iterator Iterator, ret *Variant) bool      `call:"variant_iter_get func(&void,&void,+void,+bool)"`
+		Hash          func(self *Variant) int64                                      `call:"variant_hash func(&void)int64_t"`
+		RecursiveHash func(self *Variant) int64                                      `call:"variant_recursive_hash func(&void)int64_t"`
+		Compare       func(self, variant *Variant) bool                              `call:"variant_hash_compare func(&void,&void)bool"`
+		ToBool        func(self *Variant) bool                                       `call:"variant_booleanize func(&void)bool"`
+		Duplicate     func(self *Variant, ret *Variant, deep bool)                   `call:"variant_duplicate func(&void,+void,bool)"`
+		ToString      func(self *Variant, out *String)                               `call:"variant_stringify func(&void,+void)"`
+		Type          func(self CallFrameArgs) VariantType                           `call:"variant_get_type func(&void)int"`
+		HasMethod     func(self *Variant, method StringNamePtr) bool                 `call:"variant_has_method func(&void,&void)bool"`
+		HasMember     func(self *Variant, member StringNamePtr) bool                 `call:"variant_has_member func(&void,&void)bool"`
+		HasKey        func(self *Variant, key *Variant) (bool, bool)                 `call:"variant_has_key func(&void,&void,+bool)bool"`
 		// TypeName dst must be unititialized
 		TypeName         func(self *Variant, dst *String)        `call:"variant_get_type_name func(&void,+void)"`
 		CanConvert       func(fromType, toType VariantType) bool `call:"variant_can_convert func(int,int)bool"`

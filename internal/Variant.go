@@ -9,6 +9,8 @@ import (
 	"runtime.link/mmm"
 )
 
+// Variant returns a variant from the given value, which must be one of the
+// basic godot types defined in the gd package.
 func (ctx Context) Variant(v any) Variant {
 	var godot = ctx.API()
 	var frame = godot.NewFrame()
@@ -140,6 +142,8 @@ func (ctx Context) Variant(v any) Variant {
 	return mmm.Make[API, Variant](ctx, godot, FrameGet[[3]uintptr](frame))
 }
 
+// Type returns the variant's type, similar to [reflect.Kind] but for a variant
+// value.
 func (variant Variant) Type() VariantType {
 	var godot = variant.API
 	var frame = godot.NewFrame()
@@ -149,7 +153,21 @@ func (variant Variant) Type() VariantType {
 	return vtype
 }
 
-func (variant Variant) Interface(ctx context.Context) any {
+// Get returns the value specified by the given key variant and a boolean
+// indiciating whether the get operation was valid.
+func (variant Variant) Get(ctx Context, key Variant) (val Variant, ok bool) {
+	return variant.API.Variants.Get(ctx, variant, key)
+}
+
+// Set sets the value specified by the given key variant to the given value
+// variant. Returns true if the set operation was valid.
+func (variant Variant) Set(ctx Context, key, val Variant) bool {
+	return variant.API.Variants.Set(ctx, variant, key, val)
+}
+
+// Interface returns the variant's value as one of the the native Godot values
+// (as defined) in the gd package.
+func (variant Variant) Interface(ctx mmm.Context) any {
 	switch variant.Type() {
 	case TypeNil:
 		return nil
