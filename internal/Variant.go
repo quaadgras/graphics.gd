@@ -133,7 +133,13 @@ func (ctx Context) Variant(v any) Variant {
 		FrameSet[[2]uintptr](0, frame, val.Pointer())
 		godot.variant.FromType[TypePackedColorArray](frame.Back(), frame.Get(0))
 	default:
-		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
+		class, ok := v.(IsClass)
+		if ok {
+			FrameSet[uintptr](0, frame, class.AsPointer().Pointer())
+			godot.variant.FromType[TypeObject](frame.Back(), frame.Get(0))
+		} else {
+			panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
+		}
 	}
 	frame.Free()
 	return mmm.Make[API, Variant](ctx, godot, FrameGet[[3]uintptr](frame))
@@ -160,6 +166,16 @@ func (variant Variant) Get(ctx Context, key Variant) (val Variant, ok bool) {
 // variant. Returns true if the set operation was valid.
 func (variant Variant) Set(ctx Context, key, val Variant) bool {
 	return variant.API.Variants.Set(ctx, variant, key, val)
+}
+
+// Call calls a method on the variant dynamically.
+func (variant Variant) Call(ctx Context, method StringName, args ...Variant) (Variant, error) {
+	return variant.API.Variants.Call(ctx, variant, method, args...)
+}
+
+// Call a static method on a variant type.
+func (variant VariantType) Call(ctx Context, method StringName, args ...Variant) (Variant, error) {
+	return ctx.API().Variants.CallStatic(ctx, variant, method, args...)
 }
 
 // Interface returns the variant's value as one of the the native Godot values

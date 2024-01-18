@@ -30,18 +30,19 @@ type API struct {
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
 
 	Variants struct {
-		NewCopy func(ctx Context, src Variant) Variant
-		NewNil  func(ctx Context) Variant
-		Destroy func(self Variant)
+		NewCopy    func(ctx Context, src Variant) Variant
+		NewNil     func(ctx Context) Variant
+		Destroy    func(self Variant)
+		Call       func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
+		CallStatic func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
 
 		Get func(ctx Context, self, key Variant) (Variant, bool)
 		Set func(ctx Context, self, key, val Variant) bool
 
 		// Zero dst must be unititialized
-		Free       func(CallFrameArgs)                                                                         `call:"variant_destroy func($void)"`
-		Call       func(self *Variant, method StringNamePtr, args []*Variant, ret *Variant, err CallError)     `call:"variant_call func($void,&void,&void,-int64_t=@3,+void,+void)"`
-		CallStatic func(vtype VariantType, method StringNamePtr, args []*Variant, ret *Variant, err CallError) `call:"variant_call_static func(int,&void,&void,&void,-int64_t=@3,+void,+void)"`
-		Evaluate   func(operator Operator, a, b *Variant, ret *Variant, ok *bool)                              `call:"variant_evaluate func(int,&void,&void,+void,+bool)"`
+		Free func(CallFrameArgs) `call:"variant_destroy func($void)"`
+
+		Evaluate func(operator Operator, a, b *Variant, ret *Variant, ok *bool) `call:"variant_evaluate func(int,&void,&void,+void,+bool)"`
 
 		SetNamed func(self *Variant, key StringNamePtr, val *Variant, ok *bool) `call:"variant_set_named func(&void,&void,+bool)"`
 		SetKeyed func(self, key, val *Variant, ok *bool)                        `call:"variant_set_keyed func(&void,&void,+bool)"`
@@ -226,6 +227,25 @@ type CallError struct {
 	ErrorType CallErrorType
 	Argument  int32
 	Expected  int32
+}
+
+func (err CallError) Error() string {
+	switch err.ErrorType {
+	case ErrInvalidMethod:
+		return "invalid method"
+	case ErrInvalidArgument:
+		return "invalid argument"
+	case ErrTooManyArguments:
+		return "too many arguments"
+	case ErrTooFewArguments:
+		return "too few arguments"
+	case ErrInstanceIsNil:
+		return "instance is nil"
+	case ErrMethodNotConst:
+		return "method not const"
+	default:
+		return "unknown error"
+	}
 }
 
 type Version struct {

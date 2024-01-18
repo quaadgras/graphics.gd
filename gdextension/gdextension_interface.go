@@ -34,6 +34,12 @@ void variant_new_nil(uintptr_t fn, uintptr_t r_dest) {
 void variant_destroy(uintptr_t fn, uintptr_t p_self) {
 	((GDExtensionInterfaceVariantDestroy)fn)((GDExtensionVariantPtr)p_self);
 }
+void variant_call(uintptr_t fn, uintptr_t p_self, uintptr_t p_method, uintptr_t p_args, GDExtensionInt p_argument_count, uintptr_t r_ret, GDExtensionCallError *r_error) {
+	((GDExtensionInterfaceVariantCall)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_method, (GDExtensionConstVariantPtr)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
+}
+void variant_call_static(uintptr_t fn, GDExtensionVariantType p_type, uintptr_t p_method, uintptr_t p_args, GDExtensionInt p_argument_count, uintptr_t r_ret, GDExtensionCallError *r_error) {
+	((GDExtensionInterfaceVariantCallStatic)fn)((GDExtensionVariantType)p_type, (GDExtensionConstStringNamePtr)p_method, (GDExtensionConstVariantPtr)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
+}
 
 uint64_t get_native_struct_size(uintptr_t fn, uintptr_t p_classname) {
 	return ((GDExtensionInterfaceGetNativeStructSize)fn)((GDExtensionConstStringNamePtr)p_classname);
@@ -55,19 +61,18 @@ import "C"
 import (
 	"unsafe"
 
-	"grow.graphics/gd"
-	internal "grow.graphics/gd/internal"
+	gd "grow.graphics/gd/internal"
 	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
 // linkCGO implements the Godot GDExtension API via CGO.
-func linkCGO(API *internal.API) {
+func linkCGO(API *gd.API) {
 	get_godot_version := dlsymGD("get_godot_version")
-	API.GetGodotVersion = func() internal.Version {
+	API.GetGodotVersion = func() gd.Version {
 		var version = new(C.GDExtensionGodotVersion)
 		C.get_godot_version(C.uintptr_t(uintptr(get_godot_version)), version)
-		return internal.Version{
+		return gd.Version{
 			Major: uint32(version.major),
 			Minor: uint32(version.minor),
 			Patch: uint32(version.patch),
@@ -198,7 +203,7 @@ func linkCGO(API *internal.API) {
 		C.free(unsafe.Pointer(p_file))
 	}
 	variant_new_copy := dlsymGD("variant_new_copy")
-	API.Variants.NewCopy = func(ctx internal.Context, self internal.Variant) internal.Variant {
+	API.Variants.NewCopy = func(ctx gd.Context, self gd.Variant) gd.Variant {
 		var frame = call.New()
 		var p_self = call.Arg(frame, self.Pointer())
 		var r_dest = call.Ret[[3]uintptr](frame)
@@ -207,22 +212,24 @@ func linkCGO(API *internal.API) {
 			C.uintptr_t(r_dest.Uintptr()),
 			C.uintptr_t(p_self.Uintptr()),
 		)
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_dest.Get())
 		frame.Free()
-		return mmm.Make[internal.API, internal.Variant, [3]uintptr](ctx, ctx.API(), r_dest.Get())
+		return ret
 	}
 	variant_new_nil := dlsymGD("variant_new_nil")
-	API.Variants.NewNil = func(ctx internal.Context) internal.Variant {
+	API.Variants.NewNil = func(ctx gd.Context) gd.Variant {
 		var frame = call.New()
 		var r_dest = call.Ret[[3]uintptr](frame)
 		C.variant_new_nil(
 			C.uintptr_t(uintptr(variant_new_nil)),
 			C.uintptr_t(r_dest.Uintptr()),
 		)
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_dest.Get())
 		frame.Free()
-		return mmm.Make[internal.API, internal.Variant, [3]uintptr](ctx, ctx.API(), r_dest.Get())
+		return ret
 	}
 	variant_destroy := dlsymGD("variant_destroy")
-	API.Variants.Destroy = func(self internal.Variant) {
+	API.Variants.Destroy = func(self gd.Variant) {
 		var frame = call.New()
 		var p_self = call.Arg(frame, self.Pointer())
 		C.variant_destroy(
@@ -230,6 +237,66 @@ func linkCGO(API *internal.API) {
 			C.uintptr_t(p_self.Uintptr()),
 		)
 		frame.Free()
+	}
+	variant_call := dlsymGD("variant_call")
+	API.Variants.Call = func(ctx gd.Context, self gd.Variant, method gd.StringName, args ...gd.Variant) (gd.Variant, error) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, self.Pointer())
+		var p_method = call.Arg(frame, method.Pointer())
+		for _, arg := range args {
+			call.Arg(frame, arg.Pointer())
+		}
+		var r_ret = call.Ret[[3]uintptr](frame)
+		var r_error = new(C.GDExtensionCallError)
+		C.variant_call(
+			C.uintptr_t(uintptr(variant_call)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.uintptr_t(p_method.Uintptr()),
+			C.uintptr_t(frame.Array(2).Uintptr()),
+			C.GDExtensionInt(len(args)),
+			C.uintptr_t(r_ret.Uintptr()),
+			r_error,
+		)
+		if r_error.error != 0 {
+			frame.Free()
+			return gd.Variant{}, &gd.CallError{
+				ErrorType: gd.CallErrorType(r_error.error),
+				Argument:  int32(r_error.argument),
+				Expected:  int32(r_error.expected),
+			}
+		}
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		return ret, nil
+	}
+	API.Variants.CallStatic = func(ctx gd.Context, vtype gd.VariantType, method gd.StringName, args ...gd.Variant) (gd.Variant, error) {
+		var frame = call.New()
+		var p_method = call.Arg(frame, method.Pointer())
+		for _, arg := range args {
+			call.Arg(frame, arg.Pointer())
+		}
+		var r_ret = call.Ret[[3]uintptr](frame)
+		var r_error = new(C.GDExtensionCallError)
+		C.variant_call_static(
+			C.uintptr_t(uintptr(variant_call)),
+			C.GDExtensionVariantType(vtype),
+			C.uintptr_t(p_method.Uintptr()),
+			C.uintptr_t(frame.Array(1).Uintptr()),
+			C.GDExtensionInt(len(args)),
+			C.uintptr_t(r_ret.Uintptr()),
+			r_error,
+		)
+		if r_error.error != 0 {
+			frame.Free()
+			return gd.Variant{}, &gd.CallError{
+				ErrorType: gd.CallErrorType(r_error.error),
+				Argument:  int32(r_error.argument),
+				Expected:  int32(r_error.expected),
+			}
+		}
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		return ret, nil
 	}
 
 	get_native_struct_size := dlsymGD("get_native_struct_size")
@@ -246,7 +313,7 @@ func linkCGO(API *internal.API) {
 	API.ClassDB.ConstructObject = func(ctx gd.Context, name gd.StringName) gd.Object {
 		var frame = call.New()
 		var obj gd.Object
-		obj.SetPointer(mmm.Make[internal.API, internal.Pointer, uintptr](ctx, ctx.API(), uintptr(C.classdb_construct_object(
+		obj.SetPointer(mmm.Make[gd.API, gd.Pointer, uintptr](ctx, ctx.API(), uintptr(C.classdb_construct_object(
 			C.uintptr_t(uintptr(classdb_construct_object)),
 			C.uintptr_t(call.Arg(frame, name.Pointer()).Uintptr()),
 		))))
@@ -255,7 +322,7 @@ func linkCGO(API *internal.API) {
 	}
 
 	variant_get := dlsymGD("variant_get")
-	API.Variants.Get = func(ctx internal.Context, self, key internal.Variant) (internal.Variant, bool) {
+	API.Variants.Get = func(ctx gd.Context, self, key gd.Variant) (gd.Variant, bool) {
 		var frame = call.New()
 		var p_self = call.Arg(frame, self.Pointer())
 		var p_key = call.Arg(frame, key.Pointer())
@@ -269,10 +336,10 @@ func linkCGO(API *internal.API) {
 			C.uintptr_t(r_valid.Uintptr()),
 		)
 		frame.Free()
-		return mmm.Make[internal.API, internal.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get()), r_valid.Get()
+		return mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get()), r_valid.Get()
 	}
 	variant_set := dlsymGD("variant_set")
-	API.Variants.Set = func(ctx internal.Context, self, key, val internal.Variant) bool {
+	API.Variants.Set = func(ctx gd.Context, self, key, val gd.Variant) bool {
 		var frame = call.New()
 		var p_self = call.Arg(frame, self.Pointer())
 		var p_key = call.Arg(frame, key.Pointer())

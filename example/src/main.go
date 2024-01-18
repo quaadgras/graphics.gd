@@ -91,6 +91,14 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 
 	node.SetPosition(pos)
 	fmt.Println("position=", pos)
+
+	variant := godot.Variant(node)
+	result, err := variant.Call(godot, godot.StringName("get_position"))
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+		fmt.Println("result:", result.Interface(godot))
+	}
 }
 
 // main init function, where the extensions are exported so that
