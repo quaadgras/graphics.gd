@@ -49,6 +49,11 @@ func Create[T PointerToClass](ctx Context, ptr T) T {
 	return ptr
 }
 
+// Version returns the version of the Godot API that we are linked in to.
+func (ctx Context) Version() Version {
+	return ctx.API().GetGodotVersion()
+}
+
 // GetLibraryPath returns the path to the library that was loaded.
 func (ctx Context) GetLibraryPath() string {
 	var godot = ctx.API()

@@ -100,6 +100,7 @@ func main() {
 	if !ok {
 		return
 	}
+	fmt.Println("Godot Version is: ", godot.Version())
 	fmt.Println("Extension: ", godot.GetLibraryPath())
 	gdextension.Register[HelloWorld](godot)
 	gdextension.Register[ExtendedNode](godot)

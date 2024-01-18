@@ -3,6 +3,14 @@ package gdextension
 /*
 #include "gdextension_interface.h"
 
+void get_godot_version(uintptr_t fn, GDExtensionGodotVersion *r_version) {
+	((GDExtensionInterfaceGetGodotVersion)fn)(r_version);
+}
+
+uint64_t get_native_struct_size(uintptr_t fn, uintptr_t p_classname) {
+	return ((GDExtensionInterfaceGetNativeStructSize)fn)((GDExtensionConstStringNamePtr)p_classname);
+}
+
 uintptr_t classdb_construct_object(uintptr_t fn, uintptr_t p_classname) {
 	return (uintptr_t)((GDExtensionInterfaceClassdbConstructObject)fn)((GDExtensionConstStringNamePtr)p_classname);
 }
@@ -24,6 +32,28 @@ import (
 )
 
 func linkCGO(API *internal.API) {
+	get_godot_version := dlsymGD("get_godot_version")
+	API.GetGodotVersion = func() internal.Version {
+		var version = new(C.GDExtensionGodotVersion)
+		C.get_godot_version(C.uintptr_t(uintptr(get_godot_version)), version)
+		return internal.Version{
+			Major: uint32(version.major),
+			Minor: uint32(version.minor),
+			Patch: uint32(version.patch),
+			Value: C.GoString(version.string),
+		}
+	}
+
+	get_native_struct_size := dlsymGD("get_native_struct_size")
+	API.GetNativeStructSize = func(name gd.StringName) uint64 {
+		var frame = call.New()
+		defer frame.Free()
+		return uint64(C.get_native_struct_size(
+			C.uintptr_t(uintptr(get_native_struct_size)),
+			C.uintptr_t(call.Arg(frame, name.Pointer()).Uintptr()),
+		))
+	}
+
 	classdb_construct_object := dlsymGD("classdb_construct_object")
 	API.ClassDB.ConstructObject = func(ctx gd.Context, name gd.StringName) gd.Object {
 		var frame = call.New()
@@ -50,6 +80,7 @@ func linkCGO(API *internal.API) {
 			C.uintptr_t(r_ret.Uintptr()),
 			C.uintptr_t(r_valid.Uintptr()),
 		)
+		frame.Free()
 		return mmm.Make[internal.API, internal.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get()), r_valid.Get()
 	}
 	variant_set := dlsymGD("variant_set")
@@ -66,6 +97,7 @@ func linkCGO(API *internal.API) {
 			C.uintptr_t(p_value.Uintptr()),
 			C.uintptr_t(r_valid.Uintptr()),
 		)
+		frame.Free()
 		return r_valid.Get()
 	}
 }

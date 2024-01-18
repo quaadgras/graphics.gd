@@ -13,7 +13,8 @@ import (
 type API struct {
 	api.Specification
 
-	GetGodotVersion func(*ExtensionGodotVersion) `call:"get_godot_version func(&void)"`
+	GetGodotVersion     func() Version
+	GetNativeStructSize func(StringName) uint64
 
 	Allocate   func(uintptr) unsafe.Pointer                 `call:"mem_alloc func(size_t)$void"`
 	Reallocate func(unsafe.Pointer, uintptr) unsafe.Pointer `call:"mem_realloc func($void,size_t)$void"`
@@ -25,8 +26,6 @@ type API struct {
 	PrintWarningMessage     func(code, message, function, file string, line int32, notifyEditor bool)                    `call:"print_warning func(&char,&char,&char,&char,int32_t,bool)"`
 	PrintScriptError        func(code, function, file string, line int32, stackTrace string, notifyEditor bool)          `call:"print_script_error func(&char,&char,&char,int32_t,&char,bool)"`
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, stackTrace string, notifyEditor bool) `call:"print_script_error func(&char,&char,&char,&char,int32_t,&char,bool)"`
-
-	GetNativeStructSize func(name StringNamePtr) uint64 `call:"get_native_struct_size func(&void)size_t"`
 
 	Variants struct {
 		Get func(ctx Context, self, key Variant) (Variant, bool)
@@ -226,11 +225,15 @@ type CallError struct {
 	Expected  int32
 }
 
-type ExtensionGodotVersion struct {
-	Major  uint32
-	Minor  uint32
-	Patch  uint32
-	String *byte
+type Version struct {
+	Major uint32
+	Minor uint32
+	Patch uint32
+	Value string
+}
+
+func (v Version) String() string {
+	return v.Value
 }
 
 type Iterator uintptr
