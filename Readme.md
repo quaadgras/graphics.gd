@@ -51,8 +51,8 @@ https://docs.godotengine.org/en/latest/index.html
 
 ## Semi-Automatic Memory Management
 
-Godot types are preferred over Go types, so that allocations can be kept under
-control. All values are tied to a [gd.Context] type, which is either:
+Godot types are preferred over Go types, in order to keep allocations optional. 
+All values are tied to a [gd.Context] type, which is either:
 
     (a) a function argument and any values associated with it will be freed
         when the function returns.
@@ -66,7 +66,7 @@ an issue.
 
 ## Performance
 
-No serious profiling has been completed, however all Go -> Godot calls are optimised
+No profiling has been completed, however all Go -> Godot calls are optimised
 in a way to avoid almost all allocations. Allocations are currently unavoidable
 for all Godot -> Go script calls (but not for virtual overrides, which are essentially
 allocation free).
