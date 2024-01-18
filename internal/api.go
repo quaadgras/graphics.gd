@@ -30,44 +30,37 @@ type API struct {
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
 
 	Variants struct {
-		NewCopy    func(ctx Context, src Variant) Variant
-		NewNil     func(ctx Context) Variant
-		Destroy    func(self Variant)
-		Call       func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
-		CallStatic func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
+		NewCopy            func(ctx Context, src Variant) Variant
+		NewNil             func(ctx Context) Variant
+		Destroy            func(self Variant)
+		Call               func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
+		CallStatic         func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
+		Evaluate           func(ctx Context, operator Operator, a, b Variant) (ret Variant, ok bool)
+		Set                func(self, key, val Variant) bool
+		SetNamed           func(self Variant, key StringName, val Variant) bool
+		SetKeyed           func(self, key, val Variant) bool
+		SetIndexed         func(self Variant, index int64, val Variant) (ok, oob bool)
+		Get                func(ctx Context, self, key Variant) (Variant, bool)
+		GetNamed           func(ctx Context, self Variant, key StringName) (Variant, bool)
+		GetKeyed           func(ctx Context, self, key Variant) (Variant, bool)
+		GetIndexed         func(ctx Context, self Variant, index int64) (val Variant, ok, oob bool)
+		IteratorInitialize func(ctx Context, self Variant) (Variant, bool)
+		IteratorNext       func(self Variant, iterator Variant) bool
+		IteratorGet        func(ctx Context, self Variant, iterator Variant) (Variant, bool)
+		Hash               func(self Variant) int64
+		RecursiveHash      func(self Variant, count Int) int64
+		HashCompare        func(self, variant Variant) bool
+		Booleanize         func(self Variant) bool
+		Duplicate          func(self Variant, deep bool) Variant
+		Stringify          func(self Variant) String
+		GetType            func(self Variant) VariantType
 
-		Get func(ctx Context, self, key Variant) (Variant, bool)
-		Set func(ctx Context, self, key, val Variant) bool
-
-		// Zero dst must be unititialized
-		Free func(CallFrameArgs) `call:"variant_destroy func($void)"`
-
-		Evaluate func(operator Operator, a, b *Variant, ret *Variant, ok *bool) `call:"variant_evaluate func(int,&void,&void,+void,+bool)"`
-
-		SetNamed func(self *Variant, key StringNamePtr, val *Variant, ok *bool) `call:"variant_set_named func(&void,&void,+bool)"`
-		SetKeyed func(self, key, val *Variant, ok *bool)                        `call:"variant_set_keyed func(&void,&void,+bool)"`
-		SetIndex func(self *Variant, index int64, val *Variant, ok *bool)       `call:"variant_set_indexed func(&void,int64_t,+bool)"`
-
-		GetNamed      func(self *Variant, key StringNamePtr, ret *Variant, ok *bool) `call:"variant_get_named func(&void,&void,+void,+bool)"`
-		GetKeyed      func(self *Variant, key *Variant, ret *Variant, ok *bool)      `call:"variant_get_keyed func(&void,&void,+void,+bool)"`
-		GetIndex      func(self *Variant, index int64, ret *Variant, ok *bool)       `call:"variant_get_indexed func(&void,int64_t,+void,+bool)"`
-		Iterator      func(self *Variant, iter *Iterator) bool                       `call:"variant_iter_init func(&void,+void,+bool)"`
-		Next          func(self *Variant, iterator Iterator, ret *Variant) bool      `call:"variant_iter_next func(&void,&void,+void,+bool)"`
-		IteratorValue func(self *Variant, iterator Iterator, ret *Variant) bool      `call:"variant_iter_get func(&void,&void,+void,+bool)"`
-		Hash          func(self *Variant) int64                                      `call:"variant_hash func(&void)int64_t"`
-		RecursiveHash func(self *Variant) int64                                      `call:"variant_recursive_hash func(&void)int64_t"`
-		Compare       func(self, variant *Variant) bool                              `call:"variant_hash_compare func(&void,&void)bool"`
-		ToBool        func(self *Variant) bool                                       `call:"variant_booleanize func(&void)bool"`
-		Duplicate     func(self *Variant, ret *Variant, deep bool)                   `call:"variant_duplicate func(&void,+void,bool)"`
-		ToString      func(self *Variant, out *String)                               `call:"variant_stringify func(&void,+void)"`
-		Type          func(self CallFrameArgs) VariantType                           `call:"variant_get_type func(&void)int"`
-		HasMethod     func(self *Variant, method StringNamePtr) bool                 `call:"variant_has_method func(&void,&void)bool"`
-		HasMember     func(self *Variant, member StringNamePtr) bool                 `call:"variant_has_member func(&void,&void)bool"`
-		HasKey        func(self *Variant, key *Variant) (bool, bool)                 `call:"variant_has_key func(&void,&void,+bool)bool"`
-		// TypeName dst must be unititialized
-		TypeName         func(self *Variant, dst *String)        `call:"variant_get_type_name func(&void,+void)"`
-		CanConvert       func(fromType, toType VariantType) bool `call:"variant_can_convert func(int,int)bool"`
-		CanConvertStrict func(fromType, toType VariantType) bool `call:"variant_can_convert_strict func(int,int)bool"`
+		HasMethod        func(self Variant, method StringName) bool
+		HasMember        func(self Variant, member StringName) bool
+		HasKey           func(self Variant, key Variant) (hasKey, valid bool)
+		GetTypeName      func(ctx Context, self VariantType) String
+		CanConvert       func(self Variant, to VariantType) bool
+		CanConvertStrict func(self Variant, to VariantType) bool
 
 		Encoder func(VariantType) func(out CallFrameBack, in CallFrameArgs) `call:"get_variant_from_type_constructor func(int)func(+void,&void)"`
 		Decoder func(VariantType) func(out CallFrameBack, in CallFrameArgs) `call:"get_variant_to_type_constructor func(int)func(+void,&void)"`
@@ -258,8 +251,6 @@ type Version struct {
 func (v Version) String() string {
 	return v.Value
 }
-
-type Iterator uintptr
 
 type MethodBind uintptr
 

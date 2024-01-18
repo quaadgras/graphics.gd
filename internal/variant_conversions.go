@@ -145,39 +145,6 @@ func (ctx Context) Variant(v any) Variant {
 	return mmm.Make[API, Variant](ctx, godot, FrameGet[[3]uintptr](frame))
 }
 
-// Type returns the variant's type, similar to [reflect.Kind] but for a variant
-// value.
-func (variant Variant) Type() VariantType {
-	var godot = variant.API
-	var frame = godot.NewFrame()
-	FrameSet[[3]uintptr](0, frame, variant.Pointer())
-	var vtype = godot.Variants.Type(frame.Get(0))
-	frame.Free()
-	return vtype
-}
-
-// Get returns the value specified by the given key variant and a boolean
-// indiciating whether the get operation was valid.
-func (variant Variant) Get(ctx Context, key Variant) (val Variant, ok bool) {
-	return variant.API.Variants.Get(ctx, variant, key)
-}
-
-// Set sets the value specified by the given key variant to the given value
-// variant. Returns true if the set operation was valid.
-func (variant Variant) Set(ctx Context, key, val Variant) bool {
-	return variant.API.Variants.Set(ctx, variant, key, val)
-}
-
-// Call calls a method on the variant dynamically.
-func (variant Variant) Call(ctx Context, method StringName, args ...Variant) (Variant, error) {
-	return variant.API.Variants.Call(ctx, variant, method, args...)
-}
-
-// Call a static method on a variant type.
-func (variant VariantType) Call(ctx Context, method StringName, args ...Variant) (Variant, error) {
-	return ctx.API().Variants.CallStatic(ctx, variant, method, args...)
-}
-
 // Interface returns the variant's value as one of the the native Godot values
 // (as defined) in the gd package.
 func (variant Variant) Interface(ctx mmm.Context) any {

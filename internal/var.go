@@ -312,11 +312,25 @@ func (p PackedColorArray) Free() {
 type Variant mmm.Pointer[API, Variant, [3]uintptr]
 
 func (s Variant) Free() {
-	var frame = s.API.NewFrame()
-	FrameSet[[3]uintptr](0, frame, s.Pointer())
-	s.API.Variants.Free(frame.Get(0))
-	frame.Free()
+	s.API.Variants.Destroy(s)
 	mmm.MarkFree(s)
+}
+
+type Iterator struct {
+	self Variant
+	iter Variant
+}
+
+func (iter Iterator) Next() bool {
+	return iter.self.API.Variants.IteratorNext(iter.self, iter.iter)
+}
+
+func (iter Iterator) Value(ctx Context) Variant {
+	val, ok := iter.self.API.Variants.IteratorGet(ctx, iter.self, iter.iter)
+	if !ok {
+		panic("failed to get iterator value")
+	}
+	return val
 }
 
 func variantTypeFromName(s string) (VariantType, reflect.Type) {
