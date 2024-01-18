@@ -749,7 +749,7 @@ func generate() error {
 	fmt.Fprintf(out, "type typeset struct{\n")
 	fmt.Fprintf(out, "\tcreation struct{\n")
 	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v [%d]func(CallFrameBack,CallFrameArgs)\n", class.Name, len(class.Constructors))
+		fmt.Fprintf(out, "\t\t%v [%d]func(call.Any, call.Args)\n", class.Name, len(class.Constructors))
 	}
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "\toperator struct{\n")
@@ -788,7 +788,7 @@ func generate() error {
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "\tdestruct struct{\n")
 	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v func(CallFrameArgs)\n", class.Name)
+		fmt.Fprintf(out, "\t\t%v func(call.Any)\n", class.Name)
 		for _, method := range class.Methods {
 			classDB.methodCall(core, "internal", class, method, callBuiltin)
 		}

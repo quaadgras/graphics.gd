@@ -119,7 +119,7 @@ func (Godot *API) linkTypesetCreation() {
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
 			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*func(CallFrameBack, CallFrameArgs))) = Godot.Variants.Constructor(vtype, int32(i))
+			*(value.Interface().(*func(call.Any, call.Args))) = Godot.Variants.GetPointerConstructor(vtype, int32(i))
 		}
 	}
 }
@@ -161,7 +161,7 @@ func (Godot *API) linkTypesetDestruct() {
 		field := rvalue.Type().Field(i)
 		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
 		vtype, _ := variantTypeFromName(field.Name)
-		*(value.Interface().(*func(CallFrameArgs))) = Godot.Variants.Destructor(vtype)
+		*(value.Interface().(*func(call.Any))) = Godot.Variants.GetPointerDestructor(vtype)
 	}
 }
 

@@ -64,11 +64,8 @@ type API struct {
 		ToTypeConstructor        func(VariantType) func(ret call.Any, arg call.Ptr[[3]uintptr])
 		PointerOperatorEvaluator func(op Operator, a, b VariantType) func(a, b, ret call.Any)
 		GetPointerBuiltinMethod  func(VariantType, StringName, Int) func(base call.Any, args call.Args, ret call.Any, c int32)
-
-		BuiltinMethodCaller func(VariantType, StringNamePtr, int64) func(base, args CallFrameArgs, ret CallFrameBack, c int32) `call:"variant_get_ptr_builtin_method func(int,&void,int64_t)func(&void,&void,+void,int)"`
-
-		Constructor func(VariantType, int32) func(base CallFrameBack, args CallFrameArgs) `call:"variant_get_ptr_constructor func(int,int32_t)func(+void,&void)"`
-		Destructor  func(VariantType) func(CallFrameArgs)                                 `call:"variant_get_ptr_destructor func(int)func($void)"`
+		GetPointerConstructor    func(vtype VariantType, index int32) func(base call.Any, args call.Args)
+		GetPointerDestructor     func(VariantType) func(base call.Any)
 
 		Construct func(t VariantType, out *Variant, args []*Variant, err CallError) `call:"variant_construct func(int,+void,&void,-int64_t=@3,+void)"`
 

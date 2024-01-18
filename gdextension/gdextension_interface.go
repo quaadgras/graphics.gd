@@ -145,6 +145,18 @@ pointer variant_get_ptr_builtin_method(pointer fn, GDExtensionVariantType p_type
 void call_variant_ptr_builtin_method(pointer fn, pointer p_base, pointer r_arg, pointer r_ret, int count) {
 	((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionTypePtr)r_ret, count);
 }
+pointer variant_get_ptr_constructor(pointer fn, GDExtensionVariantType p_type, int32_t p_constructor) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrConstructor)fn)(p_type, p_constructor);
+}
+void call_variant_ptr_constructor(pointer fn, pointer r_ret, pointer r_arg) {
+	((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
+}
+pointer variant_get_ptr_destructor(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrDestructor)fn)(p_type);
+}
+void call_variant_ptr_destructor(pointer fn, pointer r_arg) {
+	((GDExtensionPtrDestructor)fn)((GDExtensionVariantPtr)r_arg);
+}
 
 void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
 	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
@@ -875,6 +887,34 @@ func linkCGO(API *gd.API) {
 				C.uintptr_t(args.Uintptr()),
 				C.uintptr_t(ret.Uintptr()),
 				C.int32_t(c),
+			)
+		}
+	}
+	variant_get_ptr_constructor := dlsymGD("variant_get_ptr_constructor")
+	API.Variants.GetPointerConstructor = func(vt gd.VariantType, index int32) func(ret call.Any, args call.Args) {
+		fn := C.variant_get_ptr_constructor(
+			C.uintptr_t(uintptr(variant_get_ptr_constructor)),
+			C.GDExtensionVariantType(vt),
+			C.int32_t(index),
+		)
+		return func(ret call.Any, args call.Args) {
+			C.call_variant_ptr_constructor(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(ret.Uintptr()),
+				C.uintptr_t(args.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_destructor := dlsymGD("variant_get_ptr_destructor")
+	API.Variants.GetPointerDestructor = func(vt gd.VariantType) func(ret call.Any) {
+		fn := C.variant_get_ptr_destructor(
+			C.uintptr_t(uintptr(variant_get_ptr_destructor)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(ret call.Any) {
+			C.call_variant_ptr_destructor(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(ret.Uintptr()),
 			)
 		}
 	}
