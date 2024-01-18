@@ -157,6 +157,60 @@ pointer variant_get_ptr_destructor(pointer fn, GDExtensionVariantType p_type) {
 void call_variant_ptr_destructor(pointer fn, pointer r_arg) {
 	((GDExtensionPtrDestructor)fn)((GDExtensionVariantPtr)r_arg);
 }
+void variant_construct(pointer fn, GDExtensionVariantType p_type, pointer p_base, pointer p_args, int32_t p_argument_count, GDExtensionCallError *r_error) {
+	((GDExtensionInterfaceVariantConstruct)fn)(p_type, (GDExtensionUninitializedVariantPtr)p_base, (GDExtensionConstVariantPtr)p_args, p_argument_count, r_error);
+}
+pointer variant_get_ptr_setter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrSetter)fn)(p_type, (GDExtensionConstStringNamePtr)p_member);
+}
+void call_variant_ptr_setter(pointer fn, pointer p_base, pointer p_value) {
+	((GDExtensionPtrSetter)fn)((GDExtensionTypePtr)p_base, (GDExtensionConstTypePtr)p_value);
+}
+pointer variant_get_ptr_getter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrGetter)fn)(p_type, (GDExtensionConstStringNamePtr)p_member);
+}
+void call_variant_ptr_getter(pointer fn, pointer p_base, pointer r_value) {
+	((GDExtensionPtrGetter)fn)((GDExtensionTypePtr)p_base, (GDExtensionTypePtr)r_value);
+}
+pointer variant_get_ptr_indexed_setter(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrIndexedSetter)fn)(p_type);
+}
+void call_variant_ptr_indexed_setter(pointer fn, pointer p_base, GDExtensionInt p_index, pointer r_value) {
+	((GDExtensionPtrIndexedSetter)fn)((GDExtensionTypePtr)p_base, p_index, (GDExtensionConstTypePtr)r_value);
+}
+pointer variant_get_ptr_indexed_getter(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrIndexedGetter)fn)(p_type);
+}
+void call_variant_ptr_indexed_getter(pointer fn, pointer p_base, GDExtensionInt p_index, pointer r_ret) {
+	((GDExtensionPtrIndexedGetter)fn)((GDExtensionTypePtr)p_base, p_index, (GDExtensionTypePtr)r_ret);
+}
+pointer variant_get_ptr_keyed_setter(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrKeyedSetter)fn)(p_type);
+}
+void call_variant_ptr_keyed_setter(pointer fn, pointer p_base, pointer r_arg, pointer r_value) {
+	((GDExtensionPtrKeyedSetter)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionConstTypePtr)r_value);
+}
+pointer variant_get_ptr_keyed_getter(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrKeyedGetter)fn)(p_type);
+}
+void call_variant_ptr_keyed_getter(pointer fn, pointer p_base, pointer r_arg, pointer r_ret) {
+	((GDExtensionPtrKeyedGetter)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionTypePtr)r_ret);
+}
+pointer variant_get_ptr_keyed_checker(pointer fn, GDExtensionVariantType p_type) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrKeyedChecker)fn)(p_type);
+}
+uint32_t call_variant_ptr_keyed_checker(pointer fn, pointer p_base, pointer r_arg) {
+	return ((GDExtensionPtrKeyedChecker)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg);
+}
+void variant_get_constant_value(pointer fn, GDExtensionVariantType p_type, pointer p_constant, pointer r_ret) {
+	((GDExtensionInterfaceVariantGetConstantValue)fn)(p_type, (GDExtensionConstStringNamePtr)p_constant, (GDExtensionUninitializedVariantPtr)r_ret);
+}
+pointer variant_get_ptr_utility_function(pointer fn, pointer p_name, GDExtensionInt hash) {
+	return (pointer)((GDExtensionInterfaceVariantGetPtrUtilityFunction)fn)((GDExtensionConstStringNamePtr)p_name, hash);
+}
+void call_variant_ptr_utility_function(pointer fn, pointer r_ret, pointer r_arg, int count) {
+	((GDExtensionPtrUtilityFunction)fn)((GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionConstVariantPtr)r_arg, count);
+}
 
 void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
 	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
@@ -918,19 +972,187 @@ func linkCGO(API *gd.API) {
 			)
 		}
 	}
+	variant_construct := dlsymGD("variant_construct")
+	API.Variants.Construct = func(ctx gd.Context, t gd.VariantType, args ...gd.Variant) (gd.Variant, error) {
+		var frame = call.New()
+		for _, arg := range args {
+			call.Arg(frame, arg.Pointer())
+		}
+		var r_ret = call.Ret[[3]uintptr](frame)
+		var r_error = new(C.GDExtensionCallError)
+		C.variant_construct(
+			C.uintptr_t(uintptr(variant_construct)),
+			C.GDExtensionVariantType(t),
+			C.uintptr_t(r_ret.Uintptr()),
+			C.uintptr_t(frame.Array(0).Uintptr()),
+			C.int32_t(len(args)),
+			r_error,
+		)
+		if r_error.error != 0 {
+			frame.Free()
+			return gd.Variant{}, &gd.CallError{
+				ErrorType: gd.CallErrorType(r_error.error),
+				Argument:  int32(r_error.argument),
+				Expected:  int32(r_error.expected),
+			}
+		}
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		return ret, nil
+	}
+	variant_get_ptr_setter := dlsymGD("variant_get_ptr_setter")
+	API.Variants.GetPointerSetter = func(vt gd.VariantType, sn gd.StringName) func(base, arg call.Any) {
+		var frame = call.New()
+		p_method := call.Arg(frame, sn.Pointer())
+		fn := C.variant_get_ptr_setter(
+			C.uintptr_t(uintptr(variant_get_ptr_setter)),
+			C.GDExtensionVariantType(vt),
+			C.uintptr_t(p_method.Uintptr()),
+		)
+		frame.Free()
+		return func(base, arg call.Any) {
+			C.call_variant_ptr_setter(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(arg.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_getter := dlsymGD("variant_get_ptr_getter")
+	API.Variants.GetPointerGetter = func(vt gd.VariantType, sn gd.StringName) func(base call.Any, ret call.Any) {
+		var frame = call.New()
+		p_method := call.Arg(frame, sn.Pointer())
+		fn := C.variant_get_ptr_getter(
+			C.uintptr_t(uintptr(variant_get_ptr_getter)),
+			C.GDExtensionVariantType(vt),
+			C.uintptr_t(p_method.Uintptr()),
+		)
+		frame.Free()
+		return func(base call.Any, ret call.Any) {
+			C.call_variant_ptr_getter(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_indexed_setter := dlsymGD("variant_get_ptr_indexed_setter")
+	API.Variants.GetPointerIndexedSetter = func(vt gd.VariantType) func(base call.Any, index gd.Int, arg call.Any) {
+		fn := C.variant_get_ptr_indexed_setter(
+			C.uintptr_t(uintptr(variant_get_ptr_indexed_setter)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(base call.Any, index gd.Int, arg call.Any) {
+			C.call_variant_ptr_indexed_setter(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.GDExtensionInt(index),
+				C.uintptr_t(arg.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_indexed_getter := dlsymGD("variant_get_ptr_indexed_getter")
+	API.Variants.GetPointerIndexedGetter = func(vt gd.VariantType) func(base call.Any, index gd.Int, ret call.Any) {
+		fn := C.variant_get_ptr_indexed_getter(
+			C.uintptr_t(uintptr(variant_get_ptr_indexed_getter)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(base call.Any, index gd.Int, ret call.Any) {
+			C.call_variant_ptr_indexed_getter(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.GDExtensionInt(index),
+				C.uintptr_t(ret.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_keyed_setter := dlsymGD("variant_get_ptr_keyed_setter")
+	API.Variants.GetPointerKeyedSetter = func(vt gd.VariantType) func(base call.Any, key call.Any, arg call.Any) {
+		fn := C.variant_get_ptr_keyed_setter(
+			C.uintptr_t(uintptr(variant_get_ptr_keyed_setter)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(base call.Any, key call.Any, arg call.Any) {
+			C.call_variant_ptr_keyed_setter(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(key.Uintptr()),
+				C.uintptr_t(arg.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_keyed_getter := dlsymGD("variant_get_ptr_keyed_getter")
+	API.Variants.GetPointerKeyedGetter = func(vt gd.VariantType) func(base call.Any, key call.Any, ret call.Any) {
+		fn := C.variant_get_ptr_keyed_getter(
+			C.uintptr_t(uintptr(variant_get_ptr_keyed_getter)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(base call.Any, key call.Any, ret call.Any) {
+			C.call_variant_ptr_keyed_getter(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(key.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
+			)
+		}
+	}
+	variant_get_ptr_keyed_checker := dlsymGD("variant_get_ptr_keyed_checker")
+	API.Variants.GetPointerKeyedChecker = func(vt gd.VariantType) func(base call.Any, key call.Any) uint32 {
+		fn := C.variant_get_ptr_keyed_checker(
+			C.uintptr_t(uintptr(variant_get_ptr_keyed_checker)),
+			C.GDExtensionVariantType(vt),
+		)
+		return func(base call.Any, key call.Any) uint32 {
+			return uint32(C.call_variant_ptr_keyed_checker(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(key.Uintptr()),
+			))
+		}
+	}
+	variant_get_constant_value := dlsymGD("variant_get_constant_value")
+	API.Variants.GetConstantValue = func(ctx gd.Context, vt gd.VariantType, sn gd.StringName) gd.Variant {
+		var frame = call.New()
+		p_method := call.Arg(frame, sn.Pointer())
+		var r_ret = call.Ret[[3]uintptr](frame)
+		C.variant_get_constant_value(
+			C.uintptr_t(uintptr(variant_get_constant_value)),
+			C.GDExtensionVariantType(vt),
+			C.uintptr_t(p_method.Uintptr()),
+			C.uintptr_t(r_ret.Uintptr()),
+		)
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](nil, nil, r_ret.Get())
+		frame.Free()
+		return ret
+	}
+	variant_get_ptr_utility_function := dlsymGD("variant_get_ptr_utility_function")
+	API.Variants.GetPointerUtilityFunction = func(sn gd.StringName, hash gd.Int) func(ret call.Any, args call.Args, c int32) {
+		var frame = call.New()
+		p_method := call.Arg(frame, sn.Pointer())
+		fn := C.variant_get_ptr_utility_function(
+			C.uintptr_t(uintptr(variant_get_ptr_utility_function)),
+			C.uintptr_t(p_method.Uintptr()),
+			C.GDExtensionInt(hash),
+		)
+		frame.Free()
+		return func(ret call.Any, args call.Args, c int32) {
+			C.call_variant_ptr_utility_function(
+				C.uintptr_t(uintptr(fn)),
+				C.uintptr_t(ret.Uintptr()),
+				C.uintptr_t(args.Uintptr()),
+				C.int32_t(c),
+			)
+		}
+	}
 
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg call.Args, ret call.Any) {
-		var r_ret uintptr
-		if ret != nil {
-			r_ret = ret.Uintptr()
-		}
 		C.object_method_bind_ptrcall(
 			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
 			C.uintptr_t(method),
 			C.uintptr_t(obj.Pointer()),
 			C.uintptr_t(arg.Uintptr()),
-			C.uintptr_t(r_ret),
+			C.uintptr_t(ret.Uintptr()),
 		)
 	}
 

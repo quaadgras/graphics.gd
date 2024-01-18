@@ -94,1085 +94,1199 @@ const (
 type VariantOperator int64
 
 func (ctx Context) Sin(angle_rad Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, angle_rad)
-	ctx.API().utility.sin(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, angle_rad)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.sin(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Cos(angle_rad Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, angle_rad)
-	ctx.API().utility.cos(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, angle_rad)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.cos(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Tan(angle_rad Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, angle_rad)
-	ctx.API().utility.tan(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, angle_rad)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.tan(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Sinh(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.sinh(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.sinh(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Cosh(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.cosh(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.cosh(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Tanh(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.tanh(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.tanh(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Asin(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.asin(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.asin(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Acos(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.acos(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.acos(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Atan(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.atan(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.atan(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Atan2(y Float, x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, y)
-	FrameSet[Float](1, abi, x)
-	ctx.API().utility.atan2(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, y)
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.atan2(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Asinh(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.asinh(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.asinh(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Acosh(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.acosh(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.acosh(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Atanh(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.atanh(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.atanh(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Sqrt(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.sqrt(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.sqrt(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Fmod(x Float, y Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	FrameSet[Float](1, abi, y)
-	ctx.API().utility.fmod(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	call.Arg(frame, y)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.fmod(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Fposmod(x Float, y Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	FrameSet[Float](1, abi, y)
-	ctx.API().utility.fposmod(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	call.Arg(frame, y)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.fposmod(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Posmod(x Int, y Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, x)
-	FrameSet[Int](1, abi, y)
-	ctx.API().utility.posmod(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	call.Arg(frame, y)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.posmod(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Floor(x Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, x.Pointer())
-	ctx.API().utility.floor(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, x.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.floor(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Floorf(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.floorf(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.floorf(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Floori(x Float) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.floori(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.floori(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Ceil(x Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, x.Pointer())
-	ctx.API().utility.ceil(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, x.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.ceil(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Ceilf(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.ceilf(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.ceilf(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Ceili(x Float) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.ceili(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.ceili(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Round(x Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, x.Pointer())
-	ctx.API().utility.round(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, x.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.round(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Roundf(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.roundf(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.roundf(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Roundi(x Float) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.roundi(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.roundi(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Abs(x Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, x.Pointer())
-	ctx.API().utility.abs(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, x.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.abs(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Absf(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.absf(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.absf(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Absi(x Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, x)
-	ctx.API().utility.absi(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.absi(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Sign(x Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, x.Pointer())
-	ctx.API().utility.sign(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, x.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.sign(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Signf(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.signf(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.signf(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Signi(x Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, x)
-	ctx.API().utility.signi(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.signi(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Snapped(x Variant, step Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, x.Pointer())
-	FrameSet[[3]uintptr](1, abi, step.Pointer())
-	ctx.API().utility.snapped(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, x.Pointer())
+	call.Arg(frame, step.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.snapped(r_ret, frame.Array(0), 2)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Snappedf(x Float, step Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	FrameSet[Float](1, abi, step)
-	ctx.API().utility.snappedf(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	call.Arg(frame, step)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.snappedf(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Snappedi(x Float, step Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	FrameSet[Int](1, abi, step)
-	ctx.API().utility.snappedi(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	call.Arg(frame, step)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.snappedi(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Pow(base Float, exp Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, base)
-	FrameSet[Float](1, abi, exp)
-	ctx.API().utility.pow(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, base)
+	call.Arg(frame, exp)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.pow(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Log(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.log(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.log(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Exp(x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.exp(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.exp(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsNan(x Float) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.is_nan(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_nan(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsInf(x Float) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.is_inf(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_inf(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsEqualApprox(a Float, b Float) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, a)
-	FrameSet[Float](1, abi, b)
-	ctx.API().utility.is_equal_approx(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, a)
+	call.Arg(frame, b)
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_equal_approx(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsZeroApprox(x Float) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.is_zero_approx(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_zero_approx(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsFinite(x Float) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.is_finite(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_finite(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Ease(x Float, curve Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	FrameSet[Float](1, abi, curve)
-	ctx.API().utility.ease(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	call.Arg(frame, curve)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.ease(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) StepDecimals(x Float) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, x)
-	ctx.API().utility.step_decimals(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.step_decimals(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Lerp(from Variant, to Variant, weight Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, from.Pointer())
-	FrameSet[[3]uintptr](1, abi, to.Pointer())
-	FrameSet[[3]uintptr](2, abi, weight.Pointer())
-	ctx.API().utility.lerp(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, from.Pointer())
+	call.Arg(frame, to.Pointer())
+	call.Arg(frame, weight.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.lerp(r_ret, frame.Array(0), 3)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Lerpf(from Float, to Float, weight Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, weight)
-	ctx.API().utility.lerpf(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, weight)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.lerpf(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, pre)
-	FrameSet[Float](3, abi, post)
-	FrameSet[Float](4, abi, weight)
-	ctx.API().utility.cubic_interpolate(abi.Back(), abi.Args(), 5)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, pre)
+	call.Arg(frame, post)
+	call.Arg(frame, weight)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.cubic_interpolate(r_ret, frame.Array(0), 5)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, pre)
-	FrameSet[Float](3, abi, post)
-	FrameSet[Float](4, abi, weight)
-	ctx.API().utility.cubic_interpolate_angle(abi.Back(), abi.Args(), 5)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, pre)
+	call.Arg(frame, post)
+	call.Arg(frame, weight)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.cubic_interpolate_angle(r_ret, frame.Array(0), 5)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, pre)
-	FrameSet[Float](3, abi, post)
-	FrameSet[Float](4, abi, weight)
-	FrameSet[Float](5, abi, to_t)
-	FrameSet[Float](6, abi, pre_t)
-	FrameSet[Float](7, abi, post_t)
-	ctx.API().utility.cubic_interpolate_in_time(abi.Back(), abi.Args(), 8)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, pre)
+	call.Arg(frame, post)
+	call.Arg(frame, weight)
+	call.Arg(frame, to_t)
+	call.Arg(frame, pre_t)
+	call.Arg(frame, post_t)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.cubic_interpolate_in_time(r_ret, frame.Array(0), 8)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, pre)
-	FrameSet[Float](3, abi, post)
-	FrameSet[Float](4, abi, weight)
-	FrameSet[Float](5, abi, to_t)
-	FrameSet[Float](6, abi, pre_t)
-	FrameSet[Float](7, abi, post_t)
-	ctx.API().utility.cubic_interpolate_angle_in_time(abi.Back(), abi.Args(), 8)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, pre)
+	call.Arg(frame, post)
+	call.Arg(frame, weight)
+	call.Arg(frame, to_t)
+	call.Arg(frame, pre_t)
+	call.Arg(frame, post_t)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.cubic_interpolate_angle_in_time(r_ret, frame.Array(0), 8)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, start)
-	FrameSet[Float](1, abi, control_1)
-	FrameSet[Float](2, abi, control_2)
-	FrameSet[Float](3, abi, end)
-	FrameSet[Float](4, abi, t)
-	ctx.API().utility.bezier_interpolate(abi.Back(), abi.Args(), 5)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, start)
+	call.Arg(frame, control_1)
+	call.Arg(frame, control_2)
+	call.Arg(frame, end)
+	call.Arg(frame, t)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.bezier_interpolate(r_ret, frame.Array(0), 5)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, start)
-	FrameSet[Float](1, abi, control_1)
-	FrameSet[Float](2, abi, control_2)
-	FrameSet[Float](3, abi, end)
-	FrameSet[Float](4, abi, t)
-	ctx.API().utility.bezier_derivative(abi.Back(), abi.Args(), 5)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, start)
+	call.Arg(frame, control_1)
+	call.Arg(frame, control_2)
+	call.Arg(frame, end)
+	call.Arg(frame, t)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.bezier_derivative(r_ret, frame.Array(0), 5)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) AngleDifference(from Float, to Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	ctx.API().utility.angle_difference(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.angle_difference(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) LerpAngle(from Float, to Float, weight Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, weight)
-	ctx.API().utility.lerp_angle(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, weight)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.lerp_angle(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) InverseLerp(from Float, to Float, weight Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, weight)
-	ctx.API().utility.inverse_lerp(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, weight)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.inverse_lerp(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, value)
-	FrameSet[Float](1, abi, istart)
-	FrameSet[Float](2, abi, istop)
-	FrameSet[Float](3, abi, ostart)
-	FrameSet[Float](4, abi, ostop)
-	ctx.API().utility.remap(abi.Back(), abi.Args(), 5)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	call.Arg(frame, istart)
+	call.Arg(frame, istop)
+	call.Arg(frame, ostart)
+	call.Arg(frame, ostop)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.remap(r_ret, frame.Array(0), 5)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Smoothstep(from Float, to Float, x Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, x)
-	ctx.API().utility.smoothstep(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, x)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.smoothstep(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) MoveToward(from Float, to Float, delta Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, delta)
-	ctx.API().utility.move_toward(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, delta)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.move_toward(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) RotateToward(from Float, to Float, delta Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	FrameSet[Float](2, abi, delta)
-	ctx.API().utility.rotate_toward(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	call.Arg(frame, delta)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.rotate_toward(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) DegToRad(deg Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, deg)
-	ctx.API().utility.deg_to_rad(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, deg)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.deg_to_rad(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) RadToDeg(rad Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, rad)
-	ctx.API().utility.rad_to_deg(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, rad)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.rad_to_deg(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) LinearToDb(lin Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, lin)
-	ctx.API().utility.linear_to_db(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, lin)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.linear_to_db(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) DbToLinear(db Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, db)
-	ctx.API().utility.db_to_linear(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, db)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.db_to_linear(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Wrap(value Variant, min Variant, max Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, value.Pointer())
-	FrameSet[[3]uintptr](1, abi, min.Pointer())
-	FrameSet[[3]uintptr](2, abi, max.Pointer())
-	ctx.API().utility.wrap(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, value.Pointer())
+	call.Arg(frame, min.Pointer())
+	call.Arg(frame, max.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.wrap(r_ret, frame.Array(0), 3)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Wrapi(value Int, min Int, max Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, value)
-	FrameSet[Int](1, abi, min)
-	FrameSet[Int](2, abi, max)
-	ctx.API().utility.wrapi(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	call.Arg(frame, min)
+	call.Arg(frame, max)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.wrapi(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, value)
-	FrameSet[Float](1, abi, min)
-	FrameSet[Float](2, abi, max)
-	ctx.API().utility.wrapf(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	call.Arg(frame, min)
+	call.Arg(frame, max)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.wrapf(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Max(arg1 Variant, arg2 Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	FrameSet[[3]uintptr](1, abi, arg2.Pointer())
-	ctx.API().utility.max(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	call.Arg(frame, arg2.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.max(r_ret, frame.Array(0), 2)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Maxi(a Int, b Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, a)
-	FrameSet[Int](1, abi, b)
-	ctx.API().utility.maxi(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, a)
+	call.Arg(frame, b)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.maxi(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Maxf(a Float, b Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, a)
-	FrameSet[Float](1, abi, b)
-	ctx.API().utility.maxf(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, a)
+	call.Arg(frame, b)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.maxf(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Min(arg1 Variant, arg2 Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	FrameSet[[3]uintptr](1, abi, arg2.Pointer())
-	ctx.API().utility.min(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	call.Arg(frame, arg2.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.min(r_ret, frame.Array(0), 2)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Mini(a Int, b Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, a)
-	FrameSet[Int](1, abi, b)
-	ctx.API().utility.mini(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, a)
+	call.Arg(frame, b)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.mini(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Minf(a Float, b Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, a)
-	FrameSet[Float](1, abi, b)
-	ctx.API().utility.minf(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, a)
+	call.Arg(frame, b)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.minf(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Clamp(value Variant, min Variant, max Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, value.Pointer())
-	FrameSet[[3]uintptr](1, abi, min.Pointer())
-	FrameSet[[3]uintptr](2, abi, max.Pointer())
-	ctx.API().utility.clamp(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, value.Pointer())
+	call.Arg(frame, min.Pointer())
+	call.Arg(frame, max.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.clamp(r_ret, frame.Array(0), 3)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Clampi(value Int, min Int, max Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, value)
-	FrameSet[Int](1, abi, min)
-	FrameSet[Int](2, abi, max)
-	ctx.API().utility.clampi(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	call.Arg(frame, min)
+	call.Arg(frame, max)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.clampi(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Clampf(value Float, min Float, max Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, value)
-	FrameSet[Float](1, abi, min)
-	FrameSet[Float](2, abi, max)
-	ctx.API().utility.clampf(abi.Back(), abi.Args(), 3)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	call.Arg(frame, min)
+	call.Arg(frame, max)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.clampf(r_ret, frame.Array(0), 3)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) NearestPo2(value Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, value)
-	ctx.API().utility.nearest_po2(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.nearest_po2(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Pingpong(value Float, length Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, value)
-	FrameSet[Float](1, abi, length)
-	ctx.API().utility.pingpong(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, value)
+	call.Arg(frame, length)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.pingpong(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Randomize() {
-	var abi = ctx.API().NewFrame()
-	ctx.API().utility.randomize(abi.Back(), abi.Args(), 0)
-	abi.Free()
+	var frame = call.New()
+	var r_ret call.Nil
+	ctx.API().utility.randomize(r_ret, frame.Array(0), 0)
+	frame.Free()
 }
 
 func (ctx Context) Randi() Int {
-	var abi = ctx.API().NewFrame()
-	ctx.API().utility.randi(abi.Back(), abi.Args(), 0)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.randi(r_ret, frame.Array(0), 0)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Randf() Float {
-	var abi = ctx.API().NewFrame()
-	ctx.API().utility.randf(abi.Back(), abi.Args(), 0)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.randf(r_ret, frame.Array(0), 0)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) RandiRange(from Int, to Int) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, from)
-	FrameSet[Int](1, abi, to)
-	ctx.API().utility.randi_range(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.randi_range(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) RandfRange(from Float, to Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, from)
-	FrameSet[Float](1, abi, to)
-	ctx.API().utility.randf_range(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, from)
+	call.Arg(frame, to)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.randf_range(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Randfn(mean Float, deviation Float) Float {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Float](0, abi, mean)
-	FrameSet[Float](1, abi, deviation)
-	ctx.API().utility.randfn(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[Float](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, mean)
+	call.Arg(frame, deviation)
+	var r_ret = call.Ret[Float](frame)
+	ctx.API().utility.randfn(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) Seed(base Int) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, base)
-	ctx.API().utility.seed(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, base)
+	var r_ret call.Nil
+	ctx.API().utility.seed(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) RandFromSeed(seed Int) PackedInt64Array {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, seed)
-	ctx.API().utility.rand_from_seed(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[2]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, PackedInt64Array, [2]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, seed)
+	var r_ret = call.Ret[[2]uintptr](frame)
+	ctx.API().utility.rand_from_seed(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, PackedInt64Array, [2]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Weakref(obj Variant) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, obj.Pointer())
-	ctx.API().utility.weakref(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, obj.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.weakref(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Typeof(variable Variant) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, variable.Pointer())
-	ctx.API().utility.typeof(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, variable.Pointer())
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.typeof(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, variant.Pointer())
-	FrameSet[Int](1, abi, atype)
-	ctx.API().utility.type_convert(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, variant.Pointer())
+	call.Arg(frame, atype)
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.type_convert(r_ret, frame.Array(0), 2)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Str(arg1 Variant) String {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.str(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret = call.Ret[uintptr](frame)
+	ctx.API().utility.str(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, String, uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) ErrorString(error Int) String {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, error)
-	ctx.API().utility.error_string(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, error)
+	var r_ret = call.Ret[uintptr](frame)
+	ctx.API().utility.error_string(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, String, uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) TypeToString(atype Int) String {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, atype)
-	ctx.API().utility.type_string(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, atype)
+	var r_ret = call.Ret[uintptr](frame)
+	ctx.API().utility.type_string(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, String, uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Print(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.print(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.print(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) PrintRich(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.print_rich(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.print_rich(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) Printerr(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.printerr(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.printerr(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) Printt(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.printt(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.printt(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) Prints(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.prints(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.prints(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) Printraw(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.printraw(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.printraw(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) PrintVerbose(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.print_verbose(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.print_verbose(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) PushError(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.push_error(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.push_error(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) PushWarning(arg1 Variant) {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, arg1.Pointer())
-	ctx.API().utility.push_warning(abi.Back(), abi.Args(), 1)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, arg1.Pointer())
+	var r_ret call.Nil
+	ctx.API().utility.push_warning(r_ret, frame.Array(0), 1)
+	frame.Free()
 }
 
 func (ctx Context) VarToStr(variable Variant) String {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, variable.Pointer())
-	ctx.API().utility.var_to_str(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, String, uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, variable.Pointer())
+	var r_ret = call.Ret[uintptr](frame)
+	ctx.API().utility.var_to_str(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, String, uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) StrToVar(s String) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[uintptr](0, abi, s.Pointer())
-	ctx.API().utility.str_to_var(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, s.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.str_to_var(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) VarToBytes(variable Variant) PackedByteArray {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, variable.Pointer())
-	ctx.API().utility.var_to_bytes(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[2]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, PackedByteArray, [2]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, variable.Pointer())
+	var r_ret = call.Ret[[2]uintptr](frame)
+	ctx.API().utility.var_to_bytes(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, PackedByteArray, [2]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) BytesToVar(bytes PackedByteArray) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[2]uintptr](0, abi, bytes.Pointer())
-	ctx.API().utility.bytes_to_var(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, bytes.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.bytes_to_var(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) VarToBytesWithObjects(variable Variant) PackedByteArray {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, variable.Pointer())
-	ctx.API().utility.var_to_bytes_with_objects(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[2]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, PackedByteArray, [2]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, variable.Pointer())
+	var r_ret = call.Ret[[2]uintptr](frame)
+	ctx.API().utility.var_to_bytes_with_objects(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, PackedByteArray, [2]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) BytesToVarWithObjects(bytes PackedByteArray) Variant {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[2]uintptr](0, abi, bytes.Pointer())
-	ctx.API().utility.bytes_to_var_with_objects(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[[3]uintptr](abi)
-	abi.Free()
-	return mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), ret)
+	var frame = call.New()
+	call.Arg(frame, bytes.Pointer())
+	var r_ret = call.Ret[[3]uintptr](frame)
+	ctx.API().utility.bytes_to_var_with_objects(r_ret, frame.Array(0), 1)
+	var ret = mmm.Make[API, Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+	frame.Free()
+	return ret
 }
 
 func (ctx Context) Hash(variable Variant) Int {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, variable.Pointer())
-	ctx.API().utility.hash(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, variable.Pointer())
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.hash(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) InstanceFromId(instance_id Int) Object {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, instance_id)
-	ctx.API().utility.instance_from_id(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[Object](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, instance_id)
+	var r_ret = call.Ret[Object](frame)
+	ctx.API().utility.instance_from_id(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsInstanceIdValid(id Int) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, id)
-	ctx.API().utility.is_instance_id_valid(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, id)
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_instance_id_valid(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsInstanceValid(instance Variant) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, instance.Pointer())
-	ctx.API().utility.is_instance_valid(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, instance.Pointer())
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_instance_valid(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) RidAllocateId() Int {
-	var abi = ctx.API().NewFrame()
-	ctx.API().utility.rid_allocate_id(abi.Back(), abi.Args(), 0)
-	var ret = FrameGet[Int](abi)
-	abi.Free()
+	var frame = call.New()
+	var r_ret = call.Ret[Int](frame)
+	ctx.API().utility.rid_allocate_id(r_ret, frame.Array(0), 0)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) RidFromInt64(base Int) RID {
-	var abi = ctx.API().NewFrame()
-	FrameSet[Int](0, abi, base)
-	ctx.API().utility.rid_from_int64(abi.Back(), abi.Args(), 1)
-	var ret = FrameGet[RID](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, base)
+	var r_ret = call.Ret[RID](frame)
+	ctx.API().utility.rid_from_int64(r_ret, frame.Array(0), 1)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
 func (ctx Context) IsSame(a Variant, b Variant) bool {
-	var abi = ctx.API().NewFrame()
-	FrameSet[[3]uintptr](0, abi, a.Pointer())
-	FrameSet[[3]uintptr](1, abi, b.Pointer())
-	ctx.API().utility.is_same(abi.Back(), abi.Args(), 2)
-	var ret = FrameGet[bool](abi)
-	abi.Free()
+	var frame = call.New()
+	call.Arg(frame, a.Pointer())
+	call.Arg(frame, b.Pointer())
+	var r_ret = call.Ret[bool](frame)
+	ctx.API().utility.is_same(r_ret, frame.Array(0), 2)
+	var ret = r_ret.Get()
+	frame.Free()
 	return ret
 }
 
@@ -3839,7 +3953,7 @@ func (self Callable) Call(ctx Context) Variant {
 func (self Callable) CallDeferred() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Callable.call_deferred(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -3848,7 +3962,7 @@ func (self Callable) CallDeferred() {
 func (self Callable) Rpc() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Callable.rpc(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -3858,7 +3972,7 @@ func (self Callable) RpcId(peer_id Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, peer_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Callable.rpc_id(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -3936,7 +4050,7 @@ func (self Signal) Disconnect(callable Callable) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Signal.disconnect(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -3968,7 +4082,7 @@ func (self Signal) GetConnections(ctx Context) Array {
 func (self Signal) Emit() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Signal.emit(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -3999,7 +4113,7 @@ func (self Dictionary) IsEmpty() bool {
 func (self Dictionary) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4010,7 +4124,7 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	var frame = call.New()
 	call.Arg(frame, dictionary.Pointer())
 	call.Arg(frame, overwrite)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.merge(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -4125,7 +4239,7 @@ func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 func (self Dictionary) MakeReadOnly() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Dictionary.make_read_only(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4167,7 +4281,7 @@ func (self Array) IsEmpty() bool {
 func (self Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4188,7 +4302,7 @@ func (self Array) Assign(array Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.assign(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4198,7 +4312,7 @@ func (self Array) PushBack(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.push_back(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4208,7 +4322,7 @@ func (self Array) PushFront(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.push_front(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4218,7 +4332,7 @@ func (self Array) Append(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.append(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4228,7 +4342,7 @@ func (self Array) AppendArray(array Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4263,7 +4377,7 @@ func (self Array) RemoveAt(position Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4273,7 +4387,7 @@ func (self Array) Fill(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4283,7 +4397,7 @@ func (self Array) Erase(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.erase(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4409,7 +4523,7 @@ func (self Array) PopAt(ctx Context, position Int) Variant {
 func (self Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4419,7 +4533,7 @@ func (self Array) SortCustom(fn Callable) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, fn.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.sort_custom(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4428,7 +4542,7 @@ func (self Array) SortCustom(fn Callable) {
 func (self Array) Shuffle() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.shuffle(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4464,7 +4578,7 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 func (self Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4639,7 +4753,7 @@ func (self Array) GetTypedScript(ctx Context) Variant {
 func (self Array) MakeReadOnly() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.Array.make_read_only(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4683,7 +4797,7 @@ func (self PackedByteArray) Set(index Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -4717,7 +4831,7 @@ func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4727,7 +4841,7 @@ func (self PackedByteArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4750,7 +4864,7 @@ func (self PackedByteArray) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -4771,7 +4885,7 @@ func (self PackedByteArray) Resize(new_size Int) Int {
 func (self PackedByteArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4792,7 +4906,7 @@ func (self PackedByteArray) Has(value Int) bool {
 func (self PackedByteArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -4814,7 +4928,7 @@ func (self PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArr
 func (self PackedByteArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5206,7 +5320,7 @@ func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_u8(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5217,7 +5331,7 @@ func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_s8(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5228,7 +5342,7 @@ func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_u16(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5239,7 +5353,7 @@ func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_s16(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5250,7 +5364,7 @@ func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_u32(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5261,7 +5375,7 @@ func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_s32(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5272,7 +5386,7 @@ func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_u64(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5283,7 +5397,7 @@ func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_s64(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5294,7 +5408,7 @@ func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_half(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5305,7 +5419,7 @@ func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_float(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5316,7 +5430,7 @@ func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	var frame = call.New()
 	call.Arg(frame, byte_offset)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedByteArray.encode_double(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5363,7 +5477,7 @@ func (self PackedInt32Array) Set(index Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5397,7 +5511,7 @@ func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5407,7 +5521,7 @@ func (self PackedInt32Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5430,7 +5544,7 @@ func (self PackedInt32Array) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5451,7 +5565,7 @@ func (self PackedInt32Array) Resize(new_size Int) Int {
 func (self PackedInt32Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5472,7 +5586,7 @@ func (self PackedInt32Array) Has(value Int) bool {
 func (self PackedInt32Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5505,7 +5619,7 @@ func (self PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedInt32Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt32Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5600,7 +5714,7 @@ func (self PackedInt64Array) Set(index Int, value Int) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5634,7 +5748,7 @@ func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5644,7 +5758,7 @@ func (self PackedInt64Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5667,7 +5781,7 @@ func (self PackedInt64Array) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5688,7 +5802,7 @@ func (self PackedInt64Array) Resize(new_size Int) Int {
 func (self PackedInt64Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5709,7 +5823,7 @@ func (self PackedInt64Array) Has(value Int) bool {
 func (self PackedInt64Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5742,7 +5856,7 @@ func (self PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedInt64Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedInt64Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5837,7 +5951,7 @@ func (self PackedFloat32Array) Set(index Int, value Float) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -5871,7 +5985,7 @@ func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5881,7 +5995,7 @@ func (self PackedFloat32Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5904,7 +6018,7 @@ func (self PackedFloat32Array) Fill(value Float) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -5925,7 +6039,7 @@ func (self PackedFloat32Array) Resize(new_size Int) Int {
 func (self PackedFloat32Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5946,7 +6060,7 @@ func (self PackedFloat32Array) Has(value Float) bool {
 func (self PackedFloat32Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -5979,7 +6093,7 @@ func (self PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedFloat32Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat32Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6074,7 +6188,7 @@ func (self PackedFloat64Array) Set(index Int, value Float) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -6108,7 +6222,7 @@ func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6118,7 +6232,7 @@ func (self PackedFloat64Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6141,7 +6255,7 @@ func (self PackedFloat64Array) Fill(value Float) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6162,7 +6276,7 @@ func (self PackedFloat64Array) Resize(new_size Int) Int {
 func (self PackedFloat64Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6183,7 +6297,7 @@ func (self PackedFloat64Array) Has(value Float) bool {
 func (self PackedFloat64Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6216,7 +6330,7 @@ func (self PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedFloat64Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedFloat64Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6311,7 +6425,7 @@ func (self PackedStringArray) Set(index Int, value String) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -6345,7 +6459,7 @@ func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6355,7 +6469,7 @@ func (self PackedStringArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6378,7 +6492,7 @@ func (self PackedStringArray) Fill(value String) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6399,7 +6513,7 @@ func (self PackedStringArray) Resize(new_size Int) Int {
 func (self PackedStringArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6420,7 +6534,7 @@ func (self PackedStringArray) Has(value String) bool {
 func (self PackedStringArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6453,7 +6567,7 @@ func (self PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedStringArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedStringArray.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6548,7 +6662,7 @@ func (self PackedVector2Array) Set(index Int, value Vector2) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -6582,7 +6696,7 @@ func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6592,7 +6706,7 @@ func (self PackedVector2Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6615,7 +6729,7 @@ func (self PackedVector2Array) Fill(value Vector2) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6636,7 +6750,7 @@ func (self PackedVector2Array) Resize(new_size Int) Int {
 func (self PackedVector2Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6657,7 +6771,7 @@ func (self PackedVector2Array) Has(value Vector2) bool {
 func (self PackedVector2Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6690,7 +6804,7 @@ func (self PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedVector2Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector2Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6785,7 +6899,7 @@ func (self PackedVector3Array) Set(index Int, value Vector3) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -6819,7 +6933,7 @@ func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6829,7 +6943,7 @@ func (self PackedVector3Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6852,7 +6966,7 @@ func (self PackedVector3Array) Fill(value Vector3) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -6873,7 +6987,7 @@ func (self PackedVector3Array) Resize(new_size Int) Int {
 func (self PackedVector3Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6894,7 +7008,7 @@ func (self PackedVector3Array) Has(value Vector3) bool {
 func (self PackedVector3Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -6927,7 +7041,7 @@ func (self PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedVector3Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedVector3Array.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -7022,7 +7136,7 @@ func (self PackedColorArray) Set(index Int, value Color) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.set(p_self, frame.Array(0), r_ret, 2)
 	frame.Free()
@@ -7056,7 +7170,7 @@ func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, array.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.append_array(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -7066,7 +7180,7 @@ func (self PackedColorArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.remove_at(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -7089,7 +7203,7 @@ func (self PackedColorArray) Fill(value Color) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.fill(p_self, frame.Array(0), r_ret, 1)
 	frame.Free()
@@ -7110,7 +7224,7 @@ func (self PackedColorArray) Resize(new_size Int) Int {
 func (self PackedColorArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.clear(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -7131,7 +7245,7 @@ func (self PackedColorArray) Has(value Color) bool {
 func (self PackedColorArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.reverse(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -7164,7 +7278,7 @@ func (self PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 func (self PackedColorArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	var p_self = call.Arg(frame, selfPtr.Pointer())
 	selfPtr.API.builtin.PackedColorArray.sort(p_self, frame.Array(0), r_ret, 0)
 	frame.Free()
@@ -7246,7 +7360,7 @@ func (self ArrayMesh) AddBlendShape(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_add_blend_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7277,7 +7391,7 @@ func (self ArrayMesh) SetBlendShapeName(index Int, name StringName) {
 	var frame = call.New()
 	call.Arg(frame, index)
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_set_blend_shape_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7285,7 +7399,7 @@ func (self ArrayMesh) SetBlendShapeName(index Int, name StringName) {
 func (self ArrayMesh) ClearBlendShapes() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_clear_blend_shapes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7294,7 +7408,7 @@ func (self ArrayMesh) SetBlendShapeMode(mode MeshBlendShapeMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7317,7 +7431,7 @@ func (self ArrayMesh) AddSurfaceFromArrays(primitive MeshPrimitiveType, arrays A
 	call.Arg(frame, blend_shapes)
 	call.Arg(frame, lods.Pointer())
 	call.Arg(frame, flags)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7325,7 +7439,7 @@ func (self ArrayMesh) AddSurfaceFromArrays(primitive MeshPrimitiveType, arrays A
 func (self ArrayMesh) ClearSurfaces() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_clear_surfaces, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7336,7 +7450,7 @@ func (self ArrayMesh) SurfaceUpdateVertexRegion(surf_idx Int, offset Int, data P
 	call.Arg(frame, surf_idx)
 	call.Arg(frame, offset)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7347,7 +7461,7 @@ func (self ArrayMesh) SurfaceUpdateAttributeRegion(surf_idx Int, offset Int, dat
 	call.Arg(frame, surf_idx)
 	call.Arg(frame, offset)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7358,7 +7472,7 @@ func (self ArrayMesh) SurfaceUpdateSkinRegion(surf_idx Int, offset Int, data Pac
 	call.Arg(frame, surf_idx)
 	call.Arg(frame, offset)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7423,7 +7537,7 @@ func (self ArrayMesh) SurfaceSetName(surf_idx Int, name String) {
 	var frame = call.New()
 	call.Arg(frame, surf_idx)
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_surface_set_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7442,7 +7556,7 @@ func (self ArrayMesh) SurfaceGetName(ctx Context, surf_idx Int) String {
 func (self ArrayMesh) RegenNormalMaps() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_regen_normal_maps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7463,7 +7577,7 @@ func (self ArrayMesh) SetCustomAabb(aabb AABB) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, aabb)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7482,7 +7596,7 @@ func (self ArrayMesh) SetShadowMesh(mesh ArrayMesh) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mesh.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ArrayMesh.Bind_set_shadow_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7549,7 +7663,7 @@ func (self Camera2D) SetOffset(offset Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7568,7 +7682,7 @@ func (self Camera2D) SetAnchorMode(anchor_mode Camera2DAnchorMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, anchor_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_anchor_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7587,7 +7701,7 @@ func (self Camera2D) SetIgnoreRotation(ignore bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, ignore)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_ignore_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7606,7 +7720,7 @@ func (self Camera2D) SetProcessCallback(mode Camera2DCamera2DProcessCallback) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_process_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7625,7 +7739,7 @@ func (self Camera2D) SetEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7643,7 +7757,7 @@ func (self Camera2D) IsEnabled() bool {
 func (self Camera2D) MakeCurrent() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7663,7 +7777,7 @@ func (self Camera2D) SetLimit(margin Side, limit Int) {
 	var frame = call.New()
 	call.Arg(frame, margin)
 	call.Arg(frame, limit)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_limit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7683,7 +7797,7 @@ func (self Camera2D) SetLimitSmoothingEnabled(limit_smoothing_enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, limit_smoothing_enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_limit_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7702,7 +7816,7 @@ func (self Camera2D) SetDragVerticalEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_drag_vertical_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7721,7 +7835,7 @@ func (self Camera2D) SetDragHorizontalEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_drag_horizontal_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7740,7 +7854,7 @@ func (self Camera2D) SetDragVerticalOffset(offset Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_drag_vertical_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7759,7 +7873,7 @@ func (self Camera2D) SetDragHorizontalOffset(offset Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_drag_horizontal_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7779,7 +7893,7 @@ func (self Camera2D) SetDragMargin(margin Side, drag_margin Float) {
 	var frame = call.New()
 	call.Arg(frame, margin)
 	call.Arg(frame, drag_margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_drag_margin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7819,7 +7933,7 @@ func (self Camera2D) SetZoom(zoom Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, zoom)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_zoom, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7838,7 +7952,7 @@ func (self Camera2D) SetCustomViewport(viewport Node) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, viewport.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_custom_viewport, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7857,7 +7971,7 @@ func (self Camera2D) SetPositionSmoothingSpeed(position_smoothing_speed Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position_smoothing_speed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_position_smoothing_speed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7876,7 +7990,7 @@ func (self Camera2D) SetPositionSmoothingEnabled(position_smoothing_speed bool) 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position_smoothing_speed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_position_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7895,7 +8009,7 @@ func (self Camera2D) SetRotationSmoothingEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_rotation_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7914,7 +8028,7 @@ func (self Camera2D) SetRotationSmoothingSpeed(speed Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, speed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_rotation_smoothing_speed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7932,7 +8046,7 @@ func (self Camera2D) GetRotationSmoothingSpeed() Float {
 func (self Camera2D) ForceUpdateScroll() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_force_update_scroll, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7940,7 +8054,7 @@ func (self Camera2D) ForceUpdateScroll() {
 func (self Camera2D) ResetSmoothing() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_reset_smoothing, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7948,7 +8062,7 @@ func (self Camera2D) ResetSmoothing() {
 func (self Camera2D) Align() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_align, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7957,7 +8071,7 @@ func (self Camera2D) SetScreenDrawingEnabled(screen_drawing_enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, screen_drawing_enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_screen_drawing_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7976,7 +8090,7 @@ func (self Camera2D) SetLimitDrawingEnabled(limit_drawing_enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, limit_drawing_enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_limit_drawing_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -7995,7 +8109,7 @@ func (self Camera2D) SetMarginDrawingEnabled(margin_drawing_enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, margin_drawing_enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera2D.Bind_set_margin_drawing_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8103,7 +8217,7 @@ func (self Camera3D) SetPerspective(fov Float, z_near Float, z_far Float) {
 	call.Arg(frame, fov)
 	call.Arg(frame, z_near)
 	call.Arg(frame, z_far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_perspective, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8114,7 +8228,7 @@ func (self Camera3D) SetOrthogonal(size Float, z_near Float, z_far Float) {
 	call.Arg(frame, size)
 	call.Arg(frame, z_near)
 	call.Arg(frame, z_far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_orthogonal, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8126,7 +8240,7 @@ func (self Camera3D) SetFrustum(size Float, offset Vector2, z_near Float, z_far 
 	call.Arg(frame, offset)
 	call.Arg(frame, z_near)
 	call.Arg(frame, z_far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_frustum, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8134,7 +8248,7 @@ func (self Camera3D) SetFrustum(size Float, offset Vector2, z_near Float, z_far 
 func (self Camera3D) MakeCurrent() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8143,7 +8257,7 @@ func (self Camera3D) ClearCurrent(enable_next bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable_next)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_clear_current, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8152,7 +8266,7 @@ func (self Camera3D) SetCurrent(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_current, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8241,7 +8355,7 @@ func (self Camera3D) SetFov(fov Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, fov)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_fov, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8250,7 +8364,7 @@ func (self Camera3D) SetFrustumOffset(offset Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_frustum_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8259,7 +8373,7 @@ func (self Camera3D) SetSize(size Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8268,7 +8382,7 @@ func (self Camera3D) SetFar(far Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_far, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8277,7 +8391,7 @@ func (self Camera3D) SetNear(near Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, near)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_near, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8296,7 +8410,7 @@ func (self Camera3D) SetProjection(mode Camera3DProjectionType) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_projection, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8305,7 +8419,7 @@ func (self Camera3D) SetHOffset(offset Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_h_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8324,7 +8438,7 @@ func (self Camera3D) SetVOffset(offset Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_v_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8343,7 +8457,7 @@ func (self Camera3D) SetCullMask(mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8362,7 +8476,7 @@ func (self Camera3D) SetEnvironment(env Environment) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, env.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8381,7 +8495,7 @@ func (self Camera3D) SetAttributes(env CameraAttributes) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, env.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_attributes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8400,7 +8514,7 @@ func (self Camera3D) SetKeepAspectMode(mode Camera3DKeepAspect) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8419,7 +8533,7 @@ func (self Camera3D) SetDopplerTracking(mode Camera3DDopplerTracking) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_doppler_tracking, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8480,7 +8594,7 @@ func (self Camera3D) SetCullMaskValue(layer_number Int, value bool) {
 	var frame = call.New()
 	call.Arg(frame, layer_number)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Camera3D.Bind_set_cull_mask_value, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8517,7 +8631,7 @@ func (self CameraAttributes) SetExposureMultiplier(multiplier Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, multiplier)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CameraAttributes.Bind_set_exposure_multiplier, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8536,7 +8650,7 @@ func (self CameraAttributes) SetExposureSensitivity(sensitivity Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sensitivity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CameraAttributes.Bind_set_exposure_sensitivity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8555,7 +8669,7 @@ func (self CameraAttributes) SetAutoExposureEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CameraAttributes.Bind_set_auto_exposure_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8574,7 +8688,7 @@ func (self CameraAttributes) SetAutoExposureSpeed(exposure_speed Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exposure_speed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CameraAttributes.Bind_set_auto_exposure_speed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8593,7 +8707,7 @@ func (self CameraAttributes) SetAutoExposureScale(exposure_grey Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exposure_grey)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CameraAttributes.Bind_set_auto_exposure_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8650,7 +8764,7 @@ func (self CanvasItem) SetVisible(visible bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8678,7 +8792,7 @@ func (self CanvasItem) IsVisibleInTree() bool {
 func (self CanvasItem) Show() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_show, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8686,7 +8800,7 @@ func (self CanvasItem) Show() {
 func (self CanvasItem) Hide() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_hide, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8694,7 +8808,7 @@ func (self CanvasItem) Hide() {
 func (self CanvasItem) QueueRedraw() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_queue_redraw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8702,7 +8816,7 @@ func (self CanvasItem) QueueRedraw() {
 func (self CanvasItem) MoveToFront() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_move_to_front, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8711,7 +8825,7 @@ func (self CanvasItem) SetAsTopLevel(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8730,7 +8844,7 @@ func (self CanvasItem) SetLightMask(light_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, light_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_light_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8749,7 +8863,7 @@ func (self CanvasItem) SetModulate(modulate Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_modulate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8768,7 +8882,7 @@ func (self CanvasItem) SetSelfModulate(self_modulate Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, self_modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_self_modulate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8787,7 +8901,7 @@ func (self CanvasItem) SetZIndex(z_index Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, z_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_z_index, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8806,7 +8920,7 @@ func (self CanvasItem) SetZAsRelative(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_z_as_relative, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8825,7 +8939,7 @@ func (self CanvasItem) SetYSortEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8844,7 +8958,7 @@ func (self CanvasItem) SetDrawBehindParent(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8867,7 +8981,7 @@ func (self CanvasItem) DrawLine(from Vector2, to Vector2, color Color, width Flo
 	call.Arg(frame, color)
 	call.Arg(frame, width)
 	call.Arg(frame, antialiased)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_line, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8881,7 +8995,7 @@ func (self CanvasItem) DrawDashedLine(from Vector2, to Vector2, color Color, wid
 	call.Arg(frame, width)
 	call.Arg(frame, dash)
 	call.Arg(frame, aligned)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_dashed_line, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8893,7 +9007,7 @@ func (self CanvasItem) DrawPolyline(points PackedVector2Array, color Color, widt
 	call.Arg(frame, color)
 	call.Arg(frame, width)
 	call.Arg(frame, antialiased)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_polyline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8905,7 +9019,7 @@ func (self CanvasItem) DrawPolylineColors(points PackedVector2Array, colors Pack
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, width)
 	call.Arg(frame, antialiased)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_polyline_colors, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8921,7 +9035,7 @@ func (self CanvasItem) DrawArc(center Vector2, radius Float, start_angle Float, 
 	call.Arg(frame, color)
 	call.Arg(frame, width)
 	call.Arg(frame, antialiased)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_arc, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8932,7 +9046,7 @@ func (self CanvasItem) DrawMultiline(points PackedVector2Array, color Color, wid
 	call.Arg(frame, points.Pointer())
 	call.Arg(frame, color)
 	call.Arg(frame, width)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multiline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8943,7 +9057,7 @@ func (self CanvasItem) DrawMultilineColors(points PackedVector2Array, colors Pac
 	call.Arg(frame, points.Pointer())
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, width)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multiline_colors, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8955,7 +9069,7 @@ func (self CanvasItem) DrawRect(rect Rect2, color Color, filled bool, width Floa
 	call.Arg(frame, color)
 	call.Arg(frame, filled)
 	call.Arg(frame, width)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8966,7 +9080,7 @@ func (self CanvasItem) DrawCircle(position Vector2, radius Float, color Color) {
 	call.Arg(frame, position)
 	call.Arg(frame, radius)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_circle, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8977,7 +9091,7 @@ func (self CanvasItem) DrawTexture(texture Texture2D, position Vector2, modulate
 	call.Arg(frame, texture.Pointer())
 	call.Arg(frame, position)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -8990,7 +9104,7 @@ func (self CanvasItem) DrawTextureRect(texture Texture2D, rect Rect2, tile bool,
 	call.Arg(frame, tile)
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_texture_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9004,7 +9118,7 @@ func (self CanvasItem) DrawTextureRectRegion(texture Texture2D, rect Rect2, src_
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
 	call.Arg(frame, clip_uv)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_texture_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9019,7 +9133,7 @@ func (self CanvasItem) DrawMsdfTextureRectRegion(texture Texture2D, rect Rect2, 
 	call.Arg(frame, outline)
 	call.Arg(frame, pixel_range)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9031,7 +9145,7 @@ func (self CanvasItem) DrawLcdTextureRectRegion(texture Texture2D, rect Rect2, s
 	call.Arg(frame, rect)
 	call.Arg(frame, src_rect)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9041,7 +9155,7 @@ func (self CanvasItem) DrawStyleBox(style_box StyleBox, rect Rect2) {
 	var frame = call.New()
 	call.Arg(frame, style_box.Pointer())
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_style_box, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9053,7 +9167,7 @@ func (self CanvasItem) DrawPrimitive(points PackedVector2Array, colors PackedCol
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, uvs.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_primitive, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9065,7 +9179,7 @@ func (self CanvasItem) DrawPolygon(points PackedVector2Array, colors PackedColor
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, uvs.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_polygon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9077,7 +9191,7 @@ func (self CanvasItem) DrawColoredPolygon(points PackedVector2Array, color Color
 	call.Arg(frame, color)
 	call.Arg(frame, uvs.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_colored_polygon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9095,7 +9209,7 @@ func (self CanvasItem) DrawString(font Font, pos Vector2, text String, alignment
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9115,7 +9229,7 @@ func (self CanvasItem) DrawMultilineString(font Font, pos Vector2, text String, 
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9134,7 +9248,7 @@ func (self CanvasItem) DrawStringOutline(font Font, pos Vector2, text String, al
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9155,7 +9269,7 @@ func (self CanvasItem) DrawMultilineStringOutline(font Font, pos Vector2, text S
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9168,7 +9282,7 @@ func (self CanvasItem) DrawChar(font Font, pos Vector2, char String, font_size I
 	call.Arg(frame, char.Pointer())
 	call.Arg(frame, font_size)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9182,7 +9296,7 @@ func (self CanvasItem) DrawCharOutline(font Font, pos Vector2, char String, font
 	call.Arg(frame, font_size)
 	call.Arg(frame, size)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9194,7 +9308,7 @@ func (self CanvasItem) DrawMesh(mesh Mesh, texture Texture2D, transform Transfor
 	call.Arg(frame, texture.Pointer())
 	call.Arg(frame, transform)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9204,7 +9318,7 @@ func (self CanvasItem) DrawMultimesh(multimesh MultiMesh, texture Texture2D) {
 	var frame = call.New()
 	call.Arg(frame, multimesh.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_multimesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9215,7 +9329,7 @@ func (self CanvasItem) DrawSetTransform(position Vector2, rotation Float, scale 
 	call.Arg(frame, position)
 	call.Arg(frame, rotation)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9224,7 +9338,7 @@ func (self CanvasItem) DrawSetTransformMatrix(xform Transform2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, xform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_set_transform_matrix, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9236,7 +9350,7 @@ func (self CanvasItem) DrawAnimationSlice(animation_length Float, slice_begin Fl
 	call.Arg(frame, slice_begin)
 	call.Arg(frame, slice_end)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_animation_slice, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9244,7 +9358,7 @@ func (self CanvasItem) DrawAnimationSlice(animation_length Float, slice_begin Fl
 func (self CanvasItem) DrawEndAnimation() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_draw_end_animation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9363,7 +9477,7 @@ func (self CanvasItem) SetMaterial(material Material) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, material.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9382,7 +9496,7 @@ func (self CanvasItem) SetUseParentMaterial(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9401,7 +9515,7 @@ func (self CanvasItem) SetNotifyLocalTransform(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9420,7 +9534,7 @@ func (self CanvasItem) SetNotifyTransform(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9438,7 +9552,7 @@ func (self CanvasItem) IsTransformNotificationEnabled() bool {
 func (self CanvasItem) ForceUpdateTransform() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9469,7 +9583,7 @@ func (self CanvasItem) SetVisibilityLayer(layer Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, layer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9489,7 +9603,7 @@ func (self CanvasItem) SetVisibilityLayerBit(layer Int, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, layer)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9509,7 +9623,7 @@ func (self CanvasItem) SetTextureFilter(mode CanvasItemTextureFilter) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9528,7 +9642,7 @@ func (self CanvasItem) SetTextureRepeat(mode CanvasItemTextureRepeat) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9547,7 +9661,7 @@ func (self CanvasItem) SetClipChildrenMode(mode CanvasItemClipChildrenMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.CanvasItem.Bind_set_clip_children_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9587,7 +9701,7 @@ func (self ConcavePolygonShape3D) SetFaces(faces PackedVector3Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, faces.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ConcavePolygonShape3D.Bind_set_faces, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9606,7 +9720,7 @@ func (self ConcavePolygonShape3D) SetBackfaceCollisionEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ConcavePolygonShape3D.Bind_set_backface_collision_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9769,7 +9883,7 @@ func (Control) _gui_input(impl func(ptr unsafe.Pointer, ctx Context, event Input
 func (self Control) AcceptEvent() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_accept_event, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9799,7 +9913,7 @@ func (self Control) SetAnchorsPreset(preset ControlLayoutPreset, keep_offsets bo
 	var frame = call.New()
 	call.Arg(frame, preset)
 	call.Arg(frame, keep_offsets)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_anchors_preset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9810,7 +9924,7 @@ func (self Control) SetOffsetsPreset(preset ControlLayoutPreset, resize_mode Con
 	call.Arg(frame, preset)
 	call.Arg(frame, resize_mode)
 	call.Arg(frame, margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_offsets_preset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9821,7 +9935,7 @@ func (self Control) SetAnchorsAndOffsetsPreset(preset ControlLayoutPreset, resiz
 	call.Arg(frame, preset)
 	call.Arg(frame, resize_mode)
 	call.Arg(frame, margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_anchors_and_offsets_preset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9833,7 +9947,7 @@ func (self Control) SetAnchor(side Side, anchor Float, keep_offset bool, push_op
 	call.Arg(frame, anchor)
 	call.Arg(frame, keep_offset)
 	call.Arg(frame, push_opposite_anchor)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_anchor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9854,7 +9968,7 @@ func (self Control) SetOffset(side Side, offset Float) {
 	var frame = call.New()
 	call.Arg(frame, side)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9877,7 +9991,7 @@ func (self Control) SetAnchorAndOffset(side Side, anchor Float, offset Float, pu
 	call.Arg(frame, anchor)
 	call.Arg(frame, offset)
 	call.Arg(frame, push_opposite_anchor)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_anchor_and_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9886,7 +10000,7 @@ func (self Control) SetBegin(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_begin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9895,7 +10009,7 @@ func (self Control) SetEnd(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_end, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9905,7 +10019,7 @@ func (self Control) SetPosition(position Vector2, keep_offsets bool) {
 	var frame = call.New()
 	call.Arg(frame, position)
 	call.Arg(frame, keep_offsets)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9915,7 +10029,7 @@ func (self Control) SetSize(size Vector2, keep_offsets bool) {
 	var frame = call.New()
 	call.Arg(frame, size)
 	call.Arg(frame, keep_offsets)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9923,7 +10037,7 @@ func (self Control) SetSize(size Vector2, keep_offsets bool) {
 func (self Control) ResetSize() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_reset_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9932,7 +10046,7 @@ func (self Control) SetCustomMinimumSize(size Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_custom_minimum_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9942,7 +10056,7 @@ func (self Control) SetGlobalPosition(position Vector2, keep_offsets bool) {
 	var frame = call.New()
 	call.Arg(frame, position)
 	call.Arg(frame, keep_offsets)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9951,7 +10065,7 @@ func (self Control) SetRotation(radians Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9960,7 +10074,7 @@ func (self Control) SetRotationDegrees(degrees Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, degrees)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9969,7 +10083,7 @@ func (self Control) SetScale(scale Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -9978,7 +10092,7 @@ func (self Control) SetPivotOffset(pivot_offset Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, pivot_offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_pivot_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10127,7 +10241,7 @@ func (self Control) SetFocusMode(mode ControlFocusMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_focus_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10155,7 +10269,7 @@ func (self Control) HasFocus() bool {
 func (self Control) GrabFocus() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_grab_focus, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10163,7 +10277,7 @@ func (self Control) GrabFocus() {
 func (self Control) ReleaseFocus() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_release_focus, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10203,7 +10317,7 @@ func (self Control) SetHSizeFlags(flags ControlSizeFlags) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, flags)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_h_size_flags, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10222,7 +10336,7 @@ func (self Control) SetStretchRatio(ratio Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_stretch_ratio, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10241,7 +10355,7 @@ func (self Control) SetVSizeFlags(flags ControlSizeFlags) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, flags)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_v_size_flags, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10260,7 +10374,7 @@ func (self Control) SetTheme(theme Theme) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_theme, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10279,7 +10393,7 @@ func (self Control) SetThemeTypeVariation(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_theme_type_variation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10297,7 +10411,7 @@ func (self Control) GetThemeTypeVariation(ctx Context) StringName {
 func (self Control) BeginBulkThemeOverride() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_begin_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10305,7 +10419,7 @@ func (self Control) BeginBulkThemeOverride() {
 func (self Control) EndBulkThemeOverride() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_end_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10315,7 +10429,7 @@ func (self Control) AddThemeIconOverride(name StringName, texture Texture2D) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_add_theme_icon_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10325,7 +10439,7 @@ func (self Control) AddThemeStyleboxOverride(name StringName, stylebox StyleBox)
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, stylebox.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_add_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10335,7 +10449,7 @@ func (self Control) AddThemeFontOverride(name StringName, font Font) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, font.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_add_theme_font_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10345,7 +10459,7 @@ func (self Control) AddThemeFontSizeOverride(name StringName, font_size Int) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, font_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_add_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10355,7 +10469,7 @@ func (self Control) AddThemeColorOverride(name StringName, color Color) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_add_theme_color_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10365,7 +10479,7 @@ func (self Control) AddThemeConstantOverride(name StringName, constant Int) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, constant)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_add_theme_constant_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10374,7 +10488,7 @@ func (self Control) RemoveThemeIconOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_remove_theme_icon_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10383,7 +10497,7 @@ func (self Control) RemoveThemeStyleboxOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_remove_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10392,7 +10506,7 @@ func (self Control) RemoveThemeFontOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_remove_theme_font_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10401,7 +10515,7 @@ func (self Control) RemoveThemeFontSizeOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_remove_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10410,7 +10524,7 @@ func (self Control) RemoveThemeColorOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_remove_theme_color_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10419,7 +10533,7 @@ func (self Control) RemoveThemeConstantOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_remove_theme_constant_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10678,7 +10792,7 @@ func (self Control) SetHGrowDirection(direction ControlGrowDirection) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, direction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_h_grow_direction, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10697,7 +10811,7 @@ func (self Control) SetVGrowDirection(direction ControlGrowDirection) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, direction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_v_grow_direction, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10716,7 +10830,7 @@ func (self Control) SetTooltipText(hint String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, hint.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_tooltip_text, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10746,7 +10860,7 @@ func (self Control) SetDefaultCursorShape(shape ControlCursorShape) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_default_cursor_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10777,7 +10891,7 @@ func (self Control) SetFocusNeighbor(side Side, neighbor NodePath) {
 	var frame = call.New()
 	call.Arg(frame, side)
 	call.Arg(frame, neighbor.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_focus_neighbor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10797,7 +10911,7 @@ func (self Control) SetFocusNext(next NodePath) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, next.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_focus_next, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10816,7 +10930,7 @@ func (self Control) SetFocusPrevious(previous NodePath) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, previous.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_focus_previous, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10836,7 +10950,7 @@ func (self Control) ForceDrag(data Variant, preview Control) {
 	var frame = call.New()
 	call.Arg(frame, data.Pointer())
 	call.Arg(frame, preview.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_force_drag, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10845,7 +10959,7 @@ func (self Control) SetMouseFilter(filter ControlMouseFilter) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_mouse_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10864,7 +10978,7 @@ func (self Control) SetForcePassScrollEvents(force_pass_scroll_events bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, force_pass_scroll_events)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_force_pass_scroll_events, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10883,7 +10997,7 @@ func (self Control) SetClipContents(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_clip_contents, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10901,7 +11015,7 @@ func (self Control) IsClippingContents() bool {
 func (self Control) GrabClickFocus() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_grab_click_focus, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10912,7 +11026,7 @@ func (self Control) SetDragForwarding(drag_func Callable, can_drop_func Callable
 	call.Arg(frame, drag_func.Pointer())
 	call.Arg(frame, can_drop_func.Pointer())
 	call.Arg(frame, drop_func.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_drag_forwarding, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10921,7 +11035,7 @@ func (self Control) SetDragPreview(control Control) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, control.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_drag_preview, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10940,7 +11054,7 @@ func (self Control) WarpMouse(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10949,7 +11063,7 @@ func (self Control) SetShortcutContext(node Node) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, node.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_shortcut_context, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10967,7 +11081,7 @@ func (self Control) GetShortcutContext() Node {
 func (self Control) UpdateMinimumSize() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_update_minimum_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -10976,7 +11090,7 @@ func (self Control) SetLayoutDirection(direction ControlLayoutDirection) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, direction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_layout_direction, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11005,7 +11119,7 @@ func (self Control) SetAutoTranslate(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_auto_translate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11024,7 +11138,7 @@ func (self Control) SetLocalizeNumeralSystem(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Control.Bind_set_localize_numeral_system, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11080,7 +11194,7 @@ func (self ConvexPolygonShape3D) SetPoints(points PackedVector3Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, points.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ConvexPolygonShape3D.Bind_set_points, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11158,7 +11272,7 @@ func (self DisplayServer) GlobalMenuSetPopupCallbacks(menu_root String, open_cal
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, open_callback.Pointer())
 	call.Arg(frame, close_callback.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_popup_callbacks, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11535,7 +11649,7 @@ func (self DisplayServer) GlobalMenuSetItemChecked(menu_root String, idx Int, ch
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, checked)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_checked, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11546,7 +11660,7 @@ func (self DisplayServer) GlobalMenuSetItemCheckable(menu_root String, idx Int, 
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, checkable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_checkable, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11557,7 +11671,7 @@ func (self DisplayServer) GlobalMenuSetItemRadioCheckable(menu_root String, idx 
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, checkable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11568,7 +11682,7 @@ func (self DisplayServer) GlobalMenuSetItemCallback(menu_root String, idx Int, c
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, callback.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11579,7 +11693,7 @@ func (self DisplayServer) GlobalMenuSetItemHoverCallbacks(menu_root String, idx 
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, callback.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11590,7 +11704,7 @@ func (self DisplayServer) GlobalMenuSetItemKeyCallback(menu_root String, idx Int
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, key_callback.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11601,7 +11715,7 @@ func (self DisplayServer) GlobalMenuSetItemTag(menu_root String, idx Int, tag Va
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, tag.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_tag, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11612,7 +11726,7 @@ func (self DisplayServer) GlobalMenuSetItemText(menu_root String, idx Int, text 
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, text.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_text, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11623,7 +11737,7 @@ func (self DisplayServer) GlobalMenuSetItemSubmenu(menu_root String, idx Int, su
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, submenu.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_submenu, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11634,7 +11748,7 @@ func (self DisplayServer) GlobalMenuSetItemAccelerator(menu_root String, idx Int
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, keycode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_accelerator, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11645,7 +11759,7 @@ func (self DisplayServer) GlobalMenuSetItemDisabled(menu_root String, idx Int, d
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, disabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_disabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11656,7 +11770,7 @@ func (self DisplayServer) GlobalMenuSetItemHidden(menu_root String, idx Int, hid
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, hidden)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_hidden, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11667,7 +11781,7 @@ func (self DisplayServer) GlobalMenuSetItemTooltip(menu_root String, idx Int, to
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, tooltip.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11678,7 +11792,7 @@ func (self DisplayServer) GlobalMenuSetItemState(menu_root String, idx Int, stat
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, state)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_state, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11689,7 +11803,7 @@ func (self DisplayServer) GlobalMenuSetItemMaxStates(menu_root String, idx Int, 
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, max_states)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_max_states, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11700,7 +11814,7 @@ func (self DisplayServer) GlobalMenuSetItemIcon(menu_root String, idx Int, icon 
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, icon.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_icon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11711,7 +11825,7 @@ func (self DisplayServer) GlobalMenuSetItemIndentationLevel(menu_root String, id
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
 	call.Arg(frame, level)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_set_item_indentation_level, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11732,7 +11846,7 @@ func (self DisplayServer) GlobalMenuRemoveItem(menu_root String, idx Int) {
 	var frame = call.New()
 	call.Arg(frame, menu_root.Pointer())
 	call.Arg(frame, idx)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_remove_item, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11741,7 +11855,7 @@ func (self DisplayServer) GlobalMenuClear(menu_root String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, menu_root.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_global_menu_clear, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11797,7 +11911,7 @@ func (self DisplayServer) TtsSpeak(text String, voice String, volume Int, pitch 
 	call.Arg(frame, rate)
 	call.Arg(frame, utterance_id)
 	call.Arg(frame, interrupt)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_tts_speak, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11805,7 +11919,7 @@ func (self DisplayServer) TtsSpeak(text String, voice String, volume Int, pitch 
 func (self DisplayServer) TtsPause() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_tts_pause, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11813,7 +11927,7 @@ func (self DisplayServer) TtsPause() {
 func (self DisplayServer) TtsResume() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_tts_resume, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11821,7 +11935,7 @@ func (self DisplayServer) TtsResume() {
 func (self DisplayServer) TtsStop() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_tts_stop, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11831,7 +11945,7 @@ func (self DisplayServer) TtsSetUtteranceCallback(event DisplayServerTTSUtteranc
 	var frame = call.New()
 	call.Arg(frame, event)
 	call.Arg(frame, callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_tts_set_utterance_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11870,7 +11984,7 @@ func (self DisplayServer) MouseSetMode(mouse_mode DisplayServerMouseMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mouse_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_mouse_set_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11889,7 +12003,7 @@ func (self DisplayServer) WarpMouse(position Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11918,7 +12032,7 @@ func (self DisplayServer) ClipboardSet(clipboard String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, clipboard.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_clipboard_set, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -11967,7 +12081,7 @@ func (self DisplayServer) ClipboardSetPrimary(clipboard_primary String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, clipboard_primary.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_clipboard_set_primary, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12156,7 +12270,7 @@ func (self DisplayServer) ScreenSetOrientation(orientation DisplayServerScreenOr
 	var frame = call.New()
 	call.Arg(frame, orientation)
 	call.Arg(frame, screen)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_screen_set_orientation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12176,7 +12290,7 @@ func (self DisplayServer) ScreenSetKeepOn(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_screen_set_keep_on, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12239,7 +12353,7 @@ func (self DisplayServer) WindowSetPopupSafeRect(window Int, rect Rect2i) {
 	var frame = call.New()
 	call.Arg(frame, window)
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_popup_safe_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12260,7 +12374,7 @@ func (self DisplayServer) WindowSetTitle(title String, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, title.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_title, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12282,7 +12396,7 @@ func (self DisplayServer) WindowSetMousePassthrough(region PackedVector2Array, w
 	var frame = call.New()
 	call.Arg(frame, region.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_mouse_passthrough, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12303,7 +12417,7 @@ func (self DisplayServer) WindowSetCurrentScreen(screen Int, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, screen)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_current_screen, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12335,7 +12449,7 @@ func (self DisplayServer) WindowSetPosition(position Vector2i, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, position)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12356,7 +12470,7 @@ func (self DisplayServer) WindowSetSize(size Vector2i, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, size)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12366,7 +12480,7 @@ func (self DisplayServer) WindowSetRectChangedCallback(callback Callable, window
 	var frame = call.New()
 	call.Arg(frame, callback.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_rect_changed_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12376,7 +12490,7 @@ func (self DisplayServer) WindowSetWindowEventCallback(callback Callable, window
 	var frame = call.New()
 	call.Arg(frame, callback.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_window_event_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12386,7 +12500,7 @@ func (self DisplayServer) WindowSetInputEventCallback(callback Callable, window_
 	var frame = call.New()
 	call.Arg(frame, callback.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_input_event_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12396,7 +12510,7 @@ func (self DisplayServer) WindowSetInputTextCallback(callback Callable, window_i
 	var frame = call.New()
 	call.Arg(frame, callback.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_input_text_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12406,7 +12520,7 @@ func (self DisplayServer) WindowSetDropFilesCallback(callback Callable, window_i
 	var frame = call.New()
 	call.Arg(frame, callback.Pointer())
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_drop_files_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12438,7 +12552,7 @@ func (self DisplayServer) WindowSetMaxSize(max_size Vector2i, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, max_size)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_max_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12459,7 +12573,7 @@ func (self DisplayServer) WindowSetMinSize(min_size Vector2i, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, min_size)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_min_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12491,7 +12605,7 @@ func (self DisplayServer) WindowSetMode(mode DisplayServerWindowMode, window_id 
 	var frame = call.New()
 	call.Arg(frame, mode)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12502,7 +12616,7 @@ func (self DisplayServer) WindowSetFlag(flag DisplayServerWindowFlags, enabled b
 	call.Arg(frame, flag)
 	call.Arg(frame, enabled)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_flag, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12524,7 +12638,7 @@ func (self DisplayServer) WindowSetWindowButtonsOffset(offset Vector2i, window_i
 	var frame = call.New()
 	call.Arg(frame, offset)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_window_buttons_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12544,7 +12658,7 @@ func (self DisplayServer) WindowRequestAttention(window_id Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_request_attention, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12553,7 +12667,7 @@ func (self DisplayServer) WindowMoveToForeground(window_id Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_move_to_foreground, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12585,7 +12699,7 @@ func (self DisplayServer) WindowSetTransient(window_id Int, parent_window_id Int
 	var frame = call.New()
 	call.Arg(frame, window_id)
 	call.Arg(frame, parent_window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_transient, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12595,7 +12709,7 @@ func (self DisplayServer) WindowSetExclusive(window_id Int, exclusive bool) {
 	var frame = call.New()
 	call.Arg(frame, window_id)
 	call.Arg(frame, exclusive)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_exclusive, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12605,7 +12719,7 @@ func (self DisplayServer) WindowSetImeActive(active bool, window_id Int) {
 	var frame = call.New()
 	call.Arg(frame, active)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_ime_active, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12615,7 +12729,7 @@ func (self DisplayServer) WindowSetImePosition(position Vector2i, window_id Int)
 	var frame = call.New()
 	call.Arg(frame, position)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_ime_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12625,7 +12739,7 @@ func (self DisplayServer) WindowSetVsyncMode(vsync_mode DisplayServerVSyncMode, 
 	var frame = call.New()
 	call.Arg(frame, vsync_mode)
 	call.Arg(frame, window_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_window_set_vsync_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12701,7 +12815,7 @@ func (self DisplayServer) VirtualKeyboardShow(existing_text String, position Rec
 	call.Arg(frame, max_length)
 	call.Arg(frame, cursor_start)
 	call.Arg(frame, cursor_end)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_virtual_keyboard_show, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12709,7 +12823,7 @@ func (self DisplayServer) VirtualKeyboardShow(existing_text String, position Rec
 func (self DisplayServer) VirtualKeyboardHide() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_virtual_keyboard_hide, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12728,7 +12842,7 @@ func (self DisplayServer) CursorSetShape(shape DisplayServerCursorShape) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_cursor_set_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12749,7 +12863,7 @@ func (self DisplayServer) CursorSetCustomImage(cursor Resource, shape DisplaySer
 	call.Arg(frame, cursor.Pointer())
 	call.Arg(frame, shape)
 	call.Arg(frame, hotspot)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_cursor_set_custom_image, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12768,7 +12882,7 @@ func (self DisplayServer) EnableForStealingFocus(process_id Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, process_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_enable_for_stealing_focus, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12842,7 +12956,7 @@ func (self DisplayServer) KeyboardSetCurrentLayout(index Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_keyboard_set_current_layout, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12894,7 +13008,7 @@ func (self DisplayServer) KeyboardGetLabelFromPhysical(keycode Key) Key {
 func (self DisplayServer) ProcessEvents() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_process_events, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12902,7 +13016,7 @@ func (self DisplayServer) ProcessEvents() {
 func (self DisplayServer) ForceProcessAndDropEvents() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_force_process_and_drop_events, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12911,7 +13025,7 @@ func (self DisplayServer) SetNativeIcon(filename String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, filename.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_set_native_icon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12920,7 +13034,7 @@ func (self DisplayServer) SetIcon(image Image) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, image.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_set_icon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12960,7 +13074,7 @@ func (self DisplayServer) TabletSetCurrentDriver(name String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.DisplayServer.Bind_tablet_set_current_driver, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -12982,7 +13096,7 @@ func (self Engine) SetPhysicsTicksPerSecond(physics_ticks_per_second Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, physics_ticks_per_second)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_set_physics_ticks_per_second, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13001,7 +13115,7 @@ func (self Engine) SetMaxPhysicsStepsPerFrame(max_physics_steps Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, max_physics_steps)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_set_max_physics_steps_per_frame, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13020,7 +13134,7 @@ func (self Engine) SetPhysicsJitterFix(physics_jitter_fix Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, physics_jitter_fix)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_set_physics_jitter_fix, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13049,7 +13163,7 @@ func (self Engine) SetMaxFps(max_fps Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, max_fps)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_set_max_fps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13068,7 +13182,7 @@ func (self Engine) SetTimeScale(time_scale Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, time_scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_set_time_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13240,7 +13354,7 @@ func (self Engine) RegisterSingleton(name StringName, instance Object) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, instance.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_register_singleton, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13249,7 +13363,7 @@ func (self Engine) UnregisterSingleton(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_unregister_singleton, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13331,7 +13445,7 @@ func (self Engine) SetPrintErrorMessages(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Engine.Bind_set_print_error_messages, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13376,7 +13490,7 @@ func (self Environment) SetBackground(mode EnvironmentBGMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_background, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13395,7 +13509,7 @@ func (self Environment) SetSky(sky Sky) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sky.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sky, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13414,7 +13528,7 @@ func (self Environment) SetSkyCustomFov(scale Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sky_custom_fov, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13433,7 +13547,7 @@ func (self Environment) SetSkyRotation(euler_radians Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, euler_radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sky_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13452,7 +13566,7 @@ func (self Environment) SetBgColor(color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_bg_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13471,7 +13585,7 @@ func (self Environment) SetBgEnergyMultiplier(energy Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_bg_energy_multiplier, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13490,7 +13604,7 @@ func (self Environment) SetBgIntensity(energy Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_bg_intensity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13509,7 +13623,7 @@ func (self Environment) SetCanvasMaxLayer(layer Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, layer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_canvas_max_layer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13528,7 +13642,7 @@ func (self Environment) SetCameraFeedId(id Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_camera_feed_id, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13547,7 +13661,7 @@ func (self Environment) SetAmbientLightColor(color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ambient_light_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13566,7 +13680,7 @@ func (self Environment) SetAmbientSource(source EnvironmentAmbientSource) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, source)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ambient_source, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13585,7 +13699,7 @@ func (self Environment) SetAmbientLightEnergy(energy Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ambient_light_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13604,7 +13718,7 @@ func (self Environment) SetAmbientLightSkyContribution(ratio Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ambient_light_sky_contribution, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13623,7 +13737,7 @@ func (self Environment) SetReflectionSource(source EnvironmentReflectionSource) 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, source)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_reflection_source, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13642,7 +13756,7 @@ func (self Environment) SetTonemapper(mode EnvironmentToneMapper) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_tonemapper, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13661,7 +13775,7 @@ func (self Environment) SetTonemapExposure(exposure Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exposure)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_tonemap_exposure, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13680,7 +13794,7 @@ func (self Environment) SetTonemapWhite(white Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, white)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_tonemap_white, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13699,7 +13813,7 @@ func (self Environment) SetSsrEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssr_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13718,7 +13832,7 @@ func (self Environment) SetSsrMaxSteps(max_steps Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, max_steps)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssr_max_steps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13737,7 +13851,7 @@ func (self Environment) SetSsrFadeIn(fade_in Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, fade_in)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssr_fade_in, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13756,7 +13870,7 @@ func (self Environment) SetSsrFadeOut(fade_out Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, fade_out)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssr_fade_out, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13775,7 +13889,7 @@ func (self Environment) SetSsrDepthTolerance(depth_tolerance Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, depth_tolerance)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssr_depth_tolerance, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13794,7 +13908,7 @@ func (self Environment) SetSsaoEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13813,7 +13927,7 @@ func (self Environment) SetSsaoRadius(radius Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radius)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_radius, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13832,7 +13946,7 @@ func (self Environment) SetSsaoIntensity(intensity Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, intensity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_intensity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13851,7 +13965,7 @@ func (self Environment) SetSsaoPower(power Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, power)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_power, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13870,7 +13984,7 @@ func (self Environment) SetSsaoDetail(detail Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, detail)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_detail, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13889,7 +14003,7 @@ func (self Environment) SetSsaoHorizon(horizon Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, horizon)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_horizon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13908,7 +14022,7 @@ func (self Environment) SetSsaoSharpness(sharpness Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sharpness)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_sharpness, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13927,7 +14041,7 @@ func (self Environment) SetSsaoDirectLightAffect(amount Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_direct_light_affect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13946,7 +14060,7 @@ func (self Environment) SetSsaoAoChannelAffect(amount Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssao_ao_channel_affect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13965,7 +14079,7 @@ func (self Environment) SetSsilEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssil_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -13984,7 +14098,7 @@ func (self Environment) SetSsilRadius(radius Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radius)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssil_radius, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14003,7 +14117,7 @@ func (self Environment) SetSsilIntensity(intensity Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, intensity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssil_intensity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14022,7 +14136,7 @@ func (self Environment) SetSsilSharpness(sharpness Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sharpness)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssil_sharpness, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14041,7 +14155,7 @@ func (self Environment) SetSsilNormalRejection(normal_rejection Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, normal_rejection)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_ssil_normal_rejection, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14060,7 +14174,7 @@ func (self Environment) SetSdfgiEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14079,7 +14193,7 @@ func (self Environment) SetSdfgiCascades(amount Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_cascades, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14098,7 +14212,7 @@ func (self Environment) SetSdfgiMinCellSize(size Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_min_cell_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14117,7 +14231,7 @@ func (self Environment) SetSdfgiMaxDistance(distance Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, distance)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_max_distance, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14136,7 +14250,7 @@ func (self Environment) SetSdfgiCascade0Distance(distance Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, distance)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_cascade0_distance, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14155,7 +14269,7 @@ func (self Environment) SetSdfgiYScale(scale EnvironmentSDFGIYScale) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_y_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14174,7 +14288,7 @@ func (self Environment) SetSdfgiUseOcclusion(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_use_occlusion, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14193,7 +14307,7 @@ func (self Environment) SetSdfgiBounceFeedback(amount Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_bounce_feedback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14212,7 +14326,7 @@ func (self Environment) SetSdfgiReadSkyLight(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_read_sky_light, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14231,7 +14345,7 @@ func (self Environment) SetSdfgiEnergy(amount Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14250,7 +14364,7 @@ func (self Environment) SetSdfgiNormalBias(bias Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_normal_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14269,7 +14383,7 @@ func (self Environment) SetSdfgiProbeBias(bias Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_sdfgi_probe_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14288,7 +14402,7 @@ func (self Environment) SetGlowEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14308,7 +14422,7 @@ func (self Environment) SetGlowLevel(idx Int, intensity Float) {
 	var frame = call.New()
 	call.Arg(frame, idx)
 	call.Arg(frame, intensity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_level, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14328,7 +14442,7 @@ func (self Environment) SetGlowNormalized(normalize bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, normalize)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_normalized, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14347,7 +14461,7 @@ func (self Environment) SetGlowIntensity(intensity Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, intensity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_intensity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14366,7 +14480,7 @@ func (self Environment) SetGlowStrength(strength Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, strength)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_strength, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14385,7 +14499,7 @@ func (self Environment) SetGlowMix(mix Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mix)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_mix, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14404,7 +14518,7 @@ func (self Environment) SetGlowBloom(amount Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_bloom, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14423,7 +14537,7 @@ func (self Environment) SetGlowBlendMode(mode EnvironmentGlowBlendMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_blend_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14442,7 +14556,7 @@ func (self Environment) SetGlowHdrBleedThreshold(threshold Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, threshold)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_hdr_bleed_threshold, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14461,7 +14575,7 @@ func (self Environment) SetGlowHdrBleedScale(scale Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_hdr_bleed_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14480,7 +14594,7 @@ func (self Environment) SetGlowHdrLuminanceCap(amount Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_hdr_luminance_cap, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14499,7 +14613,7 @@ func (self Environment) SetGlowMapStrength(strength Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, strength)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_map_strength, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14518,7 +14632,7 @@ func (self Environment) SetGlowMap(mode Texture) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_glow_map, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14537,7 +14651,7 @@ func (self Environment) SetFogEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14556,7 +14670,7 @@ func (self Environment) SetFogLightColor(light_color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, light_color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_light_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14575,7 +14689,7 @@ func (self Environment) SetFogLightEnergy(light_energy Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, light_energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_light_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14594,7 +14708,7 @@ func (self Environment) SetFogSunScatter(sun_scatter Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sun_scatter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_sun_scatter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14613,7 +14727,7 @@ func (self Environment) SetFogDensity(density Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, density)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_density, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14632,7 +14746,7 @@ func (self Environment) SetFogHeight(height Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, height)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_height, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14651,7 +14765,7 @@ func (self Environment) SetFogHeightDensity(height_density Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, height_density)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_height_density, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14670,7 +14784,7 @@ func (self Environment) SetFogAerialPerspective(aerial_perspective Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, aerial_perspective)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_aerial_perspective, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14689,7 +14803,7 @@ func (self Environment) SetFogSkyAffect(sky_affect Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sky_affect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_fog_sky_affect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14708,7 +14822,7 @@ func (self Environment) SetVolumetricFogEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14727,7 +14841,7 @@ func (self Environment) SetVolumetricFogEmission(color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_emission, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14746,7 +14860,7 @@ func (self Environment) SetVolumetricFogAlbedo(color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_albedo, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14765,7 +14879,7 @@ func (self Environment) SetVolumetricFogDensity(density Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, density)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_density, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14784,7 +14898,7 @@ func (self Environment) SetVolumetricFogEmissionEnergy(begin Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, begin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_emission_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14803,7 +14917,7 @@ func (self Environment) SetVolumetricFogAnisotropy(anisotropy Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, anisotropy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_anisotropy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14822,7 +14936,7 @@ func (self Environment) SetVolumetricFogLength(length Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, length)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_length, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14841,7 +14955,7 @@ func (self Environment) SetVolumetricFogDetailSpread(detail_spread Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, detail_spread)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_detail_spread, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14860,7 +14974,7 @@ func (self Environment) SetVolumetricFogGiInject(gi_inject Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, gi_inject)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_gi_inject, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14879,7 +14993,7 @@ func (self Environment) SetVolumetricFogAmbientInject(enabled Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_ambient_inject, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14898,7 +15012,7 @@ func (self Environment) SetVolumetricFogSkyAffect(sky_affect Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, sky_affect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_sky_affect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14917,7 +15031,7 @@ func (self Environment) SetVolumetricFogTemporalReprojectionEnabled(enabled bool
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_temporal_reprojection_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14936,7 +15050,7 @@ func (self Environment) SetVolumetricFogTemporalReprojectionAmount(temporal_repr
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, temporal_reprojection_amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_volumetric_fog_temporal_reprojection_amount, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14955,7 +15069,7 @@ func (self Environment) SetAdjustmentEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_adjustment_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14974,7 +15088,7 @@ func (self Environment) SetAdjustmentBrightness(brightness Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, brightness)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_adjustment_brightness, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -14993,7 +15107,7 @@ func (self Environment) SetAdjustmentContrast(contrast Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, contrast)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_adjustment_contrast, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15012,7 +15126,7 @@ func (self Environment) SetAdjustmentSaturation(saturation Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, saturation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_adjustment_saturation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15031,7 +15145,7 @@ func (self Environment) SetAdjustmentColorCorrection(color_correction Texture) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color_correction.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Environment.Bind_set_adjustment_color_correction, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15150,7 +15264,7 @@ func (self FileAccess) GetFileAsString(ctx Context, path String) String {
 func (self FileAccess) Flush() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_flush, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15189,7 +15303,7 @@ func (self FileAccess) SeekTo(position Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_seek, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15198,7 +15312,7 @@ func (self FileAccess) SeekEnd(position Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_seek_end, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15382,7 +15496,7 @@ func (self FileAccess) SetBigEndian(big_endian bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, big_endian)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_set_big_endian, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15412,7 +15526,7 @@ func (self FileAccess) Store8(value Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_8, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15421,7 +15535,7 @@ func (self FileAccess) Store16(value Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_16, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15430,7 +15544,7 @@ func (self FileAccess) Store32(value Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_32, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15439,7 +15553,7 @@ func (self FileAccess) Store64(value Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_64, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15448,7 +15562,7 @@ func (self FileAccess) StoreFloat(value Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_float, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15457,7 +15571,7 @@ func (self FileAccess) StoreDouble(value Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_double, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15466,7 +15580,7 @@ func (self FileAccess) StoreReal(value Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_real, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15475,7 +15589,7 @@ func (self FileAccess) StoreBuffer(buffer PackedByteArray) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, buffer.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_buffer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15484,7 +15598,7 @@ func (self FileAccess) StoreLine(line String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, line.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_line, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15494,7 +15608,7 @@ func (self FileAccess) StoreCsvLine(values PackedStringArray, delim String) {
 	var frame = call.New()
 	call.Arg(frame, values.Pointer())
 	call.Arg(frame, delim.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_csv_line, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15503,7 +15617,7 @@ func (self FileAccess) StoreString(s String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, s.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_string, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15513,7 +15627,7 @@ func (self FileAccess) StoreVar(value Variant, full_objects bool) {
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
 	call.Arg(frame, full_objects)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_var, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15522,7 +15636,7 @@ func (self FileAccess) StorePascalString(s String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, s.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_store_pascal_string, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15540,7 +15654,7 @@ func (self FileAccess) GetPascalString(ctx Context) String {
 func (self FileAccess) Close() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.FileAccess.Bind_close, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15655,7 +15769,7 @@ func (self Font) SetFallbacks(fallbacks ArrayOf[Font]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, fallbacks)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Font.Bind_set_fallbacks, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15839,7 +15953,7 @@ func (self Font) SetCacheCapacity(single_line Int, multi_line Int) {
 	var frame = call.New()
 	call.Arg(frame, single_line)
 	call.Arg(frame, multi_line)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Font.Bind_set_cache_capacity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15893,7 +16007,7 @@ func (self Font) DrawString(canvas_item RID, pos Vector2, text String, alignment
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Font.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15913,7 +16027,7 @@ func (self Font) DrawMultilineString(canvas_item RID, pos Vector2, text String, 
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Font.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15932,7 +16046,7 @@ func (self Font) DrawStringOutline(canvas_item RID, pos Vector2, text String, al
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Font.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -15953,7 +16067,7 @@ func (self Font) DrawMultilineStringOutline(canvas_item RID, pos Vector2, text S
 	call.Arg(frame, justification_flags)
 	call.Arg(frame, direction)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Font.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16113,7 +16227,7 @@ func (self GDExtension) OpenLibrary(path String, entry_symbol String) int64 {
 func (self GDExtension) CloseLibrary() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.GDExtension.Bind_close_library, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16142,7 +16256,7 @@ func (self GDExtension) InitializeLibrary(level GDExtensionInitializationLevel) 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, level)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.GDExtension.Bind_initialize_library, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16239,7 +16353,7 @@ func (self Image) Convert(format ImageFormat) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, format)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_convert, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16270,7 +16384,7 @@ func (self Image) ResizeToPo2(square bool, interpolation ImageInterpolation) {
 	var frame = call.New()
 	call.Arg(frame, square)
 	call.Arg(frame, interpolation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_resize_to_po2, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16281,7 +16395,7 @@ func (self Image) Resize(width Int, height Int, interpolation ImageInterpolation
 	call.Arg(frame, width)
 	call.Arg(frame, height)
 	call.Arg(frame, interpolation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_resize, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16289,7 +16403,7 @@ func (self Image) Resize(width Int, height Int, interpolation ImageInterpolation
 func (self Image) ShrinkX2() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_shrink_x2, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16299,7 +16413,7 @@ func (self Image) Crop(width Int, height Int) {
 	var frame = call.New()
 	call.Arg(frame, width)
 	call.Arg(frame, height)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_crop, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16307,7 +16421,7 @@ func (self Image) Crop(width Int, height Int) {
 func (self Image) FlipX() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_flip_x, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16315,7 +16429,7 @@ func (self Image) FlipX() {
 func (self Image) FlipY() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_flip_y, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16334,7 +16448,7 @@ func (self Image) GenerateMipmaps(renormalize bool) int64 {
 func (self Image) ClearMipmaps() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_clear_mipmaps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16376,7 +16490,7 @@ func (self Image) SetData(width Int, height Int, use_mipmaps bool, format ImageF
 	call.Arg(frame, use_mipmaps)
 	call.Arg(frame, format)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_set_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16586,7 +16700,7 @@ func (self Image) Rotate90(direction ClockDirection) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, direction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_rotate_90, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16594,7 +16708,7 @@ func (self Image) Rotate90(direction ClockDirection) {
 func (self Image) Rotate180() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_rotate_180, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16602,7 +16716,7 @@ func (self Image) Rotate180() {
 func (self Image) FixAlphaEdges() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_fix_alpha_edges, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16610,7 +16724,7 @@ func (self Image) FixAlphaEdges() {
 func (self Image) PremultiplyAlpha() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_premultiply_alpha, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16618,7 +16732,7 @@ func (self Image) PremultiplyAlpha() {
 func (self Image) SrgbToLinear() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_srgb_to_linear, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16626,7 +16740,7 @@ func (self Image) SrgbToLinear() {
 func (self Image) NormalMapToXy() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_normal_map_to_xy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16645,7 +16759,7 @@ func (self Image) BumpMapToNormalMap(bump_scale Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, bump_scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_bump_map_to_normal_map, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16668,7 +16782,7 @@ func (self Image) BlitRect(src Image, src_rect Rect2i, dst Vector2i) {
 	call.Arg(frame, src.Pointer())
 	call.Arg(frame, src_rect)
 	call.Arg(frame, dst)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_blit_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16680,7 +16794,7 @@ func (self Image) BlitRectMask(src Image, mask Image, src_rect Rect2i, dst Vecto
 	call.Arg(frame, mask.Pointer())
 	call.Arg(frame, src_rect)
 	call.Arg(frame, dst)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_blit_rect_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16691,7 +16805,7 @@ func (self Image) BlendRect(src Image, src_rect Rect2i, dst Vector2i) {
 	call.Arg(frame, src.Pointer())
 	call.Arg(frame, src_rect)
 	call.Arg(frame, dst)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_blend_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16703,7 +16817,7 @@ func (self Image) BlendRectMask(src Image, mask Image, src_rect Rect2i, dst Vect
 	call.Arg(frame, mask.Pointer())
 	call.Arg(frame, src_rect)
 	call.Arg(frame, dst)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_blend_rect_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16712,7 +16826,7 @@ func (self Image) Fill(color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_fill, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16722,7 +16836,7 @@ func (self Image) FillRect(rect Rect2i, color Color) {
 	var frame = call.New()
 	call.Arg(frame, rect)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_fill_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16752,7 +16866,7 @@ func (self Image) CopyFrom(src Image) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, src.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_copy_from, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16785,7 +16899,7 @@ func (self Image) SetPixelv(point Vector2i, color Color) {
 	var frame = call.New()
 	call.Arg(frame, point)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_set_pixelv, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16796,7 +16910,7 @@ func (self Image) SetPixel(x Int, y Int, color Color) {
 	call.Arg(frame, x)
 	call.Arg(frame, y)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_set_pixel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16807,7 +16921,7 @@ func (self Image) AdjustBcs(brightness Float, contrast Float, saturation Float) 
 	call.Arg(frame, brightness)
 	call.Arg(frame, contrast)
 	call.Arg(frame, saturation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Image.Bind_adjust_bcs, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -16921,7 +17035,7 @@ func (self InputEvent) SetDevice(device Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, device)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.InputEvent.Bind_set_device, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17223,7 +17337,7 @@ func (self Material) SetNextPass(next_pass Material) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, next_pass.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Material.Bind_set_next_pass, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17242,7 +17356,7 @@ func (self Material) SetRenderPriority(priority Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, priority)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Material.Bind_set_render_priority, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17260,7 +17374,7 @@ func (self Material) GetRenderPriority() Int {
 func (self Material) InspectNativeShaderCode() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Material.Bind_inspect_native_shader_code, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17480,7 +17594,7 @@ func (self Mesh) SetLightmapSizeHint(size Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Mesh.Bind_set_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17552,7 +17666,7 @@ func (self Mesh) SurfaceSetMaterial(surf_idx Int, material Material) {
 	var frame = call.New()
 	call.Arg(frame, surf_idx)
 	call.Arg(frame, material.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Mesh.Bind_surface_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17717,7 +17831,7 @@ func (self MultiMesh) SetMesh(mesh Mesh) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mesh.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17736,7 +17850,7 @@ func (self MultiMesh) SetUseColors(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_use_colors, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17755,7 +17869,7 @@ func (self MultiMesh) SetUseCustomData(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_use_custom_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17774,7 +17888,7 @@ func (self MultiMesh) SetTransformFormat(format MultiMeshTransformFormat) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, format)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_transform_format, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17793,7 +17907,7 @@ func (self MultiMesh) SetInstanceCount(count Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, count)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_instance_count, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17812,7 +17926,7 @@ func (self MultiMesh) SetVisibleInstanceCount(count Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, count)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_visible_instance_count, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17832,7 +17946,7 @@ func (self MultiMesh) SetInstanceTransform(instance Int, transform Transform3D) 
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_instance_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17842,7 +17956,7 @@ func (self MultiMesh) SetInstanceTransform2d(instance Int, transform Transform2D
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_instance_transform_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17874,7 +17988,7 @@ func (self MultiMesh) SetInstanceColor(instance Int, color Color) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_instance_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17895,7 +18009,7 @@ func (self MultiMesh) SetInstanceCustomData(instance Int, custom_data Color) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, custom_data)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_instance_custom_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17935,7 +18049,7 @@ func (self MultiMesh) SetBuffer(buffer PackedFloat32Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, buffer.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiMesh.Bind_set_buffer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -17980,7 +18094,7 @@ func (self MultiplayerAPI) SetMultiplayerPeer(peer MultiplayerPeer) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, peer.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerAPI.Bind_set_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18077,7 +18191,7 @@ func (self MultiplayerAPI) SetDefaultInterface(interface_name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, interface_name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerAPI.Bind_set_default_interface, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18126,7 +18240,7 @@ func (self MultiplayerPeer) SetTransferChannel(channel Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, channel)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_set_transfer_channel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18145,7 +18259,7 @@ func (self MultiplayerPeer) SetTransferMode(mode MultiplayerPeerTransferMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_set_transfer_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18164,7 +18278,7 @@ func (self MultiplayerPeer) SetTargetPeer(id Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_set_target_peer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18202,7 +18316,7 @@ func (self MultiplayerPeer) GetPacketMode() MultiplayerPeerTransferMode {
 func (self MultiplayerPeer) Poll() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_poll, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18210,7 +18324,7 @@ func (self MultiplayerPeer) Poll() {
 func (self MultiplayerPeer) Close() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_close, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18220,7 +18334,7 @@ func (self MultiplayerPeer) DisconnectPeer(peer Int, force bool) {
 	var frame = call.New()
 	call.Arg(frame, peer)
 	call.Arg(frame, force)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_disconnect_peer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18259,7 +18373,7 @@ func (self MultiplayerPeer) SetRefuseNewConnections(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.MultiplayerPeer.Bind_set_refuse_new_connections, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18419,7 +18533,7 @@ func (Node) _unhandled_key_input(impl func(ptr unsafe.Pointer, ctx Context, even
 func (self Node) PrintOrphanNodes() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18429,7 +18543,7 @@ func (self Node) AddSibling(sibling Node, force_readable_name bool) {
 	var frame = call.New()
 	call.Arg(frame, sibling.Pointer())
 	call.Arg(frame, force_readable_name)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18438,7 +18552,7 @@ func (self Node) SetName(name String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18459,7 +18573,7 @@ func (self Node) AddChild(node Node, force_readable_name bool, internal_ NodeInt
 	call.Arg(frame, node.Pointer())
 	call.Arg(frame, force_readable_name)
 	call.Arg(frame, internal_)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_add_child, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18468,7 +18582,7 @@ func (self Node) RemoveChild(node Node) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, node.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18478,7 +18592,7 @@ func (self Node) Reparent(new_parent Node, keep_global_transform bool) {
 	var frame = call.New()
 	call.Arg(frame, new_parent.Pointer())
 	call.Arg(frame, keep_global_transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_reparent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18679,7 +18793,7 @@ func (self Node) AddToGroup(group StringName, persistent bool) {
 	var frame = call.New()
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, persistent)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_add_to_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18688,7 +18802,7 @@ func (self Node) RemoveFromGroup(group StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, group.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_remove_from_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18709,7 +18823,7 @@ func (self Node) MoveChild(child_node Node, to_index Int) {
 	var frame = call.New()
 	call.Arg(frame, child_node.Pointer())
 	call.Arg(frame, to_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_move_child, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18728,7 +18842,7 @@ func (self Node) SetOwner(owner Node) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, owner.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_owner, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18757,7 +18871,7 @@ func (self Node) GetIndex(include_internal bool) Int {
 func (self Node) PrintTree() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_print_tree, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18765,7 +18879,7 @@ func (self Node) PrintTree() {
 func (self Node) PrintTreePretty() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_print_tree_pretty, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18794,7 +18908,7 @@ func (self Node) SetSceneFilePath(scene_file_path String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scene_file_path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_scene_file_path, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18813,7 +18927,7 @@ func (self Node) PropagateNotification(what Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, what)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_propagate_notification, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18824,7 +18938,7 @@ func (self Node) PropagateCall(method StringName, args Array, parent_first bool)
 	call.Arg(frame, method.Pointer())
 	call.Arg(frame, args.Pointer())
 	call.Arg(frame, parent_first)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_propagate_call, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18833,7 +18947,7 @@ func (self Node) SetPhysicsProcess(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_physics_process, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18872,7 +18986,7 @@ func (self Node) SetProcess(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18881,7 +18995,7 @@ func (self Node) SetProcessPriority(priority Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, priority)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_priority, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18900,7 +19014,7 @@ func (self Node) SetPhysicsProcessPriority(priority Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, priority)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_physics_process_priority, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18929,7 +19043,7 @@ func (self Node) SetProcessInput(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18948,7 +19062,7 @@ func (self Node) SetProcessShortcutInput(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_shortcut_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18967,7 +19081,7 @@ func (self Node) SetProcessUnhandledInput(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_unhandled_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -18986,7 +19100,7 @@ func (self Node) SetProcessUnhandledKeyInput(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19005,7 +19119,7 @@ func (self Node) SetProcessMode(mode NodeProcessMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19034,7 +19148,7 @@ func (self Node) SetProcessThreadGroup(mode NodeProcessThreadGroup) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_thread_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19053,7 +19167,7 @@ func (self Node) SetProcessThreadMessages(flags NodeProcessThreadMessages) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, flags)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_thread_messages, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19072,7 +19186,7 @@ func (self Node) SetProcessThreadGroupOrder(order Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, order)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19091,7 +19205,7 @@ func (self Node) SetDisplayFolded(fold bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, fold)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_display_folded, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19110,7 +19224,7 @@ func (self Node) SetProcessInternal(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_process_internal, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19129,7 +19243,7 @@ func (self Node) SetPhysicsProcessInternal(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_physics_process_internal, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19200,7 +19314,7 @@ func (self Node) ReplaceBy(node Node, keep_groups bool) {
 	var frame = call.New()
 	call.Arg(frame, node.Pointer())
 	call.Arg(frame, keep_groups)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19209,7 +19323,7 @@ func (self Node) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, load_placeholder)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19229,7 +19343,7 @@ func (self Node) SetEditableInstance(node Node, is_editable bool) {
 	var frame = call.New()
 	call.Arg(frame, node.Pointer())
 	call.Arg(frame, is_editable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_editable_instance, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19258,7 +19372,7 @@ func (self Node) GetViewport() Viewport {
 func (self Node) QueueFree() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19266,7 +19380,7 @@ func (self Node) QueueFree() {
 func (self Node) RequestReady() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_request_ready, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19286,7 +19400,7 @@ func (self Node) SetMultiplayerAuthority(id Int, recursive bool) {
 	var frame = call.New()
 	call.Arg(frame, id)
 	call.Arg(frame, recursive)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19326,7 +19440,7 @@ func (self Node) RpcConfig(method StringName, config Variant) {
 	var frame = call.New()
 	call.Arg(frame, method.Pointer())
 	call.Arg(frame, config.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19335,7 +19449,7 @@ func (self Node) SetEditorDescription(editor_description String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, editor_description.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_editor_description, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19354,7 +19468,7 @@ func (self Node) SetUniqueNameInOwner(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19395,7 +19509,7 @@ func (self Node) RpcId(peer_id Int, method StringName) int64 {
 func (self Node) UpdateConfigurationWarnings() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19416,7 +19530,7 @@ func (self Node) SetDeferredThreadGroup(property StringName, value Variant) {
 	var frame = call.New()
 	call.Arg(frame, property.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19425,7 +19539,7 @@ func (self Node) NotifyDeferredThreadGroup(what Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, what)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_notify_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19446,7 +19560,7 @@ func (self Node) SetThreadSafe(property StringName, value Variant) {
 	var frame = call.New()
 	call.Arg(frame, property.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19455,7 +19569,7 @@ func (self Node) NotifyThreadSafe(what Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, what)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node.Bind_notify_thread_safe, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19499,7 +19613,7 @@ func (self Node2D) SetPosition(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19508,7 +19622,7 @@ func (self Node2D) SetRotation(radians Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19517,7 +19631,7 @@ func (self Node2D) SetRotationDegrees(degrees Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, degrees)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19526,7 +19640,7 @@ func (self Node2D) SetSkew(radians Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_skew, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19535,7 +19649,7 @@ func (self Node2D) SetScale(scale Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19594,7 +19708,7 @@ func (self Node2D) Rotate(radians Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_rotate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19604,7 +19718,7 @@ func (self Node2D) MoveLocalX(delta Float, scaled bool) {
 	var frame = call.New()
 	call.Arg(frame, delta)
 	call.Arg(frame, scaled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_move_local_x, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19614,7 +19728,7 @@ func (self Node2D) MoveLocalY(delta Float, scaled bool) {
 	var frame = call.New()
 	call.Arg(frame, delta)
 	call.Arg(frame, scaled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_move_local_y, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19623,7 +19737,7 @@ func (self Node2D) Translate(offset Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_translate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19632,7 +19746,7 @@ func (self Node2D) GlobalTranslate(offset Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_global_translate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19641,7 +19755,7 @@ func (self Node2D) ApplyScale(ratio Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_apply_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19650,7 +19764,7 @@ func (self Node2D) SetGlobalPosition(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19669,7 +19783,7 @@ func (self Node2D) SetGlobalRotation(radians Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_global_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19678,7 +19792,7 @@ func (self Node2D) SetGlobalRotationDegrees(degrees Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, degrees)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19707,7 +19821,7 @@ func (self Node2D) SetGlobalSkew(radians Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_global_skew, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19726,7 +19840,7 @@ func (self Node2D) SetGlobalScale(scale Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_global_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19745,7 +19859,7 @@ func (self Node2D) SetTransform(xform Transform2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, xform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19754,7 +19868,7 @@ func (self Node2D) SetGlobalTransform(xform Transform2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, xform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19763,7 +19877,7 @@ func (self Node2D) LookAt(point Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, point)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node2D.Bind_look_at, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19830,7 +19944,7 @@ func (self Node3D) SetTransform(local Transform3D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, local)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19849,7 +19963,7 @@ func (self Node3D) SetPosition(position Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19868,7 +19982,7 @@ func (self Node3D) SetRotation(euler_radians Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, euler_radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19887,7 +20001,7 @@ func (self Node3D) SetRotationDegrees(euler_degrees Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, euler_degrees)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19906,7 +20020,7 @@ func (self Node3D) SetRotationOrder(order EulerOrder) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, order)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_rotation_order, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19925,7 +20039,7 @@ func (self Node3D) SetRotationEditMode(edit_mode Node3DRotationEditMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, edit_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19944,7 +20058,7 @@ func (self Node3D) SetScale(scale Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19963,7 +20077,7 @@ func (self Node3D) SetQuaternion(quaternion Quaternion) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quaternion)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_quaternion, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -19982,7 +20096,7 @@ func (self Node3D) SetBasis(basis Basis) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, basis)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_basis, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20001,7 +20115,7 @@ func (self Node3D) SetGlobalTransform(global Transform3D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, global)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20020,7 +20134,7 @@ func (self Node3D) SetGlobalPosition(position Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20039,7 +20153,7 @@ func (self Node3D) SetGlobalBasis(basis Basis) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, basis)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_global_basis, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20058,7 +20172,7 @@ func (self Node3D) SetGlobalRotation(euler_radians Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, euler_radians)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_global_rotation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20077,7 +20191,7 @@ func (self Node3D) SetGlobalRotationDegrees(euler_degrees Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, euler_degrees)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20106,7 +20220,7 @@ func (self Node3D) SetIgnoreTransformNotification(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_ignore_transform_notification, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20115,7 +20229,7 @@ func (self Node3D) SetAsTopLevel(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20134,7 +20248,7 @@ func (self Node3D) SetDisableScale(disable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, disable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_disable_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20162,7 +20276,7 @@ func (self Node3D) GetWorld3d() World3D {
 func (self Node3D) ForceUpdateTransform() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20171,7 +20285,7 @@ func (self Node3D) SetVisibilityParent(path NodePath) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20189,7 +20303,7 @@ func (self Node3D) GetVisibilityParent(ctx Context) NodePath {
 func (self Node3D) UpdateGizmos() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_update_gizmos, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20198,7 +20312,7 @@ func (self Node3D) AddGizmo(gizmo Node3DGizmo) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, gizmo.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_add_gizmo, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20216,7 +20330,7 @@ func (self Node3D) GetGizmos() ArrayOf[Node3DGizmo] {
 func (self Node3D) ClearGizmos() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_clear_gizmos, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20227,7 +20341,7 @@ func (self Node3D) SetSubgizmoSelection(gizmo Node3DGizmo, id Int, transform Tra
 	call.Arg(frame, gizmo.Pointer())
 	call.Arg(frame, id)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20235,7 +20349,7 @@ func (self Node3D) SetSubgizmoSelection(gizmo Node3DGizmo, id Int, transform Tra
 func (self Node3D) ClearSubgizmoSelection() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_clear_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20244,7 +20358,7 @@ func (self Node3D) SetVisible(visible bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20272,7 +20386,7 @@ func (self Node3D) IsVisibleInTree() bool {
 func (self Node3D) Show() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_show, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20280,7 +20394,7 @@ func (self Node3D) Show() {
 func (self Node3D) Hide() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_hide, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20289,7 +20403,7 @@ func (self Node3D) SetNotifyLocalTransform(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20308,7 +20422,7 @@ func (self Node3D) SetNotifyTransform(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20328,7 +20442,7 @@ func (self Node3D) Rotate(axis Vector3, angle Float) {
 	var frame = call.New()
 	call.Arg(frame, axis)
 	call.Arg(frame, angle)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_rotate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20338,7 +20452,7 @@ func (self Node3D) GlobalRotate(axis Vector3, angle Float) {
 	var frame = call.New()
 	call.Arg(frame, axis)
 	call.Arg(frame, angle)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_global_rotate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20347,7 +20461,7 @@ func (self Node3D) GlobalScale(scale Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_global_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20356,7 +20470,7 @@ func (self Node3D) GlobalTranslate(offset Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_global_translate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20366,7 +20480,7 @@ func (self Node3D) RotateObjectLocal(axis Vector3, angle Float) {
 	var frame = call.New()
 	call.Arg(frame, axis)
 	call.Arg(frame, angle)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_rotate_object_local, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20375,7 +20489,7 @@ func (self Node3D) ScaleObjectLocal(scale Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_scale_object_local, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20384,7 +20498,7 @@ func (self Node3D) TranslateObjectLocal(offset Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_translate_object_local, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20393,7 +20507,7 @@ func (self Node3D) RotateX(angle Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, angle)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_rotate_x, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20402,7 +20516,7 @@ func (self Node3D) RotateY(angle Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, angle)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_rotate_y, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20411,7 +20525,7 @@ func (self Node3D) RotateZ(angle Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, angle)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_rotate_z, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20420,7 +20534,7 @@ func (self Node3D) Translate(offset Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_translate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20428,7 +20542,7 @@ func (self Node3D) Translate(offset Vector3) {
 func (self Node3D) Orthonormalize() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_orthonormalize, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20436,7 +20550,7 @@ func (self Node3D) Orthonormalize() {
 func (self Node3D) SetIdentity() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_set_identity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20447,7 +20561,7 @@ func (self Node3D) LookAt(target Vector3, up Vector3, use_model_front bool) {
 	call.Arg(frame, target)
 	call.Arg(frame, up)
 	call.Arg(frame, use_model_front)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_look_at, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20459,7 +20573,7 @@ func (self Node3D) LookAtFromPosition(position Vector3, target Vector3, up Vecto
 	call.Arg(frame, target)
 	call.Arg(frame, up)
 	call.Arg(frame, use_model_front)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Node3D.Bind_look_at_from_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20535,7 +20649,7 @@ func (self Object) Set(property StringName, value Variant) {
 	var frame = call.New()
 	call.Arg(frame, property.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20556,7 +20670,7 @@ func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	var frame = call.New()
 	call.Arg(frame, property_path.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set_indexed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20619,7 +20733,7 @@ func (self Object) Notification(what Int, reversed bool) {
 	var frame = call.New()
 	call.Arg(frame, what)
 	call.Arg(frame, reversed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_notification, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20648,7 +20762,7 @@ func (self Object) SetScript(script Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, script.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set_script, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20668,7 +20782,7 @@ func (self Object) SetMeta(name StringName, value Variant) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set_meta, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20677,7 +20791,7 @@ func (self Object) RemoveMeta(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_remove_meta, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20720,7 +20834,7 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 	var frame = call.New()
 	call.Arg(frame, signal.Pointer())
 	call.Arg(frame, arguments.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_add_user_signal, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20774,7 +20888,7 @@ func (self Object) SetDeferred(property StringName, value Variant) {
 	var frame = call.New()
 	call.Arg(frame, property.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set_deferred, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20862,7 +20976,7 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 	var frame = call.New()
 	call.Arg(frame, signal.Pointer())
 	call.Arg(frame, callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_disconnect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20883,7 +20997,7 @@ func (self Object) SetBlockSignals(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set_block_signals, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20901,7 +21015,7 @@ func (self Object) IsBlockingSignals() bool {
 func (self Object) NotifyPropertyListChanged() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_notify_property_list_changed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20910,7 +21024,7 @@ func (self Object) SetMessageTranslation(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_set_message_translation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -20964,7 +21078,7 @@ func (self Object) IsQueuedForDeletion() bool {
 func (self Object) CancelFree() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Object.Bind_cancel_free, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21118,7 +21232,7 @@ func (self PacketPeer) SetEncodeBufferMaxSize(max_size Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, max_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PacketPeer.Bind_set_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21306,7 +21420,7 @@ func (self PhysicsPointQueryParameters2D) SetPosition(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters2D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21325,7 +21439,7 @@ func (self PhysicsPointQueryParameters2D) SetCanvasInstanceId(canvas_instance_id
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, canvas_instance_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters2D.Bind_set_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21344,7 +21458,7 @@ func (self PhysicsPointQueryParameters2D) SetCollisionMask(collision_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, collision_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters2D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21363,7 +21477,7 @@ func (self PhysicsPointQueryParameters2D) SetExclude(exclude ArrayOf[RID]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclude)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters2D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21382,7 +21496,7 @@ func (self PhysicsPointQueryParameters2D) SetCollideWithBodies(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters2D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21401,7 +21515,7 @@ func (self PhysicsPointQueryParameters2D) SetCollideWithAreas(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters2D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21435,7 +21549,7 @@ func (self PhysicsPointQueryParameters3D) SetPosition(position Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters3D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21454,7 +21568,7 @@ func (self PhysicsPointQueryParameters3D) SetCollisionMask(collision_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, collision_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21473,7 +21587,7 @@ func (self PhysicsPointQueryParameters3D) SetExclude(exclude ArrayOf[RID]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclude)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters3D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21492,7 +21606,7 @@ func (self PhysicsPointQueryParameters3D) SetCollideWithBodies(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters3D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21511,7 +21625,7 @@ func (self PhysicsPointQueryParameters3D) SetCollideWithAreas(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsPointQueryParameters3D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21559,7 +21673,7 @@ func (self PhysicsRayQueryParameters2D) SetFrom(from Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, from)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_from, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21578,7 +21692,7 @@ func (self PhysicsRayQueryParameters2D) SetTo(to Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, to)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_to, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21597,7 +21711,7 @@ func (self PhysicsRayQueryParameters2D) SetCollisionMask(collision_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, collision_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21616,7 +21730,7 @@ func (self PhysicsRayQueryParameters2D) SetExclude(exclude ArrayOf[RID]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclude)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21635,7 +21749,7 @@ func (self PhysicsRayQueryParameters2D) SetCollideWithBodies(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21654,7 +21768,7 @@ func (self PhysicsRayQueryParameters2D) SetCollideWithAreas(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21673,7 +21787,7 @@ func (self PhysicsRayQueryParameters2D) SetHitFromInside(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters2D.Bind_set_hit_from_inside, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21721,7 +21835,7 @@ func (self PhysicsRayQueryParameters3D) SetFrom(from Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, from)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_from, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21740,7 +21854,7 @@ func (self PhysicsRayQueryParameters3D) SetTo(to Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, to)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_to, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21759,7 +21873,7 @@ func (self PhysicsRayQueryParameters3D) SetCollisionMask(collision_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, collision_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21778,7 +21892,7 @@ func (self PhysicsRayQueryParameters3D) SetExclude(exclude ArrayOf[RID]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclude)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21797,7 +21911,7 @@ func (self PhysicsRayQueryParameters3D) SetCollideWithBodies(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21816,7 +21930,7 @@ func (self PhysicsRayQueryParameters3D) SetCollideWithAreas(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21835,7 +21949,7 @@ func (self PhysicsRayQueryParameters3D) SetHitFromInside(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_hit_from_inside, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21854,7 +21968,7 @@ func (self PhysicsRayQueryParameters3D) SetHitBackFaces(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsRayQueryParameters3D.Bind_set_hit_back_faces, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21888,7 +22002,7 @@ func (self PhysicsShapeQueryParameters2D) SetShape(shape Resource) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21907,7 +22021,7 @@ func (self PhysicsShapeQueryParameters2D) SetShapeRid(shape RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_shape_rid, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21926,7 +22040,7 @@ func (self PhysicsShapeQueryParameters2D) SetTransform(transform Transform2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21945,7 +22059,7 @@ func (self PhysicsShapeQueryParameters2D) SetMotion(motion Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, motion)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_motion, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21964,7 +22078,7 @@ func (self PhysicsShapeQueryParameters2D) SetMargin(margin Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_margin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -21983,7 +22097,7 @@ func (self PhysicsShapeQueryParameters2D) SetCollisionMask(collision_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, collision_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22002,7 +22116,7 @@ func (self PhysicsShapeQueryParameters2D) SetExclude(exclude ArrayOf[RID]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclude)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22021,7 +22135,7 @@ func (self PhysicsShapeQueryParameters2D) SetCollideWithBodies(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22040,7 +22154,7 @@ func (self PhysicsShapeQueryParameters2D) SetCollideWithAreas(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters2D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22074,7 +22188,7 @@ func (self PhysicsShapeQueryParameters3D) SetShape(shape Resource) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22093,7 +22207,7 @@ func (self PhysicsShapeQueryParameters3D) SetShapeRid(shape RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape_rid, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22112,7 +22226,7 @@ func (self PhysicsShapeQueryParameters3D) SetTransform(transform Transform3D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22131,7 +22245,7 @@ func (self PhysicsShapeQueryParameters3D) SetMotion(motion Vector3) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, motion)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_motion, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22150,7 +22264,7 @@ func (self PhysicsShapeQueryParameters3D) SetMargin(margin Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_margin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22169,7 +22283,7 @@ func (self PhysicsShapeQueryParameters3D) SetCollisionMask(collision_mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, collision_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22188,7 +22302,7 @@ func (self PhysicsShapeQueryParameters3D) SetExclude(exclude ArrayOf[RID]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclude)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22207,7 +22321,7 @@ func (self PhysicsShapeQueryParameters3D) SetCollideWithBodies(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22226,7 +22340,7 @@ func (self PhysicsShapeQueryParameters3D) SetCollideWithAreas(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.PhysicsShapeQueryParameters3D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22341,7 +22455,7 @@ func (self RDAttachmentFormat) SetFormat(p_member RenderingDeviceDataFormat) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDAttachmentFormat.Bind_set_format, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22360,7 +22474,7 @@ func (self RDAttachmentFormat) SetSamples(p_member RenderingDeviceTextureSamples
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDAttachmentFormat.Bind_set_samples, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22379,7 +22493,7 @@ func (self RDAttachmentFormat) SetUsageFlags(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDAttachmentFormat.Bind_set_usage_flags, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22413,7 +22527,7 @@ func (self RDFramebufferPass) SetColorAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_color_attachments, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22432,7 +22546,7 @@ func (self RDFramebufferPass) SetInputAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_input_attachments, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22451,7 +22565,7 @@ func (self RDFramebufferPass) SetResolveAttachments(p_member PackedInt32Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_resolve_attachments, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22470,7 +22584,7 @@ func (self RDFramebufferPass) SetPreserveAttachments(p_member PackedInt32Array) 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_preserve_attachments, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22489,7 +22603,7 @@ func (self RDFramebufferPass) SetDepthAttachment(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDFramebufferPass.Bind_set_depth_attachment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22523,7 +22637,7 @@ func (self RDPipelineColorBlendState) SetEnableLogicOp(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendState.Bind_set_enable_logic_op, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22542,7 +22656,7 @@ func (self RDPipelineColorBlendState) SetLogicOp(p_member RenderingDeviceLogicOp
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendState.Bind_set_logic_op, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22561,7 +22675,7 @@ func (self RDPipelineColorBlendState) SetBlendConstant(p_member Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendState.Bind_set_blend_constant, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22580,7 +22694,7 @@ func (self RDPipelineColorBlendState) SetAttachments(attachments ArrayOf[RDPipel
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, attachments)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendState.Bind_set_attachments, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22613,7 +22727,7 @@ func (self RDPipelineColorBlendStateAttachment) AsObject() Object { return *self
 func (self RDPipelineColorBlendStateAttachment) SetAsMix() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_as_mix, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22622,7 +22736,7 @@ func (self RDPipelineColorBlendStateAttachment) SetEnableBlend(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_enable_blend, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22641,7 +22755,7 @@ func (self RDPipelineColorBlendStateAttachment) SetSrcColorBlendFactor(p_member 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_src_color_blend_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22660,7 +22774,7 @@ func (self RDPipelineColorBlendStateAttachment) SetDstColorBlendFactor(p_member 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_dst_color_blend_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22679,7 +22793,7 @@ func (self RDPipelineColorBlendStateAttachment) SetColorBlendOp(p_member Renderi
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_color_blend_op, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22698,7 +22812,7 @@ func (self RDPipelineColorBlendStateAttachment) SetSrcAlphaBlendFactor(p_member 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_src_alpha_blend_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22717,7 +22831,7 @@ func (self RDPipelineColorBlendStateAttachment) SetDstAlphaBlendFactor(p_member 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_dst_alpha_blend_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22736,7 +22850,7 @@ func (self RDPipelineColorBlendStateAttachment) SetAlphaBlendOp(p_member Renderi
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_alpha_blend_op, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22755,7 +22869,7 @@ func (self RDPipelineColorBlendStateAttachment) SetWriteR(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_write_r, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22774,7 +22888,7 @@ func (self RDPipelineColorBlendStateAttachment) SetWriteG(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_write_g, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22793,7 +22907,7 @@ func (self RDPipelineColorBlendStateAttachment) SetWriteB(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_write_b, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22812,7 +22926,7 @@ func (self RDPipelineColorBlendStateAttachment) SetWriteA(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineColorBlendStateAttachment.Bind_set_write_a, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22846,7 +22960,7 @@ func (self RDPipelineDepthStencilState) SetEnableDepthTest(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_test, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22865,7 +22979,7 @@ func (self RDPipelineDepthStencilState) SetEnableDepthWrite(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_write, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22884,7 +22998,7 @@ func (self RDPipelineDepthStencilState) SetDepthCompareOperator(p_member Renderi
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_depth_compare_operator, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22903,7 +23017,7 @@ func (self RDPipelineDepthStencilState) SetEnableDepthRange(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22922,7 +23036,7 @@ func (self RDPipelineDepthStencilState) SetDepthRangeMin(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_depth_range_min, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22941,7 +23055,7 @@ func (self RDPipelineDepthStencilState) SetDepthRangeMax(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_depth_range_max, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22960,7 +23074,7 @@ func (self RDPipelineDepthStencilState) SetEnableStencil(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_enable_stencil, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22979,7 +23093,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpFail(p_member RenderingDeviceS
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_fail, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -22998,7 +23112,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpPass(p_member RenderingDeviceS
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_pass, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23017,7 +23131,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpDepthFail(p_member RenderingDe
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_depth_fail, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23036,7 +23150,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpCompare(p_member RenderingDevi
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_compare, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23055,7 +23169,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpCompareMask(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_compare_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23074,7 +23188,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpWriteMask(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_write_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23093,7 +23207,7 @@ func (self RDPipelineDepthStencilState) SetFrontOpReference(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_front_op_reference, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23112,7 +23226,7 @@ func (self RDPipelineDepthStencilState) SetBackOpFail(p_member RenderingDeviceSt
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_fail, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23131,7 +23245,7 @@ func (self RDPipelineDepthStencilState) SetBackOpPass(p_member RenderingDeviceSt
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_pass, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23150,7 +23264,7 @@ func (self RDPipelineDepthStencilState) SetBackOpDepthFail(p_member RenderingDev
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_depth_fail, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23169,7 +23283,7 @@ func (self RDPipelineDepthStencilState) SetBackOpCompare(p_member RenderingDevic
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_compare, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23188,7 +23302,7 @@ func (self RDPipelineDepthStencilState) SetBackOpCompareMask(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_compare_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23207,7 +23321,7 @@ func (self RDPipelineDepthStencilState) SetBackOpWriteMask(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_write_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23226,7 +23340,7 @@ func (self RDPipelineDepthStencilState) SetBackOpReference(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineDepthStencilState.Bind_set_back_op_reference, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23260,7 +23374,7 @@ func (self RDPipelineMultisampleState) SetSampleCount(p_member RenderingDeviceTe
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineMultisampleState.Bind_set_sample_count, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23279,7 +23393,7 @@ func (self RDPipelineMultisampleState) SetEnableSampleShading(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineMultisampleState.Bind_set_enable_sample_shading, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23298,7 +23412,7 @@ func (self RDPipelineMultisampleState) SetMinSampleShading(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineMultisampleState.Bind_set_min_sample_shading, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23317,7 +23431,7 @@ func (self RDPipelineMultisampleState) SetEnableAlphaToCoverage(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineMultisampleState.Bind_set_enable_alpha_to_coverage, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23336,7 +23450,7 @@ func (self RDPipelineMultisampleState) SetEnableAlphaToOne(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineMultisampleState.Bind_set_enable_alpha_to_one, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23355,7 +23469,7 @@ func (self RDPipelineMultisampleState) SetSampleMasks(masks ArrayOf[Int]) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, masks)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineMultisampleState.Bind_set_sample_masks, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23389,7 +23503,7 @@ func (self RDPipelineRasterizationState) SetEnableDepthClamp(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_enable_depth_clamp, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23408,7 +23522,7 @@ func (self RDPipelineRasterizationState) SetDiscardPrimitives(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_discard_primitives, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23427,7 +23541,7 @@ func (self RDPipelineRasterizationState) SetWireframe(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_wireframe, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23446,7 +23560,7 @@ func (self RDPipelineRasterizationState) SetCullMode(p_member RenderingDevicePol
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_cull_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23465,7 +23579,7 @@ func (self RDPipelineRasterizationState) SetFrontFace(p_member RenderingDevicePo
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_front_face, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23484,7 +23598,7 @@ func (self RDPipelineRasterizationState) SetDepthBiasEnabled(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_depth_bias_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23503,7 +23617,7 @@ func (self RDPipelineRasterizationState) SetDepthBiasConstantFactor(p_member Flo
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_depth_bias_constant_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23522,7 +23636,7 @@ func (self RDPipelineRasterizationState) SetDepthBiasClamp(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_depth_bias_clamp, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23541,7 +23655,7 @@ func (self RDPipelineRasterizationState) SetDepthBiasSlopeFactor(p_member Float)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_depth_bias_slope_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23560,7 +23674,7 @@ func (self RDPipelineRasterizationState) SetLineWidth(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_line_width, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23579,7 +23693,7 @@ func (self RDPipelineRasterizationState) SetPatchControlPoints(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineRasterizationState.Bind_set_patch_control_points, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23613,7 +23727,7 @@ func (self RDPipelineSpecializationConstant) SetValue(value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineSpecializationConstant.Bind_set_value, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23632,7 +23746,7 @@ func (self RDPipelineSpecializationConstant) SetConstantId(constant_id Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, constant_id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDPipelineSpecializationConstant.Bind_set_constant_id, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23666,7 +23780,7 @@ func (self RDSamplerState) SetMagFilter(p_member RenderingDeviceSamplerFilter) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_mag_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23685,7 +23799,7 @@ func (self RDSamplerState) SetMinFilter(p_member RenderingDeviceSamplerFilter) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_min_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23704,7 +23818,7 @@ func (self RDSamplerState) SetMipFilter(p_member RenderingDeviceSamplerFilter) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_mip_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23723,7 +23837,7 @@ func (self RDSamplerState) SetRepeatU(p_member RenderingDeviceSamplerRepeatMode)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_repeat_u, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23742,7 +23856,7 @@ func (self RDSamplerState) SetRepeatV(p_member RenderingDeviceSamplerRepeatMode)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_repeat_v, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23761,7 +23875,7 @@ func (self RDSamplerState) SetRepeatW(p_member RenderingDeviceSamplerRepeatMode)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_repeat_w, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23780,7 +23894,7 @@ func (self RDSamplerState) SetLodBias(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_lod_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23799,7 +23913,7 @@ func (self RDSamplerState) SetUseAnisotropy(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_use_anisotropy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23818,7 +23932,7 @@ func (self RDSamplerState) SetAnisotropyMax(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_anisotropy_max, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23837,7 +23951,7 @@ func (self RDSamplerState) SetEnableCompare(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_enable_compare, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23856,7 +23970,7 @@ func (self RDSamplerState) SetCompareOp(p_member RenderingDeviceCompareOperator)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_compare_op, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23875,7 +23989,7 @@ func (self RDSamplerState) SetMinLod(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_min_lod, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23894,7 +24008,7 @@ func (self RDSamplerState) SetMaxLod(p_member Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_max_lod, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23913,7 +24027,7 @@ func (self RDSamplerState) SetBorderColor(p_member RenderingDeviceSamplerBorderC
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_border_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23932,7 +24046,7 @@ func (self RDSamplerState) SetUnnormalizedUvw(p_member bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDSamplerState.Bind_set_unnormalized_uvw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23967,7 +24081,7 @@ func (self RDShaderSPIRV) SetStageBytecode(stage RenderingDeviceShaderStage, byt
 	var frame = call.New()
 	call.Arg(frame, stage)
 	call.Arg(frame, bytecode.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDShaderSPIRV.Bind_set_stage_bytecode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -23988,7 +24102,7 @@ func (self RDShaderSPIRV) SetStageCompileError(stage RenderingDeviceShaderStage,
 	var frame = call.New()
 	call.Arg(frame, stage)
 	call.Arg(frame, compile_error.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDShaderSPIRV.Bind_set_stage_compile_error, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24024,7 +24138,7 @@ func (self RDShaderSource) SetStageSource(stage RenderingDeviceShaderStage, sour
 	var frame = call.New()
 	call.Arg(frame, stage)
 	call.Arg(frame, source.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDShaderSource.Bind_set_stage_source, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24044,7 +24158,7 @@ func (self RDShaderSource) SetLanguage(language RenderingDeviceShaderLanguage) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, language)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDShaderSource.Bind_set_language, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24078,7 +24192,7 @@ func (self RDTextureFormat) SetFormat(p_member RenderingDeviceDataFormat) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_format, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24097,7 +24211,7 @@ func (self RDTextureFormat) SetWidth(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_width, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24116,7 +24230,7 @@ func (self RDTextureFormat) SetHeight(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_height, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24135,7 +24249,7 @@ func (self RDTextureFormat) SetDepth(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_depth, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24154,7 +24268,7 @@ func (self RDTextureFormat) SetArrayLayers(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_array_layers, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24173,7 +24287,7 @@ func (self RDTextureFormat) SetMipmaps(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_mipmaps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24192,7 +24306,7 @@ func (self RDTextureFormat) SetTextureType(p_member RenderingDeviceTextureType) 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24211,7 +24325,7 @@ func (self RDTextureFormat) SetSamples(p_member RenderingDeviceTextureSamples) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_samples, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24230,7 +24344,7 @@ func (self RDTextureFormat) SetUsageBits(p_member RenderingDeviceTextureUsageBit
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_set_usage_bits, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24249,7 +24363,7 @@ func (self RDTextureFormat) AddShareableFormat(format RenderingDeviceDataFormat)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, format)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_add_shareable_format, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24258,7 +24372,7 @@ func (self RDTextureFormat) RemoveShareableFormat(format RenderingDeviceDataForm
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, format)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureFormat.Bind_remove_shareable_format, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24282,7 +24396,7 @@ func (self RDTextureView) SetFormatOverride(p_member RenderingDeviceDataFormat) 
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureView.Bind_set_format_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24301,7 +24415,7 @@ func (self RDTextureView) SetSwizzleR(p_member RenderingDeviceTextureSwizzle) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureView.Bind_set_swizzle_r, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24320,7 +24434,7 @@ func (self RDTextureView) SetSwizzleG(p_member RenderingDeviceTextureSwizzle) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureView.Bind_set_swizzle_g, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24339,7 +24453,7 @@ func (self RDTextureView) SetSwizzleB(p_member RenderingDeviceTextureSwizzle) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureView.Bind_set_swizzle_b, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24358,7 +24472,7 @@ func (self RDTextureView) SetSwizzleA(p_member RenderingDeviceTextureSwizzle) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDTextureView.Bind_set_swizzle_a, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24390,7 +24504,7 @@ func (self RDUniform) SetUniformType(p_member RenderingDeviceUniformType) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDUniform.Bind_set_uniform_type, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24409,7 +24523,7 @@ func (self RDUniform) SetBinding(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDUniform.Bind_set_binding, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24428,7 +24542,7 @@ func (self RDUniform) AddId(id RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDUniform.Bind_add_id, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24436,7 +24550,7 @@ func (self RDUniform) AddId(id RID) {
 func (self RDUniform) ClearIds() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDUniform.Bind_clear_ids, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24470,7 +24584,7 @@ func (self RDVertexAttribute) SetLocation(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDVertexAttribute.Bind_set_location, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24489,7 +24603,7 @@ func (self RDVertexAttribute) SetOffset(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDVertexAttribute.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24508,7 +24622,7 @@ func (self RDVertexAttribute) SetFormat(p_member RenderingDeviceDataFormat) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDVertexAttribute.Bind_set_format, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24527,7 +24641,7 @@ func (self RDVertexAttribute) SetStride(p_member Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDVertexAttribute.Bind_set_stride, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -24546,7 +24660,7 @@ func (self RDVertexAttribute) SetFrequency(p_member RenderingDeviceVertexFrequen
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, p_member)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RDVertexAttribute.Bind_set_frequency, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25394,7 +25508,7 @@ func (self RenderingDevice) DrawListSetBlendConstants(draw_list Int, color Color
 	var frame = call.New()
 	call.Arg(frame, draw_list)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_set_blend_constants, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25404,7 +25518,7 @@ func (self RenderingDevice) DrawListBindRenderPipeline(draw_list Int, render_pip
 	var frame = call.New()
 	call.Arg(frame, draw_list)
 	call.Arg(frame, render_pipeline)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_bind_render_pipeline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25415,7 +25529,7 @@ func (self RenderingDevice) DrawListBindUniformSet(draw_list Int, uniform_set RI
 	call.Arg(frame, draw_list)
 	call.Arg(frame, uniform_set)
 	call.Arg(frame, set_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_bind_uniform_set, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25425,7 +25539,7 @@ func (self RenderingDevice) DrawListBindVertexArray(draw_list Int, vertex_array 
 	var frame = call.New()
 	call.Arg(frame, draw_list)
 	call.Arg(frame, vertex_array)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_bind_vertex_array, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25435,7 +25549,7 @@ func (self RenderingDevice) DrawListBindIndexArray(draw_list Int, index_array RI
 	var frame = call.New()
 	call.Arg(frame, draw_list)
 	call.Arg(frame, index_array)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_bind_index_array, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25446,7 +25560,7 @@ func (self RenderingDevice) DrawListSetPushConstant(draw_list Int, buffer Packed
 	call.Arg(frame, draw_list)
 	call.Arg(frame, buffer.Pointer())
 	call.Arg(frame, size_bytes)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_set_push_constant, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25458,7 +25572,7 @@ func (self RenderingDevice) DrawListDraw(draw_list Int, use_indices bool, instan
 	call.Arg(frame, use_indices)
 	call.Arg(frame, instances)
 	call.Arg(frame, procedural_vertex_count)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25468,7 +25582,7 @@ func (self RenderingDevice) DrawListEnableScissor(draw_list Int, rect Rect2) {
 	var frame = call.New()
 	call.Arg(frame, draw_list)
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_enable_scissor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25477,7 +25591,7 @@ func (self RenderingDevice) DrawListDisableScissor(draw_list Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, draw_list)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_disable_scissor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25507,7 +25621,7 @@ func (self RenderingDevice) DrawListEnd(post_barrier RenderingDeviceBarrierMask)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, post_barrier)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_list_end, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25528,7 +25642,7 @@ func (self RenderingDevice) ComputeListBindComputePipeline(compute_list Int, com
 	var frame = call.New()
 	call.Arg(frame, compute_list)
 	call.Arg(frame, compute_pipeline)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_bind_compute_pipeline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25539,7 +25653,7 @@ func (self RenderingDevice) ComputeListSetPushConstant(compute_list Int, buffer 
 	call.Arg(frame, compute_list)
 	call.Arg(frame, buffer.Pointer())
 	call.Arg(frame, size_bytes)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_set_push_constant, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25550,7 +25664,7 @@ func (self RenderingDevice) ComputeListBindUniformSet(compute_list Int, uniform_
 	call.Arg(frame, compute_list)
 	call.Arg(frame, uniform_set)
 	call.Arg(frame, set_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_bind_uniform_set, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25562,7 +25676,7 @@ func (self RenderingDevice) ComputeListDispatch(compute_list Int, x_groups Int, 
 	call.Arg(frame, x_groups)
 	call.Arg(frame, y_groups)
 	call.Arg(frame, z_groups)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_dispatch, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25571,7 +25685,7 @@ func (self RenderingDevice) ComputeListAddBarrier(compute_list Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, compute_list)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_add_barrier, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25580,7 +25694,7 @@ func (self RenderingDevice) ComputeListEnd(post_barrier RenderingDeviceBarrierMa
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, post_barrier)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_compute_list_end, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25589,7 +25703,7 @@ func (self RenderingDevice) FreeRid(rid RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, rid)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25598,7 +25712,7 @@ func (self RenderingDevice) CaptureTimestamp(name String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_capture_timestamp, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25680,7 +25794,7 @@ func (self RenderingDevice) GetFrameDelay() Int {
 func (self RenderingDevice) Submit() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_submit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25688,7 +25802,7 @@ func (self RenderingDevice) Submit() {
 func (self RenderingDevice) Sync() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_sync, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25698,7 +25812,7 @@ func (self RenderingDevice) Barrier(from RenderingDeviceBarrierMask, to Renderin
 	var frame = call.New()
 	call.Arg(frame, from)
 	call.Arg(frame, to)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_barrier, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25706,7 +25820,7 @@ func (self RenderingDevice) Barrier(from RenderingDeviceBarrierMask, to Renderin
 func (self RenderingDevice) FullBarrier() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_full_barrier, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25726,7 +25840,7 @@ func (self RenderingDevice) SetResourceName(id RID, name String) {
 	var frame = call.New()
 	call.Arg(frame, id)
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_set_resource_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25736,7 +25850,7 @@ func (self RenderingDevice) DrawCommandBeginLabel(name String, color Color) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_command_begin_label, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25746,7 +25860,7 @@ func (self RenderingDevice) DrawCommandInsertLabel(name String, color Color) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_command_insert_label, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -25754,7 +25868,7 @@ func (self RenderingDevice) DrawCommandInsertLabel(name String, color Color) {
 func (self RenderingDevice) DrawCommandEndLabel() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingDevice.Bind_draw_command_end_label, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26029,7 +26143,7 @@ func (self RenderingServer) Texture2dUpdate(texture RID, image Image, layer Int)
 	call.Arg(frame, texture)
 	call.Arg(frame, image.Pointer())
 	call.Arg(frame, layer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_2d_update, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26039,7 +26153,7 @@ func (self RenderingServer) Texture3dUpdate(texture RID, data ArrayOf[Image]) {
 	var frame = call.New()
 	call.Arg(frame, texture)
 	call.Arg(frame, data)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_3d_update, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26049,7 +26163,7 @@ func (self RenderingServer) TextureProxyUpdate(texture RID, proxy_to RID) {
 	var frame = call.New()
 	call.Arg(frame, texture)
 	call.Arg(frame, proxy_to)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_proxy_update, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26124,7 +26238,7 @@ func (self RenderingServer) TextureReplace(texture RID, by_texture RID) {
 	var frame = call.New()
 	call.Arg(frame, texture)
 	call.Arg(frame, by_texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_replace, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26135,7 +26249,7 @@ func (self RenderingServer) TextureSetSizeOverride(texture RID, width Int, heigh
 	call.Arg(frame, texture)
 	call.Arg(frame, width)
 	call.Arg(frame, height)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_set_size_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26145,7 +26259,7 @@ func (self RenderingServer) TextureSetPath(texture RID, path String) {
 	var frame = call.New()
 	call.Arg(frame, texture)
 	call.Arg(frame, path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_set_path, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26177,7 +26291,7 @@ func (self RenderingServer) TextureSetForceRedrawIfVisible(texture RID, enable b
 	var frame = call.New()
 	call.Arg(frame, texture)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_texture_set_force_redraw_if_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26233,7 +26347,7 @@ func (self RenderingServer) ShaderSetCode(shader RID, code String) {
 	var frame = call.New()
 	call.Arg(frame, shader)
 	call.Arg(frame, code.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_shader_set_code, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26243,7 +26357,7 @@ func (self RenderingServer) ShaderSetPathHint(shader RID, path String) {
 	var frame = call.New()
 	call.Arg(frame, shader)
 	call.Arg(frame, path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_shader_set_path_hint, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26289,7 +26403,7 @@ func (self RenderingServer) ShaderSetDefaultTextureParameter(shader RID, name St
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, texture)
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_shader_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26322,7 +26436,7 @@ func (self RenderingServer) MaterialSetShader(shader_material RID, shader RID) {
 	var frame = call.New()
 	call.Arg(frame, shader_material)
 	call.Arg(frame, shader)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_material_set_shader, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26333,7 +26447,7 @@ func (self RenderingServer) MaterialSetParam(material RID, parameter StringName,
 	call.Arg(frame, material)
 	call.Arg(frame, parameter.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_material_set_param, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26355,7 +26469,7 @@ func (self RenderingServer) MaterialSetRenderPriority(material RID, priority Int
 	var frame = call.New()
 	call.Arg(frame, material)
 	call.Arg(frame, priority)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_material_set_render_priority, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26365,7 +26479,7 @@ func (self RenderingServer) MaterialSetNextPass(material RID, next_material RID)
 	var frame = call.New()
 	call.Arg(frame, material)
 	call.Arg(frame, next_material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_material_set_next_pass, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26458,7 +26572,7 @@ func (self RenderingServer) MeshAddSurface(mesh RID, surface Dictionary) {
 	var frame = call.New()
 	call.Arg(frame, mesh)
 	call.Arg(frame, surface.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_add_surface, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26472,7 +26586,7 @@ func (self RenderingServer) MeshAddSurfaceFromArrays(mesh RID, primitive Renderi
 	call.Arg(frame, blend_shapes.Pointer())
 	call.Arg(frame, lods.Pointer())
 	call.Arg(frame, compress_format)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26493,7 +26607,7 @@ func (self RenderingServer) MeshSetBlendShapeMode(mesh RID, mode RenderingServer
 	var frame = call.New()
 	call.Arg(frame, mesh)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26515,7 +26629,7 @@ func (self RenderingServer) MeshSurfaceSetMaterial(mesh RID, surface Int, materi
 	call.Arg(frame, mesh)
 	call.Arg(frame, surface)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26584,7 +26698,7 @@ func (self RenderingServer) MeshSetCustomAabb(mesh RID, aabb AABB) {
 	var frame = call.New()
 	call.Arg(frame, mesh)
 	call.Arg(frame, aabb)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26604,7 +26718,7 @@ func (self RenderingServer) MeshClear(mesh RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mesh)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_clear, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26616,7 +26730,7 @@ func (self RenderingServer) MeshSurfaceUpdateVertexRegion(mesh RID, surface Int,
 	call.Arg(frame, surface)
 	call.Arg(frame, offset)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26628,7 +26742,7 @@ func (self RenderingServer) MeshSurfaceUpdateAttributeRegion(mesh RID, surface I
 	call.Arg(frame, surface)
 	call.Arg(frame, offset)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26640,7 +26754,7 @@ func (self RenderingServer) MeshSurfaceUpdateSkinRegion(mesh RID, surface Int, o
 	call.Arg(frame, surface)
 	call.Arg(frame, offset)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26650,7 +26764,7 @@ func (self RenderingServer) MeshSetShadowMesh(mesh RID, shadow_mesh RID) {
 	var frame = call.New()
 	call.Arg(frame, mesh)
 	call.Arg(frame, shadow_mesh)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_mesh_set_shadow_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26673,7 +26787,7 @@ func (self RenderingServer) MultimeshAllocateData(multimesh RID, instances Int, 
 	call.Arg(frame, transform_format)
 	call.Arg(frame, color_format)
 	call.Arg(frame, custom_data_format)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_allocate_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26694,7 +26808,7 @@ func (self RenderingServer) MultimeshSetMesh(multimesh RID, mesh RID) {
 	var frame = call.New()
 	call.Arg(frame, multimesh)
 	call.Arg(frame, mesh)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_set_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26705,7 +26819,7 @@ func (self RenderingServer) MultimeshInstanceSetTransform(multimesh RID, index I
 	call.Arg(frame, multimesh)
 	call.Arg(frame, index)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_instance_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26716,7 +26830,7 @@ func (self RenderingServer) MultimeshInstanceSetTransform2d(multimesh RID, index
 	call.Arg(frame, multimesh)
 	call.Arg(frame, index)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_instance_set_transform_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26727,7 +26841,7 @@ func (self RenderingServer) MultimeshInstanceSetColor(multimesh RID, index Int, 
 	call.Arg(frame, multimesh)
 	call.Arg(frame, index)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_instance_set_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26738,7 +26852,7 @@ func (self RenderingServer) MultimeshInstanceSetCustomData(multimesh RID, index 
 	call.Arg(frame, multimesh)
 	call.Arg(frame, index)
 	call.Arg(frame, custom_data)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_instance_set_custom_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26818,7 +26932,7 @@ func (self RenderingServer) MultimeshSetVisibleInstances(multimesh RID, visible 
 	var frame = call.New()
 	call.Arg(frame, multimesh)
 	call.Arg(frame, visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_set_visible_instances, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26839,7 +26953,7 @@ func (self RenderingServer) MultimeshSetBuffer(multimesh RID, buffer PackedFloat
 	var frame = call.New()
 	call.Arg(frame, multimesh)
 	call.Arg(frame, buffer.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_multimesh_set_buffer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26871,7 +26985,7 @@ func (self RenderingServer) SkeletonAllocateData(skeleton RID, bones Int, is_2d_
 	call.Arg(frame, skeleton)
 	call.Arg(frame, bones)
 	call.Arg(frame, is_2d_skeleton)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_skeleton_allocate_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26893,7 +27007,7 @@ func (self RenderingServer) SkeletonBoneSetTransform(skeleton RID, bone Int, tra
 	call.Arg(frame, skeleton)
 	call.Arg(frame, bone)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_skeleton_bone_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26916,7 +27030,7 @@ func (self RenderingServer) SkeletonBoneSetTransform2d(skeleton RID, bone Int, t
 	call.Arg(frame, skeleton)
 	call.Arg(frame, bone)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_skeleton_bone_set_transform_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26938,7 +27052,7 @@ func (self RenderingServer) SkeletonSetBaseTransform2d(skeleton RID, base_transf
 	var frame = call.New()
 	call.Arg(frame, skeleton)
 	call.Arg(frame, base_transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_skeleton_set_base_transform_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26978,7 +27092,7 @@ func (self RenderingServer) LightSetColor(light RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26989,7 +27103,7 @@ func (self RenderingServer) LightSetParam(light RID, param RenderingServerLightP
 	call.Arg(frame, light)
 	call.Arg(frame, param)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_param, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -26999,7 +27113,7 @@ func (self RenderingServer) LightSetShadow(light RID, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_shadow, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27009,7 +27123,7 @@ func (self RenderingServer) LightSetProjector(light RID, texture RID) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_projector, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27019,7 +27133,7 @@ func (self RenderingServer) LightSetNegative(light RID, enable bool) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_negative, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27029,7 +27143,7 @@ func (self RenderingServer) LightSetCullMask(light RID, mask Int) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27042,7 +27156,7 @@ func (self RenderingServer) LightSetDistanceFade(decal RID, enabled bool, begin 
 	call.Arg(frame, begin)
 	call.Arg(frame, shadow)
 	call.Arg(frame, length)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_distance_fade, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27052,7 +27166,7 @@ func (self RenderingServer) LightSetReverseCullFaceMode(light RID, enabled bool)
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_reverse_cull_face_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27062,7 +27176,7 @@ func (self RenderingServer) LightSetBakeMode(light RID, bake_mode RenderingServe
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, bake_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_bake_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27072,7 +27186,7 @@ func (self RenderingServer) LightSetMaxSdfgiCascade(light RID, cascade Int) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, cascade)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_set_max_sdfgi_cascade, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27082,7 +27196,7 @@ func (self RenderingServer) LightOmniSetShadowMode(light RID, mode RenderingServ
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_omni_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27092,7 +27206,7 @@ func (self RenderingServer) LightDirectionalSetShadowMode(light RID, mode Render
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_directional_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27102,7 +27216,7 @@ func (self RenderingServer) LightDirectionalSetBlendSplits(light RID, enable boo
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_directional_set_blend_splits, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27112,7 +27226,7 @@ func (self RenderingServer) LightDirectionalSetSkyMode(light RID, mode Rendering
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_directional_set_sky_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27121,7 +27235,7 @@ func (self RenderingServer) LightProjectorsSetFilter(filter RenderingServerLight
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_light_projectors_set_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27130,7 +27244,7 @@ func (self RenderingServer) PositionalSoftShadowFilterSetQuality(quality Renderi
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quality)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_positional_soft_shadow_filter_set_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27139,7 +27253,7 @@ func (self RenderingServer) DirectionalSoftShadowFilterSetQuality(quality Render
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quality)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_directional_soft_shadow_filter_set_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27149,7 +27263,7 @@ func (self RenderingServer) DirectionalShadowAtlasSetSize(size Int, is_16bits bo
 	var frame = call.New()
 	call.Arg(frame, size)
 	call.Arg(frame, is_16bits)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_directional_shadow_atlas_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27169,7 +27283,7 @@ func (self RenderingServer) ReflectionProbeSetUpdateMode(probe RID, mode Renderi
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_update_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27179,7 +27293,7 @@ func (self RenderingServer) ReflectionProbeSetIntensity(probe RID, intensity Flo
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, intensity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_intensity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27189,7 +27303,7 @@ func (self RenderingServer) ReflectionProbeSetAmbientMode(probe RID, mode Render
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_ambient_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27199,7 +27313,7 @@ func (self RenderingServer) ReflectionProbeSetAmbientColor(probe RID, color Colo
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_ambient_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27209,7 +27323,7 @@ func (self RenderingServer) ReflectionProbeSetAmbientEnergy(probe RID, energy Fl
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_ambient_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27219,7 +27333,7 @@ func (self RenderingServer) ReflectionProbeSetMaxDistance(probe RID, distance Fl
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, distance)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_max_distance, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27229,7 +27343,7 @@ func (self RenderingServer) ReflectionProbeSetSize(probe RID, size Vector3) {
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27239,7 +27353,7 @@ func (self RenderingServer) ReflectionProbeSetOriginOffset(probe RID, offset Vec
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_origin_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27249,7 +27363,7 @@ func (self RenderingServer) ReflectionProbeSetAsInterior(probe RID, enable bool)
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_as_interior, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27259,7 +27373,7 @@ func (self RenderingServer) ReflectionProbeSetEnableBoxProjection(probe RID, ena
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_enable_box_projection, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27269,7 +27383,7 @@ func (self RenderingServer) ReflectionProbeSetEnableShadows(probe RID, enable bo
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_enable_shadows, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27279,7 +27393,7 @@ func (self RenderingServer) ReflectionProbeSetCullMask(probe RID, layers Int) {
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, layers)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27289,7 +27403,7 @@ func (self RenderingServer) ReflectionProbeSetResolution(probe RID, resolution I
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, resolution)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_resolution, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27299,7 +27413,7 @@ func (self RenderingServer) ReflectionProbeSetMeshLodThreshold(probe RID, pixels
 	var frame = call.New()
 	call.Arg(frame, probe)
 	call.Arg(frame, pixels)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_reflection_probe_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27319,7 +27433,7 @@ func (self RenderingServer) DecalSetSize(decal RID, size Vector3) {
 	var frame = call.New()
 	call.Arg(frame, decal)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27330,7 +27444,7 @@ func (self RenderingServer) DecalSetTexture(decal RID, atype RenderingServerDeca
 	call.Arg(frame, decal)
 	call.Arg(frame, atype)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27340,7 +27454,7 @@ func (self RenderingServer) DecalSetEmissionEnergy(decal RID, energy Float) {
 	var frame = call.New()
 	call.Arg(frame, decal)
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_emission_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27350,7 +27464,7 @@ func (self RenderingServer) DecalSetAlbedoMix(decal RID, albedo_mix Float) {
 	var frame = call.New()
 	call.Arg(frame, decal)
 	call.Arg(frame, albedo_mix)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_albedo_mix, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27360,7 +27474,7 @@ func (self RenderingServer) DecalSetModulate(decal RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, decal)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_modulate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27370,7 +27484,7 @@ func (self RenderingServer) DecalSetCullMask(decal RID, mask Int) {
 	var frame = call.New()
 	call.Arg(frame, decal)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27382,7 +27496,7 @@ func (self RenderingServer) DecalSetDistanceFade(decal RID, enabled bool, begin 
 	call.Arg(frame, enabled)
 	call.Arg(frame, begin)
 	call.Arg(frame, length)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_distance_fade, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27393,7 +27507,7 @@ func (self RenderingServer) DecalSetFade(decal RID, above Float, below Float) {
 	call.Arg(frame, decal)
 	call.Arg(frame, above)
 	call.Arg(frame, below)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_fade, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27403,7 +27517,7 @@ func (self RenderingServer) DecalSetNormalFade(decal RID, fade Float) {
 	var frame = call.New()
 	call.Arg(frame, decal)
 	call.Arg(frame, fade)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decal_set_normal_fade, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27412,7 +27526,7 @@ func (self RenderingServer) DecalsSetFilter(filter RenderingServerDecalFilter) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_decals_set_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27421,7 +27535,7 @@ func (self RenderingServer) GiSetUseHalfResolution(half_resolution bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, half_resolution)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_gi_set_use_half_resolution, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27447,7 +27561,7 @@ func (self RenderingServer) VoxelGiAllocateData(voxel_gi RID, to_cell_xform Tran
 	call.Arg(frame, data_cells.Pointer())
 	call.Arg(frame, distance_field.Pointer())
 	call.Arg(frame, level_counts.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_allocate_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27523,7 +27637,7 @@ func (self RenderingServer) VoxelGiSetDynamicRange(voxel_gi RID, arange Float) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, arange)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_dynamic_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27533,7 +27647,7 @@ func (self RenderingServer) VoxelGiSetPropagation(voxel_gi RID, amount Float) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_propagation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27543,7 +27657,7 @@ func (self RenderingServer) VoxelGiSetEnergy(voxel_gi RID, energy Float) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27553,7 +27667,7 @@ func (self RenderingServer) VoxelGiSetBakedExposureNormalization(voxel_gi RID, b
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, baked_exposure)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_baked_exposure_normalization, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27563,7 +27677,7 @@ func (self RenderingServer) VoxelGiSetBias(voxel_gi RID, bias Float) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27573,7 +27687,7 @@ func (self RenderingServer) VoxelGiSetNormalBias(voxel_gi RID, bias Float) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_normal_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27583,7 +27697,7 @@ func (self RenderingServer) VoxelGiSetInterior(voxel_gi RID, enable bool) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_interior, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27593,7 +27707,7 @@ func (self RenderingServer) VoxelGiSetUseTwoBounces(voxel_gi RID, enable bool) {
 	var frame = call.New()
 	call.Arg(frame, voxel_gi)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_use_two_bounces, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27602,7 +27716,7 @@ func (self RenderingServer) VoxelGiSetQuality(quality RenderingServerVoxelGIQual
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quality)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_voxel_gi_set_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27623,7 +27737,7 @@ func (self RenderingServer) LightmapSetTextures(lightmap RID, light RID, uses_sh
 	call.Arg(frame, lightmap)
 	call.Arg(frame, light)
 	call.Arg(frame, uses_sh)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_textures, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27633,7 +27747,7 @@ func (self RenderingServer) LightmapSetProbeBounds(lightmap RID, bounds AABB) {
 	var frame = call.New()
 	call.Arg(frame, lightmap)
 	call.Arg(frame, bounds)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_probe_bounds, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27643,7 +27757,7 @@ func (self RenderingServer) LightmapSetProbeInterior(lightmap RID, interior bool
 	var frame = call.New()
 	call.Arg(frame, lightmap)
 	call.Arg(frame, interior)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_probe_interior, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27656,7 +27770,7 @@ func (self RenderingServer) LightmapSetProbeCaptureData(lightmap RID, points Pac
 	call.Arg(frame, point_sh.Pointer())
 	call.Arg(frame, tetrahedra.Pointer())
 	call.Arg(frame, bsp_tree.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27710,7 +27824,7 @@ func (self RenderingServer) LightmapSetBakedExposureNormalization(lightmap RID, 
 	var frame = call.New()
 	call.Arg(frame, lightmap)
 	call.Arg(frame, baked_exposure)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_baked_exposure_normalization, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27719,7 +27833,7 @@ func (self RenderingServer) LightmapSetProbeCaptureUpdateSpeed(speed Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, speed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_lightmap_set_probe_capture_update_speed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27739,7 +27853,7 @@ func (self RenderingServer) ParticlesSetMode(particles RID, mode RenderingServer
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27749,7 +27863,7 @@ func (self RenderingServer) ParticlesSetEmitting(particles RID, emitting bool) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, emitting)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_emitting, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27770,7 +27884,7 @@ func (self RenderingServer) ParticlesSetAmount(particles RID, amount Int) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_amount, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27780,7 +27894,7 @@ func (self RenderingServer) ParticlesSetAmountRatio(particles RID, ratio Float) 
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_amount_ratio, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27790,7 +27904,7 @@ func (self RenderingServer) ParticlesSetLifetime(particles RID, lifetime Float) 
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, lifetime)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_lifetime, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27800,7 +27914,7 @@ func (self RenderingServer) ParticlesSetOneShot(particles RID, one_shot bool) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, one_shot)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_one_shot, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27810,7 +27924,7 @@ func (self RenderingServer) ParticlesSetPreProcessTime(particles RID, time Float
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, time)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_pre_process_time, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27820,7 +27934,7 @@ func (self RenderingServer) ParticlesSetExplosivenessRatio(particles RID, ratio 
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_explosiveness_ratio, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27830,7 +27944,7 @@ func (self RenderingServer) ParticlesSetRandomnessRatio(particles RID, ratio Flo
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_randomness_ratio, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27840,7 +27954,7 @@ func (self RenderingServer) ParticlesSetInterpToEnd(particles RID, factor Float)
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, factor)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_interp_to_end, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27850,7 +27964,7 @@ func (self RenderingServer) ParticlesSetEmitterVelocity(particles RID, velocity 
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, velocity)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_emitter_velocity, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27860,7 +27974,7 @@ func (self RenderingServer) ParticlesSetCustomAabb(particles RID, aabb AABB) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, aabb)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27870,7 +27984,7 @@ func (self RenderingServer) ParticlesSetSpeedScale(particles RID, scale Float) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_speed_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27880,7 +27994,7 @@ func (self RenderingServer) ParticlesSetUseLocalCoordinates(particles RID, enabl
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_use_local_coordinates, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27890,7 +28004,7 @@ func (self RenderingServer) ParticlesSetProcessMaterial(particles RID, material 
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_process_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27900,7 +28014,7 @@ func (self RenderingServer) ParticlesSetFixedFps(particles RID, fps Int) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, fps)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_fixed_fps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27910,7 +28024,7 @@ func (self RenderingServer) ParticlesSetInterpolate(particles RID, enable bool) 
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_interpolate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27920,7 +28034,7 @@ func (self RenderingServer) ParticlesSetFractionalDelta(particles RID, enable bo
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_fractional_delta, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27930,7 +28044,7 @@ func (self RenderingServer) ParticlesSetCollisionBaseSize(particles RID, size Fl
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_collision_base_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27940,7 +28054,7 @@ func (self RenderingServer) ParticlesSetTransformAlign(particles RID, align Rend
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, align)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_transform_align, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27951,7 +28065,7 @@ func (self RenderingServer) ParticlesSetTrails(particles RID, enable bool, lengt
 	call.Arg(frame, particles)
 	call.Arg(frame, enable)
 	call.Arg(frame, length_sec)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_trails, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27961,7 +28075,7 @@ func (self RenderingServer) ParticlesSetTrailBindPoses(particles RID, bind_poses
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, bind_poses)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_trail_bind_poses, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27981,7 +28095,7 @@ func (self RenderingServer) ParticlesRequestProcess(particles RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, particles)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_request_process, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -27990,7 +28104,7 @@ func (self RenderingServer) ParticlesRestart(particles RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, particles)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_restart, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28000,7 +28114,7 @@ func (self RenderingServer) ParticlesSetSubemitter(particles RID, subemitter_par
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, subemitter_particles)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_subemitter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28014,7 +28128,7 @@ func (self RenderingServer) ParticlesEmit(particles RID, transform Transform3D, 
 	call.Arg(frame, color)
 	call.Arg(frame, custom)
 	call.Arg(frame, emit_flags)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_emit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28024,7 +28138,7 @@ func (self RenderingServer) ParticlesSetDrawOrder(particles RID, order Rendering
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, order)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_draw_order, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28034,7 +28148,7 @@ func (self RenderingServer) ParticlesSetDrawPasses(particles RID, count Int) {
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, count)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_draw_passes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28045,7 +28159,7 @@ func (self RenderingServer) ParticlesSetDrawPassMesh(particles RID, pass Int, me
 	call.Arg(frame, particles)
 	call.Arg(frame, pass)
 	call.Arg(frame, mesh)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_draw_pass_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28066,7 +28180,7 @@ func (self RenderingServer) ParticlesSetEmissionTransform(particles RID, transfo
 	var frame = call.New()
 	call.Arg(frame, particles)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_set_emission_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28086,7 +28200,7 @@ func (self RenderingServer) ParticlesCollisionSetCollisionType(particles_collisi
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, atype)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_collision_type, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28096,7 +28210,7 @@ func (self RenderingServer) ParticlesCollisionSetCullMask(particles_collision RI
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28106,7 +28220,7 @@ func (self RenderingServer) ParticlesCollisionSetSphereRadius(particles_collisio
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, radius)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_sphere_radius, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28116,7 +28230,7 @@ func (self RenderingServer) ParticlesCollisionSetBoxExtents(particles_collision 
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, extents)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_box_extents, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28126,7 +28240,7 @@ func (self RenderingServer) ParticlesCollisionSetAttractorStrength(particles_col
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, strength)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_attractor_strength, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28136,7 +28250,7 @@ func (self RenderingServer) ParticlesCollisionSetAttractorDirectionality(particl
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_attractor_directionality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28146,7 +28260,7 @@ func (self RenderingServer) ParticlesCollisionSetAttractorAttenuation(particles_
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, curve)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_attractor_attenuation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28156,7 +28270,7 @@ func (self RenderingServer) ParticlesCollisionSetFieldTexture(particles_collisio
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_field_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28165,7 +28279,7 @@ func (self RenderingServer) ParticlesCollisionHeightFieldUpdate(particles_collis
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_height_field_update, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28175,7 +28289,7 @@ func (self RenderingServer) ParticlesCollisionSetHeightFieldResolution(particles
 	var frame = call.New()
 	call.Arg(frame, particles_collision)
 	call.Arg(frame, resolution)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_particles_collision_set_height_field_resolution, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28195,7 +28309,7 @@ func (self RenderingServer) FogVolumeSetShape(fog_volume RID, shape RenderingSer
 	var frame = call.New()
 	call.Arg(frame, fog_volume)
 	call.Arg(frame, shape)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_fog_volume_set_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28205,7 +28319,7 @@ func (self RenderingServer) FogVolumeSetSize(fog_volume RID, size Vector3) {
 	var frame = call.New()
 	call.Arg(frame, fog_volume)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_fog_volume_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28215,7 +28329,7 @@ func (self RenderingServer) FogVolumeSetMaterial(fog_volume RID, material RID) {
 	var frame = call.New()
 	call.Arg(frame, fog_volume)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_fog_volume_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28235,7 +28349,7 @@ func (self RenderingServer) VisibilityNotifierSetAabb(notifier RID, aabb AABB) {
 	var frame = call.New()
 	call.Arg(frame, notifier)
 	call.Arg(frame, aabb)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_visibility_notifier_set_aabb, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28246,7 +28360,7 @@ func (self RenderingServer) VisibilityNotifierSetCallbacks(notifier RID, enter_c
 	call.Arg(frame, notifier)
 	call.Arg(frame, enter_callable.Pointer())
 	call.Arg(frame, exit_callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28267,7 +28381,7 @@ func (self RenderingServer) OccluderSetMesh(occluder RID, vertices PackedVector3
 	call.Arg(frame, occluder)
 	call.Arg(frame, vertices.Pointer())
 	call.Arg(frame, indices.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_occluder_set_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28289,7 +28403,7 @@ func (self RenderingServer) CameraSetPerspective(camera RID, fovy_degrees Float,
 	call.Arg(frame, fovy_degrees)
 	call.Arg(frame, z_near)
 	call.Arg(frame, z_far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_perspective, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28301,7 +28415,7 @@ func (self RenderingServer) CameraSetOrthogonal(camera RID, size Float, z_near F
 	call.Arg(frame, size)
 	call.Arg(frame, z_near)
 	call.Arg(frame, z_far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_orthogonal, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28314,7 +28428,7 @@ func (self RenderingServer) CameraSetFrustum(camera RID, size Float, offset Vect
 	call.Arg(frame, offset)
 	call.Arg(frame, z_near)
 	call.Arg(frame, z_far)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_frustum, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28324,7 +28438,7 @@ func (self RenderingServer) CameraSetTransform(camera RID, transform Transform3D
 	var frame = call.New()
 	call.Arg(frame, camera)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28334,7 +28448,7 @@ func (self RenderingServer) CameraSetCullMask(camera RID, layers Int) {
 	var frame = call.New()
 	call.Arg(frame, camera)
 	call.Arg(frame, layers)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28344,7 +28458,7 @@ func (self RenderingServer) CameraSetEnvironment(camera RID, env RID) {
 	var frame = call.New()
 	call.Arg(frame, camera)
 	call.Arg(frame, env)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_environment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28354,7 +28468,7 @@ func (self RenderingServer) CameraSetCameraAttributes(camera RID, effects RID) {
 	var frame = call.New()
 	call.Arg(frame, camera)
 	call.Arg(frame, effects)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28364,7 +28478,7 @@ func (self RenderingServer) CameraSetUseVerticalAspect(camera RID, enable bool) 
 	var frame = call.New()
 	call.Arg(frame, camera)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_set_use_vertical_aspect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28384,7 +28498,7 @@ func (self RenderingServer) ViewportSetUseXr(viewport RID, use_xr bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, use_xr)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_use_xr, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28395,7 +28509,7 @@ func (self RenderingServer) ViewportSetSize(viewport RID, width Int, height Int)
 	call.Arg(frame, viewport)
 	call.Arg(frame, width)
 	call.Arg(frame, height)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28405,7 +28519,7 @@ func (self RenderingServer) ViewportSetActive(viewport RID, active bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, active)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_active, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28415,7 +28529,7 @@ func (self RenderingServer) ViewportSetParentViewport(viewport RID, parent_viewp
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, parent_viewport)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_parent_viewport, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28426,7 +28540,7 @@ func (self RenderingServer) ViewportAttachToScreen(viewport RID, rect Rect2, scr
 	call.Arg(frame, viewport)
 	call.Arg(frame, rect)
 	call.Arg(frame, screen)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_attach_to_screen, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28436,7 +28550,7 @@ func (self RenderingServer) ViewportSetRenderDirectToScreen(viewport RID, enable
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_render_direct_to_screen, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28446,7 +28560,7 @@ func (self RenderingServer) ViewportSetCanvasCullMask(viewport RID, canvas_cull_
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, canvas_cull_mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28456,7 +28570,7 @@ func (self RenderingServer) ViewportSetScaling3dMode(viewport RID, scaling_3d_mo
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, scaling_3d_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28466,7 +28580,7 @@ func (self RenderingServer) ViewportSetScaling3dScale(viewport RID, scale Float)
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28476,7 +28590,7 @@ func (self RenderingServer) ViewportSetFsrSharpness(viewport RID, sharpness Floa
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, sharpness)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28486,7 +28600,7 @@ func (self RenderingServer) ViewportSetTextureMipmapBias(viewport RID, mipmap_bi
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, mipmap_bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28496,7 +28610,7 @@ func (self RenderingServer) ViewportSetUpdateMode(viewport RID, update_mode Rend
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, update_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_update_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28506,7 +28620,7 @@ func (self RenderingServer) ViewportSetClearMode(viewport RID, clear_mode Render
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, clear_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_clear_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28538,7 +28652,7 @@ func (self RenderingServer) ViewportSetDisable3d(viewport RID, disable bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, disable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_disable_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28548,7 +28662,7 @@ func (self RenderingServer) ViewportSetDisable2d(viewport RID, disable bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, disable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_disable_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28558,7 +28672,7 @@ func (self RenderingServer) ViewportSetEnvironmentMode(viewport RID, mode Render
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_environment_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28568,7 +28682,7 @@ func (self RenderingServer) ViewportAttachCamera(viewport RID, camera RID) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, camera)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_attach_camera, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28578,7 +28692,7 @@ func (self RenderingServer) ViewportSetScenario(viewport RID, scenario RID) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, scenario)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_scenario, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28588,7 +28702,7 @@ func (self RenderingServer) ViewportAttachCanvas(viewport RID, canvas RID) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, canvas)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_attach_canvas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28598,7 +28712,7 @@ func (self RenderingServer) ViewportRemoveCanvas(viewport RID, canvas RID) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, canvas)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_remove_canvas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28608,7 +28722,7 @@ func (self RenderingServer) ViewportSetSnap2dTransformsToPixel(viewport RID, ena
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_snap_2d_transforms_to_pixel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28618,7 +28732,7 @@ func (self RenderingServer) ViewportSetSnap2dVerticesToPixel(viewport RID, enabl
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_snap_2d_vertices_to_pixel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28628,7 +28742,7 @@ func (self RenderingServer) ViewportSetDefaultCanvasItemTextureFilter(viewport R
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28638,7 +28752,7 @@ func (self RenderingServer) ViewportSetDefaultCanvasItemTextureRepeat(viewport R
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, repeat)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28649,7 +28763,7 @@ func (self RenderingServer) ViewportSetCanvasTransform(viewport RID, canvas RID,
 	call.Arg(frame, viewport)
 	call.Arg(frame, canvas)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_canvas_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28661,7 +28775,7 @@ func (self RenderingServer) ViewportSetCanvasStacking(viewport RID, canvas RID, 
 	call.Arg(frame, canvas)
 	call.Arg(frame, layer)
 	call.Arg(frame, sublayer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_canvas_stacking, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28671,7 +28785,7 @@ func (self RenderingServer) ViewportSetTransparentBackground(viewport RID, enabl
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_transparent_background, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28681,7 +28795,7 @@ func (self RenderingServer) ViewportSetGlobalCanvasTransform(viewport RID, trans
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28692,7 +28806,7 @@ func (self RenderingServer) ViewportSetSdfOversizeAndScale(viewport RID, oversiz
 	call.Arg(frame, viewport)
 	call.Arg(frame, oversize)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_sdf_oversize_and_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28703,7 +28817,7 @@ func (self RenderingServer) ViewportSetPositionalShadowAtlasSize(viewport RID, s
 	call.Arg(frame, viewport)
 	call.Arg(frame, size)
 	call.Arg(frame, use_16_bits)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28714,7 +28828,7 @@ func (self RenderingServer) ViewportSetPositionalShadowAtlasQuadrantSubdivision(
 	call.Arg(frame, viewport)
 	call.Arg(frame, quadrant)
 	call.Arg(frame, subdivision)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_quadrant_subdivision, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28724,7 +28838,7 @@ func (self RenderingServer) ViewportSetMsaa3d(viewport RID, msaa RenderingServer
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, msaa)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_msaa_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28734,7 +28848,7 @@ func (self RenderingServer) ViewportSetMsaa2d(viewport RID, msaa RenderingServer
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, msaa)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_msaa_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28744,7 +28858,7 @@ func (self RenderingServer) ViewportSetUseHdr2d(viewport RID, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_use_hdr_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28754,7 +28868,7 @@ func (self RenderingServer) ViewportSetScreenSpaceAa(viewport RID, mode Renderin
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_screen_space_aa, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28764,7 +28878,7 @@ func (self RenderingServer) ViewportSetUseTaa(viewport RID, enable bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_use_taa, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28774,7 +28888,7 @@ func (self RenderingServer) ViewportSetUseDebanding(viewport RID, enable bool) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_use_debanding, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28784,7 +28898,7 @@ func (self RenderingServer) ViewportSetUseOcclusionCulling(viewport RID, enable 
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_use_occlusion_culling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28793,7 +28907,7 @@ func (self RenderingServer) ViewportSetOcclusionRaysPerThread(rays_per_thread In
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, rays_per_thread)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_occlusion_rays_per_thread, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28802,7 +28916,7 @@ func (self RenderingServer) ViewportSetOcclusionCullingBuildQuality(quality Rend
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quality)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_occlusion_culling_build_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28825,7 +28939,7 @@ func (self RenderingServer) ViewportSetDebugDraw(viewport RID, draw RenderingSer
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, draw)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_debug_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28835,7 +28949,7 @@ func (self RenderingServer) ViewportSetMeasureRenderTime(viewport RID, enable bo
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_measure_render_time, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28867,7 +28981,7 @@ func (self RenderingServer) ViewportSetVrsMode(viewport RID, mode RenderingServe
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_vrs_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28877,7 +28991,7 @@ func (self RenderingServer) ViewportSetVrsTexture(viewport RID, texture RID) {
 	var frame = call.New()
 	call.Arg(frame, viewport)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_viewport_set_vrs_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28897,7 +29011,7 @@ func (self RenderingServer) SkySetRadianceSize(sky RID, radiance_size Int) {
 	var frame = call.New()
 	call.Arg(frame, sky)
 	call.Arg(frame, radiance_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_sky_set_radiance_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28907,7 +29021,7 @@ func (self RenderingServer) SkySetMode(sky RID, mode RenderingServerSkyMode) {
 	var frame = call.New()
 	call.Arg(frame, sky)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_sky_set_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28917,7 +29031,7 @@ func (self RenderingServer) SkySetMaterial(sky RID, material RID) {
 	var frame = call.New()
 	call.Arg(frame, sky)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_sky_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28951,7 +29065,7 @@ func (self RenderingServer) EnvironmentSetBackground(env RID, bg RenderingServer
 	var frame = call.New()
 	call.Arg(frame, env)
 	call.Arg(frame, bg)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_background, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28961,7 +29075,7 @@ func (self RenderingServer) EnvironmentSetSky(env RID, sky RID) {
 	var frame = call.New()
 	call.Arg(frame, env)
 	call.Arg(frame, sky)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sky, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28971,7 +29085,7 @@ func (self RenderingServer) EnvironmentSetSkyCustomFov(env RID, scale Float) {
 	var frame = call.New()
 	call.Arg(frame, env)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sky_custom_fov, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28981,7 +29095,7 @@ func (self RenderingServer) EnvironmentSetSkyOrientation(env RID, orientation Ba
 	var frame = call.New()
 	call.Arg(frame, env)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sky_orientation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -28991,7 +29105,7 @@ func (self RenderingServer) EnvironmentSetBgColor(env RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, env)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_bg_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29002,7 +29116,7 @@ func (self RenderingServer) EnvironmentSetBgEnergy(env RID, multiplier Float, ex
 	call.Arg(frame, env)
 	call.Arg(frame, multiplier)
 	call.Arg(frame, exposure_value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_bg_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29012,7 +29126,7 @@ func (self RenderingServer) EnvironmentSetCanvasMaxLayer(env RID, max_layer Int)
 	var frame = call.New()
 	call.Arg(frame, env)
 	call.Arg(frame, max_layer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_canvas_max_layer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29026,7 +29140,7 @@ func (self RenderingServer) EnvironmentSetAmbientLight(env RID, color Color, amb
 	call.Arg(frame, energy)
 	call.Arg(frame, sky_contibution)
 	call.Arg(frame, reflection_source)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_ambient_light, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29047,7 +29161,7 @@ func (self RenderingServer) EnvironmentSetGlow(env RID, enable bool, levels Pack
 	call.Arg(frame, hdr_luminance_cap)
 	call.Arg(frame, glow_map_strength)
 	call.Arg(frame, glow_map)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_glow, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29059,7 +29173,7 @@ func (self RenderingServer) EnvironmentSetTonemap(env RID, tone_mapper Rendering
 	call.Arg(frame, tone_mapper)
 	call.Arg(frame, exposure)
 	call.Arg(frame, white)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_tonemap, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29074,7 +29188,7 @@ func (self RenderingServer) EnvironmentSetAdjustment(env RID, enable bool, brigh
 	call.Arg(frame, saturation)
 	call.Arg(frame, use_1d_color_correction)
 	call.Arg(frame, color_correction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_adjustment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29088,7 +29202,7 @@ func (self RenderingServer) EnvironmentSetSsr(env RID, enable bool, max_steps In
 	call.Arg(frame, fade_in)
 	call.Arg(frame, fade_out)
 	call.Arg(frame, depth_tolerance)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_ssr, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29106,7 +29220,7 @@ func (self RenderingServer) EnvironmentSetSsao(env RID, enable bool, radius Floa
 	call.Arg(frame, sharpness)
 	call.Arg(frame, light_affect)
 	call.Arg(frame, ao_channel_affect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_ssao, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29124,7 +29238,7 @@ func (self RenderingServer) EnvironmentSetFog(env RID, enable bool, light_color 
 	call.Arg(frame, height_density)
 	call.Arg(frame, aerial_perspective)
 	call.Arg(frame, sky_affect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_fog, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29143,7 +29257,7 @@ func (self RenderingServer) EnvironmentSetSdfgi(env RID, enable bool, cascades I
 	call.Arg(frame, energy)
 	call.Arg(frame, normal_bias)
 	call.Arg(frame, probe_bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sdfgi, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29165,7 +29279,7 @@ func (self RenderingServer) EnvironmentSetVolumetricFog(env RID, enable bool, de
 	call.Arg(frame, temporal_reprojection_amount)
 	call.Arg(frame, ambient_inject)
 	call.Arg(frame, sky_affect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_volumetric_fog, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29174,7 +29288,7 @@ func (self RenderingServer) EnvironmentGlowSetUseBicubicUpscale(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_glow_set_use_bicubic_upscale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29183,7 +29297,7 @@ func (self RenderingServer) EnvironmentSetSsrRoughnessQuality(quality RenderingS
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quality)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_ssr_roughness_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29197,7 +29311,7 @@ func (self RenderingServer) EnvironmentSetSsaoQuality(quality RenderingServerEnv
 	call.Arg(frame, blur_passes)
 	call.Arg(frame, fadeout_from)
 	call.Arg(frame, fadeout_to)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_ssao_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29211,7 +29325,7 @@ func (self RenderingServer) EnvironmentSetSsilQuality(quality RenderingServerEnv
 	call.Arg(frame, blur_passes)
 	call.Arg(frame, fadeout_from)
 	call.Arg(frame, fadeout_to)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_ssil_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29220,7 +29334,7 @@ func (self RenderingServer) EnvironmentSetSdfgiRayCount(ray_count RenderingServe
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, ray_count)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sdfgi_ray_count, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29229,7 +29343,7 @@ func (self RenderingServer) EnvironmentSetSdfgiFramesToConverge(frames Rendering
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, frames)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_converge, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29238,7 +29352,7 @@ func (self RenderingServer) EnvironmentSetSdfgiFramesToUpdateLight(frames Render
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, frames)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_update_light, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29248,7 +29362,7 @@ func (self RenderingServer) EnvironmentSetVolumetricFogVolumeSize(size Int, dept
 	var frame = call.New()
 	call.Arg(frame, size)
 	call.Arg(frame, depth)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_volumetric_fog_volume_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29257,7 +29371,7 @@ func (self RenderingServer) EnvironmentSetVolumetricFogFilterActive(active bool)
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, active)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_environment_set_volumetric_fog_filter_active, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29281,7 +29395,7 @@ func (self RenderingServer) ScreenSpaceRoughnessLimiterSetActive(enable bool, am
 	call.Arg(frame, enable)
 	call.Arg(frame, amount)
 	call.Arg(frame, limit)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_screen_space_roughness_limiter_set_active, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29290,7 +29404,7 @@ func (self RenderingServer) SubSurfaceScatteringSetQuality(quality RenderingServ
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, quality)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_sub_surface_scattering_set_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29300,7 +29414,7 @@ func (self RenderingServer) SubSurfaceScatteringSetScale(scale Float, depth_scal
 	var frame = call.New()
 	call.Arg(frame, scale)
 	call.Arg(frame, depth_scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_sub_surface_scattering_set_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29320,7 +29434,7 @@ func (self RenderingServer) CameraAttributesSetDofBlurQuality(quality RenderingS
 	var frame = call.New()
 	call.Arg(frame, quality)
 	call.Arg(frame, use_jitter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_quality, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29329,7 +29443,7 @@ func (self RenderingServer) CameraAttributesSetDofBlurBokehShape(shape Rendering
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, shape)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_bokeh_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29345,7 +29459,7 @@ func (self RenderingServer) CameraAttributesSetDofBlur(camera_attributes RID, fa
 	call.Arg(frame, near_distance)
 	call.Arg(frame, near_transition)
 	call.Arg(frame, amount)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29356,7 +29470,7 @@ func (self RenderingServer) CameraAttributesSetExposure(camera_attributes RID, m
 	call.Arg(frame, camera_attributes)
 	call.Arg(frame, multiplier)
 	call.Arg(frame, normalization)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_attributes_set_exposure, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29370,7 +29484,7 @@ func (self RenderingServer) CameraAttributesSetAutoExposure(camera_attributes RI
 	call.Arg(frame, max_sensitivity)
 	call.Arg(frame, speed)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_camera_attributes_set_auto_exposure, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29390,7 +29504,7 @@ func (self RenderingServer) ScenarioSetEnvironment(scenario RID, environment RID
 	var frame = call.New()
 	call.Arg(frame, scenario)
 	call.Arg(frame, environment)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_scenario_set_environment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29400,7 +29514,7 @@ func (self RenderingServer) ScenarioSetFallbackEnvironment(scenario RID, environ
 	var frame = call.New()
 	call.Arg(frame, scenario)
 	call.Arg(frame, environment)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_scenario_set_fallback_environment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29410,7 +29524,7 @@ func (self RenderingServer) ScenarioSetCameraAttributes(scenario RID, effects RI
 	var frame = call.New()
 	call.Arg(frame, scenario)
 	call.Arg(frame, effects)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_scenario_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29442,7 +29556,7 @@ func (self RenderingServer) InstanceSetBase(instance RID, base RID) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, base)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_base, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29452,7 +29566,7 @@ func (self RenderingServer) InstanceSetScenario(instance RID, scenario RID) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, scenario)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_scenario, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29462,7 +29576,7 @@ func (self RenderingServer) InstanceSetLayerMask(instance RID, mask Int) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_layer_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29473,7 +29587,7 @@ func (self RenderingServer) InstanceSetPivotData(instance RID, sorting_offset Fl
 	call.Arg(frame, instance)
 	call.Arg(frame, sorting_offset)
 	call.Arg(frame, use_aabb_center)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_pivot_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29483,7 +29597,7 @@ func (self RenderingServer) InstanceSetTransform(instance RID, transform Transfo
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29493,7 +29607,7 @@ func (self RenderingServer) InstanceAttachObjectInstanceId(instance RID, id Int)
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, id)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29504,7 +29618,7 @@ func (self RenderingServer) InstanceSetBlendShapeWeight(instance RID, shape Int,
 	call.Arg(frame, instance)
 	call.Arg(frame, shape)
 	call.Arg(frame, weight)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_blend_shape_weight, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29515,7 +29629,7 @@ func (self RenderingServer) InstanceSetSurfaceOverrideMaterial(instance RID, sur
 	call.Arg(frame, instance)
 	call.Arg(frame, surface)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_surface_override_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29525,7 +29639,7 @@ func (self RenderingServer) InstanceSetVisible(instance RID, visible bool) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29535,7 +29649,7 @@ func (self RenderingServer) InstanceGeometrySetTransparency(instance RID, transp
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, transparency)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_transparency, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29545,7 +29659,7 @@ func (self RenderingServer) InstanceSetCustomAabb(instance RID, aabb AABB) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, aabb)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29555,7 +29669,7 @@ func (self RenderingServer) InstanceAttachSkeleton(instance RID, skeleton RID) {
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, skeleton)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_attach_skeleton, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29565,7 +29679,7 @@ func (self RenderingServer) InstanceSetExtraVisibilityMargin(instance RID, margi
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_extra_visibility_margin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29575,7 +29689,7 @@ func (self RenderingServer) InstanceSetVisibilityParent(instance RID, parent RID
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, parent)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29585,7 +29699,7 @@ func (self RenderingServer) InstanceSetIgnoreCulling(instance RID, enabled bool)
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_set_ignore_culling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29596,7 +29710,7 @@ func (self RenderingServer) InstanceGeometrySetFlag(instance RID, flag Rendering
 	call.Arg(frame, instance)
 	call.Arg(frame, flag)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_flag, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29606,7 +29720,7 @@ func (self RenderingServer) InstanceGeometrySetCastShadowsSetting(instance RID, 
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, shadow_casting_setting)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_cast_shadows_setting, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29616,7 +29730,7 @@ func (self RenderingServer) InstanceGeometrySetMaterialOverride(instance RID, ma
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_material_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29626,7 +29740,7 @@ func (self RenderingServer) InstanceGeometrySetMaterialOverlay(instance RID, mat
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_material_overlay, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29640,7 +29754,7 @@ func (self RenderingServer) InstanceGeometrySetVisibilityRange(instance RID, min
 	call.Arg(frame, min_margin)
 	call.Arg(frame, max_margin)
 	call.Arg(frame, fade_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_visibility_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29652,7 +29766,7 @@ func (self RenderingServer) InstanceGeometrySetLightmap(instance RID, lightmap R
 	call.Arg(frame, lightmap)
 	call.Arg(frame, lightmap_uv_scale)
 	call.Arg(frame, lightmap_slice)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_lightmap, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29662,7 +29776,7 @@ func (self RenderingServer) InstanceGeometrySetLodBias(instance RID, lod_bias Fl
 	var frame = call.New()
 	call.Arg(frame, instance)
 	call.Arg(frame, lod_bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_lod_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29673,7 +29787,7 @@ func (self RenderingServer) InstanceGeometrySetShaderParameter(instance RID, par
 	call.Arg(frame, instance)
 	call.Arg(frame, parameter.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29779,7 +29893,7 @@ func (self RenderingServer) CanvasSetItemMirroring(canvas RID, item RID, mirrori
 	call.Arg(frame, canvas)
 	call.Arg(frame, item)
 	call.Arg(frame, mirroring)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_set_item_mirroring, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29789,7 +29903,7 @@ func (self RenderingServer) CanvasSetModulate(canvas RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, canvas)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_set_modulate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29798,7 +29912,7 @@ func (self RenderingServer) CanvasSetDisableScale(disable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, disable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_set_disable_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29819,7 +29933,7 @@ func (self RenderingServer) CanvasTextureSetChannel(canvas_texture RID, channel 
 	call.Arg(frame, canvas_texture)
 	call.Arg(frame, channel)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_texture_set_channel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29830,7 +29944,7 @@ func (self RenderingServer) CanvasTextureSetShadingParameters(canvas_texture RID
 	call.Arg(frame, canvas_texture)
 	call.Arg(frame, base_color)
 	call.Arg(frame, shininess)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_texture_set_shading_parameters, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29840,7 +29954,7 @@ func (self RenderingServer) CanvasTextureSetTextureFilter(canvas_texture RID, fi
 	var frame = call.New()
 	call.Arg(frame, canvas_texture)
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_texture_set_texture_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29850,7 +29964,7 @@ func (self RenderingServer) CanvasTextureSetTextureRepeat(canvas_texture RID, re
 	var frame = call.New()
 	call.Arg(frame, canvas_texture)
 	call.Arg(frame, repeat)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_texture_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29870,7 +29984,7 @@ func (self RenderingServer) CanvasItemSetParent(item RID, parent RID) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, parent)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29880,7 +29994,7 @@ func (self RenderingServer) CanvasItemSetDefaultTextureFilter(item RID, filter R
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_default_texture_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29890,7 +30004,7 @@ func (self RenderingServer) CanvasItemSetDefaultTextureRepeat(item RID, repeat R
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, repeat)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_default_texture_repeat, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29900,7 +30014,7 @@ func (self RenderingServer) CanvasItemSetVisible(item RID, visible bool) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29910,7 +30024,7 @@ func (self RenderingServer) CanvasItemSetLightMask(item RID, mask Int) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_light_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29920,7 +30034,7 @@ func (self RenderingServer) CanvasItemSetVisibilityLayer(item RID, visibility_la
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, visibility_layer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29930,7 +30044,7 @@ func (self RenderingServer) CanvasItemSetTransform(item RID, transform Transform
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29940,7 +30054,7 @@ func (self RenderingServer) CanvasItemSetClip(item RID, clip bool) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, clip)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_clip, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29950,7 +30064,7 @@ func (self RenderingServer) CanvasItemSetDistanceFieldMode(item RID, enabled boo
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_distance_field_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29961,7 +30075,7 @@ func (self RenderingServer) CanvasItemSetCustomRect(item RID, use_custom_rect bo
 	call.Arg(frame, item)
 	call.Arg(frame, use_custom_rect)
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_custom_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29971,7 +30085,7 @@ func (self RenderingServer) CanvasItemSetModulate(item RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_modulate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29981,7 +30095,7 @@ func (self RenderingServer) CanvasItemSetSelfModulate(item RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_self_modulate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -29991,7 +30105,7 @@ func (self RenderingServer) CanvasItemSetDrawBehindParent(item RID, enabled bool
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30005,7 +30119,7 @@ func (self RenderingServer) CanvasItemAddLine(item RID, from Vector2, to Vector2
 	call.Arg(frame, color)
 	call.Arg(frame, width)
 	call.Arg(frame, antialiased)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_line, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30018,7 +30132,7 @@ func (self RenderingServer) CanvasItemAddPolyline(item RID, points PackedVector2
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, width)
 	call.Arg(frame, antialiased)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_polyline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30030,7 +30144,7 @@ func (self RenderingServer) CanvasItemAddMultiline(item RID, points PackedVector
 	call.Arg(frame, points.Pointer())
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, width)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_multiline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30041,7 +30155,7 @@ func (self RenderingServer) CanvasItemAddRect(item RID, rect Rect2, color Color)
 	call.Arg(frame, item)
 	call.Arg(frame, rect)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30053,7 +30167,7 @@ func (self RenderingServer) CanvasItemAddCircle(item RID, pos Vector2, radius Fl
 	call.Arg(frame, pos)
 	call.Arg(frame, radius)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_circle, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30067,7 +30181,7 @@ func (self RenderingServer) CanvasItemAddTextureRect(item RID, rect Rect2, textu
 	call.Arg(frame, tile)
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_texture_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30083,7 +30197,7 @@ func (self RenderingServer) CanvasItemAddMsdfTextureRectRegion(item RID, rect Re
 	call.Arg(frame, outline_size)
 	call.Arg(frame, px_range)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30096,7 +30210,7 @@ func (self RenderingServer) CanvasItemAddLcdTextureRectRegion(item RID, rect Rec
 	call.Arg(frame, texture)
 	call.Arg(frame, src_rect)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30111,7 +30225,7 @@ func (self RenderingServer) CanvasItemAddTextureRectRegion(item RID, rect Rect2,
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
 	call.Arg(frame, clip_uv)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_texture_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30129,7 +30243,7 @@ func (self RenderingServer) CanvasItemAddNinePatch(item RID, rect Rect2, source 
 	call.Arg(frame, y_axis_mode)
 	call.Arg(frame, draw_center)
 	call.Arg(frame, modulate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_nine_patch, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30142,7 +30256,7 @@ func (self RenderingServer) CanvasItemAddPrimitive(item RID, points PackedVector
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, uvs.Pointer())
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_primitive, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30155,7 +30269,7 @@ func (self RenderingServer) CanvasItemAddPolygon(item RID, points PackedVector2A
 	call.Arg(frame, colors.Pointer())
 	call.Arg(frame, uvs.Pointer())
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_polygon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30172,7 +30286,7 @@ func (self RenderingServer) CanvasItemAddTriangleArray(item RID, indices PackedI
 	call.Arg(frame, weights.Pointer())
 	call.Arg(frame, texture)
 	call.Arg(frame, count)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_triangle_array, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30185,7 +30299,7 @@ func (self RenderingServer) CanvasItemAddMesh(item RID, mesh RID, transform Tran
 	call.Arg(frame, transform)
 	call.Arg(frame, modulate)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_mesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30196,7 +30310,7 @@ func (self RenderingServer) CanvasItemAddMultimesh(item RID, mesh RID, texture R
 	call.Arg(frame, item)
 	call.Arg(frame, mesh)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_multimesh, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30207,7 +30321,7 @@ func (self RenderingServer) CanvasItemAddParticles(item RID, particles RID, text
 	call.Arg(frame, item)
 	call.Arg(frame, particles)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_particles, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30217,7 +30331,7 @@ func (self RenderingServer) CanvasItemAddSetTransform(item RID, transform Transf
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30227,7 +30341,7 @@ func (self RenderingServer) CanvasItemAddClipIgnore(item RID, ignore bool) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, ignore)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_clip_ignore, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30240,7 +30354,7 @@ func (self RenderingServer) CanvasItemAddAnimationSlice(item RID, animation_leng
 	call.Arg(frame, slice_begin)
 	call.Arg(frame, slice_end)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_add_animation_slice, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30250,7 +30364,7 @@ func (self RenderingServer) CanvasItemSetSortChildrenByY(item RID, enabled bool)
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_sort_children_by_y, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30260,7 +30374,7 @@ func (self RenderingServer) CanvasItemSetZIndex(item RID, z_index Int) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, z_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_z_index, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30270,7 +30384,7 @@ func (self RenderingServer) CanvasItemSetZAsRelativeToParent(item RID, enabled b
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_z_as_relative_to_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30281,7 +30395,7 @@ func (self RenderingServer) CanvasItemSetCopyToBackbuffer(item RID, enabled bool
 	call.Arg(frame, item)
 	call.Arg(frame, enabled)
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_copy_to_backbuffer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30290,7 +30404,7 @@ func (self RenderingServer) CanvasItemClear(item RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, item)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_clear, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30300,7 +30414,7 @@ func (self RenderingServer) CanvasItemSetDrawIndex(item RID, index Int) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_draw_index, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30310,7 +30424,7 @@ func (self RenderingServer) CanvasItemSetMaterial(item RID, material RID) {
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, material)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30320,7 +30434,7 @@ func (self RenderingServer) CanvasItemSetUseParentMaterial(item RID, enabled boo
 	var frame = call.New()
 	call.Arg(frame, item)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30333,7 +30447,7 @@ func (self RenderingServer) CanvasItemSetVisibilityNotifier(item RID, enable boo
 	call.Arg(frame, area)
 	call.Arg(frame, enter_callable.Pointer())
 	call.Arg(frame, exit_callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30347,7 +30461,7 @@ func (self RenderingServer) CanvasItemSetCanvasGroupMode(item RID, mode Renderin
 	call.Arg(frame, fit_empty)
 	call.Arg(frame, fit_margin)
 	call.Arg(frame, blur_mipmaps)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_item_set_canvas_group_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30367,7 +30481,7 @@ func (self RenderingServer) CanvasLightAttachToCanvas(light RID, canvas RID) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, canvas)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_attach_to_canvas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30377,7 +30491,7 @@ func (self RenderingServer) CanvasLightSetEnabled(light RID, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30387,7 +30501,7 @@ func (self RenderingServer) CanvasLightSetTextureScale(light RID, scale Float) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_texture_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30397,7 +30511,7 @@ func (self RenderingServer) CanvasLightSetTransform(light RID, transform Transfo
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30407,7 +30521,7 @@ func (self RenderingServer) CanvasLightSetTexture(light RID, texture RID) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, texture)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30417,7 +30531,7 @@ func (self RenderingServer) CanvasLightSetTextureOffset(light RID, offset Vector
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_texture_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30427,7 +30541,7 @@ func (self RenderingServer) CanvasLightSetColor(light RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30437,7 +30551,7 @@ func (self RenderingServer) CanvasLightSetHeight(light RID, height Float) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, height)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_height, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30447,7 +30561,7 @@ func (self RenderingServer) CanvasLightSetEnergy(light RID, energy Float) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, energy)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_energy, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30458,7 +30572,7 @@ func (self RenderingServer) CanvasLightSetZRange(light RID, min_z Int, max_z Int
 	call.Arg(frame, light)
 	call.Arg(frame, min_z)
 	call.Arg(frame, max_z)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_z_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30469,7 +30583,7 @@ func (self RenderingServer) CanvasLightSetLayerRange(light RID, min_layer Int, m
 	call.Arg(frame, light)
 	call.Arg(frame, min_layer)
 	call.Arg(frame, max_layer)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_layer_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30479,7 +30593,7 @@ func (self RenderingServer) CanvasLightSetItemCullMask(light RID, mask Int) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_item_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30489,7 +30603,7 @@ func (self RenderingServer) CanvasLightSetItemShadowCullMask(light RID, mask Int
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_item_shadow_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30499,7 +30613,7 @@ func (self RenderingServer) CanvasLightSetMode(light RID, mode RenderingServerCa
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30509,7 +30623,7 @@ func (self RenderingServer) CanvasLightSetShadowEnabled(light RID, enabled bool)
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_shadow_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30519,7 +30633,7 @@ func (self RenderingServer) CanvasLightSetShadowFilter(light RID, filter Renderi
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_shadow_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30529,7 +30643,7 @@ func (self RenderingServer) CanvasLightSetShadowColor(light RID, color Color) {
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_shadow_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30539,7 +30653,7 @@ func (self RenderingServer) CanvasLightSetShadowSmooth(light RID, smooth Float) 
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, smooth)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_shadow_smooth, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30549,7 +30663,7 @@ func (self RenderingServer) CanvasLightSetBlendMode(light RID, mode RenderingSer
 	var frame = call.New()
 	call.Arg(frame, light)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_set_blend_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30569,7 +30683,7 @@ func (self RenderingServer) CanvasLightOccluderAttachToCanvas(occluder RID, canv
 	var frame = call.New()
 	call.Arg(frame, occluder)
 	call.Arg(frame, canvas)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_occluder_attach_to_canvas, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30579,7 +30693,7 @@ func (self RenderingServer) CanvasLightOccluderSetEnabled(occluder RID, enabled 
 	var frame = call.New()
 	call.Arg(frame, occluder)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_occluder_set_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30589,7 +30703,7 @@ func (self RenderingServer) CanvasLightOccluderSetPolygon(occluder RID, polygon 
 	var frame = call.New()
 	call.Arg(frame, occluder)
 	call.Arg(frame, polygon)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_occluder_set_polygon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30599,7 +30713,7 @@ func (self RenderingServer) CanvasLightOccluderSetAsSdfCollision(occluder RID, e
 	var frame = call.New()
 	call.Arg(frame, occluder)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_occluder_set_as_sdf_collision, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30609,7 +30723,7 @@ func (self RenderingServer) CanvasLightOccluderSetTransform(occluder RID, transf
 	var frame = call.New()
 	call.Arg(frame, occluder)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_occluder_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30619,7 +30733,7 @@ func (self RenderingServer) CanvasLightOccluderSetLightMask(occluder RID, mask I
 	var frame = call.New()
 	call.Arg(frame, occluder)
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_light_occluder_set_light_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30640,7 +30754,7 @@ func (self RenderingServer) CanvasOccluderPolygonSetShape(occluder_polygon RID, 
 	call.Arg(frame, occluder_polygon)
 	call.Arg(frame, shape.Pointer())
 	call.Arg(frame, closed)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30650,7 +30764,7 @@ func (self RenderingServer) CanvasOccluderPolygonSetCullMode(occluder_polygon RI
 	var frame = call.New()
 	call.Arg(frame, occluder_polygon)
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_cull_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30659,7 +30773,7 @@ func (self RenderingServer) CanvasSetShadowTextureSize(size Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_canvas_set_shadow_texture_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30670,7 +30784,7 @@ func (self RenderingServer) GlobalShaderParameterAdd(name StringName, atype Rend
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, atype)
 	call.Arg(frame, default_value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_add, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30679,7 +30793,7 @@ func (self RenderingServer) GlobalShaderParameterRemove(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_remove, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30699,7 +30813,7 @@ func (self RenderingServer) GlobalShaderParameterSet(name StringName, value Vari
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_set, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30709,7 +30823,7 @@ func (self RenderingServer) GlobalShaderParameterSetOverride(name StringName, va
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_global_shader_parameter_set_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30740,7 +30854,7 @@ func (self RenderingServer) FreeRid(rid RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, rid)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30749,7 +30863,7 @@ func (self RenderingServer) RequestFrameDrawnCallback(callable Callable) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_request_frame_drawn_callback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30865,7 +30979,7 @@ func (self RenderingServer) SetBootImage(image Image, color Color, scale bool, u
 	call.Arg(frame, color)
 	call.Arg(frame, scale)
 	call.Arg(frame, use_filter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_set_boot_image, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30884,7 +30998,7 @@ func (self RenderingServer) SetDefaultClearColor(color Color) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_set_default_clear_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30915,7 +31029,7 @@ func (self RenderingServer) SetDebugGenerateWireframes(generate bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, generate)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_set_debug_generate_wireframes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30934,7 +31048,7 @@ func (self RenderingServer) SetRenderLoopEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_set_render_loop_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30952,7 +31066,7 @@ func (self RenderingServer) GetFrameSetupTimeCpu() Float {
 func (self RenderingServer) ForceSync() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_force_sync, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30962,7 +31076,7 @@ func (self RenderingServer) ForceDraw(swap_buffers bool, frame_step Float) {
 	var frame = call.New()
 	call.Arg(frame, swap_buffers)
 	call.Arg(frame, frame_step)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_force_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -30991,7 +31105,7 @@ func (self RenderingServer) CallOnRenderThread(callable Callable) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, callable.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.RenderingServer.Bind_call_on_render_thread, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31023,7 +31137,7 @@ func (self Resource) SetPath(path String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Resource.Bind_set_path, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31032,7 +31146,7 @@ func (self Resource) TakeOverPath(path String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Resource.Bind_take_over_path, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31051,7 +31165,7 @@ func (self Resource) SetName(name String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Resource.Bind_set_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31080,7 +31194,7 @@ func (self Resource) SetLocalToScene(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Resource.Bind_set_local_to_scene, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31108,7 +31222,7 @@ func (self Resource) GetLocalScene() Node {
 func (self Resource) SetupLocalToScene() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Resource.Bind_setup_local_to_scene, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31116,7 +31230,7 @@ func (self Resource) SetupLocalToScene() {
 func (self Resource) EmitChanged() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Resource.Bind_emit_changed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31429,7 +31543,7 @@ func (self SceneTree) SetAutoAcceptQuit(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_auto_accept_quit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31448,7 +31562,7 @@ func (self SceneTree) SetQuitOnGoBack(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_quit_on_go_back, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31457,7 +31571,7 @@ func (self SceneTree) SetDebugCollisionsHint(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_debug_collisions_hint, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31476,7 +31590,7 @@ func (self SceneTree) SetDebugPathsHint(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_debug_paths_hint, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31495,7 +31609,7 @@ func (self SceneTree) SetDebugNavigationHint(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_debug_navigation_hint, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31514,7 +31628,7 @@ func (self SceneTree) SetEditedSceneRoot(scene Node) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scene.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_edited_scene_root, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31533,7 +31647,7 @@ func (self SceneTree) SetPause(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_pause, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31606,7 +31720,7 @@ func (self SceneTree) Quit(exit_code Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exit_code)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_quit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31615,7 +31729,7 @@ func (self SceneTree) QueueDelete(obj Object) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, obj.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_queue_delete, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31626,7 +31740,7 @@ func (self SceneTree) CallGroupFlags(flags Int, group StringName, method StringN
 	call.Arg(frame, flags)
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, method.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_call_group_flags, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31637,7 +31751,7 @@ func (self SceneTree) NotifyGroupFlags(call_flags Int, group StringName, notific
 	call.Arg(frame, call_flags)
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, notification)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_notify_group_flags, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31649,7 +31763,7 @@ func (self SceneTree) SetGroupFlags(call_flags Int, group StringName, property S
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, property.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_group_flags, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31659,7 +31773,7 @@ func (self SceneTree) CallGroup(group StringName, method StringName) {
 	var frame = call.New()
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, method.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_call_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31669,7 +31783,7 @@ func (self SceneTree) NotifyGroup(group StringName, notification Int) {
 	var frame = call.New()
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, notification)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_notify_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31680,7 +31794,7 @@ func (self SceneTree) SetGroup(group StringName, property String, value Variant)
 	call.Arg(frame, group.Pointer())
 	call.Arg(frame, property.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_group, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31711,7 +31825,7 @@ func (self SceneTree) SetCurrentScene(child_node Node) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, child_node.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_current_scene, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31761,7 +31875,7 @@ func (self SceneTree) ReloadCurrentScene() int64 {
 func (self SceneTree) UnloadCurrentScene() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_unload_current_scene, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31771,7 +31885,7 @@ func (self SceneTree) SetMultiplayer(multiplayer MultiplayerAPI, root_path NodeP
 	var frame = call.New()
 	call.Arg(frame, multiplayer.Pointer())
 	call.Arg(frame, root_path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_multiplayer, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31791,7 +31905,7 @@ func (self SceneTree) SetMultiplayerPollEnabled(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTree.Bind_set_multiplayer_poll_enabled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31825,7 +31939,7 @@ func (self SceneTreeTimer) SetTimeLeft(time Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, time)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.SceneTreeTimer.Bind_set_time_left, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -31900,7 +32014,7 @@ func (self Script) SetSourceCode(source String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, source.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Script.Bind_set_source_code, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32059,7 +32173,7 @@ func (self Shader) SetCode(code String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, code.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Shader.Bind_set_code, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32080,7 +32194,7 @@ func (self Shader) SetDefaultTextureParameter(name StringName, texture Texture2D
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, texture.Pointer())
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Shader.Bind_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32127,7 +32241,7 @@ func (self Shape3D) SetCustomSolverBias(bias Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Shape3D.Bind_set_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32146,7 +32260,7 @@ func (self Shape3D) SetMargin(margin Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, margin)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Shape3D.Bind_set_margin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32193,7 +32307,7 @@ func (self Sky) SetRadianceSize(size SkyRadianceSize) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Sky.Bind_set_radiance_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32212,7 +32326,7 @@ func (self Sky) SetProcessMode(mode SkyProcessMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Sky.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32231,7 +32345,7 @@ func (self Sky) SetMaterial(material Material) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, material.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Sky.Bind_set_material, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32324,7 +32438,7 @@ func (self StyleBox) SetContentMargin(margin Side, offset Float) {
 	var frame = call.New()
 	call.Arg(frame, margin)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.StyleBox.Bind_set_content_margin, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32333,7 +32447,7 @@ func (self StyleBox) SetContentMarginAll(offset Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.StyleBox.Bind_set_content_margin_all, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32375,7 +32489,7 @@ func (self StyleBox) Draw(canvas_item RID, rect Rect2) {
 	var frame = call.New()
 	call.Arg(frame, canvas_item)
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.StyleBox.Bind_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32581,7 +32695,7 @@ func (self TextServer) FreeRid(rid RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, rid)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32612,7 +32726,7 @@ func (self TextServer) FontSetData(font_rid RID, data PackedByteArray) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, data.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_data, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32622,7 +32736,7 @@ func (self TextServer) FontSetFaceIndex(font_rid RID, face_index Int) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, face_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_face_index, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32654,7 +32768,7 @@ func (self TextServer) FontSetStyle(font_rid RID, style TextServerFontStyle) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, style)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_style, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32675,7 +32789,7 @@ func (self TextServer) FontSetName(font_rid RID, name String) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32707,7 +32821,7 @@ func (self TextServer) FontSetStyleName(font_rid RID, name String) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_style_name, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32728,7 +32842,7 @@ func (self TextServer) FontSetWeight(font_rid RID, weight Int) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, weight)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_weight, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32749,7 +32863,7 @@ func (self TextServer) FontSetStretch(font_rid RID, weight Int) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, weight)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_stretch, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32770,7 +32884,7 @@ func (self TextServer) FontSetAntialiasing(font_rid RID, antialiasing TextServer
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, antialiasing)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_antialiasing, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32791,7 +32905,7 @@ func (self TextServer) FontSetGenerateMipmaps(font_rid RID, generate_mipmaps boo
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, generate_mipmaps)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32812,7 +32926,7 @@ func (self TextServer) FontSetMultichannelSignedDistanceField(font_rid RID, msdf
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, msdf)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_multichannel_signed_distance_field, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32833,7 +32947,7 @@ func (self TextServer) FontSetMsdfPixelRange(font_rid RID, msdf_pixel_range Int)
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, msdf_pixel_range)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32854,7 +32968,7 @@ func (self TextServer) FontSetMsdfSize(font_rid RID, msdf_size Int) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, msdf_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_msdf_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32875,7 +32989,7 @@ func (self TextServer) FontSetFixedSize(font_rid RID, fixed_size Int) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, fixed_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_fixed_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32896,7 +33010,7 @@ func (self TextServer) FontSetFixedSizeScaleMode(font_rid RID, fixed_size_scale_
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, fixed_size_scale_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_fixed_size_scale_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32917,7 +33031,7 @@ func (self TextServer) FontSetAllowSystemFallback(font_rid RID, allow_system_fal
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, allow_system_fallback)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_allow_system_fallback, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32938,7 +33052,7 @@ func (self TextServer) FontSetForceAutohinter(font_rid RID, force_autohinter boo
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, force_autohinter)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_force_autohinter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32959,7 +33073,7 @@ func (self TextServer) FontSetHinting(font_rid RID, hinting TextServerHinting) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, hinting)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_hinting, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -32980,7 +33094,7 @@ func (self TextServer) FontSetSubpixelPositioning(font_rid RID, subpixel_positio
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, subpixel_positioning)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33001,7 +33115,7 @@ func (self TextServer) FontSetEmbolden(font_rid RID, strength Float) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, strength)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_embolden, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33023,7 +33137,7 @@ func (self TextServer) FontSetSpacing(font_rid RID, spacing TextServerSpacingTyp
 	call.Arg(frame, font_rid)
 	call.Arg(frame, spacing)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_spacing, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33045,7 +33159,7 @@ func (self TextServer) FontSetTransform(font_rid RID, transform Transform2D) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, transform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33066,7 +33180,7 @@ func (self TextServer) FontSetVariationCoordinates(font_rid RID, variation_coord
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, variation_coordinates.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_variation_coordinates, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33087,7 +33201,7 @@ func (self TextServer) FontSetOversampling(font_rid RID, oversampling Float) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, oversampling)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_oversampling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33118,7 +33232,7 @@ func (self TextServer) FontClearSizeCache(font_rid RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, font_rid)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_clear_size_cache, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33128,7 +33242,7 @@ func (self TextServer) FontRemoveSizeCache(font_rid RID, size Vector2i) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_remove_size_cache, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33139,7 +33253,7 @@ func (self TextServer) FontSetAscent(font_rid RID, size Int, ascent Float) {
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, ascent)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_ascent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33162,7 +33276,7 @@ func (self TextServer) FontSetDescent(font_rid RID, size Int, descent Float) {
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, descent)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_descent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33185,7 +33299,7 @@ func (self TextServer) FontSetUnderlinePosition(font_rid RID, size Int, underlin
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, underline_position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_underline_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33208,7 +33322,7 @@ func (self TextServer) FontSetUnderlineThickness(font_rid RID, size Int, underli
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, underline_thickness)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_underline_thickness, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33231,7 +33345,7 @@ func (self TextServer) FontSetScale(font_rid RID, size Int, scale Float) {
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33265,7 +33379,7 @@ func (self TextServer) FontClearTextures(font_rid RID, size Vector2i) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_clear_textures, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33276,7 +33390,7 @@ func (self TextServer) FontRemoveTexture(font_rid RID, size Vector2i, texture_in
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, texture_index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_remove_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33288,7 +33402,7 @@ func (self TextServer) FontSetTextureImage(font_rid RID, size Vector2i, texture_
 	call.Arg(frame, size)
 	call.Arg(frame, texture_index)
 	call.Arg(frame, image.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_texture_image, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33313,7 +33427,7 @@ func (self TextServer) FontSetTextureOffsets(font_rid RID, size Vector2i, textur
 	call.Arg(frame, size)
 	call.Arg(frame, texture_index)
 	call.Arg(frame, offset.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_texture_offsets, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33348,7 +33462,7 @@ func (self TextServer) FontClearGlyphs(font_rid RID, size Vector2i) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_clear_glyphs, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33359,7 +33473,7 @@ func (self TextServer) FontRemoveGlyph(font_rid RID, size Vector2i, glyph Int) {
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, glyph)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_remove_glyph, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33384,7 +33498,7 @@ func (self TextServer) FontSetGlyphAdvance(font_rid RID, size Int, glyph Int, ad
 	call.Arg(frame, size)
 	call.Arg(frame, glyph)
 	call.Arg(frame, advance)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_glyph_advance, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33409,7 +33523,7 @@ func (self TextServer) FontSetGlyphOffset(font_rid RID, size Vector2i, glyph Int
 	call.Arg(frame, size)
 	call.Arg(frame, glyph)
 	call.Arg(frame, offset)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_glyph_offset, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33434,7 +33548,7 @@ func (self TextServer) FontSetGlyphSize(font_rid RID, size Vector2i, glyph Int, 
 	call.Arg(frame, size)
 	call.Arg(frame, glyph)
 	call.Arg(frame, gl_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_glyph_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33459,7 +33573,7 @@ func (self TextServer) FontSetGlyphUvRect(font_rid RID, size Vector2i, glyph Int
 	call.Arg(frame, size)
 	call.Arg(frame, glyph)
 	call.Arg(frame, uv_rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_glyph_uv_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33484,7 +33598,7 @@ func (self TextServer) FontSetGlyphTextureIdx(font_rid RID, size Vector2i, glyph
 	call.Arg(frame, size)
 	call.Arg(frame, glyph)
 	call.Arg(frame, texture_idx)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_glyph_texture_idx, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33545,7 +33659,7 @@ func (self TextServer) FontClearKerningMap(font_rid RID, size Int) {
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_clear_kerning_map, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33556,7 +33670,7 @@ func (self TextServer) FontRemoveKerning(font_rid RID, size Int, glyph_pair Vect
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, glyph_pair)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_remove_kerning, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33568,7 +33682,7 @@ func (self TextServer) FontSetKerning(font_rid RID, size Int, glyph_pair Vector2
 	call.Arg(frame, size)
 	call.Arg(frame, glyph_pair)
 	call.Arg(frame, kerning)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_kerning, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33643,7 +33757,7 @@ func (self TextServer) FontRenderRange(font_rid RID, size Vector2i, start Int, e
 	call.Arg(frame, size)
 	call.Arg(frame, start)
 	call.Arg(frame, end)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_render_range, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33654,7 +33768,7 @@ func (self TextServer) FontRenderGlyph(font_rid RID, size Vector2i, index Int) {
 	call.Arg(frame, font_rid)
 	call.Arg(frame, size)
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_render_glyph, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33668,7 +33782,7 @@ func (self TextServer) FontDrawGlyph(font_rid RID, canvas RID, size Int, pos Vec
 	call.Arg(frame, pos)
 	call.Arg(frame, index)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_draw_glyph, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33683,7 +33797,7 @@ func (self TextServer) FontDrawGlyphOutline(font_rid RID, canvas RID, size Int, 
 	call.Arg(frame, pos)
 	call.Arg(frame, index)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_draw_glyph_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33706,7 +33820,7 @@ func (self TextServer) FontSetLanguageSupportOverride(font_rid RID, language Str
 	call.Arg(frame, font_rid)
 	call.Arg(frame, language.Pointer())
 	call.Arg(frame, supported)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_language_support_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33728,7 +33842,7 @@ func (self TextServer) FontRemoveLanguageSupportOverride(font_rid RID, language 
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, language.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_remove_language_support_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33762,7 +33876,7 @@ func (self TextServer) FontSetScriptSupportOverride(font_rid RID, script String,
 	call.Arg(frame, font_rid)
 	call.Arg(frame, script.Pointer())
 	call.Arg(frame, supported)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_script_support_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33784,7 +33898,7 @@ func (self TextServer) FontRemoveScriptSupportOverride(font_rid RID, script Stri
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, script.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_remove_script_support_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33805,7 +33919,7 @@ func (self TextServer) FontSetOpentypeFeatureOverrides(font_rid RID, overrides D
 	var frame = call.New()
 	call.Arg(frame, font_rid)
 	call.Arg(frame, overrides.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33857,7 +33971,7 @@ func (self TextServer) FontSetGlobalOversampling(oversampling Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, oversampling)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_font_set_global_oversampling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33882,7 +33996,7 @@ func (self TextServer) DrawHexCodeBox(canvas RID, size Int, pos Vector2, index I
 	call.Arg(frame, pos)
 	call.Arg(frame, index)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_draw_hex_code_box, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33903,7 +34017,7 @@ func (self TextServer) ShapedTextClear(rid RID) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, rid)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_clear, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33913,7 +34027,7 @@ func (self TextServer) ShapedTextSetDirection(shaped RID, direction TextServerDi
 	var frame = call.New()
 	call.Arg(frame, shaped)
 	call.Arg(frame, direction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_direction, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33945,7 +34059,7 @@ func (self TextServer) ShapedTextSetBidiOverride(shaped RID, override Array) {
 	var frame = call.New()
 	call.Arg(frame, shaped)
 	call.Arg(frame, override.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_bidi_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33955,7 +34069,7 @@ func (self TextServer) ShapedTextSetCustomPunctuation(shaped RID, punct String) 
 	var frame = call.New()
 	call.Arg(frame, shaped)
 	call.Arg(frame, punct.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_custom_punctuation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33976,7 +34090,7 @@ func (self TextServer) ShapedTextSetOrientation(shaped RID, orientation TextServ
 	var frame = call.New()
 	call.Arg(frame, shaped)
 	call.Arg(frame, orientation)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_orientation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -33997,7 +34111,7 @@ func (self TextServer) ShapedTextSetPreserveInvalid(shaped RID, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, shaped)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_preserve_invalid, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34018,7 +34132,7 @@ func (self TextServer) ShapedTextSetPreserveControl(shaped RID, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, shaped)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_preserve_control, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34040,7 +34154,7 @@ func (self TextServer) ShapedTextSetSpacing(shaped RID, spacing TextServerSpacin
 	call.Arg(frame, shaped)
 	call.Arg(frame, spacing)
 	call.Arg(frame, value)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_set_spacing, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34136,7 +34250,7 @@ func (self TextServer) ShapedSetSpanUpdateFont(shaped RID, index Int, fonts Arra
 	call.Arg(frame, fonts)
 	call.Arg(frame, size)
 	call.Arg(frame, opentype_features.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_set_span_update_font, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34358,7 +34472,7 @@ func (self TextServer) ShapedTextOverrunTrimToWidth(shaped RID, width Float, ove
 	call.Arg(frame, shaped)
 	call.Arg(frame, width)
 	call.Arg(frame, overrun_trim_flags)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_overrun_trim_to_width, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34593,7 +34707,7 @@ func (self TextServer) ShapedTextDraw(shaped RID, canvas RID, pos Vector2, clip_
 	call.Arg(frame, clip_l)
 	call.Arg(frame, clip_r)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34608,7 +34722,7 @@ func (self TextServer) ShapedTextDrawOutline(shaped RID, canvas RID, pos Vector2
 	call.Arg(frame, clip_r)
 	call.Arg(frame, outline_size)
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.TextServer.Bind_shaped_text_draw_outline, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34938,7 +35052,7 @@ func (self Texture2D) Draw(canvas_item RID, position Vector2, modulate Color, tr
 	call.Arg(frame, position)
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Texture2D.Bind_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34951,7 +35065,7 @@ func (self Texture2D) DrawRect(canvas_item RID, rect Rect2, tile bool, modulate 
 	call.Arg(frame, tile)
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Texture2D.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -34965,7 +35079,7 @@ func (self Texture2D) DrawRectRegion(canvas_item RID, rect Rect2, src_rect Rect2
 	call.Arg(frame, modulate)
 	call.Arg(frame, transpose)
 	call.Arg(frame, clip_uv)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Texture2D.Bind_draw_rect_region, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35026,7 +35140,7 @@ func (self Theme) SetIcon(name StringName, theme_type StringName, texture Textur
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_icon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35061,7 +35175,7 @@ func (self Theme) RenameIcon(old_name StringName, name StringName, theme_type St
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_icon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35071,7 +35185,7 @@ func (self Theme) ClearIcon(name StringName, theme_type StringName) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_icon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35103,7 +35217,7 @@ func (self Theme) SetStylebox(name StringName, theme_type StringName, texture St
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_stylebox, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35138,7 +35252,7 @@ func (self Theme) RenameStylebox(old_name StringName, name StringName, theme_typ
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_stylebox, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35148,7 +35262,7 @@ func (self Theme) ClearStylebox(name StringName, theme_type StringName) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_stylebox, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35180,7 +35294,7 @@ func (self Theme) SetFont(name StringName, theme_type StringName, font Font) {
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, font.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_font, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35215,7 +35329,7 @@ func (self Theme) RenameFont(old_name StringName, name StringName, theme_type St
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_font, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35225,7 +35339,7 @@ func (self Theme) ClearFont(name StringName, theme_type StringName) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_font, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35257,7 +35371,7 @@ func (self Theme) SetFontSize(name StringName, theme_type StringName, font_size 
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, font_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_font_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35292,7 +35406,7 @@ func (self Theme) RenameFontSize(old_name StringName, name StringName, theme_typ
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_font_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35302,7 +35416,7 @@ func (self Theme) ClearFontSize(name StringName, theme_type StringName) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_font_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35334,7 +35448,7 @@ func (self Theme) SetColor(name StringName, theme_type StringName, color Color) 
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35369,7 +35483,7 @@ func (self Theme) RenameColor(old_name StringName, name StringName, theme_type S
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35379,7 +35493,7 @@ func (self Theme) ClearColor(name StringName, theme_type StringName) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_color, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35411,7 +35525,7 @@ func (self Theme) SetConstant(name StringName, theme_type StringName, constant I
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, constant)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35446,7 +35560,7 @@ func (self Theme) RenameConstant(old_name StringName, name StringName, theme_typ
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_constant, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35456,7 +35570,7 @@ func (self Theme) ClearConstant(name StringName, theme_type StringName) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_constant, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35486,7 +35600,7 @@ func (self Theme) SetDefaultBaseScale(base_scale Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, base_scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_default_base_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35515,7 +35629,7 @@ func (self Theme) SetDefaultFont(font Font) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, font.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_default_font, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35544,7 +35658,7 @@ func (self Theme) SetDefaultFontSize(font_size Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, font_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_default_font_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35576,7 +35690,7 @@ func (self Theme) SetThemeItem(data_type ThemeDataType, name StringName, theme_t
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, value.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_theme_item, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35614,7 +35728,7 @@ func (self Theme) RenameThemeItem(data_type ThemeDataType, old_name StringName, 
 	call.Arg(frame, old_name.Pointer())
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_rename_theme_item, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35625,7 +35739,7 @@ func (self Theme) ClearThemeItem(data_type ThemeDataType, name StringName, theme
 	call.Arg(frame, data_type)
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_theme_item, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35658,7 +35772,7 @@ func (self Theme) SetTypeVariation(theme_type StringName, base_type StringName) 
 	var frame = call.New()
 	call.Arg(frame, theme_type.Pointer())
 	call.Arg(frame, base_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_set_type_variation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35679,7 +35793,7 @@ func (self Theme) ClearTypeVariation(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear_type_variation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35710,7 +35824,7 @@ func (self Theme) AddType(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_add_type, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35719,7 +35833,7 @@ func (self Theme) RemoveType(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_remove_type, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35738,7 +35852,7 @@ func (self Theme) MergeWith(other Theme) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, other.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_merge_with, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35746,7 +35860,7 @@ func (self Theme) MergeWith(other Theme) {
 func (self Theme) Clear() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Theme.Bind_clear, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35850,7 +35964,7 @@ func (self Tween) CustomStep(delta Float) bool {
 func (self Tween) Stop() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Tween.Bind_stop, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35858,7 +35972,7 @@ func (self Tween) Stop() {
 func (self Tween) Pause() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Tween.Bind_pause, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35866,7 +35980,7 @@ func (self Tween) Pause() {
 func (self Tween) Play() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Tween.Bind_play, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -35874,7 +35988,7 @@ func (self Tween) Play() {
 func (self Tween) Kill() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Tween.Bind_kill, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36096,7 +36210,7 @@ func (self Viewport) SetWorld2d(world_2d World2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, world_2d.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_world_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36125,7 +36239,7 @@ func (self Viewport) SetCanvasTransform(xform Transform2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, xform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_canvas_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36144,7 +36258,7 @@ func (self Viewport) SetGlobalCanvasTransform(xform Transform2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, xform)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36193,7 +36307,7 @@ func (self Viewport) SetTransparentBackground(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_transparent_background, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36212,7 +36326,7 @@ func (self Viewport) SetUseHdr2d(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_use_hdr_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36231,7 +36345,7 @@ func (self Viewport) SetMsaa2d(msaa ViewportMSAA) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, msaa)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_msaa_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36250,7 +36364,7 @@ func (self Viewport) SetMsaa3d(msaa ViewportMSAA) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, msaa)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_msaa_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36269,7 +36383,7 @@ func (self Viewport) SetScreenSpaceAa(screen_space_aa ViewportScreenSpaceAA) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, screen_space_aa)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_screen_space_aa, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36288,7 +36402,7 @@ func (self Viewport) SetUseTaa(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_use_taa, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36307,7 +36421,7 @@ func (self Viewport) SetUseDebanding(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_use_debanding, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36326,7 +36440,7 @@ func (self Viewport) SetUseOcclusionCulling(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_use_occlusion_culling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36345,7 +36459,7 @@ func (self Viewport) SetDebugDraw(debug_draw ViewportDebugDraw) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, debug_draw)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_debug_draw, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36386,7 +36500,7 @@ func (self Viewport) SetPhysicsObjectPicking(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_physics_object_picking, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36405,7 +36519,7 @@ func (self Viewport) SetPhysicsObjectPickingSort(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_physics_object_picking_sort, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36434,7 +36548,7 @@ func (self Viewport) PushTextInput(text String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, text.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_push_text_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36444,7 +36558,7 @@ func (self Viewport) PushInput(event InputEvent, in_local_coords bool) {
 	var frame = call.New()
 	call.Arg(frame, event.Pointer())
 	call.Arg(frame, in_local_coords)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_push_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36454,7 +36568,7 @@ func (self Viewport) PushUnhandledInput(event InputEvent, in_local_coords bool) 
 	var frame = call.New()
 	call.Arg(frame, event.Pointer())
 	call.Arg(frame, in_local_coords)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_push_unhandled_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36473,7 +36587,7 @@ func (self Viewport) SetAsAudioListener2d(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_as_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36502,7 +36616,7 @@ func (self Viewport) WarpMouse(position Vector2) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36510,7 +36624,7 @@ func (self Viewport) WarpMouse(position Vector2) {
 func (self Viewport) UpdateMouseCursorState() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_update_mouse_cursor_state, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36548,7 +36662,7 @@ func (self Viewport) GuiIsDragSuccessful() bool {
 func (self Viewport) GuiReleaseFocus() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_gui_release_focus, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36567,7 +36681,7 @@ func (self Viewport) SetDisableInput(disable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, disable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_disable_input, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36586,7 +36700,7 @@ func (self Viewport) SetPositionalShadowAtlasSize(size Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36605,7 +36719,7 @@ func (self Viewport) SetPositionalShadowAtlas16Bits(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_positional_shadow_atlas_16_bits, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36624,7 +36738,7 @@ func (self Viewport) SetSnapControlsToPixels(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_snap_controls_to_pixels, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36643,7 +36757,7 @@ func (self Viewport) SetSnap2dTransformsToPixel(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_snap_2d_transforms_to_pixel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36662,7 +36776,7 @@ func (self Viewport) SetSnap2dVerticesToPixel(enabled bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_snap_2d_vertices_to_pixel, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36682,7 +36796,7 @@ func (self Viewport) SetPositionalShadowAtlasQuadrantSubdiv(quadrant Int, subdiv
 	var frame = call.New()
 	call.Arg(frame, quadrant)
 	call.Arg(frame, subdiv)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_positional_shadow_atlas_quadrant_subdiv, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36701,7 +36815,7 @@ func (self Viewport) GetPositionalShadowAtlasQuadrantSubdiv(quadrant Int) Viewpo
 func (self Viewport) SetInputAsHandled() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_input_as_handled, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36720,7 +36834,7 @@ func (self Viewport) SetHandleInputLocally(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_handle_input_locally, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36739,7 +36853,7 @@ func (self Viewport) SetDefaultCanvasItemTextureFilter(mode ViewportDefaultCanva
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36758,7 +36872,7 @@ func (self Viewport) SetEmbeddingSubwindows(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_embedding_subwindows, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36787,7 +36901,7 @@ func (self Viewport) SetCanvasCullMask(mask Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mask)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36807,7 +36921,7 @@ func (self Viewport) SetCanvasCullMaskBit(layer Int, enable bool) {
 	var frame = call.New()
 	call.Arg(frame, layer)
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_canvas_cull_mask_bit, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36827,7 +36941,7 @@ func (self Viewport) SetDefaultCanvasItemTextureRepeat(mode ViewportDefaultCanva
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36846,7 +36960,7 @@ func (self Viewport) SetSdfOversize(oversize ViewportSDFOversize) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, oversize)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_sdf_oversize, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36865,7 +36979,7 @@ func (self Viewport) SetSdfScale(scale ViewportSDFScale) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_sdf_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36884,7 +36998,7 @@ func (self Viewport) SetMeshLodThreshold(pixels Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, pixels)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36903,7 +37017,7 @@ func (self Viewport) SetWorld3d(world_3d World3D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, world_3d.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_world_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36932,7 +37046,7 @@ func (self Viewport) SetUseOwnWorld3d(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_use_own_world_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36961,7 +37075,7 @@ func (self Viewport) SetAsAudioListener3d(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_as_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36980,7 +37094,7 @@ func (self Viewport) SetDisable3d(disable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, disable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_disable_3d, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -36999,7 +37113,7 @@ func (self Viewport) SetUseXr(use bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, use)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_use_xr, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37018,7 +37132,7 @@ func (self Viewport) SetScaling3dMode(scaling_3d_mode ViewportScaling3DMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scaling_3d_mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37037,7 +37151,7 @@ func (self Viewport) SetScaling3dScale(scale Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, scale)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37056,7 +37170,7 @@ func (self Viewport) SetFsrSharpness(fsr_sharpness Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, fsr_sharpness)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37075,7 +37189,7 @@ func (self Viewport) SetTextureMipmapBias(texture_mipmap_bias Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, texture_mipmap_bias)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37094,7 +37208,7 @@ func (self Viewport) SetVrsMode(mode ViewportVRSMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_vrs_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37113,7 +37227,7 @@ func (self Viewport) SetVrsTexture(texture Texture2D) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Viewport.Bind_set_vrs_texture, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37153,7 +37267,7 @@ func (self ViewportTexture) SetViewportPathInScene(path NodePath) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, path.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.ViewportTexture.Bind_set_viewport_path_in_scene, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37211,7 +37325,7 @@ func (self Window) SetTitle(title String) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, title.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_title, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37240,7 +37354,7 @@ func (self Window) SetInitialPosition(initial_position WindowWindowInitialPositi
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, initial_position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_initial_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37259,7 +37373,7 @@ func (self Window) SetCurrentScreen(index Int) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, index)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_current_screen, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37278,7 +37392,7 @@ func (self Window) SetPosition(position Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37296,7 +37410,7 @@ func (self Window) GetPosition() Vector2i {
 func (self Window) MoveToCenter() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_move_to_center, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37305,7 +37419,7 @@ func (self Window) SetSize(size Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37323,7 +37437,7 @@ func (self Window) GetSize() Vector2i {
 func (self Window) ResetSize() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_reset_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37352,7 +37466,7 @@ func (self Window) SetMaxSize(max_size Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, max_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_max_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37371,7 +37485,7 @@ func (self Window) SetMinSize(min_size Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, min_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_min_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37390,7 +37504,7 @@ func (self Window) SetMode(mode WindowMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37410,7 +37524,7 @@ func (self Window) SetFlag(flag WindowFlags, enabled bool) {
 	var frame = call.New()
 	call.Arg(frame, flag)
 	call.Arg(frame, enabled)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37439,7 +37553,7 @@ func (self Window) IsMaximizeAllowed() bool {
 func (self Window) RequestAttention() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_request_attention, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37447,7 +37561,7 @@ func (self Window) RequestAttention() {
 func (self Window) MoveToForeground() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_move_to_foreground, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37456,7 +37570,7 @@ func (self Window) SetVisible(visible bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37474,7 +37588,7 @@ func (self Window) IsVisible() bool {
 func (self Window) Hide() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_hide, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37482,7 +37596,7 @@ func (self Window) Hide() {
 func (self Window) Show() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_show, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37491,7 +37605,7 @@ func (self Window) SetTransient(transient bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, transient)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_transient, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37510,7 +37624,7 @@ func (self Window) SetExclusive(exclusive bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, exclusive)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_exclusive, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37529,7 +37643,7 @@ func (self Window) SetUnparentWhenInvisible(unparent bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, unparent)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_unparent_when_invisible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37557,7 +37671,7 @@ func (self Window) HasFocus() bool {
 func (self Window) GrabFocus() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_grab_focus, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37566,7 +37680,7 @@ func (self Window) SetImeActive(active bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, active)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_ime_active, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37575,7 +37689,7 @@ func (self Window) SetImePosition(position Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, position)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_ime_position, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37604,7 +37718,7 @@ func (self Window) SetContentScaleSize(size Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_content_scale_size, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37623,7 +37737,7 @@ func (self Window) SetContentScaleMode(mode WindowContentScaleMode) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mode)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_content_scale_mode, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37642,7 +37756,7 @@ func (self Window) SetContentScaleAspect(aspect WindowContentScaleAspect) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, aspect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_content_scale_aspect, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37661,7 +37775,7 @@ func (self Window) SetContentScaleStretch(stretch WindowContentScaleStretch) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, stretch)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_content_scale_stretch, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37680,7 +37794,7 @@ func (self Window) SetKeepTitleVisible(title_visible bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, title_visible)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_keep_title_visible, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37699,7 +37813,7 @@ func (self Window) SetContentScaleFactor(factor Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, factor)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_content_scale_factor, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37718,7 +37832,7 @@ func (self Window) SetUseFontOversampling(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_use_font_oversampling, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37737,7 +37851,7 @@ func (self Window) SetMousePassthroughPolygon(polygon PackedVector2Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, polygon.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37756,7 +37870,7 @@ func (self Window) SetWrapControls(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_wrap_controls, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37774,7 +37888,7 @@ func (self Window) IsWrappingControls() bool {
 func (self Window) ChildControlsChanged() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_child_controls_changed, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37783,7 +37897,7 @@ func (self Window) SetTheme(theme Theme) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_theme, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37802,7 +37916,7 @@ func (self Window) SetThemeTypeVariation(theme_type StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, theme_type.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_theme_type_variation, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37820,7 +37934,7 @@ func (self Window) GetThemeTypeVariation(ctx Context) StringName {
 func (self Window) BeginBulkThemeOverride() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_begin_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37828,7 +37942,7 @@ func (self Window) BeginBulkThemeOverride() {
 func (self Window) EndBulkThemeOverride() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_end_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37838,7 +37952,7 @@ func (self Window) AddThemeIconOverride(name StringName, texture Texture2D) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, texture.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_add_theme_icon_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37848,7 +37962,7 @@ func (self Window) AddThemeStyleboxOverride(name StringName, stylebox StyleBox) 
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, stylebox.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_add_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37858,7 +37972,7 @@ func (self Window) AddThemeFontOverride(name StringName, font Font) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, font.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_add_theme_font_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37868,7 +37982,7 @@ func (self Window) AddThemeFontSizeOverride(name StringName, font_size Int) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, font_size)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_add_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37878,7 +37992,7 @@ func (self Window) AddThemeColorOverride(name StringName, color Color) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, color)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_add_theme_color_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37888,7 +38002,7 @@ func (self Window) AddThemeConstantOverride(name StringName, constant Int) {
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
 	call.Arg(frame, constant)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_add_theme_constant_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37897,7 +38011,7 @@ func (self Window) RemoveThemeIconOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_remove_theme_icon_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37906,7 +38020,7 @@ func (self Window) RemoveThemeStyleboxOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_remove_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37915,7 +38029,7 @@ func (self Window) RemoveThemeFontOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_remove_theme_font_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37924,7 +38038,7 @@ func (self Window) RemoveThemeFontSizeOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_remove_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37933,7 +38047,7 @@ func (self Window) RemoveThemeColorOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_remove_theme_color_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -37942,7 +38056,7 @@ func (self Window) RemoveThemeConstantOverride(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, name.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_remove_theme_constant_override, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38191,7 +38305,7 @@ func (self Window) SetLayoutDirection(direction WindowLayoutDirection) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, direction)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_layout_direction, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38220,7 +38334,7 @@ func (self Window) SetAutoTranslate(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, enable)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_set_auto_translate, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38239,7 +38353,7 @@ func (self Window) Popup(rect Rect2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38248,7 +38362,7 @@ func (self Window) PopupOnParent(parent_rect Rect2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, parent_rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_on_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38257,7 +38371,7 @@ func (self Window) PopupCentered(minsize Vector2i) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, minsize)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_centered, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38266,7 +38380,7 @@ func (self Window) PopupCenteredRatio(ratio Float) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_centered_ratio, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38276,7 +38390,7 @@ func (self Window) PopupCenteredClamped(minsize Vector2i, fallback_ratio Float) 
 	var frame = call.New()
 	call.Arg(frame, minsize)
 	call.Arg(frame, fallback_ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_centered_clamped, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38286,7 +38400,7 @@ func (self Window) PopupExclusive(from_node Node, rect Rect2i) {
 	var frame = call.New()
 	call.Arg(frame, from_node.Pointer())
 	call.Arg(frame, rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_exclusive, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38296,7 +38410,7 @@ func (self Window) PopupExclusiveOnParent(from_node Node, parent_rect Rect2i) {
 	var frame = call.New()
 	call.Arg(frame, from_node.Pointer())
 	call.Arg(frame, parent_rect)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_on_parent, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38306,7 +38420,7 @@ func (self Window) PopupExclusiveCentered(from_node Node, minsize Vector2i) {
 	var frame = call.New()
 	call.Arg(frame, from_node.Pointer())
 	call.Arg(frame, minsize)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_centered, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38316,7 +38430,7 @@ func (self Window) PopupExclusiveCenteredRatio(from_node Node, ratio Float) {
 	var frame = call.New()
 	call.Arg(frame, from_node.Pointer())
 	call.Arg(frame, ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_centered_ratio, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38327,7 +38441,7 @@ func (self Window) PopupExclusiveCenteredClamped(from_node Node, minsize Vector2
 	call.Arg(frame, from_node.Pointer())
 	call.Arg(frame, minsize)
 	call.Arg(frame, fallback_ratio)
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.Window.Bind_popup_exclusive_centered_clamped, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38438,7 +38552,7 @@ func (self World3D) SetEnvironment(env Environment) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, env.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.World3D.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38457,7 +38571,7 @@ func (self World3D) SetFallbackEnvironment(env Environment) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, env.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.World3D.Bind_set_fallback_environment, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38476,7 +38590,7 @@ func (self World3D) SetCameraAttributes(attributes CameraAttributes) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, attributes.Pointer())
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.World3D.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }
@@ -38653,7 +38767,7 @@ func (self XMLParser) GetCurrentLine() Int {
 func (self XMLParser) SkipSection() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
-	var r_ret call.Any
+	var r_ret call.Nil
 	selfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.XMLParser.Bind_skip_section, self.AsObject(), frame.Array(0), r_ret)
 	frame.Free()
 }

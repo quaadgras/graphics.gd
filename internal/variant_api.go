@@ -30,6 +30,12 @@ func (variant VariantType) Call(ctx Context, method StringName, args ...Variant)
 	return ctx.API().Variants.CallStatic(ctx, variant, method, args...)
 }
 
+// New calls the variant constructor with the given arguments and returns the
+// result as a variant.
+func (variant VariantType) New(ctx Context, args ...Variant) (Variant, error) {
+	return ctx.API().Variants.Construct(ctx, variant, args...)
+}
+
 // Iterator returns an iterator for the variant.
 func (variant Variant) Iterator(ctx Context) Iterator {
 	iter, ok := ctx.API().Variants.IteratorInitialize(ctx, variant)

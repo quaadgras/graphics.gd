@@ -677,7 +677,7 @@ func generate() error {
 
 	fmt.Fprintf(out, "type utility struct{\n")
 	for _, utility := range spec.UtilityFunctions {
-		fmt.Fprintf(out, "\t%v func(CallFrameBack,CallFrameArgs,int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
+		fmt.Fprintf(out, "\t%v func(ret call.Any, args call.Args, c int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
 
 		fmt.Fprintf(core, "\nfunc (ctx Context) %v(", convertName(utility.Name))
 		for i, arg := range utility.Arguments {
@@ -694,37 +694,41 @@ func generate() error {
 		} else {
 			fmt.Fprintf(core, " {\n")
 		}
-		fmt.Fprintf(core, "\tvar abi = ctx.API().NewFrame()\n")
-		for i, arg := range utility.Arguments {
+		fmt.Fprintf(core, "\tvar frame = call.New()\n")
+		for _, arg := range utility.Arguments {
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(core, "\tFrameSet[uintptr](%[1]v, abi, %[2]v.Pointer())\n", i, fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcall.Arg(frame, %v.Pointer())\n", fixReserved(arg.Name))
 				continue
 			}
-
 			argType := classDB.convertType("internal", arg.Meta, arg.Type)
-			argPtrKind, argIsPtr := isPointer(argType)
+			_, argIsPtr := isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(core, "\tFrameSet[%[2]v](%[1]v, abi, %[3]v.Pointer())\n", i, argPtrKind, fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcall.Arg(frame, %v.Pointer())\n", fixReserved(arg.Name))
 			} else {
-				fmt.Fprintf(core, "\tFrameSet[%[2]v](%[1]v, abi, %[3]v)\n", i, argType, fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcall.Arg(frame, %v)\n", fixReserved(arg.Name))
 			}
 		}
-		fmt.Fprintf(core, "\tctx.API().utility.%v(abi.Back(), abi.Args(), %d)\n", utility.Name, len(utility.Arguments))
 		if isPtr {
-			fmt.Fprintf(core, "\tvar ret = FrameGet[%v](abi)\n", ptrKind)
+			fmt.Fprintf(core, "\tvar r_ret = call.Ret[%v](frame)\n", ptrKind)
 		} else {
 			if result != "" {
-				fmt.Fprintf(core, "\tvar ret = FrameGet[%v](abi)\n", result)
+				fmt.Fprintf(core, "\tvar r_ret = call.Ret[%v](frame)\n", result)
+			} else {
+				fmt.Fprintf(core, "\tvar r_ret call.Nil\n")
 			}
 		}
-		fmt.Fprintf(core, "\tabi.Free()\n")
-		if result != "" {
-			if isPtr {
-				fmt.Fprintf(core, "\treturn mmm.Make[API,%v,%v](ctx,ctx.API(),ret)", result, ptrKind)
-			} else {
-				fmt.Fprintf(core, "\treturn ret\n")
+		fmt.Fprintf(core, "\tctx.API().utility.%v(r_ret, frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
+		if isPtr {
+			fmt.Fprintf(core, "\tvar ret = mmm.Make[API,%v,%v](ctx,ctx.API(),r_ret.Get())\n", result, ptrKind)
+		} else {
+			if result != "" {
+				fmt.Fprintf(core, "\tvar ret = r_ret.Get()\n")
 			}
+		}
+		fmt.Fprintf(core, "\tframe.Free()\n")
+		if result != "" {
+			fmt.Fprintf(core, "\treturn ret\n")
 		}
 		fmt.Fprintf(core, "}\n")
 	}
@@ -1021,7 +1025,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		if result != "" {
 			fmt.Fprintf(w, "\tvar r_ret = call.Ret[%v](frame)\n", result)
 		} else {
-			fmt.Fprintf(w, "\tvar r_ret call.Any\n")
+			fmt.Fprintf(w, "\tvar r_ret call.Nil\n")
 		}
 	}
 	if ctype == callBuiltin {

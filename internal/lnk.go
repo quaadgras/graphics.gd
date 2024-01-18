@@ -44,7 +44,7 @@ func (Godot *API) linkUtility() {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
 		}
-		*(value.Interface().(*func(CallFrameBack, CallFrameArgs, int32))) = Godot.Variants.Utility((StringNamePtr)(unsafe.Pointer(&name)), hash)
+		*(value.Interface().(*func(ret call.Any, args call.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, hash)
 	}
 }
 

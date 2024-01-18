@@ -6,120 +6,120 @@ package gd
 import "runtime.link/api/call"
 
 type utility struct {
-	sin                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	cos                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	tan                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	sinh                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	cosh                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	tanh                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	asin                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	acos                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	atan                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	atan2                           func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	asinh                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	acosh                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	atanh                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	sqrt                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	fmod                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	fposmod                         func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	posmod                          func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
-	floor                           func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
-	floorf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	floori                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
-	ceil                            func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
-	ceilf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	ceili                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
-	round                           func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
-	roundf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	roundi                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
-	abs                             func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
-	absf                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	absi                            func(CallFrameBack, CallFrameArgs, int32) `hash:"2157319888"`
-	sign                            func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
-	signf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	signi                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2157319888"`
-	snapped                         func(CallFrameBack, CallFrameArgs, int32) `hash:"459914704"`
-	snappedf                        func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	snappedi                        func(CallFrameBack, CallFrameArgs, int32) `hash:"3570758393"`
-	pow                             func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	log                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	exp                             func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	is_nan                          func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
-	is_inf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
-	is_equal_approx                 func(CallFrameBack, CallFrameArgs, int32) `hash:"1400789633"`
-	is_zero_approx                  func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
-	is_finite                       func(CallFrameBack, CallFrameArgs, int32) `hash:"3569215213"`
-	ease                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	step_decimals                   func(CallFrameBack, CallFrameArgs, int32) `hash:"2780425386"`
-	lerp                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3389874542"`
-	lerpf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	cubic_interpolate               func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
-	cubic_interpolate_angle         func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
-	cubic_interpolate_in_time       func(CallFrameBack, CallFrameArgs, int32) `hash:"388121036"`
-	cubic_interpolate_angle_in_time func(CallFrameBack, CallFrameArgs, int32) `hash:"388121036"`
-	bezier_interpolate              func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
-	bezier_derivative               func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
-	angle_difference                func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	lerp_angle                      func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	inverse_lerp                    func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	remap                           func(CallFrameBack, CallFrameArgs, int32) `hash:"1090965791"`
-	smoothstep                      func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	move_toward                     func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	rotate_toward                   func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	deg_to_rad                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	rad_to_deg                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	linear_to_db                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	db_to_linear                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2140049587"`
-	wrap                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3389874542"`
-	wrapi                           func(CallFrameBack, CallFrameArgs, int32) `hash:"650295447"`
-	wrapf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	max                             func(CallFrameBack, CallFrameArgs, int32) `hash:"3896050336"`
-	maxi                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
-	maxf                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	min                             func(CallFrameBack, CallFrameArgs, int32) `hash:"3896050336"`
-	mini                            func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
-	minf                            func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	clamp                           func(CallFrameBack, CallFrameArgs, int32) `hash:"3389874542"`
-	clampi                          func(CallFrameBack, CallFrameArgs, int32) `hash:"650295447"`
-	clampf                          func(CallFrameBack, CallFrameArgs, int32) `hash:"998901048"`
-	nearest_po2                     func(CallFrameBack, CallFrameArgs, int32) `hash:"2157319888"`
-	pingpong                        func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	randomize                       func(CallFrameBack, CallFrameArgs, int32) `hash:"1691721052"`
-	randi                           func(CallFrameBack, CallFrameArgs, int32) `hash:"701202648"`
-	randf                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2086227845"`
-	randi_range                     func(CallFrameBack, CallFrameArgs, int32) `hash:"3133453818"`
-	randf_range                     func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	randfn                          func(CallFrameBack, CallFrameArgs, int32) `hash:"92296394"`
-	seed                            func(CallFrameBack, CallFrameArgs, int32) `hash:"382931173"`
-	rand_from_seed                  func(CallFrameBack, CallFrameArgs, int32) `hash:"1391063685"`
-	weakref                         func(CallFrameBack, CallFrameArgs, int32) `hash:"4776452"`
-	typeof                          func(CallFrameBack, CallFrameArgs, int32) `hash:"326422594"`
-	type_convert                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2453062746"`
-	str                             func(CallFrameBack, CallFrameArgs, int32) `hash:"32569176"`
-	error_string                    func(CallFrameBack, CallFrameArgs, int32) `hash:"942708242"`
-	type_string                     func(CallFrameBack, CallFrameArgs, int32) `hash:"942708242"`
-	print                           func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	print_rich                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	printerr                        func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	printt                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	prints                          func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	printraw                        func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	print_verbose                   func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	push_error                      func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	push_warning                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2648703342"`
-	var_to_str                      func(CallFrameBack, CallFrameArgs, int32) `hash:"866625479"`
-	str_to_var                      func(CallFrameBack, CallFrameArgs, int32) `hash:"1891498491"`
-	var_to_bytes                    func(CallFrameBack, CallFrameArgs, int32) `hash:"2947269930"`
-	bytes_to_var                    func(CallFrameBack, CallFrameArgs, int32) `hash:"4249819452"`
-	var_to_bytes_with_objects       func(CallFrameBack, CallFrameArgs, int32) `hash:"2947269930"`
-	bytes_to_var_with_objects       func(CallFrameBack, CallFrameArgs, int32) `hash:"4249819452"`
-	hash                            func(CallFrameBack, CallFrameArgs, int32) `hash:"326422594"`
-	instance_from_id                func(CallFrameBack, CallFrameArgs, int32) `hash:"1156694636"`
-	is_instance_id_valid            func(CallFrameBack, CallFrameArgs, int32) `hash:"2232439758"`
-	is_instance_valid               func(CallFrameBack, CallFrameArgs, int32) `hash:"996128841"`
-	rid_allocate_id                 func(CallFrameBack, CallFrameArgs, int32) `hash:"701202648"`
-	rid_from_int64                  func(CallFrameBack, CallFrameArgs, int32) `hash:"3426892196"`
-	is_same                         func(CallFrameBack, CallFrameArgs, int32) `hash:"1409423524"`
+	sin                             func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	cos                             func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	tan                             func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	sinh                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	cosh                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	tanh                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	asin                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	acos                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	atan                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	atan2                           func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	asinh                           func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	acosh                           func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	atanh                           func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	sqrt                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	fmod                            func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	fposmod                         func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	posmod                          func(ret call.Any, args call.Args, c int32) `hash:"3133453818"`
+	floor                           func(ret call.Any, args call.Args, c int32) `hash:"4776452"`
+	floorf                          func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	floori                          func(ret call.Any, args call.Args, c int32) `hash:"2780425386"`
+	ceil                            func(ret call.Any, args call.Args, c int32) `hash:"4776452"`
+	ceilf                           func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	ceili                           func(ret call.Any, args call.Args, c int32) `hash:"2780425386"`
+	round                           func(ret call.Any, args call.Args, c int32) `hash:"4776452"`
+	roundf                          func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	roundi                          func(ret call.Any, args call.Args, c int32) `hash:"2780425386"`
+	abs                             func(ret call.Any, args call.Args, c int32) `hash:"4776452"`
+	absf                            func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	absi                            func(ret call.Any, args call.Args, c int32) `hash:"2157319888"`
+	sign                            func(ret call.Any, args call.Args, c int32) `hash:"4776452"`
+	signf                           func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	signi                           func(ret call.Any, args call.Args, c int32) `hash:"2157319888"`
+	snapped                         func(ret call.Any, args call.Args, c int32) `hash:"459914704"`
+	snappedf                        func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	snappedi                        func(ret call.Any, args call.Args, c int32) `hash:"3570758393"`
+	pow                             func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	log                             func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	exp                             func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	is_nan                          func(ret call.Any, args call.Args, c int32) `hash:"3569215213"`
+	is_inf                          func(ret call.Any, args call.Args, c int32) `hash:"3569215213"`
+	is_equal_approx                 func(ret call.Any, args call.Args, c int32) `hash:"1400789633"`
+	is_zero_approx                  func(ret call.Any, args call.Args, c int32) `hash:"3569215213"`
+	is_finite                       func(ret call.Any, args call.Args, c int32) `hash:"3569215213"`
+	ease                            func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	step_decimals                   func(ret call.Any, args call.Args, c int32) `hash:"2780425386"`
+	lerp                            func(ret call.Any, args call.Args, c int32) `hash:"3389874542"`
+	lerpf                           func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	cubic_interpolate               func(ret call.Any, args call.Args, c int32) `hash:"1090965791"`
+	cubic_interpolate_angle         func(ret call.Any, args call.Args, c int32) `hash:"1090965791"`
+	cubic_interpolate_in_time       func(ret call.Any, args call.Args, c int32) `hash:"388121036"`
+	cubic_interpolate_angle_in_time func(ret call.Any, args call.Args, c int32) `hash:"388121036"`
+	bezier_interpolate              func(ret call.Any, args call.Args, c int32) `hash:"1090965791"`
+	bezier_derivative               func(ret call.Any, args call.Args, c int32) `hash:"1090965791"`
+	angle_difference                func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	lerp_angle                      func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	inverse_lerp                    func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	remap                           func(ret call.Any, args call.Args, c int32) `hash:"1090965791"`
+	smoothstep                      func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	move_toward                     func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	rotate_toward                   func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	deg_to_rad                      func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	rad_to_deg                      func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	linear_to_db                    func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	db_to_linear                    func(ret call.Any, args call.Args, c int32) `hash:"2140049587"`
+	wrap                            func(ret call.Any, args call.Args, c int32) `hash:"3389874542"`
+	wrapi                           func(ret call.Any, args call.Args, c int32) `hash:"650295447"`
+	wrapf                           func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	max                             func(ret call.Any, args call.Args, c int32) `hash:"3896050336"`
+	maxi                            func(ret call.Any, args call.Args, c int32) `hash:"3133453818"`
+	maxf                            func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	min                             func(ret call.Any, args call.Args, c int32) `hash:"3896050336"`
+	mini                            func(ret call.Any, args call.Args, c int32) `hash:"3133453818"`
+	minf                            func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	clamp                           func(ret call.Any, args call.Args, c int32) `hash:"3389874542"`
+	clampi                          func(ret call.Any, args call.Args, c int32) `hash:"650295447"`
+	clampf                          func(ret call.Any, args call.Args, c int32) `hash:"998901048"`
+	nearest_po2                     func(ret call.Any, args call.Args, c int32) `hash:"2157319888"`
+	pingpong                        func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	randomize                       func(ret call.Any, args call.Args, c int32) `hash:"1691721052"`
+	randi                           func(ret call.Any, args call.Args, c int32) `hash:"701202648"`
+	randf                           func(ret call.Any, args call.Args, c int32) `hash:"2086227845"`
+	randi_range                     func(ret call.Any, args call.Args, c int32) `hash:"3133453818"`
+	randf_range                     func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	randfn                          func(ret call.Any, args call.Args, c int32) `hash:"92296394"`
+	seed                            func(ret call.Any, args call.Args, c int32) `hash:"382931173"`
+	rand_from_seed                  func(ret call.Any, args call.Args, c int32) `hash:"1391063685"`
+	weakref                         func(ret call.Any, args call.Args, c int32) `hash:"4776452"`
+	typeof                          func(ret call.Any, args call.Args, c int32) `hash:"326422594"`
+	type_convert                    func(ret call.Any, args call.Args, c int32) `hash:"2453062746"`
+	str                             func(ret call.Any, args call.Args, c int32) `hash:"32569176"`
+	error_string                    func(ret call.Any, args call.Args, c int32) `hash:"942708242"`
+	type_string                     func(ret call.Any, args call.Args, c int32) `hash:"942708242"`
+	print                           func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	print_rich                      func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	printerr                        func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	printt                          func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	prints                          func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	printraw                        func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	print_verbose                   func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	push_error                      func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	push_warning                    func(ret call.Any, args call.Args, c int32) `hash:"2648703342"`
+	var_to_str                      func(ret call.Any, args call.Args, c int32) `hash:"866625479"`
+	str_to_var                      func(ret call.Any, args call.Args, c int32) `hash:"1891498491"`
+	var_to_bytes                    func(ret call.Any, args call.Args, c int32) `hash:"2947269930"`
+	bytes_to_var                    func(ret call.Any, args call.Args, c int32) `hash:"4249819452"`
+	var_to_bytes_with_objects       func(ret call.Any, args call.Args, c int32) `hash:"2947269930"`
+	bytes_to_var_with_objects       func(ret call.Any, args call.Args, c int32) `hash:"4249819452"`
+	hash                            func(ret call.Any, args call.Args, c int32) `hash:"326422594"`
+	instance_from_id                func(ret call.Any, args call.Args, c int32) `hash:"1156694636"`
+	is_instance_id_valid            func(ret call.Any, args call.Args, c int32) `hash:"2232439758"`
+	is_instance_valid               func(ret call.Any, args call.Args, c int32) `hash:"996128841"`
+	rid_allocate_id                 func(ret call.Any, args call.Args, c int32) `hash:"701202648"`
+	rid_from_int64                  func(ret call.Any, args call.Args, c int32) `hash:"3426892196"`
+	is_same                         func(ret call.Any, args call.Args, c int32) `hash:"1409423524"`
 }
 type builtin struct {
 	Nil struct {

@@ -10,6 +10,7 @@ import (
 	"runtime.link/api/call"
 )
 
+// API specification for Godot's GDExtension.
 type API struct {
 	api.Specification
 
@@ -30,54 +31,52 @@ type API struct {
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
 
 	Variants struct {
-		NewCopy                  func(ctx Context, src Variant) Variant
-		NewNil                   func(ctx Context) Variant
-		Destroy                  func(self Variant)
-		Call                     func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
-		CallStatic               func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
-		Evaluate                 func(ctx Context, operator Operator, a, b Variant) (ret Variant, ok bool)
-		Set                      func(self, key, val Variant) bool
-		SetNamed                 func(self Variant, key StringName, val Variant) bool
-		SetKeyed                 func(self, key, val Variant) bool
-		SetIndexed               func(self Variant, index int64, val Variant) (ok, oob bool)
-		Get                      func(ctx Context, self, key Variant) (Variant, bool)
-		GetNamed                 func(ctx Context, self Variant, key StringName) (Variant, bool)
-		GetKeyed                 func(ctx Context, self, key Variant) (Variant, bool)
-		GetIndexed               func(ctx Context, self Variant, index int64) (val Variant, ok, oob bool)
-		IteratorInitialize       func(ctx Context, self Variant) (Variant, bool)
-		IteratorNext             func(self Variant, iterator Variant) bool
-		IteratorGet              func(ctx Context, self Variant, iterator Variant) (Variant, bool)
-		Hash                     func(self Variant) int64
-		RecursiveHash            func(self Variant, count Int) int64
-		HashCompare              func(self, variant Variant) bool
-		Booleanize               func(self Variant) bool
-		Duplicate                func(self Variant, deep bool) Variant
-		Stringify                func(self Variant) String
-		GetType                  func(self Variant) VariantType
-		HasMethod                func(self Variant, method StringName) bool
-		HasMember                func(self Variant, member StringName) bool
-		HasKey                   func(self Variant, key Variant) (hasKey, valid bool)
-		GetTypeName              func(ctx Context, self VariantType) String
-		CanConvert               func(self Variant, to VariantType) bool
-		CanConvertStrict         func(self Variant, to VariantType) bool
-		FromTypeConstructor      func(VariantType) func(ret call.Ptr[[3]uintptr], arg call.Any)
-		ToTypeConstructor        func(VariantType) func(ret call.Any, arg call.Ptr[[3]uintptr])
-		PointerOperatorEvaluator func(op Operator, a, b VariantType) func(a, b, ret call.Any)
-		GetPointerBuiltinMethod  func(VariantType, StringName, Int) func(base call.Any, args call.Args, ret call.Any, c int32)
-		GetPointerConstructor    func(vtype VariantType, index int32) func(base call.Any, args call.Args)
-		GetPointerDestructor     func(VariantType) func(base call.Any)
-
-		Construct func(t VariantType, out *Variant, args []*Variant, err CallError) `call:"variant_construct func(int,+void,&void,-int64_t=@3,+void)"`
-
-		Setter      func(VariantType, StringNamePtr) func(*Variant, unsafe.Pointer)                 `call:"variant_get_ptr_setter func(int,&void)func(&void,&void)"`
-		Getter      func(VariantType, StringNamePtr) func(base *Variant, ret unsafe.Pointer)        `call:"variant_get_ptr_getter func(int,&void)func(&void,+void)"`
-		IndexSetter func(VariantType) func(*Variant, int64, unsafe.Pointer)                         `call:"variant_get_ptr_indexed_setter func(int)func(&void,int64_t,&void)"`
-		IndexGetter func(VariantType) func(val *Variant, idx int64, ret unsafe.Pointer)             `call:"variant_get_ptr_indexed_getter func(int)func(&void,int64_t)&void"`
-		KeySetter   func(VariantType) func(*Variant, *Variant, unsafe.Pointer)                      `call:"variant_get_ptr_keyed_setter func(int)func(&void,&void,&void)"`
-		KeyGetter   func(VariantType) func(val *Variant, key *Variant, ret unsafe.Pointer)          `call:"variant_get_ptr_keyed_getter func(int)func(&void,&void)&void"`
-		KeyChecker  func(VariantType) func(*Variant, *Variant) uint32                               `call:"variant_get_ptr_keyed_checker func(int)func(&void,&void)uint32_t"`
-		Constant    func(t VariantType, name StringNamePtr, ret *Variant)                           `call:"variant_get_constant_value func(int,&void,+void)"`
-		Utility     func(StringNamePtr, int64) func(ret CallFrameBack, args CallFrameArgs, c int32) `call:"variant_get_ptr_utility_function func(&void,int64_t)func(+void,&void,int)"`
+		NewCopy                   func(ctx Context, src Variant) Variant
+		NewNil                    func(ctx Context) Variant
+		Destroy                   func(self Variant)
+		Call                      func(ctx Context, self Variant, method StringName, args ...Variant) (Variant, error)
+		CallStatic                func(ctx Context, vtype VariantType, method StringName, args ...Variant) (Variant, error)
+		Evaluate                  func(ctx Context, operator Operator, a, b Variant) (ret Variant, ok bool)
+		Set                       func(self, key, val Variant) bool
+		SetNamed                  func(self Variant, key StringName, val Variant) bool
+		SetKeyed                  func(self, key, val Variant) bool
+		SetIndexed                func(self Variant, index int64, val Variant) (ok, oob bool)
+		Get                       func(ctx Context, self, key Variant) (Variant, bool)
+		GetNamed                  func(ctx Context, self Variant, key StringName) (Variant, bool)
+		GetKeyed                  func(ctx Context, self, key Variant) (Variant, bool)
+		GetIndexed                func(ctx Context, self Variant, index int64) (val Variant, ok, oob bool)
+		IteratorInitialize        func(ctx Context, self Variant) (Variant, bool)
+		IteratorNext              func(self Variant, iterator Variant) bool
+		IteratorGet               func(ctx Context, self Variant, iterator Variant) (Variant, bool)
+		Hash                      func(self Variant) int64
+		RecursiveHash             func(self Variant, count Int) int64
+		HashCompare               func(self, variant Variant) bool
+		Booleanize                func(self Variant) bool
+		Duplicate                 func(self Variant, deep bool) Variant
+		Stringify                 func(self Variant) String
+		GetType                   func(self Variant) VariantType
+		HasMethod                 func(self Variant, method StringName) bool
+		HasMember                 func(self Variant, member StringName) bool
+		HasKey                    func(self Variant, key Variant) (hasKey, valid bool)
+		GetTypeName               func(ctx Context, self VariantType) String
+		CanConvert                func(self Variant, to VariantType) bool
+		CanConvertStrict          func(self Variant, to VariantType) bool
+		FromTypeConstructor       func(VariantType) func(ret call.Ptr[[3]uintptr], arg call.Any)
+		ToTypeConstructor         func(VariantType) func(ret call.Any, arg call.Ptr[[3]uintptr])
+		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret call.Any)
+		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base call.Any, args call.Args, ret call.Any, c int32)
+		GetPointerConstructor     func(vtype VariantType, index int32) func(base call.Any, args call.Args)
+		GetPointerDestructor      func(VariantType) func(base call.Any)
+		Construct                 func(ctx Context, t VariantType, args ...Variant) (Variant, error)
+		GetPointerSetter          func(VariantType, StringName) func(base, arg call.Any)
+		GetPointerGetter          func(VariantType, StringName) func(base, ret call.Any)
+		GetPointerIndexedSetter   func(VariantType) func(base call.Any, index Int, arg call.Any)
+		GetPointerIndexedGetter   func(VariantType) func(base call.Any, index Int, ret call.Any)
+		GetPointerKeyedSetter     func(VariantType) func(base call.Any, key call.Any, arg call.Any)
+		GetPointerKeyedGetter     func(VariantType) func(base call.Any, key call.Any, ret call.Any)
+		GetPointerKeyedChecker    func(VariantType) func(base call.Any, key call.Any) uint32
+		GetConstantValue          func(ctx Context, t VariantType, name StringName) Variant
+		GetPointerUtilityFunction func(name StringName, hash Int) func(ret call.Any, args call.Args, c int32)
 	}
 
 	Strings struct {
