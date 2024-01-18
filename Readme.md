@@ -39,7 +39,9 @@ func main() {
 Godot classes are exported by the `gd` package and can be referred to by 
 their standard Godot names, for example `gd.Object` is an 
 [Object](https://docs.godotengine.org/en/latest/classes/class_object.html) 
-reference.
+reference. There's no inheritance, so to access the 'super' class, you need 
+to call `Super()` on your custom 'Class'. All Godot classes have methods
+to cast to the classes they extend for example `AsObject()` or `AsNode2D()`.
 
 Methods have been renamed to follow Go conventions, so instead of
 underscores, methods are named as PascalCase. Keep this in mind when
