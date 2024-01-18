@@ -89,6 +89,7 @@ see Go printing things to the console.
 * No support for indexed properties
 * No support for Godot functions with varargs.
 * No support for script extensions.
+* 64bit support only.
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use 
