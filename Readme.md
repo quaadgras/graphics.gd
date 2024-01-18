@@ -1,6 +1,8 @@
-# Godot 4.2.1 + Go
+# Godot 4.2.1 + Go [![Go Reference](https://pkg.go.dev/badge/grow.graphics/gd.svg)](https://pkg.go.dev/grow.graphics/gd)
 
 This module provides a safe and simple way to work with Godot 4.2.1, in Go.
+
+You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
 ```go
 package main
@@ -88,6 +90,7 @@ see Go printing things to the console.
 * No support for Godot functions with varargs.
 * No support for script extensions.
 
-## Disclaimer
-
-This module is still in development, some functionality may not be available.
+## Licensing
+This project is licensed under an MIT license (the same license as Godot), you can use 
+it in any manner you can use the Godot engine. If you use this for a commercially successful
+project, please consider [financially supporting us](https://buy.stripe.com/4gw14maETbnX3vOcMM).
