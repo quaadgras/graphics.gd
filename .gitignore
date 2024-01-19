@@ -10,3 +10,5 @@ example/bin/
 /gdextension/header.h
 /go.work
 /extension_api.json
+/internal/testbed/.godot
+/internal/testbed/testing.lib

@@ -11,6 +11,7 @@ import (
 	"runtime.link/mmm"
 )
 
+type Bool = bool
 type Float = float64
 type Int = int64
 

@@ -6,14 +6,13 @@ import (
 	"runtime/cgo"
 	"strings"
 
-	"grow.graphics/gd"
-	internal "grow.graphics/gd/internal"
+	gd "grow.graphics/gd/internal"
 	"runtime.link/mmm"
 )
 
-func attachProperties(ctx gd.Context, className internal.StringName, info *internal.ClassCreationInfo, rtype reflect.Type) {
+func attachProperties(ctx gd.Context, className gd.StringName, info *gd.ClassCreationInfo, rtype reflect.Type) {
 	var (
-		properties     []internal.PropertyInfo
+		properties     []gd.PropertyInfo
 		propertyPinner runtime.Pinner
 	)
 	ctx.Defer(func() {
@@ -46,19 +45,19 @@ func attachProperties(ctx gd.Context, className internal.StringName, info *inter
 	if len(properties) > 0 {
 		propertyPinner.Pin(&properties[0])
 
-		info.GetPropertyList.Set(func(instance cgo.Handle, length *uint32) *internal.PropertyInfo {
+		info.GetPropertyList.Set(func(instance cgo.Handle, length *uint32) *gd.PropertyInfo {
 			*length = uint32(len(properties))
 			return &properties[0]
 		})
-		info.FreePropertyList.Set(func(instance cgo.Handle, properties *internal.PropertyInfo) {})
-		info.Set.Set(func(instance cgo.Handle, name internal.StringNamePtr, value internal.VariantPtr) bool {
-			ctx := internal.NewContext(ctx.API())
-			sname := mmm.Make[internal.API, internal.StringName, uintptr](nil, ctx.API(), *name)
+		info.FreePropertyList.Set(func(instance cgo.Handle, properties *gd.PropertyInfo) {})
+		info.Set.Set(func(instance cgo.Handle, name gd.StringNamePtr, value gd.VariantPtr) bool {
+			ctx := gd.NewContext(ctx.API())
+			sname := mmm.Make[gd.API, gd.StringName, uintptr](nil, ctx.API(), *name)
 			field := reflect.ValueOf(instance.Value()).Elem().FieldByName(sname.String())
 			if !field.IsValid() {
 				return false
 			}
-			variant := mmm.Make[internal.API, internal.Variant, [3]uintptr](nil, ctx.API(), *value)
+			variant := mmm.Make[gd.API, gd.Variant, [3]uintptr](nil, ctx.API(), *value)
 			var fieldCtx mmm.Context
 			ptr, ok := field.Interface().(interface {
 				Context() mmm.Context
@@ -74,9 +73,9 @@ func attachProperties(ctx gd.Context, className internal.StringName, info *inter
 			ctx.Free()
 			return true
 		})
-		info.Get.Set(func(instance cgo.Handle, name internal.StringNamePtr, value internal.VariantPtr) bool {
-			ctx := internal.NewContext(ctx.API())
-			sname := mmm.Make[internal.API, internal.StringName, uintptr](nil, ctx.API(), *name)
+		info.Get.Set(func(instance cgo.Handle, name gd.StringNamePtr, value gd.VariantPtr) bool {
+			ctx := gd.NewContext(ctx.API())
+			sname := mmm.Make[gd.API, gd.StringName, uintptr](nil, ctx.API(), *name)
 			field := reflect.ValueOf(instance.Value()).Elem().FieldByName(sname.String())
 			if !field.IsValid() {
 				return false
@@ -91,21 +90,21 @@ func attachProperties(ctx gd.Context, className internal.StringName, info *inter
 
 	var frame = ctx.API().NewFrame()
 	for _, group := range groups {
-		internal.FrameSet[uintptr](0, frame, className.Pointer())
-		internal.FrameSet[uintptr](1, frame, ctx.String(group[0]).Pointer())
-		internal.FrameSet[uintptr](2, frame, ctx.String(group[1]).Pointer())
+		gd.FrameSet[uintptr](0, frame, className.Pointer())
+		gd.FrameSet[uintptr](1, frame, ctx.String(group[0]).Pointer())
+		gd.FrameSet[uintptr](2, frame, ctx.String(group[1]).Pointer())
 		ctx.API().ClassDB.RegisterClassPropertyGroup(ctx.API().ExtensionToken, frame.Get(0), frame.Get(1), frame.Get(2))
 	}
 	for _, group := range subgroups {
-		internal.FrameSet[uintptr](0, frame, className.Pointer())
-		internal.FrameSet[uintptr](1, frame, ctx.String(group[0]).Pointer())
-		internal.FrameSet[uintptr](2, frame, ctx.String(group[1]).Pointer())
+		gd.FrameSet[uintptr](0, frame, className.Pointer())
+		gd.FrameSet[uintptr](1, frame, ctx.String(group[0]).Pointer())
+		gd.FrameSet[uintptr](2, frame, ctx.String(group[1]).Pointer())
 		ctx.API().ClassDB.RegisterClassPropertySubGroup(ctx.API().ExtensionToken, frame.Get(0), frame.Get(1), frame.Get(2))
 	}
 	frame.Free()
 }
 
-func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype reflect.Type, field reflect.StructField) internal.PropertyInfo {
+func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype reflect.Type, field reflect.StructField) gd.PropertyInfo {
 	if field.Name == "" {
 		field.Name = strings.ToLower(field.Type.Name())
 	}
@@ -113,8 +112,8 @@ func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype 
 	var name = godot.StringName(field.Name).Pointer()
 	var namePtr = &name
 	propertyPinner.Pin(namePtr)
-	var class internal.StringNamePtr
-	if field.Type.Implements(reflect.TypeOf([0]internal.IsClass{}).Elem()) {
+	var class gd.StringNamePtr
+	if field.Type.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
 		className := godot.StringName(field.Type.Name()).Pointer()
 		vtype = gd.TypeObject
 		class = &className
@@ -124,7 +123,7 @@ func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype 
 		class = &className
 		propertyPinner.Pin(class)
 	}
-	if field.Type.Implements(reflect.TypeOf([0]internal.IsSignal{}).Elem()) {
+	if field.Type.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 		vtype = gd.TypeSignal
 	}
 
@@ -210,7 +209,7 @@ func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype 
 			panic("gdextension.RegisterClass: unsupported property type " + field.Type.String())
 		}
 	}
-	return internal.PropertyInfo{
+	return gd.PropertyInfo{
 		Type:       uint32(vtype),
 		Name:       namePtr,
 		ClassName:  class,

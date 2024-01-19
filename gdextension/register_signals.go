@@ -6,15 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	"grow.graphics/gd"
-	internal "grow.graphics/gd/internal"
+	gd "grow.graphics/gd/internal"
 )
 
 // registerSignals registers [gd.Signal[T]] fields as signals emittable by the class,
 // when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
 func registerSignals(godot gd.Context, class gd.StringName, rtype reflect.Type) {
-	ctx := internal.NewContext(godot.API())
+	ctx := gd.NewContext(godot.API())
 	defer ctx.Free()
 
 	var pin runtime.Pinner
@@ -22,7 +21,7 @@ func registerSignals(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
-		if field.Type.Implements(reflect.TypeOf([0]internal.IsSignal{}).Elem()) {
+		if field.Type.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 			var signalName = godot.StringName(field.Name)
 			var ftype = field.Type.Field(1).Type
 			if ftype.Kind() != reflect.Func {
@@ -32,13 +31,13 @@ func registerSignals(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 				panic(fmt.Sprintf("gdextension.RegisterClass: %v.%v must not return any values",
 					rtype.Name(), field.Name))
 			}
-			var args []internal.PropertyInfo
+			var args []gd.PropertyInfo
 			for i := 0; i < ftype.NumIn(); i++ {
 				args = append(args, derivePropertyInfo(ctx, &pin, rtype, reflect.StructField{Type: ftype.In(i)}))
 			}
 			godot.API().ClassDB.RegisterClassSignal(godot.API().ExtensionToken,
-				(internal.StringNamePtr)(unsafe.Pointer(&class)),
-				(internal.StringNamePtr)(unsafe.Pointer(&signalName)),
+				(gd.StringNamePtr)(unsafe.Pointer(&class)),
+				(gd.StringNamePtr)(unsafe.Pointer(&signalName)),
 				args,
 			)
 		}

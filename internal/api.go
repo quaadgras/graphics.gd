@@ -15,7 +15,7 @@ type API struct {
 	api.Specification
 
 	GetGodotVersion     func() Version
-	GetNativeStructSize func(StringName) uint64
+	GetNativeStructSize func(StringName) uintptr
 
 	Memory struct {
 		Allocate   func(uintptr) unsafe.Pointer
@@ -125,17 +125,17 @@ type API struct {
 		MethodBindPointerCall func(method MethodBind, obj Object, arg call.Args, ret call.Any)
 		Destroy               func(Object)
 		GetSingleton          func(ctx Context, name StringName) Object
+		GetInstanceBinding    func(Object, ExtensionToken, InstanceBindingType) any
+		SetInstanceBinding    func(Object, ExtensionToken, any, InstanceBindingType)
+		FreeInstanceBinding   func(Object, ExtensionToken)
+		SetInstance           func(Object, StringName, any)
+		GetClassName          func(Context, Object, ExtensionToken) String
 
-		GetInstanceBinding  func(obj uintptr, token unsafe.Pointer, callbacks *InstanceBindingCallbacks)          `call:"object_get_instance_binding func(&void,$void,&void)"`
-		SetInstanceBinding  func(obj uintptr, token, binding unsafe.Pointer, callbacks *InstanceBindingCallbacks) `call:"object_set_instance_binding func(&void,$void,&void)"`
-		FreeInstanceBinding func(obj uintptr, token unsafe.Pointer)                                               `call:"object_free_instance_binding func(&void,$void)"`
-		SetInstance         func(obj uintptr, name StringNamePtr, value cgo.Handle)                               `call:"object_set_instance func(&void,&void,&void)"`
-		GetClassName        func(obj uintptr, library ExtensionToken, out StringNamePtr)                          `call:"object_get_class_name func(&void,+void)"`
-		CastTo              func(obj uintptr, class ClassTag) uintptr                                             `call:"object_cast_to func(&void,&void)&void"`
-		GetFromID           func(id InstanceID) uintptr                                                           `call:"object_get_instance_from_id func(uint64_t)&void"`
-		GetID               func(obj uintptr) InstanceID                                                          `call:"object_get_instance_id func(&void)uint64_t"`
-		GetFromReference    func(ref unsafe.Pointer) uintptr                                                      `call:"ref_get_object func(&void)&void"`
-		Reference           func(ref unsafe.Pointer, obj uintptr)                                                 `call:"ref_set_object func(&void,&void)"`
+		CastTo           func(obj uintptr, class ClassTag) uintptr `call:"object_cast_to func(&void,&void)&void"`
+		GetFromID        func(id InstanceID) uintptr               `call:"object_get_instance_from_id func(uint64_t)&void"`
+		GetID            func(obj uintptr) InstanceID              `call:"object_get_instance_id func(&void)uint64_t"`
+		GetFromReference func(ref unsafe.Pointer) uintptr          `call:"ref_get_object func(&void)&void"`
+		Reference        func(ref unsafe.Pointer, obj uintptr)     `call:"ref_set_object func(&void,&void)"`
 	}
 	Scripts struct {
 		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script             `call:"script_instance_create2 func(&void,&void)&void"`
@@ -210,6 +210,8 @@ type CallError struct {
 	Argument  int32
 	Expected  int32
 }
+
+type InstanceBindingType unsafe.Pointer
 
 func (err CallError) Error() string {
 	switch err.ErrorType {

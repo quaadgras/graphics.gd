@@ -279,7 +279,21 @@ void object_destroy(pointer fn, pointer p_self) {
 pointer global_get_singleton(pointer fn, pointer p_name) {
 	return (pointer)((GDExtensionInterfaceGlobalGetSingleton)fn)((GDExtensionConstStringNamePtr)p_name);
 }
-
+pointer object_get_instance_binding(pointer fn, pointer p_o, pointer p_library, void *p_callbacks) {
+	return (pointer)((GDExtensionInterfaceObjectGetInstanceBinding)fn)((GDExtensionObjectPtr)p_o, (void*)p_library, (const GDExtensionInstanceBindingCallbacks *)p_callbacks);
+}
+void object_set_instance_binding(pointer fn, pointer p_o, pointer p_library, pointer p_binding, void *p_callbacks) {
+	((GDExtensionInterfaceObjectSetInstanceBinding)fn)((GDExtensionObjectPtr)p_o, (void*)p_library, (void *)p_binding, (const GDExtensionInstanceBindingCallbacks *)p_callbacks);
+}
+void object_free_instance_binding(pointer fn, pointer p_o, pointer p_library) {
+	((GDExtensionInterfaceObjectFreeInstanceBinding)fn)((GDExtensionObjectPtr)p_o, (void*)p_library);
+}
+void object_set_instance(pointer fn, pointer p_o, pointer p_classname, pointer p_instance) {
+	((GDExtensionInterfaceObjectSetInstance)fn)((GDExtensionObjectPtr)p_o, (GDExtensionConstStringNamePtr)p_classname, (GDExtensionObjectPtr)p_instance);
+}
+void object_get_class_name(pointer fn, pointer p_o, pointer p_token, pointer r_ret) {
+	((GDExtensionInterfaceObjectGetClassName)fn)((GDExtensionObjectPtr)p_o, (void *)p_token, (GDExtensionUninitializedStringPtr)r_ret);
+}
 
 pointer classdb_construct_object(pointer fn, pointer p_classname) {
 	return (pointer)((GDExtensionInterfaceClassdbConstructObject)fn)((GDExtensionConstStringNamePtr)p_classname);
@@ -290,9 +304,11 @@ import "C"
 import (
 	"errors"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	gd "grow.graphics/gd/internal"
+	internal "grow.graphics/gd/internal"
 	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
@@ -434,10 +450,10 @@ func linkCGO(API *gd.API) {
 		C.free(unsafe.Pointer(p_file))
 	}
 	get_native_struct_size := dlsymGD("get_native_struct_size")
-	API.GetNativeStructSize = func(name gd.StringName) uint64 {
+	API.GetNativeStructSize = func(name gd.StringName) uintptr {
 		var frame = call.New()
 		defer frame.Free()
-		return uint64(C.get_native_struct_size(
+		return uintptr(C.get_native_struct_size(
 			C.uintptr_t(uintptr(get_native_struct_size)),
 			C.uintptr_t(call.Arg(frame, name.Pointer()).Uintptr()),
 		))
@@ -1539,6 +1555,16 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return ret, nil
 	}
+	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
+	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg call.Args, ret call.Any) {
+		C.object_method_bind_ptrcall(
+			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
+			C.uintptr_t(method),
+			C.uintptr_t(obj.Pointer()),
+			C.uintptr_t(arg.Uintptr()),
+			C.uintptr_t(ret.Uintptr()),
+		)
+	}
 	object_destroy := dlsymGD("object_destroy")
 	API.Object.Destroy = func(o gd.Object) {
 		C.object_destroy(
@@ -1559,16 +1585,61 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return obj
 	}
-
-	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
-	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg call.Args, ret call.Any) {
-		C.object_method_bind_ptrcall(
-			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
-			C.uintptr_t(method),
-			C.uintptr_t(obj.Pointer()),
-			C.uintptr_t(arg.Uintptr()),
-			C.uintptr_t(ret.Uintptr()),
+	object_get_instance_binding := dlsymGD("object_get_instance_binding")
+	API.Object.GetInstanceBinding = func(o gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
+		var ret = C.object_get_instance_binding(
+			C.uintptr_t(uintptr(object_get_instance_binding)),
+			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(et),
+			unsafe.Pointer(ibt),
 		)
+		return cgo.Handle(ret).Value()
+	}
+	object_set_instance_binding := dlsymGD("object_set_instance_binding")
+	API.Object.SetInstanceBinding = func(o gd.Object, et gd.ExtensionToken, val any, ibt gd.InstanceBindingType) {
+		p_val := cgo.NewHandle(val)
+		C.object_set_instance_binding(
+			C.uintptr_t(uintptr(object_set_instance_binding)),
+			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(et),
+			C.uintptr_t(p_val),
+			unsafe.Pointer(ibt),
+		)
+	}
+	object_free_instance_binding := dlsymGD("object_free_instance_binding")
+	API.Object.FreeInstanceBinding = func(o gd.Object, et gd.ExtensionToken) {
+		C.object_free_instance_binding(
+			C.uintptr_t(uintptr(object_free_instance_binding)),
+			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(et),
+		)
+	}
+	object_set_instance := dlsymGD("object_set_instance")
+	API.Object.SetInstance = func(o gd.Object, sn gd.StringName, a any) {
+		var frame = call.New()
+		var p_sn = call.Arg(frame, sn.Pointer())
+		var p_val = cgo.NewHandle(a)
+		C.object_set_instance(
+			C.uintptr_t(uintptr(object_set_instance)),
+			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(p_sn.Uintptr()),
+			C.uintptr_t(p_val),
+		)
+		frame.Free()
+	}
+	object_get_class_name := dlsymGD("object_get_class_name")
+	API.Object.GetClassName = func(ctx gd.Context, o gd.Object, token internal.ExtensionToken) gd.String {
+		var frame = call.New()
+		var r_ret = call.Ret[uintptr](frame)
+		C.object_get_class_name(
+			C.uintptr_t(uintptr(object_get_class_name)),
+			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(token),
+			C.uintptr_t(r_ret.Uintptr()),
+		)
+		var ret = mmm.Make[gd.API, gd.String, uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		return ret
 	}
 
 	classdb_construct_object := dlsymGD("classdb_construct_object")
