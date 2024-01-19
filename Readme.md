@@ -43,12 +43,13 @@ sure that your `$GOPATH/bin` is in your `$PATH` and run:
 	go install grow.graphics/gd/cmd/gd@master
 ```
 
-Now when you can run `gd run`, `gd test` in your project's directory and things
-will work as expected.
+Now when you can run `gd run`, `gd test` on the main package in your project's 
+directory, things will work as expected.
 
-On linux, `gd` will download the correct version of Godot for you automatically.
 Running the command without any arguments will startup the editor so you can 
 manage the graphical aspects of your project.
+
+**NOTE** On linux, `gd` will download Godot for you automatically!
 
 ## Design Principles
 
@@ -79,6 +80,15 @@ This module aims to offer memory safety for race-free extensions, if you discove
 a way to unintentionally do something unsafe (like double free, use-after-free or
 a segfault), using methods on types exported by the root `gd` package please open 
 an issue. 
+
+## Recommendations
+
+Start with a main.go file, model your project in Go using structs to represent the 
+world, space or state of your project. Go is an excellent language for textual 
+representation. Use the `gd` command to launch the Godot editor when you want to 
+create visual representation of your structures. Godot is an excellent tool for
+importing media, managing assets and designing the visual and spatial aspects of
+a project. Don't forget to write tests!
 
 ## Performance
 
