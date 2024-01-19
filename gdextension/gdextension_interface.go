@@ -9,6 +9,10 @@ typedef const char* string;
 typedef char32_t rune;
 typedef uint8_t * bytes;
 
+// TODO the amount of code here can probably be reduced by stenciling out the various
+// function signatures, such that we can call every function that takes 1 pointer arg,
+// 2 pointer args etc.
+
 void get_godot_version(pointer fn, GDExtensionGodotVersion *r_version) {
 	((GDExtensionInterfaceGetGodotVersion)fn)(r_version);
 }
@@ -299,6 +303,12 @@ pointer object_cast_to(pointer fn, pointer p_o, pointer p_class_tag) {
 }
 uint64_t object_get_instance_id(pointer fn, pointer p_o) {
 	return ((GDExtensionInterfaceObjectGetInstanceId)fn)((GDExtensionObjectPtr)p_o);
+}
+pointer ref_get_object(pointer fn, pointer p_r) {
+	return (pointer)((GDExtensionInterfaceRefGetObject)fn)((GDExtensionRefPtr)p_r);
+}
+void ref_set_object(pointer fn, pointer p_r, pointer p_o) {
+	((GDExtensionInterfaceRefSetObject)fn)((GDExtensionRefPtr)p_r, (GDExtensionObjectPtr)p_o);
 }
 
 pointer classdb_construct_object(pointer fn, pointer p_classname) {
@@ -1664,6 +1674,24 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(uintptr(object_get_instance_id)),
 			C.uintptr_t(o.Pointer()),
 		))
+	}
+	ref_get_object := dlsymGD("ref_get_object")
+	API.RefCounted.GetObject = func(ctx gd.Context, rc internal.RefCounted) internal.Object {
+		var ret = C.ref_get_object(
+			C.uintptr_t(uintptr(ref_get_object)),
+			C.uintptr_t(rc.Pointer()),
+		)
+		var obj gd.Object
+		obj.SetPointer(mmm.Make[gd.API, gd.Pointer, uintptr](ctx, ctx.API(), uintptr(ret)))
+		return obj
+	}
+	ref_set_object := dlsymGD("ref_set_object")
+	API.RefCounted.SetObject = func(rc internal.RefCounted, o internal.Object) {
+		C.ref_set_object(
+			C.uintptr_t(uintptr(ref_set_object)),
+			C.uintptr_t(rc.Pointer()),
+			C.uintptr_t(o.Pointer()),
+		)
 	}
 
 	classdb_construct_object := dlsymGD("classdb_construct_object")

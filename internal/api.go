@@ -132,10 +132,10 @@ type API struct {
 		GetClassName          func(Context, Object, ExtensionToken) String
 		CastTo                func(Context, Object, ClassTag) Object
 		GetInstanceID         func(Object) ObjectID
-
-		GetFromID        func(id InstanceID) uintptr           `call:"object_get_instance_from_id func(uint64_t)&void"`
-		GetFromReference func(ref unsafe.Pointer) uintptr      `call:"ref_get_object func(&void)&void"`
-		Reference        func(ref unsafe.Pointer, obj uintptr) `call:"ref_set_object func(&void,&void)"`
+	}
+	RefCounted struct {
+		GetObject func(Context, RefCounted) Object
+		SetObject func(RefCounted, Object)
 	}
 	Scripts struct {
 		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script             `call:"script_instance_create2 func(&void,&void)&void"`
