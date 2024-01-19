@@ -3,6 +3,7 @@ package gdextension
 import (
 	"errors"
 	"fmt"
+	"os"
 	"unsafe"
 
 	internal "grow.graphics/gd/internal"
@@ -11,6 +12,16 @@ import (
 	"runtime.link/api/stub"
 )
 import "C"
+
+// little hack to enable `gd test` to work, we strip away the headless flag
+// so that 'go test' doesn't complain on startup.
+func init() {
+	for i := 0; i < len(os.Args); i++ {
+		if os.Args[i] == "--headless" {
+			os.Args = append(os.Args[:i], os.Args[i+1:]...)
+		}
+	}
+}
 
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer

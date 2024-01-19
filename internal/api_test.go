@@ -12,11 +12,6 @@ import (
 var API *gd.API
 
 func TestMain(M *testing.M) {
-	for i := 0; i < len(os.Args); i++ {
-		if os.Args[i] == "--headless" {
-			os.Args = append(os.Args[:i], os.Args[i+1:]...)
-		}
-	}
 	godot, ok := gdextension.Link()
 	if ok {
 		API = godot.API()

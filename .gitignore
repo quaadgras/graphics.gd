@@ -12,3 +12,4 @@ example/bin/
 /extension_api.json
 /internal/testbed/.godot
 /internal/testbed/testing.lib
+/internal/graphics
