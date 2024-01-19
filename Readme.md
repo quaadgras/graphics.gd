@@ -89,12 +89,12 @@ see Go printing things to the console.
 ## Testing
 To run the go tests for this module, you need to compile the test library:
 ```sh
-cd ./internal/testing
-make # go test ./internal -o ./internal/testing/testing.lib -c
+cd ./internal/testbed
+make # go test ./internal -o ./internal/testbed/testing.lib -c
 ```
-Then launch godot from the internal testing directory with the desired Go
+Then launch godot from the `internal/testbed` directory with the desired Go
 test-prefixed test flags (`-test.v`, `-test.bench`, etc) be sure to add the
-`--headless` flag to prevent Godot from opening a window.
+`--headless` flag to prevent Godot from opening a window!
 
 ## Known Limitations
 
