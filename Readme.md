@@ -102,6 +102,7 @@ test-prefixed test flags (`-test.v`, `-test.bench`, etc) be sure to add the
 * No support for script extensions.
 * No methods for Godot math types, Vectors, Transforms, etc.
 * 64bit support only.
+* Untested on Windows.
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use 
