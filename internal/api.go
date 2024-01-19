@@ -78,65 +78,48 @@ type API struct {
 		GetConstantValue          func(ctx Context, t VariantType, name StringName) Variant
 		GetPointerUtilityFunction func(name StringName, hash Int) func(ret call.Any, args call.Args, c int32)
 	}
-
 	Strings struct {
-		New        func(dst CallFrameBack, s string) `call:"string_new_with_utf8_chars_and_len func(+void,&char,-int64_t=@2)"`
-		Get        func(CallFrameArgs, []byte)       `call:"string_to_utf8_chars func(&void,&char,-int64_t=@2)"`
-		Index      func(StringPtr, int64) rune       `call:"string_operator_index func(&void,int64_t)&char32_t"`
-		Append     func(StringPtr, *String)          `call:"string_operator_plus_eq_string func(&void,&void)"`
-		AppendRune func(StringPtr, rune)             `call:"string_operator_plus_eq_char func(&void,&char32_t)"`
-		Resize     func(StringPtr, int64)            `call:"string_resize func(&void,int64_t)"`
+		New        func(Context, string) String
+		Get        func(String) string
+		SetIndex   func(String, Int, rune)
+		Index      func(String, Int) rune
+		Append     func(String, String)
+		AppendRune func(String, rune)
+		Resize     func(String, Int)
 	}
-
 	StringNames struct {
-		New func(dst CallFrameBack, s string) `call:"string_name_new_with_utf8_chars_and_len func(+void,&char,-int64_t=@2)"`
+		New func(Context, string) StringName
 	}
-
 	XMLParser struct {
-		OpenBuffer func(*XMLParser, []byte) Error `call:"xml_parser_open_buffer func(&void,&char,int64_t=@2)int64_t"`
+		OpenBuffer func(XMLParser, []byte) error
 	}
-
 	FileAccess struct {
-		StoreBuffer func(*FileAccess, []byte) Error `call:"file_access_store_buffer func(&void,&char,int64_t=@2)int64_t"`
-		ReadBuffer  func(*FileAccess, []byte) Error `call:"file_access_get_buffer func(&void,&char,int64_t=@2)int64_t"`
+		StoreBuffer func(FileAccess, []byte)
+		GetBuffer   func(FileAccess, []byte) int
 	}
-
-	PackedByteArray struct {
-		Index func(*PackedByteArray, int64) *byte `call:"packed_byte_array_operator_index func(&void,int64_t)&char"`
+	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
+	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
+	PackedFloat32Array PackedFunctionsFor[PackedFloat32Array, float32]
+	PackedFloat64Array PackedFunctionsFor[PackedFloat64Array, float64]
+	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32]
+	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64]
+	PackedStringArray  struct {
+		Index       func(Context, PackedStringArray, Int) String
+		SetIndex    func(PackedStringArray, Int, String)
+		CopyAsSlice func(Context, PackedStringArray) []String
 	}
-	PackedColorArray struct {
-		Index func(*PackedColorArray, int64) *Color `call:"packed_color_array_operator_index func(&void,int64_t)&Color"`
-	}
-	PackedFloat32Array struct {
-		Index func(*PackedFloat32Array, int64) *float32 `call:"packed_float32_array_operator_index func(&void,int64_t)&float"`
-	}
-	PackedFloat64Array struct {
-		Index func(*PackedFloat64Array, int64) *float64 `call:"packed_float64_array_operator_index func(&void,int64_t)&double"`
-	}
-	PackedInt32Array struct {
-		Index func(*PackedInt32Array, int64) *int32 `call:"packed_int32_array_operator_index func(&void,int64_t)&int32_t"`
-	}
-	PackedInt64Array struct {
-		Index func(*PackedInt64Array, int64) *int64 `call:"packed_int64_array_operator_index func(&void,int64_t)&int64_t"`
-	}
-	PackedStringArray struct {
-		Index func(*PackedStringArray, int64) *uintptr `call:"packed_string_array_operator_index func(&void,int64_t)$void"`
-	}
-	PackedVector2Array struct {
-		Index func(*PackedVector2Array, int64) *Vector2 `call:"packed_vector2_array_operator_index func(&void,int64_t)&Vector2"`
-	}
-	PackedVector3Array struct {
-		Index func(*PackedVector3Array, int64) *Vector3 `call:"packed_vector3_array_operator_index func(&void,int64_t)&Vector3"`
-	}
-	Array struct {
-		Index    func(*Array, int64) *Variant                                           `call:"array_operator_index func(&void,int64_t)&void"`
-		Set      func(*Array, *Array)                                                   `call:"array_ref func(&void,&void)"`
-		SetTyped func(a *Array, t VariantType, className StringNamePtr, script *Script) `call:"array_set_typed func(&void,int,&void,&void)"`
+	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
+	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
+	Array              struct {
+		Index    func(Context, Array, Int) Variant
+		Set      func(self, from Array)
+		SetIndex func(Array, Int, Variant)
+		SetTyped func(self Array, t VariantType, className StringName, script Script)
 	}
 	Dictionary struct {
-		Index func(d *Dictionary, key *Variant, ret *Variant) `call:"dictionary_operator_index func(&void,&void,&void)"`
+		Index    func(ctx Context, dict Dictionary, key Variant) Variant
+		SetIndex func(dict Dictionary, key, val Variant)
 	}
-
 	Object struct {
 		MethodBindPointerCall func(method MethodBind, obj Object, arg call.Args, ret call.Any)
 
@@ -155,19 +138,16 @@ type API struct {
 		GetFromReference    func(ref unsafe.Pointer) uintptr                                                      `call:"ref_get_object func(&void)&void"`
 		Reference           func(ref unsafe.Pointer, obj uintptr)                                                 `call:"ref_set_object func(&void,&void)"`
 	}
-
 	Scripts struct {
 		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script             `call:"script_instance_create2 func(&void,&void)&void"`
 		CreatePlaceholder func(lang *ScriptLanguage, script *Script, owner *uintptr) Script        `call:"placeholder_script_instance_create func(&void,&void,&void)&void"`
 		UpdatePlaceholder func(script Script, properties *ArrayOf[Dictionary], values *Dictionary) `call:"placeholder_script_instance_update func(&void)"`
 		Get               func(obj *uintptr, lang *ScriptLanguage) Script                          `call:"object_get_script_instance func(&void)&void"`
 	}
-
 	Callables struct {
 		Create      func(callable *Callable, info *CallableCustomInfo)            `call:"callable_custom_create func(+void,&void)"`
 		GetUserData func(callable *Callable, token unsafe.Pointer) unsafe.Pointer `call:"callable_custom_get_userdata func(&void,&void)$void"`
 	}
-
 	ClassDB struct {
 		ConstructObject func(Context, StringName) Object
 		GetMethodBind   func(class, method StringNamePtr, hash int64) MethodBind `call:"classdb_get_method_bind func(&void,&void,int64_t)void"`
@@ -184,15 +164,28 @@ type API struct {
 		UnregisterClass               func(library ExtensionToken, class StringNamePtr)                                                                `call:"classdb_unregister_extension_class func(&void,&void)"`
 		GetLibraryPath                func(library ExtensionToken, out CallFrameBack)                                                                  `call:"get_library_path func(&void,&void)"`
 	}
-
 	EditorPlugins struct {
 		Add    func(plugin StringNamePtr) `call:"editor_add_plugin func(&void)"`
 		Remove func(plugin StringNamePtr) `call:"editor_remove_plugin func(&void)"`
 	}
 
 	ExtensionToken
-
 	cache
+}
+
+type Packed interface {
+	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
+		PackedFloat64Array | PackedStringArray | PackedVector2Array | PackedVector3Array |
+		PackedColorArray
+
+	Pointer() [2]uintptr
+	Size() Int
+}
+
+type PackedFunctionsFor[T Packed, V any] struct {
+	Index       func(T, Int) V
+	SetIndex    func(T, Int, V)
+	CopyAsSlice func(T) []V
 }
 
 type (

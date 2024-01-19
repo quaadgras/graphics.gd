@@ -138,7 +138,7 @@ func injectDependenciesInto(ctx context.Context, Godot *internal.API, value refl
 	if value.CanAddr() && value.Kind() != reflect.Struct {
 		panic("gdextension.injectDependenciesInto: value must be an addressable struct")
 	}
-	localCtx := mmm.NewContext(context.Background())
+	localCtx := internal.NewContext(Godot)
 	defer localCtx.Free()
 
 	for i := 0; i < value.NumField(); i++ {
@@ -151,7 +151,7 @@ func injectDependenciesInto(ctx context.Context, Godot *internal.API, value refl
 		if ok && container.Pointer() == 0 {
 			_, ok := fieldValue.(internal.Singleton)
 			if ok {
-				var name = Godot.StringName(localCtx, strings.TrimPrefix(field.Type.Name(), "class"))
+				var name = localCtx.StringName(strings.TrimPrefix(field.Type.Name(), "class"))
 				singleton := Godot.Object.GetSingleton((internal.StringNamePtr)(unsafe.Pointer(&name)))
 				container.SetPointer(mmm.Make[internal.API, internal.Pointer](nil, Godot, singleton))
 			}

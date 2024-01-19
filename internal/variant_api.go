@@ -2,6 +2,11 @@
 
 package gd
 
+// Copy returns a copy of the variant that will belong to the provided context.
+func (variant Variant) Copy(ctx Context) Variant {
+	return variant.API.Variants.NewCopy(ctx, variant)
+}
+
 // Type returns the variant's type, similar to [reflect.Kind] but for a variant
 // value.
 func (variant Variant) Type() VariantType {

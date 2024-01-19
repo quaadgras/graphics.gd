@@ -66,20 +66,10 @@ func (ctx Context) GetLibraryPath() string {
 
 // String returns a [String] from a standard UTF8 Go string.
 func (ctx Context) String(s string) String {
-	var godot = ctx.API()
-	var frame = godot.NewFrame()
-	ctx.API().Strings.New(frame.Back(), s)
-	var str = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, String](ctx, godot, str)
+	return ctx.API().Strings.New(ctx, s)
 }
 
 // StringName returns a [StringName] from a standard UTF8 Go string.
 func (ctx Context) StringName(s string) StringName {
-	var godot = ctx.API()
-	var frame = godot.NewFrame()
-	ctx.API().StringNames.New(frame.Back(), s)
-	var str = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, StringName](ctx, godot, str)
+	return ctx.API().StringNames.New(ctx, s)
 }

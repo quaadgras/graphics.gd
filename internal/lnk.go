@@ -3,7 +3,6 @@
 package gd
 
 import (
-	"context"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -11,7 +10,6 @@ import (
 	"unsafe"
 
 	"runtime.link/api/call"
-	"runtime.link/mmm"
 )
 
 // Link needs to be called once for the API to load in all of the
@@ -32,14 +30,14 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 // linkUtility, each field of cache.utility is a function value that
 // needs to be loaded in dynamically.
 func (Godot *API) linkUtility() {
-	ctx := mmm.NewContext(context.Background())
+	ctx := NewContext(Godot)
 	defer ctx.Free()
 
 	rvalue := reflect.ValueOf(&Godot.utility).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
 		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
-		name := Godot.StringName(ctx, field.Name)
+		name := ctx.StringName(field.Name)
 		hash, err := strconv.ParseInt(field.Tag.Get("hash"), 10, 64)
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
@@ -51,7 +49,7 @@ func (Godot *API) linkUtility() {
 // linkBuiltin is very similar to [Godot.linkMethods], except it loads in methods for the
 // builtin Godot classes.
 func (Godot *API) linkBuiltin() {
-	ctx := mmm.NewContext(context.Background())
+	ctx := NewContext(Godot)
 	defer ctx.Free()
 
 	rvalue := reflect.ValueOf(&Godot.builtin).Elem()
@@ -62,7 +60,7 @@ func (Godot *API) linkBuiltin() {
 			method := class.Type.Field(j)
 			method.Name = strings.TrimSuffix(method.Name, "_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
-			methodName := Godot.StringName(ctx, method.Name)
+			methodName := ctx.StringName(method.Name)
 			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
@@ -77,7 +75,7 @@ func (Godot *API) linkBuiltin() {
 // the class it represents. Each field of that struct needs to be
 // filled in with a [MethodBind].
 func (Godot *API) linkMethods() {
-	ctx := mmm.NewContext(context.Background())
+	ctx := NewContext(Godot)
 	defer ctx.Free()
 
 	rvalue := reflect.ValueOf(&Godot.Methods).Elem()
@@ -89,8 +87,8 @@ func (Godot *API) linkMethods() {
 			method.Name = strings.TrimSuffix(method.Name, "_")
 			method.Name = strings.TrimPrefix(method.Name, "Bind_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
-			className := Godot.StringName(ctx, class.Name)
-			methodName := Godot.StringName(ctx, method.Name)
+			className := ctx.StringName(class.Name)
+			methodName := ctx.StringName(method.Name)
 			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())

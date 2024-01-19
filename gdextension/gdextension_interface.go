@@ -6,6 +6,8 @@ package gdextension
 
 typedef uintptr_t pointer;
 typedef const char* string;
+typedef char32_t rune;
+typedef uint8_t * bytes;
 
 void get_godot_version(pointer fn, GDExtensionGodotVersion *r_version) {
 	((GDExtensionInterfaceGetGodotVersion)fn)(r_version);
@@ -211,6 +213,60 @@ pointer variant_get_ptr_utility_function(pointer fn, pointer p_name, GDExtension
 void call_variant_ptr_utility_function(pointer fn, pointer r_ret, pointer r_arg, int count) {
 	((GDExtensionPtrUtilityFunction)fn)((GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionConstVariantPtr)r_arg, count);
 }
+void string_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
+	((GDExtensionInterfaceStringNewWithUtf8CharsAndLen)fn)((GDExtensionUninitializedStringPtr)r_ret, p_chars, p_len);
+}
+GDExtensionInt string_to_utf8_chars(pointer fn, pointer p_self, char *r_chars, GDExtensionInt p_max) {
+	return ((GDExtensionInterfaceStringToUtf8Chars)fn)((GDExtensionConstStringPtr)p_self, r_chars, p_max);
+}
+rune *string_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return ((GDExtensionInterfaceStringOperatorIndex)fn)((GDExtensionStringPtr)p_self, p_index);
+}
+const rune *string_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return ((GDExtensionInterfaceStringOperatorIndexConst)fn)((GDExtensionConstStringPtr)p_self, p_index);
+}
+void string_operator_plus_eq_string(pointer fn, pointer p_self, pointer p_other) {
+	((GDExtensionInterfaceStringOperatorPlusEqString)fn)((GDExtensionStringPtr)p_self, (GDExtensionConstStringPtr)p_other);
+}
+void string_operator_plus_eq_char(pointer fn, pointer p_self, rune p_other) {
+	((GDExtensionInterfaceStringOperatorPlusEqChar)fn)((GDExtensionStringPtr)p_self, p_other);
+}
+void string_resize(pointer fn, pointer p_self, GDExtensionInt p_size) {
+	((GDExtensionInterfaceStringResize)fn)((GDExtensionStringPtr)p_self, p_size);
+}
+void string_name_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
+	((GDExtensionInterfaceStringNameNewWithUtf8CharsAndLen)fn)((GDExtensionUninitializedStringNamePtr)r_ret, p_chars, p_len);
+}
+GDExtensionInt xml_parser_open_buffer(pointer fn, pointer p_instance, const bytes p_buffer, size_t p_size) {
+	return ((GDExtensionInterfaceXmlParserOpenBuffer)fn)((GDExtensionObjectPtr)p_instance, (const uint8_t *)p_buffer, p_size);
+}
+void file_access_store_buffer(pointer fn, pointer p_self, const bytes p_buffer, uint64_t p_len) {
+	((GDExtensionInterfaceFileAccessStoreBuffer)fn)((GDExtensionObjectPtr)p_self, (const uint8_t *)p_buffer, p_len);
+}
+uint64_t file_access_get_buffer(pointer fn, pointer p_self, bytes r_buffer, uint64_t p_length) {
+	return ((GDExtensionInterfaceFileAccessGetBuffer)fn)((GDExtensionConstObjectPtr)p_self, (uint8_t *)r_buffer, p_length);
+}
+pointer packed_T_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
+}
+const pointer packed_T_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
+}
+pointer array_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return (pointer)((GDExtensionInterfaceArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
+}
+const pointer array_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return (const pointer)((GDExtensionInterfaceArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
+}
+void array_ref(pointer fn, pointer p_self, pointer p_from) {
+	((GDExtensionInterfaceArrayRef)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstTypePtr)p_from);
+}
+void array_set_typed(pointer fn, pointer p_self, GDExtensionVariantType p_type, pointer p_class_name, pointer p_script) {
+	((GDExtensionInterfaceArraySetTyped)fn)((GDExtensionTypePtr)p_self, p_type, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstVariantPtr)p_script);
+}
+pointer dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
+	return (pointer)((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
+}
 
 void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
 	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
@@ -223,6 +279,8 @@ pointer classdb_construct_object(pointer fn, pointer p_classname) {
 import "C"
 
 import (
+	"errors"
+	"runtime"
 	"unsafe"
 
 	gd "grow.graphics/gd/internal"
@@ -1144,6 +1202,305 @@ func linkCGO(API *gd.API) {
 			)
 		}
 	}
+	string_new_with_utf8_chars_and_len := dlsymGD("string_new_with_utf8_chars_and_len")
+	API.Strings.New = func(ctx gd.Context, s string) gd.String {
+		var str = C.CString(s)
+		var frame = call.New()
+		var r_ret = call.Ret[uintptr](frame)
+		C.string_new_with_utf8_chars_and_len(
+			C.uintptr_t(uintptr(string_new_with_utf8_chars_and_len)),
+			C.uintptr_t(r_ret.Uintptr()),
+			str,
+			C.GDExtensionInt(len(s)),
+		)
+		var ret = mmm.Make[gd.API, gd.String, uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		C.free(unsafe.Pointer(str))
+		return ret
+	}
+	string_to_utf8_chars := dlsymGD("string_to_utf8_chars")
+	API.Strings.Get = func(s gd.String) string {
+		var frame = call.New()
+		var p_self = call.Arg(frame, s.Pointer())
+		var length = s.Length()
+		var r_ret = make([]byte, length)
+		C.string_to_utf8_chars(
+			C.uintptr_t(uintptr(string_to_utf8_chars)),
+			C.uintptr_t(p_self.Uintptr()),
+			(*C.char)(unsafe.Pointer(&r_ret[0])),
+			C.GDExtensionInt(length),
+		)
+		frame.Free()
+		return string(r_ret)
+	}
+	string_operator_index := dlsymGD("string_operator_index")
+	API.Strings.SetIndex = func(s gd.String, index gd.Int, val rune) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, s.Pointer())
+		*C.string_operator_index(
+			C.uintptr_t(uintptr(string_operator_index)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(index),
+		) = C.rune(val)
+		frame.Free()
+	}
+	string_operator_index_const := dlsymGD("string_operator_index")
+	API.Strings.Index = func(s gd.String, index gd.Int) rune {
+		var frame = call.New()
+		var p_self = call.Arg(frame, s.Pointer())
+		var ret = C.string_operator_index_const(
+			C.uintptr_t(uintptr(string_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(index),
+		)
+		frame.Free()
+		return rune(*ret)
+	}
+	string_operator_plus_eq_string := dlsymGD("string_operator_plus_eq_string")
+	API.Strings.Append = func(s gd.String, other gd.String) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, s.Pointer())
+		var p_other = call.Arg(frame, other.Pointer())
+		C.string_operator_plus_eq_string(
+			C.uintptr_t(uintptr(string_operator_plus_eq_string)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.uintptr_t(p_other.Uintptr()),
+		)
+		frame.Free()
+	}
+	string_operator_plus_eq_char := dlsymGD("string_operator_plus_eq_char")
+	API.Strings.AppendRune = func(s gd.String, other rune) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, s.Pointer())
+		C.string_operator_plus_eq_char(
+			C.uintptr_t(uintptr(string_operator_plus_eq_char)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.rune(other),
+		)
+		frame.Free()
+	}
+	string_resize := dlsymGD("string_resize")
+	API.Strings.Resize = func(s gd.String, size gd.Int) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, s.Pointer())
+		var length = s.Length()
+		C.string_resize(
+			C.uintptr_t(uintptr(string_resize)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(size),
+		)
+		if size < length {
+			API.Strings.SetIndex(s, size, 0)
+		}
+		frame.Free()
+	}
+	string_name_new_with_utf8_chars_and_len := dlsymGD("string_name_new_with_utf8_chars_and_len")
+	API.StringNames.New = func(ctx gd.Context, s string) gd.StringName {
+		var str = C.CString(s)
+		var frame = call.New()
+		var r_ret = call.Ret[uintptr](frame)
+		C.string_name_new_with_utf8_chars_and_len(
+			C.uintptr_t(uintptr(string_name_new_with_utf8_chars_and_len)),
+			C.uintptr_t(r_ret.Uintptr()),
+			str,
+			C.GDExtensionInt(len(s)),
+		)
+		var ret = mmm.Make[gd.API, gd.StringName, uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		C.free(unsafe.Pointer(str))
+		return ret
+	}
+	xml_parser_open_buffer := dlsymGD("xml_parser_open_buffer")
+	API.XMLParser.OpenBuffer = func(x gd.XMLParser, b []byte) error {
+		var pin runtime.Pinner
+		pin.Pin(&b[0])
+		x.Context().Defer(func() {
+			pin.Unpin()
+		})
+		var frame = call.New()
+		var p_self = call.Arg(frame, x.Pointer())
+		var errCode = C.xml_parser_open_buffer(
+			C.uintptr_t(uintptr(xml_parser_open_buffer)),
+			C.uintptr_t(p_self.Uintptr()),
+			(C.bytes)(unsafe.Pointer(&b[0])),
+			C.size_t(len(b)),
+		)
+		frame.Free()
+		if errCode != 0 {
+			return errors.New("xml_parser_open_buffer failed") // TODO godot error code string?
+		}
+		return nil
+	}
+	file_access_store_buffer := dlsymGD("file_access_store_buffer")
+	API.FileAccess.StoreBuffer = func(f gd.FileAccess, b []byte) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, f.Pointer())
+		C.file_access_store_buffer(
+			C.uintptr_t(uintptr(file_access_store_buffer)),
+			C.uintptr_t(p_self.Uintptr()),
+			(C.bytes)(unsafe.Pointer(&b[0])),
+			C.uint64_t(len(b)),
+		)
+		frame.Free()
+	}
+	file_access_get_buffer := dlsymGD("file_access_get_buffer")
+	API.FileAccess.GetBuffer = func(f gd.FileAccess, b []byte) int {
+		var frame = call.New()
+		var p_self = call.Arg(frame, f.Pointer())
+		var length = C.file_access_get_buffer(
+			C.uintptr_t(uintptr(file_access_get_buffer)),
+			C.uintptr_t(p_self.Uintptr()),
+			(C.bytes)(unsafe.Pointer(&b[0])),
+			C.uint64_t(len(b)),
+		)
+		frame.Free()
+		return int(length)
+	}
+	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
+	API.PackedColorArray = makePackedFunctions[gd.PackedColorArray, gd.Color]("color_array")
+	API.PackedFloat32Array = makePackedFunctions[gd.PackedFloat32Array, float32]("float32_array")
+	API.PackedFloat64Array = makePackedFunctions[gd.PackedFloat64Array, float64]("float64_array")
+	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
+	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
+	packed_string_array_operator_index_const := dlsymGD("packed_string_array_operator_index_const")
+	API.PackedStringArray.Index = func(ctx gd.Context, psa gd.PackedStringArray, i int64) gd.String {
+		var frame = call.New()
+		var p_self = call.Arg(frame, psa.Pointer())
+		var ret = C.packed_T_operator_index_const(
+			C.uintptr_t(uintptr(packed_string_array_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		frame.Free()
+		return mmm.Make[gd.API, gd.String, uintptr](nil, psa.API, uintptr(ret)).Copy(ctx)
+	}
+	packed_string_array_operator_index := dlsymGD("packed_string_array_operator_index")
+	API.PackedStringArray.SetIndex = func(psa gd.PackedStringArray, i int64, v gd.String) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, psa.Pointer())
+		var ptr = C.packed_T_operator_index(
+			C.uintptr_t(uintptr(packed_string_array_operator_index)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		*(*gd.String)(unsafe.Pointer(uintptr(ptr))) = v
+		frame.Free()
+	}
+	API.PackedStringArray.CopyAsSlice = func(ctx gd.Context, psa gd.PackedStringArray) []gd.String {
+		var size = psa.Size()
+		if size == 0 {
+			return nil
+		}
+		var frame = call.New()
+		var p_self = call.Arg(frame, psa.Pointer())
+		var ret = C.packed_T_operator_index_const(
+			C.uintptr_t(uintptr(packed_string_array_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(0),
+		)
+		var slice = make([]gd.String, size)
+		for _, ptr := range unsafe.Slice((*uintptr)(unsafe.Pointer(uintptr(ret))), size) {
+			slice = append(slice, mmm.Make[gd.API, gd.String, uintptr](nil, psa.API, ptr).Copy(ctx))
+		}
+		frame.Free()
+		return slice
+	}
+	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
+	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
+	array_operator_index_const := dlsymGD("array_operator_index_const")
+	API.Array.Index = func(ctx gd.Context, a gd.Array, i int64) gd.Variant {
+		var frame = call.New()
+		var p_self = call.Arg(frame, a.Pointer())
+		var r_ret = C.array_operator_index_const(
+			C.uintptr_t(uintptr(array_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		var ptr = (*[3]uintptr)(unsafe.Pointer(uintptr(r_ret)))
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](nil, ctx.API(), *ptr)
+		frame.Free()
+		return ret.Copy(ctx)
+	}
+	array_operator_index := dlsymGD("array_operator_index")
+	API.Array.SetIndex = func(a gd.Array, i gd.Int, v gd.Variant) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, a.Pointer())
+		var ptr = C.array_operator_index(
+			C.uintptr_t(uintptr(array_operator_index)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		var p_copy = call.Ret[[3]uintptr](frame)
+		var p_value = call.Arg(frame, v.Pointer())
+		C.variant_new_copy(
+			C.uintptr_t(uintptr(variant_new_copy)),
+			C.uintptr_t(p_copy.Uintptr()),
+			C.uintptr_t(p_value.Uintptr()),
+		)
+		*(*[3]uintptr)(unsafe.Pointer(uintptr(ptr))) = p_copy.Get()
+		frame.Free()
+	}
+	array_ref := dlsymGD("array_ref")
+	API.Array.Set = func(self gd.Array, from gd.Array) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, self.Pointer())
+		var p_from = call.Arg(frame, from.Pointer())
+		C.array_ref(
+			C.uintptr_t(uintptr(array_ref)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.uintptr_t(p_from.Uintptr()),
+		)
+		frame.Free()
+	}
+	array_set_typed := dlsymGD("array_set_typed")
+	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Script) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, self.Pointer())
+		var p_className = call.Arg(frame, className.Pointer())
+		var p_script = call.Arg(frame, script.Pointer())
+		C.array_set_typed(
+			C.uintptr_t(uintptr(array_set_typed)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionVariantType(t),
+			C.uintptr_t(p_className.Uintptr()),
+			C.uintptr_t(p_script.Uintptr()), // FIXME should this be a variant?
+		)
+		frame.Free()
+	}
+	dictionary_operator_index := dlsymGD("dictionary_operator_index")
+	API.Dictionary.Index = func(ctx gd.Context, d gd.Dictionary, key gd.Variant) gd.Variant {
+		var frame = call.New()
+		var p_self = call.Arg(frame, d.Pointer())
+		var p_key = call.Arg(frame, key.Pointer())
+		var ptr = C.dictionary_operator_index(
+			C.uintptr_t(uintptr(dictionary_operator_index)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.uintptr_t(p_key.Uintptr()),
+		)
+		var r_ret = *(*[3]uintptr)(unsafe.Pointer(uintptr(ptr)))
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_ret)
+		frame.Free()
+		return ret
+	}
+	API.Dictionary.SetIndex = func(dict gd.Dictionary, key, val gd.Variant) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, dict.Pointer())
+		var p_key = call.Arg(frame, key.Pointer())
+		var ptr = C.dictionary_operator_index(
+			C.uintptr_t(uintptr(dictionary_operator_index)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.uintptr_t(p_key.Uintptr()),
+		)
+		var p_copy = call.Ret[[3]uintptr](frame)
+		var p_value = call.Arg(frame, val.Pointer())
+		C.variant_new_copy(
+			C.uintptr_t(uintptr(variant_new_copy)),
+			C.uintptr_t(p_copy.Uintptr()),
+			C.uintptr_t(p_value.Uintptr()),
+		)
+		*(*[3]uintptr)(unsafe.Pointer(uintptr(ptr))) = p_copy.Get()
+		frame.Free()
+	}
 
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg call.Args, ret call.Any) {
@@ -1168,4 +1525,50 @@ func linkCGO(API *gd.API) {
 		return obj
 	}
 
+}
+
+func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunctionsFor[T, V] {
+	var API gd.PackedFunctionsFor[T, V]
+	packed_T_operator_index := dlsymGD("packed_" + prefix + "_operator_index")
+	API.SetIndex = func(t T, i int64, v V) {
+		var frame = call.New()
+		var p_self = call.Arg(frame, t.Pointer())
+		var ptr = C.packed_T_operator_index(
+			C.uintptr_t(uintptr(packed_T_operator_index)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		*(*V)(unsafe.Pointer(uintptr(ptr))) = v
+		frame.Free()
+	}
+	packed_T_operator_index_const := dlsymGD("packed_" + prefix + "_operator_index_const")
+	API.Index = func(t T, i int64) V {
+		var frame = call.New()
+		var p_self = call.Arg(frame, t.Pointer())
+		var ret = C.packed_T_operator_index_const(
+			C.uintptr_t(uintptr(packed_T_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(i),
+		)
+		frame.Free()
+		return *(*V)(unsafe.Pointer(uintptr(ret)))
+	}
+	API.CopyAsSlice = func(t T) []V {
+		var size = t.Size()
+		if size == 0 {
+			return nil
+		}
+		var frame = call.New()
+		var p_self = call.Arg(frame, t.Pointer())
+		var ret = C.packed_T_operator_index_const(
+			C.uintptr_t(uintptr(packed_T_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(0),
+		)
+		var slice []V
+		copy(slice, unsafe.Slice((*V)(unsafe.Pointer(uintptr(ret))), size))
+		frame.Free()
+		return slice
+	}
+	return API
 }

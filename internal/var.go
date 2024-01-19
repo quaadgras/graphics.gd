@@ -16,6 +16,17 @@ type Int = int64
 
 type String mmm.Pointer[API, String, uintptr]
 
+// Copy returns a copy of the string that is owned by the provided context.
+func (s String) Copy(ctx Context) String {
+	var frame = call.New()
+	call.Arg(frame, s.Pointer())
+	var ret = call.Ret[uintptr](frame)
+	ctx.API().typeset.creation.String[1](ret, frame.Array(0))
+	var raw = ret.Get()
+	frame.Free()
+	return mmm.Make[API, String](ctx, s.API, raw)
+}
+
 func (s String) Free() {
 	var frame = call.New()
 	s.API.typeset.destruct.String(call.Arg(frame, s.Pointer()))
@@ -26,12 +37,7 @@ func (s String) String() string {
 	if s.Pointer() == 0 {
 		return ""
 	}
-	var buf = make([]byte, s.Length())
-	var frame = s.API.NewFrame()
-	FrameSet[uintptr](0, frame, s.Pointer())
-	s.API.Strings.Get(frame.Get(0), buf)
-	frame.Free()
-	return string(buf)
+	return s.API.Strings.Get(s)
 }
 
 func (Godot *API) StringFromStringName(ctx context.Context, s StringName) String {
@@ -118,14 +124,6 @@ type Color struct {
 
 type StringName mmm.Pointer[API, StringName, uintptr]
 
-func (Godot *API) StringName(ctx context.Context, s string) StringName {
-	var frame = Godot.NewFrame()
-	Godot.StringNames.New(frame.Back(), s)
-	var raw = FrameGet[uintptr](frame)
-	frame.Free()
-	return mmm.Make[API, StringName](ctx, Godot, raw)
-}
-
 func (Godot *API) StringNameFromString(ctx context.Context, s String) StringName {
 	var frame = call.New()
 	call.Arg(frame, s.Pointer())
@@ -188,6 +186,14 @@ func (s Signal) Free() {
 
 type Dictionary mmm.Pointer[API, Dictionary, uintptr]
 
+func (d Dictionary) Index(ctx Context, key Variant) Variant {
+	return d.API.Dictionary.Index(ctx, d, key)
+}
+
+func (d Dictionary) SetIndex(key Variant, value Variant) {
+	d.API.Dictionary.SetIndex(d, key, value)
+}
+
 func (d Dictionary) Free() {
 	var frame = call.New()
 	d.API.typeset.destruct.Dictionary(call.Arg(frame, d.Pointer()))
@@ -196,6 +202,14 @@ func (d Dictionary) Free() {
 }
 
 type Array mmm.Pointer[API, Array, uintptr]
+
+func (a Array) Index(ctx Context, index Int) Variant {
+	return a.API.Array.Index(ctx, a, index)
+}
+
+func (a Array) SetIndex(index Int, value Variant) {
+	a.API.Array.SetIndex(a, index, value)
+}
 
 func (a Array) Free() {
 	var frame = call.New()
@@ -208,6 +222,14 @@ type ArrayOf[T any] Array
 
 type PackedByteArray mmm.Pointer[API, PackedByteArray, [2]uintptr]
 
+func (p PackedByteArray) Index(idx Int) byte {
+	return p.API.PackedByteArray.Index(p, idx)
+}
+
+func (p PackedByteArray) SetIndex(idx Int, value byte) {
+	p.API.PackedByteArray.SetIndex(p, idx, value)
+}
+
 func (p PackedByteArray) Free() {
 	var frame = call.New()
 	p.API.typeset.destruct.PackedByteArray(call.Arg(frame, p.Pointer()))
@@ -216,6 +238,14 @@ func (p PackedByteArray) Free() {
 }
 
 type PackedInt32Array mmm.Pointer[API, PackedInt32Array, [2]uintptr]
+
+func (p PackedInt32Array) Index(idx Int) int32 {
+	return p.API.PackedInt32Array.Index(p, idx)
+}
+
+func (p PackedInt32Array) SetIndex(idx Int, value int32) {
+	p.API.PackedInt32Array.SetIndex(p, idx, value)
+}
 
 func (p PackedInt32Array) Free() {
 	var frame = call.New()
@@ -226,6 +256,14 @@ func (p PackedInt32Array) Free() {
 
 type PackedInt64Array mmm.Pointer[API, PackedInt64Array, [2]uintptr]
 
+func (p PackedInt64Array) Index(idx Int) int64 {
+	return p.API.PackedInt64Array.Index(p, idx)
+}
+
+func (p PackedInt64Array) SetIndex(idx Int, value int64) {
+	p.API.PackedInt64Array.SetIndex(p, idx, value)
+}
+
 func (p PackedInt64Array) Free() {
 	var frame = call.New()
 	p.API.typeset.destruct.PackedInt64Array(call.Arg(frame, p.Pointer()))
@@ -234,6 +272,14 @@ func (p PackedInt64Array) Free() {
 }
 
 type PackedFloat32Array mmm.Pointer[API, PackedFloat32Array, [2]uintptr]
+
+func (p PackedFloat32Array) Index(idx Int) float32 {
+	return p.API.PackedFloat32Array.Index(p, idx)
+}
+
+func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
+	p.API.PackedFloat32Array.SetIndex(p, idx, value)
+}
 
 func (p PackedFloat32Array) Free() {
 	var frame = call.New()
@@ -244,6 +290,14 @@ func (p PackedFloat32Array) Free() {
 
 type PackedFloat64Array mmm.Pointer[API, PackedFloat64Array, [2]uintptr]
 
+func (p PackedFloat64Array) Index(idx Int) float64 {
+	return p.API.PackedFloat64Array.Index(p, idx)
+}
+
+func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
+	p.API.PackedFloat64Array.SetIndex(p, idx, value)
+}
+
 func (p PackedFloat64Array) Free() {
 	var frame = call.New()
 	p.API.typeset.destruct.PackedFloat64Array(call.Arg(frame, p.Pointer()))
@@ -253,13 +307,16 @@ func (p PackedFloat64Array) Free() {
 
 type PackedStringArray mmm.Pointer[API, PackedStringArray, [2]uintptr]
 
-func (p PackedStringArray) AsSlice() []string {
-	var slice = make([]string, p.Size())
-	for i := 0; i < len(slice); i++ {
-		tmp := p.API.PackedStringArray.Index(&p, int64(i))
-		slice[i] = (mmm.Make[API, String, uintptr](nil, p.API, *tmp)).String()
-	}
-	return slice
+func (p PackedStringArray) Index(ctx Context, idx Int) String {
+	return p.API.PackedStringArray.Index(ctx, p, idx)
+}
+
+func (p PackedStringArray) SetIndex(idx Int, value String) {
+	p.API.PackedStringArray.SetIndex(p, idx, value)
+}
+
+func (p PackedStringArray) AsSlice(ctx Context) []String {
+	return p.API.PackedStringArray.CopyAsSlice(ctx, p)
 }
 
 func (p PackedStringArray) Free() {
@@ -271,6 +328,14 @@ func (p PackedStringArray) Free() {
 
 type PackedVector2Array mmm.Pointer[API, PackedVector2Array, [2]uintptr]
 
+func (p PackedVector2Array) Index(idx Int) Vector2 {
+	return p.API.PackedVector2Array.Index(p, idx)
+}
+
+func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
+	p.API.PackedVector2Array.SetIndex(p, idx, value)
+}
+
 func (p PackedVector2Array) Free() {
 	var frame = call.New()
 	p.API.typeset.destruct.PackedVector2Array(call.Arg(frame, p.Pointer()))
@@ -280,6 +345,14 @@ func (p PackedVector2Array) Free() {
 
 type PackedVector3Array mmm.Pointer[API, PackedVector3Array, [2]uintptr]
 
+func (p PackedVector3Array) Index(idx Int) Vector3 {
+	return p.API.PackedVector3Array.Index(p, idx)
+}
+
+func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
+	p.API.PackedVector3Array.SetIndex(p, idx, value)
+}
+
 func (p PackedVector3Array) Free() {
 	var frame = call.New()
 	p.API.typeset.destruct.PackedVector3Array(call.Arg(frame, p.Pointer()))
@@ -288,6 +361,14 @@ func (p PackedVector3Array) Free() {
 }
 
 type PackedColorArray mmm.Pointer[API, PackedColorArray, [2]uintptr]
+
+func (p PackedColorArray) Index(idx Int) Color {
+	return p.API.PackedColorArray.Index(p, idx)
+}
+
+func (p PackedColorArray) SetIndex(idx Int, value Color) {
+	p.API.PackedColorArray.SetIndex(p, idx, value)
+}
 
 func (p PackedColorArray) Free() {
 	var frame = call.New()
