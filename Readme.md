@@ -33,6 +33,23 @@ func main() {
 
 ```
 
+## Getting Started
+The module includes a drop-in replacement for the go command called `gd` that 
+makes it easy to work with projects that run within Godot. It enables you to
+start developing a new project from a single main.go file, to install it, make
+sure that your `$GOPATH/bin` is in your `$PATH` and run:
+
+```sh
+	go install grow.graphics/gd/cmd/gd@master
+```
+
+Now when you can run `gd run`, `gd test` in your project's directory and things
+will work as expected.
+
+On linux, `gd` will download the correct version of Godot for you automatically.
+Running the command without any arguments will startup the editor so you can 
+manage the graphical aspects of your project.
+
 ## Design Principles
 
 Godot classes are exported by the `gd` package and can be referred to by 

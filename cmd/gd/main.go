@@ -58,7 +58,7 @@ func setupFile(name, embed string, args ...any) error {
 
 func main() {
 	if err := wrap(); err != nil {
-		fmt.Fprint(os.Stderr, "ERROR: ", err)
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 }
@@ -125,6 +125,11 @@ func wrap() error {
 	if err != nil {
 		return fmt.Errorf("gd requires Godot to be installed as a binary at $GOPATH/bin/godot-4.2.1: %w", err)
 	}
+
+	if _, err := os.Stat("./go.mod"); os.IsNotExist(err) {
+		return fmt.Errorf("gd requires a go.mod file (and the main package) in your working directory: %w", err)
+	}
+
 	if err := os.MkdirAll("./graphics/.godot", 0755); err != nil {
 		return err
 	}
