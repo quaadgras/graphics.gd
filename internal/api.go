@@ -121,12 +121,11 @@ type API struct {
 		SetIndex func(dict Dictionary, key, val Variant)
 	}
 	Object struct {
+		MethodBindCall        func(ctx Context, method MethodBind, obj Object, arg ...Variant) (Variant, error)
 		MethodBindPointerCall func(method MethodBind, obj Object, arg call.Args, ret call.Any)
+		Destroy               func(Object)
+		GetSingleton          func(ctx Context, name StringName) Object
 
-		Call                func(method MethodBind, obj uintptr, arg []*Variant, ret *Variant, err CallError)     `call:"object_method_bind_call func(&void,&void,&void,-int64_t=@3,+void,+void)"`
-		UnsafeCall          func(method MethodBind, obj uintptr, args CallFrameArgs, ret CallFrameBack)           `call:"object_method_bind_ptrcall func(&void,&void,&void,&void)"`
-		Destroy             func(obj uintptr)                                                                     `call:"object_destroy func(&void)"`
-		GetSingleton        func(name StringNamePtr) uintptr                                                      `call:"global_get_singleton func(&void)&void"`
 		GetInstanceBinding  func(obj uintptr, token unsafe.Pointer, callbacks *InstanceBindingCallbacks)          `call:"object_get_instance_binding func(&void,$void,&void)"`
 		SetInstanceBinding  func(obj uintptr, token, binding unsafe.Pointer, callbacks *InstanceBindingCallbacks) `call:"object_set_instance_binding func(&void,$void,&void)"`
 		FreeInstanceBinding func(obj uintptr, token unsafe.Pointer)                                               `call:"object_free_instance_binding func(&void,$void)"`

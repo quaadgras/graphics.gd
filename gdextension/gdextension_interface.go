@@ -267,10 +267,19 @@ void array_set_typed(pointer fn, pointer p_self, GDExtensionVariantType p_type, 
 pointer dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
 	return (pointer)((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
 }
-
+void object_method_bind_call(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, GDExtensionInt count, pointer r_ret, GDExtensionCallError *r_error) {
+	((GDExtensionInterfaceObjectMethodBindCall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
+}
 void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
 	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
 }
+void object_destroy(pointer fn, pointer p_self) {
+	((GDExtensionInterfaceObjectDestroy)fn)((GDExtensionObjectPtr)p_self);
+}
+pointer global_get_singleton(pointer fn, pointer p_name) {
+	return (pointer)((GDExtensionInterfaceGlobalGetSingleton)fn)((GDExtensionConstStringNamePtr)p_name);
+}
+
 
 pointer classdb_construct_object(pointer fn, pointer p_classname) {
 	return (pointer)((GDExtensionInterfaceClassdbConstructObject)fn)((GDExtensionConstStringNamePtr)p_classname);
@@ -1500,6 +1509,55 @@ func linkCGO(API *gd.API) {
 		)
 		*(*[3]uintptr)(unsafe.Pointer(uintptr(ptr))) = p_copy.Get()
 		frame.Free()
+	}
+	object_method_bind_call := dlsymGD("object_method_bind_call")
+	API.Object.MethodBindCall = func(ctx gd.Context, method gd.MethodBind, obj gd.Object, arg ...gd.Variant) (gd.Variant, error) {
+		var frame = call.New()
+		for _, a := range arg {
+			call.Arg(frame, a.Pointer())
+		}
+		var r_ret = call.Ret[[3]uintptr](frame)
+		var r_error = new(C.GDExtensionCallError)
+		C.object_method_bind_call(
+			C.uintptr_t(uintptr(object_method_bind_call)),
+			C.uintptr_t(method),
+			C.uintptr_t(obj.Pointer()),
+			C.uintptr_t(frame.Array(0).Uintptr()),
+			C.GDExtensionInt(len(arg)),
+			C.uintptr_t(r_ret.Uintptr()),
+			r_error,
+		)
+		if r_error.error != 0 {
+			frame.Free()
+			return gd.Variant{}, &gd.CallError{
+				ErrorType: gd.CallErrorType(r_error.error),
+				Argument:  int32(r_error.argument),
+				Expected:  int32(r_error.expected),
+			}
+		}
+		var ret = mmm.Make[gd.API, gd.Variant, [3]uintptr](ctx, ctx.API(), r_ret.Get())
+		frame.Free()
+		return ret, nil
+	}
+	object_destroy := dlsymGD("object_destroy")
+	API.Object.Destroy = func(o gd.Object) {
+		C.object_destroy(
+			C.uintptr_t(uintptr(object_destroy)),
+			C.uintptr_t(o.Pointer()),
+		)
+	}
+	global_get_singleton := dlsymGD("global_get_singleton")
+	API.Object.GetSingleton = func(ctx gd.Context, name gd.StringName) gd.Object {
+		var frame = call.New()
+		var p_name = call.Arg(frame, name.Pointer())
+		var ret = C.global_get_singleton(
+			C.uintptr_t(uintptr(global_get_singleton)),
+			C.uintptr_t(p_name.Uintptr()),
+		)
+		var obj gd.Object
+		obj.SetPointer(mmm.Make[gd.API, gd.Pointer, uintptr](nil, ctx.API(), uintptr(ret)))
+		frame.Free()
+		return obj
 	}
 
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")

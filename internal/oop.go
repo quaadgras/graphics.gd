@@ -53,7 +53,9 @@ type Singleton interface {
 type Pointer mmm.Pointer[API, Pointer, uintptr]
 
 func (ptr Pointer) Free() {
-	ptr.API.Object.Destroy(ptr.Pointer())
+	var obj Object
+	obj.super = ptr
+	ptr.API.Object.Destroy(obj)
 }
 
 func (ptr Pointer) virtual(string) reflect.Value {

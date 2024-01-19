@@ -152,8 +152,8 @@ func injectDependenciesInto(ctx context.Context, Godot *internal.API, value refl
 			_, ok := fieldValue.(internal.Singleton)
 			if ok {
 				var name = localCtx.StringName(strings.TrimPrefix(field.Type.Name(), "class"))
-				singleton := Godot.Object.GetSingleton((internal.StringNamePtr)(unsafe.Pointer(&name)))
-				container.SetPointer(mmm.Make[internal.API, internal.Pointer](nil, Godot, singleton))
+				singleton := Godot.Object.GetSingleton(localCtx, name)
+				container.SetPointer(mmm.Make[internal.API, internal.Pointer](nil, Godot, singleton.Pointer()))
 			}
 		}
 
