@@ -86,9 +86,9 @@ an issue.
 Start with a main.go file, model your project in Go using structs to represent the 
 world, space or state of your project. Go is an excellent language for textual 
 representation. Use the `gd` command to launch the Godot editor when you want to 
-create visual representation of your structures. Godot is an excellent tool for
-importing media, managing assets and designing the visual and spatial aspects of
-a project. Don't forget to write tests!
+create visual representation of your structures. The Godot editor is an excellent 
+tool for importing media, managing assets and designing the visual and spatial aspects 
+of a project. Don't forget to write tests!
 
 ## Performance
 
@@ -113,14 +113,7 @@ Now open the example project in Godot from a terminal and you will be able to
 see Go printing things to the console.
 
 ## Testing
-To run the go tests for this module, you need to compile the test library:
-```sh
-cd ./internal/testbed
-make # go test .. -o ./testing.lib -c -buildmode=c-shared
-```
-Then launch godot from the `internal/testbed` directory with the desired Go
-test-prefixed test flags (`-test.v`, `-test.bench`, etc) be sure to add the
-`--headless` flag to prevent Godot from opening a window!
+To run the go tests for this module `cd internal && gd test`.
 
 ## Known Limitations
 
@@ -129,7 +122,7 @@ test-prefixed test flags (`-test.v`, `-test.bench`, etc) be sure to add the
 * No support for script extensions.
 * No methods for Godot math types, Vectors, Transforms, etc.
 * 64bit support only.
-* Untested on Windows.
+* Not tested on Windows.
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use 
