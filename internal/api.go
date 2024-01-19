@@ -130,12 +130,12 @@ type API struct {
 		FreeInstanceBinding   func(Object, ExtensionToken)
 		SetInstance           func(Object, StringName, any)
 		GetClassName          func(Context, Object, ExtensionToken) String
+		CastTo                func(Context, Object, ClassTag) Object
+		GetInstanceID         func(Object) ObjectID
 
-		CastTo           func(obj uintptr, class ClassTag) uintptr `call:"object_cast_to func(&void,&void)&void"`
-		GetFromID        func(id InstanceID) uintptr               `call:"object_get_instance_from_id func(uint64_t)&void"`
-		GetID            func(obj uintptr) InstanceID              `call:"object_get_instance_id func(&void)uint64_t"`
-		GetFromReference func(ref unsafe.Pointer) uintptr          `call:"ref_get_object func(&void)&void"`
-		Reference        func(ref unsafe.Pointer, obj uintptr)     `call:"ref_set_object func(&void,&void)"`
+		GetFromID        func(id InstanceID) uintptr           `call:"object_get_instance_from_id func(uint64_t)&void"`
+		GetFromReference func(ref unsafe.Pointer) uintptr      `call:"ref_get_object func(&void)&void"`
+		Reference        func(ref unsafe.Pointer, obj uintptr) `call:"ref_set_object func(&void,&void)"`
 	}
 	Scripts struct {
 		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script             `call:"script_instance_create2 func(&void,&void)&void"`

@@ -294,6 +294,12 @@ void object_set_instance(pointer fn, pointer p_o, pointer p_classname, pointer p
 void object_get_class_name(pointer fn, pointer p_o, pointer p_token, pointer r_ret) {
 	((GDExtensionInterfaceObjectGetClassName)fn)((GDExtensionObjectPtr)p_o, (void *)p_token, (GDExtensionUninitializedStringPtr)r_ret);
 }
+pointer object_cast_to(pointer fn, pointer p_o, pointer p_class_tag) {
+	return (pointer)((GDExtensionInterfaceObjectCastTo)fn)((GDExtensionObjectPtr)p_o, (void*)p_class_tag);
+}
+uint64_t object_get_instance_id(pointer fn, pointer p_o) {
+	return ((GDExtensionInterfaceObjectGetInstanceId)fn)((GDExtensionObjectPtr)p_o);
+}
 
 pointer classdb_construct_object(pointer fn, pointer p_classname) {
 	return (pointer)((GDExtensionInterfaceClassdbConstructObject)fn)((GDExtensionConstStringNamePtr)p_classname);
@@ -1640,6 +1646,24 @@ func linkCGO(API *gd.API) {
 		var ret = mmm.Make[gd.API, gd.String, uintptr](ctx, ctx.API(), r_ret.Get())
 		frame.Free()
 		return ret
+	}
+	object_cast_to := dlsymGD("object_cast_to")
+	API.Object.CastTo = func(ctx gd.Context, o internal.Object, ct internal.ClassTag) internal.Object {
+		var ret = C.object_cast_to(
+			C.uintptr_t(uintptr(object_cast_to)),
+			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(ct),
+		)
+		var obj gd.Object
+		obj.SetPointer(mmm.Make[gd.API, gd.Pointer, uintptr](ctx, ctx.API(), uintptr(ret)))
+		return obj
+	}
+	object_get_instance_id := dlsymGD("object_get_instance_id")
+	API.Object.GetInstanceID = func(o internal.Object) internal.ObjectID {
+		return internal.ObjectID(C.object_get_instance_id(
+			C.uintptr_t(uintptr(object_get_instance_id)),
+			C.uintptr_t(o.Pointer()),
+		))
 	}
 
 	classdb_construct_object := dlsymGD("classdb_construct_object")
