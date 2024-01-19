@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"runtime.link/api/call"
+	"runtime.link/mmm"
 )
 
 // cache is responsible for keeping a local copy for the various
@@ -34,6 +35,12 @@ var callFrames sync.Pool
 
 type CallFrameArgs uintptr
 type CallFrameBack uintptr
+
+type ScriptInstance mmm.Pointer[API, ScriptInstance, unsafe.Pointer]
+
+func (instance ScriptInstance) Free() {
+	instance.API.Memory.Free(instance.Pointer())
+}
 
 type unsafeCallFrame struct {
 	ptrs [maxMethodArgs]uintptr
