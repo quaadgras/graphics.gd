@@ -9,7 +9,6 @@ package main
 
 import (
 	"fmt"
-	"runtime"
 
 	"grow.graphics/gd"
 	"grow.graphics/gd/gdextension"
