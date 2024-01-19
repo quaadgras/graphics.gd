@@ -90,7 +90,7 @@ see Go printing things to the console.
 To run the go tests for this module, you need to compile the test library:
 ```sh
 cd ./internal/testbed
-make # go test ./internal -o ./internal/testbed/testing.lib -c
+make # go test .. -o ./testing.lib -c -buildmode=c-shared
 ```
 Then launch godot from the `internal/testbed` directory with the desired Go
 test-prefixed test flags (`-test.v`, `-test.bench`, etc) be sure to add the
