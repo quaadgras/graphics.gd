@@ -861,7 +861,7 @@ func generate() error {
 
 		}
 		if singletons[class.Name] {
-			fmt.Fprintf(w, "\nfunc (self %[1]v) isSingleton() {}\n", class.Name)
+			fmt.Fprintf(w, "\nfunc (self %[1]v) IsSingleton() {}\n", class.Name)
 		}
 		for _, method := range class.Methods {
 			classDB.methodCall(w, pkg, class, method, callDefault)

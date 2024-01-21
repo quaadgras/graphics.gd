@@ -70,8 +70,8 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot gd.Context) {
 		return super.Pointer()
 	})
 	info.FreeInstance.Set(func(userdata unsafe.Pointer, handle cgo.Handle) {
-		//handle.Value().(gd.IsClass).Pin().Free()
-		//handle.Delete()
+		//handle.Value().(gd.IsClass).Pin().End()
+		handle.Delete()
 	})
 
 	// Dispatch virtual functions, these are functions that structs can
@@ -161,14 +161,10 @@ func injectDependenciesInto(godot gd.Context, value reflect.Value, superType ref
 		fieldValue := reflect.NewAt(field.Type, unsafe.Add(value.Addr().UnsafePointer(), field.Offset)).Interface()
 
 		container, ok := fieldValue.(gd.PointerToClass)
-		if ok && container.Pointer() == 0 {
-			_, ok := fieldValue.(gd.Singleton)
-			if ok {
-				var name = localCtx.StringName(strings.TrimPrefix(field.Type.Name(), "class"))
-				singleton := godot.API.Object.GetSingleton(localCtx, name)
-				container.SetPointer(mmm.Let[gd.Pointer](godot.Lifetime, godot.API, singleton.Pointer()))
-			}
+		if ok && container.Pointer() == 0 && field.Type.Implements(reflect.TypeOf([0]gd.Singleton{}).Elem()) {
+			var name = localCtx.StringName(strings.TrimPrefix(field.Type.Name(), "class"))
+			singleton := godot.API.Object.GetSingleton(localCtx, name)
+			container.SetPointer(mmm.Let[gd.Pointer](godot.Lifetime, godot.API, singleton.Pointer()))
 		}
-
 	}
 }

@@ -20,7 +20,7 @@ func registerMethods(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 		if !method.IsExported() {
 			continue
 		}
-		if method.Type.NumIn() > 2 || method.Type.NumOut() > 0 {
+		if method.Type.NumIn() > 2 || method.Type.NumOut() > 0 || method.Type.NumIn() < 2 {
 			continue
 		}
 		if method.Type.In(1) != reflect.TypeOf(gd.Context{}) {

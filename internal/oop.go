@@ -69,7 +69,7 @@ func As[T IsClass](godot Context, class IsClass) (T, bool) {
 }
 
 type Singleton interface {
-	isSingleton()
+	IsSingleton()
 }
 
 type Pointer mmm.Pointer[API, Pointer, uintptr]

@@ -11243,7 +11243,7 @@ type DisplayServer struct{ Class[DisplayServer, Object] }
 
 func (self DisplayServer) AsObject() Object { return *self.Super() }
 
-func (self DisplayServer) isSingleton() {}
+func (self DisplayServer) IsSingleton() {}
 
 func (self DisplayServer) HasFeature(feature DisplayServerFeature) bool {
 	var selfPtr = self.AsPointer()
@@ -13090,7 +13090,7 @@ type Engine struct{ Class[Engine, Object] }
 
 func (self Engine) AsObject() Object { return *self.Super() }
 
-func (self Engine) isSingleton() {}
+func (self Engine) IsSingleton() {}
 
 func (self Engine) SetPhysicsTicksPerSecond(physics_ticks_per_second Int) {
 	var selfPtr = self.AsPointer()
@@ -26085,7 +26085,7 @@ type RenderingServer struct{ Class[RenderingServer, Object] }
 
 func (self RenderingServer) AsObject() Object { return *self.Super() }
 
-func (self RenderingServer) isSingleton() {}
+func (self RenderingServer) IsSingleton() {}
 
 func (self RenderingServer) Texture2dCreate(image Image) RID {
 	var selfPtr = self.AsPointer()

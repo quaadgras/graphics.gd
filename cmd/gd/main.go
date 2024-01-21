@@ -163,6 +163,13 @@ func wrap() error {
 		return err
 	}
 	if len(os.Args) == 1 {
+		golang := exec.Command("go", "build", "-buildmode=c-shared", "-o", "./graphics/library.so")
+		golang.Stderr = os.Stderr
+		golang.Stdout = os.Stdout
+		golang.Stdin = os.Stdin
+		if err := golang.Run(); err != nil {
+			return err
+		}
 		godot := exec.Command(godot, "-e")
 		godot.Dir = "./graphics"
 		godot.Stderr = os.Stderr
