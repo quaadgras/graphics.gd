@@ -13,7 +13,7 @@ func (s String) StringName(ctx Context) StringName {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(s))
 	var r_ret = call.Ret[uintptr](frame)
-	mmm.API(s).typeset.creation.StringName[2](r_ret, frame.Array(0))
+	mmm.API(s).typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[StringName](ctx.Lifetime, ctx.API, raw)
@@ -24,7 +24,7 @@ func (s String) Copy(ctx Context) String {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(s))
 	var ret = call.Ret[uintptr](frame)
-	ctx.API.typeset.creation.String[1](ret, frame.Array(0))
+	ctx.API.typeset.creation.String[1](ret.Uintptr(), frame.Array(0))
 	var raw = ret.Get()
 	frame.Free()
 	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
@@ -32,7 +32,7 @@ func (s String) Copy(ctx Context) String {
 
 func (s String) Free() {
 	var frame = call.New()
-	mmm.API(s).typeset.destruct.String(call.Arg(frame, mmm.End(s)))
+	mmm.API(s).typeset.destruct.String(call.Arg(frame, mmm.End(s)).Uintptr())
 	frame.Free()
 }
 
@@ -51,7 +51,7 @@ func (Godot *API) StringFromStringName(ctx Context, s StringName) String {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(s))
 	var r_ret = call.Ret[uintptr](frame)
-	Godot.typeset.creation.String[2](r_ret, frame.Array(0))
+	Godot.typeset.creation.String[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
@@ -63,7 +63,7 @@ func (Godot *API) StringNameFromString(ctx Context, s String) StringName {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(s))
 	var r_ret = call.Ret[uintptr](frame)
-	Godot.typeset.creation.StringName[2](r_ret, frame.Array(0))
+	Godot.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[StringName](ctx.Lifetime, ctx.API, raw)
@@ -71,7 +71,7 @@ func (Godot *API) StringNameFromString(ctx Context, s String) StringName {
 
 func (s StringName) Free() {
 	var frame = call.New()
-	mmm.API(s).typeset.destruct.StringName(call.Arg(frame, mmm.End(s)))
+	mmm.API(s).typeset.destruct.StringName(call.Arg(frame, mmm.End(s)).Uintptr())
 	frame.Free()
 }
 
@@ -89,6 +89,6 @@ type NodePath mmm.Pointer[API, NodePath, uintptr]
 
 func (n NodePath) Free() {
 	var frame = call.New()
-	mmm.API(n).typeset.destruct.NodePath(call.Arg(frame, mmm.End(n)))
+	mmm.API(n).typeset.destruct.NodePath(call.Arg(frame, mmm.End(n)).Uintptr())
 	frame.Free()
 }

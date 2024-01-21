@@ -22,8 +22,8 @@ type cache struct {
 }
 
 type variant struct {
-	FromType [TypeMax]func(ret call.Ptr[[3]uintptr], arg call.Any)
-	IntoType [TypeMax]func(ret call.Any, arg call.Ptr[[3]uintptr])
+	FromType [TypeMax]func(ret call.Ptr[[3]uintptr], arg uintptr)
+	IntoType [TypeMax]func(ret uintptr, arg call.Ptr[[3]uintptr])
 }
 
 type ObjectID uint64

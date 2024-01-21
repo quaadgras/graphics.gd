@@ -677,7 +677,7 @@ func generate() error {
 
 	fmt.Fprintf(out, "type utility struct{\n")
 	for _, utility := range spec.UtilityFunctions {
-		fmt.Fprintf(out, "\t%v func(ret call.Any, args call.Args, c int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
+		fmt.Fprintf(out, "\t%v func(ret uintptr, args call.Args, c int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
 
 		fmt.Fprintf(core, "\nfunc (ctx Context) %v(", convertName(utility.Name))
 		for i, arg := range utility.Arguments {
@@ -718,7 +718,7 @@ func generate() error {
 				fmt.Fprintf(core, "\tvar r_ret call.Nil\n")
 			}
 		}
-		fmt.Fprintf(core, "\tctx.API.utility.%v(r_ret, frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
+		fmt.Fprintf(core, "\tctx.API.utility.%v(r_ret.Uintptr(), frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
 		if isPtr {
 			fmt.Fprintf(core, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
 		} else {
@@ -744,7 +744,7 @@ func generate() error {
 			if method.Name == "map" {
 				method.Name = "map_"
 			}
-			fmt.Fprintf(out, "\t\t%v func(base call.Any, args call.Args, ret call.Any, c int32) `hash:\"%v\"`\n", method.Name, method.Hash)
+			fmt.Fprintf(out, "\t\t%v func(base uintptr, args call.Args, ret uintptr, c int32) `hash:\"%v\"`\n", method.Name, method.Hash)
 		}
 		fmt.Fprintf(out, "\t}\n")
 	}
@@ -753,7 +753,7 @@ func generate() error {
 	fmt.Fprintf(out, "type typeset struct{\n")
 	fmt.Fprintf(out, "\tcreation struct{\n")
 	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v [%d]func(call.Any, call.Args)\n", class.Name, len(class.Constructors))
+		fmt.Fprintf(out, "\t\t%v [%d]func(uintptr, call.Args)\n", class.Name, len(class.Constructors))
 	}
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "\toperator struct{\n")
@@ -771,7 +771,7 @@ func generate() error {
 				if last != "" {
 					fmt.Fprintf(out, "\t\t\t}\n")
 				}
-				fmt.Fprintf(out, "\t\t\t%v func(a, b, ret call.Any)\n", mapOperator(op.Name))
+				fmt.Fprintf(out, "\t\t\t%v func(a, b, ret uintptr)\n", mapOperator(op.Name))
 				last = ""
 			} else {
 				if op.Name != last {
@@ -780,7 +780,7 @@ func generate() error {
 					}
 					fmt.Fprintf(out, "\t\t\t%v struct {\n", mapOperator(op.Name))
 				}
-				fmt.Fprintf(out, "\t\t\t\t%v func(a, b, ret call.Any)\n", op.RightType)
+				fmt.Fprintf(out, "\t\t\t\t%v func(a, b, ret uintptr)\n", op.RightType)
 				last = op.Name
 			}
 		}
@@ -792,7 +792,7 @@ func generate() error {
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "\tdestruct struct{\n")
 	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v func(call.Any)\n", class.Name)
+		fmt.Fprintf(out, "\t\t%v func(uintptr)\n", class.Name)
 		for _, method := range class.Methods {
 			classDB.methodCall(core, "internal", class, method, callBuiltin)
 		}
@@ -1030,9 +1030,9 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	}
 	if ctype == callBuiltin {
 		fmt.Fprintf(w, "\tvar p_self = call.Arg(frame, mmm.Get(selfPtr))\n")
-		fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self, frame.Array(0), r_ret, %d)\n", class.Name, method.Name, len(method.Arguments))
+		fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
 	} else {
-		fmt.Fprintf(w, "\tmmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret)\n", class.Name, method.Name)
+		fmt.Fprintf(w, "\tmmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
 	}
 
 	if isPtr {
