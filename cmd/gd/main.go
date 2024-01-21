@@ -126,17 +126,30 @@ func wrap() error {
 		return fmt.Errorf("gd requires Godot to be installed as a binary at $GOPATH/bin/godot-4.2.1: %w", err)
 	}
 
-	if _, err := os.Stat("./go.mod"); os.IsNotExist(err) {
-		return fmt.Errorf("gd requires a go.mod file (and the main package) in your working directory: %w", err)
+	wd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	// look for a go.mod file
+	for wd := wd; true; wd = filepath.Dir(wd) {
+		if wd == "/" {
+			return fmt.Errorf("gd requires your project to have a go.mod file:")
+		}
+		_, err := os.Stat(wd + "/go.mod")
+		if err == nil {
+			break
+		} else if os.IsNotExist(err) {
+			continue
+		} else {
+			return err
+		}
 	}
 
 	if err := os.MkdirAll("./graphics/.godot", 0755); err != nil {
 		return err
 	}
-	wd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
+
 	if err := setupFile("./graphics/main.tscn", main_tscn); err != nil {
 		return err
 	}
@@ -164,9 +177,7 @@ func wrap() error {
 		args[0] = "build"
 		args = append(args, "-buildmode=c-shared", "-o", "./graphics/library.so")
 	case "test":
-		copy(args, os.Args[1:])
-		args[0] = "test"
-		args = append(args, "-buildmode=c-shared", "-c", "-o", "./graphics/library.so")
+		args = []string{"test", "-buildmode=c-shared", "-c", "-o", "./graphics/library.so"}
 	}
 
 	golang := exec.Command("go", args...)
@@ -188,7 +199,19 @@ func wrap() error {
 	case "test":
 		var args = []string{"--headless"}
 		for _, arg := range os.Args[2:] {
-			args = append(args, "-test."+strings.TrimPrefix(arg, "-"))
+			switch arg {
+			case "-bench", "-benchmem", "-benchtime", "blockprofile",
+				"-blockprofilerate", "-count", "-coverprofile", "-cpu",
+				"-cpuprofile", "-failfast", "-fullpath", "-fuzz", "-fuzzcachedir",
+				"-fuzzminimizetime", "-fuzztime", "-fuzzworker", "-gocoverdir",
+				"-list", "-memprofile", "-memprofilerate", "-mutexprofile",
+				"-mutexprofilefraction", "-outputdir", "-paniconexit0",
+				"-parallel", "-run", "-short", "-shuffle", "-skip", "-testlogfile",
+				"-timeout", "-trace", "-v":
+				args = append(args, "-test."+strings.TrimPrefix(arg, "-"))
+			default:
+				args = append(args, arg)
+			}
 		}
 		godot := exec.Command(godot, args...)
 		godot.Dir = "./graphics"

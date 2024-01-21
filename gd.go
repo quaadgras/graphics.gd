@@ -32,6 +32,12 @@ func Create[T internal.PointerToClass](ctx Context, ptr T) T {
 	return internal.Create[T](ctx, ptr)
 }
 
+// As attempts to cast the given class to T, returning true
+// if the cast was successful.
+func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
+	return internal.As[T](godot, class)
+}
+
 type (
 	Bool   = bool
 	Int    = int64

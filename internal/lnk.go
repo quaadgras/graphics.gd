@@ -31,7 +31,7 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 // needs to be loaded in dynamically.
 func (Godot *API) linkUtility() {
 	ctx := NewContext(Godot)
-	defer ctx.Free()
+	defer ctx.End()
 
 	rvalue := reflect.ValueOf(&Godot.utility).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -50,7 +50,7 @@ func (Godot *API) linkUtility() {
 // builtin Godot classes.
 func (Godot *API) linkBuiltin() {
 	ctx := NewContext(Godot)
-	defer ctx.Free()
+	defer ctx.End()
 
 	rvalue := reflect.ValueOf(&Godot.builtin).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -76,7 +76,7 @@ func (Godot *API) linkBuiltin() {
 // filled in with a [MethodBind].
 func (Godot *API) linkMethods() {
 	ctx := NewContext(Godot)
-	defer ctx.Free()
+	defer ctx.End()
 
 	rvalue := reflect.ValueOf(&Godot.Methods).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -93,7 +93,7 @@ func (Godot *API) linkMethods() {
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
-			bind := Godot.ClassDB.GetMethodBind((StringNamePtr)(unsafe.Pointer(&className)), (StringNamePtr)(unsafe.Pointer(&methodName)), hash)
+			bind := Godot.ClassDB.GetMethodBind(className, methodName, hash)
 			if bind == 0 {
 				fmt.Println("null bind ", class.Name, method.Name)
 			}

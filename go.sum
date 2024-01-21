@@ -2,3 +2,5 @@ github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 runtime.link v0.0.0-20240118214634-cbb342b24acf h1:rffyZuYDRy1TrZ7gRLdlmrv1W6/c1K7yxzoNoy77ogo=
 runtime.link v0.0.0-20240118214634-cbb342b24acf/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
+runtime.link v0.0.0-20240121080927-e61cba9606da h1:oqyMrwoXxWqB+wypvhb4HUssAya/FGy5KxWiDkj21FU=
+runtime.link v0.0.0-20240121080927-e61cba9606da/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=

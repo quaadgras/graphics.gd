@@ -82,7 +82,7 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 			init.Initialize.Free()
 		}
 		if level == 0 {
-			background.Free()
+			background.End()
 			init.Deinitialize.Free()
 		}
 	})

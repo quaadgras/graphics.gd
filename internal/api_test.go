@@ -1,6 +1,9 @@
+//go:build !generate
+
 package gd_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 	"unsafe"
@@ -14,7 +17,7 @@ var API *gd.API
 func TestMain(M *testing.M) {
 	godot, ok := gdextension.Link()
 	if ok {
-		API = godot.API()
+		API = godot.API
 		os.Exit(M.Run())
 	}
 }
@@ -37,7 +40,7 @@ func TestGetGodotVersion(t *testing.T) {
 
 func TestNativeStructSize(t *testing.T) {
 	godot := gd.NewContext(API)
-	defer godot.Free()
+	defer godot.End()
 	for name, expectation := range map[string]uintptr{
 		"ObjectID":                                unsafe.Sizeof(gd.ObjectID(0)),
 		"AudioFrame":                              unsafe.Sizeof(gd.AudioFrame{}),
@@ -58,4 +61,10 @@ func TestNativeStructSize(t *testing.T) {
 			t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, API.GetNativeStructSize(godot.StringName(name)))
 		}
 	}
+}
+
+func TestGetLibraryPath(t *testing.T) {
+	godot := gd.NewContext(API)
+	defer godot.End()
+	fmt.Println(godot.GetLibraryPath())
 }

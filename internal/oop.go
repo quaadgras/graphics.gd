@@ -21,8 +21,10 @@ func (class Class[T, S]) AsPointer() Pointer {
 	return class.super.AsPointer()
 }
 
-func (class Class[T, S]) Context() mmm.Context {
-	return class.super.Context()
+func (class Class[T, S]) AsObject() Object {
+	var obj Object
+	obj.SetPointer(class.super.AsPointer())
+	return obj
 }
 
 func (class Class[T, S]) Pointer() uintptr {
@@ -30,8 +32,15 @@ func (class Class[T, S]) Pointer() uintptr {
 }
 
 // KeepAlive the class until the end of the specified context.
-func (class Class[T, S]) KeepAlive(ctx mmm.Context) {
-	mmm.Move(class.super.AsPointer(), ctx)
+func (class Class[T, S]) KeepAlive(lt mmm.Lifetime) {
+	mmm.Copy(class.super.AsPointer(), lt)
+}
+
+func (class Class[T, S]) Pin() Context {
+	return Context{
+		Lifetime: mmm.Life(class.AsPointer()),
+		API:      mmm.API(class.AsPointer()),
+	}
 }
 
 func (class Class[T, S]) class() S { return class.super }
@@ -46,20 +55,51 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 	return class.virtual(name)
 }
 
+// As attempts to cast the given class to T, returning true
+// if the cast was successful.
+func As[T IsClass](godot Context, class IsClass) (T, bool) {
+	var rtype = reflect.TypeOf([0]T{}).Elem()
+	if rtype.Kind() == reflect.Pointer {
+		rtype = rtype.Elem()
+	}
+	var classtag = godot.API.ClassDB.GetClassTag(godot.StringName(rtype.Name()))
+	godot.API.Object.CastTo(Context{Lifetime: mmm.Life(class.AsPointer()), API: godot.API}, class.AsObject(), classtag)
+	var zero T
+	return zero, false
+}
+
 type Singleton interface {
 	isSingleton()
 }
 
 type Pointer mmm.Pointer[API, Pointer, uintptr]
 
+func (ptr Pointer) Pointer() uintptr {
+	return mmm.Get(ptr)
+}
+
 func (ptr Pointer) Free() {
 	var obj Object
 	obj.super = ptr
-	ptr.API.Object.Destroy(obj)
+	mmm.API(ptr).Object.Destroy(obj)
+	mmm.End(obj.AsPointer())
 }
 
 func (ptr Pointer) virtual(string) reflect.Value {
 	return reflect.Value{}
+}
+
+func (ptr Pointer) AsObject() Object {
+	var obj Object
+	obj.SetPointer(ptr)
+	return obj
+}
+
+func (ptr Pointer) Pin() Context {
+	return Context{
+		Lifetime: mmm.Life(ptr),
+		API:      mmm.API(ptr),
+	}
 }
 
 func (ptr Pointer) AsPointer() Pointer     { return ptr }
@@ -76,17 +116,14 @@ type PointerToClass interface {
 }
 
 type IsClass interface {
-	Context() mmm.Context
 	Pointer() uintptr
 	AsPointer() Pointer
 	virtual(string) reflect.Value
+
+	Pin() Context
+	AsObject() Object
 }
 
 type IsPointer interface {
 	AsPointer() Pointer
-}
-
-// MarkFree marks the given class as being freed.
-func MarkFree(class IsClass) {
-	mmm.MarkFree(class.AsPointer())
 }

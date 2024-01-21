@@ -8,6 +8,7 @@
 example/bin/
 /bin/example.so
 /gdextension/header.h
+/gdextension/extension_api.json
 /go.work
 /extension_api.json
 /internal/testbed/.godot

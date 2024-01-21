@@ -15,9 +15,10 @@ func attachProperties(ctx gd.Context, className gd.StringName, info *gd.ClassCre
 		properties     []gd.PropertyInfo
 		propertyPinner runtime.Pinner
 	)
-	ctx.Defer(func() {
+	defer propertyPinner.Unpin()
+	/*ctx.Defer(func() {
 		propertyPinner.Unpin()
-	})
+	})*/
 	var groups [][2]string
 	var subgroups [][2]string
 	var addProperties func(rtype reflect.Type, prefix string, subgroup bool)
@@ -51,55 +52,55 @@ func attachProperties(ctx gd.Context, className gd.StringName, info *gd.ClassCre
 		})
 		info.FreePropertyList.Set(func(instance cgo.Handle, properties *gd.PropertyInfo) {})
 		info.Set.Set(func(instance cgo.Handle, name gd.StringNamePtr, value gd.VariantPtr) bool {
-			ctx := gd.NewContext(ctx.API())
-			sname := mmm.Make[gd.API, gd.StringName, uintptr](nil, ctx.API(), *name)
+			ctx := gd.NewContext(ctx.API)
+			sname := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *name)
 			field := reflect.ValueOf(instance.Value()).Elem().FieldByName(sname.String())
 			if !field.IsValid() {
 				return false
 			}
-			variant := mmm.Make[gd.API, gd.Variant, [3]uintptr](nil, ctx.API(), *value)
-			var fieldCtx mmm.Context
+			var fieldPin = instance.Value().(gd.IsClass).Pin()
+			variant := mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *value)
 			ptr, ok := field.Interface().(interface {
-				Context() mmm.Context
+				Pin() gd.Context
 				Free()
 			})
 			if ok {
-				fieldCtx = ptr.Context()
+				fieldPin = ptr.Pin()
 				if !field.IsZero() {
 					ptr.Free()
 				}
 			}
-			field.Set(reflect.ValueOf(variant.Interface(fieldCtx)))
-			ctx.Free()
+			field.Set(reflect.ValueOf(variant.Interface(fieldPin)))
+			ctx.End()
 			return true
 		})
 		info.Get.Set(func(instance cgo.Handle, name gd.StringNamePtr, value gd.VariantPtr) bool {
-			ctx := gd.NewContext(ctx.API())
-			sname := mmm.Make[gd.API, gd.StringName, uintptr](nil, ctx.API(), *name)
+			ctx := gd.NewContext(ctx.API)
+			sname := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *name)
 			field := reflect.ValueOf(instance.Value()).Elem().FieldByName(sname.String())
 			if !field.IsValid() {
 				return false
 			}
 			tmp := ctx.Variant(field.Interface())
-			*value = tmp.Pointer()
-			mmm.MarkFree(tmp)
-			ctx.Free()
+			*value = mmm.Get(tmp)
+			//mmm.MarkFree(tmp)
+			ctx.End()
 			return true
 		})
 	}
 
-	var frame = ctx.API().NewFrame()
+	var frame = ctx.API.NewFrame()
 	for _, group := range groups {
-		gd.FrameSet[uintptr](0, frame, className.Pointer())
-		gd.FrameSet[uintptr](1, frame, ctx.String(group[0]).Pointer())
-		gd.FrameSet[uintptr](2, frame, ctx.String(group[1]).Pointer())
-		ctx.API().ClassDB.RegisterClassPropertyGroup(ctx.API().ExtensionToken, frame.Get(0), frame.Get(1), frame.Get(2))
+		gd.FrameSet[uintptr](0, frame, mmm.Get(className))
+		gd.FrameSet[uintptr](1, frame, mmm.Get(ctx.String(group[0])))
+		gd.FrameSet[uintptr](2, frame, mmm.Get(ctx.String(group[1])))
+		ctx.API.ClassDB.RegisterClassPropertyGroup(ctx.API.ExtensionToken, frame.Get(0), frame.Get(1), frame.Get(2))
 	}
 	for _, group := range subgroups {
-		gd.FrameSet[uintptr](0, frame, className.Pointer())
-		gd.FrameSet[uintptr](1, frame, ctx.String(group[0]).Pointer())
-		gd.FrameSet[uintptr](2, frame, ctx.String(group[1]).Pointer())
-		ctx.API().ClassDB.RegisterClassPropertySubGroup(ctx.API().ExtensionToken, frame.Get(0), frame.Get(1), frame.Get(2))
+		gd.FrameSet[uintptr](0, frame, mmm.Get(className))
+		gd.FrameSet[uintptr](1, frame, mmm.Get(ctx.String(group[0])))
+		gd.FrameSet[uintptr](2, frame, mmm.Get(ctx.String(group[1])))
+		ctx.API.ClassDB.RegisterClassPropertySubGroup(ctx.API.ExtensionToken, frame.Get(0), frame.Get(1), frame.Get(2))
 	}
 	frame.Free()
 }
@@ -109,17 +110,17 @@ func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype 
 		field.Name = strings.ToLower(field.Type.Name())
 	}
 	var vtype gd.VariantType
-	var name = godot.StringName(field.Name).Pointer()
+	var name = mmm.Get(godot.StringName(field.Name))
 	var namePtr = &name
 	propertyPinner.Pin(namePtr)
 	var class gd.StringNamePtr
 	if field.Type.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
-		className := godot.StringName(field.Type.Name()).Pointer()
+		className := mmm.Get(godot.StringName(field.Type.Name()))
 		vtype = gd.TypeObject
 		class = &className
 		propertyPinner.Pin(class)
 	} else {
-		className := godot.StringName("").Pointer()
+		className := mmm.Get(godot.StringName(""))
 		class = &className
 		propertyPinner.Pin(class)
 	}
@@ -127,7 +128,7 @@ func derivePropertyInfo(godot gd.Context, propertyPinner *runtime.Pinner, rtype 
 		vtype = gd.TypeSignal
 	}
 
-	var HintString = godot.String("").Pointer()
+	var HintString = mmm.Get(godot.String(""))
 	var HintStringPtr = &HintString
 	propertyPinner.Pin(HintStringPtr)
 

@@ -36,10 +36,10 @@ var callFrames sync.Pool
 type CallFrameArgs uintptr
 type CallFrameBack uintptr
 
-type ScriptInstance mmm.Pointer[API, ScriptInstance, unsafe.Pointer]
+type ScriptInstance mmm.Pointer[API, ScriptInstance, uintptr]
 
 func (instance ScriptInstance) Free() {
-	instance.API.Memory.Free(instance.Pointer())
+	mmm.API(instance).Memory.Free(unsafe.Pointer(mmm.End(instance)))
 }
 
 type unsafeCallFrame struct {

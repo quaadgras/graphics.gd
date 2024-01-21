@@ -8,6 +8,7 @@ import (
 
 	"runtime.link/api"
 	"runtime.link/api/call"
+	"runtime.link/mmm"
 )
 
 // API specification for Godot's GDExtension.
@@ -52,8 +53,8 @@ type API struct {
 		RecursiveHash             func(self Variant, count Int) int64
 		HashCompare               func(self, variant Variant) bool
 		Booleanize                func(self Variant) bool
-		Duplicate                 func(self Variant, deep bool) Variant
-		Stringify                 func(self Variant) String
+		Duplicate                 func(ctx Context, self Variant, deep bool) Variant
+		Stringify                 func(ctx Context, self Variant) String
 		GetType                   func(self Variant) VariantType
 		HasMethod                 func(self Variant, method StringName) bool
 		HasMember                 func(self Variant, member StringName) bool
@@ -83,7 +84,7 @@ type API struct {
 		Get        func(String) string
 		SetIndex   func(String, Int, rune)
 		Index      func(String, Int) rune
-		Append     func(String, String)
+		Append     func(Context, String, String) String
 		AppendRune func(String, rune)
 		Resize     func(String, Int)
 	}
@@ -149,8 +150,8 @@ type API struct {
 	}
 	ClassDB struct {
 		ConstructObject func(Context, StringName) Object
-		GetMethodBind   func(class, method StringNamePtr, hash int64) MethodBind `call:"classdb_get_method_bind func(&void,&void,int64_t)void"`
-		GetClassTag     func(class StringNamePtr) ClassTag                       `call:"classdb_get_class_tag func(&void)void"`
+		GetClassTag     func(StringName) ClassTag
+		GetMethodBind   func(class, method StringName, hash Int) MethodBind
 
 		RegisterClass                 func(library ExtensionToken, name, extends StringNamePtr, info *ClassCreationInfo)                               `call:"classdb_register_extension_class2 func(&void,&void,&void,&void)"`
 		RegisterClassMethod           func(library ExtensionToken, class StringNamePtr, info *ClassMethodInfo)                                         `call:"classdb_register_extension_class_method func(&void,&void,&void)"`
@@ -161,12 +162,13 @@ type API struct {
 		RegisterClassPropertySubGroup func(library ExtensionToken, class CallFrameArgs, subGroup, prefix CallFrameArgs)                                `call:"classdb_register_extension_class_property_subgroup func(&void,&void,&void,&void,&void)"`
 		RegisterClassSignal           func(library ExtensionToken, class, signal StringNamePtr, args []PropertyInfo)                                   `call:"classdb_register_extension_class_signal func(&void,&void,&void,&void,-int64_t=@4)"`
 		UnregisterClass               func(library ExtensionToken, class StringNamePtr)                                                                `call:"classdb_unregister_extension_class func(&void,&void)"`
-		GetLibraryPath                func(library ExtensionToken, out CallFrameBack)                                                                  `call:"get_library_path func(&void,&void)"`
 	}
 	EditorPlugins struct {
 		Add    func(plugin StringNamePtr) `call:"editor_add_plugin func(&void)"`
 		Remove func(plugin StringNamePtr) `call:"editor_remove_plugin func(&void)"`
 	}
+
+	GetLibraryPath func(Context, ExtensionToken) String
 
 	ExtensionToken
 	cache
@@ -177,7 +179,7 @@ type Packed interface {
 		PackedFloat64Array | PackedStringArray | PackedVector2Array | PackedVector3Array |
 		PackedColorArray
 
-	Pointer() [2]uintptr
+	mmm.ManagedPointer[[2]uintptr]
 	Size() Int
 }
 

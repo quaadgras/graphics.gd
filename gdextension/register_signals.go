@@ -7,14 +7,16 @@ import (
 	"unsafe"
 
 	gd "grow.graphics/gd/internal"
+	"runtime.link/api/call"
+	"runtime.link/mmm"
 )
 
 // registerSignals registers [gd.Signal[T]] fields as signals emittable by the class,
 // when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
 func registerSignals(godot gd.Context, class gd.StringName, rtype reflect.Type) {
-	ctx := gd.NewContext(godot.API())
-	defer ctx.Free()
+	ctx := gd.NewContext(godot.API)
+	defer ctx.End()
 
 	var pin runtime.Pinner
 	defer pin.Unpin()
@@ -35,11 +37,14 @@ func registerSignals(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 			for i := 0; i < ftype.NumIn(); i++ {
 				args = append(args, derivePropertyInfo(ctx, &pin, rtype, reflect.StructField{Type: ftype.In(i)}))
 			}
-			godot.API().ClassDB.RegisterClassSignal(godot.API().ExtensionToken,
-				(gd.StringNamePtr)(unsafe.Pointer(&class)),
-				(gd.StringNamePtr)(unsafe.Pointer(&signalName)),
+
+			var frame = call.New()
+			godot.API.ClassDB.RegisterClassSignal(godot.API.ExtensionToken,
+				(gd.StringNamePtr)(unsafe.Pointer(call.Arg(frame, mmm.Get(class)).Uintptr())),
+				(gd.StringNamePtr)(unsafe.Pointer(call.Arg(frame, mmm.Get(signalName)).Uintptr())),
 				args,
 			)
+			frame.Free()
 		}
 	}
 }

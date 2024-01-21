@@ -698,13 +698,13 @@ func generate() error {
 		for _, arg := range utility.Arguments {
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(core, "\tcall.Arg(frame, %v.Pointer())\n", fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcall.Arg(frame, mmm.Get(%v))\n", fixReserved(arg.Name))
 				continue
 			}
 			argType := classDB.convertType("internal", arg.Meta, arg.Type)
 			_, argIsPtr := isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(core, "\tcall.Arg(frame, %v.Pointer())\n", fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcall.Arg(frame, mmm.Get(%v))\n", fixReserved(arg.Name))
 			} else {
 				fmt.Fprintf(core, "\tcall.Arg(frame, %v)\n", fixReserved(arg.Name))
 			}
@@ -718,9 +718,9 @@ func generate() error {
 				fmt.Fprintf(core, "\tvar r_ret call.Nil\n")
 			}
 		}
-		fmt.Fprintf(core, "\tctx.API().utility.%v(r_ret, frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
+		fmt.Fprintf(core, "\tctx.API.utility.%v(r_ret, frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
 		if isPtr {
-			fmt.Fprintf(core, "\tvar ret = mmm.Make[API,%v,%v](ctx,ctx.API(),r_ret.Get())\n", result, ptrKind)
+			fmt.Fprintf(core, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
 		} else {
 			if result != "" {
 				fmt.Fprintf(core, "\tvar ret = r_ret.Get()\n")
@@ -942,13 +942,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 			_, ok := classDB[arg.Type]
 			if ok {
 				fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), argType)
-				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Make["+prefix+"API, "+prefix+"Pointer, uintptr](ctx, api, "+prefix+"UnsafeGet[uintptr](p_args,%d)))\n", fixReserved(arg.Name), i)
+				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.New["+prefix+"Pointer](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[uintptr](p_args,%d)))\n", fixReserved(arg.Name), i)
 				continue
 			}
 
 			argPtrKind, argIsPtr := isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = mmm.Make["+prefix+"API, %v](ctx, api, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
+				fmt.Fprintf(w, "\t\tvar %v = mmm.New[%v](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
 			} else {
 				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
 			}
@@ -964,9 +964,9 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		}
 		fmt.Fprintf(w, ")\n")
 		if isPtr {
-			fmt.Fprintf(w, "\t\tmmm.MarkFree(ret)\n")
+			fmt.Fprintf(w, "\t\tmmm.End(ret)\n")
 		}
-		fmt.Fprintf(w, "\tctx.Free()\n")
+		fmt.Fprintf(w, "\tctx.End()\n")
 		if result != "" {
 			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet[%v](p_back, ret)\n", result)
 		}
@@ -1007,14 +1007,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	for _, arg := range method.Arguments {
 		_, ok := classDB[arg.Type]
 		if ok {
-			fmt.Fprintf(w, "\tcall.Arg(frame, %v.Pointer())\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\tcall.Arg(frame, mmm.Get(%v.AsPointer()))\n", fixReserved(arg.Name))
 			continue
 		}
 
 		argType := classDB.convertType(pkg, arg.Meta, arg.Type)
 		_, argIsPtr := isPointer(argType)
 		if argIsPtr {
-			fmt.Fprintf(w, "\tcall.Arg(frame, %v.Pointer())\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\tcall.Arg(frame, mmm.Get(%v))\n", fixReserved(arg.Name))
 		} else {
 			fmt.Fprintf(w, "\tcall.Arg(frame, %v)\n", fixReserved(arg.Name))
 		}
@@ -1029,14 +1029,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		}
 	}
 	if ctype == callBuiltin {
-		fmt.Fprintf(w, "\tvar p_self = call.Arg(frame, selfPtr.Pointer())\n")
-		fmt.Fprintf(w, "\tselfPtr.API.builtin.%v.%v(p_self, frame.Array(0), r_ret, %d)\n", class.Name, method.Name, len(method.Arguments))
+		fmt.Fprintf(w, "\tvar p_self = call.Arg(frame, mmm.Get(selfPtr))\n")
+		fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self, frame.Array(0), r_ret, %d)\n", class.Name, method.Name, len(method.Arguments))
 	} else {
-		fmt.Fprintf(w, "\tselfPtr.API.Object.MethodBindPointerCall(selfPtr.API.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret)\n", class.Name, method.Name)
+		fmt.Fprintf(w, "\tmmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret)\n", class.Name, method.Name)
 	}
 
 	if isPtr {
-		fmt.Fprintf(w, "\tvar ret = mmm.Make["+prefix+"API,%v,%v](ctx,selfPtr.API,r_ret.Get())\n", result, ptrKind)
+		fmt.Fprintf(w, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
 	} else if result != "" {
 		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")
 	}

@@ -2,25 +2,18 @@ package gdextension
 
 import (
 	"reflect"
-	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
 
 	gd "grow.graphics/gd/internal"
+	"runtime.link/api/call"
+	"runtime.link/mmm"
 )
 
 func registerMethods(godot gd.Context, class gd.StringName, rtype reflect.Type) {
-	var pinner runtime.Pinner
-	godot.Defer(func() {
-		pinner.Unpin()
-	})
-
-	pinner.Pin(&class)
-
 	classTypePtr := reflect.PointerTo(rtype)
-
-	var returnInfo = (*gd.PropertyInfo)(godot.API().Memory.Allocate(unsafe.Sizeof(gd.PropertyInfo{})))
+	var returnInfo = (*gd.PropertyInfo)(godot.API.Memory.Allocate(unsafe.Sizeof(gd.PropertyInfo{})))
 
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		method := classTypePtr.Method(i)
@@ -35,15 +28,16 @@ func registerMethods(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 		}
 
 		var methodName = godot.StringName(strings.ToLower(method.Name))
-		pinner.Pin(&methodName)
+
+		var frame = call.New()
 
 		var info = gd.ClassMethodInfo{
-			Name:            (gd.StringNamePtr)(unsafe.Pointer(&methodName)),
+			Name:            (gd.StringNamePtr)(unsafe.Pointer(call.Arg(frame, mmm.Get(methodName)).Uintptr())),
 			HasReturnValue:  method.Type.NumOut() > 0,
 			ReturnValueInfo: returnInfo,
 		}
 		info.PointerCall.Set(func(userdata unsafe.Pointer, instance cgo.Handle, args, ret unsafe.Pointer, err *gd.CallError) {
-			ctx := gd.NewContext(godot.API())
+			ctx := gd.NewContext(godot.API)
 			var in = make([]reflect.Value, method.Type.NumIn())
 			in[0] = reflect.ValueOf(instance.Value())
 			in[1] = reflect.ValueOf(ctx)
@@ -51,8 +45,10 @@ func registerMethods(godot gd.Context, class gd.StringName, rtype reflect.Type) 
 			if len(out) > 0 {
 				reflect.NewAt(method.Type.Out(0), ret).Elem().Set(out[0])
 			}
-			ctx.Free()
+			ctx.End()
 		})
-		godot.API().ClassDB.RegisterClassMethod(godot.API().ExtensionToken, (gd.StringNamePtr)(unsafe.Pointer(&class)), &info)
+		godot.API.ClassDB.RegisterClassMethod(godot.API.ExtensionToken,
+			(gd.StringNamePtr)(unsafe.Pointer(call.Arg(frame, mmm.Get(class)).Uintptr())), &info)
+		frame.Free()
 	}
 }
