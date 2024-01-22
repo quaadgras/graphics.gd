@@ -380,6 +380,21 @@ static inline void classdb_register_extension_class_method(pointer fn, pointer p
 	p_method_bind_info->ptrcall_func = (void*)method_ptrcall;
 	((GDExtensionInterfaceClassdbRegisterExtensionClassMethod)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, p_method_bind_info);
 }
+static inline void classdb_register_extension_class_integer_constant(pointer fn, pointer p_library, pointer p_class_name, pointer p_enum_name, pointer p_constant_name, int64_t p_constant_value, GDExtensionBool p_is_bitfield) {
+	((GDExtensionInterfaceClassdbRegisterExtensionClassIntegerConstant)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringNamePtr)p_enum_name, (GDExtensionConstStringNamePtr)p_constant_name, p_constant_value, p_is_bitfield);
+}
+static inline void classdb_register_extension_class_property(pointer fn, pointer p_library, pointer p_class_name, GDExtensionPropertyInfo *p_property_info, pointer setter, pointer getter) {
+	((GDExtensionInterfaceClassdbRegisterExtensionClassProperty)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, p_property_info, (GDExtensionConstStringNamePtr)setter, (GDExtensionConstStringNamePtr)getter);
+}
+static inline void classdb_register_extension_class_property_indexed(pointer fn, pointer p_library, pointer p_class_name, GDExtensionPropertyInfo *p_property_info, pointer setter, pointer getter, GDExtensionInt p_index) {
+	((GDExtensionInterfaceClassdbRegisterExtensionClassPropertyIndexed)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, p_property_info, (GDExtensionConstStringNamePtr)setter, (GDExtensionConstStringNamePtr)getter, p_index);
+}
+static inline void classdb_register_extension_class_property_group(pointer fn, pointer p_library, pointer p_class_name, pointer p_group_name, pointer p_prefix) {
+	((GDExtensionInterfaceClassdbRegisterExtensionClassPropertyGroup)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringPtr)p_group_name, (GDExtensionConstStringPtr)p_prefix);
+}
+static inline void classdb_register_extension_class_property_subgroup(pointer fn, pointer p_library, pointer p_class_name, pointer p_group_name, pointer p_subgroup_name) {
+	((GDExtensionInterfaceClassdbRegisterExtensionClassPropertySubgroup)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringPtr)p_group_name, (GDExtensionConstStringPtr)p_subgroup_name);
+}
 static inline void classdb_register_extension_class_signal(pointer fn, pointer p_library, pointer p_class_name, pointer p_signal_name, GDExtensionPropertyInfo *args, GDExtensionInt arg_count) {
 	((GDExtensionInterfaceClassdbRegisterExtensionClassSignal)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringNamePtr)p_signal_name, args, arg_count);
 }
@@ -404,6 +419,13 @@ import (
 	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
+
+func btoi(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
+}
 
 // linkCGO implements the Godot GDExtension API via CGO.
 func linkCGO(API *gd.API) {
@@ -1869,8 +1891,121 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 
+	classdb_register_extension_class_integer_constant := dlsymGD("classdb_register_extension_class_integer_constant")
+	API.ClassDB.RegisterClassIntegerConstant = func(library gd.ExtensionToken, class, enum, constant gd.StringName, value int64, bitfield bool) {
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_enum = call.Arg(frame, mmm.Get(enum))
+		var p_constant = call.Arg(frame, mmm.Get(constant))
+		C.classdb_register_extension_class_integer_constant(
+			C.uintptr_t(uintptr(classdb_register_extension_class_integer_constant)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			C.uintptr_t(p_enum.Uintptr()),
+			C.uintptr_t(p_constant.Uintptr()),
+			C.GDExtensionInt(value),
+			C.GDExtensionBool(btoi(bitfield)),
+		)
+		frame.Free()
+	}
+	classdb_register_extension_class_property := dlsymGD("classdb_register_extension_class_property")
+	API.ClassDB.RegisterClassProperty = func(library internal.ExtensionToken, class internal.StringName, info internal.PropertyInfo, getter, setter internal.StringName) {
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_getter = call.Arg(frame, mmm.Get(getter))
+		var p_setter = call.Arg(frame, mmm.Get(setter))
+		var pins runtime.Pinner
+		defer pins.Unpin()
+		var info_name = mmm.Get(info.Name)
+		var info_className = mmm.Get(info.ClassName)
+		var info_hintString = mmm.Get(info.HintString)
+		pins.Pin(&info_name)
+		pins.Pin(&info_className)
+		pins.Pin(&info_hintString)
+		var p_info = C.GDExtensionPropertyInfo{
+			_type:       C.GDExtensionVariantType(info.Type),
+			name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_name)),
+			class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_className)),
+			hint:        C.uint32_t(info.Hint),
+			hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&info_hintString)),
+			usage:       C.uint32_t(info.Usage),
+		}
+		C.classdb_register_extension_class_property(
+			C.uintptr_t(uintptr(classdb_register_extension_class_property)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			&p_info,
+			C.uintptr_t(p_getter.Uintptr()),
+			C.uintptr_t(p_setter.Uintptr()),
+		)
+		frame.Free()
+	}
+	classdb_register_extension_class_property_indexed := dlsymGD("classdb_register_extension_class_property_indexed")
+	API.ClassDB.RegisterClassPropertyIndexed = func(library internal.ExtensionToken, class internal.StringName, info internal.PropertyInfo, getter, setter internal.StringName, index int64) {
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_getter = call.Arg(frame, mmm.Get(getter))
+		var p_setter = call.Arg(frame, mmm.Get(setter))
+		var pins runtime.Pinner
+		defer pins.Unpin()
+		var info_name = mmm.Get(info.Name)
+		var info_className = mmm.Get(info.ClassName)
+		var info_hintString = mmm.Get(info.HintString)
+		pins.Pin(&info_name)
+		pins.Pin(&info_className)
+		pins.Pin(&info_hintString)
+		var p_info = C.GDExtensionPropertyInfo{
+			_type:       C.GDExtensionVariantType(info.Type),
+			name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_name)),
+			class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_className)),
+			hint:        C.uint32_t(info.Hint),
+			hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&info_hintString)),
+			usage:       C.uint32_t(info.Usage),
+		}
+		C.classdb_register_extension_class_property_indexed(
+			C.uintptr_t(uintptr(classdb_register_extension_class_property_indexed)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			&p_info,
+			C.uintptr_t(p_getter.Uintptr()),
+			C.uintptr_t(p_setter.Uintptr()),
+			C.GDExtensionInt(index),
+		)
+		frame.Free()
+	}
+
+	classdb_register_extension_class_property_group := dlsymGD("classdb_register_extension_class_property_group")
+	API.ClassDB.RegisterClassPropertyGroup = func(library internal.ExtensionToken, class internal.StringName, group, prefix internal.String) {
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_group = call.Arg(frame, mmm.Get(group))
+		var p_prefix = call.Arg(frame, mmm.Get(prefix))
+		C.classdb_register_extension_class_property_group(
+			C.uintptr_t(uintptr(classdb_register_extension_class_property_group)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			C.uintptr_t(p_group.Uintptr()),
+			C.uintptr_t(p_prefix.Uintptr()),
+		)
+		frame.Free()
+	}
+	classdb_register_extension_class_property_subgroup := dlsymGD("classdb_register_extension_class_property_subgroup")
+	API.ClassDB.RegisterClassPropertySubGroup = func(library internal.ExtensionToken, class internal.StringName, subGroup, prefix internal.String) {
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_subGroup = call.Arg(frame, mmm.Get(subGroup))
+		var p_prefix = call.Arg(frame, mmm.Get(prefix))
+		C.classdb_register_extension_class_property_subgroup(
+			C.uintptr_t(uintptr(classdb_register_extension_class_property_subgroup)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			C.uintptr_t(p_subGroup.Uintptr()),
+			C.uintptr_t(p_prefix.Uintptr()),
+		)
+		frame.Free()
+	}
 	classdb_register_extension_class_method := dlsymGD("classdb_register_extension_class_method")
-	API.ClassDB.RegisterClassMethod = func(ctx gd.Context, library internal.ExtensionToken, class internal.StringName, info internal.Method) {
+	API.ClassDB.RegisterClassMethod = func(ctx gd.Context, library gd.ExtensionToken, class gd.StringName, info gd.Method) {
 		infoHandle := cgo.NewHandle(&info)
 		releaseHandle := infoHandle.Delete
 		mmm.Let[onFree](ctx.Lifetime, &releaseHandle, [0]uintptr{})
