@@ -322,7 +322,7 @@ typedef struct {
 	// Used to call virtual functions when `get_virtual_call_data_func` is not null.
 	GDExtensionClassCallVirtualWithData call_virtual_with_data_func;
 	GDExtensionClassGetRID get_rid_func;
-	void *class_userdata; // Per-class user data, later accessible in instance bindings.
+	uintptr_t class_userdata; // Per-class user data, later accessible in instance bindings.
 } GDExtensionClassCreationInfo2;
 
 typedef void *GDExtensionClassLibraryPtr;
@@ -359,7 +359,7 @@ typedef void (*GDExtensionClassMethodPtrCall)(void *method_userdata, GDExtension
 
 typedef struct {
 	GDExtensionStringNamePtr name;
-	void *method_userdata;
+	uintptr_t method_userdata;
 	GDExtensionClassMethodCall call_func;
 	GDExtensionClassMethodPtrCall ptrcall_func;
 	uint32_t method_flags; // Bitfield of `GDExtensionClassMethodFlags`.
@@ -406,7 +406,7 @@ typedef struct {
 	 *
 	 * `free_func` is necessary if `callable_userdata` needs to be cleaned up when the callable is freed.
 	 */
-	void *callable_userdata;
+	uintptr_t callable_userdata;
 	void *token;
 
 	GDObjectInstanceID object_id;

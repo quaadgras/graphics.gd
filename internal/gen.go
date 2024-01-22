@@ -608,7 +608,6 @@ func generate() error {
 	fmt.Fprintln(core)
 	fmt.Fprintln(core, `import "unsafe"`)
 	fmt.Fprintln(core, `import "reflect"`)
-	fmt.Fprintln(core, `import "runtime/cgo"`)
 	fmt.Fprintln(core, `import "runtime.link/mmm"`)
 	fmt.Fprintln(core, `import "runtime.link/api/call"`)
 	fmt.Fprintln(core)
@@ -624,7 +623,6 @@ func generate() error {
 	fmt.Fprintln(all)
 	fmt.Fprintln(all, `import "unsafe"`)
 	fmt.Fprintln(all, `import "reflect"`)
-	fmt.Fprintln(all, `import "runtime/cgo"`)
 	fmt.Fprintln(all, `import "runtime.link/mmm"`)
 	fmt.Fprintln(all, `import "runtime.link/api/call"`)
 	fmt.Fprintln(all, `import gd "grow.graphics/gd/internal"`)
@@ -934,7 +932,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v, api *"+prefix+"API) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprintf(w, "\tcb.Set(func(class cgo.Handle, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
+		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
 		fmt.Fprintf(w, "\tctx := %vNewContext(api)\n", prefix)
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
@@ -953,7 +951,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
 			}
 		}
-		fmt.Fprintf(w, "\tself := reflect.ValueOf(class.Value()).UnsafePointer()\n")
+		fmt.Fprintf(w, "\tself := reflect.ValueOf(class).UnsafePointer()\n")
 		if result != "" {
 			fmt.Fprintf(w, "\t\tret := ")
 		}
@@ -970,8 +968,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		if result != "" {
 			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet[%v](p_back, ret)\n", result)
 		}
-		fmt.Fprintf(w, "\t})\n")
-		fmt.Fprintf(w, "\treturn\n")
+		fmt.Fprintf(w, "\t}\n")
 		fmt.Fprintf(w, "}\n")
 		return
 	}

@@ -8,322 +8,388 @@ typedef uintptr_t pointer;
 typedef const char* string;
 typedef char32_t rune;
 typedef uint8_t * bytes;
+typedef GDExtensionBool bool;
 
 // TODO the amount of code here can probably be reduced by stenciling out the various
 // function signatures, such that we can call every function that takes 1 pointer arg,
 // 2 pointer args etc.
 
-void get_godot_version(pointer fn, GDExtensionGodotVersion *r_version) {
+static inline void get_godot_version(pointer fn, GDExtensionGodotVersion *r_version) {
 	((GDExtensionInterfaceGetGodotVersion)fn)(r_version);
 }
-void *mem_alloc(pointer fn, size_t size) {
+static inline void *mem_alloc(pointer fn, size_t size) {
 	return ((GDExtensionInterfaceMemAlloc)fn)(size);
 }
-void *mem_realloc(pointer fn, void *ptr, size_t size) {
+static inline void *mem_realloc(pointer fn, void *ptr, size_t size) {
 	return ((GDExtensionInterfaceMemRealloc)fn)(ptr, size);
 }
-void mem_free(pointer fn, void *ptr) {
+static inline void mem_free(pointer fn, void *ptr) {
 	((GDExtensionInterfaceMemFree)fn)(ptr);
 }
-void print_error(pointer fn, string p_description, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
+static inline void print_error(pointer fn, string p_description, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
 	((GDExtensionInterfacePrintError)fn)(p_description, p_function, p_file, p_line, p_notify_editor);
 }
-void print_error_with_message(pointer fn, string p_description, string p_message, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
+static inline void print_error_with_message(pointer fn, string p_description, string p_message, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
 	((GDExtensionInterfacePrintErrorWithMessage)fn)(p_description, p_message, p_function, p_file, p_line, p_notify_editor);
 }
-void print_warning(pointer fn, string p_description, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
+static inline void print_warning(pointer fn, string p_description, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
 	((GDExtensionInterfacePrintWarning)fn)(p_description, p_function, p_file, p_line, p_notify_editor);
 }
-uint64_t get_native_struct_size(pointer fn, pointer p_classname) {
+static inline uint64_t get_native_struct_size(pointer fn, pointer p_classname) {
 	return ((GDExtensionInterfaceGetNativeStructSize)fn)((GDExtensionConstStringNamePtr)p_classname);
 }
-void variant_new_copy(pointer fn, pointer r_dest, pointer p_self) {
+static inline void variant_new_copy(pointer fn, pointer r_dest, pointer p_self) {
 	((GDExtensionInterfaceVariantNewCopy)fn)((GDExtensionUninitializedVariantPtr)r_dest, (GDExtensionConstVariantPtr)p_self);
 }
-void variant_new_nil(pointer fn, pointer r_dest) {
+static inline void variant_new_nil(pointer fn, pointer r_dest) {
 	((GDExtensionInterfaceVariantNewNil)fn)((GDExtensionUninitializedVariantPtr)r_dest);
 }
-void variant_destroy(pointer fn, pointer p_self) {
+static inline void variant_destroy(pointer fn, pointer p_self) {
 	((GDExtensionInterfaceVariantDestroy)fn)((GDExtensionVariantPtr)p_self);
 }
-void variant_call(pointer fn, pointer p_self, pointer p_method, pointer p_args, GDExtensionInt p_argument_count, pointer r_ret, GDExtensionCallError *r_error) {
+static inline void variant_call(pointer fn, pointer p_self, pointer p_method, pointer p_args, GDExtensionInt p_argument_count, pointer r_ret, GDExtensionCallError *r_error) {
 	((GDExtensionInterfaceVariantCall)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_method, (GDExtensionConstVariantPtr)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
 }
-void variant_call_static(pointer fn, GDExtensionVariantType p_type, pointer p_method, pointer p_args, GDExtensionInt p_argument_count, pointer r_ret, GDExtensionCallError *r_error) {
+static inline void variant_call_static(pointer fn, GDExtensionVariantType p_type, pointer p_method, pointer p_args, GDExtensionInt p_argument_count, pointer r_ret, GDExtensionCallError *r_error) {
 	((GDExtensionInterfaceVariantCallStatic)fn)((GDExtensionVariantType)p_type, (GDExtensionConstStringNamePtr)p_method, (GDExtensionConstVariantPtr)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
 }
-void variant_evaluate(pointer fn, GDExtensionVariantOperator p_operator, pointer p_a, pointer p_b, pointer r_ret, pointer r_valid) {
+static inline void variant_evaluate(pointer fn, GDExtensionVariantOperator p_operator, pointer p_a, pointer p_b, pointer r_ret, pointer r_valid) {
 	((GDExtensionInterfaceVariantEvaluate)fn)(p_operator, (GDExtensionConstVariantPtr)p_a, (GDExtensionConstVariantPtr)p_b, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid);
 }
-void variant_set(pointer fn, pointer p_self, pointer p_key, pointer p_value, pointer r_valid) {
+static inline void variant_set(pointer fn, pointer p_self, pointer p_key, pointer p_value, pointer r_valid) {
 	((GDExtensionInterfaceVariantSet)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstVariantPtr)p_key, (GDExtensionConstVariantPtr)p_value, (GDExtensionBool*)r_valid);
 }
-void variant_set_named(pointer fn, pointer p_self, pointer p_key, pointer p_value, pointer r_valid) {
+static inline void variant_set_named(pointer fn, pointer p_self, pointer p_key, pointer p_value, pointer r_valid) {
 	((GDExtensionInterfaceVariantSetNamed)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_key, (GDExtensionConstVariantPtr)p_value, (GDExtensionBool*)r_valid);
 }
-void variant_set_keyed(pointer fn, pointer p_self, pointer p_key, pointer p_value, pointer r_valid) {
+static inline void variant_set_keyed(pointer fn, pointer p_self, pointer p_key, pointer p_value, pointer r_valid) {
 	((GDExtensionInterfaceVariantSetKeyed)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstVariantPtr)p_key, (GDExtensionConstVariantPtr)p_value, (GDExtensionBool*)r_valid);
 }
-void variant_set_indexed(pointer fn, pointer p_self, GDExtensionInt p_index, pointer p_value, pointer r_valid, pointer r_oob) {
+static inline void variant_set_indexed(pointer fn, pointer p_self, GDExtensionInt p_index, pointer p_value, pointer r_valid, pointer r_oob) {
 	((GDExtensionInterfaceVariantSetIndexed)fn)((GDExtensionVariantPtr)p_self, (GDExtensionInt)p_index, (GDExtensionConstVariantPtr)p_value, (GDExtensionBool*)r_valid, (GDExtensionBool*)r_oob);
 }
-void variant_get(pointer fn, pointer p_self, pointer p_key, pointer r_ret, pointer r_valid) {
+static inline void variant_get(pointer fn, pointer p_self, pointer p_key, pointer r_ret, pointer r_valid) {
 	((GDExtensionInterfaceVariantGet)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstVariantPtr)p_key, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid);
 }
-void variant_get_named(pointer fn, pointer p_self, pointer p_key, pointer r_ret, pointer r_valid) {
+static inline void variant_get_named(pointer fn, pointer p_self, pointer p_key, pointer r_ret, pointer r_valid) {
 	((GDExtensionInterfaceVariantGetNamed)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_key, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid);
 }
-void variant_get_keyed(pointer fn, pointer p_self, pointer p_key, pointer r_ret, pointer r_valid) {
+static inline void variant_get_keyed(pointer fn, pointer p_self, pointer p_key, pointer r_ret, pointer r_valid) {
 	((GDExtensionInterfaceVariantGetKeyed)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstVariantPtr)p_key, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid);
 }
-void variant_get_indexed(pointer fn, pointer p_self, GDExtensionInt p_index, pointer r_ret, pointer r_valid, pointer r_oob) {
+static inline void variant_get_indexed(pointer fn, pointer p_self, GDExtensionInt p_index, pointer r_ret, pointer r_valid, pointer r_oob) {
 	((GDExtensionInterfaceVariantGetIndexed)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionInt)p_index, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid, (GDExtensionBool*)r_oob);
 }
-void variant_iter_init(pointer fn, pointer p_self, pointer r_iter, pointer r_valid) {
+static inline void variant_iter_init(pointer fn, pointer p_self, pointer r_iter, pointer r_valid) {
 	((GDExtensionInterfaceVariantIterInit)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionUninitializedVariantPtr)r_iter, (GDExtensionBool*)r_valid);
 }
-void variant_iter_next(pointer fn, pointer p_self, pointer p_iter, pointer r_valid) {
+static inline void variant_iter_next(pointer fn, pointer p_self, pointer p_iter, pointer r_valid) {
 	((GDExtensionInterfaceVariantIterNext)fn)((GDExtensionVariantPtr)p_self, (GDExtensionVariantPtr)p_iter, (GDExtensionBool*)r_valid);
 }
-void variant_iter_get(pointer fn, pointer p_self, pointer p_iter, pointer r_ret, pointer r_valid) {
+static inline void variant_iter_get(pointer fn, pointer p_self, pointer p_iter, pointer r_ret, pointer r_valid) {
 	((GDExtensionInterfaceVariantIterGet)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionVariantPtr)p_iter, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid);
 }
-GDExtensionInt variant_hash(pointer fn, pointer p_self) {
+static inline GDExtensionInt variant_hash(pointer fn, pointer p_self) {
 	return ((GDExtensionInterfaceVariantHash)fn)((GDExtensionConstVariantPtr)p_self);
 }
-GDExtensionInt variant_recursive_hash(pointer fn, pointer p_self, GDExtensionInt p_count) {
+static inline GDExtensionInt variant_recursive_hash(pointer fn, pointer p_self, GDExtensionInt p_count) {
 	return ((GDExtensionInterfaceVariantRecursiveHash)fn)((GDExtensionConstVariantPtr)p_self, p_count);
 }
-GDExtensionBool variant_hash_compare(pointer fn, pointer p_self, pointer p_other) {
+static inline GDExtensionBool variant_hash_compare(pointer fn, pointer p_self, pointer p_other) {
 	return ((GDExtensionInterfaceVariantHashCompare)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstVariantPtr)p_other);
 }
-GDExtensionBool variant_booleanize(pointer fn, pointer p_self) {
+static inline GDExtensionBool variant_booleanize(pointer fn, pointer p_self) {
 	return ((GDExtensionInterfaceVariantBooleanize)fn)((GDExtensionConstVariantPtr)p_self);
 }
-void variant_duplicate(pointer fn, pointer p_self, pointer r_ret, GDExtensionBool p_deep) {
+static inline void variant_duplicate(pointer fn, pointer p_self, pointer r_ret, GDExtensionBool p_deep) {
 	((GDExtensionInterfaceVariantDuplicate)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionUninitializedVariantPtr)r_ret, p_deep);
 }
-void variant_stringify(pointer fn, pointer p_self, pointer r_ret) {
+static inline void variant_stringify(pointer fn, pointer p_self, pointer r_ret) {
 	((GDExtensionInterfaceVariantStringify)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionUninitializedStringPtr)r_ret);
 }
-GDExtensionVariantType variant_get_type(pointer fn, pointer p_self) {
+static inline GDExtensionVariantType variant_get_type(pointer fn, pointer p_self) {
 	return ((GDExtensionInterfaceVariantGetType)fn)((GDExtensionConstVariantPtr)p_self);
 }
-GDExtensionBool variant_has_method(pointer fn, pointer p_self, pointer p_method) {
+static inline GDExtensionBool variant_has_method(pointer fn, pointer p_self, pointer p_method) {
 	return ((GDExtensionInterfaceVariantHasMethod)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_method);
 }
-GDExtensionBool variant_has_member(pointer fn, pointer p_self, pointer p_member) {
+static inline GDExtensionBool variant_has_member(pointer fn, pointer p_self, pointer p_member) {
 	return ((GDExtensionInterfaceVariantHasMember)fn)((GDExtensionVariantType)p_self, (GDExtensionConstStringNamePtr)p_member);
 }
-GDExtensionBool variant_has_key(pointer fn, pointer p_self, pointer p_key, pointer r_valid) {
+static inline GDExtensionBool variant_has_key(pointer fn, pointer p_self, pointer p_key, pointer r_valid) {
 	return ((GDExtensionInterfaceVariantHasKey)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstVariantPtr)p_key, (GDExtensionBool*)r_valid);
 }
-void variant_get_type_name(pointer fn, GDExtensionVariantType p_type, pointer r_ret) {
+static inline void variant_get_type_name(pointer fn, GDExtensionVariantType p_type, pointer r_ret) {
 	((GDExtensionInterfaceVariantGetTypeName)fn)(p_type, (GDExtensionUninitializedStringPtr)r_ret);
 }
-GDExtensionBool variant_can_convert(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
+static inline GDExtensionBool variant_can_convert(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
 	return ((GDExtensionInterfaceVariantCanConvert)fn)((GDExtensionVariantType)p_self, p_type);
 }
-GDExtensionBool variant_can_convert_strict(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
+static inline GDExtensionBool variant_can_convert_strict(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
 	return ((GDExtensionInterfaceVariantCanConvertStrict)fn)((GDExtensionVariantType)p_self, p_type);
 }
-pointer get_variant_from_type_constructor(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer get_variant_from_type_constructor(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceGetVariantFromTypeConstructor)fn)(p_type);
 }
-void call_variant_from_type_constructor(pointer fn, pointer r_ret, pointer r_arg) {
+static inline void call_variant_from_type_constructor(pointer fn, pointer r_ret, pointer r_arg) {
 	((GDExtensionVariantFromTypeConstructorFunc)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
 }
-pointer get_variant_to_type_constructor(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer get_variant_to_type_constructor(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceGetVariantToTypeConstructor)fn)(p_type);
 }
-void call_variant_to_type_constructor(pointer fn, pointer r_ret, const pointer r_arg) {
+static inline void call_variant_to_type_constructor(pointer fn, pointer r_ret, const pointer r_arg) {
 	((GDExtensionTypeFromVariantConstructorFunc)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
 }
-pointer variant_get_ptr_operator_evaluator(pointer fn, GDExtensionVariantOperator p_operator, GDExtensionVariantType p_type, GDExtensionVariantType p_rhs_type) {
+static inline pointer variant_get_ptr_operator_evaluator(pointer fn, GDExtensionVariantOperator p_operator, GDExtensionVariantType p_type, GDExtensionVariantType p_rhs_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrOperatorEvaluator)fn)(p_operator, p_type, p_rhs_type);
 }
-void call_variant_ptr_operator_evaluator(pointer fn, pointer r_ret, pointer r_a, pointer r_b) {
+static inline void call_variant_ptr_operator_evaluator(pointer fn, pointer r_ret, pointer r_a, pointer r_b) {
 	((GDExtensionPtrOperatorEvaluator)fn)((GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionConstVariantPtr)r_a, (void*)r_b);
 }
-pointer variant_get_ptr_builtin_method(pointer fn, GDExtensionVariantType p_type, pointer p_method, GDExtensionInt p_hash) {
+static inline pointer variant_get_ptr_builtin_method(pointer fn, GDExtensionVariantType p_type, pointer p_method, GDExtensionInt p_hash) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrBuiltinMethod)fn)(p_type, (GDExtensionConstStringNamePtr)p_method, p_hash);
 }
-void call_variant_ptr_builtin_method(pointer fn, pointer p_base, pointer r_arg, pointer r_ret, int count) {
+static inline void call_variant_ptr_builtin_method(pointer fn, pointer p_base, pointer r_arg, pointer r_ret, int count) {
 	((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionTypePtr)r_ret, count);
 }
-pointer variant_get_ptr_constructor(pointer fn, GDExtensionVariantType p_type, int32_t p_constructor) {
+static inline pointer variant_get_ptr_constructor(pointer fn, GDExtensionVariantType p_type, int32_t p_constructor) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrConstructor)fn)(p_type, p_constructor);
 }
-void call_variant_ptr_constructor(pointer fn, pointer r_ret, pointer r_arg) {
+static inline void call_variant_ptr_constructor(pointer fn, pointer r_ret, pointer r_arg) {
 	((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
 }
-pointer variant_get_ptr_destructor(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer variant_get_ptr_destructor(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrDestructor)fn)(p_type);
 }
-void call_variant_ptr_destructor(pointer fn, pointer r_arg) {
+static inline void call_variant_ptr_destructor(pointer fn, pointer r_arg) {
 	((GDExtensionPtrDestructor)fn)((GDExtensionVariantPtr)r_arg);
 }
-void variant_construct(pointer fn, GDExtensionVariantType p_type, pointer p_base, pointer p_args, int32_t p_argument_count, GDExtensionCallError *r_error) {
+static inline void variant_construct(pointer fn, GDExtensionVariantType p_type, pointer p_base, pointer p_args, int32_t p_argument_count, GDExtensionCallError *r_error) {
 	((GDExtensionInterfaceVariantConstruct)fn)(p_type, (GDExtensionUninitializedVariantPtr)p_base, (GDExtensionConstVariantPtr)p_args, p_argument_count, r_error);
 }
-pointer variant_get_ptr_setter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
+static inline pointer variant_get_ptr_setter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrSetter)fn)(p_type, (GDExtensionConstStringNamePtr)p_member);
 }
-void call_variant_ptr_setter(pointer fn, pointer p_base, pointer p_value) {
+static inline void call_variant_ptr_setter(pointer fn, pointer p_base, pointer p_value) {
 	((GDExtensionPtrSetter)fn)((GDExtensionTypePtr)p_base, (GDExtensionConstTypePtr)p_value);
 }
-pointer variant_get_ptr_getter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
+static inline pointer variant_get_ptr_getter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrGetter)fn)(p_type, (GDExtensionConstStringNamePtr)p_member);
 }
-void call_variant_ptr_getter(pointer fn, pointer p_base, pointer r_value) {
+static inline void call_variant_ptr_getter(pointer fn, pointer p_base, pointer r_value) {
 	((GDExtensionPtrGetter)fn)((GDExtensionTypePtr)p_base, (GDExtensionTypePtr)r_value);
 }
-pointer variant_get_ptr_indexed_setter(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer variant_get_ptr_indexed_setter(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrIndexedSetter)fn)(p_type);
 }
-void call_variant_ptr_indexed_setter(pointer fn, pointer p_base, GDExtensionInt p_index, pointer r_value) {
+static inline void call_variant_ptr_indexed_setter(pointer fn, pointer p_base, GDExtensionInt p_index, pointer r_value) {
 	((GDExtensionPtrIndexedSetter)fn)((GDExtensionTypePtr)p_base, p_index, (GDExtensionConstTypePtr)r_value);
 }
-pointer variant_get_ptr_indexed_getter(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer variant_get_ptr_indexed_getter(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrIndexedGetter)fn)(p_type);
 }
-void call_variant_ptr_indexed_getter(pointer fn, pointer p_base, GDExtensionInt p_index, pointer r_ret) {
+static inline void call_variant_ptr_indexed_getter(pointer fn, pointer p_base, GDExtensionInt p_index, pointer r_ret) {
 	((GDExtensionPtrIndexedGetter)fn)((GDExtensionTypePtr)p_base, p_index, (GDExtensionTypePtr)r_ret);
 }
-pointer variant_get_ptr_keyed_setter(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer variant_get_ptr_keyed_setter(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrKeyedSetter)fn)(p_type);
 }
-void call_variant_ptr_keyed_setter(pointer fn, pointer p_base, pointer r_arg, pointer r_value) {
+static inline void call_variant_ptr_keyed_setter(pointer fn, pointer p_base, pointer r_arg, pointer r_value) {
 	((GDExtensionPtrKeyedSetter)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionConstTypePtr)r_value);
 }
-pointer variant_get_ptr_keyed_getter(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer variant_get_ptr_keyed_getter(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrKeyedGetter)fn)(p_type);
 }
-void call_variant_ptr_keyed_getter(pointer fn, pointer p_base, pointer r_arg, pointer r_ret) {
+static inline void call_variant_ptr_keyed_getter(pointer fn, pointer p_base, pointer r_arg, pointer r_ret) {
 	((GDExtensionPtrKeyedGetter)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg, (GDExtensionTypePtr)r_ret);
 }
-pointer variant_get_ptr_keyed_checker(pointer fn, GDExtensionVariantType p_type) {
+static inline pointer variant_get_ptr_keyed_checker(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrKeyedChecker)fn)(p_type);
 }
-uint32_t call_variant_ptr_keyed_checker(pointer fn, pointer p_base, pointer r_arg) {
+static inline uint32_t call_variant_ptr_keyed_checker(pointer fn, pointer p_base, pointer r_arg) {
 	return ((GDExtensionPtrKeyedChecker)fn)((GDExtensionTypePtr)p_base, (const GDExtensionConstTypePtr *)r_arg);
 }
-void variant_get_constant_value(pointer fn, GDExtensionVariantType p_type, pointer p_constant, pointer r_ret) {
+static inline void variant_get_constant_value(pointer fn, GDExtensionVariantType p_type, pointer p_constant, pointer r_ret) {
 	((GDExtensionInterfaceVariantGetConstantValue)fn)(p_type, (GDExtensionConstStringNamePtr)p_constant, (GDExtensionUninitializedVariantPtr)r_ret);
 }
-pointer variant_get_ptr_utility_function(pointer fn, pointer p_name, GDExtensionInt hash) {
+static inline pointer variant_get_ptr_utility_function(pointer fn, pointer p_name, GDExtensionInt hash) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrUtilityFunction)fn)((GDExtensionConstStringNamePtr)p_name, hash);
 }
-void call_variant_ptr_utility_function(pointer fn, pointer r_ret, pointer r_arg, int count) {
+static inline void call_variant_ptr_utility_function(pointer fn, pointer r_ret, pointer r_arg, int count) {
 	((GDExtensionPtrUtilityFunction)fn)((GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionConstVariantPtr)r_arg, count);
 }
-void string_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
+static inline void string_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
 	((GDExtensionInterfaceStringNewWithUtf8CharsAndLen)fn)((GDExtensionUninitializedStringPtr)r_ret, p_chars, p_len);
 }
-GDExtensionInt string_to_utf8_chars(pointer fn, pointer p_self, char *r_chars, GDExtensionInt p_max) {
+static inline GDExtensionInt string_to_utf8_chars(pointer fn, pointer p_self, char *r_chars, GDExtensionInt p_max) {
 	return ((GDExtensionInterfaceStringToUtf8Chars)fn)((GDExtensionConstStringPtr)p_self, r_chars, p_max);
 }
-rune *string_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline rune *string_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return ((GDExtensionInterfaceStringOperatorIndex)fn)((GDExtensionStringPtr)p_self, p_index);
 }
-const rune *string_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline const rune *string_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return ((GDExtensionInterfaceStringOperatorIndexConst)fn)((GDExtensionConstStringPtr)p_self, p_index);
 }
-void string_operator_plus_eq_string(pointer fn, pointer p_self, pointer p_other) {
+static inline void string_operator_plus_eq_string(pointer fn, pointer p_self, pointer p_other) {
 	((GDExtensionInterfaceStringOperatorPlusEqString)fn)((GDExtensionStringPtr)p_self, (GDExtensionConstStringPtr)p_other);
 }
-void string_operator_plus_eq_char(pointer fn, pointer p_self, rune p_other) {
+static inline void string_operator_plus_eq_char(pointer fn, pointer p_self, rune p_other) {
 	((GDExtensionInterfaceStringOperatorPlusEqChar)fn)((GDExtensionStringPtr)p_self, p_other);
 }
-void string_resize(pointer fn, pointer p_self, GDExtensionInt p_size) {
+static inline void string_resize(pointer fn, pointer p_self, GDExtensionInt p_size) {
 	((GDExtensionInterfaceStringResize)fn)((GDExtensionStringPtr)p_self, p_size);
 }
-void string_name_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
+static inline void string_name_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
 	((GDExtensionInterfaceStringNameNewWithUtf8CharsAndLen)fn)((GDExtensionUninitializedStringNamePtr)r_ret, p_chars, p_len);
 }
-GDExtensionInt xml_parser_open_buffer(pointer fn, pointer p_instance, const bytes p_buffer, size_t p_size) {
+static inline GDExtensionInt xml_parser_open_buffer(pointer fn, pointer p_instance, const bytes p_buffer, size_t p_size) {
 	return ((GDExtensionInterfaceXmlParserOpenBuffer)fn)((GDExtensionObjectPtr)p_instance, (const uint8_t *)p_buffer, p_size);
 }
-void file_access_store_buffer(pointer fn, pointer p_self, const bytes p_buffer, uint64_t p_len) {
+static inline void file_access_store_buffer(pointer fn, pointer p_self, const bytes p_buffer, uint64_t p_len) {
 	((GDExtensionInterfaceFileAccessStoreBuffer)fn)((GDExtensionObjectPtr)p_self, (const uint8_t *)p_buffer, p_len);
 }
-uint64_t file_access_get_buffer(pointer fn, pointer p_self, bytes r_buffer, uint64_t p_length) {
+static inline uint64_t file_access_get_buffer(pointer fn, pointer p_self, bytes r_buffer, uint64_t p_length) {
 	return ((GDExtensionInterfaceFileAccessGetBuffer)fn)((GDExtensionConstObjectPtr)p_self, (uint8_t *)r_buffer, p_length);
 }
-pointer packed_T_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline pointer packed_T_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-const pointer packed_T_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline const pointer packed_T_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-pointer array_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline pointer array_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (pointer)((GDExtensionInterfaceArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-const pointer array_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline const pointer array_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (const pointer)((GDExtensionInterfaceArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-void array_ref(pointer fn, pointer p_self, pointer p_from) {
+static inline void array_ref(pointer fn, pointer p_self, pointer p_from) {
 	((GDExtensionInterfaceArrayRef)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstTypePtr)p_from);
 }
-void array_set_typed(pointer fn, pointer p_self, GDExtensionVariantType p_type, pointer p_class_name, pointer p_script) {
+static inline void array_set_typed(pointer fn, pointer p_self, GDExtensionVariantType p_type, pointer p_class_name, pointer p_script) {
 	((GDExtensionInterfaceArraySetTyped)fn)((GDExtensionTypePtr)p_self, p_type, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstVariantPtr)p_script);
 }
-pointer dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
+static inline pointer dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
 	return (pointer)((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
 }
-void object_method_bind_call(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, GDExtensionInt count, pointer r_ret, GDExtensionCallError *r_error) {
+static inline void object_method_bind_call(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, GDExtensionInt count, pointer r_ret, GDExtensionCallError *r_error) {
 	((GDExtensionInterfaceObjectMethodBindCall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
 }
-void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
+static inline void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
 	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
 }
-void object_destroy(pointer fn, pointer p_self) {
+static inline void object_destroy(pointer fn, pointer p_self) {
 	((GDExtensionInterfaceObjectDestroy)fn)((GDExtensionObjectPtr)p_self);
 }
-pointer global_get_singleton(pointer fn, pointer p_name) {
+static inline pointer global_get_singleton(pointer fn, pointer p_name) {
 	return (pointer)((GDExtensionInterfaceGlobalGetSingleton)fn)((GDExtensionConstStringNamePtr)p_name);
 }
-pointer object_get_instance_binding(pointer fn, pointer p_o, pointer p_library, void *p_callbacks) {
+static inline pointer object_get_instance_binding(pointer fn, pointer p_o, pointer p_library, void *p_callbacks) {
 	return (pointer)((GDExtensionInterfaceObjectGetInstanceBinding)fn)((GDExtensionObjectPtr)p_o, (void*)p_library, (const GDExtensionInstanceBindingCallbacks *)p_callbacks);
 }
-void object_set_instance_binding(pointer fn, pointer p_o, pointer p_library, pointer p_binding, void *p_callbacks) {
+static inline void object_set_instance_binding(pointer fn, pointer p_o, pointer p_library, pointer p_binding, void *p_callbacks) {
 	((GDExtensionInterfaceObjectSetInstanceBinding)fn)((GDExtensionObjectPtr)p_o, (void*)p_library, (void *)p_binding, (const GDExtensionInstanceBindingCallbacks *)p_callbacks);
 }
-void object_free_instance_binding(pointer fn, pointer p_o, pointer p_library) {
+static inline void object_free_instance_binding(pointer fn, pointer p_o, pointer p_library) {
 	((GDExtensionInterfaceObjectFreeInstanceBinding)fn)((GDExtensionObjectPtr)p_o, (void*)p_library);
 }
-void object_set_instance(pointer fn, pointer p_o, pointer p_classname, pointer p_instance) {
+static inline void object_set_instance(pointer fn, pointer p_o, pointer p_classname, pointer p_instance) {
 	((GDExtensionInterfaceObjectSetInstance)fn)((GDExtensionObjectPtr)p_o, (GDExtensionConstStringNamePtr)p_classname, (GDExtensionObjectPtr)p_instance);
 }
-void object_get_class_name(pointer fn, pointer p_o, pointer p_token, pointer r_ret) {
+static inline void object_get_class_name(pointer fn, pointer p_o, pointer p_token, pointer r_ret) {
 	((GDExtensionInterfaceObjectGetClassName)fn)((GDExtensionObjectPtr)p_o, (void *)p_token, (GDExtensionUninitializedStringPtr)r_ret);
 }
-pointer object_cast_to(pointer fn, pointer p_o, pointer p_class_tag) {
+static inline pointer object_cast_to(pointer fn, pointer p_o, pointer p_class_tag) {
 	return (pointer)((GDExtensionInterfaceObjectCastTo)fn)((GDExtensionObjectPtr)p_o, (void*)p_class_tag);
 }
-uint64_t object_get_instance_id(pointer fn, pointer p_o) {
+static inline uint64_t object_get_instance_id(pointer fn, pointer p_o) {
 	return ((GDExtensionInterfaceObjectGetInstanceId)fn)((GDExtensionObjectPtr)p_o);
 }
-pointer ref_get_object(pointer fn, pointer p_r) {
+static inline pointer ref_get_object(pointer fn, pointer p_r) {
 	return (pointer)((GDExtensionInterfaceRefGetObject)fn)((GDExtensionRefPtr)p_r);
 }
-void ref_set_object(pointer fn, pointer p_r, pointer p_o) {
+static inline void ref_set_object(pointer fn, pointer p_r, pointer p_o) {
 	((GDExtensionInterfaceRefSetObject)fn)((GDExtensionRefPtr)p_r, (GDExtensionObjectPtr)p_o);
 }
 
 
-pointer classdb_construct_object(pointer fn, pointer p_classname) {
+static inline pointer classdb_construct_object(pointer fn, pointer p_classname) {
 	return (pointer)((GDExtensionInterfaceClassdbConstructObject)fn)((GDExtensionConstStringNamePtr)p_classname);
 }
-pointer classdb_get_class_tag(pointer fn, pointer p_classname) {
+static inline pointer classdb_get_class_tag(pointer fn, pointer p_classname) {
 	return (pointer)((GDExtensionInterfaceClassdbGetClassTag)fn)((GDExtensionConstStringNamePtr)p_classname);
 }
-pointer classdb_get_method_bind(pointer fn, pointer p_classname, pointer p_methodname, GDExtensionInt hash) {
+static inline pointer classdb_get_method_bind(pointer fn, pointer p_classname, pointer p_methodname, GDExtensionInt hash) {
 	return (pointer)((GDExtensionInterfaceClassdbGetMethodBind)fn)((GDExtensionConstStringNamePtr)p_classname, (GDExtensionConstStringNamePtr)p_methodname, hash);
 }
-void get_library_path(pointer fn, void *p_token, pointer r_ret) {
+static inline void get_library_path(pointer fn, void *p_token, pointer r_ret) {
 	((GDExtensionInterfaceGetLibraryPath)fn)((void *)p_token, (GDExtensionUninitializedStringPtr)r_ret);
 }
+
+extern void callable_call(pointer p_userdata, void* args, GDExtensionInt count, void* r_ret, GDExtensionCallError *r_error);
+
+static inline void callable_custom_create(pointer fn, pointer r_ret, GDExtensionCallableCustomInfo *p_callable_custom_info) {
+	p_callable_custom_info->call_func = (void*)callable_call;
+	((GDExtensionInterfaceCallableCustomCreate)fn)((GDExtensionUninitializedTypePtr)r_ret, p_callable_custom_info);
+}
+
+extern bool set_func(pointer p_instance, void* p_name, void* p_value);
+extern bool get_func(pointer p_instance, void* p_name, void* r_ret);
+extern GDExtensionPropertyInfo *get_property_list_func(pointer p_instance, uint32_t *r_count);
+extern void free_property_list_func(pointer p_instance, GDExtensionPropertyInfo *p_list);
+extern bool property_can_revert_func(pointer p_instance, void* p_name);
+extern void property_get_revert_func(pointer p_instance, void* p_name, void* r_ret);
+//extern *validate_property_func;
+extern void notification_func(pointer p_instance, int32_t p_notification, bool reversed);
+extern void to_string_func(pointer p_instance, void* valid, void* r_ret);
+extern void reference_func();
+extern void unreference_func();
+extern pointer create_instance_func(pointer p_class);
+extern void free_instance_func(pointer p_class, pointer p_instance);
+//extern *recreate_instance_func;
+extern pointer get_virtual_call_data_func(pointer p_class, void* name);
+extern void call_virtual_with_data_func(pointer p_instance, void* name, pointer userdata, void* args, void* ret);
+extern uint64_t get_rid_func(pointer p_instance);
+
+static inline void classdb_register_extension_class2(pointer fn, pointer p_library, pointer p_class_name, pointer p_parent_class_name, GDExtensionClassCreationInfo2 *p_extension_funcs) {
+	p_extension_funcs->set_func = (void*)set_func;
+	p_extension_funcs->get_func = (void*)get_func;
+	p_extension_funcs->get_property_list_func = (void*)get_property_list_func;
+	p_extension_funcs->free_property_list_func = (void*)free_property_list_func;
+	p_extension_funcs->property_can_revert_func = (void*)property_can_revert_func;
+	p_extension_funcs->property_get_revert_func = (void*)property_get_revert_func;
+	//p_extension_funcs.validate_property_func = (void*)validate_property_func;
+	p_extension_funcs->notification_func = (void*)notification_func;
+	p_extension_funcs->to_string_func = (void*)to_string_func;
+	p_extension_funcs->reference_func = (void*)reference_func;
+	p_extension_funcs->unreference_func = (void*)unreference_func;
+	p_extension_funcs->create_instance_func = (void*)create_instance_func;
+	p_extension_funcs->free_instance_func = (void*)free_instance_func;
+	//p_extension_funcs.recreate_instance_func = (void*)recreate_instance_func;
+	p_extension_funcs->get_virtual_call_data_func = (void*)get_virtual_call_data_func;
+	p_extension_funcs->call_virtual_with_data_func = (void*)call_virtual_with_data_func;
+	p_extension_funcs->get_rid_func = (void*)get_rid_func;
+	((GDExtensionInterfaceClassdbRegisterExtensionClass2)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringNamePtr)p_parent_class_name, p_extension_funcs);
+}
+
+extern void method_call(pointer p_method, pointer p_userdata, void* args, GDExtensionInt count, void* r_ret, GDExtensionCallError *r_error);
+extern void method_ptrcall(pointer p_method, pointer p_userdata, void* args, void* r_ret);
+
+static inline void classdb_register_extension_class_method(pointer fn, pointer p_library, pointer p_class_name, GDExtensionClassMethodInfo *p_method_bind_info) {
+	p_method_bind_info->call_func = (void*)method_call;
+	p_method_bind_info->ptrcall_func = (void*)method_ptrcall;
+	((GDExtensionInterfaceClassdbRegisterExtensionClassMethod)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, p_method_bind_info);
+}
+static inline void classdb_register_extension_class_signal(pointer fn, pointer p_library, pointer p_class_name, pointer p_signal_name, GDExtensionPropertyInfo *args, GDExtensionInt arg_count) {
+	((GDExtensionInterfaceClassdbRegisterExtensionClassSignal)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringNamePtr)p_signal_name, args, arg_count);
+}
+static inline void editor_add_plugin(pointer fn, pointer p_name) {
+	((GDExtensionInterfaceEditorAddPlugin)fn)((GDExtensionConstStringNamePtr)p_name);
+}
+static inline void editor_remove_plugin(pointer fn, pointer p_name) {
+	((GDExtensionInterfaceEditorRemovePlugin)fn)((GDExtensionConstStringNamePtr)p_name);
+}
+
 */
 import "C"
 
@@ -1626,7 +1692,7 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	object_set_instance := dlsymGD("object_set_instance")
-	API.Object.SetInstance = func(o gd.Object, sn gd.StringName, a any) {
+	API.Object.SetInstance = func(o gd.Object, sn gd.StringName, a gd.ObjectInterface) {
 		var frame = call.New()
 		var p_sn = call.Arg(frame, mmm.Get(sn))
 		var p_val = cgo.NewHandle(a)
@@ -1734,6 +1800,182 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 
+	callable_custom_create := dlsymGD("callable_custom_create")
+	API.Callables.Create = func(ctx gd.Context, fn func(...internal.Variant) (internal.Variant, error)) internal.Callable {
+		var frame = call.New()
+		var r_callable = call.Ret[[2]uintptr](frame)
+		var info C.GDExtensionCallableCustomInfo
+		info.token = unsafe.Pointer(ctx.API.ExtensionToken)
+		info.callable_userdata = C.uintptr_t(cgo.NewHandle(fn))
+		C.callable_custom_create(
+			C.uintptr_t(uintptr(callable_custom_create)),
+			C.uintptr_t(r_callable.Uintptr()),
+			&info,
+		)
+		var r_ret = mmm.New[gd.Callable](ctx.Lifetime, ctx.API, r_callable.Get())
+		frame.Free()
+		return r_ret
+	}
+
+	classdb_register_extension_class_signal := dlsymGD("classdb_register_extension_class_signal")
+	API.ClassDB.RegisterClassSignal = func(library internal.ExtensionToken, class, signal internal.StringName, args []internal.PropertyInfo) {
+		ctx := gd.NewContext(godot)
+		defer ctx.End()
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_signal = call.Arg(frame, mmm.Get(signal))
+		var p_list = cPropertyList(ctx, args)
+		C.classdb_register_extension_class_signal(
+			C.uintptr_t(uintptr(classdb_register_extension_class_signal)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			C.uintptr_t(p_signal.Uintptr()),
+			p_list,
+			C.GDExtensionInt(len(args)),
+		)
+		frame.Free()
+	}
+
+	classdb_register_extension_class2 := dlsymGD("classdb_register_extension_class2")
+	API.ClassDB.RegisterClass = func(library internal.ExtensionToken, name, extends internal.StringName, info internal.ClassInterface) {
+		var frame = call.New()
+		var p_name = call.Arg(frame, mmm.Get(name))
+		var p_extends = call.Arg(frame, mmm.Get(extends))
+		var is_virtual C.GDExtensionBool
+		if info.IsVirtual() {
+			is_virtual = 1
+		}
+		var is_abstract C.GDExtensionBool
+		if info.IsAbstract() {
+			is_abstract = 1
+		}
+		var is_exposed C.GDExtensionBool
+		if info.IsExposed() {
+			is_exposed = 1
+		}
+		var p_info = C.GDExtensionClassCreationInfo2{
+			is_virtual:     is_virtual,
+			is_abstract:    is_abstract,
+			is_exposed:     is_exposed,
+			class_userdata: C.uintptr_t(cgo.NewHandle(info)),
+		}
+		C.classdb_register_extension_class2(
+			C.uintptr_t(uintptr(classdb_register_extension_class2)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_name.Uintptr()),
+			C.uintptr_t(p_extends.Uintptr()),
+			&p_info,
+		)
+		frame.Free()
+	}
+
+	classdb_register_extension_class_method := dlsymGD("classdb_register_extension_class_method")
+	API.ClassDB.RegisterClassMethod = func(ctx gd.Context, library internal.ExtensionToken, class internal.StringName, info internal.Method) {
+		infoHandle := cgo.NewHandle(&info)
+		releaseHandle := infoHandle.Delete
+		mmm.Let[onFree](ctx.Lifetime, &releaseHandle, [0]uintptr{})
+
+		var pins runtime.Pinner
+		mmm.Let[pinner](ctx.Lifetime, &pins, [0]uintptr{})
+
+		var name = mmm.Get(info.Name)
+		pins.Pin(&name)
+
+		var returnInfo *C.GDExtensionPropertyInfo
+
+		var has_return_value C.GDExtensionBool
+		if info.ReturnValueInfo != nil {
+			has_return_value = 1
+
+			var retName = mmm.Get(info.ReturnValueInfo.Name)
+			pins.Pin(&retName)
+
+			var className = mmm.Get(info.ReturnValueInfo.ClassName)
+			pins.Pin(&className)
+
+			var hintString = mmm.Get(info.ReturnValueInfo.HintString)
+			pins.Pin(&hintString)
+
+			returnInfo = &C.GDExtensionPropertyInfo{
+				_type:       C.GDExtensionVariantType(info.ReturnValueInfo.Type),
+				name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&retName)),
+				class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&className)),
+				hint:        C.uint32_t(info.ReturnValueInfo.Hint),
+				hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&hintString)),
+				usage:       C.uint32_t(info.ReturnValueInfo.Usage),
+			}
+
+			pins.Pin(returnInfo)
+		}
+
+		var list = cPropertyList(ctx, info.Arguments)
+
+		var firstMetadata *C.GDExtensionClassMethodArgumentMetadata
+		var metadatas = make([]C.GDExtensionClassMethodArgumentMetadata, 0, len(info.ArgumentsMetadata))
+		for _, metadata := range info.ArgumentsMetadata {
+			metadatas = append(metadatas, C.GDExtensionClassMethodArgumentMetadata(metadata))
+		}
+		if len(metadatas) > 0 {
+			firstMetadata = &metadatas[0]
+			pins.Pin(&metadatas[0])
+		}
+
+		var firstDefaultArgument *C.GDExtensionVariantPtr
+		var defaultArguments = make([]C.GDExtensionVariantPtr, 0, len(info.DefaultArguments))
+		for _, arg := range info.DefaultArguments {
+			var def = mmm.Get(arg)
+			pins.Pin(&def)
+			defaultArguments = append(defaultArguments, C.GDExtensionVariantPtr(unsafe.Pointer(&def)))
+		}
+		if len(defaultArguments) > 0 {
+			firstDefaultArgument = &defaultArguments[0]
+			pins.Pin(&defaultArguments[0])
+		}
+
+		var frame = call.New()
+		var p_class = call.Arg(frame, mmm.Get(class))
+		var p_info = C.GDExtensionClassMethodInfo{
+			name:                   (C.GDExtensionStringNamePtr)(unsafe.Pointer(&name)),
+			method_userdata:        C.uintptr_t(infoHandle), // FIXME leak
+			method_flags:           C.uint32_t(info.MethodFlags),
+			has_return_value:       has_return_value,
+			return_value_info:      returnInfo,
+			return_value_metadata:  C.GDExtensionClassMethodArgumentMetadata(info.ReturnValueMetadata),
+			argument_count:         C.uint32_t(len(info.Arguments)),
+			arguments_info:         list,
+			arguments_metadata:     firstMetadata,
+			default_argument_count: C.uint32_t(len(info.DefaultArguments)),
+			default_arguments:      firstDefaultArgument,
+		}
+		C.classdb_register_extension_class_method(
+			C.uintptr_t(uintptr(classdb_register_extension_class_method)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_class.Uintptr()),
+			&p_info,
+		)
+		frame.Free()
+	}
+
+	editor_add_plugin := dlsymGD("editor_add_plugin")
+	API.EditorPlugins.Add = func(plugin gd.StringName) {
+		var frame = call.New()
+		var p_plugin = call.Arg(frame, mmm.Get(plugin))
+		C.editor_add_plugin(
+			C.uintptr_t(uintptr(editor_add_plugin)),
+			C.uintptr_t(p_plugin.Uintptr()),
+		)
+		frame.Free()
+	}
+	editor_remove_plugin := dlsymGD("editor_remove_plugin")
+	API.EditorPlugins.Remove = func(plugin gd.StringName) {
+		var frame = call.New()
+		var p_plugin = call.Arg(frame, mmm.Get(plugin))
+		C.editor_remove_plugin(
+			C.uintptr_t(uintptr(editor_remove_plugin)),
+			C.uintptr_t(p_plugin.Uintptr()),
+		)
+		frame.Free()
+	}
 }
 
 func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunctionsFor[T, V] {
@@ -1780,4 +2022,212 @@ func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunc
 		return slice
 	}
 	return API
+}
+
+//export set_func
+func set_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+
+	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
+	value := mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *(*[3]uintptr)(p_value))
+	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).Set(name, value)
+}
+
+//export get_func
+func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+
+	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
+	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).Get(name)
+	if !ok {
+		return false
+	}
+	*(*[3]uintptr)(p_value) = mmm.Get(variant)
+	return true
+}
+
+var propertyLists = make(map[*C.GDExtensionPropertyInfo]gd.Context)
+
+type onFree mmm.Pointer[func(), onFree, [0]uintptr]
+
+func (cb onFree) Free() {
+	(*mmm.API(cb))()
+	mmm.End(cb)
+}
+
+func cPropertyList(ctx gd.Context, list []gd.PropertyInfo) *C.GDExtensionPropertyInfo {
+	if len(list) == 0 {
+		return nil
+	}
+	var pins runtime.Pinner
+	var slice = make([]C.GDExtensionPropertyInfo, 0, len(list))
+	for i := range list {
+		property := &list[i]
+		name := mmm.Get(property.Name)
+		pins.Pin(&name)
+		class_name := mmm.Get(property.ClassName)
+		pins.Pin(&class_name)
+		hint_string := mmm.Get(property.HintString)
+		pins.Pin(&hint_string)
+		slice = append(slice, C.GDExtensionPropertyInfo{
+			_type:       C.GDExtensionVariantType(property.Type),
+			name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&name)),
+			class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&class_name)),
+			hint:        C.uint32_t(property.Hint),
+			hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&hint_string)),
+			usage:       C.uint32_t(property.Usage),
+		})
+	}
+	pins.Pin(&slice[0])
+	mmm.Pin[pinner](ctx.Lifetime, &pins, [0]uintptr{})
+	propertyLists[&slice[0]] = ctx
+	del := func() {
+		delete(propertyLists, &slice[0])
+	}
+	mmm.Pin[onFree](ctx.Lifetime, &del, [0]uintptr{})
+	return &slice[0]
+}
+
+//export get_property_list_func
+func get_property_list_func(p_instance uintptr, p_length *uint32) *C.GDExtensionPropertyInfo {
+	ctx := gd.NewContext(godot)
+	list := cgo.Handle(p_instance).Value().(gd.ObjectInterface).GetPropertyList(ctx)
+	*p_length = uint32(len(list))
+	return cPropertyList(ctx, list)
+}
+
+//export free_property_list_func
+func free_property_list_func(p_instance uintptr, p_properties *C.GDExtensionPropertyInfo) {
+	propertyLists[p_properties].End()
+}
+
+//export property_can_revert_func
+func property_can_revert_func(p_instance uintptr, p_name unsafe.Pointer) bool {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
+	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyCanRevert(name)
+}
+
+//export property_get_revert_func
+func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer) {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
+	variant := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(name)
+	*(*[3]uintptr)(p_value) = mmm.Get(variant)
+}
+
+//export notification_func
+func notification_func(p_instance uintptr, p_notification int32, p_reversed bool) {
+	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Notification(p_notification, p_reversed)
+}
+
+//export to_string_func
+func to_string_func(p_instance uintptr, valid, out unsafe.Pointer) {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+	s, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).ToString()
+	if !ok {
+		*(*bool)(valid) = false
+		return
+	}
+	*(*bool)(valid) = true
+	*(*uintptr)(out) = mmm.Get(s)
+}
+
+//export reference_func
+func reference_func(p_instance uintptr) {
+	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Reference()
+}
+
+//export unreference_func
+func unreference_func(p_instance uintptr) {
+	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Unreference()
+}
+
+//export create_instance_func
+func create_instance_func(p_class uintptr) uintptr {
+	return mmm.Get(cgo.Handle(p_class).Value().(gd.ClassInterface).CreateInstance().AsPointer())
+}
+
+//export free_instance_func
+func free_instance_func(p_class, p_instance uintptr) {
+	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Free()
+}
+
+//export recreate_instance_func
+func recreate_instance_func(p_class, p_super uintptr) uintptr {
+	return 0
+}
+
+//export get_virtual_call_data_func
+func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+	var name = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
+	virtual := cgo.Handle(p_class).Value().(gd.ClassInterface).GetVirtual(name)
+	if virtual == nil {
+		return 0
+	}
+	return uintptr(cgo.NewHandle(virtual))
+}
+
+//export call_virtual_with_data_func
+func call_virtual_with_data_func(p_instance uintptr, p_name unsafe.Pointer, p_data uintptr, p_args, p_ret unsafe.Pointer) {
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+	var name = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
+	cgo.Handle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgo.Handle(p_data).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
+}
+
+//export get_rid_func
+func get_rid_func(p_instance uintptr) C.uint64_t {
+	return C.uint64_t(cgo.Handle(p_instance).Value().(gd.ObjectInterface).GetRID())
+}
+
+//export callable_call
+func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
+	fn := cgo.Handle(p_callable).Value().(func(...gd.Variant) (gd.Variant, error))
+
+	var slice = unsafe.Slice((*[3]uintptr)(p_args), int(count))
+
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+
+	var args = make([]gd.Variant, 0, len(slice))
+	for _, elem := range slice {
+		args = append(args, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, elem))
+	}
+	ret, err := fn(args...)
+	if err != nil {
+		issue.error = 7 // TODO no generic error>
+		return
+	}
+	*(*[3]uintptr)(p_ret) = mmm.Get(ret)
+}
+
+//export method_call
+func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
+	method := cgo.Handle(p_method).Value().(*gd.Method)
+	var variants = make([]gd.Variant, 0, int(count))
+	ctx := gd.NewContext(godot)
+	defer ctx.End()
+	for _, elem := range unsafe.Slice((*[3]uintptr)(p_args), int(count)) {
+		variants = append(variants, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, elem))
+	}
+	result, err := method.Call(cgo.Handle(p_instance).Value(), variants...)
+	if err != nil {
+		issue.error = 7 // TODO no generic error>
+		return
+	}
+	*(*[3]uintptr)(p_ret) = mmm.Get(result)
+}
+
+//export method_ptrcall
+func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, p_ret unsafe.Pointer) {
+	method := cgo.Handle(p_method).Value().(*gd.Method)
+	method.PointerCall(cgo.Handle(p_instance).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
 }

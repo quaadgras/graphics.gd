@@ -14,3 +14,4 @@ example/bin/
 /internal/testbed/.godot
 /internal/testbed/testing.lib
 /internal/graphics
+/.vscode/launch.json

@@ -5,7 +5,6 @@ package gd
 
 import "unsafe"
 import "reflect"
-import "runtime/cgo"
 import "runtime.link/mmm"
 import "runtime.link/api/call"
 
@@ -8741,13 +8740,12 @@ func (self CanvasItem) AsNode() Node { return *self.Super() }
 func (self CanvasItem) AsObject() Object { return *self.Super().Super() }
 
 func (CanvasItem) _draw(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (self CanvasItem) GetCanvasItem() RID {
@@ -9770,114 +9768,105 @@ func (self Control) AsNode() Node { return *self.Super().Super() }
 func (self Control) AsObject() Object { return *self.Super().Super().Super() }
 
 func (Control) _has_point(impl func(ptr unsafe.Pointer, ctx Context, point Vector2) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var point = UnsafeGet[Vector2](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, point)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _structured_text_parser(impl func(ptr unsafe.Pointer, ctx Context, args Array, text String) ArrayOf[Vector3i], api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var args = mmm.New[Array](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0))
 		var text = mmm.New[String](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 1))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, args, text)
 		ctx.End()
 		UnsafeSet[ArrayOf[Vector3i]](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _get_minimum_size(impl func(ptr unsafe.Pointer, ctx Context) Vector2, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Vector2](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _get_tooltip(impl func(ptr unsafe.Pointer, ctx Context, at_position Vector2) String, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var at_position = UnsafeGet[Vector2](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, at_position)
 		mmm.End(ret)
 		ctx.End()
 		UnsafeSet[String](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _get_drag_data(impl func(ptr unsafe.Pointer, ctx Context, at_position Vector2) Variant, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var at_position = UnsafeGet[Vector2](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, at_position)
 		mmm.End(ret)
 		ctx.End()
 		UnsafeSet[Variant](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _can_drop_data(impl func(ptr unsafe.Pointer, ctx Context, at_position Vector2, data Variant) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var at_position = UnsafeGet[Vector2](p_args, 0)
 		var data = mmm.New[Variant](ctx.Lifetime, ctx.API, UnsafeGet[[3]uintptr](p_args, 1))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, at_position, data)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _drop_data(impl func(ptr unsafe.Pointer, ctx Context, at_position Vector2, data Variant), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var at_position = UnsafeGet[Vector2](p_args, 0)
 		var data = mmm.New[Variant](ctx.Lifetime, ctx.API, UnsafeGet[[3]uintptr](p_args, 1))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, at_position, data)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Control) _make_custom_tooltip(impl func(ptr unsafe.Pointer, ctx Context, for_text String) Object, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var for_text = mmm.New[String](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, for_text)
 		ctx.End()
 		UnsafeSet[Object](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Control) _gui_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var event InputEvent
 		event.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0)))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (self Control) AcceptEvent() {
@@ -17223,47 +17212,43 @@ type MainLoop struct{ Class[MainLoop, Object] }
 func (self MainLoop) AsObject() Object { return *self.Super() }
 
 func (MainLoop) _initialize(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (MainLoop) _physics_process(impl func(ptr unsafe.Pointer, ctx Context, delta Float) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var delta = UnsafeGet[Float](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, delta)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (MainLoop) _process(impl func(ptr unsafe.Pointer, ctx Context, delta Float) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var delta = UnsafeGet[Float](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, delta)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (MainLoop) _finalize(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (self MainLoop) virtual(name string) reflect.Value {
@@ -17290,47 +17275,43 @@ func (self Material) AsRefCounted() RefCounted { return *self.Super().Super() }
 func (self Material) AsObject() Object { return *self.Super().Super().Super() }
 
 func (Material) _get_shader_rid(impl func(ptr unsafe.Pointer, ctx Context) RID, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[RID](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Material) _get_shader_mode(impl func(ptr unsafe.Pointer, ctx Context) ShaderMode, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[ShaderMode](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Material) _can_do_next_pass(impl func(ptr unsafe.Pointer, ctx Context) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Material) _can_use_render_priority(impl func(ptr unsafe.Pointer, ctx Context) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (self Material) SetNextPass(next_pass Material) {
@@ -17422,172 +17403,158 @@ func (self Mesh) AsRefCounted() RefCounted { return *self.Super().Super() }
 func (self Mesh) AsObject() Object { return *self.Super().Super().Super() }
 
 func (Mesh) _get_surface_count(impl func(ptr unsafe.Pointer, ctx Context) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_array_len(impl func(ptr unsafe.Pointer, ctx Context, index Int) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, ctx Context, index Int) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_arrays(impl func(ptr unsafe.Pointer, ctx Context, index Int) Array, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		mmm.End(ret)
 		ctx.End()
 		UnsafeSet[Array](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, ctx Context, index Int) ArrayOf[Array], api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		ctx.End()
 		UnsafeSet[ArrayOf[Array]](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_lods(impl func(ptr unsafe.Pointer, ctx Context, index Int) Dictionary, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		mmm.End(ret)
 		ctx.End()
 		UnsafeSet[Dictionary](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_format(impl func(ptr unsafe.Pointer, ctx Context, index Int) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, ctx Context, index Int) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_set_material(impl func(ptr unsafe.Pointer, ctx Context, index Int, material Material), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
 		var material Material
 		material.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 1)))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, index, material)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Mesh) _surface_get_material(impl func(ptr unsafe.Pointer, ctx Context, index Int) Material, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		ctx.End()
 		UnsafeSet[Material](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _get_blend_shape_count(impl func(ptr unsafe.Pointer, ctx Context) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _get_blend_shape_name(impl func(ptr unsafe.Pointer, ctx Context, index Int) StringName, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, index)
 		mmm.End(ret)
 		ctx.End()
 		UnsafeSet[StringName](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Mesh) _set_blend_shape_name(impl func(ptr unsafe.Pointer, ctx Context, index Int, name StringName), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var index = UnsafeGet[Int](p_args, 0)
 		var name = mmm.New[StringName](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 1))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, index, name)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Mesh) _get_aabb(impl func(ptr unsafe.Pointer, ctx Context) AABB, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[AABB](p_back, ret)
-	})
-	return
+	}
 }
 
 func (self Mesh) SetLightmapSizeHint(size Vector2i) {
@@ -18419,115 +18386,105 @@ type Node struct{ Class[Node, Object] }
 func (self Node) AsObject() Object { return *self.Super() }
 
 func (Node) _process(impl func(ptr unsafe.Pointer, ctx Context, delta Float), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var delta = UnsafeGet[Float](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, delta)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _physics_process(impl func(ptr unsafe.Pointer, ctx Context, delta Float), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var delta = UnsafeGet[Float](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, delta)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _enter_tree(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _exit_tree(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _ready(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _get_configuration_warnings(impl func(ptr unsafe.Pointer, ctx Context) PackedStringArray, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		mmm.End(ret)
 		ctx.End()
 		UnsafeSet[PackedStringArray](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Node) _input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var event InputEvent
 		event.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0)))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _shortcut_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var event InputEvent
 		event.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0)))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _unhandled_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var event InputEvent
 		event.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0)))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Node) _unhandled_key_input(impl func(ptr unsafe.Pointer, ctx Context, event InputEvent), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var event InputEvent
 		event.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, UnsafeGet[uintptr](p_args, 0)))
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, event)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (self Node) PrintOrphanNodes() {
@@ -31124,13 +31081,12 @@ func (self Resource) AsRefCounted() RefCounted { return *self.Super() }
 func (self Resource) AsObject() Object { return *self.Super().Super() }
 
 func (Resource) _setup_local_to_scene(impl func(ptr unsafe.Pointer, ctx Context), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (self Resource) SetPath(path String) {
@@ -32376,51 +32332,47 @@ func (self StyleBox) AsRefCounted() RefCounted { return *self.Super().Super() }
 func (self StyleBox) AsObject() Object { return *self.Super().Super().Super() }
 
 func (StyleBox) _draw(impl func(ptr unsafe.Pointer, ctx Context, to_canvas_item RID, rect Rect2), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var to_canvas_item = UnsafeGet[RID](p_args, 0)
 		var rect = UnsafeGet[Rect2](p_args, 1)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, to_canvas_item, rect)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (StyleBox) _get_draw_rect(impl func(ptr unsafe.Pointer, ctx Context, rect Rect2) Rect2, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var rect = UnsafeGet[Rect2](p_args, 0)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, rect)
 		ctx.End()
 		UnsafeSet[Rect2](p_back, ret)
-	})
-	return
+	}
 }
 
 func (StyleBox) _get_minimum_size(impl func(ptr unsafe.Pointer, ctx Context) Vector2, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Vector2](p_back, ret)
-	})
-	return
+	}
 }
 
 func (StyleBox) _test_mask(impl func(ptr unsafe.Pointer, ctx Context, point Vector2, rect Rect2) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var point = UnsafeGet[Vector2](p_args, 0)
 		var rect = UnsafeGet[Rect2](p_args, 1)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, point, rect)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (self StyleBox) GetMinimumSize() Vector2 {
@@ -34915,82 +34867,76 @@ func (self Texture2D) AsRefCounted() RefCounted { return *self.Super().Super().S
 func (self Texture2D) AsObject() Object { return *self.Super().Super().Super().Super() }
 
 func (Texture2D) _get_width(impl func(ptr unsafe.Pointer, ctx Context) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Texture2D) _get_height(impl func(ptr unsafe.Pointer, ctx Context) Int, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Int](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Texture2D) _is_pixel_opaque(impl func(ptr unsafe.Pointer, ctx Context, x Int, y Int) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var x = UnsafeGet[Int](p_args, 0)
 		var y = UnsafeGet[Int](p_args, 1)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx, x, y)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Texture2D) _has_alpha(impl func(ptr unsafe.Pointer, ctx Context) bool, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[bool](p_back, ret)
-	})
-	return
+	}
 }
 
 func (Texture2D) _draw(impl func(ptr unsafe.Pointer, ctx Context, to_canvas_item RID, pos Vector2, modulate Color, transpose bool), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var to_canvas_item = UnsafeGet[RID](p_args, 0)
 		var pos = UnsafeGet[Vector2](p_args, 1)
 		var modulate = UnsafeGet[Color](p_args, 2)
 		var transpose = UnsafeGet[bool](p_args, 3)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, to_canvas_item, pos, modulate, transpose)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Texture2D) _draw_rect(impl func(ptr unsafe.Pointer, ctx Context, to_canvas_item RID, rect Rect2, tile bool, modulate Color, transpose bool), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var to_canvas_item = UnsafeGet[RID](p_args, 0)
 		var rect = UnsafeGet[Rect2](p_args, 1)
 		var tile = UnsafeGet[bool](p_args, 2)
 		var modulate = UnsafeGet[Color](p_args, 3)
 		var transpose = UnsafeGet[bool](p_args, 4)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, to_canvas_item, rect, tile, modulate, transpose)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (Texture2D) _draw_rect_region(impl func(ptr unsafe.Pointer, ctx Context, to_canvas_item RID, rect Rect2, src_rect Rect2, modulate Color, transpose bool, clip_uv bool), api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
 		var to_canvas_item = UnsafeGet[RID](p_args, 0)
 		var rect = UnsafeGet[Rect2](p_args, 1)
@@ -34998,11 +34944,10 @@ func (Texture2D) _draw_rect_region(impl func(ptr unsafe.Pointer, ctx Context, to
 		var modulate = UnsafeGet[Color](p_args, 3)
 		var transpose = UnsafeGet[bool](p_args, 4)
 		var clip_uv = UnsafeGet[bool](p_args, 5)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ctx, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 		ctx.End()
-	})
-	return
+	}
 }
 
 func (self Texture2D) GetWidth() Int {
@@ -37311,14 +37256,13 @@ func (self Window) AsNode() Node { return *self.Super().Super() }
 func (self Window) AsObject() Object { return *self.Super().Super().Super() }
 
 func (Window) _get_contents_minimum_size(impl func(ptr unsafe.Pointer, ctx Context) Vector2, api *API) (cb ExtensionClassCallVirtualFunc) {
-	cb.Set(func(class cgo.Handle, p_args UnsafeArgs, p_back UnsafeBack) {
+	return func(class any, p_args UnsafeArgs, p_back UnsafeBack) {
 		ctx := NewContext(api)
-		self := reflect.ValueOf(class.Value()).UnsafePointer()
+		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, ctx)
 		ctx.End()
 		UnsafeSet[Vector2](p_back, ret)
-	})
-	return
+	}
 }
 
 func (self Window) SetTitle(title String) {

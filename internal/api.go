@@ -129,7 +129,7 @@ type API struct {
 		GetInstanceBinding    func(Object, ExtensionToken, InstanceBindingType) any
 		SetInstanceBinding    func(Object, ExtensionToken, any, InstanceBindingType)
 		FreeInstanceBinding   func(Object, ExtensionToken)
-		SetInstance           func(Object, StringName, any)
+		SetInstance           func(Object, StringName, ObjectInterface)
 		GetClassName          func(Context, Object, ExtensionToken) String
 		CastTo                func(Context, Object, ClassTag) Object
 		GetInstanceID         func(Object) ObjectID
@@ -138,34 +138,35 @@ type API struct {
 		GetObject func(Context, RefCounted) Object
 		SetObject func(RefCounted, Object)
 	}
+	// unsure how this is meant to work, requires further investigation.
 	Scripts struct {
-		Create            func(info *ScriptInstanceInfo, script unsafe.Pointer) Script             `call:"script_instance_create2 func(&void,&void)&void"`
-		CreatePlaceholder func(lang *ScriptLanguage, script *Script, owner *uintptr) Script        `call:"placeholder_script_instance_create func(&void,&void,&void)&void"`
-		UpdatePlaceholder func(script Script, properties *ArrayOf[Dictionary], values *Dictionary) `call:"placeholder_script_instance_update func(&void)"`
-		Get               func(obj *uintptr, lang *ScriptLanguage) Script                          `call:"object_get_script_instance func(&void)&void"`
+		Create            func(ScriptInstance) Script
+		CreatePlaceholder func(lang ScriptLanguage, script Script, owner Object) Script
+		UpdatePlaceholder func(script Script, properties ArrayOf[Dictionary], values Dictionary)
+		Get               func(Object, ScriptLanguage) cgo.Handle
 	}
 	Callables struct {
-		Create      func(callable *Callable, info *CallableCustomInfo)            `call:"callable_custom_create func(+void,&void)"`
-		GetUserData func(callable *Callable, token unsafe.Pointer) unsafe.Pointer `call:"callable_custom_get_userdata func(&void,&void)$void"`
+		Create func(ctx Context, fn func(...Variant) (Variant, error)) Callable
+		Get    func(Callable) (func(...Variant) (Variant, error), bool)
 	}
 	ClassDB struct {
 		ConstructObject func(Context, StringName) Object
 		GetClassTag     func(StringName) ClassTag
 		GetMethodBind   func(class, method StringName, hash Int) MethodBind
 
-		RegisterClass                 func(library ExtensionToken, name, extends StringNamePtr, info *ClassCreationInfo)                               `call:"classdb_register_extension_class2 func(&void,&void,&void,&void)"`
-		RegisterClassMethod           func(library ExtensionToken, class StringNamePtr, info *ClassMethodInfo)                                         `call:"classdb_register_extension_class_method func(&void,&void,&void)"`
-		RegisterClassIntegerConstant  func(library ExtensionToken, class, enum, name StringNamePtr, value int64, bitfield bool)                        `call:"classdb_register_extension_class_integer_constant func(&void,&void,&void,&void,&void,int64_t)"`
-		RegisterClassProperty         func(library ExtensionToken, class StringNamePtr, info *PropertyInfo, getter, setter StringNamePtr)              `call:"classdb_register_extension_class_property func(&void,&void,&void,&void,&void)"`
-		RegisterClassPropertyIndexed  func(library ExtensionToken, class StringNamePtr, info *PropertyInfo, getter, setter StringNamePtr, index int64) `call:"classdb_register_extension_class_property_indexed func(&void,&void,&void,&void,&void,int64_t)"`
-		RegisterClassPropertyGroup    func(library ExtensionToken, class CallFrameArgs, group, prefix CallFrameArgs)                                   `call:"classdb_register_extension_class_property_group func(&void,&void,&void,&void)"`
-		RegisterClassPropertySubGroup func(library ExtensionToken, class CallFrameArgs, subGroup, prefix CallFrameArgs)                                `call:"classdb_register_extension_class_property_subgroup func(&void,&void,&void,&void,&void)"`
-		RegisterClassSignal           func(library ExtensionToken, class, signal StringNamePtr, args []PropertyInfo)                                   `call:"classdb_register_extension_class_signal func(&void,&void,&void,&void,-int64_t=@4)"`
-		UnregisterClass               func(library ExtensionToken, class StringNamePtr)                                                                `call:"classdb_unregister_extension_class func(&void,&void)"`
+		RegisterClass                 func(library ExtensionToken, name, extends StringName, info ClassInterface)
+		RegisterClassMethod           func(ctx Context, library ExtensionToken, class StringName, info Method)
+		RegisterClassIntegerConstant  func(library ExtensionToken, class, enum, name StringName, value int64, bitfield bool)
+		RegisterClassProperty         func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
+		RegisterClassPropertyIndexed  func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName, index int64)
+		RegisterClassPropertyGroup    func(library ExtensionToken, class StringName, group, prefix String)
+		RegisterClassPropertySubGroup func(library ExtensionToken, class StringName, subGroup, prefix String)
+		RegisterClassSignal           func(library ExtensionToken, class, signal StringName, args []PropertyInfo)
+		UnregisterClass               func(library ExtensionToken, class StringName)
 	}
 	EditorPlugins struct {
-		Add    func(plugin StringNamePtr) `call:"editor_add_plugin func(&void)"`
-		Remove func(plugin StringNamePtr) `call:"editor_remove_plugin func(&void)"`
+		Add    func(plugin StringName)
+		Remove func(plugin StringName)
 	}
 
 	GetLibraryPath func(Context, ExtensionToken) String
@@ -296,56 +297,49 @@ type InstanceBindingCallbacks struct {
 }
 
 type PropertyInfo struct {
-	Type       uint32 // VariantType
-	Name       StringNamePtr
-	ClassName  StringNamePtr
-	Hint       uint32 // PropertyHint
-	HintString StringPtr
-	Usage      uint32 // PropertyUsageFlags
+	Type       VariantType
+	Name       StringName
+	ClassName  StringName
+	Hint       PropertyHint
+	HintString String
+	Usage      PropertyUsageFlags
 }
 
 type MethodInfo struct {
-	Name                 StringName
-	ReturnValue          PropertyInfo
-	Flags                uint32 // MethodFlags
-	ID                   int32
-	ArgumentCount        uint32
-	Arguments            *PropertyInfo
-	DefaultArgumentCount uint32
-	DefaultArguments     *Variant
+	Name             StringName
+	ReturnValue      PropertyInfo
+	Flags            MethodFlags
+	ID               int32
+	Arguments        []PropertyInfo
+	DefaultArguments []Variant
 }
 
-type ClassCreationInfo struct {
-	IsVirtual  bool
-	IsAbstract bool
-	IsExposed  bool
+type ClassInterface interface {
+	IsVirtual() bool
+	IsAbstract() bool
+	IsExposed() bool
 
-	Set call.Back[func(instance cgo.Handle, name StringNamePtr, value VariantPtr) bool]
-	Get call.Back[func(instance cgo.Handle, name StringNamePtr, ret VariantPtr) bool]
-
-	GetPropertyList   call.Back[func(instance cgo.Handle, len *uint32) *PropertyInfo]
-	FreePropertyList  call.Back[func(instance cgo.Handle, list *PropertyInfo)]
-	PropertyCanRevert call.Back[func(instance cgo.Handle, name StringNamePtr) bool]
-	PropertyGetRevert call.Back[func(instance cgo.Handle, name StringNamePtr, ret VariantPtr)]
-	ValidateProperty  call.Back[func(instance cgo.Handle, name StringNamePtr, property *PropertyInfo) bool]
-	Notification      call.Back[func(instance cgo.Handle, notification int32, reversed bool)]
-	ToString          call.Back[func(instance cgo.Handle, valid *bool, out *String)]
-	Reference         call.Back[func(instance cgo.Handle)]
-	Unreference       call.Back[func(instance cgo.Handle)]
-
-	// Mandatory
-	CreateInstance         call.Back[func(userdata unsafe.Pointer) uintptr]
-	FreeInstance           call.Back[func(userdata unsafe.Pointer, instance cgo.Handle)]
-	RecreateInstance       call.Back[func(userdata unsafe.Pointer, instance cgo.Handle) uintptr]
-	GetVirtual             call.Back[func(userdata unsafe.Pointer, name StringNamePtr) ExtensionClassCallVirtualFunc]
-	GetVirtualCallWithData call.Back[func(userdata unsafe.Pointer, name StringNamePtr) unsafe.Pointer]
-	CallVirtualWithData    call.Back[func(instance cgo.Handle, name StringNamePtr, userdata, args, ret unsafe.Pointer)]
-	GetRID                 call.Back[func(instance cgo.Handle) uint64]
-
-	UserData unsafe.Pointer
+	CreateInstance() Object
+	GetVirtual(StringName) any
 }
 
-type ExtensionClassCallVirtualFunc = call.Back[func(cgo.Handle, UnsafeArgs, UnsafeBack)]
+type ObjectInterface interface {
+	Set(StringName, Variant) bool
+	Get(StringName) (Variant, bool)
+	GetPropertyList(Context) []PropertyInfo
+	PropertyCanRevert(StringName) bool
+	PropertyGetRevert(StringName) Variant
+	ValidateProperty(StringName, PropertyInfo) bool
+	Notification(int32, bool)
+	ToString() (String, bool)
+	Reference()
+	Unreference()
+	CallVirtual(StringName, any, UnsafeArgs, UnsafeBack)
+	GetRID() RID
+	Free()
+}
+
+type ExtensionClassCallVirtualFunc func(any, UnsafeArgs, UnsafeBack)
 
 type ClassMethodArgumentMetadata uint32
 
@@ -363,71 +357,40 @@ const (
 	ArgumentMetadataRealIsFloat64
 )
 
-type ClassMethodInfo struct {
-	Name                StringNamePtr
-	MethodUserdata      unsafe.Pointer
-	Call                call.Back[func(userdata unsafe.Pointer, instance cgo.Handle, args *Variant, arg_count int64, ret *Variant, err *CallError)]
-	PointerCall         call.Back[func(userdata unsafe.Pointer, instance cgo.Handle, args unsafe.Pointer, ret unsafe.Pointer, err *CallError)]
-	MethodFlags         uint32 // MethodFlags
-	HasReturnValue      bool
+type Method struct {
+	Name                StringName
+	Call                func(any, ...Variant) (Variant, error)
+	PointerCall         func(any, UnsafeArgs, UnsafeBack)
+	MethodFlags         MethodFlags
 	ReturnValueInfo     *PropertyInfo
 	ReturnValueMetadata ClassMethodArgumentMetadata
 
-	ArgumentCount     uint32
-	ArgumentsInfo     *PropertyInfo
-	ArgumentsMetadata *ClassMethodArgumentMetadata
+	Arguments         []PropertyInfo
+	ArgumentsMetadata []ClassMethodArgumentMetadata
 
-	DefaultArgumentCount uint32
-	DefaultArguments     *Variant
+	DefaultArguments []Variant
 }
 
-type CallableCustomInfo struct {
-	CallableUserdata unsafe.Pointer
-	Token            unsafe.Pointer
-	ObjectID         InstanceID
-	Call             call.Back[func(userdata, instance unsafe.Pointer, args *Variant, arg_count int64, ret *Variant, err *CallError)]
-	IsValid          call.Back[func(userdata unsafe.Pointer) bool]
-	Free             call.Back[func(userdata unsafe.Pointer)]
-	Hash             call.Back[func(userdata unsafe.Pointer) uint32]
-	Equal            call.Back[func(a unsafe.Pointer, b unsafe.Pointer) bool]
-	LessThan         call.Back[func(a unsafe.Pointer, b unsafe.Pointer) bool]
-	ToString         call.Back[func(userdata unsafe.Pointer, valid *bool, out *String)]
-}
-
-type ScriptInstanceInfo struct {
-	Set               call.Back[func(instance unsafe.Pointer, name *StringName, value *Variant)]
-	Get               call.Back[func(instance unsafe.Pointer, name *StringName, ret *Variant)]
-	GetPropertyList   call.Back[func(instance unsafe.Pointer, len *uint32) *PropertyInfo]
-	FreePropertyList  call.Back[func(instance unsafe.Pointer, list *PropertyInfo)]
-	PropertyCanRevert call.Back[func(instance unsafe.Pointer, name *StringName) bool]
-	PropertyGetRevert call.Back[func(instance unsafe.Pointer, name *StringName, ret *Variant)]
-
-	GetOwner         call.Back[func(instance unsafe.Pointer) *Object]
-	GetPropertyState call.Back[func(instance unsafe.Pointer, add func(name *StringName, value *Variant, userdata unsafe.Pointer), userdata unsafe.Pointer)]
-
-	GetMethodList    call.Back[func(instance unsafe.Pointer, len *uint32) *MethodInfo]
-	FreeMethodList   call.Back[func(instance unsafe.Pointer, list *MethodInfo)]
-	GetPropertyType  call.Back[func(instance unsafe.Pointer, name *StringName, valid *bool) VariantType]
-	ValidateProperty call.Back[func(instance unsafe.Pointer, name *StringName, property *PropertyInfo) bool]
-
-	HasMethod call.Back[func(instance unsafe.Pointer, name *StringName) bool]
-
-	Call         call.Back[func(instance unsafe.Pointer, name *StringName, args *Variant, arg_count int64, ret *Variant, err *CallError)]
-	Notification call.Back[func(instance unsafe.Pointer, notification int32, reversed bool)]
-
-	ToString call.Back[func(instance unsafe.Pointer, valid *bool, out *String)]
-
-	RefcountIncremented call.Back[func(instance unsafe.Pointer)]
-	RefcountDecremented call.Back[func(instance unsafe.Pointer)]
-
-	GetScript call.Back[func(instance unsafe.Pointer) *Script]
-
-	IsPlaceholder call.Back[func(instance unsafe.Pointer) bool]
-
-	SetFallback call.Back[func(instance unsafe.Pointer, name *StringName, value *Variant)]
-	GetFallback call.Back[func(instance unsafe.Pointer, name *StringName, ret *Variant)]
-
-	GetLanguage call.Back[func(instance unsafe.Pointer) *ScriptLanguage]
-
-	Free call.Back[func(instance unsafe.Pointer)]
+type ScriptInstance interface {
+	Set(name StringName, value Variant)
+	Get(name StringName) Variant
+	GetPropertyList() []PropertyInfo
+	PropertyCanRevert(name StringName) bool
+	PropertyGetRevert(name StringName) Variant
+	GetOwner() Object
+	GetPropertyState(add func(name StringName, value Variant))
+	GetMethodList() []MethodInfo
+	GetPropertyType(name StringName, valid bool) VariantType
+	ValidateProperty(name StringName, property PropertyInfo) bool
+	HasMethod(name StringName) bool
+	Call(name StringName, args ...Variant) (Variant, error)
+	Notification(notification int32, reversed bool)
+	ToString(valid bool) String
+	RefcountIncremented()
+	RefcountDecremented()
+	GetScript() Script
+	IsPlaceholder() Bool
+	SetFallback(name StringName, value Variant)
+	GetFallback(name StringName) Variant
+	GetLanguage() ScriptLanguage
 }

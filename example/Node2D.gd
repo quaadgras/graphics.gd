@@ -4,7 +4,7 @@ var hello: HelloWorld = HelloWorld.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	hello.print()
+	hello.Print()
 	
 	$ExtendedNode.StringField = "Hello Property from Godot -> Go -> Godot"
 	print($ExtendedNode.StringField)
