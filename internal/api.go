@@ -3,7 +3,6 @@
 package gd
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"runtime.link/api"
@@ -137,13 +136,6 @@ type API struct {
 	RefCounted struct {
 		GetObject func(Context, RefCounted) Object
 		SetObject func(RefCounted, Object)
-	}
-	// unsure how this is meant to work, requires further investigation.
-	Scripts struct {
-		Create            func(ScriptInstance) Script
-		CreatePlaceholder func(lang ScriptLanguage, script Script, owner Object) Script
-		UpdatePlaceholder func(script Script, properties ArrayOf[Dictionary], values Dictionary)
-		Get               func(Object, ScriptLanguage) cgo.Handle
 	}
 	Callables struct {
 		Create func(ctx Context, fn func(...Variant) (Variant, error)) Callable
