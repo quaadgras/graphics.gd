@@ -90,6 +90,16 @@ create visual representation of your structures. The Godot editor is an excellen
 tool for importing media, managing assets and designing the visual and spatial aspects 
 of a project. Don't forget to write tests!
 
+## Where Do I Find?
+
+```
+* Godot Class 				-> gd.{ClassName}
+* Godot Class Method 		-> gd.{ClassName}.{pascal(MethodName)}
+* Godot Utility Function	-> gd.Context.{pascal(UtilityName)}
+* Godot Enum 				-> gd.{EnumName}
+* Godot Enum Value 			-> gd.{EnumName}{EnumValueName}
+```
+
 ## Performance
 
 No profiling has been completed, however all Go -> Godot calls are optimised
