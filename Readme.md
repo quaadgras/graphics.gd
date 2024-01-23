@@ -93,11 +93,11 @@ of a project. Don't forget to write tests!
 ## Where Do I Find?
 
 ```
-* Godot Class 				-> gd.{ClassName}
+* Godot Class				-> gd.{ClassName}
 * Godot Class Method 		-> gd.{ClassName}.{pascal(MethodName)}
-* Godot Utility Function	-> gd.Context.{pascal(UtilityName)}
-* Godot Enum 				-> gd.{EnumName}
-* Godot Enum Value 			-> gd.{EnumName}{EnumValueName}
+* Godot Utility Function	-> gd.Context.{pascal(UtilityName)} OR gd.{pascal(UtilityName)} (pure)
+* Godot Enum				-> gd.{EnumName}
+* Godot Enum Value			-> gd.{EnumName}{EnumValueName}
 ```
 
 ## Performance
