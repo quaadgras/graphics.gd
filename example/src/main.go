@@ -87,7 +87,7 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 
 	fmt.Println("position=", pos)
 
-	pos.X = 100
+	pos[0] = 100
 
 	node.SetPosition(pos)
 	fmt.Println("position=", pos)
