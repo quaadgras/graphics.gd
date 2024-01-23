@@ -40,16 +40,16 @@ type API struct {
 		Set                       func(self, key, val Variant) bool
 		SetNamed                  func(self Variant, key StringName, val Variant) bool
 		SetKeyed                  func(self, key, val Variant) bool
-		SetIndexed                func(self Variant, index int64, val Variant) (ok, oob bool)
+		SetIndexed                func(self Variant, index Int, val Variant) (ok, oob bool)
 		Get                       func(ctx Context, self, key Variant) (Variant, bool)
 		GetNamed                  func(ctx Context, self Variant, key StringName) (Variant, bool)
 		GetKeyed                  func(ctx Context, self, key Variant) (Variant, bool)
-		GetIndexed                func(ctx Context, self Variant, index int64) (val Variant, ok, oob bool)
+		GetIndexed                func(ctx Context, self Variant, index Int) (val Variant, ok, oob bool)
 		IteratorInitialize        func(ctx Context, self Variant) (Variant, bool)
 		IteratorNext              func(self Variant, iterator Variant) bool
 		IteratorGet               func(ctx Context, self Variant, iterator Variant) (Variant, bool)
-		Hash                      func(self Variant) int64
-		RecursiveHash             func(self Variant, count Int) int64
+		Hash                      func(self Variant) Int
+		RecursiveHash             func(self Variant, count Int) Int
 		HashCompare               func(self, variant Variant) bool
 		Booleanize                func(self Variant) bool
 		Duplicate                 func(ctx Context, self Variant, deep bool) Variant

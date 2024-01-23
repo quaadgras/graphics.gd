@@ -40,6 +40,58 @@ type MIDIMessage int64
 
 type Error int64
 
+const (
+	Ok                         Error = 0
+	Failed                     Error = 1
+	ErrUnavailable             Error = 2
+	ErrUnconfigured            Error = 3
+	ErrUnauthorized            Error = 4
+	ErrParameterRangeError     Error = 5
+	ErrOutOfMemory             Error = 6
+	ErrFileNotFound            Error = 7
+	ErrFileBadDrive            Error = 8
+	ErrFileBadPath             Error = 9
+	ErrFileNoPermission        Error = 10
+	ErrFileAlreadyInUse        Error = 11
+	ErrFileCantOpen            Error = 12
+	ErrFileCantWrite           Error = 13
+	ErrFileCantRead            Error = 14
+	ErrFileUnrecognized        Error = 15
+	ErrFileCorrupt             Error = 16
+	ErrFileMissingDependencies Error = 17
+	ErrFileEof                 Error = 18
+	ErrCantOpen                Error = 19
+	ErrCantCreate              Error = 20
+	ErrQueryFailed             Error = 21
+	ErrAlreadyInUse            Error = 22
+	ErrLocked                  Error = 23
+	ErrTimeout                 Error = 24
+	ErrCantConnect             Error = 25
+	ErrCantResolve             Error = 26
+	ErrConnectionError         Error = 27
+	ErrCantAcquireResource     Error = 28
+	ErrCantFork                Error = 29
+	ErrInvalidData             Error = 30
+	ErrInvalidParameter        Error = 31
+	ErrAlreadyExists           Error = 32
+	ErrDoesNotExist            Error = 33
+	ErrDatabaseCantRead        Error = 34
+	ErrDatabaseCantWrite       Error = 35
+	ErrCompilationFailed       Error = 36
+	ErrMethodNotFound          Error = 37
+	ErrLinkFailed              Error = 38
+	ErrScriptFailed            Error = 39
+	ErrCyclicLink              Error = 40
+	ErrInvalidDeclaration      Error = 41
+	ErrDuplicateSymbol         Error = 42
+	ErrParseError              Error = 43
+	ErrBusy                    Error = 44
+	ErrSkip                    Error = 45
+	ErrHelp                    Error = 46
+	ErrBug                     Error = 47
+	ErrPrinterOnFire           Error = 48
+)
+
 type PropertyHint int64
 
 type PropertyUsageFlags int64

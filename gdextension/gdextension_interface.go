@@ -1506,7 +1506,7 @@ func linkCGO(API *gd.API) {
 	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
 	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
 	packed_string_array_operator_index_const := dlsymGD("packed_string_array_operator_index_const")
-	API.PackedStringArray.Index = func(ctx gd.Context, psa gd.PackedStringArray, i int64) gd.String {
+	API.PackedStringArray.Index = func(ctx gd.Context, psa gd.PackedStringArray, i gd.Int) gd.String {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(psa))
 		var ret = C.packed_T_operator_index_const(
@@ -1518,7 +1518,7 @@ func linkCGO(API *gd.API) {
 		return mmm.Let[gd.String](ctx.Lifetime, ctx.API, uintptr(*(*uintptr)(unsafe.Pointer(uintptr(ret)))))
 	}
 	packed_string_array_operator_index := dlsymGD("packed_string_array_operator_index")
-	API.PackedStringArray.SetIndex = func(psa gd.PackedStringArray, i int64, v gd.String) {
+	API.PackedStringArray.SetIndex = func(psa gd.PackedStringArray, i gd.Int, v gd.String) {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(psa))
 		var ptr = C.packed_T_operator_index(
@@ -1532,7 +1532,7 @@ func linkCGO(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	array_operator_index_const := dlsymGD("array_operator_index_const")
-	API.Array.Index = func(ctx gd.Context, a gd.Array, i int64) gd.Variant {
+	API.Array.Index = func(ctx gd.Context, a gd.Array, i gd.Int) gd.Variant {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(a))
 		var r_ret = C.array_operator_index_const(
@@ -2116,7 +2116,7 @@ func linkCGO(API *gd.API) {
 func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunctionsFor[T, V] {
 	var API gd.PackedFunctionsFor[T, V]
 	packed_T_operator_index := dlsymGD("packed_" + prefix + "_operator_index")
-	API.SetIndex = func(t T, i int64, v V) {
+	API.SetIndex = func(t T, i gd.Int, v V) {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(t))
 		var ptr = C.packed_T_operator_index(
@@ -2128,7 +2128,7 @@ func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunc
 		frame.Free()
 	}
 	packed_T_operator_index_const := dlsymGD("packed_" + prefix + "_operator_index_const")
-	API.Index = func(t T, i int64) V {
+	API.Index = func(t T, i gd.Int) V {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(t))
 		var ret = C.packed_T_operator_index_const(

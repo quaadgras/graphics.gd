@@ -42,7 +42,7 @@ func (Godot *API) linkUtility() {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
 		}
-		*(value.Interface().(*func(ret uintptr, args call.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, hash)
+		*(value.Interface().(*func(ret uintptr, args call.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, Int(hash))
 	}
 }
 
@@ -66,7 +66,7 @@ func (Godot *API) linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*func(base uintptr, args call.Args, ret uintptr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, hash)
+			*(direct.Interface().(*func(base uintptr, args call.Args, ret uintptr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, Int(hash))
 		}
 	}
 }
@@ -93,7 +93,7 @@ func (Godot *API) linkMethods() {
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
-			bind := Godot.ClassDB.GetMethodBind(className, methodName, hash)
+			bind := Godot.ClassDB.GetMethodBind(className, methodName, Int(hash))
 			if bind == 0 {
 				fmt.Println("null bind ", class.Name, method.Name)
 			}

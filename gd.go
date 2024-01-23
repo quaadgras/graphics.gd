@@ -38,25 +38,10 @@ func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
 	return internal.As[T](godot, class)
 }
 
-type ordered interface {
-	~float32 | ~float64
-}
-
-// Clamp the given value between min and max.
-func Clamp[T ordered](value, min, max T) T {
-	if value < min {
-		return min
-	}
-	if value > max {
-		return max
-	}
-	return value
-}
-
 type (
-	Bool   = bool
-	Int    = int64
-	Float  = float64
+	Bool   = internal.Bool
+	Int    = internal.Int
+	Float  = internal.Float
 	String = internal.String
 
 	Vector2     = internal.Vector2

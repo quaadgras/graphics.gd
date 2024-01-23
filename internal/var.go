@@ -11,9 +11,9 @@ import (
 	"runtime.link/mmm"
 )
 
-type Bool = bool
-type Float = float64
-type Int = int64
+type Bool bool
+type Float float64
+type Int int64
 
 type Rect2 struct {
 	Position Vector2
@@ -31,29 +31,13 @@ type Transform2D struct {
 	O Vector2
 }
 
-type Vector4 struct {
-	X, Y, Z, W float32
-}
-
-type Vector4i struct {
-	X, Y, Z, W int32
-}
-
 type Plane struct {
 	Matrix Vector4
-}
-
-type Quaternion struct {
-	X, Y, Z, W float32
 }
 
 type AABB struct {
 	Position Vector3
 	Size     Vector3
-}
-
-type Basis struct {
-	Rows [3]Vector3
 }
 
 type Transform3D struct {
@@ -67,9 +51,7 @@ type Projection struct {
 	X, Y, Z, W Vector4
 }
 
-type Color struct {
-	R, G, B, A float32
-}
+type Color [4]float32
 
 type RID uint64
 
