@@ -4,12 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"runtime"
 	"unsafe"
 
 	internal "grow.graphics/gd/internal"
 	"runtime.link/api"
 	"runtime.link/api/call"
 	"runtime.link/api/stub"
+	"runtime.link/mmm"
 )
 import "C"
 
@@ -22,6 +24,10 @@ func init() {
 		}
 	}
 }
+
+type pinner mmm.Pointer[runtime.Pinner, pinner, [0]uintptr]
+
+func (p pinner) Free() { mmm.API(p).Unpin(); mmm.End(p) }
 
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer

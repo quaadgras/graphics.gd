@@ -110,8 +110,8 @@ func main() {
 	}
 	fmt.Println("Godot Version is: ", godot.Version())
 	fmt.Println("Extension: ", godot.GetLibraryPath())
-	gdextension.Register[HelloWorld](godot)
-	gdextension.Register[ExtendedNode](godot)
-	gdextension.Register[Rotator](godot)
-	gdextension.Register[StartedSignalEmitter](godot)
+	gd.Register[HelloWorld](godot)
+	gd.Register[ExtendedNode](godot)
+	gd.Register[Rotator](godot)
+	gd.Register[StartedSignalEmitter](godot)
 }

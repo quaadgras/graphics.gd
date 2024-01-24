@@ -25,6 +25,9 @@ func (v Vector2) Length() Float {
 
 func (v Vector2) Normalized() Vector2 {
 	length := v.Length()
+	if length == 0 {
+		return Vector2{}
+	}
 	return Vector2{float32(Float(v[x]) / length), float32(Float(v[y]) / length)}
 }
 

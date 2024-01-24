@@ -5,7 +5,6 @@ package gd_test
 import (
 	"testing"
 
-	"grow.graphics/gd/gdextension"
 	gd "grow.graphics/gd/internal"
 )
 
@@ -17,7 +16,7 @@ func TestRegister(t *testing.T) {
 		gd.Class[SimpleClass, gd.Node2D]
 	}
 
-	gdextension.Register[SimpleClass](godot)
+	gd.Register[SimpleClass](godot)
 
 	if tag := godot.API.ClassDB.GetClassTag(godot.StringName("Node2D")); tag == 0 {
 		t.Fail()

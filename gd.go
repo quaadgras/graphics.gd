@@ -1,6 +1,7 @@
 package gd
 
 import (
+	gd "grow.graphics/gd/internal"
 	internal "grow.graphics/gd/internal"
 )
 
@@ -30,6 +31,31 @@ type Context = internal.Context
 // pointer to a value of that class. T must be a class from this package.
 func Create[T internal.PointerToClass](ctx Context, ptr T) T {
 	return internal.Create[T](ctx, ptr)
+}
+
+/*
+Register registers a struct available for use inside Godot
+extending the given 'Parent' Godot class. The 'Struct' type must
+be a named struct that embeds a [Class] field specifying the
+parent class to extend.
+
+	type MyClass struct {
+		gd.Class[MyClass, Node2D]
+	}
+
+Use this in a main or init function to register your Go structs
+and they will become available within the Godot engine for use
+in the editor and/or within scripts.
+
+All exported fields and methods will be exposed to Godot, so
+take caution when embedding types, as their fields and methods
+will be promoted.
+
+If the Struct extends [EditorPlugin] then it will be added to
+the editor as a plugin.
+*/
+func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
+	internal.Register[Struct, Parent](godot)
 }
 
 // As attempts to cast the given class to T, returning true

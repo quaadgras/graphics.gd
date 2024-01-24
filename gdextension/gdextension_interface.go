@@ -2350,8 +2350,8 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 	var variants = make([]gd.Variant, 0, int(count))
 	ctx := gd.NewContext(godot)
 	defer ctx.End()
-	for _, elem := range unsafe.Slice((*[3]uintptr)(p_args), int(count)) {
-		variants = append(variants, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, elem))
+	for _, elem := range unsafe.Slice((**[3]uintptr)(p_args), int(count)) {
+		variants = append(variants, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *elem))
 	}
 	result, err := method.Call(cgo.Handle(p_instance).Value(), variants...)
 	if err != nil {

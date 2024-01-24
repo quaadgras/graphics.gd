@@ -3,6 +3,7 @@
 package gd
 
 import (
+	"fmt"
 	"reflect"
 
 	"runtime.link/api/call"
@@ -229,7 +230,7 @@ func (variant Variant) Interface(ctx Context) any {
 	case TypePackedColorArray:
 		return variantAsPointerType[PackedColorArray](ctx, variant, vtype)
 	default:
-		panic("gd.Variant.Interface: invalid variant type")
+		panic("gd.Variant.Interface: invalid variant type " + fmt.Sprint(vtype))
 	}
 }
 
@@ -249,4 +250,13 @@ func variantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerS
 	var ret = r_ret.Get()
 	frame.Free()
 	return mmm.New[T](ctx.Lifetime, ctx.API, ret)
+}
+
+func letVariantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Context, variant Variant, vtype VariantType) T {
+	var frame = call.New()
+	var r_ret = call.Ret[Size](frame)
+	mmm.API(variant).variant.IntoType[vtype](r_ret.Uintptr(), call.Arg(frame, mmm.Get(variant)))
+	var ret = r_ret.Get()
+	frame.Free()
+	return mmm.Let[T](ctx.Lifetime, ctx.API, ret)
 }

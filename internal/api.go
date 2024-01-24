@@ -165,6 +165,9 @@ type API struct {
 
 	ExtensionToken
 	cache
+
+	// extensions instances are mapped here.
+	instances map[uintptr]any
 }
 
 type Packed interface {

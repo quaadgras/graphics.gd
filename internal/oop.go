@@ -58,6 +58,9 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T IsClass](godot Context, class IsClass) (T, bool) {
+	if ref, ok := godot.API.instances[mmm.Get(class.AsPointer())].(T); ok {
+		return ref, true
+	}
 	var rtype = reflect.TypeOf([0]T{}).Elem()
 	if rtype.Kind() == reflect.Pointer {
 		rtype = rtype.Elem()
