@@ -84,6 +84,7 @@ func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
 
 type (
 	Radians = internal.Radians
+	Degrees = internal.Degrees
 )
 
 type (

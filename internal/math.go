@@ -461,11 +461,6 @@ func DecibelsToLinear[T ~float32 | ~float64](db T) T {
 	return T(math.Exp(float64(db) * 0.11512925464970228420089957273422))
 }
 
-// DegreesToRadians converts an angle expressed in degrees to radians.
-func DegreesToRadians[T ~float32 | ~float64](deg T) T {
-	return deg * (Pi / 180.0)
-}
-
 // Ease returns an "eased" value of x based on an easing function defined with curve.
 // This easing function is based on an exponent. The curve can be any floating-point number,
 // with specific values leading to the following behaviors:
@@ -669,9 +664,6 @@ func Posmod[T ~int8 | ~int16 | ~int32 | ~int64 | ~int](x, y T) T {
 
 // Pow returns the result of base raised to the power of exp.
 func Pow[T ~float32 | ~float64](base, exp T) T { return T(math.Pow(float64(base), float64(exp))) }
-
-// RadiansToDegrees converts an angle expressed in radians to degrees.
-func RadiansToDegrees[T ~float32 | ~float64](rad T) T { return rad * (180.0 / Pi) }
 
 // Remap maps a value from range (istart, istop) to (ostart, ostop). See also [Lerp] and [InverseLerp].
 // If value is outside (istart, istop), then the resulting value will also be outside (ostart, ostop).
