@@ -5,6 +5,15 @@ import (
 	internal "grow.graphics/gd/internal"
 )
 
+type Axis int
+
+const (
+	X Axis = iota
+	Y
+	Z
+	W
+)
+
 // Class can be embedded inside of a struct to represent a new Class type.
 // The extended class will be available by calling the [Class.Super] method.
 type Class[T, S internal.IsClass] struct {
@@ -32,6 +41,15 @@ type Context = internal.Context
 func Create[T internal.PointerToClass](ctx Context, ptr T) T {
 	return internal.Create[T](ctx, ptr)
 }
+
+// Const can be used to retrieve a 'constant' value from a structured type.
+func Const[F func(T) T, T any](constant F) T {
+	var zero T
+	return constant(zero)
+}
+
+// NewVector2 constructs a new Vector2 from the given x and y.
+func NewVector2(x, y Float) Vector2 { return Vector2{float32(x), float32(y)} }
 
 /*
 Register registers a struct available for use inside Godot
@@ -63,6 +81,10 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
 	return internal.As[T](godot, class)
 }
+
+type (
+	Radians = internal.Radians
+)
 
 type (
 	Bool   = internal.Bool

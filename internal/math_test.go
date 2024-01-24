@@ -5,7 +5,7 @@ package gd_test
 import (
 	"testing"
 
-	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd"
 )
 
 func TestABS(t *testing.T) {

@@ -25,12 +25,6 @@ type Rect2i struct {
 	Size     Vector2i
 }
 
-type Transform2D struct {
-	X Vector2
-	Y Vector2
-	O Vector2
-}
-
 type Plane struct {
 	Matrix Vector4
 }
