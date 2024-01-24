@@ -107,7 +107,7 @@ in a way to avoid almost all allocations. Allocations are currently unavoidable
 for all Godot -> Go script calls (but not for virtual overrides, which are essentially
 allocation free).
 
-## Example
+## Examples
 
 Run `make` in the example/src directory or manually build a C-shared library:
 
@@ -121,6 +121,9 @@ After this, subsequent builds will be quite a bit faster!
 
 Now open the example project in Godot from a terminal and you will be able to 
 see Go printing things to the console.
+
+There is also a [pong](https://github.com/grow-graphics/eg/blob/master/2d/pong/pong.go)
+example in the [examples](https://github.com/grow-graphics/eg) repo.
 
 ## Testing
 To run the go tests for this module `cd internal && gd test`.
