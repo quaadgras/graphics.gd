@@ -260,10 +260,7 @@ func (v Vector4) Divf(other Float) Vector4 {
 }
 func (v Vector4) Neg() Vector4 { return Vector4{-v[X], -v[Y], -v[Z], -v[W]} }
 
-// Transform transforms (multiplies) the [Vector4] by the transpose of the given Projection matrix.
-//
-// For transforming by inverse of a projection vector.Transform(projection.Inverse()) can be used instead.
-// See [Projection.Inverse].
+// Transform transform transforms (multiplies) the [Vector4] by the given [Projection]'s transformation matrix.
 func (v Vector4) Transform(p Projection) Vector4 {
 	return Vector4{
 		p[0][0]*v[X] + p[1][0]*v[Y] + p[2][0]*v[Z] + p[3][0]*v[W],

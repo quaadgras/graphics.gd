@@ -34,6 +34,33 @@ func NewRotationAroundAxis(axis Vector3, angle Radians) Basis {
 	return rows
 }
 
+func (b Basis) cofac(row1, col1, row2, col2 int) float32 {
+	return (b[row1][col1]*b[row2][col2] - b[row1][col2]*b[row2][col1])
+}
+
+func (b Basis) Inverse() Basis {
+	var co = [3]float32{
+		b.cofac(1, 1, 2, 2), b.cofac(1, 2, 2, 0), b.cofac(1, 0, 2, 1),
+	}
+	var det = b[0][0]*co[0] + b[0][1]*co[1] + b[0][2]*co[2]
+	var (
+		s = 1.0 / det
+	)
+	return Basis{
+		{co[0] * s, b.cofac(0, 2, 2, 1) * s, b.cofac(0, 1, 1, 2) * s},
+		{co[1] * s, b.cofac(0, 0, 2, 2) * s, b.cofac(0, 2, 1, 0) * s},
+		{co[2] * s, b.cofac(0, 1, 2, 0) * s, b.cofac(0, 0, 1, 1) * s},
+	}
+}
+
+func (m Basis) Transposed() Basis {
+	return Basis{
+		{m[0][0], m[1][0], m[2][0]},
+		{m[0][1], m[1][1], m[2][1]},
+		{m[0][2], m[1][2], m[2][2]},
+	}
+}
+
 func (m Basis) Transform(v Vector3) Vector3 {
 	return Vector3{
 		float32(m[0].Dot(v)),

@@ -85,6 +85,9 @@ func NewVector4i(x, y, z, w Int) Vector4i {
 	return Vector4i{int32(x), int32(y), int32(z), int32(w)}
 }
 
+// NewPlane creates a plane from the three points, given in clockwise order.
+func NewPlane(a, b, c Vector3) Plane { return gd.NewPlane(a, b, c) }
+
 /*
 Register registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must

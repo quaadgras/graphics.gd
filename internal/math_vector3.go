@@ -458,3 +458,11 @@ func (v Vector3) Divf(other Float) Vector3 {
 	return Vector3{v[x] / float32(other), v[y] / float32(other), v[z] / float32(other)}
 }
 func (v Vector3) Neg() Vector3 { return Vector3{-v[x], -v[y], -v[z]} }
+
+func (v Vector3) Transform(t Transform3D) Vector3 {
+	return Vector3{
+		float32(t.Basis[0].Dot(v)) + t.Origin[X],
+		float32(t.Basis[1].Dot(v)) + t.Origin[Y],
+		float32(t.Basis[2].Dot(v)) + t.Origin[Z],
+	}
+}

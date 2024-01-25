@@ -5,7 +5,6 @@ package gd
 import (
 	"reflect"
 	"strings"
-	"unsafe"
 
 	"runtime.link/api/call"
 	"runtime.link/mmm"
@@ -15,21 +14,10 @@ type Bool bool
 type Float float64
 type Int int64
 
-type Plane struct {
-	Matrix Vector4
-}
-
 type AABB struct {
 	Position Vector3
 	Size     Vector3
 }
-
-type Transform3D struct {
-	Basis  Basis
-	Origin Vector3
-}
-
-const _ = unsafe.Sizeof(Transform3D{})
 
 type Projection [4]Vector4
 
