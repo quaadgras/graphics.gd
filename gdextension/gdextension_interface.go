@@ -1455,7 +1455,7 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	xml_parser_open_buffer := dlsymGD("xml_parser_open_buffer")
-	API.XMLParser.OpenBuffer = func(x gd.XMLParser, b []byte) error {
+	API.XMLParser.OpenBuffer = func(x gd.Object, b []byte) error {
 		var pin runtime.Pinner
 		pin.Pin(&b[0])
 		mmm.Pin[pinner](x.Pin().Lifetime, &pin, [0]uintptr{})
@@ -1475,7 +1475,7 @@ func linkCGO(API *gd.API) {
 		return nil
 	}
 	file_access_store_buffer := dlsymGD("file_access_store_buffer")
-	API.FileAccess.StoreBuffer = func(f gd.FileAccess, b []byte) {
+	API.FileAccess.StoreBuffer = func(f gd.Object, b []byte) {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(f.AsPointer()))
 		C.file_access_store_buffer(
@@ -1487,7 +1487,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	file_access_get_buffer := dlsymGD("file_access_get_buffer")
-	API.FileAccess.GetBuffer = func(f gd.FileAccess, b []byte) int {
+	API.FileAccess.GetBuffer = func(f gd.Object, b []byte) int {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(f.AsPointer()))
 		var length = C.file_access_get_buffer(
@@ -1577,7 +1577,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	array_set_typed := dlsymGD("array_set_typed")
-	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Script) {
+	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Object) {
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(self))
 		var p_className = call.Arg(frame, mmm.Get(className))
@@ -1759,7 +1759,7 @@ func linkCGO(API *gd.API) {
 		))
 	}
 	ref_get_object := dlsymGD("ref_get_object")
-	API.RefCounted.GetObject = func(ctx gd.Context, rc internal.RefCounted) internal.Object {
+	API.RefCounted.GetObject = func(ctx gd.Context, rc internal.Object) internal.Object {
 		var ret = C.ref_get_object(
 			C.uintptr_t(uintptr(ref_get_object)),
 			C.uintptr_t(rc.Pointer()),
@@ -1769,7 +1769,7 @@ func linkCGO(API *gd.API) {
 		return obj
 	}
 	ref_set_object := dlsymGD("ref_set_object")
-	API.RefCounted.SetObject = func(rc internal.RefCounted, o internal.Object) {
+	API.RefCounted.SetObject = func(rc internal.Object, o internal.Object) {
 		C.ref_set_object(
 			C.uintptr_t(uintptr(ref_set_object)),
 			C.uintptr_t(rc.Pointer()),
