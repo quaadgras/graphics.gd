@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
@@ -144,9 +145,19 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	ctx := NewContext(class.Godot)
 	defer ctx.End()
 
-	var Engine Engine
+	var Engine Object
 	Engine.SetPointer(class.Godot.Object.GetSingleton(ctx, ctx.StringName("Engine")).AsPointer())
-	if Engine.IsEditorHint() {
+
+	is_editor_hint := func() bool {
+		var selfPtr = Engine.AsPointer()
+		var frame = call.New()
+		var r_ret = call.Ret[bool](frame)
+		mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Engine.Bind_is_editor_hint, Engine.AsObject(), frame.Array(0), r_ret.Uintptr())
+		var ret = r_ret.Get()
+		frame.Free()
+		return ret
+	}
+	if is_editor_hint() {
 		return nil
 	}
 

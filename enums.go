@@ -1364,21 +1364,21 @@ const (
 	CSGShape3DOperationSubtraction CSGShape3DOperation = 2
 )
 
-type Camera2DAnchorMode = gd.Camera2DAnchorMode
+type Camera2DAnchorMode = classdb.Camera2DAnchorMode
 
 const (
 	Camera2DAnchorModeFixedTopLeft Camera2DAnchorMode = 0
 	Camera2DAnchorModeDragCenter Camera2DAnchorMode = 1
 )
 
-type Camera2DCamera2DProcessCallback = gd.Camera2DCamera2DProcessCallback
+type Camera2DCamera2DProcessCallback = classdb.Camera2DCamera2DProcessCallback
 
 const (
 	Camera2DCamera2dProcessPhysics Camera2DCamera2DProcessCallback = 0
 	Camera2DCamera2dProcessIdle Camera2DCamera2DProcessCallback = 1
 )
 
-type Camera3DProjectionType = gd.Camera3DProjectionType
+type Camera3DProjectionType = classdb.Camera3DProjectionType
 
 const (
 	Camera3DProjectionPerspective Camera3DProjectionType = 0
@@ -1386,14 +1386,14 @@ const (
 	Camera3DProjectionFrustum Camera3DProjectionType = 2
 )
 
-type Camera3DKeepAspect = gd.Camera3DKeepAspect
+type Camera3DKeepAspect = classdb.Camera3DKeepAspect
 
 const (
 	Camera3DKeepWidth Camera3DKeepAspect = 0
 	Camera3DKeepHeight Camera3DKeepAspect = 1
 )
 
-type Camera3DDopplerTracking = gd.Camera3DDopplerTracking
+type Camera3DDopplerTracking = classdb.Camera3DDopplerTracking
 
 const (
 	Camera3DDopplerTrackingDisabled Camera3DDopplerTracking = 0
@@ -1427,7 +1427,7 @@ const (
 	CameraServerFeedCbcrImage CameraServerFeedImage = 1
 )
 
-type CanvasItemTextureFilter = gd.CanvasItemTextureFilter
+type CanvasItemTextureFilter = classdb.CanvasItemTextureFilter
 
 const (
 	CanvasItemTextureFilterParentNode CanvasItemTextureFilter = 0
@@ -1440,7 +1440,7 @@ const (
 	CanvasItemTextureFilterMax CanvasItemTextureFilter = 7
 )
 
-type CanvasItemTextureRepeat = gd.CanvasItemTextureRepeat
+type CanvasItemTextureRepeat = classdb.CanvasItemTextureRepeat
 
 const (
 	CanvasItemTextureRepeatParentNode CanvasItemTextureRepeat = 0
@@ -1450,7 +1450,7 @@ const (
 	CanvasItemTextureRepeatMax CanvasItemTextureRepeat = 4
 )
 
-type CanvasItemClipChildrenMode = gd.CanvasItemClipChildrenMode
+type CanvasItemClipChildrenMode = classdb.CanvasItemClipChildrenMode
 
 const (
 	CanvasItemClipChildrenDisabled CanvasItemClipChildrenMode = 0
@@ -1584,7 +1584,7 @@ const (
 	ConeTwistJoint3DParamMax ConeTwistJoint3DParam = 5
 )
 
-type ControlFocusMode = gd.ControlFocusMode
+type ControlFocusMode = classdb.ControlFocusMode
 
 const (
 	ControlFocusNone ControlFocusMode = 0
@@ -1592,7 +1592,7 @@ const (
 	ControlFocusAll ControlFocusMode = 2
 )
 
-type ControlCursorShape = gd.ControlCursorShape
+type ControlCursorShape = classdb.ControlCursorShape
 
 const (
 	ControlCursorArrow ControlCursorShape = 0
@@ -1614,7 +1614,7 @@ const (
 	ControlCursorHelp ControlCursorShape = 16
 )
 
-type ControlLayoutPreset = gd.ControlLayoutPreset
+type ControlLayoutPreset = classdb.ControlLayoutPreset
 
 const (
 	ControlPresetTopLeft ControlLayoutPreset = 0
@@ -1635,7 +1635,7 @@ const (
 	ControlPresetFullRect ControlLayoutPreset = 15
 )
 
-type ControlLayoutPresetMode = gd.ControlLayoutPresetMode
+type ControlLayoutPresetMode = classdb.ControlLayoutPresetMode
 
 const (
 	ControlPresetModeMinsize ControlLayoutPresetMode = 0
@@ -1644,7 +1644,7 @@ const (
 	ControlPresetModeKeepSize ControlLayoutPresetMode = 3
 )
 
-type ControlSizeFlags = gd.ControlSizeFlags
+type ControlSizeFlags = classdb.ControlSizeFlags
 
 const (
 	ControlSizeShrinkBegin ControlSizeFlags = 0
@@ -1655,7 +1655,7 @@ const (
 	ControlSizeShrinkEnd ControlSizeFlags = 8
 )
 
-type ControlMouseFilter = gd.ControlMouseFilter
+type ControlMouseFilter = classdb.ControlMouseFilter
 
 const (
 	ControlMouseFilterStop ControlMouseFilter = 0
@@ -1663,7 +1663,7 @@ const (
 	ControlMouseFilterIgnore ControlMouseFilter = 2
 )
 
-type ControlGrowDirection = gd.ControlGrowDirection
+type ControlGrowDirection = classdb.ControlGrowDirection
 
 const (
 	ControlGrowDirectionBegin ControlGrowDirection = 0
@@ -1671,14 +1671,14 @@ const (
 	ControlGrowDirectionBoth ControlGrowDirection = 2
 )
 
-type ControlAnchor = gd.ControlAnchor
+type ControlAnchor = classdb.ControlAnchor
 
 const (
 	ControlAnchorBegin ControlAnchor = 0
 	ControlAnchorEnd ControlAnchor = 1
 )
 
-type ControlLayoutDirection = gd.ControlLayoutDirection
+type ControlLayoutDirection = classdb.ControlLayoutDirection
 
 const (
 	ControlLayoutDirectionInherited ControlLayoutDirection = 0
@@ -1687,7 +1687,7 @@ const (
 	ControlLayoutDirectionRtl ControlLayoutDirection = 3
 )
 
-type ControlTextDirection = gd.ControlTextDirection
+type ControlTextDirection = classdb.ControlTextDirection
 
 const (
 	ControlTextDirectionInherited ControlTextDirection = 3
@@ -1737,7 +1737,7 @@ const (
 	DirectionalLight3DSkyModeSkyOnly DirectionalLight3DSkyMode = 2
 )
 
-type DisplayServerFeature = gd.DisplayServerFeature
+type DisplayServerFeature = classdb.DisplayServerFeature
 
 const (
 	DisplayServerFeatureGlobalMenu DisplayServerFeature = 0
@@ -1763,7 +1763,7 @@ const (
 	DisplayServerFeatureScreenCapture DisplayServerFeature = 21
 )
 
-type DisplayServerMouseMode = gd.DisplayServerMouseMode
+type DisplayServerMouseMode = classdb.DisplayServerMouseMode
 
 const (
 	DisplayServerMouseModeVisible DisplayServerMouseMode = 0
@@ -1773,7 +1773,7 @@ const (
 	DisplayServerMouseModeConfinedHidden DisplayServerMouseMode = 4
 )
 
-type DisplayServerScreenOrientation = gd.DisplayServerScreenOrientation
+type DisplayServerScreenOrientation = classdb.DisplayServerScreenOrientation
 
 const (
 	DisplayServerScreenLandscape DisplayServerScreenOrientation = 0
@@ -1785,7 +1785,7 @@ const (
 	DisplayServerScreenSensor DisplayServerScreenOrientation = 6
 )
 
-type DisplayServerVirtualKeyboardType = gd.DisplayServerVirtualKeyboardType
+type DisplayServerVirtualKeyboardType = classdb.DisplayServerVirtualKeyboardType
 
 const (
 	DisplayServerKeyboardTypeDefault DisplayServerVirtualKeyboardType = 0
@@ -1798,7 +1798,7 @@ const (
 	DisplayServerKeyboardTypeUrl DisplayServerVirtualKeyboardType = 7
 )
 
-type DisplayServerCursorShape = gd.DisplayServerCursorShape
+type DisplayServerCursorShape = classdb.DisplayServerCursorShape
 
 const (
 	DisplayServerCursorArrow DisplayServerCursorShape = 0
@@ -1821,7 +1821,7 @@ const (
 	DisplayServerCursorMax DisplayServerCursorShape = 17
 )
 
-type DisplayServerFileDialogMode = gd.DisplayServerFileDialogMode
+type DisplayServerFileDialogMode = classdb.DisplayServerFileDialogMode
 
 const (
 	DisplayServerFileDialogModeOpenFile DisplayServerFileDialogMode = 0
@@ -1831,7 +1831,7 @@ const (
 	DisplayServerFileDialogModeSaveFile DisplayServerFileDialogMode = 4
 )
 
-type DisplayServerWindowMode = gd.DisplayServerWindowMode
+type DisplayServerWindowMode = classdb.DisplayServerWindowMode
 
 const (
 	DisplayServerWindowModeWindowed DisplayServerWindowMode = 0
@@ -1841,7 +1841,7 @@ const (
 	DisplayServerWindowModeExclusiveFullscreen DisplayServerWindowMode = 4
 )
 
-type DisplayServerWindowFlags = gd.DisplayServerWindowFlags
+type DisplayServerWindowFlags = classdb.DisplayServerWindowFlags
 
 const (
 	DisplayServerWindowFlagResizeDisabled DisplayServerWindowFlags = 0
@@ -1855,7 +1855,7 @@ const (
 	DisplayServerWindowFlagMax DisplayServerWindowFlags = 8
 )
 
-type DisplayServerWindowEvent = gd.DisplayServerWindowEvent
+type DisplayServerWindowEvent = classdb.DisplayServerWindowEvent
 
 const (
 	DisplayServerWindowEventMouseEnter DisplayServerWindowEvent = 0
@@ -1868,7 +1868,7 @@ const (
 	DisplayServerWindowEventTitlebarChange DisplayServerWindowEvent = 7
 )
 
-type DisplayServerVSyncMode = gd.DisplayServerVSyncMode
+type DisplayServerVSyncMode = classdb.DisplayServerVSyncMode
 
 const (
 	DisplayServerVsyncDisabled DisplayServerVSyncMode = 0
@@ -1877,7 +1877,7 @@ const (
 	DisplayServerVsyncMailbox DisplayServerVSyncMode = 3
 )
 
-type DisplayServerHandleType = gd.DisplayServerHandleType
+type DisplayServerHandleType = classdb.DisplayServerHandleType
 
 const (
 	DisplayServerDisplayHandle DisplayServerHandleType = 0
@@ -1886,7 +1886,7 @@ const (
 	DisplayServerOpenglContext DisplayServerHandleType = 3
 )
 
-type DisplayServerTTSUtteranceEvent = gd.DisplayServerTTSUtteranceEvent
+type DisplayServerTTSUtteranceEvent = classdb.DisplayServerTTSUtteranceEvent
 
 const (
 	DisplayServerTtsUtteranceStarted DisplayServerTTSUtteranceEvent = 0
@@ -2076,7 +2076,7 @@ const (
 	EditorVCSInterfaceTreeAreaUnstaged EditorVCSInterfaceTreeArea = 2
 )
 
-type EnvironmentBGMode = gd.EnvironmentBGMode
+type EnvironmentBGMode = classdb.EnvironmentBGMode
 
 const (
 	EnvironmentBgClearColor EnvironmentBGMode = 0
@@ -2088,7 +2088,7 @@ const (
 	EnvironmentBgMax EnvironmentBGMode = 6
 )
 
-type EnvironmentAmbientSource = gd.EnvironmentAmbientSource
+type EnvironmentAmbientSource = classdb.EnvironmentAmbientSource
 
 const (
 	EnvironmentAmbientSourceBg EnvironmentAmbientSource = 0
@@ -2097,7 +2097,7 @@ const (
 	EnvironmentAmbientSourceSky EnvironmentAmbientSource = 3
 )
 
-type EnvironmentReflectionSource = gd.EnvironmentReflectionSource
+type EnvironmentReflectionSource = classdb.EnvironmentReflectionSource
 
 const (
 	EnvironmentReflectionSourceBg EnvironmentReflectionSource = 0
@@ -2105,7 +2105,7 @@ const (
 	EnvironmentReflectionSourceSky EnvironmentReflectionSource = 2
 )
 
-type EnvironmentToneMapper = gd.EnvironmentToneMapper
+type EnvironmentToneMapper = classdb.EnvironmentToneMapper
 
 const (
 	EnvironmentToneMapperLinear EnvironmentToneMapper = 0
@@ -2114,7 +2114,7 @@ const (
 	EnvironmentToneMapperAces EnvironmentToneMapper = 3
 )
 
-type EnvironmentGlowBlendMode = gd.EnvironmentGlowBlendMode
+type EnvironmentGlowBlendMode = classdb.EnvironmentGlowBlendMode
 
 const (
 	EnvironmentGlowBlendModeAdditive EnvironmentGlowBlendMode = 0
@@ -2124,7 +2124,7 @@ const (
 	EnvironmentGlowBlendModeMix EnvironmentGlowBlendMode = 4
 )
 
-type EnvironmentSDFGIYScale = gd.EnvironmentSDFGIYScale
+type EnvironmentSDFGIYScale = classdb.EnvironmentSDFGIYScale
 
 const (
 	EnvironmentSdfgiYScale50Percent EnvironmentSDFGIYScale = 0
@@ -2189,7 +2189,7 @@ const (
 	FastNoiseLiteDomainWarpFractalIndependent FastNoiseLiteDomainWarpFractalType = 2
 )
 
-type FileAccessModeFlags = gd.FileAccessModeFlags
+type FileAccessModeFlags = classdb.FileAccessModeFlags
 
 const (
 	FileAccessRead FileAccessModeFlags = 1
@@ -2198,7 +2198,7 @@ const (
 	FileAccessWriteRead FileAccessModeFlags = 7
 )
 
-type FileAccessCompressionMode = gd.FileAccessCompressionMode
+type FileAccessCompressionMode = classdb.FileAccessCompressionMode
 
 const (
 	FileAccessCompressionFastlz FileAccessCompressionMode = 0
@@ -2208,7 +2208,7 @@ const (
 	FileAccessCompressionBrotli FileAccessCompressionMode = 4
 )
 
-type FileAccessUnixPermissionFlags = gd.FileAccessUnixPermissionFlags
+type FileAccessUnixPermissionFlags = classdb.FileAccessUnixPermissionFlags
 
 const (
 	FileAccessUnixReadOwner FileAccessUnixPermissionFlags = 256
@@ -2251,7 +2251,7 @@ const (
 	FlowContainerAlignmentEnd FlowContainerAlignmentMode = 2
 )
 
-type GDExtensionInitializationLevel = gd.GDExtensionInitializationLevel
+type GDExtensionInitializationLevel = classdb.GDExtensionInitializationLevel
 
 const (
 	GDExtensionInitializationLevelCore GDExtensionInitializationLevel = 0
@@ -2659,7 +2659,7 @@ const (
 	IPTypeAny IPType = 3
 )
 
-type ImageFormat = gd.ImageFormat
+type ImageFormat = classdb.ImageFormat
 
 const (
 	ImageFormatL8 ImageFormat = 0
@@ -2704,7 +2704,7 @@ const (
 	ImageFormatMax ImageFormat = 39
 )
 
-type ImageInterpolation = gd.ImageInterpolation
+type ImageInterpolation = classdb.ImageInterpolation
 
 const (
 	ImageInterpolateNearest ImageInterpolation = 0
@@ -2714,7 +2714,7 @@ const (
 	ImageInterpolateLanczos ImageInterpolation = 4
 )
 
-type ImageAlphaMode = gd.ImageAlphaMode
+type ImageAlphaMode = classdb.ImageAlphaMode
 
 const (
 	ImageAlphaNone ImageAlphaMode = 0
@@ -2722,7 +2722,7 @@ const (
 	ImageAlphaBlend ImageAlphaMode = 2
 )
 
-type ImageCompressMode = gd.ImageCompressMode
+type ImageCompressMode = classdb.ImageCompressMode
 
 const (
 	ImageCompressS3tc ImageCompressMode = 0
@@ -2733,7 +2733,7 @@ const (
 	ImageCompressMax ImageCompressMode = 5
 )
 
-type ImageUsedChannels = gd.ImageUsedChannels
+type ImageUsedChannels = classdb.ImageUsedChannels
 
 const (
 	ImageUsedChannelsL ImageUsedChannels = 0
@@ -2744,7 +2744,7 @@ const (
 	ImageUsedChannelsRgba ImageUsedChannels = 5
 )
 
-type ImageCompressSource = gd.ImageCompressSource
+type ImageCompressSource = classdb.ImageCompressSource
 
 const (
 	ImageCompressSourceGeneric ImageCompressSource = 0
@@ -2752,7 +2752,7 @@ const (
 	ImageCompressSourceNormal ImageCompressSource = 2
 )
 
-type ImageASTCFormat = gd.ImageASTCFormat
+type ImageASTCFormat = classdb.ImageASTCFormat
 
 const (
 	ImageAstcFormat4x4 ImageASTCFormat = 0
@@ -3017,7 +3017,7 @@ const (
 	LinkButtonUnderlineModeNever LinkButtonUnderlineMode = 2
 )
 
-type MeshPrimitiveType = gd.MeshPrimitiveType
+type MeshPrimitiveType = classdb.MeshPrimitiveType
 
 const (
 	MeshPrimitivePoints MeshPrimitiveType = 0
@@ -3027,7 +3027,7 @@ const (
 	MeshPrimitiveTriangleStrip MeshPrimitiveType = 4
 )
 
-type MeshArrayType = gd.MeshArrayType
+type MeshArrayType = classdb.MeshArrayType
 
 const (
 	MeshArrayVertex MeshArrayType = 0
@@ -3046,7 +3046,7 @@ const (
 	MeshArrayMax MeshArrayType = 13
 )
 
-type MeshArrayCustomFormat = gd.MeshArrayCustomFormat
+type MeshArrayCustomFormat = classdb.MeshArrayCustomFormat
 
 const (
 	MeshArrayCustomRgba8Unorm MeshArrayCustomFormat = 0
@@ -3060,7 +3060,7 @@ const (
 	MeshArrayCustomMax MeshArrayCustomFormat = 8
 )
 
-type MeshArrayFormat = gd.MeshArrayFormat
+type MeshArrayFormat = classdb.MeshArrayFormat
 
 const (
 	MeshArrayFormatVertex MeshArrayFormat = 1
@@ -3092,7 +3092,7 @@ const (
 	MeshArrayFlagCompressAttributes MeshArrayFormat = 536870912
 )
 
-type MeshBlendShapeMode = gd.MeshBlendShapeMode
+type MeshBlendShapeMode = classdb.MeshBlendShapeMode
 
 const (
 	MeshBlendShapeModeNormalized MeshBlendShapeMode = 0
@@ -3106,14 +3106,14 @@ const (
 	MeshConvexDecompositionSettingsConvexDecompositionModeTetrahedron MeshConvexDecompositionSettingsMode = 1
 )
 
-type MultiMeshTransformFormat = gd.MultiMeshTransformFormat
+type MultiMeshTransformFormat = classdb.MultiMeshTransformFormat
 
 const (
 	MultiMeshTransform2d MultiMeshTransformFormat = 0
 	MultiMeshTransform3d MultiMeshTransformFormat = 1
 )
 
-type MultiplayerAPIRPCMode = gd.MultiplayerAPIRPCMode
+type MultiplayerAPIRPCMode = classdb.MultiplayerAPIRPCMode
 
 const (
 	MultiplayerAPIRpcModeDisabled MultiplayerAPIRPCMode = 0
@@ -3121,7 +3121,7 @@ const (
 	MultiplayerAPIRpcModeAuthority MultiplayerAPIRPCMode = 2
 )
 
-type MultiplayerPeerConnectionStatus = gd.MultiplayerPeerConnectionStatus
+type MultiplayerPeerConnectionStatus = classdb.MultiplayerPeerConnectionStatus
 
 const (
 	MultiplayerPeerConnectionDisconnected MultiplayerPeerConnectionStatus = 0
@@ -3129,7 +3129,7 @@ const (
 	MultiplayerPeerConnectionConnected MultiplayerPeerConnectionStatus = 2
 )
 
-type MultiplayerPeerTransferMode = gd.MultiplayerPeerTransferMode
+type MultiplayerPeerTransferMode = classdb.MultiplayerPeerTransferMode
 
 const (
 	MultiplayerPeerTransferModeUnreliable MultiplayerPeerTransferMode = 0
@@ -3272,7 +3272,7 @@ const (
 	NinePatchRectAxisStretchModeTileFit NinePatchRectAxisStretchMode = 2
 )
 
-type NodeProcessMode = gd.NodeProcessMode
+type NodeProcessMode = classdb.NodeProcessMode
 
 const (
 	NodeProcessModeInherit NodeProcessMode = 0
@@ -3282,7 +3282,7 @@ const (
 	NodeProcessModeDisabled NodeProcessMode = 4
 )
 
-type NodeProcessThreadGroup = gd.NodeProcessThreadGroup
+type NodeProcessThreadGroup = classdb.NodeProcessThreadGroup
 
 const (
 	NodeProcessThreadGroupInherit NodeProcessThreadGroup = 0
@@ -3290,7 +3290,7 @@ const (
 	NodeProcessThreadGroupSubThread NodeProcessThreadGroup = 2
 )
 
-type NodeProcessThreadMessages = gd.NodeProcessThreadMessages
+type NodeProcessThreadMessages = classdb.NodeProcessThreadMessages
 
 const (
 	NodeFlagProcessThreadMessages NodeProcessThreadMessages = 1
@@ -3298,7 +3298,7 @@ const (
 	NodeFlagProcessThreadMessagesAll NodeProcessThreadMessages = 3
 )
 
-type NodeDuplicateFlags = gd.NodeDuplicateFlags
+type NodeDuplicateFlags = classdb.NodeDuplicateFlags
 
 const (
 	NodeDuplicateSignals NodeDuplicateFlags = 1
@@ -3307,7 +3307,7 @@ const (
 	NodeDuplicateUseInstantiation NodeDuplicateFlags = 8
 )
 
-type NodeInternalMode = gd.NodeInternalMode
+type NodeInternalMode = classdb.NodeInternalMode
 
 const (
 	NodeInternalModeDisabled NodeInternalMode = 0
@@ -3315,7 +3315,7 @@ const (
 	NodeInternalModeBack NodeInternalMode = 2
 )
 
-type Node3DRotationEditMode = gd.Node3DRotationEditMode
+type Node3DRotationEditMode = classdb.Node3DRotationEditMode
 
 const (
 	Node3DRotationEditModeEuler Node3DRotationEditMode = 0
@@ -3452,7 +3452,7 @@ const (
 	OpenXRInterfaceHandJointAngularVelocityValid OpenXRInterfaceHandJointFlags = 32
 )
 
-type PackedSceneGenEditState = gd.PackedSceneGenEditState
+type PackedSceneGenEditState = classdb.PackedSceneGenEditState
 
 const (
 	PackedSceneGenEditStateDisabled PackedSceneGenEditState = 0
@@ -4047,7 +4047,7 @@ const (
 	ReflectionProbeAmbientColor ReflectionProbeAmbientMode = 2
 )
 
-type RenderingDeviceDeviceType = gd.RenderingDeviceDeviceType
+type RenderingDeviceDeviceType = classdb.RenderingDeviceDeviceType
 
 const (
 	RenderingDeviceDeviceTypeOther RenderingDeviceDeviceType = 0
@@ -4058,7 +4058,7 @@ const (
 	RenderingDeviceDeviceTypeMax RenderingDeviceDeviceType = 5
 )
 
-type RenderingDeviceDriverResource = gd.RenderingDeviceDriverResource
+type RenderingDeviceDriverResource = classdb.RenderingDeviceDriverResource
 
 const (
 	RenderingDeviceDriverResourceVulkanDevice RenderingDeviceDriverResource = 0
@@ -4076,7 +4076,7 @@ const (
 	RenderingDeviceDriverResourceVulkanRenderPipeline RenderingDeviceDriverResource = 12
 )
 
-type RenderingDeviceDataFormat = gd.RenderingDeviceDataFormat
+type RenderingDeviceDataFormat = classdb.RenderingDeviceDataFormat
 
 const (
 	RenderingDeviceDataFormatR4g4UnormPack8 RenderingDeviceDataFormat = 0
@@ -4300,7 +4300,7 @@ const (
 	RenderingDeviceDataFormatMax RenderingDeviceDataFormat = 218
 )
 
-type RenderingDeviceBarrierMask = gd.RenderingDeviceBarrierMask
+type RenderingDeviceBarrierMask = classdb.RenderingDeviceBarrierMask
 
 const (
 	RenderingDeviceBarrierMaskVertex RenderingDeviceBarrierMask = 1
@@ -4312,7 +4312,7 @@ const (
 	RenderingDeviceBarrierMaskNoBarrier RenderingDeviceBarrierMask = 32768
 )
 
-type RenderingDeviceTextureType = gd.RenderingDeviceTextureType
+type RenderingDeviceTextureType = classdb.RenderingDeviceTextureType
 
 const (
 	RenderingDeviceTextureType1d RenderingDeviceTextureType = 0
@@ -4325,7 +4325,7 @@ const (
 	RenderingDeviceTextureTypeMax RenderingDeviceTextureType = 7
 )
 
-type RenderingDeviceTextureSamples = gd.RenderingDeviceTextureSamples
+type RenderingDeviceTextureSamples = classdb.RenderingDeviceTextureSamples
 
 const (
 	RenderingDeviceTextureSamples1 RenderingDeviceTextureSamples = 0
@@ -4338,7 +4338,7 @@ const (
 	RenderingDeviceTextureSamplesMax RenderingDeviceTextureSamples = 7
 )
 
-type RenderingDeviceTextureUsageBits = gd.RenderingDeviceTextureUsageBits
+type RenderingDeviceTextureUsageBits = classdb.RenderingDeviceTextureUsageBits
 
 const (
 	RenderingDeviceTextureUsageSamplingBit RenderingDeviceTextureUsageBits = 1
@@ -4353,7 +4353,7 @@ const (
 	RenderingDeviceTextureUsageInputAttachmentBit RenderingDeviceTextureUsageBits = 512
 )
 
-type RenderingDeviceTextureSwizzle = gd.RenderingDeviceTextureSwizzle
+type RenderingDeviceTextureSwizzle = classdb.RenderingDeviceTextureSwizzle
 
 const (
 	RenderingDeviceTextureSwizzleIdentity RenderingDeviceTextureSwizzle = 0
@@ -4366,7 +4366,7 @@ const (
 	RenderingDeviceTextureSwizzleMax RenderingDeviceTextureSwizzle = 7
 )
 
-type RenderingDeviceTextureSliceType = gd.RenderingDeviceTextureSliceType
+type RenderingDeviceTextureSliceType = classdb.RenderingDeviceTextureSliceType
 
 const (
 	RenderingDeviceTextureSlice2d RenderingDeviceTextureSliceType = 0
@@ -4374,14 +4374,14 @@ const (
 	RenderingDeviceTextureSlice3d RenderingDeviceTextureSliceType = 2
 )
 
-type RenderingDeviceSamplerFilter = gd.RenderingDeviceSamplerFilter
+type RenderingDeviceSamplerFilter = classdb.RenderingDeviceSamplerFilter
 
 const (
 	RenderingDeviceSamplerFilterNearest RenderingDeviceSamplerFilter = 0
 	RenderingDeviceSamplerFilterLinear RenderingDeviceSamplerFilter = 1
 )
 
-type RenderingDeviceSamplerRepeatMode = gd.RenderingDeviceSamplerRepeatMode
+type RenderingDeviceSamplerRepeatMode = classdb.RenderingDeviceSamplerRepeatMode
 
 const (
 	RenderingDeviceSamplerRepeatModeRepeat RenderingDeviceSamplerRepeatMode = 0
@@ -4392,7 +4392,7 @@ const (
 	RenderingDeviceSamplerRepeatModeMax RenderingDeviceSamplerRepeatMode = 5
 )
 
-type RenderingDeviceSamplerBorderColor = gd.RenderingDeviceSamplerBorderColor
+type RenderingDeviceSamplerBorderColor = classdb.RenderingDeviceSamplerBorderColor
 
 const (
 	RenderingDeviceSamplerBorderColorFloatTransparentBlack RenderingDeviceSamplerBorderColor = 0
@@ -4404,27 +4404,27 @@ const (
 	RenderingDeviceSamplerBorderColorMax RenderingDeviceSamplerBorderColor = 6
 )
 
-type RenderingDeviceVertexFrequency = gd.RenderingDeviceVertexFrequency
+type RenderingDeviceVertexFrequency = classdb.RenderingDeviceVertexFrequency
 
 const (
 	RenderingDeviceVertexFrequencyVertex RenderingDeviceVertexFrequency = 0
 	RenderingDeviceVertexFrequencyInstance RenderingDeviceVertexFrequency = 1
 )
 
-type RenderingDeviceIndexBufferFormat = gd.RenderingDeviceIndexBufferFormat
+type RenderingDeviceIndexBufferFormat = classdb.RenderingDeviceIndexBufferFormat
 
 const (
 	RenderingDeviceIndexBufferFormatUint16 RenderingDeviceIndexBufferFormat = 0
 	RenderingDeviceIndexBufferFormatUint32 RenderingDeviceIndexBufferFormat = 1
 )
 
-type RenderingDeviceStorageBufferUsage = gd.RenderingDeviceStorageBufferUsage
+type RenderingDeviceStorageBufferUsage = classdb.RenderingDeviceStorageBufferUsage
 
 const (
 	RenderingDeviceStorageBufferUsageDispatchIndirect RenderingDeviceStorageBufferUsage = 1
 )
 
-type RenderingDeviceUniformType = gd.RenderingDeviceUniformType
+type RenderingDeviceUniformType = classdb.RenderingDeviceUniformType
 
 const (
 	RenderingDeviceUniformTypeSampler RenderingDeviceUniformType = 0
@@ -4440,7 +4440,7 @@ const (
 	RenderingDeviceUniformTypeMax RenderingDeviceUniformType = 10
 )
 
-type RenderingDeviceRenderPrimitive = gd.RenderingDeviceRenderPrimitive
+type RenderingDeviceRenderPrimitive = classdb.RenderingDeviceRenderPrimitive
 
 const (
 	RenderingDeviceRenderPrimitivePoints RenderingDeviceRenderPrimitive = 0
@@ -4457,7 +4457,7 @@ const (
 	RenderingDeviceRenderPrimitiveMax RenderingDeviceRenderPrimitive = 11
 )
 
-type RenderingDevicePolygonCullMode = gd.RenderingDevicePolygonCullMode
+type RenderingDevicePolygonCullMode = classdb.RenderingDevicePolygonCullMode
 
 const (
 	RenderingDevicePolygonCullDisabled RenderingDevicePolygonCullMode = 0
@@ -4465,14 +4465,14 @@ const (
 	RenderingDevicePolygonCullBack RenderingDevicePolygonCullMode = 2
 )
 
-type RenderingDevicePolygonFrontFace = gd.RenderingDevicePolygonFrontFace
+type RenderingDevicePolygonFrontFace = classdb.RenderingDevicePolygonFrontFace
 
 const (
 	RenderingDevicePolygonFrontFaceClockwise RenderingDevicePolygonFrontFace = 0
 	RenderingDevicePolygonFrontFaceCounterClockwise RenderingDevicePolygonFrontFace = 1
 )
 
-type RenderingDeviceStencilOperation = gd.RenderingDeviceStencilOperation
+type RenderingDeviceStencilOperation = classdb.RenderingDeviceStencilOperation
 
 const (
 	RenderingDeviceStencilOpKeep RenderingDeviceStencilOperation = 0
@@ -4486,7 +4486,7 @@ const (
 	RenderingDeviceStencilOpMax RenderingDeviceStencilOperation = 8
 )
 
-type RenderingDeviceCompareOperator = gd.RenderingDeviceCompareOperator
+type RenderingDeviceCompareOperator = classdb.RenderingDeviceCompareOperator
 
 const (
 	RenderingDeviceCompareOpNever RenderingDeviceCompareOperator = 0
@@ -4500,7 +4500,7 @@ const (
 	RenderingDeviceCompareOpMax RenderingDeviceCompareOperator = 8
 )
 
-type RenderingDeviceLogicOperation = gd.RenderingDeviceLogicOperation
+type RenderingDeviceLogicOperation = classdb.RenderingDeviceLogicOperation
 
 const (
 	RenderingDeviceLogicOpClear RenderingDeviceLogicOperation = 0
@@ -4522,7 +4522,7 @@ const (
 	RenderingDeviceLogicOpMax RenderingDeviceLogicOperation = 16
 )
 
-type RenderingDeviceBlendFactor = gd.RenderingDeviceBlendFactor
+type RenderingDeviceBlendFactor = classdb.RenderingDeviceBlendFactor
 
 const (
 	RenderingDeviceBlendFactorZero RenderingDeviceBlendFactor = 0
@@ -4547,7 +4547,7 @@ const (
 	RenderingDeviceBlendFactorMax RenderingDeviceBlendFactor = 19
 )
 
-type RenderingDeviceBlendOperation = gd.RenderingDeviceBlendOperation
+type RenderingDeviceBlendOperation = classdb.RenderingDeviceBlendOperation
 
 const (
 	RenderingDeviceBlendOpAdd RenderingDeviceBlendOperation = 0
@@ -4558,7 +4558,7 @@ const (
 	RenderingDeviceBlendOpMax RenderingDeviceBlendOperation = 5
 )
 
-type RenderingDevicePipelineDynamicStateFlags = gd.RenderingDevicePipelineDynamicStateFlags
+type RenderingDevicePipelineDynamicStateFlags = classdb.RenderingDevicePipelineDynamicStateFlags
 
 const (
 	RenderingDeviceDynamicStateLineWidth RenderingDevicePipelineDynamicStateFlags = 1
@@ -4570,7 +4570,7 @@ const (
 	RenderingDeviceDynamicStateStencilReference RenderingDevicePipelineDynamicStateFlags = 64
 )
 
-type RenderingDeviceInitialAction = gd.RenderingDeviceInitialAction
+type RenderingDeviceInitialAction = classdb.RenderingDeviceInitialAction
 
 const (
 	RenderingDeviceInitialActionClear RenderingDeviceInitialAction = 0
@@ -4582,7 +4582,7 @@ const (
 	RenderingDeviceInitialActionMax RenderingDeviceInitialAction = 6
 )
 
-type RenderingDeviceFinalAction = gd.RenderingDeviceFinalAction
+type RenderingDeviceFinalAction = classdb.RenderingDeviceFinalAction
 
 const (
 	RenderingDeviceFinalActionRead RenderingDeviceFinalAction = 0
@@ -4591,7 +4591,7 @@ const (
 	RenderingDeviceFinalActionMax RenderingDeviceFinalAction = 3
 )
 
-type RenderingDeviceShaderStage = gd.RenderingDeviceShaderStage
+type RenderingDeviceShaderStage = classdb.RenderingDeviceShaderStage
 
 const (
 	RenderingDeviceShaderStageVertex RenderingDeviceShaderStage = 0
@@ -4607,14 +4607,14 @@ const (
 	RenderingDeviceShaderStageComputeBit RenderingDeviceShaderStage = 16
 )
 
-type RenderingDeviceShaderLanguage = gd.RenderingDeviceShaderLanguage
+type RenderingDeviceShaderLanguage = classdb.RenderingDeviceShaderLanguage
 
 const (
 	RenderingDeviceShaderLanguageGlsl RenderingDeviceShaderLanguage = 0
 	RenderingDeviceShaderLanguageHlsl RenderingDeviceShaderLanguage = 1
 )
 
-type RenderingDevicePipelineSpecializationConstantType = gd.RenderingDevicePipelineSpecializationConstantType
+type RenderingDevicePipelineSpecializationConstantType = classdb.RenderingDevicePipelineSpecializationConstantType
 
 const (
 	RenderingDevicePipelineSpecializationConstantTypeBool RenderingDevicePipelineSpecializationConstantType = 0
@@ -4622,7 +4622,7 @@ const (
 	RenderingDevicePipelineSpecializationConstantTypeFloat RenderingDevicePipelineSpecializationConstantType = 2
 )
 
-type RenderingDeviceLimit = gd.RenderingDeviceLimit
+type RenderingDeviceLimit = classdb.RenderingDeviceLimit
 
 const (
 	RenderingDeviceLimitMaxBoundUniformSets RenderingDeviceLimit = 0
@@ -4664,7 +4664,7 @@ const (
 	RenderingDeviceLimitMaxViewportDimensionsY RenderingDeviceLimit = 36
 )
 
-type RenderingDeviceMemoryType = gd.RenderingDeviceMemoryType
+type RenderingDeviceMemoryType = classdb.RenderingDeviceMemoryType
 
 const (
 	RenderingDeviceMemoryTextures RenderingDeviceMemoryType = 0
@@ -4672,7 +4672,7 @@ const (
 	RenderingDeviceMemoryTotal RenderingDeviceMemoryType = 2
 )
 
-type RenderingServerTextureLayeredType = gd.RenderingServerTextureLayeredType
+type RenderingServerTextureLayeredType = classdb.RenderingServerTextureLayeredType
 
 const (
 	RenderingServerTextureLayered2dArray RenderingServerTextureLayeredType = 0
@@ -4680,7 +4680,7 @@ const (
 	RenderingServerTextureLayeredCubemapArray RenderingServerTextureLayeredType = 2
 )
 
-type RenderingServerCubeMapLayer = gd.RenderingServerCubeMapLayer
+type RenderingServerCubeMapLayer = classdb.RenderingServerCubeMapLayer
 
 const (
 	RenderingServerCubemapLayerLeft RenderingServerCubeMapLayer = 0
@@ -4691,7 +4691,7 @@ const (
 	RenderingServerCubemapLayerBack RenderingServerCubeMapLayer = 5
 )
 
-type RenderingServerShaderMode = gd.RenderingServerShaderMode
+type RenderingServerShaderMode = classdb.RenderingServerShaderMode
 
 const (
 	RenderingServerShaderSpatial RenderingServerShaderMode = 0
@@ -4702,7 +4702,7 @@ const (
 	RenderingServerShaderMax RenderingServerShaderMode = 5
 )
 
-type RenderingServerArrayType = gd.RenderingServerArrayType
+type RenderingServerArrayType = classdb.RenderingServerArrayType
 
 const (
 	RenderingServerArrayVertex RenderingServerArrayType = 0
@@ -4721,7 +4721,7 @@ const (
 	RenderingServerArrayMax RenderingServerArrayType = 13
 )
 
-type RenderingServerArrayCustomFormat = gd.RenderingServerArrayCustomFormat
+type RenderingServerArrayCustomFormat = classdb.RenderingServerArrayCustomFormat
 
 const (
 	RenderingServerArrayCustomRgba8Unorm RenderingServerArrayCustomFormat = 0
@@ -4735,7 +4735,7 @@ const (
 	RenderingServerArrayCustomMax RenderingServerArrayCustomFormat = 8
 )
 
-type RenderingServerArrayFormat = gd.RenderingServerArrayFormat
+type RenderingServerArrayFormat = classdb.RenderingServerArrayFormat
 
 const (
 	RenderingServerArrayFormatVertex RenderingServerArrayFormat = 1
@@ -4773,7 +4773,7 @@ const (
 	RenderingServerArrayFlagFormatVersionMask RenderingServerArrayFormat = 255
 )
 
-type RenderingServerPrimitiveType = gd.RenderingServerPrimitiveType
+type RenderingServerPrimitiveType = classdb.RenderingServerPrimitiveType
 
 const (
 	RenderingServerPrimitivePoints RenderingServerPrimitiveType = 0
@@ -4784,21 +4784,21 @@ const (
 	RenderingServerPrimitiveMax RenderingServerPrimitiveType = 5
 )
 
-type RenderingServerBlendShapeMode = gd.RenderingServerBlendShapeMode
+type RenderingServerBlendShapeMode = classdb.RenderingServerBlendShapeMode
 
 const (
 	RenderingServerBlendShapeModeNormalized RenderingServerBlendShapeMode = 0
 	RenderingServerBlendShapeModeRelative RenderingServerBlendShapeMode = 1
 )
 
-type RenderingServerMultimeshTransformFormat = gd.RenderingServerMultimeshTransformFormat
+type RenderingServerMultimeshTransformFormat = classdb.RenderingServerMultimeshTransformFormat
 
 const (
 	RenderingServerMultimeshTransform2d RenderingServerMultimeshTransformFormat = 0
 	RenderingServerMultimeshTransform3d RenderingServerMultimeshTransformFormat = 1
 )
 
-type RenderingServerLightProjectorFilter = gd.RenderingServerLightProjectorFilter
+type RenderingServerLightProjectorFilter = classdb.RenderingServerLightProjectorFilter
 
 const (
 	RenderingServerLightProjectorFilterNearest RenderingServerLightProjectorFilter = 0
@@ -4809,7 +4809,7 @@ const (
 	RenderingServerLightProjectorFilterLinearMipmapsAnisotropic RenderingServerLightProjectorFilter = 5
 )
 
-type RenderingServerLightType = gd.RenderingServerLightType
+type RenderingServerLightType = classdb.RenderingServerLightType
 
 const (
 	RenderingServerLightDirectional RenderingServerLightType = 0
@@ -4817,7 +4817,7 @@ const (
 	RenderingServerLightSpot RenderingServerLightType = 2
 )
 
-type RenderingServerLightParam = gd.RenderingServerLightParam
+type RenderingServerLightParam = classdb.RenderingServerLightParam
 
 const (
 	RenderingServerLightParamEnergy RenderingServerLightParam = 0
@@ -4844,7 +4844,7 @@ const (
 	RenderingServerLightParamMax RenderingServerLightParam = 21
 )
 
-type RenderingServerLightBakeMode = gd.RenderingServerLightBakeMode
+type RenderingServerLightBakeMode = classdb.RenderingServerLightBakeMode
 
 const (
 	RenderingServerLightBakeDisabled RenderingServerLightBakeMode = 0
@@ -4852,14 +4852,14 @@ const (
 	RenderingServerLightBakeDynamic RenderingServerLightBakeMode = 2
 )
 
-type RenderingServerLightOmniShadowMode = gd.RenderingServerLightOmniShadowMode
+type RenderingServerLightOmniShadowMode = classdb.RenderingServerLightOmniShadowMode
 
 const (
 	RenderingServerLightOmniShadowDualParaboloid RenderingServerLightOmniShadowMode = 0
 	RenderingServerLightOmniShadowCube RenderingServerLightOmniShadowMode = 1
 )
 
-type RenderingServerLightDirectionalShadowMode = gd.RenderingServerLightDirectionalShadowMode
+type RenderingServerLightDirectionalShadowMode = classdb.RenderingServerLightDirectionalShadowMode
 
 const (
 	RenderingServerLightDirectionalShadowOrthogonal RenderingServerLightDirectionalShadowMode = 0
@@ -4867,7 +4867,7 @@ const (
 	RenderingServerLightDirectionalShadowParallel4Splits RenderingServerLightDirectionalShadowMode = 2
 )
 
-type RenderingServerLightDirectionalSkyMode = gd.RenderingServerLightDirectionalSkyMode
+type RenderingServerLightDirectionalSkyMode = classdb.RenderingServerLightDirectionalSkyMode
 
 const (
 	RenderingServerLightDirectionalSkyModeLightAndSky RenderingServerLightDirectionalSkyMode = 0
@@ -4875,7 +4875,7 @@ const (
 	RenderingServerLightDirectionalSkyModeSkyOnly RenderingServerLightDirectionalSkyMode = 2
 )
 
-type RenderingServerShadowQuality = gd.RenderingServerShadowQuality
+type RenderingServerShadowQuality = classdb.RenderingServerShadowQuality
 
 const (
 	RenderingServerShadowQualityHard RenderingServerShadowQuality = 0
@@ -4887,14 +4887,14 @@ const (
 	RenderingServerShadowQualityMax RenderingServerShadowQuality = 6
 )
 
-type RenderingServerReflectionProbeUpdateMode = gd.RenderingServerReflectionProbeUpdateMode
+type RenderingServerReflectionProbeUpdateMode = classdb.RenderingServerReflectionProbeUpdateMode
 
 const (
 	RenderingServerReflectionProbeUpdateOnce RenderingServerReflectionProbeUpdateMode = 0
 	RenderingServerReflectionProbeUpdateAlways RenderingServerReflectionProbeUpdateMode = 1
 )
 
-type RenderingServerReflectionProbeAmbientMode = gd.RenderingServerReflectionProbeAmbientMode
+type RenderingServerReflectionProbeAmbientMode = classdb.RenderingServerReflectionProbeAmbientMode
 
 const (
 	RenderingServerReflectionProbeAmbientDisabled RenderingServerReflectionProbeAmbientMode = 0
@@ -4902,7 +4902,7 @@ const (
 	RenderingServerReflectionProbeAmbientColor RenderingServerReflectionProbeAmbientMode = 2
 )
 
-type RenderingServerDecalTexture = gd.RenderingServerDecalTexture
+type RenderingServerDecalTexture = classdb.RenderingServerDecalTexture
 
 const (
 	RenderingServerDecalTextureAlbedo RenderingServerDecalTexture = 0
@@ -4912,7 +4912,7 @@ const (
 	RenderingServerDecalTextureMax RenderingServerDecalTexture = 4
 )
 
-type RenderingServerDecalFilter = gd.RenderingServerDecalFilter
+type RenderingServerDecalFilter = classdb.RenderingServerDecalFilter
 
 const (
 	RenderingServerDecalFilterNearest RenderingServerDecalFilter = 0
@@ -4923,21 +4923,21 @@ const (
 	RenderingServerDecalFilterLinearMipmapsAnisotropic RenderingServerDecalFilter = 5
 )
 
-type RenderingServerVoxelGIQuality = gd.RenderingServerVoxelGIQuality
+type RenderingServerVoxelGIQuality = classdb.RenderingServerVoxelGIQuality
 
 const (
 	RenderingServerVoxelGiQualityLow RenderingServerVoxelGIQuality = 0
 	RenderingServerVoxelGiQualityHigh RenderingServerVoxelGIQuality = 1
 )
 
-type RenderingServerParticlesMode = gd.RenderingServerParticlesMode
+type RenderingServerParticlesMode = classdb.RenderingServerParticlesMode
 
 const (
 	RenderingServerParticlesMode2d RenderingServerParticlesMode = 0
 	RenderingServerParticlesMode3d RenderingServerParticlesMode = 1
 )
 
-type RenderingServerParticlesTransformAlign = gd.RenderingServerParticlesTransformAlign
+type RenderingServerParticlesTransformAlign = classdb.RenderingServerParticlesTransformAlign
 
 const (
 	RenderingServerParticlesTransformAlignDisabled RenderingServerParticlesTransformAlign = 0
@@ -4946,7 +4946,7 @@ const (
 	RenderingServerParticlesTransformAlignZBillboardYToVelocity RenderingServerParticlesTransformAlign = 3
 )
 
-type RenderingServerParticlesDrawOrder = gd.RenderingServerParticlesDrawOrder
+type RenderingServerParticlesDrawOrder = classdb.RenderingServerParticlesDrawOrder
 
 const (
 	RenderingServerParticlesDrawOrderIndex RenderingServerParticlesDrawOrder = 0
@@ -4955,7 +4955,7 @@ const (
 	RenderingServerParticlesDrawOrderViewDepth RenderingServerParticlesDrawOrder = 3
 )
 
-type RenderingServerParticlesCollisionType = gd.RenderingServerParticlesCollisionType
+type RenderingServerParticlesCollisionType = classdb.RenderingServerParticlesCollisionType
 
 const (
 	RenderingServerParticlesCollisionTypeSphereAttract RenderingServerParticlesCollisionType = 0
@@ -4967,7 +4967,7 @@ const (
 	RenderingServerParticlesCollisionTypeHeightfieldCollide RenderingServerParticlesCollisionType = 6
 )
 
-type RenderingServerParticlesCollisionHeightfieldResolution = gd.RenderingServerParticlesCollisionHeightfieldResolution
+type RenderingServerParticlesCollisionHeightfieldResolution = classdb.RenderingServerParticlesCollisionHeightfieldResolution
 
 const (
 	RenderingServerParticlesCollisionHeightfieldResolution256 RenderingServerParticlesCollisionHeightfieldResolution = 0
@@ -4979,7 +4979,7 @@ const (
 	RenderingServerParticlesCollisionHeightfieldResolutionMax RenderingServerParticlesCollisionHeightfieldResolution = 6
 )
 
-type RenderingServerFogVolumeShape = gd.RenderingServerFogVolumeShape
+type RenderingServerFogVolumeShape = classdb.RenderingServerFogVolumeShape
 
 const (
 	RenderingServerFogVolumeShapeEllipsoid RenderingServerFogVolumeShape = 0
@@ -4990,7 +4990,7 @@ const (
 	RenderingServerFogVolumeShapeMax RenderingServerFogVolumeShape = 5
 )
 
-type RenderingServerViewportScaling3DMode = gd.RenderingServerViewportScaling3DMode
+type RenderingServerViewportScaling3DMode = classdb.RenderingServerViewportScaling3DMode
 
 const (
 	RenderingServerViewportScaling3dModeBilinear RenderingServerViewportScaling3DMode = 0
@@ -4999,7 +4999,7 @@ const (
 	RenderingServerViewportScaling3dModeMax RenderingServerViewportScaling3DMode = 3
 )
 
-type RenderingServerViewportUpdateMode = gd.RenderingServerViewportUpdateMode
+type RenderingServerViewportUpdateMode = classdb.RenderingServerViewportUpdateMode
 
 const (
 	RenderingServerViewportUpdateDisabled RenderingServerViewportUpdateMode = 0
@@ -5009,7 +5009,7 @@ const (
 	RenderingServerViewportUpdateAlways RenderingServerViewportUpdateMode = 4
 )
 
-type RenderingServerViewportClearMode = gd.RenderingServerViewportClearMode
+type RenderingServerViewportClearMode = classdb.RenderingServerViewportClearMode
 
 const (
 	RenderingServerViewportClearAlways RenderingServerViewportClearMode = 0
@@ -5017,7 +5017,7 @@ const (
 	RenderingServerViewportClearOnlyNextFrame RenderingServerViewportClearMode = 2
 )
 
-type RenderingServerViewportEnvironmentMode = gd.RenderingServerViewportEnvironmentMode
+type RenderingServerViewportEnvironmentMode = classdb.RenderingServerViewportEnvironmentMode
 
 const (
 	RenderingServerViewportEnvironmentDisabled RenderingServerViewportEnvironmentMode = 0
@@ -5026,7 +5026,7 @@ const (
 	RenderingServerViewportEnvironmentMax RenderingServerViewportEnvironmentMode = 3
 )
 
-type RenderingServerViewportSDFOversize = gd.RenderingServerViewportSDFOversize
+type RenderingServerViewportSDFOversize = classdb.RenderingServerViewportSDFOversize
 
 const (
 	RenderingServerViewportSdfOversize100Percent RenderingServerViewportSDFOversize = 0
@@ -5036,7 +5036,7 @@ const (
 	RenderingServerViewportSdfOversizeMax RenderingServerViewportSDFOversize = 4
 )
 
-type RenderingServerViewportSDFScale = gd.RenderingServerViewportSDFScale
+type RenderingServerViewportSDFScale = classdb.RenderingServerViewportSDFScale
 
 const (
 	RenderingServerViewportSdfScale100Percent RenderingServerViewportSDFScale = 0
@@ -5045,7 +5045,7 @@ const (
 	RenderingServerViewportSdfScaleMax RenderingServerViewportSDFScale = 3
 )
 
-type RenderingServerViewportMSAA = gd.RenderingServerViewportMSAA
+type RenderingServerViewportMSAA = classdb.RenderingServerViewportMSAA
 
 const (
 	RenderingServerViewportMsaaDisabled RenderingServerViewportMSAA = 0
@@ -5055,7 +5055,7 @@ const (
 	RenderingServerViewportMsaaMax RenderingServerViewportMSAA = 4
 )
 
-type RenderingServerViewportScreenSpaceAA = gd.RenderingServerViewportScreenSpaceAA
+type RenderingServerViewportScreenSpaceAA = classdb.RenderingServerViewportScreenSpaceAA
 
 const (
 	RenderingServerViewportScreenSpaceAaDisabled RenderingServerViewportScreenSpaceAA = 0
@@ -5063,7 +5063,7 @@ const (
 	RenderingServerViewportScreenSpaceAaMax RenderingServerViewportScreenSpaceAA = 2
 )
 
-type RenderingServerViewportOcclusionCullingBuildQuality = gd.RenderingServerViewportOcclusionCullingBuildQuality
+type RenderingServerViewportOcclusionCullingBuildQuality = classdb.RenderingServerViewportOcclusionCullingBuildQuality
 
 const (
 	RenderingServerViewportOcclusionBuildQualityLow RenderingServerViewportOcclusionCullingBuildQuality = 0
@@ -5071,7 +5071,7 @@ const (
 	RenderingServerViewportOcclusionBuildQualityHigh RenderingServerViewportOcclusionCullingBuildQuality = 2
 )
 
-type RenderingServerViewportRenderInfo = gd.RenderingServerViewportRenderInfo
+type RenderingServerViewportRenderInfo = classdb.RenderingServerViewportRenderInfo
 
 const (
 	RenderingServerViewportRenderInfoObjectsInFrame RenderingServerViewportRenderInfo = 0
@@ -5080,7 +5080,7 @@ const (
 	RenderingServerViewportRenderInfoMax RenderingServerViewportRenderInfo = 3
 )
 
-type RenderingServerViewportRenderInfoType = gd.RenderingServerViewportRenderInfoType
+type RenderingServerViewportRenderInfoType = classdb.RenderingServerViewportRenderInfoType
 
 const (
 	RenderingServerViewportRenderInfoTypeVisible RenderingServerViewportRenderInfoType = 0
@@ -5088,7 +5088,7 @@ const (
 	RenderingServerViewportRenderInfoTypeMax RenderingServerViewportRenderInfoType = 2
 )
 
-type RenderingServerViewportDebugDraw = gd.RenderingServerViewportDebugDraw
+type RenderingServerViewportDebugDraw = classdb.RenderingServerViewportDebugDraw
 
 const (
 	RenderingServerViewportDebugDrawDisabled RenderingServerViewportDebugDraw = 0
@@ -5120,7 +5120,7 @@ const (
 	RenderingServerViewportDebugDrawInternalBuffer RenderingServerViewportDebugDraw = 26
 )
 
-type RenderingServerViewportVRSMode = gd.RenderingServerViewportVRSMode
+type RenderingServerViewportVRSMode = classdb.RenderingServerViewportVRSMode
 
 const (
 	RenderingServerViewportVrsDisabled RenderingServerViewportVRSMode = 0
@@ -5129,7 +5129,7 @@ const (
 	RenderingServerViewportVrsMax RenderingServerViewportVRSMode = 3
 )
 
-type RenderingServerSkyMode = gd.RenderingServerSkyMode
+type RenderingServerSkyMode = classdb.RenderingServerSkyMode
 
 const (
 	RenderingServerSkyModeAutomatic RenderingServerSkyMode = 0
@@ -5138,7 +5138,7 @@ const (
 	RenderingServerSkyModeRealtime RenderingServerSkyMode = 3
 )
 
-type RenderingServerEnvironmentBG = gd.RenderingServerEnvironmentBG
+type RenderingServerEnvironmentBG = classdb.RenderingServerEnvironmentBG
 
 const (
 	RenderingServerEnvBgClearColor RenderingServerEnvironmentBG = 0
@@ -5150,7 +5150,7 @@ const (
 	RenderingServerEnvBgMax RenderingServerEnvironmentBG = 6
 )
 
-type RenderingServerEnvironmentAmbientSource = gd.RenderingServerEnvironmentAmbientSource
+type RenderingServerEnvironmentAmbientSource = classdb.RenderingServerEnvironmentAmbientSource
 
 const (
 	RenderingServerEnvAmbientSourceBg RenderingServerEnvironmentAmbientSource = 0
@@ -5159,7 +5159,7 @@ const (
 	RenderingServerEnvAmbientSourceSky RenderingServerEnvironmentAmbientSource = 3
 )
 
-type RenderingServerEnvironmentReflectionSource = gd.RenderingServerEnvironmentReflectionSource
+type RenderingServerEnvironmentReflectionSource = classdb.RenderingServerEnvironmentReflectionSource
 
 const (
 	RenderingServerEnvReflectionSourceBg RenderingServerEnvironmentReflectionSource = 0
@@ -5167,7 +5167,7 @@ const (
 	RenderingServerEnvReflectionSourceSky RenderingServerEnvironmentReflectionSource = 2
 )
 
-type RenderingServerEnvironmentGlowBlendMode = gd.RenderingServerEnvironmentGlowBlendMode
+type RenderingServerEnvironmentGlowBlendMode = classdb.RenderingServerEnvironmentGlowBlendMode
 
 const (
 	RenderingServerEnvGlowBlendModeAdditive RenderingServerEnvironmentGlowBlendMode = 0
@@ -5177,7 +5177,7 @@ const (
 	RenderingServerEnvGlowBlendModeMix RenderingServerEnvironmentGlowBlendMode = 4
 )
 
-type RenderingServerEnvironmentToneMapper = gd.RenderingServerEnvironmentToneMapper
+type RenderingServerEnvironmentToneMapper = classdb.RenderingServerEnvironmentToneMapper
 
 const (
 	RenderingServerEnvToneMapperLinear RenderingServerEnvironmentToneMapper = 0
@@ -5186,7 +5186,7 @@ const (
 	RenderingServerEnvToneMapperAces RenderingServerEnvironmentToneMapper = 3
 )
 
-type RenderingServerEnvironmentSSRRoughnessQuality = gd.RenderingServerEnvironmentSSRRoughnessQuality
+type RenderingServerEnvironmentSSRRoughnessQuality = classdb.RenderingServerEnvironmentSSRRoughnessQuality
 
 const (
 	RenderingServerEnvSsrRoughnessQualityDisabled RenderingServerEnvironmentSSRRoughnessQuality = 0
@@ -5195,7 +5195,7 @@ const (
 	RenderingServerEnvSsrRoughnessQualityHigh RenderingServerEnvironmentSSRRoughnessQuality = 3
 )
 
-type RenderingServerEnvironmentSSAOQuality = gd.RenderingServerEnvironmentSSAOQuality
+type RenderingServerEnvironmentSSAOQuality = classdb.RenderingServerEnvironmentSSAOQuality
 
 const (
 	RenderingServerEnvSsaoQualityVeryLow RenderingServerEnvironmentSSAOQuality = 0
@@ -5205,7 +5205,7 @@ const (
 	RenderingServerEnvSsaoQualityUltra RenderingServerEnvironmentSSAOQuality = 4
 )
 
-type RenderingServerEnvironmentSSILQuality = gd.RenderingServerEnvironmentSSILQuality
+type RenderingServerEnvironmentSSILQuality = classdb.RenderingServerEnvironmentSSILQuality
 
 const (
 	RenderingServerEnvSsilQualityVeryLow RenderingServerEnvironmentSSILQuality = 0
@@ -5215,7 +5215,7 @@ const (
 	RenderingServerEnvSsilQualityUltra RenderingServerEnvironmentSSILQuality = 4
 )
 
-type RenderingServerEnvironmentSDFGIYScale = gd.RenderingServerEnvironmentSDFGIYScale
+type RenderingServerEnvironmentSDFGIYScale = classdb.RenderingServerEnvironmentSDFGIYScale
 
 const (
 	RenderingServerEnvSdfgiYScale50Percent RenderingServerEnvironmentSDFGIYScale = 0
@@ -5223,7 +5223,7 @@ const (
 	RenderingServerEnvSdfgiYScale100Percent RenderingServerEnvironmentSDFGIYScale = 2
 )
 
-type RenderingServerEnvironmentSDFGIRayCount = gd.RenderingServerEnvironmentSDFGIRayCount
+type RenderingServerEnvironmentSDFGIRayCount = classdb.RenderingServerEnvironmentSDFGIRayCount
 
 const (
 	RenderingServerEnvSdfgiRayCount4 RenderingServerEnvironmentSDFGIRayCount = 0
@@ -5236,7 +5236,7 @@ const (
 	RenderingServerEnvSdfgiRayCountMax RenderingServerEnvironmentSDFGIRayCount = 7
 )
 
-type RenderingServerEnvironmentSDFGIFramesToConverge = gd.RenderingServerEnvironmentSDFGIFramesToConverge
+type RenderingServerEnvironmentSDFGIFramesToConverge = classdb.RenderingServerEnvironmentSDFGIFramesToConverge
 
 const (
 	RenderingServerEnvSdfgiConvergeIn5Frames RenderingServerEnvironmentSDFGIFramesToConverge = 0
@@ -5248,7 +5248,7 @@ const (
 	RenderingServerEnvSdfgiConvergeMax RenderingServerEnvironmentSDFGIFramesToConverge = 6
 )
 
-type RenderingServerEnvironmentSDFGIFramesToUpdateLight = gd.RenderingServerEnvironmentSDFGIFramesToUpdateLight
+type RenderingServerEnvironmentSDFGIFramesToUpdateLight = classdb.RenderingServerEnvironmentSDFGIFramesToUpdateLight
 
 const (
 	RenderingServerEnvSdfgiUpdateLightIn1Frame RenderingServerEnvironmentSDFGIFramesToUpdateLight = 0
@@ -5259,7 +5259,7 @@ const (
 	RenderingServerEnvSdfgiUpdateLightMax RenderingServerEnvironmentSDFGIFramesToUpdateLight = 5
 )
 
-type RenderingServerSubSurfaceScatteringQuality = gd.RenderingServerSubSurfaceScatteringQuality
+type RenderingServerSubSurfaceScatteringQuality = classdb.RenderingServerSubSurfaceScatteringQuality
 
 const (
 	RenderingServerSubSurfaceScatteringQualityDisabled RenderingServerSubSurfaceScatteringQuality = 0
@@ -5268,7 +5268,7 @@ const (
 	RenderingServerSubSurfaceScatteringQualityHigh RenderingServerSubSurfaceScatteringQuality = 3
 )
 
-type RenderingServerDOFBokehShape = gd.RenderingServerDOFBokehShape
+type RenderingServerDOFBokehShape = classdb.RenderingServerDOFBokehShape
 
 const (
 	RenderingServerDofBokehBox RenderingServerDOFBokehShape = 0
@@ -5276,7 +5276,7 @@ const (
 	RenderingServerDofBokehCircle RenderingServerDOFBokehShape = 2
 )
 
-type RenderingServerDOFBlurQuality = gd.RenderingServerDOFBlurQuality
+type RenderingServerDOFBlurQuality = classdb.RenderingServerDOFBlurQuality
 
 const (
 	RenderingServerDofBlurQualityVeryLow RenderingServerDOFBlurQuality = 0
@@ -5285,7 +5285,7 @@ const (
 	RenderingServerDofBlurQualityHigh RenderingServerDOFBlurQuality = 3
 )
 
-type RenderingServerInstanceType = gd.RenderingServerInstanceType
+type RenderingServerInstanceType = classdb.RenderingServerInstanceType
 
 const (
 	RenderingServerInstanceNone RenderingServerInstanceType = 0
@@ -5305,7 +5305,7 @@ const (
 	RenderingServerInstanceGeometryMask RenderingServerInstanceType = 14
 )
 
-type RenderingServerInstanceFlags = gd.RenderingServerInstanceFlags
+type RenderingServerInstanceFlags = classdb.RenderingServerInstanceFlags
 
 const (
 	RenderingServerInstanceFlagUseBakedLight RenderingServerInstanceFlags = 0
@@ -5315,7 +5315,7 @@ const (
 	RenderingServerInstanceFlagMax RenderingServerInstanceFlags = 4
 )
 
-type RenderingServerShadowCastingSetting = gd.RenderingServerShadowCastingSetting
+type RenderingServerShadowCastingSetting = classdb.RenderingServerShadowCastingSetting
 
 const (
 	RenderingServerShadowCastingSettingOff RenderingServerShadowCastingSetting = 0
@@ -5324,7 +5324,7 @@ const (
 	RenderingServerShadowCastingSettingShadowsOnly RenderingServerShadowCastingSetting = 3
 )
 
-type RenderingServerVisibilityRangeFadeMode = gd.RenderingServerVisibilityRangeFadeMode
+type RenderingServerVisibilityRangeFadeMode = classdb.RenderingServerVisibilityRangeFadeMode
 
 const (
 	RenderingServerVisibilityRangeFadeDisabled RenderingServerVisibilityRangeFadeMode = 0
@@ -5332,7 +5332,7 @@ const (
 	RenderingServerVisibilityRangeFadeDependencies RenderingServerVisibilityRangeFadeMode = 2
 )
 
-type RenderingServerBakeChannels = gd.RenderingServerBakeChannels
+type RenderingServerBakeChannels = classdb.RenderingServerBakeChannels
 
 const (
 	RenderingServerBakeChannelAlbedoAlpha RenderingServerBakeChannels = 0
@@ -5341,7 +5341,7 @@ const (
 	RenderingServerBakeChannelEmission RenderingServerBakeChannels = 3
 )
 
-type RenderingServerCanvasTextureChannel = gd.RenderingServerCanvasTextureChannel
+type RenderingServerCanvasTextureChannel = classdb.RenderingServerCanvasTextureChannel
 
 const (
 	RenderingServerCanvasTextureChannelDiffuse RenderingServerCanvasTextureChannel = 0
@@ -5349,7 +5349,7 @@ const (
 	RenderingServerCanvasTextureChannelSpecular RenderingServerCanvasTextureChannel = 2
 )
 
-type RenderingServerNinePatchAxisMode = gd.RenderingServerNinePatchAxisMode
+type RenderingServerNinePatchAxisMode = classdb.RenderingServerNinePatchAxisMode
 
 const (
 	RenderingServerNinePatchStretch RenderingServerNinePatchAxisMode = 0
@@ -5357,7 +5357,7 @@ const (
 	RenderingServerNinePatchTileFit RenderingServerNinePatchAxisMode = 2
 )
 
-type RenderingServerCanvasItemTextureFilter = gd.RenderingServerCanvasItemTextureFilter
+type RenderingServerCanvasItemTextureFilter = classdb.RenderingServerCanvasItemTextureFilter
 
 const (
 	RenderingServerCanvasItemTextureFilterDefault RenderingServerCanvasItemTextureFilter = 0
@@ -5370,7 +5370,7 @@ const (
 	RenderingServerCanvasItemTextureFilterMax RenderingServerCanvasItemTextureFilter = 7
 )
 
-type RenderingServerCanvasItemTextureRepeat = gd.RenderingServerCanvasItemTextureRepeat
+type RenderingServerCanvasItemTextureRepeat = classdb.RenderingServerCanvasItemTextureRepeat
 
 const (
 	RenderingServerCanvasItemTextureRepeatDefault RenderingServerCanvasItemTextureRepeat = 0
@@ -5380,7 +5380,7 @@ const (
 	RenderingServerCanvasItemTextureRepeatMax RenderingServerCanvasItemTextureRepeat = 4
 )
 
-type RenderingServerCanvasGroupMode = gd.RenderingServerCanvasGroupMode
+type RenderingServerCanvasGroupMode = classdb.RenderingServerCanvasGroupMode
 
 const (
 	RenderingServerCanvasGroupModeDisabled RenderingServerCanvasGroupMode = 0
@@ -5389,14 +5389,14 @@ const (
 	RenderingServerCanvasGroupModeTransparent RenderingServerCanvasGroupMode = 3
 )
 
-type RenderingServerCanvasLightMode = gd.RenderingServerCanvasLightMode
+type RenderingServerCanvasLightMode = classdb.RenderingServerCanvasLightMode
 
 const (
 	RenderingServerCanvasLightModePoint RenderingServerCanvasLightMode = 0
 	RenderingServerCanvasLightModeDirectional RenderingServerCanvasLightMode = 1
 )
 
-type RenderingServerCanvasLightBlendMode = gd.RenderingServerCanvasLightBlendMode
+type RenderingServerCanvasLightBlendMode = classdb.RenderingServerCanvasLightBlendMode
 
 const (
 	RenderingServerCanvasLightBlendModeAdd RenderingServerCanvasLightBlendMode = 0
@@ -5404,7 +5404,7 @@ const (
 	RenderingServerCanvasLightBlendModeMix RenderingServerCanvasLightBlendMode = 2
 )
 
-type RenderingServerCanvasLightShadowFilter = gd.RenderingServerCanvasLightShadowFilter
+type RenderingServerCanvasLightShadowFilter = classdb.RenderingServerCanvasLightShadowFilter
 
 const (
 	RenderingServerCanvasLightFilterNone RenderingServerCanvasLightShadowFilter = 0
@@ -5413,7 +5413,7 @@ const (
 	RenderingServerCanvasLightFilterMax RenderingServerCanvasLightShadowFilter = 3
 )
 
-type RenderingServerCanvasOccluderPolygonCullMode = gd.RenderingServerCanvasOccluderPolygonCullMode
+type RenderingServerCanvasOccluderPolygonCullMode = classdb.RenderingServerCanvasOccluderPolygonCullMode
 
 const (
 	RenderingServerCanvasOccluderPolygonCullDisabled RenderingServerCanvasOccluderPolygonCullMode = 0
@@ -5421,7 +5421,7 @@ const (
 	RenderingServerCanvasOccluderPolygonCullCounterClockwise RenderingServerCanvasOccluderPolygonCullMode = 2
 )
 
-type RenderingServerGlobalShaderParameterType = gd.RenderingServerGlobalShaderParameterType
+type RenderingServerGlobalShaderParameterType = classdb.RenderingServerGlobalShaderParameterType
 
 const (
 	RenderingServerGlobalVarTypeBool RenderingServerGlobalShaderParameterType = 0
@@ -5455,7 +5455,7 @@ const (
 	RenderingServerGlobalVarTypeMax RenderingServerGlobalShaderParameterType = 28
 )
 
-type RenderingServerRenderingInfo = gd.RenderingServerRenderingInfo
+type RenderingServerRenderingInfo = classdb.RenderingServerRenderingInfo
 
 const (
 	RenderingServerRenderingInfoTotalObjectsInFrame RenderingServerRenderingInfo = 0
@@ -5466,7 +5466,7 @@ const (
 	RenderingServerRenderingInfoVideoMemUsed RenderingServerRenderingInfo = 5
 )
 
-type RenderingServerFeatures = gd.RenderingServerFeatures
+type RenderingServerFeatures = classdb.RenderingServerFeatures
 
 const (
 	RenderingServerFeatureShaders RenderingServerFeatures = 0
@@ -5613,7 +5613,7 @@ const (
 	SceneReplicationConfigReplicationModeOnChange SceneReplicationConfigReplicationMode = 2
 )
 
-type SceneStateGenEditState = gd.SceneStateGenEditState
+type SceneStateGenEditState = classdb.SceneStateGenEditState
 
 const (
 	SceneStateGenEditStateDisabled SceneStateGenEditState = 0
@@ -5622,7 +5622,7 @@ const (
 	SceneStateGenEditStateMainInherited SceneStateGenEditState = 3
 )
 
-type SceneTreeGroupCallFlags = gd.SceneTreeGroupCallFlags
+type SceneTreeGroupCallFlags = classdb.SceneTreeGroupCallFlags
 
 const (
 	SceneTreeGroupCallDefault SceneTreeGroupCallFlags = 0
@@ -5680,7 +5680,7 @@ const (
 	ScrollContainerScrollModeShowNever ScrollContainerScrollMode = 3
 )
 
-type ShaderMode = gd.ShaderMode
+type ShaderMode = classdb.ShaderMode
 
 const (
 	ShaderModeSpatial ShaderMode = 0
@@ -5698,7 +5698,7 @@ const (
 	SkeletonProfileTailDirectionEnd SkeletonProfileTailDirection = 2
 )
 
-type SkyRadianceSize = gd.SkyRadianceSize
+type SkyRadianceSize = classdb.SkyRadianceSize
 
 const (
 	SkyRadianceSize32 SkyRadianceSize = 0
@@ -5711,7 +5711,7 @@ const (
 	SkyRadianceSizeMax SkyRadianceSize = 7
 )
 
-type SkyProcessMode = gd.SkyProcessMode
+type SkyProcessMode = classdb.SkyProcessMode
 
 const (
 	SkyProcessModeAutomatic SkyProcessMode = 0
@@ -5952,7 +5952,7 @@ const (
 	TextEditGutterTypeCustom TextEditGutterType = 2
 )
 
-type TextServerFontAntialiasing = gd.TextServerFontAntialiasing
+type TextServerFontAntialiasing = classdb.TextServerFontAntialiasing
 
 const (
 	TextServerFontAntialiasingNone TextServerFontAntialiasing = 0
@@ -5960,7 +5960,7 @@ const (
 	TextServerFontAntialiasingLcd TextServerFontAntialiasing = 2
 )
 
-type TextServerFontLCDSubpixelLayout = gd.TextServerFontLCDSubpixelLayout
+type TextServerFontLCDSubpixelLayout = classdb.TextServerFontLCDSubpixelLayout
 
 const (
 	TextServerFontLcdSubpixelLayoutNone TextServerFontLCDSubpixelLayout = 0
@@ -5971,7 +5971,7 @@ const (
 	TextServerFontLcdSubpixelLayoutMax TextServerFontLCDSubpixelLayout = 5
 )
 
-type TextServerDirection = gd.TextServerDirection
+type TextServerDirection = classdb.TextServerDirection
 
 const (
 	TextServerDirectionAuto TextServerDirection = 0
@@ -5980,14 +5980,14 @@ const (
 	TextServerDirectionInherited TextServerDirection = 3
 )
 
-type TextServerOrientation = gd.TextServerOrientation
+type TextServerOrientation = classdb.TextServerOrientation
 
 const (
 	TextServerOrientationHorizontal TextServerOrientation = 0
 	TextServerOrientationVertical TextServerOrientation = 1
 )
 
-type TextServerJustificationFlag = gd.TextServerJustificationFlag
+type TextServerJustificationFlag = classdb.TextServerJustificationFlag
 
 const (
 	TextServerJustificationNone TextServerJustificationFlag = 0
@@ -6001,7 +6001,7 @@ const (
 	TextServerJustificationDoNotSkipSingleLine TextServerJustificationFlag = 128
 )
 
-type TextServerAutowrapMode = gd.TextServerAutowrapMode
+type TextServerAutowrapMode = classdb.TextServerAutowrapMode
 
 const (
 	TextServerAutowrapOff TextServerAutowrapMode = 0
@@ -6010,7 +6010,7 @@ const (
 	TextServerAutowrapWordSmart TextServerAutowrapMode = 3
 )
 
-type TextServerLineBreakFlag = gd.TextServerLineBreakFlag
+type TextServerLineBreakFlag = classdb.TextServerLineBreakFlag
 
 const (
 	TextServerBreakNone TextServerLineBreakFlag = 0
@@ -6021,7 +6021,7 @@ const (
 	TextServerBreakTrimEdgeSpaces TextServerLineBreakFlag = 16
 )
 
-type TextServerVisibleCharactersBehavior = gd.TextServerVisibleCharactersBehavior
+type TextServerVisibleCharactersBehavior = classdb.TextServerVisibleCharactersBehavior
 
 const (
 	TextServerVcCharsBeforeShaping TextServerVisibleCharactersBehavior = 0
@@ -6031,7 +6031,7 @@ const (
 	TextServerVcGlyphsRtl TextServerVisibleCharactersBehavior = 4
 )
 
-type TextServerOverrunBehavior = gd.TextServerOverrunBehavior
+type TextServerOverrunBehavior = classdb.TextServerOverrunBehavior
 
 const (
 	TextServerOverrunNoTrimming TextServerOverrunBehavior = 0
@@ -6041,7 +6041,7 @@ const (
 	TextServerOverrunTrimWordEllipsis TextServerOverrunBehavior = 4
 )
 
-type TextServerTextOverrunFlag = gd.TextServerTextOverrunFlag
+type TextServerTextOverrunFlag = classdb.TextServerTextOverrunFlag
 
 const (
 	TextServerOverrunNoTrim TextServerTextOverrunFlag = 0
@@ -6052,7 +6052,7 @@ const (
 	TextServerOverrunJustificationAware TextServerTextOverrunFlag = 16
 )
 
-type TextServerGraphemeFlag = gd.TextServerGraphemeFlag
+type TextServerGraphemeFlag = classdb.TextServerGraphemeFlag
 
 const (
 	TextServerGraphemeIsValid TextServerGraphemeFlag = 1
@@ -6070,7 +6070,7 @@ const (
 	TextServerGraphemeIsEmbeddedObject TextServerGraphemeFlag = 4096
 )
 
-type TextServerHinting = gd.TextServerHinting
+type TextServerHinting = classdb.TextServerHinting
 
 const (
 	TextServerHintingNone TextServerHinting = 0
@@ -6078,7 +6078,7 @@ const (
 	TextServerHintingNormal TextServerHinting = 2
 )
 
-type TextServerSubpixelPositioning = gd.TextServerSubpixelPositioning
+type TextServerSubpixelPositioning = classdb.TextServerSubpixelPositioning
 
 const (
 	TextServerSubpixelPositioningDisabled TextServerSubpixelPositioning = 0
@@ -6089,7 +6089,7 @@ const (
 	TextServerSubpixelPositioningOneQuarterMaxSize TextServerSubpixelPositioning = 16
 )
 
-type TextServerFeature = gd.TextServerFeature
+type TextServerFeature = classdb.TextServerFeature
 
 const (
 	TextServerFeatureSimpleLayout TextServerFeature = 1
@@ -6109,7 +6109,7 @@ const (
 	TextServerFeatureUnicodeSecurity TextServerFeature = 16384
 )
 
-type TextServerContourPointTag = gd.TextServerContourPointTag
+type TextServerContourPointTag = classdb.TextServerContourPointTag
 
 const (
 	TextServerContourCurveTagOn TextServerContourPointTag = 1
@@ -6117,7 +6117,7 @@ const (
 	TextServerContourCurveTagOffCubic TextServerContourPointTag = 2
 )
 
-type TextServerSpacingType = gd.TextServerSpacingType
+type TextServerSpacingType = classdb.TextServerSpacingType
 
 const (
 	TextServerSpacingGlyph TextServerSpacingType = 0
@@ -6127,7 +6127,7 @@ const (
 	TextServerSpacingMax TextServerSpacingType = 4
 )
 
-type TextServerFontStyle = gd.TextServerFontStyle
+type TextServerFontStyle = classdb.TextServerFontStyle
 
 const (
 	TextServerFontBold TextServerFontStyle = 1
@@ -6135,7 +6135,7 @@ const (
 	TextServerFontFixedWidth TextServerFontStyle = 4
 )
 
-type TextServerStructuredTextParser = gd.TextServerStructuredTextParser
+type TextServerStructuredTextParser = classdb.TextServerStructuredTextParser
 
 const (
 	TextServerStructuredTextDefault TextServerStructuredTextParser = 0
@@ -6147,7 +6147,7 @@ const (
 	TextServerStructuredTextCustom TextServerStructuredTextParser = 6
 )
 
-type TextServerFixedSizeScaleMode = gd.TextServerFixedSizeScaleMode
+type TextServerFixedSizeScaleMode = classdb.TextServerFixedSizeScaleMode
 
 const (
 	TextServerFixedSizeScaleDisable TextServerFixedSizeScaleMode = 0
@@ -6212,7 +6212,7 @@ const (
 	TextureRectStretchKeepAspectCovered TextureRectStretchMode = 6
 )
 
-type ThemeDataType = gd.ThemeDataType
+type ThemeDataType = classdb.ThemeDataType
 
 const (
 	ThemeDataTypeColor ThemeDataType = 0
@@ -6373,14 +6373,14 @@ const (
 	TreeItemCellModeCustom TreeItemTreeCellMode = 4
 )
 
-type TweenTweenProcessMode = gd.TweenTweenProcessMode
+type TweenTweenProcessMode = classdb.TweenTweenProcessMode
 
 const (
 	TweenTweenProcessPhysics TweenTweenProcessMode = 0
 	TweenTweenProcessIdle TweenTweenProcessMode = 1
 )
 
-type TweenTweenPauseMode = gd.TweenTweenPauseMode
+type TweenTweenPauseMode = classdb.TweenTweenPauseMode
 
 const (
 	TweenTweenPauseBound TweenTweenPauseMode = 0
@@ -6388,7 +6388,7 @@ const (
 	TweenTweenPauseProcess TweenTweenPauseMode = 2
 )
 
-type TweenTransitionType = gd.TweenTransitionType
+type TweenTransitionType = classdb.TweenTransitionType
 
 const (
 	TweenTransLinear TweenTransitionType = 0
@@ -6405,7 +6405,7 @@ const (
 	TweenTransSpring TweenTransitionType = 11
 )
 
-type TweenEaseType = gd.TweenEaseType
+type TweenEaseType = classdb.TweenEaseType
 
 const (
 	TweenEaseIn TweenEaseType = 0
@@ -6471,7 +6471,7 @@ const (
 	UndoRedoMergeAll UndoRedoMergeMode = 2
 )
 
-type ViewportPositionalShadowAtlasQuadrantSubdiv = gd.ViewportPositionalShadowAtlasQuadrantSubdiv
+type ViewportPositionalShadowAtlasQuadrantSubdiv = classdb.ViewportPositionalShadowAtlasQuadrantSubdiv
 
 const (
 	ViewportShadowAtlasQuadrantSubdivDisabled ViewportPositionalShadowAtlasQuadrantSubdiv = 0
@@ -6484,7 +6484,7 @@ const (
 	ViewportShadowAtlasQuadrantSubdivMax ViewportPositionalShadowAtlasQuadrantSubdiv = 7
 )
 
-type ViewportScaling3DMode = gd.ViewportScaling3DMode
+type ViewportScaling3DMode = classdb.ViewportScaling3DMode
 
 const (
 	ViewportScaling3dModeBilinear ViewportScaling3DMode = 0
@@ -6493,7 +6493,7 @@ const (
 	ViewportScaling3dModeMax ViewportScaling3DMode = 3
 )
 
-type ViewportMSAA = gd.ViewportMSAA
+type ViewportMSAA = classdb.ViewportMSAA
 
 const (
 	ViewportMsaaDisabled ViewportMSAA = 0
@@ -6503,7 +6503,7 @@ const (
 	ViewportMsaaMax ViewportMSAA = 4
 )
 
-type ViewportScreenSpaceAA = gd.ViewportScreenSpaceAA
+type ViewportScreenSpaceAA = classdb.ViewportScreenSpaceAA
 
 const (
 	ViewportScreenSpaceAaDisabled ViewportScreenSpaceAA = 0
@@ -6511,7 +6511,7 @@ const (
 	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 2
 )
 
-type ViewportRenderInfo = gd.ViewportRenderInfo
+type ViewportRenderInfo = classdb.ViewportRenderInfo
 
 const (
 	ViewportRenderInfoObjectsInFrame ViewportRenderInfo = 0
@@ -6520,7 +6520,7 @@ const (
 	ViewportRenderInfoMax ViewportRenderInfo = 3
 )
 
-type ViewportRenderInfoType = gd.ViewportRenderInfoType
+type ViewportRenderInfoType = classdb.ViewportRenderInfoType
 
 const (
 	ViewportRenderInfoTypeVisible ViewportRenderInfoType = 0
@@ -6528,7 +6528,7 @@ const (
 	ViewportRenderInfoTypeMax ViewportRenderInfoType = 2
 )
 
-type ViewportDebugDraw = gd.ViewportDebugDraw
+type ViewportDebugDraw = classdb.ViewportDebugDraw
 
 const (
 	ViewportDebugDrawDisabled ViewportDebugDraw = 0
@@ -6560,7 +6560,7 @@ const (
 	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
 )
 
-type ViewportDefaultCanvasItemTextureFilter = gd.ViewportDefaultCanvasItemTextureFilter
+type ViewportDefaultCanvasItemTextureFilter = classdb.ViewportDefaultCanvasItemTextureFilter
 
 const (
 	ViewportDefaultCanvasItemTextureFilterNearest ViewportDefaultCanvasItemTextureFilter = 0
@@ -6570,7 +6570,7 @@ const (
 	ViewportDefaultCanvasItemTextureFilterMax ViewportDefaultCanvasItemTextureFilter = 4
 )
 
-type ViewportDefaultCanvasItemTextureRepeat = gd.ViewportDefaultCanvasItemTextureRepeat
+type ViewportDefaultCanvasItemTextureRepeat = classdb.ViewportDefaultCanvasItemTextureRepeat
 
 const (
 	ViewportDefaultCanvasItemTextureRepeatDisabled ViewportDefaultCanvasItemTextureRepeat = 0
@@ -6579,7 +6579,7 @@ const (
 	ViewportDefaultCanvasItemTextureRepeatMax ViewportDefaultCanvasItemTextureRepeat = 3
 )
 
-type ViewportSDFOversize = gd.ViewportSDFOversize
+type ViewportSDFOversize = classdb.ViewportSDFOversize
 
 const (
 	ViewportSdfOversize100Percent ViewportSDFOversize = 0
@@ -6589,7 +6589,7 @@ const (
 	ViewportSdfOversizeMax ViewportSDFOversize = 4
 )
 
-type ViewportSDFScale = gd.ViewportSDFScale
+type ViewportSDFScale = classdb.ViewportSDFScale
 
 const (
 	ViewportSdfScale100Percent ViewportSDFScale = 0
@@ -6598,7 +6598,7 @@ const (
 	ViewportSdfScaleMax ViewportSDFScale = 3
 )
 
-type ViewportVRSMode = gd.ViewportVRSMode
+type ViewportVRSMode = classdb.ViewportVRSMode
 
 const (
 	ViewportVrsDisabled ViewportVRSMode = 0
@@ -7307,7 +7307,7 @@ const (
 	WebXRInterfaceTargetRayModeScreen WebXRInterfaceTargetRayMode = 3
 )
 
-type WindowMode = gd.WindowMode
+type WindowMode = classdb.WindowMode
 
 const (
 	WindowModeWindowed WindowMode = 0
@@ -7317,7 +7317,7 @@ const (
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
-type WindowFlags = gd.WindowFlags
+type WindowFlags = classdb.WindowFlags
 
 const (
 	WindowFlagResizeDisabled WindowFlags = 0
@@ -7331,7 +7331,7 @@ const (
 	WindowFlagMax WindowFlags = 8
 )
 
-type WindowContentScaleMode = gd.WindowContentScaleMode
+type WindowContentScaleMode = classdb.WindowContentScaleMode
 
 const (
 	WindowContentScaleModeDisabled WindowContentScaleMode = 0
@@ -7339,7 +7339,7 @@ const (
 	WindowContentScaleModeViewport WindowContentScaleMode = 2
 )
 
-type WindowContentScaleAspect = gd.WindowContentScaleAspect
+type WindowContentScaleAspect = classdb.WindowContentScaleAspect
 
 const (
 	WindowContentScaleAspectIgnore WindowContentScaleAspect = 0
@@ -7349,14 +7349,14 @@ const (
 	WindowContentScaleAspectExpand WindowContentScaleAspect = 4
 )
 
-type WindowContentScaleStretch = gd.WindowContentScaleStretch
+type WindowContentScaleStretch = classdb.WindowContentScaleStretch
 
 const (
 	WindowContentScaleStretchFractional WindowContentScaleStretch = 0
 	WindowContentScaleStretchInteger WindowContentScaleStretch = 1
 )
 
-type WindowLayoutDirection = gd.WindowLayoutDirection
+type WindowLayoutDirection = classdb.WindowLayoutDirection
 
 const (
 	WindowLayoutDirectionInherited WindowLayoutDirection = 0
@@ -7365,7 +7365,7 @@ const (
 	WindowLayoutDirectionRtl WindowLayoutDirection = 3
 )
 
-type WindowWindowInitialPosition = gd.WindowWindowInitialPosition
+type WindowWindowInitialPosition = classdb.WindowWindowInitialPosition
 
 const (
 	WindowWindowInitialPositionAbsolute WindowWindowInitialPosition = 0
@@ -7376,7 +7376,7 @@ const (
 	WindowWindowInitialPositionCenterScreenWithKeyboardFocus WindowWindowInitialPosition = 5
 )
 
-type XMLParserNodeType = gd.XMLParserNodeType
+type XMLParserNodeType = classdb.XMLParserNodeType
 
 const (
 	XMLParserNodeNone XMLParserNodeType = 0

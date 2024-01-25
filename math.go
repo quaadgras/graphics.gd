@@ -52,7 +52,7 @@ func Atan[T ~float32 | ~float64](x T) T { return gd.Atan(x) }
 // the value, the method takes into account the sign of both arguments in order to determine the quadrant.
 //
 // Important note: The Y coordinate comes first, by convention.
-func Atan2[T ~float32 | ~float64](y, x T) T { return gd.Atan2(y, x) }
+func Atan2[T ~float32 | ~float64](y, x T) Radians { return gd.Atan2(y, x) }
 
 // Atanh returns the hyperbolic arc (also called inverse) tangent of x, returning a value in radians. Use
 // it to get the angle from an angle's tangent in hyperbolic space if x is between -1 and 1 (non-inclusive).

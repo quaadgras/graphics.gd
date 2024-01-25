@@ -5,11 +5,12 @@ package gd_test
 import (
 	"testing"
 
-	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd"
+	internal "grow.graphics/gd/internal"
 )
 
 func TestRegister(t *testing.T) {
-	godot := gd.NewContext(API)
+	godot := internal.NewContext(API)
 	defer godot.End()
 
 	type SimpleClass struct {

@@ -91,11 +91,11 @@ type API struct {
 		New func(Context, string) StringName
 	}
 	XMLParser struct {
-		OpenBuffer func(XMLParser, []byte) error
+		OpenBuffer func(Object, []byte) error
 	}
 	FileAccess struct {
-		StoreBuffer func(FileAccess, []byte)
-		GetBuffer   func(FileAccess, []byte) int
+		StoreBuffer func(Object, []byte)
+		GetBuffer   func(Object, []byte) int
 	}
 	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
 	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
@@ -114,7 +114,7 @@ type API struct {
 		Index    func(Context, Array, Int) Variant
 		Set      func(self, from Array)
 		SetIndex func(Array, Int, Variant)
-		SetTyped func(self Array, t VariantType, className StringName, script Script)
+		SetTyped func(self Array, t VariantType, className StringName, script Object)
 	}
 	Dictionary struct {
 		Index    func(ctx Context, dict Dictionary, key Variant) Variant
@@ -134,8 +134,8 @@ type API struct {
 		GetInstanceID         func(Object) ObjectID
 	}
 	RefCounted struct {
-		GetObject func(Context, RefCounted) Object
-		SetObject func(RefCounted, Object)
+		GetObject func(Context, Object) Object
+		SetObject func(Object, Object)
 	}
 	Callables struct {
 		Create func(ctx Context, fn func(...Variant) (Variant, error)) Callable
@@ -278,6 +278,15 @@ const (
 	In
 )
 
+type GDExtensionInitializationLevel int
+
+const (
+	GDExtensionInitializationLevelCore    GDExtensionInitializationLevel = 0
+	GDExtensionInitializationLevelServers GDExtensionInitializationLevel = 1
+	GDExtensionInitializationLevelScene   GDExtensionInitializationLevel = 2
+	GDExtensionInitializationLevelEditor  GDExtensionInitializationLevel = 3
+)
+
 type ExtensionInitialization[T any] struct {
 	MinimumInitializationLevel GDExtensionInitializationLevel
 	Userdata                   T
@@ -364,28 +373,4 @@ type Method struct {
 	ArgumentsMetadata []ClassMethodArgumentMetadata
 
 	DefaultArguments []Variant
-}
-
-type ScriptInstance interface {
-	Set(name StringName, value Variant)
-	Get(name StringName) Variant
-	GetPropertyList() []PropertyInfo
-	PropertyCanRevert(name StringName) bool
-	PropertyGetRevert(name StringName) Variant
-	GetOwner() Object
-	GetPropertyState(add func(name StringName, value Variant))
-	GetMethodList() []MethodInfo
-	GetPropertyType(name StringName, valid bool) VariantType
-	ValidateProperty(name StringName, property PropertyInfo) bool
-	HasMethod(name StringName) bool
-	Call(name StringName, args ...Variant) (Variant, error)
-	Notification(notification int32, reversed bool)
-	ToString(valid bool) String
-	RefcountIncremented()
-	RefcountDecremented()
-	GetScript() Script
-	IsPlaceholder() Bool
-	SetFallback(name StringName, value Variant)
-	GetFallback(name StringName) Variant
-	GetLanguage() ScriptLanguage
 }
