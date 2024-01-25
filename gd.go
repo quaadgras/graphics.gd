@@ -75,6 +75,16 @@ func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vect
 	return gd.NewTransform2D(rotation, scale, skew, position)
 }
 
+// NewVector4 constructs a new Vector4 from the given x, y, z, and w.
+func NewVector4(x, y, z, w Float) Vector4 {
+	return Vector4{float32(x), float32(y), float32(z), float32(w)}
+}
+
+// NewVector4i constructs a new Vector4i from the given x, y, z, and w.
+func NewVector4i(x, y, z, w Int) Vector4i {
+	return Vector4i{int32(x), int32(y), int32(z), int32(w)}
+}
+
 /*
 Register registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must

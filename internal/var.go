@@ -31,9 +31,7 @@ type Transform3D struct {
 
 const _ = unsafe.Sizeof(Transform3D{})
 
-type Projection struct {
-	X, Y, Z, W Vector4
-}
+type Projection [4]Vector4
 
 type Color [4]float32
 

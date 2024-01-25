@@ -367,7 +367,3 @@ func (v Vector2) Divf(other Float) Vector2 {
 func (v Vector2) Neg() Vector2 { return Vector2{-v[x], -v[y]} }
 
 func (v Vector2) Transform(t Transform2D) Vector2 { return Vector2{t.tdotx(v), t.tdoty(v)}.Add(t[2]) }
-
-type Vector4 [4]float32
-
-type Vector4i [4]int32
