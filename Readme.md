@@ -44,10 +44,10 @@ sure that your `$GOPATH/bin` is in your `$PATH` and run:
 ```
 
 Now when you can run `gd run`, `gd test` on the main package in your project's 
-directory, things will work as expected.
+directory, things will work as expected. The tool will create a "graphics" 
+subdirectory where you can manage your assets via the Godot Editor. 
 
-Running the command without any arguments will startup the editor so you can 
-manage the graphical aspects of your project.
+Running the command without any arguments will startup the editor. 
 
 **NOTE** On linux, `gd` will download Godot for you automatically!
 
@@ -101,11 +101,13 @@ of a project. Don't forget to write tests!
 ```
 
 ## Performance
+It's feasible to write high performance code using this module, keep to Godot types where possible and avoid escaping memory to the heap in frequently called functions. 
 
-No profiling has been completed, however all Go -> Godot calls are optimised
-in a way to avoid almost all allocations. Allocations are currently unavoidable
-for all Godot -> Go script calls (but not for virtual overrides, which are essentially
-allocation free).
+**Zero Allocations**
+Benchmarking shows method calls from Go -> Godot do not allocate in practise. 
+
+Allocations are currently unavoidable for GDScript -> Go calls (but not 
+for class overrides such as `Process`, which should be allocation free).
 
 ## Examples
 
@@ -133,7 +135,7 @@ To run the go tests for this module `cd internal && gd test`.
 * No support for indexed properties
 * No support for Godot functions with varargs.
 * No support for script extensions.
-* No methods for Godot math types, Vectors, Transforms, etc.
+* Incomplete methods for Godot math types, Vectors, Transforms, etc.
 * 64bit support only.
 * Not tested on Windows.
 
