@@ -10,6 +10,13 @@ import "runtime.link/api/call"
 
 type Side int64
 
+const (
+	SideLeft   Side = 0
+	SideTop    Side = 1
+	SideRight  Side = 2
+	SideBottom Side = 3
+)
+
 type Corner int64
 
 type Orientation int64

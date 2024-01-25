@@ -54,6 +54,11 @@ func NewVector2(x, y Float) Vector2 { return Vector2{float32(x), float32(y)} }
 // NewVector2i constructs a new Vector2i from the given x and y.
 func NewVector2i(x, y Int) Vector2i { return Vector2i{int32(x), int32(y)} }
 
+// NewRect2 constructs a Rect2 by setting its position to (x, y), and its size to (width, height).
+func NewRect2(x, y, width, height Float) Rect2 {
+	return Rect2{Position: Vector2{float32(x), float32(y)}, Size: Vector2{float32(width), float32(height)}}
+}
+
 /*
 Register registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must

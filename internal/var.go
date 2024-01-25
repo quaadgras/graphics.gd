@@ -15,11 +15,6 @@ type Bool bool
 type Float float64
 type Int int64
 
-type Rect2 struct {
-	Position Vector2
-	Size     Vector2
-}
-
 type Rect2i struct {
 	Position Vector2i
 	Size     Vector2i
