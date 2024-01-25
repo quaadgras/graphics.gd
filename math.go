@@ -136,9 +136,6 @@ func CubicInterpolateInTime[T ~float32 | ~float64](from, to, pre, post, weight, 
 // DecibelsToLinear converts from decibels to linear energy (audio).
 func DecibelsToLinear[T ~float32 | ~float64](db T) T { return gd.DecibelsToLinear(db) }
 
-// DegreesToRadians converts an angle expressed in degrees to radians.
-func DegreesToRadians[T ~float32 | ~float64](deg T) T { return gd.DegreesToRadians(deg) }
-
 // Ease returns an "eased" value of x based on an easing function defined with curve.
 // This easing function is based on an exponent. The curve can be any floating-point number,
 // with specific values leading to the following behaviors:
@@ -268,9 +265,6 @@ func Posmod[T ~int8 | ~int16 | ~int32 | ~int64 | ~int](x, y T) T { return gd.Pos
 
 // Pow returns the result of base raised to the power of exp.
 func Pow[T ~float32 | ~float64](base, exp T) T { return gd.Pow(base, exp) }
-
-// RadiansToDegrees converts an angle expressed in radians to degrees.
-func RadiansToDegrees[T ~float32 | ~float64](rad T) T { return gd.RadiansToDegrees(rad) }
 
 // Remap maps a value from range (istart, istop) to (ostart, ostop). See also [Lerp] and [InverseLerp].
 // If value is outside (istart, istop), then the resulting value will also be outside (ostart, ostop).

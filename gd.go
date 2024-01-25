@@ -51,6 +51,9 @@ func Const[F func(T) T, T any](constant F) T {
 // NewVector2 constructs a new Vector2 from the given x and y.
 func NewVector2(x, y Float) Vector2 { return Vector2{float32(x), float32(y)} }
 
+// NewVector2i constructs a new Vector2i from the given x and y.
+func NewVector2i(x, y Int) Vector2i { return Vector2i{int32(x), int32(y)} }
+
 /*
 Register registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must
