@@ -64,6 +64,17 @@ func NewRect2i(x, y, width, height Int) Rect2i {
 	return Rect2i{Position: Vector2i{int32(x), int32(y)}, Size: Vector2i{int32(width), int32(height)}}
 }
 
+// NewVector3 constructs a new Vector3 from the given x, y, and z.
+func NewVector3(x, y, z Float) Vector3 { return Vector3{float32(x), float32(y), float32(z)} }
+
+// NewVector3i constructs a new Vector3i from the given x, y, and z.
+func NewVector3i(x, y, z Int) Vector3i { return Vector3i{int32(x), int32(y), int32(z)} }
+
+// NewTransform2D constructs a new Transform2D from the given rotation and position.
+func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vector2) Transform2D {
+	return gd.NewTransform2D(rotation, scale, skew, position)
+}
+
 /*
 Register registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must

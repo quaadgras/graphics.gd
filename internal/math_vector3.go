@@ -22,6 +22,7 @@ func (v *Vector3) SetX(x Float) { v[X] = float32(x) }
 func (v *Vector3) SetY(y Float) { v[Y] = float32(y) }
 func (v *Vector3) SetZ(z Float) { v[Z] = float32(z) }
 
+// "Constants"
 func (Vector3) ZERO() Vector3 { return Vector3{0, 0, 0} }
 func (Vector3) ONE() Vector3  { return Vector3{1, 1, 1} }
 func (Vector3) INF() Vector3 {

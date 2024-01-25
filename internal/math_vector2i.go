@@ -18,41 +18,20 @@ Otherwise, a [Vector2i] will always evaluate to true.
 */
 type Vector2i [2]int32
 
-// ZERO vector, a vector with all components set to 0.
-func (v Vector2i) ZERO() Vector2i { return Vector2i{} }
-
-// ONE vector, a vector with all components set to 1.
-func (v Vector2i) ONE() Vector2i { return Vector2i{1, 1} }
-
-// MIN vector, the vector with the smallest value in all components.
-func (v Vector2i) MIN() Vector2i { return Vector2i{math.MinInt32, math.MinInt32} }
-
-// MAX vector, the vector with the largest value in all components.
-func (v Vector2i) MAX() Vector2i { return Vector2i{math.MaxInt32, math.MaxInt32} }
-
-// LEFT unit vector. Represents the direction of left.
-func (v Vector2i) LEFT() Vector2i { return Vector2i{-1, 0} }
-
-// RIGHT unit vector. Represents the direction of right.
-func (v Vector2i) RIGHT() Vector2i { return Vector2i{1, 0} }
-
-// UP unit vector. Represents the direction of up.
-func (v Vector2i) UP() Vector2i { return Vector2i{0, -1} }
-
-// DOWN unit vector. Represents the direction of down.
-func (v Vector2i) DOWN() Vector2i { return Vector2i{0, 1} }
-
-// X returns the vector's X component. Also accessible by using the index position [0].
-func (v Vector2i) X() Int { return Int(v[0]) }
-
-// Y returns the vector's Y component. Also accessible by using the index position [1].
-func (v Vector2i) Y() Int { return Int(v[1]) }
-
-// SetX sets the vector's X component. Also accessible by using the index position [0].
+func (v Vector2i) X() Int     { return Int(v[0]) }
+func (v Vector2i) Y() Int     { return Int(v[1]) }
 func (v Vector2i) SetX(x Int) { v[0] = int32(x) }
-
-// SetY sets the vector's Y component. Also accessible by using the index position [1].
 func (v Vector2i) SetY(y Int) { v[1] = int32(y) }
+
+// "Constants"
+func (v Vector2i) ZERO() Vector2i  { return Vector2i{} }
+func (v Vector2i) ONE() Vector2i   { return Vector2i{1, 1} }
+func (v Vector2i) MIN() Vector2i   { return Vector2i{math.MinInt32, math.MinInt32} }
+func (v Vector2i) MAX() Vector2i   { return Vector2i{math.MaxInt32, math.MaxInt32} }
+func (v Vector2i) LEFT() Vector2i  { return Vector2i{-1, 0} }
+func (v Vector2i) RIGHT() Vector2i { return Vector2i{1, 0} }
+func (v Vector2i) UP() Vector2i    { return Vector2i{0, -1} }
+func (v Vector2i) DOWN() Vector2i  { return Vector2i{0, 1} }
 
 // Vector2 constructs a new Vector2 from Vector2i.
 func (v Vector2i) Vector2() Vector2 { return Vector2{float32(v[0]), float32(v[1])} }
