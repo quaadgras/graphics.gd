@@ -7866,7 +7866,7 @@ func (self Object) CancelFree() {
 	frame.Free()
 }
 
-func (self Object) virtual(name string) reflect.Value {
+func (self Object) Virtual(name string) reflect.Value {
 	switch name {
 	default:
 		return VirtualByName(self.Super(), name)

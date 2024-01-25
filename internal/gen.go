@@ -844,7 +844,7 @@ func generate() error {
 		for _, method := range class.Methods {
 			classDB.methodCall(w, pkg, class, method, callDefault)
 		}
-		fmt.Fprintf(w, "\nfunc (self %[1]v) virtual(name string) reflect.Value {\n", class.Name)
+		fmt.Fprintf(w, "\nfunc (self %[1]v) Virtual(name string) reflect.Value {\n", class.Name)
 		fmt.Fprintf(w, "\tswitch name {\n")
 		for _, method := range class.Methods {
 			if method.IsVirtual {

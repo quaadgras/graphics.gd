@@ -47,12 +47,12 @@ func (class Class[T, S]) class() S { return class.super }
 
 func (class *Class[T, S]) Super() *S { return &class.super }
 
-func (class Class[T, S]) virtual(s string) reflect.Value {
-	return class.super.virtual(s)
+func (class Class[T, S]) Virtual(s string) reflect.Value {
+	return class.super.Virtual(s)
 }
 
 func VirtualByName(class IsClass, name string) reflect.Value {
-	return class.virtual(name)
+	return class.Virtual(name)
 }
 
 // As attempts to cast the given class to T, returning true
@@ -88,7 +88,7 @@ func (ptr Pointer) Free() {
 	mmm.End(obj.AsPointer())
 }
 
-func (ptr Pointer) virtual(string) reflect.Value {
+func (ptr Pointer) Virtual(string) reflect.Value {
 	return reflect.Value{}
 }
 
@@ -121,7 +121,7 @@ type PointerToClass interface {
 type IsClass interface {
 	Pointer() uintptr
 	AsPointer() Pointer
-	virtual(string) reflect.Value
+	Virtual(string) reflect.Value
 
 	Pin() Context
 	AsObject() Object
