@@ -278,7 +278,7 @@ const (
 	In
 )
 
-type GDExtensionInitializationLevel int
+type GDExtensionInitializationLevel int64
 
 const (
 	GDExtensionInitializationLevelCore    GDExtensionInitializationLevel = 0
