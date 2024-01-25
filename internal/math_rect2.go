@@ -29,6 +29,13 @@ func (r Rect2) End() Vector2 { return r.Position.Add(r.Size) }
 // equivalent to position + size. Setting the end point will change the size of the rectangle.
 func (r *Rect2) SetEnd(end Vector2) { r.Size = end.Sub(r.Position) }
 
+func (r Rect2) Rect2i() Rect2i {
+	return Rect2i{
+		Position: r.Position.Vector2i(),
+		Size:     r.Size.Vector2i(),
+	}
+}
+
 // Abs returns a Rect2 equivalent to this rectangle, with its width and height modified to be
 // non-negative values, and with its position being the top-left corner of the rectangle.
 //

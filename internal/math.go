@@ -217,9 +217,9 @@ func (a Basis) lerp(p_to Basis, p_weight Float) Basis {
 	var from = a.GetQuaternion()
 	var to = p_to.GetQuaternion()
 	var b = from.lerp(to, p_weight).Basis()
-	b.rows[0] = b.rows[0].Mulf(lerpf(a.rows[0].Length(), p_to.rows[0].Length(), p_weight))
-	b.rows[1] = b.rows[1].Mulf(lerpf(a.rows[1].Length(), p_to.rows[1].Length(), p_weight))
-	b.rows[2] = b.rows[2].Mulf(lerpf(a.rows[2].Length(), p_to.rows[2].Length(), p_weight))
+	b[0] = b[0].Mulf(lerpf(a[0].Length(), p_to[0].Length(), p_weight))
+	b[1] = b[1].Mulf(lerpf(a[1].Length(), p_to[1].Length(), p_weight))
+	b[2] = b[2].Mulf(lerpf(a[2].Length(), p_to[2].Length(), p_weight))
 	return b
 }
 
@@ -299,8 +299,8 @@ func Atan[T ~float32 | ~float64](x T) T {
 // the value, the method takes into account the sign of both arguments in order to determine the quadrant.
 //
 // Important note: The Y coordinate comes first, by convention.
-func Atan2[T ~float32 | ~float64](y, x T) T {
-	return T(math.Atan2(float64(y), float64(x)))
+func Atan2[T ~float32 | ~float64](y, x T) Radians {
+	return Radians(math.Atan2(float64(y), float64(x)))
 }
 
 // Atanh returns the hyperbolic arc (also called inverse) tangent of x, returning a value in radians. Use

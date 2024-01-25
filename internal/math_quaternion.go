@@ -16,10 +16,8 @@ func (q Quaternion) Basis() Basis {
 	var xx, xy, xz = q[x] * xs, q[x] * ys, q[x] * zs
 	var yy, yz, zz = q[y] * ys, q[y] * zs, q[z] * zs
 	return Basis{
-		rows: [3]Vector3{
-			{1.0 - (yy + zz), xy - wz, xz + wy},
-			{xy + wz, 1.0 - (xx + zz), yz - wx},
-			{xz - wy, yz + wx, 1.0 - (xx + yy)},
-		},
+		{1.0 - (yy + zz), xy - wz, xz + wy},
+		{xy + wz, 1.0 - (xx + zz), yz - wx},
+		{xz - wy, yz + wx, 1.0 - (xx + yy)},
 	}
 }

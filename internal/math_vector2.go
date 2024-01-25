@@ -368,16 +368,6 @@ func (v Vector2) Neg() Vector2 { return Vector2{-v[x], -v[y]} }
 
 func (v Vector2) Transform(t Transform2D) Vector2 { return Vector2{t.tdotx(v), t.tdoty(v)}.Add(t[2]) }
 
-type Vector3 [3]float32
-
-func (v Vector3) Mulf(f Float) Vector3 {
-	return Vector3{float32(Float(v[x]) * f), float32(Float(v[y]) * f), float32(Float(v[z]) * f)}
-}
-
-func (v Vector3) Length() Float {
-	return Float(math.Sqrt(float64(Float(v[x])*Float(v[x]) + Float(v[y])*Float(v[y]) + Float(v[z])*Float(v[z]))))
-}
-
 type Vector3i [3]int32
 
 type Vector4 [4]float32
