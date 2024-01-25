@@ -1,3 +1,5 @@
+//go:build !generate
+
 package gd
 
 type Transform2D [3]Vector2

@@ -217,9 +217,9 @@ func (a Basis) lerp(p_to Basis, p_weight Float) Basis {
 	var from = a.GetQuaternion()
 	var to = p_to.GetQuaternion()
 	var b = from.lerp(to, p_weight).Basis()
-	b.rows[0] = b.rows[0].ScaledBy(lerpf(a.rows[0].Length(), p_to.rows[0].Length(), p_weight))
-	b.rows[1] = b.rows[1].ScaledBy(lerpf(a.rows[1].Length(), p_to.rows[1].Length(), p_weight))
-	b.rows[2] = b.rows[2].ScaledBy(lerpf(a.rows[2].Length(), p_to.rows[2].Length(), p_weight))
+	b.rows[0] = b.rows[0].Mulf(lerpf(a.rows[0].Length(), p_to.rows[0].Length(), p_weight))
+	b.rows[1] = b.rows[1].Mulf(lerpf(a.rows[1].Length(), p_to.rows[1].Length(), p_weight))
+	b.rows[2] = b.rows[2].Mulf(lerpf(a.rows[2].Length(), p_to.rows[2].Length(), p_weight))
 	return b
 }
 

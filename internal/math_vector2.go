@@ -36,8 +36,14 @@ type Vector2 [2]float32
 // X is the vector's X component. Also accessible by using the index position [0].
 func (v Vector2) X() Float { return Float(v[x]) }
 
+// SetX sets the vector's X component. Also accessible by using the index position [0].
+func (v *Vector2) SetX(x Float) { v[X] = float32(x) }
+
 // Y is the vector's Y component. Also accessible by using the index position [1].
 func (v Vector2) Y() Float { return Float(v[y]) }
+
+// SetY sets the vector's Y component. Also accessible by using the index position [1].
+func (v *Vector2) SetY(y Float) { v[Y] = float32(y) }
 
 // ZERO vector, a vector with all components set to 0.
 func (v Vector2) ZERO() Vector2 { v[x], v[y] = 0, 0; return v }
@@ -59,6 +65,11 @@ func (v Vector2) UP() Vector2 { v[x], v[y] = 0, -1; return v }
 
 // DOWN unit vector. Y is down in 2D, so this vector points +Y.
 func (v Vector2) DOWN() Vector2 { v[x], v[y] = 0, 1; return v }
+
+// Vector2i constructs a new Vector2i from the given Vector2 by truncating components' fractional parts
+// (rounding towards zero). For a different behavior consider passing the result of [Vector2.Ceil],
+// [Vector2.Floor] or [Vector2.Round] to this constructor instead.
+func (v Vector2) Vector2i() Vector2i { return Vector2i{int32(v[x]), int32(v[y])} }
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).
 func (v Vector2) Abs() Vector2 { return v.abs() }
@@ -220,8 +231,8 @@ func (v Vector2) Lerp(to Vector2, weight Float) Vector2 { return v.Lerp(to, weig
 func (v Vector2) LimitLength(length Float) Vector2 {
 	var l = v.Length()
 	if l > 0 && length < l {
-		v = v.ScaledBy(1 / l)
-		v = v.ScaledBy(length)
+		v = v.Mulf(1 / l)
+		v = v.Mulf(length)
 	}
 	return v
 }
@@ -236,12 +247,12 @@ func (v Vector2) MaxAxis() Axis {
 }
 
 // MinAxis returns the axis of the vector's lowest value. See [Axis] constants. If all
-// components are equal, this method returns [X].
+// components are equal, this method returns [Y].
 func (v Vector2) MinAxis() Axis {
-	if v[y] < v[x] {
-		return Y
+	if v[x] < v[y] {
+		return X
 	}
-	return X
+	return Y
 }
 
 // MoveToward returns a new vector moved toward to by the fixed delta amount. Will not go past
@@ -252,7 +263,7 @@ func (v Vector2) MoveToward(to Vector2, delta Float) Vector2 {
 	if len <= delta || len < cmpEpsilon {
 		return to
 	}
-	return v.Add(vd.ScaledBy(len * delta))
+	return v.Add(vd.Mulf(len * delta))
 }
 
 // Normalized returns the result of scaling the vector to unit length. Equivalent to v / v.Length().
@@ -283,12 +294,12 @@ func (v Vector2) PosmodVector(mod Vector2) Vector2 {
 
 // Project returns the result of projecting the vector onto the given vector b.
 func (v Vector2) Project(b Vector2) Vector2 {
-	return b.ScaledBy(v.Dot(b) / b.LengthSquared())
+	return b.Mulf(v.Dot(b) / b.LengthSquared())
 }
 
 // Reflect returns the result of reflecting the vector from a line defined by the given direction vector n.
 func (v Vector2) Reflect(n Vector2) Vector2 {
-	return n.ScaledBy(2 * v.Dot(n)).Sub(v)
+	return n.Mulf(2 * v.Dot(n)).Sub(v)
 }
 
 // Rotated returns the result of rotating this vector by angle (in radians).
@@ -321,12 +332,12 @@ func (v Vector2) Slerp(to Vector2, weight Radians) Vector2 {
 	var start_length = Sqrt(start_length_sq)
 	var result_length = Lerpf(start_length, Sqrt(end_length_sq), Float(weight))
 	var angle = v.AngleTo(to)
-	return v.Rotated(angle * weight).ScaledBy(result_length / start_length)
+	return v.Rotated(angle * weight).Mulf(result_length / start_length)
 }
 
 // Slide returns the result of sliding the vector along a plane defined by the given normal.
 func (v Vector2) Slide(n Vector2) Vector2 {
-	return v.Sub(n.ScaledBy(v.Dot(n)))
+	return v.Sub(n.Mulf(v.Dot(n)))
 }
 
 // Snapped returns a new vector with all components snapped to the nearest multiple of step.
@@ -341,22 +352,25 @@ func (v Vector2) Add(other Vector2) Vector2 { return Vector2{v[x] + other[x], v[
 func (v Vector2) Sub(other Vector2) Vector2 { return Vector2{v[x] - other[x], v[y] - other[y]} }
 func (v Vector2) Mul(other Vector2) Vector2 { return Vector2{v[x] * other[x], v[y] * other[y]} }
 func (v Vector2) Div(other Vector2) Vector2 { return Vector2{v[x] / other[x], v[y] / other[y]} }
-func (v Vector2) Neg() Vector2              { return Vector2{-v[x], -v[y]} }
-
-func (v Vector2) ScaledBy(f Float) Vector2 {
-	return Vector2{float32(Float(v[x]) * f), float32(Float(v[y]) * f)}
+func (v Vector2) Addf(other Float) Vector2 {
+	return Vector2{v[x] + float32(other), v[y] + float32(other)}
 }
-func (v Vector2) ShrunkBy(f Float) Vector2 {
-	return Vector2{float32(Float(v[x]) / f), float32(Float(v[y]) / f)}
+func (v Vector2) Subf(other Float) Vector2 {
+	return Vector2{v[x] - float32(other), v[y] - float32(other)}
 }
+func (v Vector2) Mulf(other Float) Vector2 {
+	return Vector2{v[x] * float32(other), v[y] * float32(other)}
+}
+func (v Vector2) Divf(other Float) Vector2 {
+	return Vector2{v[x] / float32(other), v[y] / float32(other)}
+}
+func (v Vector2) Neg() Vector2 { return Vector2{-v[x], -v[y]} }
 
 func (v Vector2) Transform(t Transform2D) Vector2 { return Vector2{t.tdotx(v), t.tdoty(v)}.Add(t[2]) }
 
-type Vector2i [2]int32
-
 type Vector3 [3]float32
 
-func (v Vector3) ScaledBy(f Float) Vector3 {
+func (v Vector3) Mulf(f Float) Vector3 {
 	return Vector3{float32(Float(v[x]) * f), float32(Float(v[y]) * f), float32(Float(v[z]) * f)}
 }
 

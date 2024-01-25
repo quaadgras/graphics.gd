@@ -1,5 +1,3 @@
-//go:build !generate
-
 package gd_test
 
 import (
