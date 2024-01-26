@@ -254,19 +254,19 @@ func Absi[T ~int8 | ~int16 | ~int32 | ~int64 | ~int](x T) T {
 // Acos returns the arc cosine of x in radians. Use to get the angle of cosine x.
 // x will be clamped between -1.0 and 1.0 (inclusive), in order to prevent acos
 // from returning NaN.
-func Acos[T ~float32 | ~float64](x T) T {
-	return T(math.Acos(float64(Clamp(x, -1.0, 1.0))))
+func Acos[T ~float32 | ~float64](x T) Radians {
+	return Radians(math.Acos(float64(Clamp(x, -1.0, 1.0))))
 }
 
 // Acosh returns the hyperbolic arc (also called inverse) cosine of x, returning a value
 // in radians. Use it to get the angle from an angle's cosine in hyperbolic space if x
 // is larger or equal to 1. For values of x lower than 1, it will return 0, in order to
 // prevent acosh from returning NaN.
-func Acosh[T ~float32 | ~float64](x T) T {
+func Acosh[T ~float32 | ~float64](x T) Radians {
 	if x < 1 {
 		return 0
 	}
-	return T(math.Acosh(float64(x)))
+	return Radians(math.Acosh(float64(x)))
 }
 
 // AngleDifference returns the difference between the two angles, in the range of [-Pi, +Pi].
@@ -278,21 +278,21 @@ func AngleDifference[T ~float32 | ~float64](from, to T) T {
 
 // Asin returns the arc sine of x in radians. Use to get the angle of sine x. x will be clamped
 // between -1.0 and 1.0 (inclusive), in order to prevent asin from returning NaN.
-func Asin[T ~float32 | ~float64](x T) T {
-	return T(math.Asin(float64(Clamp(x, -1.0, 1.0))))
+func Asin[T ~float32 | ~float64](x T) Radians {
+	return Radians(math.Asin(float64(Clamp(x, -1.0, 1.0))))
 }
 
 // Asinh returns the hyperbolic arc (also called inverse) sine of x, returning a value in radians.
 // Use it to get the angle from an angle's sine in hyperbolic space.
-func Asinh[T ~float32 | ~float64](x T) T {
-	return T(math.Asinh(float64(x)))
+func Asinh[T ~float32 | ~float64](x T) Radians {
+	return Radians(math.Asinh(float64(x)))
 }
 
 // Atan returns the arc tangent of x in radians. Use it to get the angle from an angle's tangent in
 // trigonometry. The method cannot know in which quadrant the angle should fall. See atan2 if you
 // have both y and x.
-func Atan[T ~float32 | ~float64](x T) T {
-	return T(math.Atan(float64(x)))
+func Atan[T ~float32 | ~float64](x T) Radians {
+	return Radians(math.Atan(float64(x)))
 }
 
 // Atan2 returns the arc tangent of y/x in radians. Use to get the angle of tangent y/x. To compute
@@ -309,14 +309,14 @@ func Atan2[T ~float32 | ~float64](y, x T) Radians {
 // In mathematics, the inverse hyperbolic tangent is only defined for -1 < x < 1 in the real set, so values
 // equal or lower to -1 for x return -INF and values equal or higher than 1 return +INF in order to prevent
 // atanh from returning NaN.
-func Atanh[T ~float32 | ~float64](x T) T {
+func Atanh[T ~float32 | ~float64](x T) Radians {
 	if x <= -1 {
-		return T(math.Inf(-1))
+		return Radians(math.Inf(-1))
 	}
 	if x >= 1 {
-		return T(math.Inf(1))
+		return Radians(math.Inf(1))
 	}
-	return T(math.Atanh(float64(x)))
+	return Radians(math.Atanh(float64(x)))
 }
 
 // BezierDerivative returns the derivative at the given t on a one-dimensional Bézier curve defined by the given

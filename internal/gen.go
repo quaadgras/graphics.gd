@@ -390,7 +390,7 @@ func genEnum(pkg string, decl, code io.Writer, prefix string, enum Enum) {
 		}
 		fmt.Fprintf(code, "type %v = %v.%[1]v\n", name, topLevelPrefix)
 
-		if name == "GDExtensionInitializationLevel" || name == "VariantType" || name == "Error" || name == "Side" {
+		if name == "GDExtensionInitializationLevel" || name == "VariantType" || name == "Error" || name == "Side" || name == "EulerOrder" {
 			genEnum(pkg, nil, decl, prefix, enum)
 		}
 	}

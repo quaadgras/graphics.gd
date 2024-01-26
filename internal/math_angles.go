@@ -27,3 +27,32 @@ func (deg Degrees) Vector2() Vector2 {
 	angle := deg.Radians()
 	return Vector2{float32(math.Cos(float64(angle))), float32(math.Sin(float64(angle)))}
 }
+
+// EulerAngles represents a rotation in 3D space using Euler angles.
+type EulerAngles [3]Radians
+
+// Quaternion constructs a Quaternion from Euler angles in YXZ rotation order.
+func (e EulerAngles) Quaternion() Quaternion {
+	var (
+		half_a1 = e[Y] * 0.5
+		half_a2 = e[X] * 0.5
+		half_a3 = e[Z] * 0.5
+	)
+	// R = Y(a1).X(a2).Z(a3) convention for Euler angles.
+	// Conversion to quaternion as listed in https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770024290.pdf (page A-6)
+	// a3 is the angle of the first rotation, following the notation in this reference.
+	var (
+		cos_a1 = Cos(half_a1)
+		sin_a1 = Sin(half_a1)
+		cos_a2 = Cos(half_a2)
+		sin_a2 = Sin(half_a2)
+		cos_a3 = Cos(half_a3)
+		sin_a3 = Sin(half_a3)
+	)
+	return Quaternion{
+		float32(sin_a1*cos_a2*sin_a3 + cos_a1*sin_a2*cos_a3),
+		float32(sin_a1*cos_a2*cos_a3 - cos_a1*sin_a2*sin_a3),
+		float32(-sin_a1*sin_a2*cos_a3 + cos_a1*cos_a2*sin_a3),
+		float32(sin_a1*sin_a2*sin_a3 + cos_a1*cos_a2*cos_a3),
+	}
+}

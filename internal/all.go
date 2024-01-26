@@ -30,6 +30,15 @@ type InlineAlignment int64
 
 type EulerOrder int64
 
+const (
+	EulerOrderXyz EulerOrder = 0
+	EulerOrderXzy EulerOrder = 1
+	EulerOrderYxz EulerOrder = 2
+	EulerOrderYzx EulerOrder = 3
+	EulerOrderZxy EulerOrder = 4
+	EulerOrderZyx EulerOrder = 5
+)
+
 type Key int64
 
 type KeyModifierMask int64

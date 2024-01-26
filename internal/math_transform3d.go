@@ -1,3 +1,5 @@
+//go:build !generate
+
 package gd
 
 type Transform3D struct {

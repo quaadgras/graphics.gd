@@ -14,11 +14,6 @@ type Bool bool
 type Float float64
 type Int int64
 
-type AABB struct {
-	Position Vector3
-	Size     Vector3
-}
-
 type Projection [4]Vector4
 
 type Color [4]float32
