@@ -94,6 +94,10 @@ func NewBasisRotatedAround(axis Vector3, angle Radians) Basis {
 	return rows
 }
 
+func newBasisWithQuaternionScale(q Quaternion, s Vector3) Basis {
+	return q.Basis().Mul(NewBasisScaledBy(s))
+}
+
 func (b Basis) cofac(row1, col1, row2, col2 int) float {
 	return (b[row1][col1]*b[row2][col2] - b[row1][col2]*b[row2][col1])
 }
