@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 /*
 Plane represents a normalized plane equation. normal is the normal of the plane (a, b, c normalized), and d is the
@@ -23,7 +21,7 @@ type Plane struct {
 		In the scalar equation of the plane ax + by + cz = d, this is d, while the (a, b, c) coordinates are represented by the
 		normal property.
 	*/
-	D Float
+	D float
 }
 
 // NewPlane creates a plane from the three points, given in clockwise order.
@@ -31,7 +29,7 @@ func NewPlane(a, b, c Vector3) Plane {
 	normal := a.Sub(c).Cross(a.Sub(b)).Normalized()
 	return Plane{
 		Normal: normal,
-		D:      normal.Dot(a),
+		D:      float(normal.Dot(a)),
 	}
 }
 
@@ -41,9 +39,9 @@ func (p Plane) X() Float { return Float(p.Normal[0]) }
 func (p Plane) Y() Float { return Float(p.Normal[1]) }
 func (p Plane) Z() Float { return Float(p.Normal[2]) }
 
-func (p *Plane) SetX(x Float) { p.Normal[0] = float32(x) }
-func (p *Plane) SetY(y Float) { p.Normal[1] = float32(y) }
-func (p *Plane) SetZ(z Float) { p.Normal[2] = float32(z) }
+func (p *Plane) SetX(x Float) { p.Normal[0] = float(x) }
+func (p *Plane) SetY(y Float) { p.Normal[1] = float(y) }
+func (p *Plane) SetZ(z Float) { p.Normal[2] = float(z) }
 
 // "Constants"
 
@@ -57,12 +55,12 @@ func (Plane) XY() Plane { return Plane{Normal: Vector3{0, 0, 1}} }
 // If the point is above the plane, the distance will be positive. If below,
 // the distance will be negative.
 func (p Plane) DistanceTo(point Vector3) Float {
-	return p.Normal.Dot(point) - p.D
+	return p.Normal.Dot(point) - Float(p.D)
 }
 
 // GetCenter returns the center of the plane.
 func (p Plane) GetCenter() Vector3 {
-	return p.Normal.Mulf(p.D)
+	return p.Normal.Mulf(Float(p.D))
 }
 
 // HasPoint returns true if point is inside the plane. Comparison uses a custom minimum
@@ -71,7 +69,7 @@ func (p Plane) HasPoint(point Vector3, tolerance Float) bool {
 	if tolerance < cmpEpsilon {
 		tolerance = cmpEpsilon
 	}
-	return Absf(p.Normal.Dot(point)-p.D) <= tolerance
+	return Absf(p.Normal.Dot(point)-Float(p.D)) <= tolerance
 }
 
 // Intersect3 returns the intersection point of the three planes b, c and this plane. If
@@ -86,7 +84,7 @@ func (p Plane) Intersect3(b, c Plane) (Vector3, bool) {
 	if IsApproximatelyZero(denom) {
 		return Vector3{}, false
 	}
-	return normal1.Cross(normal2).Mulf(p.D).Add(normal2.Cross(normal0).Mulf(b.D)).Add(normal0.Cross(normal1).Mulf(c.D)).Divf(denom), true
+	return normal1.Cross(normal2).Mulf(Float(p.D)).Add(normal2.Cross(normal0).Mulf(Float(b.D))).Add(normal0.Cross(normal1).Mulf(Float(c.D))).Divf(denom), true
 }
 
 // IntersectsRay returns the intersection point of a ray consisting of the position from and the
@@ -97,7 +95,7 @@ func (p Plane) IntersectsRay(from, dir Vector3) (Vector3, bool) {
 	if IsApproximatelyZero(den) {
 		return Vector3{}, false
 	}
-	var dist = (p.Normal.Dot(from) - p.D) / den
+	var dist = (p.Normal.Dot(from) - Float(p.D)) / den
 	if dist > cmpEpsilon { //this is a ray, before the emitting pos (p_from) doesn't exist
 		return Vector3{}, false
 	}
@@ -113,7 +111,7 @@ func (p Plane) IntersectsSegment(from, to Vector3) (Vector3, bool) {
 	if IsApproximatelyZero(den) {
 		return Vector3{}, false
 	}
-	var dist = (p.Normal.Dot(from) - p.D) / den
+	var dist = (p.Normal.Dot(from) - Float(p.D)) / den
 	if dist < -cmpEpsilon || dist > 1+cmpEpsilon {
 		return Vector3{}, false
 	}
@@ -131,7 +129,7 @@ func (p Plane) IsFinite() bool { return p.Normal.IsFinite() && IsFinite(p.D) }
 
 // IsPointOver returns true if point is located above the plane.
 func (p Plane) IsPointOver(point Vector3) bool {
-	return p.Normal.Dot(point) > p.D
+	return p.Normal.Dot(point) > Float(p.D)
 }
 
 // Normalized returns a copy of the plane, with normalized normal (so it's a unit vector).
@@ -143,7 +141,7 @@ func (p Plane) Normalized() Plane {
 	}
 	return Plane{
 		Normal: p.Normal.Divf(l),
-		D:      p.D / l,
+		D:      p.D / float(l),
 	}
 }
 
@@ -157,12 +155,12 @@ func (p Plane) Transform(t Transform3D) Plane {
 	b := t.Basis.Inverse().Transposed()
 
 	// Transform a single point on the plane.
-	var point = p.Normal.Mulf(p.D)
+	var point = p.Normal.Mulf(Float(p.D))
 	point.Transform(t)
 
 	// Use inverse transpose for correct normals with non-uniform scaling.
 	var normal = b.Transform(p.Normal).Normalized()
 
 	var d = p.Normal.Dot(point)
-	return Plane{normal, d}
+	return Plane{normal, float(d)}
 }

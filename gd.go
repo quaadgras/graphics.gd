@@ -3,6 +3,7 @@ package gd
 import (
 	gd "grow.graphics/gd/internal"
 	internal "grow.graphics/gd/internal"
+	"grow.graphics/gd/internal/spatial"
 )
 
 type Axis int
@@ -49,14 +50,14 @@ func Const[F func(T) T, T any](constant F) T {
 }
 
 // NewVector2 constructs a new Vector2 from the given x and y.
-func NewVector2(x, y Float) Vector2 { return Vector2{float32(x), float32(y)} }
+func NewVector2(x, y Float) Vector2 { return spatial.NewVector2(x, y) }
 
 // NewVector2i constructs a new Vector2i from the given x and y.
 func NewVector2i(x, y Int) Vector2i { return Vector2i{int32(x), int32(y)} }
 
 // NewRect2 constructs a Rect2 by setting its position to (x, y), and its size to (width, height).
 func NewRect2(x, y, width, height Float) Rect2 {
-	return Rect2{Position: Vector2{float32(x), float32(y)}, Size: Vector2{float32(width), float32(height)}}
+	return spatial.NewRect2(x, y, width, height)
 }
 
 // NewRect2i constructs a Rect2i by setting its position to (x, y), and its size to (width, height).
@@ -65,19 +66,19 @@ func NewRect2i(x, y, width, height Int) Rect2i {
 }
 
 // NewVector3 constructs a new Vector3 from the given x, y, and z.
-func NewVector3(x, y, z Float) Vector3 { return Vector3{float32(x), float32(y), float32(z)} }
+func NewVector3(x, y, z Float) Vector3 { return spatial.NewVector3(x, y, z) }
 
 // NewVector3i constructs a new Vector3i from the given x, y, and z.
 func NewVector3i(x, y, z Int) Vector3i { return Vector3i{int32(x), int32(y), int32(z)} }
 
 // NewTransform2D constructs a new Transform2D from the given rotation and position.
 func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vector2) Transform2D {
-	return gd.NewTransform2D(rotation, scale, skew, position)
+	return spatial.NewTransform2D(rotation, scale, skew, position)
 }
 
 // NewVector4 constructs a new Vector4 from the given x, y, z, and w.
 func NewVector4(x, y, z, w Float) Vector4 {
-	return Vector4{float32(x), float32(y), float32(z), float32(w)}
+	return spatial.NewVector4(x, y, z, w)
 }
 
 // NewVector4i constructs a new Vector4i from the given x, y, z, and w.
@@ -86,7 +87,7 @@ func NewVector4i(x, y, z, w Int) Vector4i {
 }
 
 // NewPlane creates a plane from the three points, given in clockwise order.
-func NewPlane(a, b, c Vector3) Plane { return gd.NewPlane(a, b, c) }
+func NewPlane(a, b, c Vector3) Plane { return spatial.NewPlane(a, b, c) }
 
 /*
 Register registers a struct available for use inside Godot
@@ -120,8 +121,14 @@ func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
 }
 
 type (
-	Radians = internal.Radians
-	Degrees = internal.Degrees
+	EulerAngles = spatial.EulerAngles
+	Radians     = spatial.Radians
+	Degrees     = spatial.Degrees
+)
+
+type (
+	Side       = spatial.Side
+	EulerOrder = spatial.EulerOrder
 )
 
 type (

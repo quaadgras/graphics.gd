@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 /*
 Rect2 represents an axis-aligned rectangle in a 2D space, using integer coordinates. It is defined by

@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 /*
 Transform2D is a 2×3 matrix (2 rows, 3 columns) used for 2D linear transformations. It can represent transformations such as translation,
@@ -12,9 +10,9 @@ type Transform2D [3]Vector2
 
 // NewTransform2D constructs a new Transform2D from the given rotation and position.
 func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vector2) Transform2D {
-	r := float32(rotation)
+	r := float(rotation)
 	s := scale
-	k := float32(skew)
+	k := float(skew)
 	p := position
 	return Transform2D{
 		Vector2{s[X] * Cos(r), s[Y] * Sin(r)},
@@ -58,14 +56,14 @@ func (t Transform2D) FLIP_Y() Transform2D {
 	}
 }
 
-func (t Transform2D) tdotx(v Vector2) float32 { return t[0][x]*v[x] + t[1][x]*v[y] }
-func (t Transform2D) tdoty(v Vector2) float32 { return t[0][y]*v[x] + t[1][y]*v[y] }
+func (t Transform2D) tdotx(v Vector2) float { return t[0][x]*v[x] + t[1][x]*v[y] }
+func (t Transform2D) tdoty(v Vector2) float { return t[0][y]*v[x] + t[1][y]*v[y] }
 
 // AffineInverse returns the inverse of the transform, under the assumption that the basis is
 // invertible (must have non-zero determinant).
 func (t Transform2D) AffineInverse() Transform2D {
 	det := t.Determinant()
-	idet := float32(1 / det)
+	idet := float(1 / det)
 	t[0][0], t[1][1] = t[1][1], t[0][0]
 	t[0] = t[0].Mul(Vector2{idet, -idet})
 	t[1] = t[1].Mul(Vector2{-idet, idet})
@@ -110,7 +108,7 @@ func (t Transform2D) GetRotation() Radians { return Atan2(t[0][Y], t[0][X]) }
 // GetScale returns the transform's scale.
 func (t Transform2D) GetScale() Vector2 {
 	var det_sign = Signf(t.Determinant())
-	return Vector2{float32(t[0].Length()), float32(det_sign * t[1].Length())}
+	return Vector2{float(t[0].Length()), float(det_sign * t[1].Length())}
 }
 
 // GetSkew returns the transform's skew (in radians)
@@ -265,7 +263,7 @@ func (t Transform2D) TranslatedLocal(offset Vector2) Transform2D {
 func (t Transform2D) Mul(other Transform2D) Transform2D {
 	t[2] = other[2].Transform(t)
 
-	var x0, x1, y0, y1 float32
+	var x0, x1, y0, y1 float
 
 	x0 = t.tdotx(other[0])
 	x1 = t.tdoty(other[0])

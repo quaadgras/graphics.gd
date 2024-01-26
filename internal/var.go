@@ -6,17 +6,38 @@ import (
 	"reflect"
 	"strings"
 
+	"grow.graphics/gd/internal/spatial"
 	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
 type Bool bool
-type Float float64
-type Int int64
 
-type Projection [4]Vector4
+type (
+	Float       = spatial.Float
+	Int         = spatial.Int
+	Vector2     = spatial.Vector2
+	Vector2i    = spatial.Vector2i
+	Rect2       = spatial.Rect2
+	Rect2i      = spatial.Rect2i
+	Vector3     = spatial.Vector3
+	Vector3i    = spatial.Vector3i
+	Transform2D = spatial.Transform2D
+	Vector4     = spatial.Vector4
+	Vector4i    = spatial.Vector4i
+	Plane       = spatial.Plane
+	Quaternion  = spatial.Quaternion
+	AABB        = spatial.AABB
+	Basis       = spatial.Basis
+	Transform3D = spatial.Transform3D
+	Projection  = spatial.Projection
+	Color       = spatial.Color
+)
 
-type Color [4]float32
+type (
+	Side       = spatial.Side
+	EulerOrder = spatial.EulerOrder
+)
 
 type RID uint64
 

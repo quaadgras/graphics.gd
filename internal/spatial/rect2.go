@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 /*
 Rect2 represents an axis-aligned rectangle in a 2D space. It is defined by its position and size,
@@ -19,6 +17,11 @@ to Const(Vector2.ZERO)). Otherwise, it always evaluates to true.
 type Rect2 struct {
 	Position Vector2
 	Size     Vector2
+}
+
+// NewRect2 constructs a Rect2 by setting its position to (x, y), and its size to (width, height).
+func NewRect2(x, y, width, height Float) Rect2 {
+	return Rect2{Position: Vector2{float(x), float(y)}, Size: Vector2{float(width), float(height)}}
 }
 
 // End is the ending point. This is usually the bottom-right corner of the rectangle, and is
@@ -104,10 +107,10 @@ func (r Rect2) Grow(amount Float) Rect2 {
 // GrowIndividual returns a copy of this rectangle with its left, top, right, and bottom sides extended by
 // the given amounts. Negative values shrink the sides, instead. See also [Rect2.Grow] and [Rect2.GrowSide].
 func (r Rect2) GrowIndividual(left, top, right, bottom Float) Rect2 {
-	r.Position[X] -= float32(left)
-	r.Position[Y] -= float32(top)
-	r.Size[X] += float32(left + right)
-	r.Size[Y] += float32(top + bottom)
+	r.Position[X] -= float(left)
+	r.Position[Y] -= float(top)
+	r.Size[X] += float(left + right)
+	r.Size[Y] += float(top + bottom)
 	return r
 }
 
@@ -116,15 +119,15 @@ func (r Rect2) GrowIndividual(left, top, right, bottom Float) Rect2 {
 func (r Rect2) GrowSide(side Side, amount Float) Rect2 {
 	switch side {
 	case SideLeft:
-		r.Position[X] -= float32(amount)
-		r.Size[X] += float32(amount)
+		r.Position[X] -= float(amount)
+		r.Size[X] += float(amount)
 	case SideTop:
-		r.Position[Y] -= float32(amount)
-		r.Size[Y] += float32(amount)
+		r.Position[Y] -= float(amount)
+		r.Size[Y] += float(amount)
 	case SideRight:
-		r.Size[X] += float32(amount)
+		r.Size[X] += float(amount)
 	case SideBottom:
-		r.Size[Y] += float32(amount)
+		r.Size[Y] += float(amount)
 	}
 	return r
 }

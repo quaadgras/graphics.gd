@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 import "math"
 
@@ -9,12 +7,12 @@ type Basis [3]Vector3
 func NewRotationAroundAxis(axis Vector3, angle Radians) Basis {
 	var rows Basis
 	var axis_sq = Vector3{axis[X] * axis[X], axis[Y] * axis[Y], axis[Z] * axis[Z]}
-	var cosine = float32(Cos(angle))
+	var cosine = float(Cos(angle))
 	rows[0][0] = axis_sq[X] + cosine*(1.0-axis_sq[X])
 	rows[1][1] = axis_sq[Y] + cosine*(1.0-axis_sq[Y])
 	rows[2][2] = axis_sq[Z] + cosine*(1.0-axis_sq[Z])
 
-	var sine = float32(Sin(angle))
+	var sine = float(Sin(angle))
 	var t = 1 - cosine
 
 	var xyzt = axis[X] * axis[Y] * t
@@ -34,12 +32,12 @@ func NewRotationAroundAxis(axis Vector3, angle Radians) Basis {
 	return rows
 }
 
-func (b Basis) cofac(row1, col1, row2, col2 int) float32 {
+func (b Basis) cofac(row1, col1, row2, col2 int) float {
 	return (b[row1][col1]*b[row2][col2] - b[row1][col2]*b[row2][col1])
 }
 
 func (b Basis) Inverse() Basis {
-	var co = [3]float32{
+	var co = [3]float{
 		b.cofac(1, 1, 2, 2), b.cofac(1, 2, 2, 0), b.cofac(1, 0, 2, 1),
 	}
 	var det = b[0][0]*co[0] + b[0][1]*co[1] + b[0][2]*co[2]
@@ -91,7 +89,7 @@ func (b Basis) Scaled(scale Vector3) Basis {
 
 func (b Basis) EulerAngles(order EulerOrder) EulerAngles {
 	switch order {
-	case EulerOrderXyz:
+	case EulerOrderXYZ:
 		// Euler angles in XYZ convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -124,7 +122,7 @@ func (b Basis) EulerAngles(order EulerOrder) EulerAngles {
 			euler[Z] = 0.0
 		}
 		return euler
-	case EulerOrderXzy:
+	case EulerOrderXZY:
 		// Euler angles in XZY convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -152,7 +150,7 @@ func (b Basis) EulerAngles(order EulerOrder) EulerAngles {
 			euler[Z] = -Pi / 2.0
 		}
 		return euler
-	case EulerOrderYxz:
+	case EulerOrderYXZ:
 		// Euler angles in YXZ convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -189,7 +187,7 @@ func (b Basis) EulerAngles(order EulerOrder) EulerAngles {
 		}
 
 		return euler
-	case EulerOrderYzx:
+	case EulerOrderYZX:
 		// Euler angles in YZX convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -217,7 +215,7 @@ func (b Basis) EulerAngles(order EulerOrder) EulerAngles {
 			euler[Z] = Pi / 2.0
 		}
 		return euler
-	case EulerOrderZxy:
+	case EulerOrderZXY:
 		// Euler angles in ZXY convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -244,7 +242,7 @@ func (b Basis) EulerAngles(order EulerOrder) EulerAngles {
 			euler[Z] = 0
 		}
 		return euler
-	case EulerOrderZyx:
+	case EulerOrderZYX:
 		// Euler angles in ZYX convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -287,7 +285,7 @@ func (b Basis) GetRotationQuaternion() Quaternion {
 		m = m.Scaled(Vector3{-1, -1, -1})
 	}
 	var trace = m[0][0] + m[1][1] + m[2][2]
-	var temp [4]float32
+	var temp [4]float
 
 	if trace > 0.0 {
 		var s = Sqrt(trace + 1.0)
@@ -328,9 +326,9 @@ func (b Basis) GetRotationQuaternion() Quaternion {
 
 func (m Basis) Transform(v Vector3) Vector3 {
 	return Vector3{
-		float32(m[0].Dot(v)),
-		float32(m[1].Dot(v)),
-		float32(m[2].Dot(v)),
+		float(m[0].Dot(v)),
+		float(m[1].Dot(v)),
+		float(m[2].Dot(v)),
 	}
 }
 
@@ -338,10 +336,10 @@ func (m Basis) GetQuaternion() Quaternion {
 	/* Allow getting a quaternion from an unnormalized transform */
 	var (
 		trace = m[0][0] + m[1][1] + m[2][2]
-		temp  [4]float32
+		temp  [4]float
 	)
 	if trace > 0.0 {
-		var s = float32(math.Sqrt(float64(trace) + 1.0))
+		var s = float(math.Sqrt(float64(trace) + 1.0))
 		temp[3] = (s * 0.5)
 		s = 0.5 / s
 		temp[0] = ((m[2][1] - m[1][2]) * s)
@@ -366,7 +364,7 @@ func (m Basis) GetQuaternion() Quaternion {
 			j int = (i + 1) % 3
 			k int = (i + 2) % 3
 		)
-		var s = float32(math.Sqrt(float64(m[i][i] - m[j][j] - m[k][k] + 1.0)))
+		var s = float(math.Sqrt(float64(m[i][i] - m[j][j] - m[k][k] + 1.0)))
 		temp[i] = s * 0.5
 		s = 0.5 / s
 		temp[3] = (m[k][j] - m[j][k]) * s

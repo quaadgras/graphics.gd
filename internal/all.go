@@ -7,15 +7,6 @@ import "reflect"
 import "runtime.link/mmm"
 import "runtime.link/api/call"
 
-type Side int64
-
-const (
-	SideLeft   Side = 0
-	SideTop    Side = 1
-	SideRight  Side = 2
-	SideBottom Side = 3
-)
-
 type Corner int64
 
 type Orientation int64
@@ -27,17 +18,6 @@ type HorizontalAlignment int64
 type VerticalAlignment int64
 
 type InlineAlignment int64
-
-type EulerOrder int64
-
-const (
-	EulerOrderXyz EulerOrder = 0
-	EulerOrderXzy EulerOrder = 1
-	EulerOrderYxz EulerOrder = 2
-	EulerOrderYzx EulerOrder = 3
-	EulerOrderZxy EulerOrder = 4
-	EulerOrderZyx EulerOrder = 5
-)
 
 type Key int64
 

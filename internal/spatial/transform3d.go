@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 type Transform3D struct {
 	Basis  Basis

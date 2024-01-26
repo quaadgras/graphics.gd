@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 import "math"
 
@@ -15,24 +13,29 @@ See [Vector4i] for its integer counterpart.
 Note: In a boolean context, a [Vector4] will evaluate to false if it's equal to Vector4{0, 0, 0, 0}. Otherwise, a
 [Vector4] will always evaluate to true.
 */
-type Vector4 [4]float32
+type Vector4 [4]float
+
+// NewVector4 constructs a new Vector4 from the given x, y, z, and w.
+func NewVector4(x, y, z, w Float) Vector4 {
+	return Vector4{float(x), float(y), float(z), float(w)}
+}
 
 func (v Vector4) X() Float { return Float(v[X]) }
 func (v Vector4) Y() Float { return Float(v[Y]) }
 func (v Vector4) Z() Float { return Float(v[Z]) }
 func (v Vector4) W() Float { return Float(v[W]) }
 
-func (v *Vector4) SetX(x Float) { v[X] = float32(x) }
-func (v *Vector4) SetY(y Float) { v[Y] = float32(y) }
-func (v *Vector4) SetZ(z Float) { v[Z] = float32(z) }
-func (v *Vector4) SetW(w Float) { v[W] = float32(w) }
+func (v *Vector4) SetX(x Float) { v[X] = float(x) }
+func (v *Vector4) SetY(y Float) { v[Y] = float(y) }
+func (v *Vector4) SetZ(z Float) { v[Z] = float(z) }
+func (v *Vector4) SetW(w Float) { v[W] = float(w) }
 
 // "Constants"
 
 func (Vector4) ZERO() Vector4 { return Vector4{} }
 func (Vector4) ONE() Vector4  { return Vector4{1, 1, 1, 1} }
 func (Vector4) INF() Vector4 {
-	return Vector4{float32(math.Inf(0)), float32(math.Inf(0)), float32(math.Inf(0)), float32(math.Inf(0))}
+	return Vector4{float(math.Inf(0)), float(math.Inf(0)), float(math.Inf(0)), float(math.Inf(0))}
 }
 
 func (v Vector4) Vector4i() Vector4i {
@@ -61,10 +64,10 @@ func (v Vector4) Clamp(min, max Vector4) Vector4 {
 // interpolation.
 func (v Vector4) CubicInterpolate(b, pre_a, post_b Vector4, weight Float) Vector4 {
 	return Vector4{
-		CubicInterpolate(v[X], b[X], pre_a[X], post_b[X], float32(weight)),
-		CubicInterpolate(v[Y], b[Y], pre_a[Y], post_b[Y], float32(weight)),
-		CubicInterpolate(v[Z], b[Z], pre_a[Z], post_b[Z], float32(weight)),
-		CubicInterpolate(v[W], b[W], pre_a[W], post_b[W], float32(weight)),
+		CubicInterpolate(v[X], b[X], pre_a[X], post_b[X], float(weight)),
+		CubicInterpolate(v[Y], b[Y], pre_a[Y], post_b[Y], float(weight)),
+		CubicInterpolate(v[Z], b[Z], pre_a[Z], post_b[Z], float(weight)),
+		CubicInterpolate(v[W], b[W], pre_a[W], post_b[W], float(weight)),
 	}
 }
 
@@ -75,10 +78,10 @@ func (v Vector4) CubicInterpolate(b, pre_a, post_b Vector4, weight Float) Vector
 // It can perform smoother interpolation than cubic_interpolate by the time values.
 func (v Vector4) CubicInterpolateInTime(b, pre_a, post_b Vector4, weight, b_t, pre_a_t, post_b_t Float) Vector4 {
 	return Vector4{
-		CubicInterpolateInTime(v[X], b[X], pre_a[X], post_b[X], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
-		CubicInterpolateInTime(v[Y], b[Y], pre_a[Y], post_b[Y], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
-		CubicInterpolateInTime(v[Z], b[Z], pre_a[Z], post_b[Z], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
-		CubicInterpolateInTime(v[W], b[W], pre_a[W], post_b[W], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
+		CubicInterpolateInTime(v[X], b[X], pre_a[X], post_b[X], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
+		CubicInterpolateInTime(v[Y], b[Y], pre_a[Y], post_b[Y], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
+		CubicInterpolateInTime(v[Z], b[Z], pre_a[Z], post_b[Z], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
+		CubicInterpolateInTime(v[W], b[W], pre_a[W], post_b[W], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
 	}
 }
 
@@ -191,10 +194,10 @@ func (v Vector4) Normalized() Vector4 {
 // Posmod returns a vector composed of the [Fposmod] of this vector's components and mod.
 func (v Vector4) Posmodf(mod Float) Vector4 {
 	return Vector4{
-		Fposmod(v[X], float32(mod)),
-		Fposmod(v[Y], float32(mod)),
-		Fposmod(v[Z], float32(mod)),
-		Fposmod(v[W], float32(mod)),
+		Fposmod(v[X], float(mod)),
+		Fposmod(v[Y], float(mod)),
+		Fposmod(v[Z], float(mod)),
+		Fposmod(v[W], float(mod)),
 	}
 }
 
@@ -247,16 +250,16 @@ func (v Vector4) Div(other Vector4) Vector4 {
 	return Vector4{v[X] / other[X], v[Y] / other[Y], v[Z] / other[Z], v[W] / other[W]}
 }
 func (v Vector4) Addf(other Float) Vector4 {
-	return Vector4{v[X] + float32(other), v[Y] + float32(other), v[Z] + float32(other), v[W] + float32(other)}
+	return Vector4{v[X] + float(other), v[Y] + float(other), v[Z] + float(other), v[W] + float(other)}
 }
 func (v Vector4) Subf(other Float) Vector4 {
-	return Vector4{v[X] - float32(other), v[Y] - float32(other), v[Z] - float32(other), v[W] - float32(other)}
+	return Vector4{v[X] - float(other), v[Y] - float(other), v[Z] - float(other), v[W] - float(other)}
 }
 func (v Vector4) Mulf(other Float) Vector4 {
-	return Vector4{v[X] * float32(other), v[Y] * float32(other), v[Z] * float32(other), v[W] * float32(other)}
+	return Vector4{v[X] * float(other), v[Y] * float(other), v[Z] * float(other), v[W] * float(other)}
 }
 func (v Vector4) Divf(other Float) Vector4 {
-	return Vector4{v[X] / float32(other), v[Y] / float32(other), v[Z] / float32(other), v[W] / float32(other)}
+	return Vector4{v[X] / float(other), v[Y] / float(other), v[Z] / float(other), v[W] / float(other)}
 }
 func (v Vector4) Neg() Vector4 { return Vector4{-v[X], -v[Y], -v[Z], -v[W]} }
 

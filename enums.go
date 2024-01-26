@@ -7,15 +7,6 @@ import gd "grow.graphics/gd/internal"
 import classdb "grow.graphics/gd/internal/classdb"
 
 
-type Side = gd.Side
-
-const (
-	SideLeft Side = 0
-	SideTop Side = 1
-	SideRight Side = 2
-	SideBottom Side = 3
-)
-
 type Corner = gd.Corner
 
 const (
@@ -73,17 +64,6 @@ const (
 	InlineAlignmentBottom InlineAlignment = 14
 	InlineAlignmentImageMask InlineAlignment = 3
 	InlineAlignmentTextMask InlineAlignment = 12
-)
-
-type EulerOrder = gd.EulerOrder
-
-const (
-	EulerOrderXyz EulerOrder = 0
-	EulerOrderXzy EulerOrder = 1
-	EulerOrderYxz EulerOrder = 2
-	EulerOrderYzx EulerOrder = 3
-	EulerOrderZxy EulerOrder = 4
-	EulerOrderZyx EulerOrder = 5
 )
 
 type Key = gd.Key

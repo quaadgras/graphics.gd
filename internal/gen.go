@@ -377,6 +377,9 @@ func convertName(fnName string) string {
 
 func genEnum(pkg string, decl, code io.Writer, prefix string, enum Enum) {
 	name := prefix + strings.Replace(enum.Name, ".", "", -1)
+	if name == "Side" || name == "EulerOrder" {
+		return
+	}
 
 	if decl != nil {
 		fmt.Fprintln(decl)
@@ -390,7 +393,7 @@ func genEnum(pkg string, decl, code io.Writer, prefix string, enum Enum) {
 		}
 		fmt.Fprintf(code, "type %v = %v.%[1]v\n", name, topLevelPrefix)
 
-		if name == "GDExtensionInitializationLevel" || name == "VariantType" || name == "Error" || name == "Side" || name == "EulerOrder" {
+		if name == "GDExtensionInitializationLevel" || name == "VariantType" || name == "Error" {
 			genEnum(pkg, nil, decl, prefix, enum)
 		}
 	}

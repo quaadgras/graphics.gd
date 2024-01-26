@@ -1,6 +1,6 @@
 //go:build !generate
 
-package gd
+package spatial
 
 import "math"
 
@@ -40,7 +40,7 @@ func (Vector4i) MAX() Vector4i {
 }
 
 func (v Vector4i) Vector4() Vector4 {
-	return Vector4{float32(v[X]), float32(v[Y]), float32(v[Z]), float32(v[W])}
+	return Vector4{float(v[X]), float(v[Y]), float(v[Z]), float(v[W])}
 }
 
 // "Methods"

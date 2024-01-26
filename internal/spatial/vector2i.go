@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 import "math"
 
@@ -34,7 +32,7 @@ func (v Vector2i) UP() Vector2i    { return Vector2i{0, -1} }
 func (v Vector2i) DOWN() Vector2i  { return Vector2i{0, 1} }
 
 // Vector2 constructs a new Vector2 from Vector2i.
-func (v Vector2i) Vector2() Vector2 { return Vector2{float32(v[0]), float32(v[1])} }
+func (v Vector2i) Vector2() Vector2 { return Vector2{float(v[0]), float(v[1])} }
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).
 func (v Vector2i) Abs() Vector2i { return v.abs() }

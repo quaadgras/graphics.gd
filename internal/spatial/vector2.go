@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 import "math"
 
@@ -31,19 +29,22 @@ See [Vector2i] for its integer counterpart.
 Note: In a boolean context, a [Vector2] will evaluate to false if it's equal to Vector2{0, 0}. Otherwise, a [Vector2]
 will always evaluate to true.
 */
-type Vector2 [2]float32
+type Vector2 [2]float
+
+// NewVector2 constructs a new Vector2 from the given x and y.
+func NewVector2(x, y Float) Vector2 { return Vector2{float(x), float(y)} }
 
 // X is the vector's X component. Also accessible by using the index position [0].
 func (v Vector2) X() Float { return Float(v[x]) }
 
 // SetX sets the vector's X component. Also accessible by using the index position [0].
-func (v *Vector2) SetX(x Float) { v[X] = float32(x) }
+func (v *Vector2) SetX(x Float) { v[X] = float(x) }
 
 // Y is the vector's Y component. Also accessible by using the index position [1].
 func (v Vector2) Y() Float { return Float(v[y]) }
 
 // SetY sets the vector's Y component. Also accessible by using the index position [1].
-func (v *Vector2) SetY(y Float) { v[Y] = float32(y) }
+func (v *Vector2) SetY(y Float) { v[Y] = float(y) }
 
 // ZERO vector, a vector with all components set to 0.
 func (v Vector2) ZERO() Vector2 { v[x], v[y] = 0, 0; return v }
@@ -52,7 +53,7 @@ func (v Vector2) ZERO() Vector2 { v[x], v[y] = 0, 0; return v }
 func (v Vector2) ONE() Vector2 { v[x], v[y] = 1, 1; return v }
 
 // INF vector, a vector with all components set to @GDScript.INF.
-func (v Vector2) INF() Vector2 { v[x], v[y] = float32(math.Inf(1)), float32(math.Inf(1)); return v }
+func (v Vector2) INF() Vector2 { v[x], v[y] = float(math.Inf(1)), float(math.Inf(1)); return v }
 
 // LEFT unit vector. Represents the direction of left.
 func (v Vector2) LEFT() Vector2 { v[x], v[y] = -1, 0; return v }
@@ -108,8 +109,8 @@ func (v Vector2) Aspect() Float { return Float(v[x] / v[y]) }
 // vector and the given control_1, control_2, and end points.
 func (v Vector2) BezierDerivative(control1, control2, end Vector2, t Float) Vector2 {
 	var res Vector2
-	res[x] = BezierDerivative(res[x], control1[x], control2[x], end[x], float32(t))
-	res[y] = BezierDerivative(res[y], control1[y], control2[y], end[y], float32(t))
+	res[x] = BezierDerivative(res[x], control1[x], control2[x], end[x], float(t))
+	res[y] = BezierDerivative(res[y], control1[y], control2[y], end[y], float(t))
 	return res
 }
 
@@ -117,8 +118,8 @@ func (v Vector2) BezierDerivative(control1, control2, end Vector2, t Float) Vect
 // and the given control_1, control_2, and end points.
 func (v Vector2) BezierInterpolate(control1, control2, end Vector2, t Float) Vector2 {
 	var res Vector2
-	res[x] = BezierInterpolate(res[x], control1[x], control2[x], end[x], float32(t))
-	res[y] = BezierInterpolate(res[y], control1[y], control2[y], end[y], float32(t))
+	res[x] = BezierInterpolate(res[x], control1[x], control2[x], end[x], float(t))
+	res[y] = BezierInterpolate(res[y], control1[y], control2[y], end[y], float(t))
 	return res
 }
 
@@ -150,8 +151,8 @@ func (v Vector2) Cross(other Vector2) Float { return Float(v[x]*other[y] - v[y]*
 // 0.0 to 1.0, representing the amount of interpolation.
 func (v Vector2) CubicInterpolate(b, preA, postB Vector2, weight Float) Vector2 {
 	return Vector2{
-		CubicInterpolate(v[x], b[x], preA[x], postB[x], float32(weight)),
-		CubicInterpolate(v[y], b[y], preA[y], postB[y], float32(weight)),
+		CubicInterpolate(v[x], b[x], preA[x], postB[x], float(weight)),
+		CubicInterpolate(v[y], b[y], preA[y], postB[y], float(weight)),
 	}
 }
 
@@ -162,8 +163,8 @@ func (v Vector2) CubicInterpolate(b, preA, postB Vector2, weight Float) Vector2 
 // It can perform smoother interpolation than cubic_interpolate by the time values.
 func (v Vector2) CubicInterpolateInTime(b, preA, postB Vector2, weight, b_t, pre_a_t, post_b_t Float) Vector2 {
 	return Vector2{
-		CubicInterpolateInTime(v[x], b[x], preA[x], postB[x], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
-		CubicInterpolateInTime(v[y], b[y], preA[y], postB[y], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
+		CubicInterpolateInTime(v[x], b[x], preA[x], postB[x], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
+		CubicInterpolateInTime(v[y], b[y], preA[y], postB[y], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
 	}
 }
 
@@ -275,7 +276,7 @@ func (v Vector2) Normalized() Vector2 {
 	if length == 0 {
 		return Vector2{}
 	}
-	return Vector2{float32(Float(v[x]) / length), float32(Float(v[y]) / length)}
+	return Vector2{float(Float(v[x]) / length), float(Float(v[y]) / length)}
 }
 
 // Orthogonal returns a perpendicular vector rotated 90 degrees counter-clockwise compared to the original,
@@ -284,7 +285,7 @@ func (v Vector2) Orthogonal() Vector2 { return Vector2{v[y], -v[x]} }
 
 // Posmode returns a vector composed of the [Fposmod] of this vector's components and [Mod].
 func (v Vector2) Posmod(mod Float) Vector2 {
-	return Vector2{Fposmod(v[x], float32(mod)), Fposmod(v[y], float32(mod))}
+	return Vector2{Fposmod(v[x], float(mod)), Fposmod(v[y], float(mod))}
 }
 
 // Posmod returns a vector composed of the [Fposmod] of this vector's components and [Mod].
@@ -304,8 +305,8 @@ func (v Vector2) Reflect(n Vector2) Vector2 {
 
 // Rotated returns the result of rotating this vector by angle (in radians).
 func (v Vector2) Rotated(by Radians) Vector2 {
-	var cs = Cos(float32(by))
-	var sn = Sin(float32(by))
+	var cs = Cos(float(by))
+	var sn = Sin(float(by))
 	return Vector2{v[x]*cs - v[y]*sn, v[x]*sn + v[y]*cs}
 }
 
@@ -353,16 +354,16 @@ func (v Vector2) Sub(other Vector2) Vector2 { return Vector2{v[x] - other[x], v[
 func (v Vector2) Mul(other Vector2) Vector2 { return Vector2{v[x] * other[x], v[y] * other[y]} }
 func (v Vector2) Div(other Vector2) Vector2 { return Vector2{v[x] / other[x], v[y] / other[y]} }
 func (v Vector2) Addf(other Float) Vector2 {
-	return Vector2{v[x] + float32(other), v[y] + float32(other)}
+	return Vector2{v[x] + float(other), v[y] + float(other)}
 }
 func (v Vector2) Subf(other Float) Vector2 {
-	return Vector2{v[x] - float32(other), v[y] - float32(other)}
+	return Vector2{v[x] - float(other), v[y] - float(other)}
 }
 func (v Vector2) Mulf(other Float) Vector2 {
-	return Vector2{v[x] * float32(other), v[y] * float32(other)}
+	return Vector2{v[x] * float(other), v[y] * float(other)}
 }
 func (v Vector2) Divf(other Float) Vector2 {
-	return Vector2{v[x] / float32(other), v[y] / float32(other)}
+	return Vector2{v[x] / float(other), v[y] / float(other)}
 }
 func (v Vector2) Neg() Vector2 { return Vector2{-v[x], -v[y]} }
 

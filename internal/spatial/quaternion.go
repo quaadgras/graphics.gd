@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 import "math"
 
@@ -14,7 +12,7 @@ efficient and robust against floating-point errors.
 
 Note: Quaternions need to be normalized before being used for rotation.
 */
-type Quaternion [4]float32
+type Quaternion [4]float
 
 // NewQuaternion constructs a quaternion representing the shortest arc between two points
 // on the surface of a sphere with a radius of 1.0.
@@ -26,8 +24,8 @@ func NewQuaternion(arc_from, arc_to Vector3) Quaternion {
 	if d < -1.0+cmpEpsilon {
 		return Quaternion{0, 1, 0, 0}
 	}
-	var s = float32(Sqrt((1.0 + d) * 2.0))
-	var rs = float32(1.0 / s)
+	var s = float(Sqrt((1.0 + d) * 2.0))
+	var rs = float(1.0 / s)
 	return Quaternion{
 		c[X] * rs,
 		c[Y] * rs,
@@ -43,10 +41,10 @@ func (q Quaternion) Y() Float { return Float(q[y]) }
 func (q Quaternion) Z() Float { return Float(q[z]) }
 func (q Quaternion) W() Float { return Float(q[w]) }
 
-func (q Quaternion) SetX(v Float) { q[x] = float32(v) }
-func (q Quaternion) SetY(v Float) { q[y] = float32(v) }
-func (q Quaternion) SetZ(v Float) { q[z] = float32(v) }
-func (q Quaternion) SetW(v Float) { q[w] = float32(v) }
+func (q Quaternion) SetX(v Float) { q[x] = float(v) }
+func (q Quaternion) SetY(v Float) { q[y] = float(v) }
+func (q Quaternion) SetZ(v Float) { q[z] = float(v) }
+func (q Quaternion) SetW(v Float) { q[w] = float(v) }
 
 // "Constants"
 
@@ -74,7 +72,7 @@ func (q Quaternion) Exp() Quaternion {
 	if theta < cmpEpsilon || !v.IsNormalized() {
 		return Quaternion{0, 0, 0, 1}
 	}
-	return Quaternion{v[X], v[Y], v[Z], float32(theta)}
+	return Quaternion{v[X], v[Y], v[Z], float(theta)}
 }
 
 func (q Quaternion) GetAngle() Radians {
@@ -143,8 +141,8 @@ func (q Quaternion) Slerpni(to Quaternion, weight Float) Quaternion {
 	}
 	var theta = Acos(dot)
 	var sinT = 1.0 / Sin(theta)
-	var newFactor = float32(Sin(Radians(weight)*theta) * sinT)
-	var invFactor = float32(Sin(Radians(1.0-weight)*theta) * sinT)
+	var newFactor = float(Sin(Radians(weight)*theta) * sinT)
+	var invFactor = float(Sin(Radians(1.0-weight)*theta) * sinT)
 	return Quaternion{
 		invFactor*q[X] + newFactor*to[X],
 		invFactor*q[Y] + newFactor*to[Y],
@@ -194,9 +192,9 @@ func (q Quaternion) SphericalCubicInterpolate(b, pre_a, post_b Quaternion, weigh
 	var ln_pre = (from_q.Inverse().Mul(pre_q)).Log()
 	var ln_post = (from_q.Inverse().Mul(post_q)).Log()
 	var ln Quaternion
-	ln[X] = CubicInterpolate(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float32(weight))
-	ln[Y] = CubicInterpolate(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float32(weight))
-	ln[Z] = CubicInterpolate(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float32(weight))
+	ln[X] = CubicInterpolate(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float(weight))
+	ln[Y] = CubicInterpolate(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float(weight))
+	ln[Z] = CubicInterpolate(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float(weight))
 	var q1 = from_q.Mul(ln.Exp())
 
 	// Calc by Expmap in to_q space.
@@ -205,9 +203,9 @@ func (q Quaternion) SphericalCubicInterpolate(b, pre_a, post_b Quaternion, weigh
 	ln_pre = (to_q.Inverse().Mul(pre_q)).Log()
 	ln_post = (to_q.Inverse().Mul(post_q)).Log()
 	ln = Quaternion{}
-	ln[X] = CubicInterpolate(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float32(weight))
-	ln[Y] = CubicInterpolate(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float32(weight))
-	ln[Z] = CubicInterpolate(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float32(weight))
+	ln[X] = CubicInterpolate(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float(weight))
+	ln[Y] = CubicInterpolate(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float(weight))
+	ln[Z] = CubicInterpolate(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float(weight))
 	var q2 = to_q.Mul(ln.Exp())
 
 	// To cancel error made by Expmap ambiguity, do blending.
@@ -257,9 +255,9 @@ func (q Quaternion) SphericalCubicInterpolateInTime(b, pre_a, post_b Quaternion,
 	var ln_pre = (from_q.Inverse().Mul(pre_q)).Log()
 	var ln_post = (from_q.Inverse().Mul(post_q)).Log()
 	var ln Quaternion
-	ln[X] = CubicInterpolateInTime(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t))
-	ln[Y] = CubicInterpolateInTime(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t))
-	ln[Z] = CubicInterpolateInTime(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t))
+	ln[X] = CubicInterpolateInTime(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float(weight), float(b_t), float(pre_a_t), float(post_b_t))
+	ln[Y] = CubicInterpolateInTime(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float(weight), float(b_t), float(pre_a_t), float(post_b_t))
+	ln[Z] = CubicInterpolateInTime(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float(weight), float(b_t), float(pre_a_t), float(post_b_t))
 	var q1 = from_q.Mul(ln.Exp())
 
 	// Calc by Expmap in to_q space.
@@ -268,9 +266,9 @@ func (q Quaternion) SphericalCubicInterpolateInTime(b, pre_a, post_b Quaternion,
 	ln_pre = (to_q.Inverse().Mul(pre_q)).Log()
 	ln_post = (to_q.Inverse().Mul(post_q)).Log()
 	ln = Quaternion{}
-	ln[X] = CubicInterpolateInTime(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t))
-	ln[Y] = CubicInterpolateInTime(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t))
-	ln[Z] = CubicInterpolateInTime(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t))
+	ln[X] = CubicInterpolateInTime(ln_from[X], ln_to[X], ln_pre[X], ln_post[X], float(weight), float(b_t), float(pre_a_t), float(post_b_t))
+	ln[Y] = CubicInterpolateInTime(ln_from[Y], ln_to[Y], ln_pre[Y], ln_post[Y], float(weight), float(b_t), float(pre_a_t), float(post_b_t))
+	ln[Z] = CubicInterpolateInTime(ln_from[Z], ln_to[Z], ln_pre[Z], ln_post[Z], float(weight), float(b_t), float(pre_a_t), float(post_b_t))
 	var q2 = to_q.Mul(ln.Exp())
 
 	// To cancel error made by Expmap ambiguity, do blending.
@@ -278,7 +276,7 @@ func (q Quaternion) SphericalCubicInterpolateInTime(b, pre_a, post_b Quaternion,
 }
 
 func (q Quaternion) Basis() Basis {
-	var d = float32(q.LengthSquared())
+	var d = float(q.LengthSquared())
 	var s = 2.0 / d
 	var xs, ys, zs = q[x] * s, q[y] * s, q[z] * s
 	var wx, wy, wz = q[w] * xs, q[w] * ys, q[w] * zs
@@ -311,16 +309,16 @@ func (q Quaternion) Div(other Quaternion) Quaternion {
 	return q.Mul(other.Neg())
 }
 func (q Quaternion) Addf(other Float) Quaternion {
-	return Quaternion{q[X] + float32(other), q[Y] + float32(other), q[Z] + float32(other), q[W] + float32(other)}
+	return Quaternion{q[X] + float(other), q[Y] + float(other), q[Z] + float(other), q[W] + float(other)}
 }
 func (q Quaternion) Subf(other Float) Quaternion {
-	return Quaternion{q[X] - float32(other), q[Y] - float32(other), q[Z] - float32(other), q[W] - float32(other)}
+	return Quaternion{q[X] - float(other), q[Y] - float(other), q[Z] - float(other), q[W] - float(other)}
 }
 func (q Quaternion) Mulf(other Float) Quaternion {
-	return Quaternion{q[X] * float32(other), q[Y] * float32(other), q[Z] * float32(other), q[W] * float32(other)}
+	return Quaternion{q[X] * float(other), q[Y] * float(other), q[Z] * float(other), q[W] * float(other)}
 }
 func (q Quaternion) Divf(other Float) Quaternion {
-	return Quaternion{q[X] / float32(other), q[Y] / float32(other), q[Z] / float32(other), q[W] / float32(other)}
+	return Quaternion{q[X] / float(other), q[Y] / float(other), q[Z] / float(other), q[W] / float(other)}
 }
 
 func (q Quaternion) Neg() Quaternion { return Quaternion{-q[X], -q[Y], -q[Z], -q[W]} }

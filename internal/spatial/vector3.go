@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package spatial
 
 import "math"
 
@@ -13,20 +11,23 @@ import "math"
 //
 // Note: In a boolean context, a Vector3 will evaluate to false if it's equal to Vector3{0, 0, 0}. Otherwise, a [Vector3]
 // will always evaluate to true.
-type Vector3 [3]float32
+type Vector3 [3]float
+
+// NewVector3 constructs a new Vector3 from the given x, y, and z.
+func NewVector3(x, y, z Float) Vector3 { return Vector3{float(x), float(y), float(z)} }
 
 func (v Vector3) X() Float      { return Float(v[X]) }
 func (v Vector3) Y() Float      { return Float(v[Y]) }
 func (v Vector3) Z() Float      { return Float(v[Z]) }
-func (v *Vector3) SetX(x Float) { v[X] = float32(x) }
-func (v *Vector3) SetY(y Float) { v[Y] = float32(y) }
-func (v *Vector3) SetZ(z Float) { v[Z] = float32(z) }
+func (v *Vector3) SetX(x Float) { v[X] = float(x) }
+func (v *Vector3) SetY(y Float) { v[Y] = float(y) }
+func (v *Vector3) SetZ(z Float) { v[Z] = float(z) }
 
 // "Constants"
 func (Vector3) ZERO() Vector3 { return Vector3{0, 0, 0} }
 func (Vector3) ONE() Vector3  { return Vector3{1, 1, 1} }
 func (Vector3) INF() Vector3 {
-	return Vector3{float32(math.Inf(1)), float32(math.Inf(1)), float32(math.Inf(1))}
+	return Vector3{float(math.Inf(1)), float(math.Inf(1)), float(math.Inf(1))}
 }
 func (Vector3) LEFT() Vector3         { return Vector3{-1, 0, 0} }
 func (Vector3) RIGHT() Vector3        { return Vector3{1, 0, 0} }
@@ -55,9 +56,9 @@ func (v Vector3) AngleTo(to Vector3) Radians {
 // defined by this vector and the given control_1, control_2, and end points.
 func (v Vector3) BezierDerivative(control1, control2, end Vector3, t Float) Vector3 {
 	return Vector3{
-		BezierDerivative(v[X], control1[X], control2[X], end[X], float32(t)),
-		BezierDerivative(v[Y], control1[Y], control2[Y], end[Y], float32(t)),
-		BezierDerivative(v[Z], control1[Z], control2[Z], end[Z], float32(t)),
+		BezierDerivative(v[X], control1[X], control2[X], end[X], float(t)),
+		BezierDerivative(v[Y], control1[Y], control2[Y], end[Y], float(t)),
+		BezierDerivative(v[Z], control1[Z], control2[Z], end[Z], float(t)),
 	}
 }
 
@@ -65,9 +66,9 @@ func (v Vector3) BezierDerivative(control1, control2, end Vector3, t Float) Vect
 // this vector and the given control_1, control_2, and end points.
 func (v Vector3) BezierInterpolate(control1, control2, end Vector3, t Float) Vector3 {
 	return Vector3{
-		BezierInterpolate(v[X], control1[X], control2[X], end[X], float32(t)),
-		BezierInterpolate(v[Y], control1[Y], control2[Y], end[Y], float32(t)),
-		BezierInterpolate(v[Z], control1[Z], control2[Z], end[Z], float32(t)),
+		BezierInterpolate(v[X], control1[X], control2[X], end[X], float(t)),
+		BezierInterpolate(v[Y], control1[Y], control2[Y], end[Y], float(t)),
+		BezierInterpolate(v[Z], control1[Z], control2[Z], end[Z], float(t)),
 	}
 }
 
@@ -103,9 +104,9 @@ func (v Vector3) Cross(with Vector3) Vector3 {
 // interpolation.
 func (v Vector3) CubicInterpolate(b, preA, postB Vector3, weight Float) Vector3 {
 	return Vector3{
-		CubicInterpolate(v[X], b[X], preA[X], postB[X], float32(weight)),
-		CubicInterpolate(v[Y], b[Y], preA[Y], postB[Y], float32(weight)),
-		CubicInterpolate(v[Z], b[Z], preA[Z], postB[Z], float32(weight)),
+		CubicInterpolate(v[X], b[X], preA[X], postB[X], float(weight)),
+		CubicInterpolate(v[Y], b[Y], preA[Y], postB[Y], float(weight)),
+		CubicInterpolate(v[Z], b[Z], preA[Z], postB[Z], float(weight)),
 	}
 }
 
@@ -115,9 +116,9 @@ func (v Vector3) CubicInterpolate(b, preA, postB Vector3, weight Float) Vector3 
 // It can perform smoother interpolation than [Vector3.CubicInterpolate] by the time values.
 func (v Vector3) CubicInterpolateInTime(b, preA, postB Vector3, weight, b_t, pre_a_t, post_b_t Float) Vector3 {
 	return Vector3{
-		CubicInterpolateInTime(v[X], b[X], preA[X], postB[X], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
-		CubicInterpolateInTime(v[Y], b[Y], preA[Y], postB[Y], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
-		CubicInterpolateInTime(v[Z], b[Z], preA[Z], postB[Z], float32(weight), float32(b_t), float32(pre_a_t), float32(post_b_t)),
+		CubicInterpolateInTime(v[X], b[X], preA[X], postB[X], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
+		CubicInterpolateInTime(v[Y], b[Y], preA[Y], postB[Y], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
+		CubicInterpolateInTime(v[Z], b[Z], preA[Z], postB[Z], float(weight), float(b_t), float(pre_a_t), float(post_b_t)),
 	}
 }
 
@@ -350,7 +351,7 @@ func (v Vector3) Outer(with Vector3) Basis {
 
 // Posmodf returns a vector composed of the Fposmod of this vector's components and mod.
 func (v Vector3) Posmodf(mod Float) Vector3 {
-	return Vector3{Fposmod(v[X], float32(mod)), Fposmod(v[Y], float32(mod)), Fposmod(v[Z], float32(mod))}
+	return Vector3{Fposmod(v[X], float(mod)), Fposmod(v[Y], float(mod)), Fposmod(v[Z], float(mod))}
 }
 
 // Posmodv returns a vector composed of the Fposmod of this vector's components and mod.
@@ -446,23 +447,23 @@ func (v Vector3) Div(other Vector3) Vector3 {
 	return Vector3{v[x] / other[x], v[y] / other[y], v[z] / other[z]}
 }
 func (v Vector3) Addf(other Float) Vector3 {
-	return Vector3{v[x] + float32(other), v[y] + float32(other), v[z] + float32(other)}
+	return Vector3{v[x] + float(other), v[y] + float(other), v[z] + float(other)}
 }
 func (v Vector3) Subf(other Float) Vector3 {
-	return Vector3{v[x] - float32(other), v[y] - float32(other), v[z] - float32(other)}
+	return Vector3{v[x] - float(other), v[y] - float(other), v[z] - float(other)}
 }
 func (v Vector3) Mulf(other Float) Vector3 {
-	return Vector3{v[x] * float32(other), v[y] * float32(other), v[z] * float32(other)}
+	return Vector3{v[x] * float(other), v[y] * float(other), v[z] * float(other)}
 }
 func (v Vector3) Divf(other Float) Vector3 {
-	return Vector3{v[x] / float32(other), v[y] / float32(other), v[z] / float32(other)}
+	return Vector3{v[x] / float(other), v[y] / float(other), v[z] / float(other)}
 }
 func (v Vector3) Neg() Vector3 { return Vector3{-v[x], -v[y], -v[z]} }
 
 func (v Vector3) Transform(t Transform3D) Vector3 {
 	return Vector3{
-		float32(t.Basis[0].Dot(v)) + t.Origin[X],
-		float32(t.Basis[1].Dot(v)) + t.Origin[Y],
-		float32(t.Basis[2].Dot(v)) + t.Origin[Z],
+		float(t.Basis[0].Dot(v)) + t.Origin[X],
+		float(t.Basis[1].Dot(v)) + t.Origin[Y],
+		float(t.Basis[2].Dot(v)) + t.Origin[Z],
 	}
 }
