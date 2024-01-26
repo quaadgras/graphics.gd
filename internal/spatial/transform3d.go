@@ -195,6 +195,15 @@ func (t Transform3D) TranslatedLocal(offset Vector3) Transform3D {
 	}
 }
 
+func (t Transform3D) Projection() Projection {
+	return Projection{
+		Vector4{t.Basis[0][X], t.Basis[1][X], t.Basis[2][X], 0},
+		Vector4{t.Basis[0][Y], t.Basis[1][Y], t.Basis[2][Y], 0},
+		Vector4{t.Basis[0][Z], t.Basis[1][Z], t.Basis[2][Z], 0},
+		Vector4{t.Origin[X], t.Origin[Y], t.Origin[Z], 1},
+	}
+}
+
 func (t Transform3D) Mul(other Transform3D) Transform3D {
 	return Transform3D{
 		Basis:  t.Basis.Mul(other.Basis),

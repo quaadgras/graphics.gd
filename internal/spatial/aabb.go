@@ -452,6 +452,19 @@ func (a AABB) Merge(b AABB) AABB {
 	}
 }
 
+// Projection creates a new Projection that scales a given projection to fit around a given
+// [AABB] in projection space.
+func (a AABB) Projection() Projection {
+	min := a.Position
+	max := a.Position.Add(a.Size)
+	return Projection{
+		Vector4{2 / (max[X] - min[X]), 0, 0, -(max[X] + min[X]) / (max[X] - min[X])},
+		Vector4{0, 2 / (max[Y] - min[Y]), 0, -(max[Y] + min[Y]) / (max[Y] - min[Y])},
+		Vector4{0, 0, 2 / (max[Z] - min[Z]), -(max[Z] + min[Z]) / (max[Z] - min[Z])},
+		Vector4{0, 0, 0, 1},
+	}
+}
+
 func (a AABB) Transform(t Transform3D) AABB {
 	/* https://dev.theomader.com/transform-bounding-boxes/ */
 	var min = a.Position

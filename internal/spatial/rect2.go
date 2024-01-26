@@ -237,6 +237,16 @@ func (r Rect2) Merge(b Rect2) Rect2 {
 	return new_rect
 }
 
+// Projection creates a new Projection that projects positions into the given Rect2.
+func (r Rect2) Projection() Projection {
+	return Projection{
+		Vector4{float(r.Size[X]), 0, 0, 0},
+		Vector4{0, float(r.Size[Y]), 0, 0},
+		Vector4{0, 0, 1, 0},
+		Vector4{float(r.Position[X]), float(r.Position[Y]), 0, 1},
+	}
+}
+
 // Transform inversely transforms (multiplies) the Rect2 by the given Transform2D transformation matrix,
 // under the assumption that the transformation basis is orthonormal (i.e. rotation/reflection is fine,
 // scaling/skew is not).
