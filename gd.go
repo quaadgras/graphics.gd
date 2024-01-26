@@ -89,6 +89,16 @@ func NewVector4i(x, y, z, w Int) Vector4i {
 // NewPlane creates a plane from the three points, given in clockwise order.
 func NewPlane(a, b, c Vector3) Plane { return spatial.NewPlane(a, b, c) }
 
+// NewBasisScaledBy constructs a pure scale basis matrix with no rotation or shearing. The scale values are set as
+// the diagonal of the matrix, and the other parts of the matrix are zero.
+func NewBasisScaledBy(scale Vector3) Basis { return spatial.NewBasisScaledBy(scale) }
+
+// NewBasisRotatedAround constructs a pure rotation basis matrix, rotated around the given axis by angle (in radians).
+// The axis must be a normalized vector.
+func NewBasisRotatedAround(axis Vector3, angle Radians) Basis {
+	return spatial.NewBasisRotatedAround(axis, angle)
+}
+
 /*
 Register registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must

@@ -367,7 +367,7 @@ func (v Vector3) Project(b Vector3) Vector3 {
 // Rotated returns the result of rotating this vector around a given axis by angle (in radians).
 // The axis must be a normalized vector.
 func (v Vector3) Rotated(axis Vector3, angle Radians) Vector3 {
-	return NewRotationAroundAxis(axis, angle).Transform(v)
+	return NewBasisRotatedAround(axis, angle).Transform(v)
 }
 
 // Round returns a new vector with all components rounded to the nearest integer, with halfway cases

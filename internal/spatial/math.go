@@ -223,8 +223,8 @@ func (a Quaternion) lerp(p_to Quaternion, p_weight Float) Quaternion {
 
 func (a Basis) lerp(p_to Basis, p_weight Float) Basis {
 	//consider scale
-	var from = a.GetQuaternion()
-	var to = p_to.GetQuaternion()
+	var from = a.getQuaternion()
+	var to = p_to.getQuaternion()
 	var b = from.lerp(to, p_weight).Basis()
 	b[0] = b[0].Mulf(lerpf(a[0].Length(), p_to[0].Length(), p_weight))
 	b[1] = b[1].Mulf(lerpf(a[1].Length(), p_to[1].Length(), p_weight))

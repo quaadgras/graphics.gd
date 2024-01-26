@@ -160,10 +160,10 @@ func (q Quaternion) SphericalCubicInterpolate(b, pre_a, post_b Quaternion, weigh
 	var post_q = post_b
 
 	// Align flip phases.
-	from_q = from_q.Basis().GetRotationQuaternion()
-	pre_q = pre_q.Basis().GetRotationQuaternion()
-	to_q = to_q.Basis().GetRotationQuaternion()
-	post_q = post_q.Basis().GetRotationQuaternion()
+	from_q = from_q.Basis().Quaternion()
+	pre_q = pre_q.Basis().Quaternion()
+	to_q = to_q.Basis().Quaternion()
+	post_q = post_q.Basis().Quaternion()
 
 	// Flip quaternions to shortest path if necessary.
 	var flip1 = math.Signbit(float64(from_q.Dot(pre_q)))
@@ -223,10 +223,10 @@ func (q Quaternion) SphericalCubicInterpolateInTime(b, pre_a, post_b Quaternion,
 	var post_q = post_b
 
 	// Align flip phases.
-	from_q = from_q.Basis().GetRotationQuaternion()
-	pre_q = pre_q.Basis().GetRotationQuaternion()
-	to_q = to_q.Basis().GetRotationQuaternion()
-	post_q = post_q.Basis().GetRotationQuaternion()
+	from_q = from_q.Basis().Quaternion()
+	pre_q = pre_q.Basis().Quaternion()
+	to_q = to_q.Basis().Quaternion()
+	post_q = post_q.Basis().Quaternion()
 
 	// Flip quaternions to shortest path if necessary.
 	var flip1 = math.Signbit(float64(from_q.Dot(pre_q)))

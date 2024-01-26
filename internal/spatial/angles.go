@@ -65,3 +65,38 @@ func (e EulerAngles) Quaternion() Quaternion {
 		float(sin_a1*sin_a2*sin_a3 + cos_a1*cos_a2*cos_a3),
 	}
 }
+
+// Basis constructs a pure rotation Basis matrix from Euler angles in the specified Euler rotation order.
+// By default, use YXZ order (most common). See the EulerOrder enum for possible values.
+func (e EulerAngles) Basis(order EulerOrder) Basis {
+	var c, s float
+
+	c = float(Cos(e[X]))
+	s = float(Sin(e[X]))
+	var xmat = Basis{{1, 0, 0}, {0, c, -s}, {0, s, c}}
+
+	c = float(Cos(e[Y]))
+	s = float(Sin(e[Y]))
+	var ymat = Basis{{c, 0, s}, {0, 1, 0}, {-s, 0, c}}
+
+	c = float(Cos(e[Z]))
+	s = float(Sin(e[Z]))
+	var zmat = Basis{{c, -s, 0}, {s, c, 0}, {0, 0, 1}}
+
+	switch order {
+	case EulerOrderXYZ:
+		return xmat.Mul(ymat.Mul(zmat))
+	case EulerOrderXZY:
+		return xmat.Mul(zmat.Mul(ymat))
+	case EulerOrderYXZ:
+		return ymat.Mul(xmat.Mul(zmat))
+	case EulerOrderYZX:
+		return ymat.Mul(zmat.Mul(xmat))
+	case EulerOrderZXY:
+		return zmat.Mul(xmat.Mul(ymat))
+	case EulerOrderZYX:
+		return zmat.Mul(ymat.Mul(xmat))
+	default:
+		panic("Invalid order parameter for EulerAngles.Basis()")
+	}
+}
