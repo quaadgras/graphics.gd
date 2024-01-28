@@ -30,7 +30,7 @@ type ComponentWise[T any] interface {
 }
 
 type Lerpable[T any] interface {
-	Float | Int | Vector2 | Vector3 | Vector4 | Color | Quaternion | Basis
+	Float | Int | Vector2 | Vector3 | Vector4 | Quaternion | Basis
 
 	lerp(T, Float) T
 }
@@ -172,9 +172,6 @@ func (a Vector3) lerp(b Vector3, t Float) Vector3 {
 }
 func (a Vector4) lerp(b Vector4, t Float) Vector4 {
 	return Vector4{a[x] + (b[x]-a[x])*float(t), a[y] + (b[y]-a[y])*float(t), a[z] + (b[z]-a[z])*float(t), a[w] + (b[w]-a[w])*float(t)}
-}
-func (a Color) lerp(b Color, t Float) Color {
-	return Color{a[x] + (b[x]-a[x])*float(t), a[y] + (b[y]-a[y])*float(t), a[z] + (b[z]-a[z])*float(t), a[w] + (b[w]-a[w])*float(t)}
 }
 
 func dot4[T ~[4]float](val T) float {

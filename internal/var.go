@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"grow.graphics/gd/internal/spatial"
+	"grow.graphics/uc"
 	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
@@ -31,8 +32,9 @@ type (
 	Basis       = spatial.Basis
 	Transform3D = spatial.Transform3D
 	Projection  = spatial.Projection
-	Color       = spatial.Color
 )
+
+type Color = uc.Color
 
 type (
 	Side       = spatial.Side
