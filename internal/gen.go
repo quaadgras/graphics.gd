@@ -816,6 +816,11 @@ func generate() error {
 			genEnum(pkg, w, enums, class.Name, enum)
 		}
 		if class.Name != "Object" {
+			if class.Description != "" {
+				fmt.Fprintln(w, "/*")
+				fmt.Fprint(w, strings.Replace(class.Description, "*/", "", -1))
+				fmt.Fprintln(w, "\n*/")
+			}
 			fmt.Fprintf(classdb, "type %v = %v \n", class.Name, classDB.nameOf("gd", class.Name))
 		}
 		if pkg == "internal" {
@@ -908,8 +913,15 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		prefix = "gd."
 	}
 
+	fmt.Fprintln(w)
+	if method.Description != "" {
+		fmt.Fprintln(w, "/*")
+		fmt.Fprint(w, method.Description)
+		fmt.Fprintln(w, "\n*/")
+	}
+
 	if method.IsVirtual {
-		fmt.Fprintf(w, "\nfunc (%s) %s(impl func(ptr unsafe.Pointer, ctx "+prefix+"Context", class.Name, method.Name)
+		fmt.Fprintf(w, "func (%s) %s(impl func(ptr unsafe.Pointer, ctx "+prefix+"Context", class.Name, method.Name)
 		for _, arg := range method.Arguments {
 			fmt.Fprint(w, ", ")
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
@@ -962,7 +974,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	if !isPtr {
 		context = ""
 	}
-	fmt.Fprintf(w, "\nfunc (self %v) %v(%s", class.Name, convertName(method.Name), context)
+	fmt.Fprintf(w, "func (self %v) %v(%s", class.Name, convertName(method.Name), context)
 
 	if method.Name == "select" {
 		method.Name = "select_"

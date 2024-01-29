@@ -1350,6 +1350,11 @@ type Vector4iAxis int64
 
 type ProjectionPlanes int64
 
+/*
+Performs a case-sensitive comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" and "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+*/
 func (self String) CasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1362,6 +1367,11 @@ func (self String) CasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+*/
 func (self String) NocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1374,6 +1384,12 @@ func (self String) NocasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Performs a [b]case-sensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
+When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+*/
 func (self String) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1386,6 +1402,12 @@ func (self String) NaturalcasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Performs a [b]case-insensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
+When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+*/
 func (self String) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1398,6 +1420,9 @@ func (self String) NaturalnocasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
+*/
 func (self String) Length() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1409,6 +1434,9 @@ func (self String) Length() Int {
 	return ret
 }
 
+/*
+Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
+*/
 func (self String) Substr(ctx Context, from Int, len Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1422,6 +1450,14 @@ func (self String) Substr(ctx Context, from Int, len Int) String {
 	return ret
 }
 
+/*
+Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns the original string if [param delimiter] does not occur in the string. Returns an empty string if the [param slice] does not exist.
+This is faster than [method split], if you only need one substring.
+[b]Example:[/b]
+[codeblock]
+print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
+[/codeblock]
+*/
 func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1435,6 +1471,10 @@ func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 	return ret
 }
 
+/*
+Splits the string using a Unicode character with code [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
+This is faster than [method split], if you only need one substring.
+*/
 func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1448,6 +1488,9 @@ func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	return ret
 }
 
+/*
+Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
+*/
 func (self String) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1460,6 +1503,26 @@ func (self String) GetSliceCount(delimiter String) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]first[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the string.
+[codeblocks]
+[gdscript]
+print("Team".find("I")) # Prints -1
+
+print("Potato".find("t"))    # Prints 2
+print("Potato".find("t", 3)) # Prints 4
+print("Potato".find("t", 5)) # Prints -1
+[/gdscript]
+[csharp]
+GD.Print("Team".Find("I")); // Prints -1
+
+GD.Print("Potato".Find("t"));    // Prints 2
+GD.Print("Potato".Find("t", 3)); // Prints 4
+GD.Print("Potato".Find("t", 5)); // Prints -1
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In GDScript, you may also use the [code]in[/code] operator.
+*/
 func (self String) Find(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1473,6 +1536,9 @@ func (self String) Find(what String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
+*/
 func (self String) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1487,6 +1553,9 @@ func (self String) Count(what String, from Int, to Int) Int {
 	return ret
 }
 
+/*
+Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
+*/
 func (self String) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1501,6 +1570,9 @@ func (self String) Countn(what String, from Int, to Int) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
+*/
 func (self String) Findn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1514,6 +1586,9 @@ func (self String) Findn(what String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
+*/
 func (self String) Rfind(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1527,6 +1602,9 @@ func (self String) Rfind(what String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
+*/
 func (self String) Rfindn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1540,6 +1618,9 @@ func (self String) Rfindn(what String, from Int) Int {
 	return ret
 }
 
+/*
+Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
+*/
 func (self String) Match(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1552,6 +1633,9 @@ func (self String) Match(expr String) bool {
 	return ret
 }
 
+/*
+Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
+*/
 func (self String) Matchn(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1564,6 +1648,9 @@ func (self String) Matchn(expr String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
+*/
 func (self String) BeginsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1576,6 +1663,9 @@ func (self String) BeginsWith(text String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
+*/
 func (self String) EndsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1588,6 +1678,17 @@ func (self String) EndsWith(text String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order.
+[codeblock]
+var text = "Wow, incredible!"
+
+print("inedible".is_subsequence_of(text)) # Prints true
+print("Word!".is_subsequence_of(text))    # Prints true
+print("Window".is_subsequence_of(text))   # Prints false
+print("".is_subsequence_of(text))         # Prints true
+[/codeblock]
+*/
 func (self String) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1600,6 +1701,9 @@ func (self String) IsSubsequenceOf(text String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
+*/
 func (self String) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1612,6 +1716,12 @@ func (self String) IsSubsequenceOfn(text String) bool {
 	return ret
 }
 
+/*
+Returns an array containing the bigrams (pairs of consecutive characters) of this string.
+[codeblock]
+print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
+[/codeblock]
+*/
 func (self String) Bigrams(ctx Context) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -1623,6 +1733,15 @@ func (self String) Bigrams(ctx Context) PackedStringArray {
 	return ret
 }
 
+/*
+Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sorensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
+[codeblock]
+print("ABC123".similarity("ABC123")) # Prints 1.0
+print("ABC123".similarity("XYZ456")) # Prints 0.0
+print("ABC123".similarity("123ABC")) # Prints 0.8
+print("ABC123".similarity("abc123")) # Prints 0.4
+[/codeblock]
+*/
 func (self String) Similarity(text String) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -1635,6 +1754,26 @@ func (self String) Similarity(text String) Float {
 	return ret
 }
 
+/*
+Formats the string by replacing all occurrences of [param placeholder] with the elements of [param values].
+[param values] can be a [Dictionary] or an [Array]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
+[codeblock]
+# Prints "Waiting for Godot is a play by Samuel Beckett, and Godot Engine is named after it."
+var use_array_values = "Waiting for {0} is a play by {1}, and {0} Engine is named after it."
+print(use_array_values.format(["Godot", "Samuel Beckett"]))
+
+# Prints "User 42 is Godot."
+print("User {id} is {name}.".format({"id": 42, "name": "Godot"}))
+[/codeblock]
+Some additional handling is performed when [param values] is an [Array]. If [param placeholder] does not contain an underscore, the elements of the [param values] array will be used to replace one occurrence of the placeholder in order; If an element of [param values] is another 2-element array, it'll be interpreted as a key-value pair.
+[codeblock]
+# Prints "User 42 is Godot."
+print("User {} is {}.".format([42, "Godot"], "{}"))
+print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
+[/codeblock]
+See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
+[b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
+*/
 func (self String) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1648,6 +1787,9 @@ func (self String) Format(ctx Context, values Variant, placeholder String) Strin
 	return ret
 }
 
+/*
+Replaces all occurrences of [param what] inside the string with the given [param forwhat].
+*/
 func (self String) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1661,6 +1803,9 @@ func (self String) Replace(ctx Context, what String, forwhat String) String {
 	return ret
 }
 
+/*
+Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
+*/
 func (self String) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1674,6 +1819,9 @@ func (self String) Replacen(ctx Context, what String, forwhat String) String {
 	return ret
 }
 
+/*
+Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
+*/
 func (self String) Repeat(ctx Context, count Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1686,6 +1834,9 @@ func (self String) Repeat(ctx Context, count Int) String {
 	return ret
 }
 
+/*
+Returns the copy of this string in reverse order.
+*/
 func (self String) Reverse(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1697,6 +1848,9 @@ func (self String) Reverse(ctx Context) String {
 	return ret
 }
 
+/*
+Inserts [param what] at the given [param position] in the string.
+*/
 func (self String) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1710,6 +1864,9 @@ func (self String) Insert(ctx Context, position Int, what String) String {
 	return ret
 }
 
+/*
+Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
+*/
 func (self String) Erase(ctx Context, position Int, chars Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1723,6 +1880,20 @@ func (self String) Erase(ctx Context, position Int, chars Int) String {
 	return ret
 }
 
+/*
+Changes the appearance of the string: replaces underscores ([code]_[/code]) with spaces, adds spaces before uppercase letters in the middle of a word, converts all letters to lowercase, then converts the first one and each one following a space to uppercase.
+[codeblocks]
+[gdscript]
+"move_local_x".capitalize()   # Returns "Move Local X"
+"sceneFile_path".capitalize() # Returns "Scene File Path"
+[/gdscript]
+[csharp]
+"move_local_x".Capitalize();   // Returns "Move Local X"
+"sceneFile_path".Capitalize(); // Returns "Scene File Path"
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This method not the same as the default appearance of properties in the Inspector dock, as it does not capitalize acronyms ([code]"2D"[/code], [code]"FPS"[/code], [code]"PNG"[/code], etc.) as you may expect.
+*/
 func (self String) Capitalize(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1734,6 +1905,9 @@ func (self String) Capitalize(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to [code]camelCase[/code].
+*/
 func (self String) ToCamelCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1745,6 +1919,9 @@ func (self String) ToCamelCase(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to [code]PascalCase[/code].
+*/
 func (self String) ToPascalCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1756,6 +1933,9 @@ func (self String) ToPascalCase(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to [code]snake_case[/code].
+*/
 func (self String) ToSnakeCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1767,6 +1947,31 @@ func (self String) ToSnakeCase(ctx Context) String {
 	return ret
 }
 
+/*
+Splits the string using a [param delimiter] and returns an array of the substrings. If [param delimiter] is an empty string, each substring will be a single character. This method is the opposite of [method join].
+If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
+If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split.
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var some_array = "One,Two,Three,Four".split(",", true, 2)
+
+print(some_array.size()) # Prints 3
+print(some_array[0])     # Prints "One"
+print(some_array[1])     # Prints "Two"
+print(some_array[2])     # Prints "Three,Four"
+[/gdscript]
+[csharp]
+// C#'s `Split()` does not support the `maxsplit` parameter.
+var someArray = "One,Two,Three".Split(",");
+
+GD.Print(someArray[0]); // Prints "One"
+GD.Print(someArray[1]); // Prints "Two"
+GD.Print(someArray[2]); // Prints "Three"
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
+*/
 func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -1781,6 +1986,25 @@ func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxspl
 	return ret
 }
 
+/*
+Splits the string using a [param delimiter] and returns an array of the substrings, starting from the end of the string. The splits in the returned array appear in the same order as the original string. If [param delimiter] is an empty string, each substring will be a single character.
+If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
+If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split, which is mostly identical to [method split].
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var some_string = "One,Two,Three,Four"
+var some_array = some_string.rsplit(",", true, 1)
+
+print(some_array.size()) # Prints 2
+print(some_array[0])     # Prints "One,Two,Three"
+print(some_array[1])     # Prints "Four"
+[/gdscript]
+[csharp]
+// In C#, there is no String.RSplit() method.
+[/csharp]
+[/codeblocks]
+*/
 func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -1795,6 +2019,15 @@ func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsp
 	return ret
 }
 
+/*
+Splits the string into floats by using a [param delimiter] and returns a [PackedFloat64Array].
+If [param allow_empty] is [code]false[/code], empty or invalid [float] conversions between adjacent delimiters are excluded.
+[codeblock]
+var a = "1,2,4.5".split_floats(",")         # a is [1.0, 2.0, 4.5]
+var c = "1| ||4.5".split_floats("|")        # c is [1.0, 0.0, 0.0, 4.5]
+var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
+[/codeblock]
+*/
 func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -1808,6 +2041,25 @@ func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) 
 	return ret
 }
 
+/*
+Returns the concatenation of [param parts]' elements, with each element separated by the string calling this method. This method is the opposite of [method split].
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var fruits = ["Apple", "Orange", "Pear", "Kiwi"]
+
+print(", ".join(fruits))  # Prints "Apple, Orange, Pear, Kiwi"
+print("---".join(fruits)) # Prints "Apple---Orange---Pear---Kiwi"
+[/gdscript]
+[csharp]
+var fruits = new string[] {"Apple", "Orange", "Pear", "Kiwi"};
+
+// In C#, this method is static.
+GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
+GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
+[/csharp]
+[/codeblocks]
+*/
 func (self String) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1820,6 +2072,9 @@ func (self String) Join(ctx Context, parts PackedStringArray) String {
 	return ret
 }
 
+/*
+Returns the string converted to uppercase.
+*/
 func (self String) ToUpper(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1831,6 +2086,9 @@ func (self String) ToUpper(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to lowercase.
+*/
 func (self String) ToLower(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1842,6 +2100,13 @@ func (self String) ToLower(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the first [param length] characters from the beginning of the string. If [param length] is negative, strips the last [param length] characters from the string's end.
+[codeblock]
+print("Hello World!".left(3))  # Prints "Hel"
+print("Hello World!".left(-4)) # Prints "Hello Wo"
+[/codeblock]
+*/
 func (self String) Left(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1854,6 +2119,13 @@ func (self String) Left(ctx Context, length Int) String {
 	return ret
 }
 
+/*
+Returns the last [param length] characters from the end of the string. If [param length] is negative, strips the first [param length] characters from the string's beginning.
+[codeblock]
+print("Hello World!".right(3))  # Prints "ld!"
+print("Hello World!".right(-4)) # Prints "o World!"
+[/codeblock]
+*/
 func (self String) Right(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1866,6 +2138,10 @@ func (self String) Right(ctx Context, length Int) String {
 	return ret
 }
 
+/*
+Strips all non-printable characters from the beginning and the end of the string. These include spaces, tabulations ([code]\t[/code]), and newlines ([code]\n[/code] [code]\r[/code]).
+If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
+*/
 func (self String) StripEdges(ctx Context, left bool, right bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1879,6 +2155,9 @@ func (self String) StripEdges(ctx Context, left bool, right bool) String {
 	return ret
 }
 
+/*
+Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
+*/
 func (self String) StripEscapes(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1890,6 +2169,10 @@ func (self String) StripEscapes(ctx Context) String {
 	return ret
 }
 
+/*
+Removes a set of characters defined in [param chars] from the string's beginning. See also [method rstrip].
+[b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
+*/
 func (self String) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1902,6 +2185,10 @@ func (self String) Lstrip(ctx Context, chars String) String {
 	return ret
 }
 
+/*
+Removes a set of characters defined in [param chars] from the string's end. See also [method lstrip].
+[b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
+*/
 func (self String) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1914,6 +2201,20 @@ func (self String) Rstrip(ctx Context, chars String) String {
 	return ret
 }
 
+/*
+If the string is a valid file name or path, returns the file extension without the leading period ([code].[/code]). Otherwise, returns an empty string.
+[codeblock]
+var a = "/path/to/file.txt".get_extension() # a is "txt"
+var b = "cool.txt".get_extension()          # b is "txt"
+var c = "cool.font.tres".get_extension()    # c is "tres"
+var d = ".pack1".get_extension()            # d is "pack1"
+
+var e = "file.txt.".get_extension()  # e is ""
+var f = "file.txt..".get_extension() # f is ""
+var g = "txt".get_extension()        # g is ""
+var h = "".get_extension()           # h is ""
+[/codeblock]
+*/
 func (self String) GetExtension(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1925,6 +2226,12 @@ func (self String) GetExtension(ctx Context) String {
 	return ret
 }
 
+/*
+If the string is a valid file path, returns the full file path, without the extension.
+[codeblock]
+var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
+[/codeblock]
+*/
 func (self String) GetBasename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1936,6 +2243,10 @@ func (self String) GetBasename(ctx Context) String {
 	return ret
 }
 
+/*
+Concatenates [param file] at the end of the string as a subpath, adding [code]/[/code] if necessary.
+[b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
+*/
 func (self String) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1948,6 +2259,9 @@ func (self String) PathJoin(ctx Context, file String) String {
 	return ret
 }
 
+/*
+Returns the character code at position [param at].
+*/
 func (self String) UnicodeAt(at Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1960,6 +2274,10 @@ func (self String) UnicodeAt(at Int) Int {
 	return ret
 }
 
+/*
+Indents every line of the string with the given [param prefix]. Empty lines are not indented. See also [method dedent] to remove indentation.
+For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
+*/
 func (self String) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1972,6 +2290,9 @@ func (self String) Indent(ctx Context, prefix String) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
+*/
 func (self String) Dedent(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1983,6 +2304,10 @@ func (self String) Dedent(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the 32-bit hash value representing the string's contents.
+[b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, strings with different hash values are guaranteed to be different.
+*/
 func (self String) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1994,6 +2319,9 @@ func (self String) Hash() Int {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
+*/
 func (self String) Md5Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2005,6 +2333,9 @@ func (self String) Md5Text(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
+*/
 func (self String) Sha1Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2016,6 +2347,9 @@ func (self String) Sha1Text(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
+*/
 func (self String) Sha256Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2027,6 +2361,9 @@ func (self String) Sha256Text(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
+*/
 func (self String) Md5Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2038,6 +2375,9 @@ func (self String) Md5Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
+*/
 func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2049,6 +2389,9 @@ func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
+*/
 func (self String) Sha256Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2060,6 +2403,9 @@ func (self String) Sha256Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
+*/
 func (self String) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2071,6 +2417,21 @@ func (self String) IsEmpty() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string contains [param what]. In GDScript, this corresponds to the [code]in[/code] operator.
+[codeblocks]
+[gdscript]
+print("Node".contains("de")) # Prints true
+print("team".contains("I"))  # Prints false
+print("I" in "team")         # Prints false
+[/gdscript]
+[csharp]
+GD.Print("Node".Contains("de")); // Prints true
+GD.Print("team".Contains("I"));  // Prints false
+[/csharp]
+[/codeblocks]
+If you need to know where [param what] is within the string, use [method find].
+*/
 func (self String) Contains(what String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2083,6 +2444,10 @@ func (self String) Contains(what String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string is a path to a file or directory, and its starting point is explicitly defined. This method is the opposite of [method is_relative_path].
+This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
+*/
 func (self String) IsAbsolutePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2094,6 +2459,9 @@ func (self String) IsAbsolutePath() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
+*/
 func (self String) IsRelativePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2105,6 +2473,13 @@ func (self String) IsRelativePath() bool {
 	return ret
 }
 
+/*
+If the string is a valid file path, converts the string into a canonical path. This is the shortest possible path, without [code]"./"[/code], and all the unnecessary [code]".."[/code] and [code]"/"[/code].
+[codeblock]
+var simple_path = "./path/to///../file".simplify_path()
+print(simple_path) # Prints "path/file"
+[/codeblock]
+*/
 func (self String) SimplifyPath(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2116,6 +2491,12 @@ func (self String) SimplifyPath(ctx Context) String {
 	return ret
 }
 
+/*
+If the string is a valid file path, returns the base directory name.
+[codeblock]
+var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
+[/codeblock]
+*/
 func (self String) GetBaseDir(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2127,6 +2508,12 @@ func (self String) GetBaseDir(ctx Context) String {
 	return ret
 }
 
+/*
+If the string is a valid file path, returns the file name, including the extension.
+[codeblock]
+var file = "/path/to/icon.png".get_file() # file is "icon.png"
+[/codeblock]
+*/
 func (self String) GetFile(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2138,6 +2525,9 @@ func (self String) GetFile(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
+*/
 func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2150,6 +2540,9 @@ func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
+*/
 func (self String) XmlUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2161,6 +2554,23 @@ func (self String) XmlUnescape(ctx Context) String {
 	return ret
 }
 
+/*
+Encodes the string to URL-friendly format. This method is meant to properly encode the parameters in a URL when sending an HTTP request. See also [method uri_decode].
+[codeblocks]
+[gdscript]
+var prefix = "$DOCS_URL/?highlight="
+var url = prefix + "Godot Engine:docs".uri_encode()
+
+print(url) # Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+[/gdscript]
+[csharp]
+var prefix = "$DOCS_URL/?highlight=";
+var url = prefix + "Godot Engine:docs".URIEncode();
+
+GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+[/csharp]
+[/codeblocks]
+*/
 func (self String) UriEncode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2172,6 +2582,19 @@ func (self String) UriEncode(ctx Context) String {
 	return ret
 }
 
+/*
+Decodes the string from its URL-encoded format. This method is meant to properly decode the parameters in a URL when receiving an HTTP request. See also [method uri_encode].
+[codeblocks]
+[gdscript]
+var url = "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+print(url.uri_decode()) # Prints "$DOCS_URL/?highlight=Godot Engine:docs"
+[/gdscript]
+[csharp]
+var url = "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
+[/csharp]
+[/codeblocks]
+*/
 func (self String) UriDecode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2183,6 +2606,9 @@ func (self String) UriDecode(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with special characters escaped using the C language standard.
+*/
 func (self String) CEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2194,6 +2620,10 @@ func (self String) CEscape(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with escaped characters replaced by their meanings. Supported escape sequences are [code]\'[/code], [code]\"[/code], [code]\\[/code], [code]\a[/code], [code]\b[/code], [code]\f[/code], [code]\n[/code], [code]\r[/code], [code]\t[/code], [code]\v[/code].
+[b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
+*/
 func (self String) CUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2205,6 +2635,9 @@ func (self String) CUnescape(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
+*/
 func (self String) JsonEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2216,6 +2649,9 @@ func (self String) JsonEscape(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
+*/
 func (self String) ValidateNodeName(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2227,6 +2663,9 @@ func (self String) ValidateNodeName(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
+*/
 func (self String) ValidateFilename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2238,6 +2677,15 @@ func (self String) ValidateFilename(ctx Context) String {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string is a valid identifier. A valid identifier may contain only letters, digits and underscores ([code]_[/code]), and the first character may not be a digit.
+[codeblock]
+print("node_2d".is_valid_identifier())    # Prints true
+print("TYPE_FLOAT".is_valid_identifier()) # Prints true
+print("1st_method".is_valid_identifier()) # Prints false
+print("MyMethod#2".is_valid_identifier()) # Prints false
+[/codeblock]
+*/
 func (self String) IsValidIdentifier() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2249,6 +2697,16 @@ func (self String) IsValidIdentifier() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string represents a valid integer. A valid integer only contains digits, and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. See also [method to_int].
+[codeblock]
+print("7".is_valid_int())    # Prints true
+print("1.65".is_valid_int()) # Prints false
+print("Hi".is_valid_int())   # Prints false
+print("+3".is_valid_int())   # Prints true
+print("-12".is_valid_int())  # Prints true
+[/codeblock]
+*/
 func (self String) IsValidInt() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2260,6 +2718,15 @@ func (self String) IsValidInt() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string represents a valid floating-point number. A valid float may contain only digits, one decimal point ([code].[/code]), and the exponent letter ([code]e[/code]). It may also be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. Any valid integer is also a valid float (see [method is_valid_int]). See also [method to_float].
+[codeblock]
+print("1.7".is_valid_float())   # Prints true
+print("24".is_valid_float())    # Prints true
+print("7e3".is_valid_float())   # Prints true
+print("Hello".is_valid_float()) # Prints false
+[/codeblock]
+*/
 func (self String) IsValidFloat() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2271,6 +2738,17 @@ func (self String) IsValidFloat() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string is a valid hexadecimal number. A valid hexadecimal number only contains digits or letters [code]A[/code] to [code]F[/code] (either uppercase or lowercase), and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign.
+If [param with_prefix] is [code]true[/code], the hexadecimal number needs to prefixed by [code]"0x"[/code] to be considered valid.
+[codeblock]
+print("A08E".is_valid_hex_number())    # Prints true
+print("-AbCdEf".is_valid_hex_number()) # Prints true
+print("2.5".is_valid_hex_number())     # Prints false
+
+print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
+[/codeblock]
+*/
 func (self String) IsValidHexNumber(with_prefix bool) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2283,6 +2761,9 @@ func (self String) IsValidHexNumber(with_prefix bool) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
+*/
 func (self String) IsValidHtmlColor() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2294,6 +2775,9 @@ func (self String) IsValidHtmlColor() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
+*/
 func (self String) IsValidIpAddress() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2305,6 +2789,9 @@ func (self String) IsValidIpAddress() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
+*/
 func (self String) IsValidFilename() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2316,6 +2803,15 @@ func (self String) IsValidFilename() bool {
 	return ret
 }
 
+/*
+Converts the string representing an integer number into an [int]. This method removes any non-number character and stops at the first decimal point ([code].[/code]). See also [method is_valid_int].
+[codeblock]
+var a = "123".to_int()    # a is 123
+var b = "x1y2z3".to_int() # b is 123
+var c = "-1.2.3".to_int() # c is -1
+var d = "Hello!".to_int() # d is 0
+[/codeblock]
+*/
 func (self String) ToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2327,6 +2823,16 @@ func (self String) ToInt() Int {
 	return ret
 }
 
+/*
+Converts the string representing a decimal number into a [float]. This method stops on the first non-number character, except the first decimal point ([code].[/code]) and the exponent letter ([code]e[/code]). See also [method is_valid_float].
+[codeblock]
+var a = "12.35".to_float()  # a is 12.35
+var b = "1.2.3".to_float()  # b is 1.2
+var c = "12xy3".to_float()  # c is 12.0
+var d = "1e3".to_float()    # d is 1000.0
+var e = "Hello!".to_float() # e is 0.0
+[/codeblock]
+*/
 func (self String) ToFloat() Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -2338,6 +2844,19 @@ func (self String) ToFloat() Float {
 	return ret
 }
 
+/*
+Converts the string representing a hexadecimal number into an [int]. The string may be optionally prefixed with [code]"0x"[/code], and an additional [code]-[/code] prefix for negative numbers.
+[codeblocks]
+[gdscript]
+print("0xff".hex_to_int()) # Prints 255
+print("ab".hex_to_int())   # Prints 171
+[/gdscript]
+[csharp]
+GD.Print("0xff".HexToInt()); // Prints 255
+GD.Print("ab".HexToInt());   // Prints 171
+[/csharp]
+[/codeblocks]
+*/
 func (self String) HexToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2349,6 +2868,21 @@ func (self String) HexToInt() Int {
 	return ret
 }
 
+/*
+Converts the string representing a binary number into an [int]. The string may optionally be prefixed with [code]"0b"[/code], and an additional [code]-[/code] prefix for negative numbers.
+[codeblocks]
+[gdscript]
+print("101".bin_to_int())   # Prints 5
+print("0b101".bin_to_int()) # Prints 5
+print("-0b10".bin_to_int()) # Prints -2
+[/gdscript]
+[csharp]
+GD.Print("101".BinToInt());   // Prints 5
+GD.Print("0b101".BinToInt()); // Prints 5
+GD.Print("-0b10".BinToInt()); // Prints -2
+[/csharp]
+[/codeblocks]
+*/
 func (self String) BinToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2360,6 +2894,9 @@ func (self String) BinToInt() Int {
 	return ret
 }
 
+/*
+Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
+*/
 func (self String) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2373,6 +2910,9 @@ func (self String) Lpad(ctx Context, min_length Int, character String) String {
 	return ret
 }
 
+/*
+Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
+*/
 func (self String) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2386,6 +2926,9 @@ func (self String) Rpad(ctx Context, min_length Int, character String) String {
 	return ret
 }
 
+/*
+Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
+*/
 func (self String) PadDecimals(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2398,6 +2941,9 @@ func (self String) PadDecimals(ctx Context, digits Int) String {
 	return ret
 }
 
+/*
+Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
+*/
 func (self String) PadZeros(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2410,6 +2956,9 @@ func (self String) PadZeros(ctx Context, digits Int) String {
 	return ret
 }
 
+/*
+Removes the given [param prefix] from the start of the string, or returns the string unchanged.
+*/
 func (self String) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2422,6 +2971,9 @@ func (self String) TrimPrefix(ctx Context, prefix String) String {
 	return ret
 }
 
+/*
+Removes the given [param suffix] from the end of the string, or returns the string unchanged.
+*/
 func (self String) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2434,6 +2986,9 @@ func (self String) TrimSuffix(ctx Context, suffix String) String {
 	return ret
 }
 
+/*
+Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces. This is the inverse of [method PackedByteArray.get_string_from_ascii].
+*/
 func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2445,6 +3000,9 @@ func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method. This is the inverse of [method PackedByteArray.get_string_from_utf8].
+*/
 func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2456,6 +3014,9 @@ func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf16].
+*/
 func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2467,6 +3028,9 @@ func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf32].
+*/
 func (self String) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2478,6 +3042,21 @@ func (self String) ToUtf32Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Decodes a hexadecimal string as a [PackedByteArray].
+[codeblocks]
+[gdscript]
+var text = "hello world"
+var encoded = text.to_utf8_buffer().hex_encode() # outputs "68656c6c6f20776f726c64"
+print(buf.hex_decode().get_string_from_utf8())
+[/gdscript]
+[csharp]
+var text = "hello world";
+var encoded = text.ToUtf8Buffer().HexEncode(); // outputs "68656c6c6f20776f726c64"
+GD.Print(buf.HexDecode().GetStringFromUtf8());
+[/csharp]
+[/codeblocks]
+*/
 func (self String) HexDecode(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2489,6 +3068,9 @@ func (self String) HexDecode(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_wchar].
+*/
 func (self String) ToWcharBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2500,6 +3082,24 @@ func (self String) ToWcharBuffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the given [param number] to a string representation, in scientific notation.
+[codeblocks]
+[gdscript]
+var n = -5.2e8
+print(n)                       # Prints -520000000
+print(String.NumScientific(n)) # Prints -5.2e+08
+[/gdscript]
+[csharp]
+// This method is not implemented in C#.
+// Use `string.ToString()` with "e" to achieve similar results.
+var n = -5.2e8f;
+GD.Print(n);                // Prints -520000000
+GD.Print(n.ToString("e1")); // Prints -5.2e+008
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, this method is not implemented. To achieve similar results, see C#'s [url=https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings]Standard numeric format strings[/url]
+*/
 func (self String) NumScientific(ctx Context, number Float) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2512,6 +3112,25 @@ func (self String) NumScientific(ctx Context, number Float) String {
 	return ret
 }
 
+/*
+Converts a [float] to a string representation of a decimal number, with the number of decimal places specified in [param decimals].
+If [param decimals] is [code]-1[/code] as by default, the string representation may only have up to 14 significant digits, with digits before the decimal point having priority over digits after.
+Trailing zeros are not included in the string. The last digit is rounded, not truncated.
+[b]Example:[/b]
+[codeblock]
+String.num(3.141593)     # Returns "3.141593"
+String.num(3.141593, 3)  # Returns "3.142"
+String.num(3.14159300)   # Returns "3.141593"
+
+# Here, the last digit will be rounded up,
+# which reduces the total digit count, since trailing zeros are removed:
+String.num(42.129999, 5) # Returns "42.13"
+
+# If `decimals` is not specified, the maximum number of significant digits is 14:
+String.num(-0.0000012345432123454321)     # Returns "-0.00000123454321"
+String.num(-10000.0000012345432123454321) # Returns "-10000.0000012345"
+[/codeblock]
+*/
 func (self String) Num(ctx Context, number Float, decimals Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2525,6 +3144,11 @@ func (self String) Num(ctx Context, number Float, decimals Int) String {
 	return ret
 }
 
+/*
+Converts the given [param number] to a string representation, with the given [param base].
+By default, [param base] is set to decimal ([code]10[/code]). Other common bases in programming include binary ([code]2[/code]), [url=https://en.wikipedia.org/wiki/Octal]octal[/url] ([code]8[/code]), hexadecimal ([code]16[/code]).
+If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
+*/
 func (self String) NumInt64(ctx Context, number Int, base Int, capitalize_hex bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2539,6 +3163,11 @@ func (self String) NumInt64(ctx Context, number Int, base Int, capitalize_hex bo
 	return ret
 }
 
+/*
+Converts the given unsigned [int] to a string representation, with the given [param base].
+By default, [param base] is set to decimal ([code]10[/code]). Other common bases in programming include binary ([code]2[/code]), [url=https://en.wikipedia.org/wiki/Octal]octal[/url] ([code]8[/code]), hexadecimal ([code]16[/code]).
+If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
+*/
 func (self String) NumUint64(ctx Context, number Int, base Int, capitalize_hex bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2553,6 +3182,13 @@ func (self String) NumUint64(ctx Context, number Int, base Int, capitalize_hex b
 	return ret
 }
 
+/*
+Returns a single Unicode character from the decimal [param char]. You may use [url=https://unicodelookup.com/]unicodelookup.com[/url] or [url=https://www.unicode.org/charts/]unicode.org[/url] as points of reference.
+[codeblock]
+print(String.chr(65))     # Prints "A"
+print(String.chr(129302)) # Prints "🤖" (robot face emoji)
+[/codeblock]
+*/
 func (self String) Chr(ctx Context, char Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2565,6 +3201,10 @@ func (self String) Chr(ctx Context, char Int) String {
 	return ret
 }
 
+/*
+Converts [param size] which represents a number of bytes into a human-readable form.
+The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]IEC prefix format[/url], which may end in either [code]"B"[/code], [code]"KiB"[/code], [code]"MiB"[/code], [code]"GiB"[/code], [code]"TiB"[/code], [code]"PiB"[/code], or [code]"EiB"[/code].
+*/
 func (self String) HumanizeSize(ctx Context, size Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2577,6 +3217,11 @@ func (self String) HumanizeSize(ctx Context, size Int) String {
 	return ret
 }
 
+/*
+Performs a case-sensitive comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" and "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+*/
 func (self StringName) CasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2589,6 +3234,11 @@ func (self StringName) CasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+*/
 func (self StringName) NocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2601,6 +3251,12 @@ func (self StringName) NocasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Performs a [b]case-sensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
+When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+*/
 func (self StringName) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2613,6 +3269,12 @@ func (self StringName) NaturalcasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Performs a [b]case-insensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
+When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
+With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+*/
 func (self StringName) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2625,6 +3287,9 @@ func (self StringName) NaturalnocasecmpTo(to String) Int {
 	return ret
 }
 
+/*
+Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
+*/
 func (self StringName) Length() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2636,6 +3301,9 @@ func (self StringName) Length() Int {
 	return ret
 }
 
+/*
+Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
+*/
 func (self StringName) Substr(ctx Context, from Int, len Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2649,6 +3317,14 @@ func (self StringName) Substr(ctx Context, from Int, len Int) String {
 	return ret
 }
 
+/*
+Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
+This is faster than [method split], if you only need one substring.
+[b]Example:[/b]
+[codeblock]
+print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
+[/codeblock]
+*/
 func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2662,6 +3338,10 @@ func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String
 	return ret
 }
 
+/*
+Splits the string using a Unicode character with code [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
+This is faster than [method split], if you only need one substring.
+*/
 func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2675,6 +3355,9 @@ func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	return ret
 }
 
+/*
+Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
+*/
 func (self StringName) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2687,6 +3370,26 @@ func (self StringName) GetSliceCount(delimiter String) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]first[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the string.
+[codeblocks]
+[gdscript]
+print("Team".find("I")) # Prints -1
+
+print("Potato".find("t"))    # Prints 2
+print("Potato".find("t", 3)) # Prints 4
+print("Potato".find("t", 5)) # Prints -1
+[/gdscript]
+[csharp]
+GD.Print("Team".Find("I")); // Prints -1
+
+GD.Print("Potato".Find("t"));    // Prints 2
+GD.Print("Potato".Find("t", 3)); // Prints 4
+GD.Print("Potato".Find("t", 5)); // Prints -1
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In GDScript, you may also use the [code]in[/code] operator.
+*/
 func (self StringName) Find(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2700,6 +3403,9 @@ func (self StringName) Find(what String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
+*/
 func (self StringName) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2714,6 +3420,9 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 	return ret
 }
 
+/*
+Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
+*/
 func (self StringName) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2728,6 +3437,9 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
+*/
 func (self StringName) Findn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2741,6 +3453,9 @@ func (self StringName) Findn(what String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
+*/
 func (self StringName) Rfind(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2754,6 +3469,9 @@ func (self StringName) Rfind(what String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
+*/
 func (self StringName) Rfindn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2767,6 +3485,9 @@ func (self StringName) Rfindn(what String, from Int) Int {
 	return ret
 }
 
+/*
+Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
+*/
 func (self StringName) Match(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2779,6 +3500,9 @@ func (self StringName) Match(expr String) bool {
 	return ret
 }
 
+/*
+Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
+*/
 func (self StringName) Matchn(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2791,6 +3515,9 @@ func (self StringName) Matchn(expr String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
+*/
 func (self StringName) BeginsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2803,6 +3530,9 @@ func (self StringName) BeginsWith(text String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
+*/
 func (self StringName) EndsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2815,6 +3545,17 @@ func (self StringName) EndsWith(text String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order.
+[codeblock]
+var text = "Wow, incredible!"
+
+print("inedible".is_subsequence_of(text)) # Prints true
+print("Word!".is_subsequence_of(text))    # Prints true
+print("Window".is_subsequence_of(text))   # Prints false
+print("".is_subsequence_of(text))         # Prints true
+[/codeblock]
+*/
 func (self StringName) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2827,6 +3568,9 @@ func (self StringName) IsSubsequenceOf(text String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
+*/
 func (self StringName) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2839,6 +3583,12 @@ func (self StringName) IsSubsequenceOfn(text String) bool {
 	return ret
 }
 
+/*
+Returns an array containing the bigrams (pairs of consecutive characters) of this string.
+[codeblock]
+print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
+[/codeblock]
+*/
 func (self StringName) Bigrams(ctx Context) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2850,6 +3600,15 @@ func (self StringName) Bigrams(ctx Context) PackedStringArray {
 	return ret
 }
 
+/*
+Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sorensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
+[codeblock]
+print("ABC123".similarity("ABC123")) # Prints 1.0
+print("ABC123".similarity("XYZ456")) # Prints 0.0
+print("ABC123".similarity("123ABC")) # Prints 0.8
+print("ABC123".similarity("abc123")) # Prints 0.4
+[/codeblock]
+*/
 func (self StringName) Similarity(text String) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -2862,6 +3621,26 @@ func (self StringName) Similarity(text String) Float {
 	return ret
 }
 
+/*
+Formats the string by replacing all occurrences of [param placeholder] with the elements of [param values].
+[param values] can be a [Dictionary] or an [Array]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
+[codeblock]
+# Prints "Waiting for Godot is a play by Samuel Beckett, and Godot Engine is named after it."
+var use_array_values = "Waiting for {0} is a play by {1}, and {0} Engine is named after it."
+print(use_array_values.format(["Godot", "Samuel Beckett"]))
+
+# Prints "User 42 is Godot."
+print("User {id} is {name}.".format({"id": 42, "name": "Godot"}))
+[/codeblock]
+Some additional handling is performed when [param values] is an [Array]. If [param placeholder] does not contain an underscore, the elements of the [param values] array will be used to replace one occurrence of the placeholder in order; If an element of [param values] is another 2-element array, it'll be interpreted as a key-value pair.
+[codeblock]
+# Prints "User 42 is Godot."
+print("User {} is {}.".format([42, "Godot"], "{}"))
+print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
+[/codeblock]
+See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
+[b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
+*/
 func (self StringName) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2875,6 +3654,9 @@ func (self StringName) Format(ctx Context, values Variant, placeholder String) S
 	return ret
 }
 
+/*
+Replaces all occurrences of [param what] inside the string with the given [param forwhat].
+*/
 func (self StringName) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2888,6 +3670,9 @@ func (self StringName) Replace(ctx Context, what String, forwhat String) String 
 	return ret
 }
 
+/*
+Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
+*/
 func (self StringName) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2901,6 +3686,9 @@ func (self StringName) Replacen(ctx Context, what String, forwhat String) String
 	return ret
 }
 
+/*
+Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
+*/
 func (self StringName) Repeat(ctx Context, count Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2913,6 +3701,9 @@ func (self StringName) Repeat(ctx Context, count Int) String {
 	return ret
 }
 
+/*
+Returns the copy of this string in reverse order.
+*/
 func (self StringName) Reverse(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2924,6 +3715,9 @@ func (self StringName) Reverse(ctx Context) String {
 	return ret
 }
 
+/*
+Inserts [param what] at the given [param position] in the string.
+*/
 func (self StringName) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2937,6 +3731,9 @@ func (self StringName) Insert(ctx Context, position Int, what String) String {
 	return ret
 }
 
+/*
+Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
+*/
 func (self StringName) Erase(ctx Context, position Int, chars Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2950,6 +3747,20 @@ func (self StringName) Erase(ctx Context, position Int, chars Int) String {
 	return ret
 }
 
+/*
+Changes the appearance of the string: replaces underscores ([code]_[/code]) with spaces, adds spaces before uppercase letters in the middle of a word, converts all letters to lowercase, then converts the first one and each one following a space to uppercase.
+[codeblocks]
+[gdscript]
+"move_local_x".capitalize()   # Returns "Move Local X"
+"sceneFile_path".capitalize() # Returns "Scene File Path"
+[/gdscript]
+[csharp]
+"move_local_x".Capitalize();   // Returns "Move Local X"
+"sceneFile_path".Capitalize(); // Returns "Scene File Path"
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This method not the same as the default appearance of properties in the Inspector dock, as it does not capitalize acronyms ([code]"2D"[/code], [code]"FPS"[/code], [code]"PNG"[/code], etc.) as you may expect.
+*/
 func (self StringName) Capitalize(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2961,6 +3772,9 @@ func (self StringName) Capitalize(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to [code]camelCase[/code].
+*/
 func (self StringName) ToCamelCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2972,6 +3786,9 @@ func (self StringName) ToCamelCase(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to [code]PascalCase[/code].
+*/
 func (self StringName) ToPascalCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2983,6 +3800,9 @@ func (self StringName) ToPascalCase(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to [code]snake_case[/code].
+*/
 func (self StringName) ToSnakeCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2994,6 +3814,31 @@ func (self StringName) ToSnakeCase(ctx Context) String {
 	return ret
 }
 
+/*
+Splits the string using a [param delimiter] and returns an array of the substrings. If [param delimiter] is an empty string, each substring will be a single character. This method is the opposite of [method join].
+If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
+If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split.
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var some_array = "One,Two,Three,Four".split(",", true, 2)
+
+print(some_array.size()) # Prints 3
+print(some_array[0])     # Prints "One"
+print(some_array[1])     # Prints "Two"
+print(some_array[2])     # Prints "Three,Four"
+[/gdscript]
+[csharp]
+// C#'s `Split()` does not support the `maxsplit` parameter.
+var someArray = "One,Two,Three".Split(",");
+
+GD.Print(someArray[0]); // Prints "One"
+GD.Print(someArray[1]); // Prints "Two"
+GD.Print(someArray[2]); // Prints "Three"
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
+*/
 func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3008,6 +3853,25 @@ func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, ma
 	return ret
 }
 
+/*
+Splits the string using a [param delimiter] and returns an array of the substrings, starting from the end of the string. The splits in the returned array appear in the same order as the original string. If [param delimiter] is an empty string, each substring will be a single character.
+If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
+If [param maxsplit] is greater than [code]0[/code], the number of splits may not exceed [param maxsplit]. By default, the entire string is split, which is mostly identical to [method split].
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var some_string = "One,Two,Three,Four"
+var some_array = some_string.rsplit(",", true, 1)
+
+print(some_array.size()) # Prints 2
+print(some_array[0])     # Prints "One,Two,Three"
+print(some_array[1])     # Prints "Four"
+[/gdscript]
+[csharp]
+// In C#, there is no String.RSplit() method.
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3022,6 +3886,15 @@ func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, m
 	return ret
 }
 
+/*
+Splits the string into floats by using a [param delimiter] and returns a [PackedFloat64Array].
+If [param allow_empty] is [code]false[/code], empty or invalid [float] conversions between adjacent delimiters are excluded.
+[codeblock]
+var a = "1,2,4.5".split_floats(",")         # a is [1.0, 2.0, 4.5]
+var c = "1| ||4.5".split_floats("|")        # c is [1.0, 0.0, 0.0, 4.5]
+var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
+[/codeblock]
+*/
 func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -3035,6 +3908,25 @@ func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bo
 	return ret
 }
 
+/*
+Returns the concatenation of [param parts]' elements, with each element separated by the string calling this method. This method is the opposite of [method split].
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var fruits = ["Apple", "Orange", "Pear", "Kiwi"]
+
+print(", ".join(fruits))  # Prints "Apple, Orange, Pear, Kiwi"
+print("---".join(fruits)) # Prints "Apple---Orange---Pear---Kiwi"
+[/gdscript]
+[csharp]
+var fruits = new string[] {"Apple", "Orange", "Pear", "Kiwi"};
+
+// In C#, this method is static.
+GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
+GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3047,6 +3939,9 @@ func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 	return ret
 }
 
+/*
+Returns the string converted to uppercase.
+*/
 func (self StringName) ToUpper(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3058,6 +3953,9 @@ func (self StringName) ToUpper(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the string converted to lowercase.
+*/
 func (self StringName) ToLower(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3069,6 +3967,13 @@ func (self StringName) ToLower(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the first [param length] characters from the beginning of the string. If [param length] is negative, strips the last [param length] characters from the string's end.
+[codeblock]
+print("Hello World!".left(3))  # Prints "Hel"
+print("Hello World!".left(-4)) # Prints "Hello Wo"
+[/codeblock]
+*/
 func (self StringName) Left(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3081,6 +3986,13 @@ func (self StringName) Left(ctx Context, length Int) String {
 	return ret
 }
 
+/*
+Returns the last [param length] characters from the end of the string. If [param length] is negative, strips the first [param length] characters from the string's beginning.
+[codeblock]
+print("Hello World!".right(3))  # Prints "ld!"
+print("Hello World!".right(-4)) # Prints "o World!"
+[/codeblock]
+*/
 func (self StringName) Right(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3093,6 +4005,10 @@ func (self StringName) Right(ctx Context, length Int) String {
 	return ret
 }
 
+/*
+Strips all non-printable characters from the beginning and the end of the string. These include spaces, tabulations ([code]\t[/code]), and newlines ([code]\n[/code] [code]\r[/code]).
+If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
+*/
 func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3106,6 +4022,9 @@ func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 	return ret
 }
 
+/*
+Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
+*/
 func (self StringName) StripEscapes(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3117,6 +4036,10 @@ func (self StringName) StripEscapes(ctx Context) String {
 	return ret
 }
 
+/*
+Removes a set of characters defined in [param chars] from the string's beginning. See also [method rstrip].
+[b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
+*/
 func (self StringName) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3129,6 +4052,10 @@ func (self StringName) Lstrip(ctx Context, chars String) String {
 	return ret
 }
 
+/*
+Removes a set of characters defined in [param chars] from the string's end. See also [method lstrip].
+[b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
+*/
 func (self StringName) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3141,6 +4068,20 @@ func (self StringName) Rstrip(ctx Context, chars String) String {
 	return ret
 }
 
+/*
+If the string is a valid file name or path, returns the file extension without the leading period ([code].[/code]). Otherwise, returns an empty string.
+[codeblock]
+var a = "/path/to/file.txt".get_extension() # a is "txt"
+var b = "cool.txt".get_extension()          # b is "txt"
+var c = "cool.font.tres".get_extension()    # c is "tres"
+var d = ".pack1".get_extension()            # d is "pack1"
+
+var e = "file.txt.".get_extension()  # e is ""
+var f = "file.txt..".get_extension() # f is ""
+var g = "txt".get_extension()        # g is ""
+var h = "".get_extension()           # h is ""
+[/codeblock]
+*/
 func (self StringName) GetExtension(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3152,6 +4093,12 @@ func (self StringName) GetExtension(ctx Context) String {
 	return ret
 }
 
+/*
+If the string is a valid file path, returns the full file path, without the extension.
+[codeblock]
+var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
+[/codeblock]
+*/
 func (self StringName) GetBasename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3163,6 +4110,10 @@ func (self StringName) GetBasename(ctx Context) String {
 	return ret
 }
 
+/*
+Concatenates [param file] at the end of the string as a subpath, adding [code]/[/code] if necessary.
+[b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
+*/
 func (self StringName) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3175,6 +4126,9 @@ func (self StringName) PathJoin(ctx Context, file String) String {
 	return ret
 }
 
+/*
+Returns the character code at position [param at].
+*/
 func (self StringName) UnicodeAt(at Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3187,6 +4141,10 @@ func (self StringName) UnicodeAt(at Int) Int {
 	return ret
 }
 
+/*
+Indents every line of the string with the given [param prefix]. Empty lines are not indented. See also [method dedent] to remove indentation.
+For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
+*/
 func (self StringName) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3199,6 +4157,9 @@ func (self StringName) Indent(ctx Context, prefix String) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
+*/
 func (self StringName) Dedent(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3210,6 +4171,9 @@ func (self StringName) Dedent(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
+*/
 func (self StringName) Md5Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3221,6 +4185,9 @@ func (self StringName) Md5Text(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
+*/
 func (self StringName) Sha1Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3232,6 +4199,9 @@ func (self StringName) Sha1Text(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
+*/
 func (self StringName) Sha256Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3243,6 +4213,9 @@ func (self StringName) Sha256Text(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
+*/
 func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3254,6 +4227,9 @@ func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
+*/
 func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3265,6 +4241,9 @@ func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
+*/
 func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3276,6 +4255,9 @@ func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
+*/
 func (self StringName) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3287,6 +4269,21 @@ func (self StringName) IsEmpty() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string contains [param what]. In GDScript, this corresponds to the [code]in[/code] operator.
+[codeblocks]
+[gdscript]
+print("Node".contains("de")) # Prints true
+print("team".contains("I"))  # Prints false
+print("I" in "team")         # Prints false
+[/gdscript]
+[csharp]
+GD.Print("Node".Contains("de")); // Prints true
+GD.Print("team".Contains("I"));  // Prints false
+[/csharp]
+[/codeblocks]
+If you need to know where [param what] is within the string, use [method find].
+*/
 func (self StringName) Contains(what String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3299,6 +4296,10 @@ func (self StringName) Contains(what String) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string is a path to a file or directory, and its starting point is explicitly defined. This method is the opposite of [method is_relative_path].
+This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
+*/
 func (self StringName) IsAbsolutePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3310,6 +4311,9 @@ func (self StringName) IsAbsolutePath() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
+*/
 func (self StringName) IsRelativePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3321,6 +4325,13 @@ func (self StringName) IsRelativePath() bool {
 	return ret
 }
 
+/*
+If the string is a valid file path, converts the string into a canonical path. This is the shortest possible path, without [code]"./"[/code], and all the unnecessary [code]".."[/code] and [code]"/"[/code].
+[codeblock]
+var simple_path = "./path/to///../file".simplify_path()
+print(simple_path) # Prints "path/file"
+[/codeblock]
+*/
 func (self StringName) SimplifyPath(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3332,6 +4343,12 @@ func (self StringName) SimplifyPath(ctx Context) String {
 	return ret
 }
 
+/*
+If the string is a valid file path, returns the base directory name.
+[codeblock]
+var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
+[/codeblock]
+*/
 func (self StringName) GetBaseDir(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3343,6 +4360,12 @@ func (self StringName) GetBaseDir(ctx Context) String {
 	return ret
 }
 
+/*
+If the string is a valid file path, returns the file name, including the extension.
+[codeblock]
+var file = "/path/to/icon.png".get_file() # file is "icon.png"
+[/codeblock]
+*/
 func (self StringName) GetFile(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3354,6 +4377,9 @@ func (self StringName) GetFile(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
+*/
 func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3366,6 +4392,9 @@ func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
+*/
 func (self StringName) XmlUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3377,6 +4406,23 @@ func (self StringName) XmlUnescape(ctx Context) String {
 	return ret
 }
 
+/*
+Encodes the string to URL-friendly format. This method is meant to properly encode the parameters in a URL when sending an HTTP request.
+[codeblocks]
+[gdscript]
+var prefix = "$DOCS_URL/?highlight="
+var url = prefix + "Godot Engine:docs".uri_encode()
+
+print(url) # Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+[/gdscript]
+[csharp]
+var prefix = "$DOCS_URL/?highlight=";
+var url = prefix + "Godot Engine:docs".URIEncode();
+
+GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) UriEncode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3388,6 +4434,19 @@ func (self StringName) UriEncode(ctx Context) String {
 	return ret
 }
 
+/*
+Decodes the string from its URL-encoded format. This method is meant to properly decode the parameters in a URL when receiving an HTTP request.
+[codeblocks]
+[gdscript]
+var url = "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+print(url.uri_decode()) # Prints "$DOCS_URL/?highlight=Godot Engine:docs"
+[/gdscript]
+[csharp]
+var url = "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
+GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) UriDecode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3399,6 +4458,9 @@ func (self StringName) UriDecode(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with special characters escaped using the C language standard.
+*/
 func (self StringName) CEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3410,6 +4472,10 @@ func (self StringName) CEscape(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with escaped characters replaced by their meanings. Supported escape sequences are [code]\'[/code], [code]\"[/code], [code]\\[/code], [code]\a[/code], [code]\b[/code], [code]\f[/code], [code]\n[/code], [code]\r[/code], [code]\t[/code], [code]\v[/code].
+[b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
+*/
 func (self StringName) CUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3421,6 +4487,9 @@ func (self StringName) CUnescape(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
+*/
 func (self StringName) JsonEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3432,6 +4501,9 @@ func (self StringName) JsonEscape(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
+*/
 func (self StringName) ValidateNodeName(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3443,6 +4515,9 @@ func (self StringName) ValidateNodeName(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
+*/
 func (self StringName) ValidateFilename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3454,6 +4529,15 @@ func (self StringName) ValidateFilename(ctx Context) String {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string is a valid identifier. A valid identifier may contain only letters, digits and underscores ([code]_[/code]), and the first character may not be a digit.
+[codeblock]
+print("node_2d".is_valid_identifier())    # Prints true
+print("TYPE_FLOAT".is_valid_identifier()) # Prints true
+print("1st_method".is_valid_identifier()) # Prints false
+print("MyMethod#2".is_valid_identifier()) # Prints false
+[/codeblock]
+*/
 func (self StringName) IsValidIdentifier() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3465,6 +4549,16 @@ func (self StringName) IsValidIdentifier() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string represents a valid integer. A valid integer only contains digits, and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. See also [method to_int].
+[codeblock]
+print("7".is_valid_int())    # Prints true
+print("1.65".is_valid_int()) # Prints false
+print("Hi".is_valid_int())   # Prints false
+print("+3".is_valid_int())   # Prints true
+print("-12".is_valid_int())  # Prints true
+[/codeblock]
+*/
 func (self StringName) IsValidInt() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3476,6 +4570,15 @@ func (self StringName) IsValidInt() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string represents a valid floating-point number. A valid float may contain only digits, one decimal point ([code].[/code]), and the exponent letter ([code]e[/code]). It may also be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. Any valid integer is also a valid float (see [method is_valid_int]). See also [method to_float].
+[codeblock]
+print("1.7".is_valid_float())   # Prints true
+print("24".is_valid_float())    # Prints true
+print("7e3".is_valid_float())   # Prints true
+print("Hello".is_valid_float()) # Prints false
+[/codeblock]
+*/
 func (self StringName) IsValidFloat() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3487,6 +4590,17 @@ func (self StringName) IsValidFloat() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string is a valid hexadecimal number. A valid hexadecimal number only contains digits or letters [code]A[/code] to [code]F[/code] (either uppercase or lowercase), and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign.
+If [param with_prefix] is [code]true[/code], the hexadecimal number needs to prefixed by [code]"0x"[/code] to be considered valid.
+[codeblock]
+print("A08E".is_valid_hex_number())    # Prints true
+print("-AbCdEf".is_valid_hex_number()) # Prints true
+print("2.5".is_valid_hex_number())     # Prints false
+
+print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
+[/codeblock]
+*/
 func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3499,6 +4613,9 @@ func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
+*/
 func (self StringName) IsValidHtmlColor() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3510,6 +4627,9 @@ func (self StringName) IsValidHtmlColor() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
+*/
 func (self StringName) IsValidIpAddress() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3521,6 +4641,9 @@ func (self StringName) IsValidIpAddress() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
+*/
 func (self StringName) IsValidFilename() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3532,6 +4655,15 @@ func (self StringName) IsValidFilename() bool {
 	return ret
 }
 
+/*
+Converts the string representing an integer number into an [int]. This method removes any non-number character and stops at the first decimal point ([code].[/code]). See also [method is_valid_int].
+[codeblock]
+var a = "123".to_int()    # a is 123
+var b = "x1y2z3".to_int() # b is 123
+var c = "-1.2.3".to_int() # c is -1
+var d = "Hello!".to_int() # d is 0
+[/codeblock]
+*/
 func (self StringName) ToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3543,6 +4675,16 @@ func (self StringName) ToInt() Int {
 	return ret
 }
 
+/*
+Converts the string representing a decimal number into a [float]. This method stops on the first non-number character, except the first decimal point ([code].[/code]) and the exponent letter ([code]e[/code]). See also [method is_valid_float].
+[codeblock]
+var a = "12.35".to_float() # a is 12.35
+var b = "1.2.3".to_float() # b is 1.2
+var c = "12xy3".to_float() # c is 12.0
+var d = "1e3".to_float()   # d is 1000.0
+var e = "Hello!".to_int()  # e is 0.0
+[/codeblock]
+*/
 func (self StringName) ToFloat() Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -3554,6 +4696,19 @@ func (self StringName) ToFloat() Float {
 	return ret
 }
 
+/*
+Converts the string representing a hexadecimal number into an [int]. The string may be optionally prefixed with [code]"0x"[/code], and an additional [code]-[/code] prefix for negative numbers.
+[codeblocks]
+[gdscript]
+print("0xff".hex_to_int()) # Prints 255
+print("ab".hex_to_int())   # Prints 171
+[/gdscript]
+[csharp]
+GD.Print("0xff".HexToInt()); // Prints 255
+GD.Print("ab".HexToInt());   // Prints 171
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) HexToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3565,6 +4720,21 @@ func (self StringName) HexToInt() Int {
 	return ret
 }
 
+/*
+Converts the string representing a binary number into an [int]. The string may optionally be prefixed with [code]"0b"[/code], and an additional [code]-[/code] prefix for negative numbers.
+[codeblocks]
+[gdscript]
+print("101".bin_to_int())   # Prints 5
+print("0b101".bin_to_int()) # Prints 5
+print("-0b10".bin_to_int()) # Prints -2
+[/gdscript]
+[csharp]
+GD.Print("101".BinToInt());   // Prints 5
+GD.Print("0b101".BinToInt()); // Prints 5
+GD.Print("-0b10".BinToInt()); // Prints -2
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) BinToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3576,6 +4746,9 @@ func (self StringName) BinToInt() Int {
 	return ret
 }
 
+/*
+Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
+*/
 func (self StringName) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3589,6 +4762,9 @@ func (self StringName) Lpad(ctx Context, min_length Int, character String) Strin
 	return ret
 }
 
+/*
+Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
+*/
 func (self StringName) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3602,6 +4778,9 @@ func (self StringName) Rpad(ctx Context, min_length Int, character String) Strin
 	return ret
 }
 
+/*
+Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
+*/
 func (self StringName) PadDecimals(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3614,6 +4793,9 @@ func (self StringName) PadDecimals(ctx Context, digits Int) String {
 	return ret
 }
 
+/*
+Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
+*/
 func (self StringName) PadZeros(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3626,6 +4808,9 @@ func (self StringName) PadZeros(ctx Context, digits Int) String {
 	return ret
 }
 
+/*
+Removes the given [param prefix] from the start of the string, or returns the string unchanged.
+*/
 func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3638,6 +4823,9 @@ func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 	return ret
 }
 
+/*
+Removes the given [param suffix] from the end of the string, or returns the string unchanged.
+*/
 func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3650,6 +4838,9 @@ func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 	return ret
 }
 
+/*
+Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces.
+*/
 func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3661,6 +4852,9 @@ func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method.
+*/
 func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3672,6 +4866,9 @@ func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray].
+*/
 func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3683,6 +4880,9 @@ func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray].
+*/
 func (self StringName) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3694,6 +4894,21 @@ func (self StringName) ToUtf32Buffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Decodes a hexadecimal string as a [PackedByteArray].
+[codeblocks]
+[gdscript]
+var text = "hello world"
+var encoded = text.to_utf8_buffer().hex_encode() # outputs "68656c6c6f20776f726c64"
+print(buf.hex_decode().get_string_from_utf8())
+[/gdscript]
+[csharp]
+var text = "hello world";
+var encoded = text.ToUtf8Buffer().HexEncode(); // outputs "68656c6c6f20776f726c64"
+GD.Print(buf.HexDecode().GetStringFromUtf8());
+[/csharp]
+[/codeblocks]
+*/
 func (self StringName) HexDecode(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3705,6 +4920,9 @@ func (self StringName) HexDecode(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray].
+*/
 func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3716,6 +4934,10 @@ func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Returns the 32-bit hash value representing the string's contents.
+[b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, strings with different hash values are guaranteed to be different.
+*/
 func (self StringName) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3727,6 +4949,9 @@ func (self StringName) Hash() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the node path is absolute (as opposed to relative), which means that it starts with a slash character ([code]/[/code]). Absolute node paths can be used to access the root node ([code]"/root"[/code]) or autoloads (e.g. [code]"/global"[/code] if a "global" autoload was registered).
+*/
 func (self NodePath) IsAbsolute() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3738,6 +4963,10 @@ func (self NodePath) IsAbsolute() bool {
 	return ret
 }
 
+/*
+Gets the number of node names which make up the path. Subnames (see [method get_subname_count]) are not included.
+For example, [code]"Path2D/PathFollow2D/Sprite2D"[/code] has 3 names.
+*/
 func (self NodePath) GetNameCount() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3749,6 +4978,23 @@ func (self NodePath) GetNameCount() Int {
 	return ret
 }
 
+/*
+Gets the node name indicated by [param idx] (0 to [method get_name_count] - 1).
+[codeblocks]
+[gdscript]
+var node_path = NodePath("Path2D/PathFollow2D/Sprite2D")
+print(node_path.get_name(0)) # Path2D
+print(node_path.get_name(1)) # PathFollow2D
+print(node_path.get_name(2)) # Sprite
+[/gdscript]
+[csharp]
+var nodePath = new NodePath("Path2D/PathFollow2D/Sprite2D");
+GD.Print(nodePath.GetName(0)); // Path2D
+GD.Print(nodePath.GetName(1)); // PathFollow2D
+GD.Print(nodePath.GetName(2)); // Sprite
+[/csharp]
+[/codeblocks]
+*/
 func (self NodePath) GetName(ctx Context, idx Int) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -3761,6 +5007,10 @@ func (self NodePath) GetName(ctx Context, idx Int) StringName {
 	return ret
 }
 
+/*
+Gets the number of resource or property names ("subnames") in the path. Each subname is listed after a colon character ([code]:[/code]) in the node path.
+For example, [code]"Path2D/PathFollow2D/Sprite2D:texture:load_path"[/code] has 2 subnames.
+*/
 func (self NodePath) GetSubnameCount() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3772,6 +5022,9 @@ func (self NodePath) GetSubnameCount() Int {
 	return ret
 }
 
+/*
+Returns the 32-bit hash value representing the [NodePath]'s contents.
+*/
 func (self NodePath) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3783,6 +5036,21 @@ func (self NodePath) Hash() Int {
 	return ret
 }
 
+/*
+Gets the resource or property name indicated by [param idx] (0 to [method get_subname_count] - 1).
+[codeblocks]
+[gdscript]
+var node_path = NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path")
+print(node_path.get_subname(0)) # texture
+print(node_path.get_subname(1)) # load_path
+[/gdscript]
+[csharp]
+var nodePath = new NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path");
+GD.Print(nodePath.GetSubname(0)); // texture
+GD.Print(nodePath.GetSubname(1)); // load_path
+[/csharp]
+[/codeblocks]
+*/
 func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -3795,6 +5063,9 @@ func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 	return ret
 }
 
+/*
+Returns all paths concatenated with a slash character ([code]/[/code]) as separator without subnames.
+*/
 func (self NodePath) GetConcatenatedNames(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -3806,6 +5077,19 @@ func (self NodePath) GetConcatenatedNames(ctx Context) StringName {
 	return ret
 }
 
+/*
+Returns all subnames concatenated with a colon character ([code]:[/code]) as separator, i.e. the right side of the first colon in a node path.
+[codeblocks]
+[gdscript]
+var node_path = NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path")
+print(node_path.get_concatenated_subnames()) # texture:load_path
+[/gdscript]
+[csharp]
+var nodePath = new NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path");
+GD.Print(nodePath.GetConcatenatedSubnames()); // texture:load_path
+[/csharp]
+[/codeblocks]
+*/
 func (self NodePath) GetConcatenatedSubnames(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -3817,6 +5101,25 @@ func (self NodePath) GetConcatenatedSubnames(ctx Context) StringName {
 	return ret
 }
 
+/*
+Returns a node path with a colon character ([code]:[/code]) prepended, transforming it to a pure property path with no node name (defaults to resolving from the current node).
+[codeblocks]
+[gdscript]
+# This will be parsed as a node path to the "x" property in the "position" node.
+var node_path = NodePath("position:x")
+# This will be parsed as a node path to the "x" component of the "position" property in the current node.
+var property_path = node_path.get_as_property_path()
+print(property_path) # :position:x
+[/gdscript]
+[csharp]
+// This will be parsed as a node path to the "x" property in the "position" node.
+var nodePath = new NodePath("position:x");
+// This will be parsed as a node path to the "x" component of the "position" property in the current node.
+NodePath propertyPath = nodePath.GetAsPropertyPath();
+GD.Print(propertyPath); // :position:x
+[/csharp]
+[/codeblocks]
+*/
 func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
 	var selfPtr = self
 	var frame = call.New()
@@ -3828,6 +5131,9 @@ func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the node path is empty.
+*/
 func (self NodePath) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3839,6 +5145,9 @@ func (self NodePath) IsEmpty() bool {
 	return ret
 }
 
+/*
+Calls the method represented by this [Callable]. Unlike [method call], this method expects all arguments to be contained inside the [param arguments] [Array].
+*/
 func (self Callable) Callv(ctx Context, arguments Array) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -3851,6 +5160,9 @@ func (self Callable) Callv(ctx Context, arguments Array) Variant {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this [Callable] has no target to call the method on.
+*/
 func (self Callable) IsNull() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3862,6 +5174,9 @@ func (self Callable) IsNull() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this [Callable] is a custom callable. Custom callables are created from [method bind] or [method unbind]. In GDScript, lambda functions are also custom callables.
+*/
 func (self Callable) IsCustom() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3873,6 +5188,9 @@ func (self Callable) IsCustom() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if this [Callable] is a standard callable. This method is the opposite of [method is_custom]. Returns [code]false[/code] if this callable is a lambda function.
+*/
 func (self Callable) IsStandard() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3884,6 +5202,9 @@ func (self Callable) IsStandard() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the callable's object exists and has a valid method name assigned, or is a custom callable.
+*/
 func (self Callable) IsValid() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3895,6 +5216,9 @@ func (self Callable) IsValid() bool {
 	return ret
 }
 
+/*
+Returns the object on which this [Callable] is called.
+*/
 func (self Callable) GetObject() Object {
 	var selfPtr = self
 	var frame = call.New()
@@ -3906,6 +5230,9 @@ func (self Callable) GetObject() Object {
 	return ret
 }
 
+/*
+Returns the ID of this [Callable]'s object (see [method Object.get_instance_id]).
+*/
 func (self Callable) GetObjectId() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3917,6 +5244,9 @@ func (self Callable) GetObjectId() Int {
 	return ret
 }
 
+/*
+Returns the name of the method represented by this [Callable]. If the callable is a GDScript lambda function, returns the function's name or [code]"<anonymous lambda>"[/code].
+*/
 func (self Callable) GetMethod(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -3928,6 +5258,9 @@ func (self Callable) GetMethod(ctx Context) StringName {
 	return ret
 }
 
+/*
+Returns the total amount of arguments bound (or unbound) via successive [method bind] or [method unbind] calls. If the amount of arguments unbound is greater than the ones bound, this function returns a value less than zero.
+*/
 func (self Callable) GetBoundArgumentsCount() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3939,6 +5272,9 @@ func (self Callable) GetBoundArgumentsCount() Int {
 	return ret
 }
 
+/*
+Return the bound arguments (as long as [method get_bound_arguments_count] is greater than zero), or empty (if [method get_bound_arguments_count] is less than or equal to zero).
+*/
 func (self Callable) GetBoundArguments(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -3950,6 +5286,10 @@ func (self Callable) GetBoundArguments(ctx Context) Array {
 	return ret
 }
 
+/*
+Returns the 32-bit hash value of this [Callable]'s object.
+[b]Note:[/b] [Callable]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the callables are equal, because different callables can have identical hash values due to hash collisions. The engine uses a 32-bit hash algorithm for [method hash].
+*/
 func (self Callable) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3961,6 +5301,10 @@ func (self Callable) Hash() Int {
 	return ret
 }
 
+/*
+Returns a copy of this [Callable] with one or more arguments bound, reading them from an array. When called, the bound arguments are passed [i]after[/i] the arguments supplied by [method call]. See also [method unbind].
+[b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
+*/
 func (self Callable) Bindv(ctx Context, arguments Array) Callable {
 	var selfPtr = self
 	var frame = call.New()
@@ -3973,6 +5317,17 @@ func (self Callable) Bindv(ctx Context, arguments Array) Callable {
 	return ret
 }
 
+/*
+Returns a copy of this [Callable] with a number of arguments unbound. In other words, when the new callable is called the last few arguments supplied by the user are ignored, according to [param argcount]. The remaining arguments are passed to the callable. This allows to use the original callable in a context that attempts to pass more arguments than this callable can handle, e.g. a signal with a fixed number of arguments. See also [method bind].
+[b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
+[codeblock]
+func _ready():
+
+	foo.unbind(1).call(1, 2) # Calls foo(1).
+	foo.bind(3, 4).unbind(1).call(1, 2) # Calls foo(1, 3, 4), note that it does not change the arguments from bind.
+
+[/codeblock]
+*/
 func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 	var selfPtr = self
 	var frame = call.New()
@@ -3985,6 +5340,9 @@ func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 	return ret
 }
 
+/*
+Calls the method represented by this [Callable]. Arguments can be passed and should match the method's signature.
+*/
 func (self Callable) Call(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -3996,6 +5354,16 @@ func (self Callable) Call(ctx Context) Variant {
 	return ret
 }
 
+/*
+Calls the method represented by this [Callable] in deferred mode, i.e. at the end of the current frame. Arguments can be passed and should match the method's signature.
+[codeblock]
+func _ready():
+
+	grab_focus.call_deferred()
+
+[/codeblock]
+See also [method Object.call_deferred].
+*/
 func (self Callable) CallDeferred() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4005,6 +5373,9 @@ func (self Callable) CallDeferred() {
 	frame.Free()
 }
 
+/*
+Perform an RPC (Remote Procedure Call) on all connected peers. This is used for multiplayer and is normally not available, unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc].
+*/
 func (self Callable) Rpc() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4014,6 +5385,9 @@ func (self Callable) Rpc() {
 	frame.Free()
 }
 
+/*
+Perform an RPC (Remote Procedure Call) on a specific peer ID (see multiplayer documentation for reference). This is used for multiplayer and is normally not available unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc_id].
+*/
 func (self Callable) RpcId(peer_id Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4024,6 +5398,10 @@ func (self Callable) RpcId(peer_id Int) {
 	frame.Free()
 }
 
+/*
+Returns a copy of this [Callable] with one or more arguments bound. When called, the bound arguments are passed [i]after[/i] the arguments supplied by [method call]. See also [method unbind].
+[b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
+*/
 func (self Callable) Bind(ctx Context) Callable {
 	var selfPtr = self
 	var frame = call.New()
@@ -4035,6 +5413,9 @@ func (self Callable) Bind(ctx Context) Callable {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the signal's name does not exist in its object, or the object is not valid.
+*/
 func (self Signal) IsNull() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4046,6 +5427,9 @@ func (self Signal) IsNull() bool {
 	return ret
 }
 
+/*
+Returns the object emitting this signal.
+*/
 func (self Signal) GetObject() Object {
 	var selfPtr = self
 	var frame = call.New()
@@ -4057,6 +5441,9 @@ func (self Signal) GetObject() Object {
 	return ret
 }
 
+/*
+Returns the ID of the object emitting this signal (see [method Object.get_instance_id]).
+*/
 func (self Signal) GetObjectId() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4068,6 +5455,9 @@ func (self Signal) GetObjectId() Int {
 	return ret
 }
 
+/*
+Returns the name of this signal.
+*/
 func (self Signal) GetName(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -4079,6 +5469,20 @@ func (self Signal) GetName(ctx Context) StringName {
 	return ret
 }
 
+/*
+Connects this signal to the specified [param callable]. Optional [param flags] can be also added to configure the connection's behavior (see [enum Object.ConnectFlags] constants). You can provide additional arguments to the connected [param callable] by using [method Callable.bind].
+A signal can only be connected once to the same [Callable]. If the signal is already connected, returns [constant ERR_INVALID_PARAMETER] and pushes an error message, unless the signal is connected with [constant Object.CONNECT_REFERENCE_COUNTED]. To prevent this, use [method is_connected] first to check for existing connections.
+[codeblock]
+for button in $Buttons.get_children():
+
+	button.pressed.connect(_on_pressed.bind(button))
+
+func _on_pressed(button):
+
+	print(button.name, " was pressed")
+
+[/codeblock]
+*/
 func (self Signal) Connect(callable Callable, flags Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4092,6 +5496,9 @@ func (self Signal) Connect(callable Callable, flags Int) Int {
 	return ret
 }
 
+/*
+Disconnects this signal from the specified [Callable]. If the connection does not exist, generates an error. Use [method is_connected] to make sure that the connection exists.
+*/
 func (self Signal) Disconnect(callable Callable) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4102,6 +5509,9 @@ func (self Signal) Disconnect(callable Callable) {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the specified [Callable] is connected to this signal.
+*/
 func (self Signal) IsConnected(callable Callable) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4114,6 +5524,12 @@ func (self Signal) IsConnected(callable Callable) bool {
 	return ret
 }
 
+/*
+Returns an [Array] of connections for this signal. Each connection is represented as a [Dictionary] that contains three entries:
+- [code]signal[/code] is a reference to this signal;
+- [code]callable[/code] is a reference to the connected [Callable];
+- [code]flags[/code] is a combination of [enum Object.ConnectFlags].
+*/
 func (self Signal) GetConnections(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4125,6 +5541,9 @@ func (self Signal) GetConnections(ctx Context) Array {
 	return ret
 }
 
+/*
+Emits this signal. All [Callable]s connected to this signal will be triggered. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
+*/
 func (self Signal) Emit() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4134,6 +5553,9 @@ func (self Signal) Emit() {
 	frame.Free()
 }
 
+/*
+Returns the number of entries in the dictionary. Empty dictionaries ([code]{ }[/code]) always return [code]0[/code]. See also [method is_empty].
+*/
 func (self Dictionary) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4145,6 +5567,9 @@ func (self Dictionary) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the dictionary is empty (its size is [code]0[/code]). See also [method size].
+*/
 func (self Dictionary) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4156,6 +5581,9 @@ func (self Dictionary) IsEmpty() bool {
 	return ret
 }
 
+/*
+Clears the dictionary, removing all entries from it.
+*/
 func (self Dictionary) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4165,6 +5593,47 @@ func (self Dictionary) Clear() {
 	frame.Free()
 }
 
+/*
+Adds entries from [param dictionary] to this dictionary. By default, duplicate keys are not copied over, unless [param overwrite] is [code]true[/code].
+[codeblocks]
+[gdscript]
+var dict = { "item": "sword", "quantity": 2 }
+var other_dict = { "quantity": 15, "color": "silver" }
+
+# Overwriting of existing keys is disabled by default.
+dict.merge(other_dict)
+print(dict)  # { "item": "sword", "quantity": 2, "color": "silver" }
+
+# With overwriting of existing keys enabled.
+dict.merge(other_dict, true)
+print(dict)  # { "item": "sword", "quantity": 15, "color": "silver" }
+[/gdscript]
+[csharp]
+var dict = new Godot.Collections.Dictionary
+
+	{
+	    ["item"] = "sword",
+	    ["quantity"] = 2,
+	};
+
+var otherDict = new Godot.Collections.Dictionary
+
+	{
+	    ["quantity"] = 15,
+	    ["color"] = "silver",
+	};
+
+// Overwriting of existing keys is disabled by default.
+dict.Merge(otherDict);
+GD.Print(dict); // { "item": "sword", "quantity": 2, "color": "silver" }
+
+// With overwriting of existing keys enabled.
+dict.Merge(otherDict, true);
+GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] [method merge] is [i]not[/i] recursive. Nested dictionaries are considered as keys that can be overwritten or not depending on the value of [param overwrite], but they will never be merged together.
+*/
 func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4176,6 +5645,42 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the dictionary contains an entry with the given [param key].
+[codeblocks]
+[gdscript]
+
+	var my_dict = {
+	    "Godot" : 4,
+	    210 : null,
+	}
+
+print(my_dict.has("Godot")) # Prints true
+print(my_dict.has(210))     # Prints true
+print(my_dict.has(4))       # Prints false
+[/gdscript]
+[csharp]
+var myDict = new Godot.Collections.Dictionary
+
+	{
+	    { "Godot", 4 },
+	    { 210, default },
+	};
+
+GD.Print(myDict.ContainsKey("Godot")); // Prints true
+GD.Print(myDict.ContainsKey(210));     // Prints true
+GD.Print(myDict.ContainsKey(4));       // Prints false
+[/csharp]
+[/codeblocks]
+In GDScript, this is equivalent to the [code]in[/code] operator:
+[codeblock]
+if "Godot" in {"Godot": 4}:
+
+	print("The key is here!") # Will be printed.
+
+[/codeblock]
+[b]Note:[/b] This method returns [code]true[/code] as long as the [param key] exists, even if its corresponding value is [code]null[/code].
+*/
 func (self Dictionary) Has(key Variant) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4188,6 +5693,13 @@ func (self Dictionary) Has(key Variant) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the dictionary contains all keys in the given [param keys] array.
+[codeblock]
+var data = {"width" : 10, "height" : 20}
+data.has_all(["height", "width"]) # Returns true
+[/codeblock]
+*/
 func (self Dictionary) HasAll(keys Array) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4200,6 +5712,10 @@ func (self Dictionary) HasAll(keys Array) bool {
 	return ret
 }
 
+/*
+Finds and returns the first key whose associated value is equal to [param value], or [code]null[/code] if it is not found.
+[b]Note:[/b] [code]null[/code] is also a valid key. If inside the dictionary, [method find_key] may give misleading results.
+*/
 func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4212,6 +5728,10 @@ func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 	return ret
 }
 
+/*
+Removes the dictionary entry by key, if it exists. Returns [code]true[/code] if the given [param key] existed in the dictionary, otherwise [code]false[/code].
+[b]Note:[/b] Do not erase entries while iterating over the dictionary. You can iterate over the [method keys] array instead.
+*/
 func (self Dictionary) Erase(key Variant) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4224,6 +5744,26 @@ func (self Dictionary) Erase(key Variant) bool {
 	return ret
 }
 
+/*
+Returns a hashed 32-bit integer value representing the dictionary contents.
+[codeblocks]
+[gdscript]
+var dict1 = {"A": 10, "B": 2}
+var dict2 = {"A": 10, "B": 2}
+
+print(dict1.hash() == dict2.hash()) # Prints true
+[/gdscript]
+[csharp]
+var dict1 = new Godot.Collections.Dictionary{{"A", 10}, {"B", 2}};
+var dict2 = new Godot.Collections.Dictionary{{"A", 10}, {"B", 2}};
+
+// Godot.Collections.Dictionary has no Hash() method. Use GD.Hash() instead.
+GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints true
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] Dictionaries with the same entries but in a different order will not have the same hash.
+[b]Note:[/b] Dictionaries with equal hash values are [i]not[/i] guaranteed to be the same, because of hash collisions. On the contrary, dictionaries with different hash values are guaranteed to be different.
+*/
 func (self Dictionary) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4235,6 +5775,9 @@ func (self Dictionary) Hash() Int {
 	return ret
 }
 
+/*
+Returns the list of keys in the dictionary.
+*/
 func (self Dictionary) Keys(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4246,6 +5789,9 @@ func (self Dictionary) Keys(ctx Context) Array {
 	return ret
 }
 
+/*
+Returns the list of values in this dictionary.
+*/
 func (self Dictionary) Values(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4257,6 +5803,9 @@ func (self Dictionary) Values(ctx Context) Array {
 	return ret
 }
 
+/*
+Creates and returns a new copy of the dictionary. If [param deep] is [code]true[/code], inner [Dictionary] and [Array] keys and values are also copied, recursively.
+*/
 func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 	var selfPtr = self
 	var frame = call.New()
@@ -4269,6 +5818,9 @@ func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 	return ret
 }
 
+/*
+Returns the corresponding value for the given [param key] in the dictionary. If the [param key] does not exist, returns [param default], or [code]null[/code] if the parameter is omitted.
+*/
 func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4282,6 +5834,9 @@ func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 	return ret
 }
 
+/*
+Makes the dictionary read-only, i.e. disables modification of the dictionary's contents. Does not apply to nested content, e.g. content of nested dictionaries.
+*/
 func (self Dictionary) MakeReadOnly() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4291,6 +5846,9 @@ func (self Dictionary) MakeReadOnly() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the dictionary is read-only. See [method make_read_only]. Dictionaries are automatically read-only if declared with [code]const[/code] keyword.
+*/
 func (self Dictionary) IsReadOnly() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4302,6 +5860,9 @@ func (self Dictionary) IsReadOnly() bool {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4313,6 +5874,9 @@ func (self Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4324,6 +5888,9 @@ func (self Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4333,6 +5900,10 @@ func (self Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns a hashed 32-bit integer value representing the array and its contents.
+[b]Note:[/b] [Array]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the arrays are equal, because different arrays can have identical hash values due to hash collisions.
+*/
 func (self Array) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4344,6 +5915,9 @@ func (self Array) Hash() Int {
 	return ret
 }
 
+/*
+Assigns elements of another [param array] into the array. Resizes the array to match [param array]. Performs type conversions if the array is typed.
+*/
 func (self Array) Assign(array Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4354,6 +5928,9 @@ func (self Array) Assign(array Array) {
 	frame.Free()
 }
 
+/*
+Appends an element at the end of the array. See also [method push_front].
+*/
 func (self Array) PushBack(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4364,6 +5941,10 @@ func (self Array) PushBack(value Variant) {
 	frame.Free()
 }
 
+/*
+Adds an element at the beginning of the array. See also [method push_back].
+[b]Note:[/b] On large arrays, this method is much slower than [method push_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method push_front] will be.
+*/
 func (self Array) PushFront(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4374,6 +5955,9 @@ func (self Array) PushFront(value Variant) {
 	frame.Free()
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self Array) Append(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4384,6 +5968,15 @@ func (self Array) Append(value Variant) {
 	frame.Free()
 }
 
+/*
+Appends another array at the end of this array.
+[codeblock]
+var array1 = [1, 2, 3]
+var array2 = [4, 5, 6]
+array1.append_array(array2)
+print(array1) # Prints [1, 2, 3, 4, 5, 6].
+[/codeblock]
+*/
 func (self Array) AppendArray(array Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4394,6 +5987,10 @@ func (self Array) AppendArray(array Array) {
 	frame.Free()
 }
 
+/*
+Resizes the array to contain a different number of elements. If the array size is smaller, elements are cleared, if bigger, new elements are [code]null[/code]. Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
+[b]Note:[/b] This method acts in-place and doesn't return a modified array.
+*/
 func (self Array) Resize(size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4406,6 +6003,11 @@ func (self Array) Resize(size Int) Int {
 	return ret
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]pos == size()[/code]). Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
+[b]Note:[/b] This method acts in-place and doesn't return a modified array.
+[b]Note:[/b] On large arrays, this method will be slower if the inserted element is close to the beginning of the array (index 0). This is because all elements placed after the newly inserted element have to be reindexed.
+*/
 func (self Array) Insert(position Int, value Variant) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4419,6 +6021,12 @@ func (self Array) Insert(position Int, value Variant) Int {
 	return ret
 }
 
+/*
+Removes an element from the array by index. If the index does not exist in the array, nothing happens. To remove an element by searching for its value, use [method erase] instead.
+[b]Note:[/b] This method acts in-place and doesn't return a modified array.
+[b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
+[b]Note:[/b] [param position] cannot be negative. To remove an element relative to the end of the array, use [code]arr.remove_at(arr.size() - (i + 1))[/code]. To remove the last element from the array without returning the value, use [code]arr.resize(arr.size() - 1)[/code].
+*/
 func (self Array) RemoveAt(position Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4429,6 +6037,22 @@ func (self Array) RemoveAt(position Int) {
 	frame.Free()
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements:
+[codeblocks]
+[gdscript]
+var array = []
+array.resize(10)
+array.fill(0) # Initialize the 10 elements to 0.
+[/gdscript]
+[csharp]
+var array = new Godot.Collections.Array();
+array.Resize(10);
+array.Fill(0); // Initialize the 10 elements to 0.
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] If [param value] is of a reference type ([Object]-derived, [Array], [Dictionary], etc.) then the array is filled with the references to the same object, i.e. no duplicates are created.
+*/
 func (self Array) Fill(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4439,6 +6063,12 @@ func (self Array) Fill(value Variant) {
 	frame.Free()
 }
 
+/*
+Removes the first occurrence of a value from the array. If the value does not exist in the array, nothing happens. To remove an element by index, use [method remove_at] instead.
+[b]Note:[/b] This method acts in-place and doesn't return a modified array.
+[b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
+[b]Note:[/b] Do not erase entries while iterating over the array.
+*/
 func (self Array) Erase(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4449,6 +6079,10 @@ func (self Array) Erase(value Variant) {
 	frame.Free()
 }
 
+/*
+Returns the first element of the array. Prints an error and returns [code]null[/code] if the array is empty.
+[b]Note:[/b] Calling this function is not the same as writing [code]array[0][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
+*/
 func (self Array) Front(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4460,6 +6094,10 @@ func (self Array) Front(ctx Context) Variant {
 	return ret
 }
 
+/*
+Returns the last element of the array. Prints an error and returns [code]null[/code] if the array is empty.
+[b]Note:[/b] Calling this function is not the same as writing [code]array[-1][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
+*/
 func (self Array) Back(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4471,6 +6109,19 @@ func (self Array) Back(ctx Context) Variant {
 	return ret
 }
 
+/*
+Returns a random value from the target array. Prints an error and returns [code]null[/code] if the array is empty.
+[codeblocks]
+[gdscript]
+var array: Array[int] = [1, 2, 3, 4]
+print(array.pick_random())  # Prints either of the four numbers.
+[/gdscript]
+[csharp]
+var array = new Godot.Collections.Array { 1, 2, 3, 4 };
+GD.Print(array.PickRandom()); // Prints either of the four numbers.
+[/csharp]
+[/codeblocks]
+*/
 func (self Array) PickRandom(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4482,6 +6133,9 @@ func (self Array) PickRandom(ctx Context) Variant {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+*/
 func (self Array) Find(what Variant, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4495,6 +6149,9 @@ func (self Array) Find(what Variant, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+*/
 func (self Array) Rfind(what Variant, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4508,6 +6165,9 @@ func (self Array) Rfind(what Variant, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+*/
 func (self Array) Count(value Variant) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4520,6 +6180,45 @@ func (self Array) Count(value Variant) Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array contains the given value.
+[codeblocks]
+[gdscript]
+print(["inside", 7].has("inside")) # True
+print(["inside", 7].has("outside")) # False
+print(["inside", 7].has(7)) # True
+print(["inside", 7].has("7")) # False
+[/gdscript]
+[csharp]
+var arr = new Godot.Collections.Array { "inside", 7 };
+// has is renamed to Contains
+GD.Print(arr.Contains("inside")); // True
+GD.Print(arr.Contains("outside")); // False
+GD.Print(arr.Contains(7)); // True
+GD.Print(arr.Contains("7")); // False
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This is equivalent to using the [code]in[/code] operator as follows:
+[codeblocks]
+[gdscript]
+# Will evaluate to `true`.
+if 2 in [2, 4, 6, 8]:
+
+	print("Contains!")
+
+[/gdscript]
+[csharp]
+// As there is no "in" keyword in C#, you have to use Contains
+var array = new Godot.Collections.Array { 2, 4, 6, 8 };
+if (array.Contains(2))
+
+	{
+	    GD.Print("Contains!");
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 func (self Array) Has(value Variant) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4532,6 +6231,9 @@ func (self Array) Has(value Variant) bool {
 	return ret
 }
 
+/*
+Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_front].
+*/
 func (self Array) PopBack(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4543,6 +6245,10 @@ func (self Array) PopBack(ctx Context) Variant {
 	return ret
 }
 
+/*
+Removes and returns the first element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_back].
+[b]Note:[/b] On large arrays, this method is much slower than [method pop_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method pop_front] will be.
+*/
 func (self Array) PopFront(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4554,6 +6260,10 @@ func (self Array) PopFront(ctx Context) Variant {
 	return ret
 }
 
+/*
+Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Leaves the array untouched and returns [code]null[/code] if the array is empty or if it's accessed out of bounds. An error message is printed when the array is accessed out of bounds, but not when the array is empty.
+[b]Note:[/b] On large arrays, this method can be slower than [method pop_back] as it will reindex the array's elements that are located after the removed element. The larger the array and the lower the index of the removed element, the slower [method pop_at] will be.
+*/
 func (self Array) PopAt(ctx Context, position Int) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4566,6 +6276,29 @@ func (self Array) PopAt(ctx Context, position Int) Variant {
 	return ret
 }
 
+/*
+Sorts the array.
+[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that values considered equal may have their order changed when using [method sort].
+[b]Note:[/b] Strings are sorted in alphabetical order (as opposed to natural order). This may lead to unexpected behavior when sorting an array of strings ending with a sequence of numbers. Consider the following example:
+[codeblocks]
+[gdscript]
+var strings = ["string1", "string2", "string10", "string11"]
+strings.sort()
+print(strings) # Prints [string1, string10, string11, string2]
+[/gdscript]
+[csharp]
+var strings = new Godot.Collections.Array { "string1", "string2", "string10", "string11" };
+strings.Sort();
+GD.Print(strings); // Prints [string1, string10, string11, string2]
+[/csharp]
+[/codeblocks]
+To perform natural order sorting, you can use [method sort_custom] with [method String.naturalnocasecmp_to] as follows:
+[codeblock]
+var strings = ["string1", "string2", "string10", "string11"]
+strings.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+print(strings) # Prints [string1, string2, string10, string11]
+[/codeblock]
+*/
 func (self Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4575,6 +6308,34 @@ func (self Array) Sort() {
 	frame.Free()
 }
 
+/*
+Sorts the array using a custom method. The custom method receives two arguments (a pair of elements from the array) and must return either [code]true[/code] or [code]false[/code]. For two elements [code]a[/code] and [code]b[/code], if the given method returns [code]true[/code], element [code]b[/code] will be after element [code]a[/code] in the array.
+[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that values considered equal may have their order changed when using [method sort_custom].
+[b]Note:[/b] You cannot randomize the return value as the heapsort algorithm expects a deterministic result. Randomizing the return value will result in unexpected behavior.
+[codeblocks]
+[gdscript]
+func sort_ascending(a, b):
+
+	if a[0] < b[0]:
+	    return true
+	return false
+
+func _ready():
+
+	var my_items = [[5, "Potato"], [9, "Rice"], [4, "Tomato"]]
+	my_items.sort_custom(sort_ascending)
+	print(my_items) # Prints [[4, Tomato], [5, Potato], [9, Rice]].
+
+	# Descending, lambda version.
+	my_items.sort_custom(func(a, b): return a[0] > b[0])
+	print(my_items) # Prints [[9, Rice], [5, Potato], [4, Tomato]].
+
+[/gdscript]
+[csharp]
+// There is no custom sort support for Godot.Collections.Array
+[/csharp]
+[/codeblocks]
+*/
 func (self Array) SortCustom(fn Callable) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4585,6 +6346,9 @@ func (self Array) SortCustom(fn Callable) {
 	frame.Free()
 }
 
+/*
+Shuffles the array such that the items will have a random order. This method uses the global random number generator common to methods such as [method @GlobalScope.randi]. Call [method @GlobalScope.randomize] to ensure that a new seed will be used each time if you want non-reproducible shuffling.
+*/
 func (self Array) Shuffle() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4594,6 +6358,10 @@ func (self Array) Shuffle() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+*/
 func (self Array) Bsearch(value Variant, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4607,6 +6375,10 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 	return ret
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search and a custom comparison method. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array. The custom method receives two arguments (an element from the array and the value searched for) and must return [code]true[/code] if the first argument is less than the second, and return [code]false[/code] otherwise.
+[b]Note:[/b] Calling [method bsearch_custom] on an unsorted array results in unexpected behavior.
+*/
 func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4621,6 +6393,9 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4630,6 +6405,10 @@ func (self Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns a copy of the array.
+If [param deep] is [code]true[/code], a deep copy is performed: all nested arrays and dictionaries are duplicated and will not be shared with the original array. If [code]false[/code], a shallow copy is made and references to the original nested arrays and dictionaries are kept, so that modifying a sub-array or dictionary in the copy will also impact those referenced in the source array. Note that any [Object]-derived elements will be shallow copied regardless of the [param deep] setting.
+*/
 func (self Array) Duplicate(ctx Context, deep bool) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4642,6 +6421,14 @@ func (self Array) Duplicate(ctx Context, deep bool) Array {
 	return ret
 }
 
+/*
+Returns the slice of the [Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+If specified, [param step] is the relative index between source elements. It can be negative, then [param begin] must be higher than [param end]. For example, [code][0, 1, 2, 3, 4, 5].slice(5, 1, -2)[/code] returns [code][5, 3][/code].
+If [param deep] is true, each element will be copied by value rather than by reference.
+[b]Note:[/b] To include the first element when [param step] is negative, use [code]arr.slice(begin, -arr.size() - 1, step)[/code] (i.e. [code][0, 1, 2].slice(1, -4, -1)[/code] returns [code][1, 0][/code]).
+*/
 func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4657,6 +6444,22 @@ func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Ar
 	return ret
 }
 
+/*
+Calls the provided [Callable] on each element in the array and returns a new array with the elements for which the method returned [code]true[/code].
+The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
+[codeblock]
+func _ready():
+
+	print([1, 2, 3].filter(remove_1)) # Prints [2, 3].
+	print([1, 2, 3].filter(func(number): return number != 1)) # Same as above, but using lambda function.
+
+func remove_1(number):
+
+	return number != 1
+
+[/codeblock]
+See also [method any], [method all], [method map] and [method reduce].
+*/
 func (self Array) Filter(ctx Context, method Callable) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4669,6 +6472,22 @@ func (self Array) Filter(ctx Context, method Callable) Array {
 	return ret
 }
 
+/*
+Calls the provided [Callable] for each element in the array and returns a new array filled with values returned by the method.
+The callable's method should take one [Variant] parameter (the current array element) and can return any [Variant].
+[codeblock]
+func _ready():
+
+	print([1, 2, 3].map(negate)) # Prints [-1, -2, -3].
+	print([1, 2, 3].map(func(number): return -number)) # Same as above, but using lambda function.
+
+func negate(number):
+
+	return -number
+
+[/codeblock]
+See also [method filter], [method reduce], [method any] and [method all].
+*/
 func (self Array) Map(ctx Context, method Callable) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -4681,6 +6500,22 @@ func (self Array) Map(ctx Context, method Callable) Array {
 	return ret
 }
 
+/*
+Calls the provided [Callable] for each element in array and accumulates the result in [param accum].
+The callable's method takes two arguments: the current value of [param accum] and the current array element. If [param accum] is [code]null[/code] (default value), the iteration will start from the second element, with the first one used as initial value of [param accum].
+[codeblock]
+func _ready():
+
+	print([1, 2, 3].reduce(sum, 10)) # Prints 16.
+	print([1, 2, 3].reduce(func(accum, number): return accum + number, 10)) # Same as above, but using lambda function.
+
+func sum(accum, number):
+
+	return accum + number
+
+[/codeblock]
+See also [method map], [method filter], [method any] and [method all].
+*/
 func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4694,6 +6529,28 @@ func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 	return ret
 }
 
+/*
+Calls the provided [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]one or more[/i] elements in the array. If the [Callable] returns [code]false[/code] for all elements in the array, this method returns [code]false[/code].
+The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
+[codeblock]
+func _ready():
+
+	print([6, 10, 6].any(greater_than_5))  # Prints True (3 elements evaluate to `true`).
+	print([4, 10, 4].any(greater_than_5))  # Prints True (1 elements evaluate to `true`).
+	print([4, 4, 4].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
+	print([].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
+
+	print([6, 10, 6].any(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
+
+func greater_than_5(number):
+
+	return number > 5
+
+[/codeblock]
+See also [method all], [method filter], [method map] and [method reduce].
+[b]Note:[/b] Unlike relying on the size of an array returned by [method filter], this method will return as early as possible to improve performance (especially with large arrays).
+[b]Note:[/b] For an empty array, this method always returns [code]false[/code].
+*/
 func (self Array) Any(method Callable) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4706,6 +6563,28 @@ func (self Array) Any(method Callable) bool {
 	return ret
 }
 
+/*
+Calls the provided [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]all[/i] elements in the array. If the [Callable] returns [code]false[/code] for one array element or more, this method returns [code]false[/code].
+The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
+[codeblock]
+func _ready():
+
+	print([6, 10, 6].all(greater_than_5))  # Prints True (3/3 elements evaluate to `true`).
+	print([4, 10, 4].all(greater_than_5))  # Prints False (1/3 elements evaluate to `true`).
+	print([4, 4, 4].all(greater_than_5))  # Prints False (0/3 elements evaluate to `true`).
+	print([].all(greater_than_5))  # Prints True (0/0 elements evaluate to `true`).
+
+	print([6, 10, 6].all(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
+
+func greater_than_5(number):
+
+	return number > 5
+
+[/codeblock]
+See also [method any], [method filter], [method map] and [method reduce].
+[b]Note:[/b] Unlike relying on the size of an array returned by [method filter], this method will return as early as possible to improve performance (especially with large arrays).
+[b]Note:[/b] For an empty array, this method [url=https://en.wikipedia.org/wiki/Vacuous_truth]always[/url] returns [code]true[/code].
+*/
 func (self Array) All(method Callable) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4718,6 +6597,22 @@ func (self Array) All(method Callable) bool {
 	return ret
 }
 
+/*
+Returns the maximum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
+To find the maximum value using a custom comparator, you can use [method reduce]. In this example every array element is checked and the first maximum value is returned:
+[codeblock]
+func _ready():
+
+	var arr = [Vector2(0, 1), Vector2(2, 0), Vector2(1, 1), Vector2(1, 0), Vector2(0, 2)]
+	# In this example we compare the lengths.
+	print(arr.reduce(func(max, val): return val if is_length_greater(val, max) else max))
+
+func is_length_greater(a, b):
+
+	return a.length() > b.length()
+
+[/codeblock]
+*/
 func (self Array) Max(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4729,6 +6624,10 @@ func (self Array) Max(ctx Context) Variant {
 	return ret
 }
 
+/*
+Returns the minimum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
+See also [method max] for an example of using a custom comparator.
+*/
 func (self Array) Min(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4740,6 +6639,9 @@ func (self Array) Min(ctx Context) Variant {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is typed. Typed arrays can only store elements of their associated type and provide type safety for the [code][][/code] operator. Methods of typed array still return [Variant].
+*/
 func (self Array) IsTyped() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4751,6 +6653,9 @@ func (self Array) IsTyped() bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is typed the same as [param array].
+*/
 func (self Array) IsSameTyped(array Array) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4763,6 +6668,9 @@ func (self Array) IsSameTyped(array Array) bool {
 	return ret
 }
 
+/*
+Returns the [enum Variant.Type] constant for a typed array. If the [Array] is not typed, returns [constant TYPE_NIL].
+*/
 func (self Array) GetTypedBuiltin() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4774,6 +6682,9 @@ func (self Array) GetTypedBuiltin() Int {
 	return ret
 }
 
+/*
+Returns a class name of a typed [Array] of type [constant TYPE_OBJECT].
+*/
 func (self Array) GetTypedClassName(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -4785,6 +6696,9 @@ func (self Array) GetTypedClassName(ctx Context) StringName {
 	return ret
 }
 
+/*
+Returns the script associated with a typed array tied to a class name.
+*/
 func (self Array) GetTypedScript(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -4796,6 +6710,9 @@ func (self Array) GetTypedScript(ctx Context) Variant {
 	return ret
 }
 
+/*
+Makes the array read-only, i.e. disabled modifying of the array's elements. Does not apply to nested content, e.g. content of nested arrays.
+*/
 func (self Array) MakeReadOnly() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4805,6 +6722,9 @@ func (self Array) MakeReadOnly() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array is read-only. See [method make_read_only]. Arrays are automatically read-only if declared with [code]const[/code] keyword.
+*/
 func (self Array) IsReadOnly() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4816,6 +6736,9 @@ func (self Array) IsReadOnly() bool {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedByteArray) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4827,6 +6750,9 @@ func (self PackedByteArray) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedByteArray) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4838,6 +6764,9 @@ func (self PackedByteArray) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the byte at the given index.
+*/
 func (self PackedByteArray) Set(index Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4849,6 +6778,9 @@ func (self PackedByteArray) Set(index Int, value Int) {
 	frame.Free()
 }
 
+/*
+Appends an element at the end of the array.
+*/
 func (self PackedByteArray) PushBack(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4861,6 +6793,9 @@ func (self PackedByteArray) PushBack(value Int) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedByteArray) Append(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4873,6 +6808,9 @@ func (self PackedByteArray) Append(value Int) bool {
 	return ret
 }
 
+/*
+Appends a [PackedByteArray] at the end of this array.
+*/
 func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4883,6 +6821,9 @@ func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedByteArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4893,6 +6834,9 @@ func (self PackedByteArray) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4906,6 +6850,9 @@ func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedByteArray) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -4916,6 +6863,9 @@ func (self PackedByteArray) Fill(value Int) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedByteArray) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4928,6 +6878,9 @@ func (self PackedByteArray) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedByteArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4937,6 +6890,9 @@ func (self PackedByteArray) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+*/
 func (self PackedByteArray) Has(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4949,6 +6905,9 @@ func (self PackedByteArray) Has(value Int) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedByteArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4958,6 +6917,11 @@ func (self PackedByteArray) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedByteArray], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedByteArray].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4971,6 +6935,9 @@ func (self PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArr
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+*/
 func (self PackedByteArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -4980,6 +6947,10 @@ func (self PackedByteArray) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+*/
 func (self PackedByteArray) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4993,6 +6964,9 @@ func (self PackedByteArray) Bsearch(value Int, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedByteArray) Duplicate(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -5004,6 +6978,9 @@ func (self PackedByteArray) Duplicate(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+*/
 func (self PackedByteArray) Find(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5017,6 +6994,9 @@ func (self PackedByteArray) Find(value Int, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+*/
 func (self PackedByteArray) Rfind(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5030,6 +7010,9 @@ func (self PackedByteArray) Rfind(value Int, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+*/
 func (self PackedByteArray) Count(value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5042,6 +7025,9 @@ func (self PackedByteArray) Count(value Int) Int {
 	return ret
 }
 
+/*
+Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method get_string_from_utf8] if the content is ASCII/Latin-1 only. Unlike the UTF-8 function this function maps every byte to a character in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use [method get_string_from_utf8]. This is the inverse of [method String.to_ascii_buffer].
+*/
 func (self PackedByteArray) GetStringFromAscii(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -5053,6 +7039,9 @@ func (self PackedByteArray) GetStringFromAscii(ctx Context) String {
 	return ret
 }
 
+/*
+Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not valid UTF-8 string. This is the inverse of [method String.to_utf8_buffer].
+*/
 func (self PackedByteArray) GetStringFromUtf8(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -5064,6 +7053,9 @@ func (self PackedByteArray) GetStringFromUtf8(ctx Context) String {
 	return ret
 }
 
+/*
+Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not valid UTF-16 string. This is the inverse of [method String.to_utf16_buffer].
+*/
 func (self PackedByteArray) GetStringFromUtf16(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -5075,6 +7067,9 @@ func (self PackedByteArray) GetStringFromUtf16(ctx Context) String {
 	return ret
 }
 
+/*
+Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns empty string if source array is not valid UTF-32 string. This is the inverse of [method String.to_utf32_buffer].
+*/
 func (self PackedByteArray) GetStringFromUtf32(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -5086,6 +7081,9 @@ func (self PackedByteArray) GetStringFromUtf32(ctx Context) String {
 	return ret
 }
 
+/*
+Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded array to [String]. Returns empty string if source array is not valid wide string. This is the inverse of [method String.to_wchar_buffer].
+*/
 func (self PackedByteArray) GetStringFromWchar(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -5097,6 +7095,19 @@ func (self PackedByteArray) GetStringFromWchar(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a hexadecimal representation of this array as a [String].
+[codeblocks]
+[gdscript]
+var array = PackedByteArray([11, 46, 255])
+print(array.hex_encode()) # Prints: 0b2eff
+[/gdscript]
+[csharp]
+var array = new byte[] {11, 46, 255};
+GD.Print(array.HexEncode()); // Prints: 0b2eff
+[/csharp]
+[/codeblocks]
+*/
 func (self PackedByteArray) HexEncode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -5108,6 +7119,9 @@ func (self PackedByteArray) HexEncode(ctx Context) String {
 	return ret
 }
 
+/*
+Returns a new [PackedByteArray] with the data compressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
+*/
 func (self PackedByteArray) Compress(ctx Context, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -5120,6 +7134,9 @@ func (self PackedByteArray) Compress(ctx Context, compression_mode Int) PackedBy
 	return ret
 }
 
+/*
+Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_size] to the size of the uncompressed data. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
+*/
 func (self PackedByteArray) Decompress(ctx Context, buffer_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -5133,6 +7150,11 @@ func (self PackedByteArray) Decompress(ctx Context, buffer_size Int, compression
 	return ret
 }
 
+/*
+Returns a new [PackedByteArray] with the data decompressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants. [b]This method only accepts brotli, gzip, and deflate compression modes.[/b]
+This method is potentially slower than [method decompress], as it may have to re-allocate its output buffer multiple times while decompressing, whereas [method decompress] knows it's output buffer size from the beginning.
+GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a small compressed payload to decompress to a potentially very large output. To guard against this, you may provide a maximum size this function is allowed to allocate in bytes via [param max_output_size]. Passing -1 will allow for unbounded output. If any positive value is passed, and the decompression exceeds that amount in bytes, then an error will be returned.
+*/
 func (self PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -5146,6 +7168,9 @@ func (self PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, 
 	return ret
 }
 
+/*
+Decodes a 8-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5158,6 +7183,9 @@ func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 8-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5170,6 +7198,9 @@ func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 16-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5182,6 +7213,9 @@ func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 16-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5194,6 +7228,9 @@ func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 32-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5206,6 +7243,9 @@ func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 32-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5218,6 +7258,9 @@ func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 64-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5230,6 +7273,9 @@ func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 64-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5242,6 +7288,9 @@ func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 	return ret
 }
 
+/*
+Decodes a 16-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -5254,6 +7303,9 @@ func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	return ret
 }
 
+/*
+Decodes a 32-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -5266,6 +7318,9 @@ func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	return ret
 }
 
+/*
+Decodes a 64-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
+*/
 func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -5278,6 +7333,9 @@ func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if a valid [Variant] value can be decoded at the [param byte_offset]. Returns [code]false[/code] otherwise or when the value is [Object]-derived and [param allow_objects] is [code]false[/code].
+*/
 func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5291,6 +7349,9 @@ func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) b
 	return ret
 }
 
+/*
+Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
+*/
 func (self PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_objects bool) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -5304,6 +7365,9 @@ func (self PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_object
 	return ret
 }
 
+/*
+Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Requires at least 4 bytes of data starting at the offset, otherwise fails.
+*/
 func (self PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5317,6 +7381,11 @@ func (self PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) I
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedInt32Array], where each block of 4 bytes has been converted to a signed 32-bit integer (C++ [code]int32_t[/code]).
+The size of the input array must be a multiple of 4 (size of 32-bit integer). The size of the new array will be [code]byte_array.size() / 4[/code].
+If the original data can't be converted to signed 32-bit integers, the resulting data is undefined.
+*/
 func (self PackedByteArray) ToInt32Array(ctx Context) PackedInt32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5328,6 +7397,11 @@ func (self PackedByteArray) ToInt32Array(ctx Context) PackedInt32Array {
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedInt64Array], where each block of 8 bytes has been converted to a signed 64-bit integer (C++ [code]int64_t[/code], Godot [int]).
+The size of the input array must be a multiple of 8 (size of 64-bit integer). The size of the new array will be [code]byte_array.size() / 8[/code].
+If the original data can't be converted to signed 64-bit integers, the resulting data is undefined.
+*/
 func (self PackedByteArray) ToInt64Array(ctx Context) PackedInt64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5339,6 +7413,11 @@ func (self PackedByteArray) ToInt64Array(ctx Context) PackedInt64Array {
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedFloat32Array], where each block of 4 bytes has been converted to a 32-bit float (C++ [code skip-lint]float[/code]).
+The size of the input array must be a multiple of 4 (size of 32-bit float). The size of the new array will be [code]byte_array.size() / 4[/code].
+If the original data can't be converted to 32-bit floats, the resulting data is undefined.
+*/
 func (self PackedByteArray) ToFloat32Array(ctx Context) PackedFloat32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5350,6 +7429,11 @@ func (self PackedByteArray) ToFloat32Array(ctx Context) PackedFloat32Array {
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedFloat64Array], where each block of 8 bytes has been converted to a 64-bit float (C++ [code]double[/code], Godot [float]).
+The size of the input array must be a multiple of 8 (size of 64-bit double). The size of the new array will be [code]byte_array.size() / 8[/code].
+If the original data can't be converted to 64-bit floats, the resulting data is undefined.
+*/
 func (self PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5361,6 +7445,9 @@ func (self PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
 	return ret
 }
 
+/*
+Encodes a 8-bit unsigned integer number (byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5372,6 +7459,9 @@ func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 8-bit signed integer number (signed byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5383,6 +7473,9 @@ func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 16-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5394,6 +7487,9 @@ func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 16-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5405,6 +7501,9 @@ func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 32-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5416,6 +7515,9 @@ func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 32-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5427,6 +7529,9 @@ func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 64-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5438,6 +7543,9 @@ func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 64-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5449,6 +7557,9 @@ func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	frame.Free()
 }
 
+/*
+Encodes a 16-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5460,6 +7571,9 @@ func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	frame.Free()
 }
 
+/*
+Encodes a 32-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5471,6 +7585,9 @@ func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	frame.Free()
 }
 
+/*
+Encodes a 64-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
+*/
 func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5482,6 +7599,9 @@ func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	frame.Free()
 }
 
+/*
+Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient space must be allocated, depending on the encoded variant's size. If [param allow_objects] is [code]false[/code], [Object]-derived values are not permitted and will instead be serialized as ID-only.
+*/
 func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5496,6 +7616,9 @@ func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_obje
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedInt32Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5507,6 +7630,9 @@ func (self PackedInt32Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedInt32Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5518,6 +7644,9 @@ func (self PackedInt32Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the integer at the given index.
+*/
 func (self PackedInt32Array) Set(index Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5529,6 +7658,9 @@ func (self PackedInt32Array) Set(index Int, value Int) {
 	frame.Free()
 }
 
+/*
+Appends a value to the array.
+*/
 func (self PackedInt32Array) PushBack(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5541,6 +7673,9 @@ func (self PackedInt32Array) PushBack(value Int) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedInt32Array) Append(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5553,6 +7688,9 @@ func (self PackedInt32Array) Append(value Int) bool {
 	return ret
 }
 
+/*
+Appends a [PackedInt32Array] at the end of this array.
+*/
 func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5563,6 +7701,9 @@ func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedInt32Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5573,6 +7714,9 @@ func (self PackedInt32Array) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5586,6 +7730,9 @@ func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedInt32Array) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5596,6 +7743,9 @@ func (self PackedInt32Array) Fill(value Int) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedInt32Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5608,6 +7758,9 @@ func (self PackedInt32Array) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedInt32Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5617,6 +7770,9 @@ func (self PackedInt32Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+*/
 func (self PackedInt32Array) Has(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5629,6 +7785,9 @@ func (self PackedInt32Array) Has(value Int) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedInt32Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5638,6 +7797,11 @@ func (self PackedInt32Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedInt32Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedInt32Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5651,6 +7815,10 @@ func (self PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32A
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
+The size of the new array will be [code]int32_array.size() * 4[/code].
+*/
 func (self PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -5662,6 +7830,9 @@ func (self PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+*/
 func (self PackedInt32Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5671,6 +7842,10 @@ func (self PackedInt32Array) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+*/
 func (self PackedInt32Array) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5684,6 +7859,9 @@ func (self PackedInt32Array) Bsearch(value Int, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5695,6 +7873,9 @@ func (self PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+*/
 func (self PackedInt32Array) Find(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5708,6 +7889,9 @@ func (self PackedInt32Array) Find(value Int, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+*/
 func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5721,6 +7905,9 @@ func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+*/
 func (self PackedInt32Array) Count(value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5733,6 +7920,9 @@ func (self PackedInt32Array) Count(value Int) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedInt64Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5744,6 +7934,9 @@ func (self PackedInt64Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedInt64Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5755,6 +7948,9 @@ func (self PackedInt64Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the integer at the given index.
+*/
 func (self PackedInt64Array) Set(index Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5766,6 +7962,9 @@ func (self PackedInt64Array) Set(index Int, value Int) {
 	frame.Free()
 }
 
+/*
+Appends a value to the array.
+*/
 func (self PackedInt64Array) PushBack(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5778,6 +7977,9 @@ func (self PackedInt64Array) PushBack(value Int) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedInt64Array) Append(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5790,6 +7992,9 @@ func (self PackedInt64Array) Append(value Int) bool {
 	return ret
 }
 
+/*
+Appends a [PackedInt64Array] at the end of this array.
+*/
 func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5800,6 +8005,9 @@ func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedInt64Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5810,6 +8018,9 @@ func (self PackedInt64Array) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5823,6 +8034,9 @@ func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedInt64Array) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5833,6 +8047,9 @@ func (self PackedInt64Array) Fill(value Int) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedInt64Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5845,6 +8062,9 @@ func (self PackedInt64Array) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedInt64Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5854,6 +8074,9 @@ func (self PackedInt64Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+*/
 func (self PackedInt64Array) Has(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5866,6 +8089,9 @@ func (self PackedInt64Array) Has(value Int) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedInt64Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5875,6 +8101,11 @@ func (self PackedInt64Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedInt64Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedInt64Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5888,6 +8119,10 @@ func (self PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64A
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
+The size of the new array will be [code]int64_array.size() * 8[/code].
+*/
 func (self PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -5899,6 +8134,9 @@ func (self PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+*/
 func (self PackedInt64Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5908,6 +8146,10 @@ func (self PackedInt64Array) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+*/
 func (self PackedInt64Array) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5921,6 +8163,9 @@ func (self PackedInt64Array) Bsearch(value Int, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5932,6 +8177,9 @@ func (self PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+*/
 func (self PackedInt64Array) Find(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5945,6 +8193,9 @@ func (self PackedInt64Array) Find(value Int, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+*/
 func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5958,6 +8209,9 @@ func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+*/
 func (self PackedInt64Array) Count(value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5970,6 +8224,9 @@ func (self PackedInt64Array) Count(value Int) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedFloat32Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5981,6 +8238,9 @@ func (self PackedFloat32Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedFloat32Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5992,6 +8252,9 @@ func (self PackedFloat32Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the float at the given index.
+*/
 func (self PackedFloat32Array) Set(index Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6003,6 +8266,9 @@ func (self PackedFloat32Array) Set(index Int, value Float) {
 	frame.Free()
 }
 
+/*
+Appends an element at the end of the array.
+*/
 func (self PackedFloat32Array) PushBack(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6015,6 +8281,9 @@ func (self PackedFloat32Array) PushBack(value Float) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedFloat32Array) Append(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6027,6 +8296,9 @@ func (self PackedFloat32Array) Append(value Float) bool {
 	return ret
 }
 
+/*
+Appends a [PackedFloat32Array] at the end of this array.
+*/
 func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6037,6 +8309,9 @@ func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedFloat32Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6047,6 +8322,9 @@ func (self PackedFloat32Array) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6060,6 +8338,9 @@ func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedFloat32Array) Fill(value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6070,6 +8351,9 @@ func (self PackedFloat32Array) Fill(value Float) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedFloat32Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6082,6 +8366,9 @@ func (self PackedFloat32Array) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedFloat32Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6091,6 +8378,10 @@ func (self PackedFloat32Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat32Array) Has(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6103,6 +8394,9 @@ func (self PackedFloat32Array) Has(value Float) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedFloat32Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6112,6 +8406,11 @@ func (self PackedFloat32Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedFloat32Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedFloat32Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFloat32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6125,6 +8424,10 @@ func (self PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFloa
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
+The size of the new array will be [code]float32_array.size() * 4[/code].
+*/
 func (self PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6136,6 +8439,10 @@ func (self PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat32Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6145,6 +8452,11 @@ func (self PackedFloat32Array) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat32Array) Bsearch(value Float, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6158,6 +8470,9 @@ func (self PackedFloat32Array) Bsearch(value Float, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6169,6 +8484,10 @@ func (self PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat32Array) Find(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6182,6 +8501,10 @@ func (self PackedFloat32Array) Find(value Float, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6195,6 +8518,10 @@ func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat32Array) Count(value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6207,6 +8534,9 @@ func (self PackedFloat32Array) Count(value Float) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedFloat64Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6218,6 +8548,9 @@ func (self PackedFloat64Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedFloat64Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6229,6 +8562,9 @@ func (self PackedFloat64Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the float at the given index.
+*/
 func (self PackedFloat64Array) Set(index Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6240,6 +8576,9 @@ func (self PackedFloat64Array) Set(index Int, value Float) {
 	frame.Free()
 }
 
+/*
+Appends an element at the end of the array.
+*/
 func (self PackedFloat64Array) PushBack(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6252,6 +8591,9 @@ func (self PackedFloat64Array) PushBack(value Float) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedFloat64Array) Append(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6264,6 +8606,9 @@ func (self PackedFloat64Array) Append(value Float) bool {
 	return ret
 }
 
+/*
+Appends a [PackedFloat64Array] at the end of this array.
+*/
 func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6274,6 +8619,9 @@ func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedFloat64Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6284,6 +8632,9 @@ func (self PackedFloat64Array) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6297,6 +8648,9 @@ func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedFloat64Array) Fill(value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6307,6 +8661,9 @@ func (self PackedFloat64Array) Fill(value Float) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedFloat64Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6319,6 +8676,9 @@ func (self PackedFloat64Array) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedFloat64Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6328,6 +8688,10 @@ func (self PackedFloat64Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat64Array) Has(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6340,6 +8704,9 @@ func (self PackedFloat64Array) Has(value Float) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedFloat64Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6349,6 +8716,11 @@ func (self PackedFloat64Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedFloat64Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedFloat64Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6362,6 +8734,10 @@ func (self PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFloa
 	return ret
 }
 
+/*
+Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
+The size of the new array will be [code]float64_array.size() * 8[/code].
+*/
 func (self PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6373,6 +8749,10 @@ func (self PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat64Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6382,6 +8762,11 @@ func (self PackedFloat64Array) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat64Array) Bsearch(value Float, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6395,6 +8780,9 @@ func (self PackedFloat64Array) Bsearch(value Float, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6406,6 +8794,10 @@ func (self PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat64Array) Find(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6419,6 +8811,10 @@ func (self PackedFloat64Array) Find(value Float, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6432,6 +8828,10 @@ func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+[b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedFloat64Array) Count(value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6444,6 +8844,9 @@ func (self PackedFloat64Array) Count(value Float) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedStringArray) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6455,6 +8858,9 @@ func (self PackedStringArray) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedStringArray) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6466,6 +8872,9 @@ func (self PackedStringArray) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the [String] at the given index.
+*/
 func (self PackedStringArray) Set(index Int, value String) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6477,6 +8886,9 @@ func (self PackedStringArray) Set(index Int, value String) {
 	frame.Free()
 }
 
+/*
+Appends a string element at end of the array.
+*/
 func (self PackedStringArray) PushBack(value String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6489,6 +8901,9 @@ func (self PackedStringArray) PushBack(value String) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedStringArray) Append(value String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6501,6 +8916,9 @@ func (self PackedStringArray) Append(value String) bool {
 	return ret
 }
 
+/*
+Appends a [PackedStringArray] at the end of this array.
+*/
 func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6511,6 +8929,9 @@ func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedStringArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6521,6 +8942,9 @@ func (self PackedStringArray) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedStringArray) Insert(at_index Int, value String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6534,6 +8958,9 @@ func (self PackedStringArray) Insert(at_index Int, value String) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedStringArray) Fill(value String) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6544,6 +8971,9 @@ func (self PackedStringArray) Fill(value String) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedStringArray) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6556,6 +8986,9 @@ func (self PackedStringArray) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedStringArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6565,6 +8998,9 @@ func (self PackedStringArray) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+*/
 func (self PackedStringArray) Has(value String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6577,6 +9013,9 @@ func (self PackedStringArray) Has(value String) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedStringArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6586,6 +9025,11 @@ func (self PackedStringArray) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedStringArray], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedStringArray].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6599,6 +9043,9 @@ func (self PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStrin
 	return ret
 }
 
+/*
+Returns a [PackedByteArray] with each string encoded as bytes.
+*/
 func (self PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6610,6 +9057,9 @@ func (self PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+*/
 func (self PackedStringArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6619,6 +9069,10 @@ func (self PackedStringArray) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+*/
 func (self PackedStringArray) Bsearch(value String, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6632,6 +9086,9 @@ func (self PackedStringArray) Bsearch(value String, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6643,6 +9100,9 @@ func (self PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+*/
 func (self PackedStringArray) Find(value String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6656,6 +9116,9 @@ func (self PackedStringArray) Find(value String, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+*/
 func (self PackedStringArray) Rfind(value String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6669,6 +9132,9 @@ func (self PackedStringArray) Rfind(value String, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+*/
 func (self PackedStringArray) Count(value String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6681,6 +9147,9 @@ func (self PackedStringArray) Count(value String) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedVector2Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6692,6 +9161,9 @@ func (self PackedVector2Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedVector2Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6703,6 +9175,9 @@ func (self PackedVector2Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the [Vector2] at the given index.
+*/
 func (self PackedVector2Array) Set(index Int, value Vector2) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6714,6 +9189,9 @@ func (self PackedVector2Array) Set(index Int, value Vector2) {
 	frame.Free()
 }
 
+/*
+Inserts a [Vector2] at the end.
+*/
 func (self PackedVector2Array) PushBack(value Vector2) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6726,6 +9204,9 @@ func (self PackedVector2Array) PushBack(value Vector2) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedVector2Array) Append(value Vector2) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6738,6 +9219,9 @@ func (self PackedVector2Array) Append(value Vector2) bool {
 	return ret
 }
 
+/*
+Appends a [PackedVector2Array] at the end of this array.
+*/
 func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6748,6 +9232,9 @@ func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedVector2Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6758,6 +9245,9 @@ func (self PackedVector2Array) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6771,6 +9261,9 @@ func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedVector2Array) Fill(value Vector2) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6781,6 +9274,9 @@ func (self PackedVector2Array) Fill(value Vector2) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedVector2Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6793,6 +9289,9 @@ func (self PackedVector2Array) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedVector2Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6802,6 +9301,10 @@ func (self PackedVector2Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector2Array) Has(value Vector2) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6814,6 +9317,9 @@ func (self PackedVector2Array) Has(value Vector2) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedVector2Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6823,6 +9329,11 @@ func (self PackedVector2Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedVector2Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedVector2Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVector2Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6836,6 +9347,9 @@ func (self PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVect
 	return ret
 }
 
+/*
+Returns a [PackedByteArray] with each vector encoded as bytes.
+*/
 func (self PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6847,6 +9361,10 @@ func (self PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector2Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6856,6 +9374,11 @@ func (self PackedVector2Array) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6869,6 +9392,9 @@ func (self PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6880,6 +9406,10 @@ func (self PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector2Array) Find(value Vector2, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6893,6 +9423,10 @@ func (self PackedVector2Array) Find(value Vector2, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6906,6 +9440,10 @@ func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector2Array) Count(value Vector2) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6918,6 +9456,9 @@ func (self PackedVector2Array) Count(value Vector2) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedVector3Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6929,6 +9470,9 @@ func (self PackedVector3Array) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedVector3Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6940,6 +9484,9 @@ func (self PackedVector3Array) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the [Vector3] at the given index.
+*/
 func (self PackedVector3Array) Set(index Int, value Vector3) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6951,6 +9498,9 @@ func (self PackedVector3Array) Set(index Int, value Vector3) {
 	frame.Free()
 }
 
+/*
+Inserts a [Vector3] at the end.
+*/
 func (self PackedVector3Array) PushBack(value Vector3) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6963,6 +9513,9 @@ func (self PackedVector3Array) PushBack(value Vector3) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedVector3Array) Append(value Vector3) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6975,6 +9528,9 @@ func (self PackedVector3Array) Append(value Vector3) bool {
 	return ret
 }
 
+/*
+Appends a [PackedVector3Array] at the end of this array.
+*/
 func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6985,6 +9541,9 @@ func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedVector3Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6995,6 +9554,9 @@ func (self PackedVector3Array) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7008,6 +9570,9 @@ func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedVector3Array) Fill(value Vector3) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7018,6 +9583,9 @@ func (self PackedVector3Array) Fill(value Vector3) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedVector3Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7030,6 +9598,9 @@ func (self PackedVector3Array) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedVector3Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7039,6 +9610,10 @@ func (self PackedVector3Array) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector3Array) Has(value Vector3) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7051,6 +9626,9 @@ func (self PackedVector3Array) Has(value Vector3) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedVector3Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7060,6 +9638,11 @@ func (self PackedVector3Array) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedVector3Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedVector3Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVector3Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7073,6 +9656,9 @@ func (self PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVect
 	return ret
 }
 
+/*
+Returns a [PackedByteArray] with each vector encoded as bytes.
+*/
 func (self PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7084,6 +9670,10 @@ func (self PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector3Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7093,6 +9683,11 @@ func (self PackedVector3Array) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7106,6 +9701,9 @@ func (self PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7117,6 +9715,10 @@ func (self PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector3Array) Find(value Vector3, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7130,6 +9732,10 @@ func (self PackedVector3Array) Find(value Vector3, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7143,6 +9749,10 @@ func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
 func (self PackedVector3Array) Count(value Vector3) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7155,6 +9765,9 @@ func (self PackedVector3Array) Count(value Vector3) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
 func (self PackedColorArray) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7166,6 +9779,9 @@ func (self PackedColorArray) Size() Int {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the array is empty.
+*/
 func (self PackedColorArray) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7177,6 +9793,9 @@ func (self PackedColorArray) IsEmpty() bool {
 	return ret
 }
 
+/*
+Changes the [Color] at the given index.
+*/
 func (self PackedColorArray) Set(index Int, value Color) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7188,6 +9807,9 @@ func (self PackedColorArray) Set(index Int, value Color) {
 	frame.Free()
 }
 
+/*
+Appends a value to the array.
+*/
 func (self PackedColorArray) PushBack(value Color) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7200,6 +9822,9 @@ func (self PackedColorArray) PushBack(value Color) bool {
 	return ret
 }
 
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
 func (self PackedColorArray) Append(value Color) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7212,6 +9837,9 @@ func (self PackedColorArray) Append(value Color) bool {
 	return ret
 }
 
+/*
+Appends a [PackedColorArray] at the end of this array.
+*/
 func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7222,6 +9850,9 @@ func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	frame.Free()
 }
 
+/*
+Removes an element from the array by index.
+*/
 func (self PackedColorArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7232,6 +9863,9 @@ func (self PackedColorArray) RemoveAt(index Int) {
 	frame.Free()
 }
 
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
 func (self PackedColorArray) Insert(at_index Int, value Color) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7245,6 +9879,9 @@ func (self PackedColorArray) Insert(at_index Int, value Color) Int {
 	return ret
 }
 
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
 func (self PackedColorArray) Fill(value Color) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7255,6 +9892,9 @@ func (self PackedColorArray) Fill(value Color) {
 	frame.Free()
 }
 
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
 func (self PackedColorArray) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7267,6 +9907,9 @@ func (self PackedColorArray) Resize(new_size Int) Int {
 	return ret
 }
 
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
 func (self PackedColorArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7276,6 +9919,9 @@ func (self PackedColorArray) Clear() {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the array contains [param value].
+*/
 func (self PackedColorArray) Has(value Color) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7288,6 +9934,9 @@ func (self PackedColorArray) Has(value Color) bool {
 	return ret
 }
 
+/*
+Reverses the order of the elements in the array.
+*/
 func (self PackedColorArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7297,6 +9946,11 @@ func (self PackedColorArray) Reverse() {
 	frame.Free()
 }
 
+/*
+Returns the slice of the [PackedColorArray], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedColorArray].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
 func (self PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColorArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7310,6 +9964,9 @@ func (self PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColorA
 	return ret
 }
 
+/*
+Returns a [PackedByteArray] with each color encoded as bytes.
+*/
 func (self PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7321,6 +9978,9 @@ func (self PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 	return ret
 }
 
+/*
+Sorts the elements of the array in ascending order.
+*/
 func (self PackedColorArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7330,6 +9990,10 @@ func (self PackedColorArray) Sort() {
 	frame.Free()
 }
 
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+*/
 func (self PackedColorArray) Bsearch(value Color, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7343,6 +10007,9 @@ func (self PackedColorArray) Bsearch(value Color, before bool) Int {
 	return ret
 }
 
+/*
+Creates a copy of the array, and returns it.
+*/
 func (self PackedColorArray) Duplicate(ctx Context) PackedColorArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7354,6 +10021,9 @@ func (self PackedColorArray) Duplicate(ctx Context) PackedColorArray {
 	return ret
 }
 
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+*/
 func (self PackedColorArray) Find(value Color, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7367,6 +10037,9 @@ func (self PackedColorArray) Find(value Color, from Int) Int {
 	return ret
 }
 
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+*/
 func (self PackedColorArray) Rfind(value Color, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7380,6 +10053,9 @@ func (self PackedColorArray) Rfind(value Color, from Int) Int {
 	return ret
 }
 
+/*
+Returns the number of times an element is in the array.
+*/
 func (self PackedColorArray) Count(value Color) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7395,6 +10071,10 @@ func (self PackedColorArray) Count(value Color) Int {
 type ObjectConnectFlags int64
 type Object struct{ Class[Object, Pointer] }
 
+/*
+Returns the object's built-in class name, as a [String]. See also [method is_class].
+[b]Note:[/b] This method ignores [code]class_name[/code] declarations. If this object's script has defined a [code]class_name[/code], the base, built-in class name is returned instead.
+*/
 func (self Object) GetClass(ctx Context) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7405,6 +10085,24 @@ func (self Object) GetClass(ctx Context) String {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the object inherits from the given [param class]. See also [method get_class].
+[codeblocks]
+[gdscript]
+var sprite2d = Sprite2D.new()
+sprite2d.is_class("Sprite2D") # Returns true
+sprite2d.is_class("Node")     # Returns true
+sprite2d.is_class("Node3D")   # Returns false
+[/gdscript]
+[csharp]
+var sprite2D = new Sprite2D();
+sprite2D.IsClass("Sprite2D"); // Returns true
+sprite2D.IsClass("Node");     // Returns true
+sprite2D.IsClass("Node3D");   // Returns false
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This method ignores [code]class_name[/code] declarations in the object's script.
+*/
 func (self Object) IsClass(class String) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7416,6 +10114,22 @@ func (self Object) IsClass(class String) bool {
 	return ret
 }
 
+/*
+Assigns [param value] to the given [param property]. If the property does not exist or the given [param value]'s type doesn't match, nothing happens.
+[codeblocks]
+[gdscript]
+var node = Node2D.new()
+node.set("global_scale", Vector2(8, 2.5))
+print(node.global_scale) # Prints (8, 2.5)
+[/gdscript]
+[csharp]
+var node = new Node2D();
+node.Set("global_scale", new Vector2(8, 2.5));
+GD.Print(node.GlobalScale); // Prints Vector2(8, 2.5)
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) Set(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7426,6 +10140,22 @@ func (self Object) Set(property StringName, value Variant) {
 	frame.Free()
 }
 
+/*
+Returns the [Variant] value of the given [param property]. If the [param property] does not exist, this method returns [code]null[/code].
+[codeblocks]
+[gdscript]
+var node = Node2D.new()
+node.rotation = 1.5
+var a = node.get("rotation") # a is 1.5
+[/gdscript]
+[csharp]
+var node = new Node2D();
+node.Rotation = 1.5f;
+var a = node.Get("rotation"); // a is 1.5
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) Get(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7437,6 +10167,24 @@ func (self Object) Get(ctx Context, property StringName) Variant {
 	return ret
 }
 
+/*
+Assigns a new [param value] to the property identified by the [param property_path]. The path should be a [NodePath] relative to this object, and can use the colon character ([code]:[/code]) to access nested properties.
+[codeblocks]
+[gdscript]
+var node = Node2D.new()
+node.set_indexed("position", Vector2(42, 0))
+node.set_indexed("position:y", -10)
+print(node.position) # Prints (42, -10)
+[/gdscript]
+[csharp]
+var node = new Node2D();
+node.SetIndexed("position", new Vector2(42, 0));
+node.SetIndexed("position:y", -10);
+GD.Print(node.Position); // Prints (42, -10)
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param property_path] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7447,6 +10195,26 @@ func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	frame.Free()
 }
 
+/*
+Gets the object's property indexed by the given [param property_path]. The path should be a [NodePath] relative to the current object and can use the colon character ([code]:[/code]) to access nested properties.
+[b]Examples:[/b] [code]"position:x"[/code] or [code]"material:next_pass:blend_mode"[/code].
+[codeblocks]
+[gdscript]
+var node = Node2D.new()
+node.position = Vector2(5, -10)
+var a = node.get_indexed("position")   # a is Vector2(5, -10)
+var b = node.get_indexed("position:y") # b is -10
+[/gdscript]
+[csharp]
+var node = new Node2D();
+node.Position = new Vector2(5, -10);
+var a = node.GetIndexed("position");   // a is Vector2(5, -10)
+var b = node.GetIndexed("position:y"); // b is -10
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param property_path] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
+[b]Note:[/b] This method does not support actual paths to nodes in the [SceneTree], only sub-property paths. In the context of nodes, use [method Node.get_node_and_resource] instead.
+*/
 func (self Object) GetIndexed(ctx Context, property_path NodePath) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7458,6 +10226,16 @@ func (self Object) GetIndexed(ctx Context, property_path NodePath) Variant {
 	return ret
 }
 
+/*
+Returns the object's property list as an [Array] of dictionaries. Each [Dictionary] contains the following entries:
+- [code]name[/code] is the property's name, as a [String];
+- [code]class_name[/code] is an empty [StringName], unless the property is [constant TYPE_OBJECT] and it inherits from a class;
+- [code]type[/code] is the property's type, as an [int] (see [enum Variant.Type]);
+- [code]hint[/code] is [i]how[/i] the property is meant to be edited (see [enum PropertyHint]);
+- [code]hint_string[/code] depends on the hint (see [enum PropertyHint]);
+- [code]usage[/code] is a combination of [enum PropertyUsageFlags].
+[b]Note:[/b] In GDScript, all class members are treated as properties. In C# and GDExtension, it may be necessary to explicitly mark class members as Godot properties using decorators or attributes.
+*/
 func (self Object) GetPropertyList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7468,6 +10246,16 @@ func (self Object) GetPropertyList() ArrayOf[Dictionary] {
 	return ret
 }
 
+/*
+Returns this object's methods and their signatures as an [Array] of dictionaries. Each [Dictionary] contains the following entries:
+- [code]name[/code] is the name of the method, as a [String];
+- [code]args[/code] is an [Array] of dictionaries representing the arguments;
+- [code]default_args[/code] is the default arguments as an [Array] of variants;
+- [code]flags[/code] is a combination of [enum MethodFlags];
+- [code]id[/code] is the method's internal identifier [int];
+- [code]return[/code] is the returned value, as a [Dictionary];
+[b]Note:[/b] The dictionaries of [code]args[/code] and [code]return[/code] are formatted identically to the results of [method get_property_list], although not all entries are used.
+*/
 func (self Object) GetMethodList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7478,6 +10266,10 @@ func (self Object) GetMethodList() ArrayOf[Dictionary] {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the given [param property] has a custom default value. Use [method property_get_revert] to get the [param property]'s default value.
+[b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_can_revert] to customize the default value. If [method _property_can_revert] is not implemented, this method returns [code]false[/code].
+*/
 func (self Object) PropertyCanRevert(property StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7489,6 +10281,10 @@ func (self Object) PropertyCanRevert(property StringName) bool {
 	return ret
 }
 
+/*
+Returns the custom default value of the given [param property]. Use [method property_can_revert] to check if the [param property] has a custom default value.
+[b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_get_revert] to customize the default value. If [method _property_get_revert] is not implemented, this method returns [code]null[/code].
+*/
 func (self Object) PropertyGetRevert(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7500,6 +10296,32 @@ func (self Object) PropertyGetRevert(ctx Context, property StringName) Variant {
 	return ret
 }
 
+/*
+Sends the given [param what] notification to all classes inherited by the object, triggering calls to [method _notification], starting from the highest ancestor (the [Object] class) and going down to the object's script.
+If [param reversed] is [code]true[/code], the call order is reversed.
+[codeblocks]
+[gdscript]
+var player = Node2D.new()
+player.set_script(load("res://player.gd"))
+
+player.notification(NOTIFICATION_ENTER_TREE)
+# The call order is Object -> Node -> Node2D -> player.gd.
+
+player.notification(NOTIFICATION_ENTER_TREE, true)
+# The call order is player.gd -> Node2D -> Node -> Object.
+[/gdscript]
+[csharp]
+var player = new Node2D();
+player.SetScript(GD.Load("res://player.gd"));
+
+player.Notification(NotificationEnterTree);
+// The call order is GodotObject -> Node -> Node2D -> player.gd.
+
+player.Notification(NotificationEnterTree, true);
+// The call order is player.gd -> Node2D -> Node -> GodotObject.
+[/csharp]
+[/codeblocks]
+*/
 func (self Object) Notification(what Int, reversed bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7510,6 +10332,9 @@ func (self Object) Notification(what Int, reversed bool) {
 	frame.Free()
 }
 
+/*
+Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[/code]. Override [method _to_string] to customize the string representation of the object.
+*/
 func (self Object) ToString(ctx Context) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7520,6 +10345,9 @@ func (self Object) ToString(ctx Context) String {
 	return ret
 }
 
+/*
+Returns the object's unique instance ID. This ID can be saved in [EncodedObjectAsID], and can be used to retrieve this object instance with [method @GlobalScope.instance_from_id].
+*/
 func (self Object) GetInstanceId() Int {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7530,6 +10358,10 @@ func (self Object) GetInstanceId() Int {
 	return ret
 }
 
+/*
+Attaches [param script] to the object, and instantiates it. As a result, the script's [method _init] is called. A [Script] is used to extend the object's functionality.
+If a script already exists, its instance is detached, and its property values and state are lost. Built-in property values are still kept.
+*/
 func (self Object) SetScript(script Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7539,6 +10371,9 @@ func (self Object) SetScript(script Variant) {
 	frame.Free()
 }
 
+/*
+Returns the object's [Script] instance, or [code]null[/code] if no script is attached.
+*/
 func (self Object) GetScript(ctx Context) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7549,6 +10384,12 @@ func (self Object) GetScript(ctx Context) Variant {
 	return ret
 }
 
+/*
+Adds or changes the entry [param name] inside the object's metadata. The metadata [param value] can be any [Variant], although some types cannot be serialized correctly.
+If [param value] is [code]null[/code], the entry is removed. This is the equivalent of using [method remove_meta]. See also [method has_meta] and [method get_meta].
+[b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
+[b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
+*/
 func (self Object) SetMeta(name StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7559,6 +10400,11 @@ func (self Object) SetMeta(name StringName, value Variant) {
 	frame.Free()
 }
 
+/*
+Removes the given entry [param name] from the object's metadata. See also [method has_meta], [method get_meta] and [method set_meta].
+[b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
+[b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
+*/
 func (self Object) RemoveMeta(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7568,6 +10414,11 @@ func (self Object) RemoveMeta(name StringName) {
 	frame.Free()
 }
 
+/*
+Returns the object's metadata value for the given entry [param name]. If the entry does not exist, returns [param default]. If [param default] is [code]null[/code], an error is also generated.
+[b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
+[b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
+*/
 func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7580,6 +10431,11 @@ func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if a metadata entry is found with the given [param name]. See also [method get_meta], [method set_meta] and [method remove_meta].
+[b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
+[b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
+*/
 func (self Object) HasMeta(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7591,6 +10447,9 @@ func (self Object) HasMeta(name StringName) bool {
 	return ret
 }
 
+/*
+Returns the object's metadata entry names as a [PackedStringArray].
+*/
 func (self Object) GetMetaList() ArrayOf[StringName] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7601,6 +10460,36 @@ func (self Object) GetMetaList() ArrayOf[StringName] {
 	return ret
 }
 
+/*
+Adds a user-defined [param signal]. Optional arguments for the signal can be added as an [Array] of dictionaries, each defining a [code]name[/code] [String] and a [code]type[/code] [int] (see [enum Variant.Type]). See also [method has_user_signal].
+[codeblocks]
+[gdscript]
+add_user_signal("hurt", [
+
+	{ "name": "damage", "type": TYPE_INT },
+	{ "name": "source", "type": TYPE_OBJECT }
+
+])
+[/gdscript]
+[csharp]
+AddUserSignal("Hurt", new Godot.Collections.Array()
+
+	{
+	    new Godot.Collections.Dictionary()
+	    {
+	        { "name", "damage" },
+	        { "type", (int)Variant.Type.Int }
+	    },
+	    new Godot.Collections.Dictionary()
+	    {
+	        { "name", "source" },
+	        { "type", (int)Variant.Type.Object }
+	    }
+	});
+
+[/csharp]
+[/codeblocks]
+*/
 func (self Object) AddUserSignal(signal String, arguments Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7611,6 +10500,9 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included.
+*/
 func (self Object) HasUserSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7622,6 +10514,21 @@ func (self Object) HasUserSignal(signal StringName) bool {
 	return ret
 }
 
+/*
+Emits the given [param signal] by name. The signal must exist, so it should be a built-in signal of this class or one of its inherited classes, or a user-defined signal (see [method add_user_signal]). This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
+Returns [constant ERR_UNAVAILABLE] if [param signal] does not exist or the parameters are invalid.
+[codeblocks]
+[gdscript]
+emit_signal("hit", "sword", 100)
+emit_signal("game_over")
+[/gdscript]
+[csharp]
+EmitSignal(SignalName.Hit, "sword", 100);
+EmitSignal(SignalName.GameOver);
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot signals. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) EmitSignal(signal StringName) int64 {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7633,6 +10540,20 @@ func (self Object) EmitSignal(signal StringName) int64 {
 	return ret
 }
 
+/*
+Calls the [param method] on the object and returns the result. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
+[codeblocks]
+[gdscript]
+var node = Node3D.new()
+node.call("rotate", Vector3(1.0, 0.0, 0.0), 1.571)
+[/gdscript]
+[csharp]
+var node = new Node3D();
+node.Call(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) Call(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7644,6 +10565,32 @@ func (self Object) Call(ctx Context, method StringName) Variant {
 	return ret
 }
 
+/*
+Calls the [param method] on the object during idle time. Always returns null, [b]not[/b] the method's result.
+Idle time happens mainly at the end of process and physics frames. In it, deferred calls will be run until there are none left, which means you can defer calls from other deferred calls and they'll still be run in the current idle time cycle. If not done carefully, this can result in infinite recursion without causing a stack overflow, which will hang the game similarly to an infinite loop.
+This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
+[codeblocks]
+[gdscript]
+var node = Node3D.new()
+node.call_deferred("rotate", Vector3(1.0, 0.0, 0.0), 1.571)
+[/gdscript]
+[csharp]
+var node = new Node3D();
+node.CallDeferred(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
+[/csharp]
+[/codeblocks]
+See also [method Callable.call_deferred].
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+[b]Note:[/b] If you're looking to delay the function call by a frame, refer to the [signal SceneTree.process_frame] and [signal SceneTree.physics_frame] signals.
+[codeblock]
+var node = Node3D.new()
+# Make a Callable and bind the arguments to the node's rotate() call.
+var callable = node.rotate.bind(Vector3(1.0, 0.0, 0.0), 1.571)
+# Connect the callable to the process_frame signal, so it gets called in the next process frame.
+# CONNECT_ONE_SHOT makes sure it only gets called once instead of every frame.
+get_tree().process_frame.connect(callable, CONNECT_ONE_SHOT)
+[/codeblock]
+*/
 func (self Object) CallDeferred(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7655,6 +10602,32 @@ func (self Object) CallDeferred(ctx Context, method StringName) Variant {
 	return ret
 }
 
+/*
+Assigns [param value] to the given [param property], at the end of the current frame. This is equivalent to calling [method set] through [method call_deferred].
+[codeblocks]
+[gdscript]
+var node = Node2D.new()
+add_child(node)
+
+node.rotation = 45.0
+node.set_deferred("rotation", 90.0)
+print(node.rotation) # Prints 45.0
+
+await get_tree().process_frame
+print(node.rotation) # Prints 90.0
+[/gdscript]
+[csharp]
+var node = new Node2D();
+node.Rotation = 45f;
+node.SetDeferred("rotation", 90f);
+GD.Print(node.Rotation); // Prints 45.0
+
+await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+GD.Print(node.Rotation); // Prints 90.0
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) SetDeferred(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7665,6 +10638,20 @@ func (self Object) SetDeferred(property StringName, value Variant) {
 	frame.Free()
 }
 
+/*
+Calls the [param method] on the object and returns the result. Unlike [method call], this method expects all parameters to be contained inside [param arg_array].
+[codeblocks]
+[gdscript]
+var node = Node3D.new()
+node.callv("rotate", [Vector3(1.0, 0.0, 0.0), 1.571])
+[/gdscript]
+[csharp]
+var node = new Node3D();
+node.Callv(Node3D.MethodName.Rotate, new Godot.Collections.Array { new Vector3(1f, 0f, 0f), 1.571f });
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) Callv(ctx Context, method StringName, arg_array Array) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7677,6 +10664,10 @@ func (self Object) Callv(ctx Context, method StringName, arg_array Array) Varian
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the given [param method] name exists in the object.
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) HasMethod(method StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7688,6 +10679,10 @@ func (self Object) HasMethod(method StringName) bool {
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the given [param signal] name exists in the object.
+[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) HasSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7699,6 +10694,10 @@ func (self Object) HasSignal(signal StringName) bool {
 	return ret
 }
 
+/*
+Returns the list of existing signals as an [Array] of dictionaries.
+[b]Note:[/b] Due of the implementation, each [Dictionary] is formatted very similarly to the returned values of [method get_method_list].
+*/
 func (self Object) GetSignalList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7709,6 +10708,12 @@ func (self Object) GetSignalList() ArrayOf[Dictionary] {
 	return ret
 }
 
+/*
+Returns an [Array] of connections for the given [param signal] name. Each connection is represented as a [Dictionary] that contains three entries:
+- [code skip-lint]signal[/code] is a reference to the [Signal];
+- [code]callable[/code] is a reference to the connected [Callable];
+- [code]flags[/code] is a combination of [enum ConnectFlags].
+*/
 func (self Object) GetSignalConnectionList(signal StringName) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7720,6 +10725,12 @@ func (self Object) GetSignalConnectionList(signal StringName) ArrayOf[Dictionary
 	return ret
 }
 
+/*
+Returns an [Array] of signal connections received by this object. Each connection is represented as a [Dictionary] that contains three entries:
+- [code]signal[/code] is a reference to the [Signal];
+- [code]callable[/code] is a reference to the [Callable];
+- [code]flags[/code] is a combination of [enum ConnectFlags].
+*/
 func (self Object) GetIncomingConnections() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7730,6 +10741,154 @@ func (self Object) GetIncomingConnections() ArrayOf[Dictionary] {
 	return ret
 }
 
+/*
+Connects a [param signal] by name to a [param callable]. Optional [param flags] can be also added to configure the connection's behavior (see [enum ConnectFlags] constants).
+A signal can only be connected once to the same [Callable]. If the signal is already connected, this method returns [constant ERR_INVALID_PARAMETER] and pushes an error message, unless the signal is connected with [constant CONNECT_REFERENCE_COUNTED]. To prevent this, use [method is_connected] first to check for existing connections.
+If the [param callable]'s object is freed, the connection will be lost.
+[b]Examples with recommended syntax:[/b]
+Connecting signals is one of the most common operations in Godot and the API gives many options to do so, which are described further down. The code block below shows the recommended approach.
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var button = Button.new()
+	# `button_down` here is a Signal variant type, and we thus call the Signal.connect() method, not Object.connect().
+	# See discussion below for a more in-depth overview of the API.
+	button.button_down.connect(_on_button_down)
+
+	# This assumes that a `Player` class exists, which defines a `hit` signal.
+	var player = Player.new()
+	# We use Signal.connect() again, and we also use the Callable.bind() method,
+	# which returns a new Callable with the parameter binds.
+	player.hit.connect(_on_player_hit.bind("sword", 100))
+
+func _on_button_down():
+
+	print("Button down!")
+
+func _on_player_hit(weapon_type, damage):
+
+	print("Hit with weapon %s for %d damage." % [weapon_type, damage])
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    var button = new Button();
+	    // C# supports passing signals as events, so we can use this idiomatic construct:
+	    button.ButtonDown += OnButtonDown;
+
+	    // This assumes that a `Player` class exists, which defines a `Hit` signal.
+	    var player = new Player();
+	    // We can use lambdas when we need to bind additional parameters.
+	    player.Hit += () => OnPlayerHit("sword", 100);
+	}
+
+private void OnButtonDown()
+
+	{
+	    GD.Print("Button down!");
+	}
+
+private void OnPlayerHit(string weaponType, int damage)
+
+	{
+	    GD.Print($"Hit with weapon {weaponType} for {damage} damage.");
+	}
+
+[/csharp]
+[/codeblocks]
+[b][code skip-lint]Object.connect()[/code] or [code skip-lint]Signal.connect()[/code]?[/b]
+As seen above, the recommended method to connect signals is not [method Object.connect]. The code block below shows the four options for connecting signals, using either this legacy method or the recommended [method Signal.connect], and using either an implicit [Callable] or a manually defined one.
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var button = Button.new()
+	# Option 1: Object.connect() with an implicit Callable for the defined function.
+	button.connect("button_down", _on_button_down)
+	# Option 2: Object.connect() with a constructed Callable using a target object and method name.
+	button.connect("button_down", Callable(self, "_on_button_down"))
+	# Option 3: Signal.connect() with an implicit Callable for the defined function.
+	button.button_down.connect(_on_button_down)
+	# Option 4: Signal.connect() with a constructed Callable using a target object and method name.
+	button.button_down.connect(Callable(self, "_on_button_down"))
+
+func _on_button_down():
+
+	print("Button down!")
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    var button = new Button();
+	    // Option 1: In C#, we can use signals as events and connect with this idiomatic syntax:
+	    button.ButtonDown += OnButtonDown;
+	    // Option 2: GodotObject.Connect() with a constructed Callable from a method group.
+	    button.Connect(Button.SignalName.ButtonDown, Callable.From(OnButtonDown));
+	    // Option 3: GodotObject.Connect() with a constructed Callable using a target object and method name.
+	    button.Connect(Button.SignalName.ButtonDown, new Callable(this, MethodName.OnButtonDown));
+	}
+
+private void OnButtonDown()
+
+	{
+	    GD.Print("Button down!");
+	}
+
+[/csharp]
+[/codeblocks]
+While all options have the same outcome ([code]button[/code]'s [signal BaseButton.button_down] signal will be connected to [code]_on_button_down[/code]), [b]option 3[/b] offers the best validation: it will print a compile-time error if either the [code]button_down[/code] [Signal] or the [code]_on_button_down[/code] [Callable] are not defined. On the other hand, [b]option 2[/b] only relies on string names and will only be able to validate either names at runtime: it will print a runtime error if [code]"button_down"[/code] doesn't correspond to a signal, or if [code]"_on_button_down"[/code] is not a registered method in the object [code]self[/code]. The main reason for using options 1, 2, or 4 would be if you actually need to use strings (e.g. to connect signals programmatically based on strings read from a configuration file). Otherwise, option 3 is the recommended (and fastest) method.
+[b]Binding and passing parameters:[/b]
+The syntax to bind parameters is through [method Callable.bind], which returns a copy of the [Callable] with its parameters bound.
+When calling [method emit_signal], the signal parameters can be also passed. The examples below show the relationship between these signal parameters and bound parameters.
+[codeblocks]
+[gdscript]
+func _ready():
+
+	# This assumes that a `Player` class exists, which defines a `hit` signal.
+	var player = Player.new()
+	# Using Callable.bind().
+	player.hit.connect(_on_player_hit.bind("sword", 100))
+
+	# Parameters added when emitting the signal are passed first.
+	player.emit_signal("hit", "Dark lord", 5)
+
+# We pass two arguments when emitting (`hit_by`, `level`),
+# and bind two more arguments when connecting (`weapon_type`, `damage`).
+func _on_player_hit(hit_by, level, weapon_type, damage):
+
+	print("Hit by %s (level %d) with weapon %s for %d damage." % [hit_by, level, weapon_type, damage])
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    // This assumes that a `Player` class exists, which defines a `Hit` signal.
+	    var player = new Player();
+	    // Using lambda expressions that create a closure that captures the additional parameters.
+	    // The lambda only receives the parameters defined by the signal's delegate.
+	    player.Hit += (hitBy, level) => OnPlayerHit(hitBy, level, "sword", 100);
+
+	    // Parameters added when emitting the signal are passed first.
+	    player.EmitSignal(SignalName.Hit, "Dark lord", 5);
+	}
+
+// We pass two arguments when emitting (`hit_by`, `level`),
+// and bind two more arguments when connecting (`weapon_type`, `damage`).
+private void OnPlayerHit(string hitBy, int level, string weaponType, int damage)
+
+	{
+	    GD.Print($"Hit by {hitBy} (level {level}) with weapon {weaponType} for {damage} damage.");
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 func (self Object) Connect(signal StringName, callable Callable, flags Int) int64 {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7743,6 +10902,9 @@ func (self Object) Connect(signal StringName, callable Callable, flags Int) int6
 	return ret
 }
 
+/*
+Disconnects a [param signal] by name from a given [param callable]. If the connection does not exist, generates an error. Use [method is_connected] to make sure that the connection exists.
+*/
 func (self Object) Disconnect(signal StringName, callable Callable) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7753,6 +10915,10 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if a connection exists between the given [param signal] name and [param callable].
+[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
+*/
 func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7765,6 +10931,9 @@ func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	return ret
 }
 
+/*
+If set to [code]true[/code], the object becomes unable to emit signals. As such, [method emit_signal] and signal connections will not work, until it is set to [code]false[/code].
+*/
 func (self Object) SetBlockSignals(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7774,6 +10943,9 @@ func (self Object) SetBlockSignals(enable bool) {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the object is blocking its signals from being emitted. See [method set_block_signals].
+*/
 func (self Object) IsBlockingSignals() bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7784,6 +10956,9 @@ func (self Object) IsBlockingSignals() bool {
 	return ret
 }
 
+/*
+Emits the [signal property_list_changed] signal. This is mainly used to refresh the editor, so that the Inspector and editor plugins are properly updated.
+*/
 func (self Object) NotifyPropertyListChanged() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7792,6 +10967,9 @@ func (self Object) NotifyPropertyListChanged() {
 	frame.Free()
 }
 
+/*
+If set to [code]true[/code], allows the object to translate messages with [method tr] and [method tr_n]. Enabled by default. See also [method can_translate_messages].
+*/
 func (self Object) SetMessageTranslation(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7801,6 +10979,9 @@ func (self Object) SetMessageTranslation(enable bool) {
 	frame.Free()
 }
 
+/*
+Returns [code]true[/code] if the object is allowed to translate messages with [method tr] and [method tr_n]. See also [method set_message_translation].
+*/
 func (self Object) CanTranslateMessages() bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7811,6 +10992,11 @@ func (self Object) CanTranslateMessages() bool {
 	return ret
 }
 
+/*
+Translates a [param message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation.
+If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns the [param message] without changes. See [method set_message_translation].
+For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
+*/
 func (self Object) Tr(ctx Context, message StringName, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7823,6 +11009,13 @@ func (self Object) Tr(ctx Context, message StringName, context StringName) Strin
 	return ret
 }
 
+/*
+Translates a [param message] or [param plural_message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation.
+If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns [param message] or [param plural_message], without changes. See [method set_message_translation].
+The [param n] is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
+For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
+[b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended handling these cases with [method tr].
+*/
 func (self Object) TrN(ctx Context, message StringName, plural_message StringName, n Int, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7837,6 +11030,9 @@ func (self Object) TrN(ctx Context, message StringName, plural_message StringNam
 	return ret
 }
 
+/*
+Returns [code]true[/code] if the [method Node.queue_free] method was called for the object.
+*/
 func (self Object) IsQueuedForDeletion() bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -7847,6 +11043,9 @@ func (self Object) IsQueuedForDeletion() bool {
 	return ret
 }
 
+/*
+If this method is called during [constant NOTIFICATION_PREDELETE], this object will reject being freed and will remain allocated. This is mostly an internal function used for error handling to avoid the user from freeing objects when they are not intended to.
+*/
 func (self Object) CancelFree() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
