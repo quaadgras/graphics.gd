@@ -2,5 +2,7 @@ github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
+grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a h1:8QjAMrsqm8iYsCLKz3dT2/aFhjlOQ/2U7+4eOusmP0E=
+grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a/go.mod h1:JwNaWFtFaeSmvp34kveQhSGN8dNowvLlz55K/c9bs1E=
 runtime.link v0.0.0-20240121080927-e61cba9606da h1:oqyMrwoXxWqB+wypvhb4HUssAya/FGy5KxWiDkj21FU=
 runtime.link v0.0.0-20240121080927-e61cba9606da/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=

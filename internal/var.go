@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"strings"
 
-	"grow.graphics/gd/internal/spatial"
 	"grow.graphics/uc"
+	"grow.graphics/xy"
 	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
@@ -15,30 +15,30 @@ import (
 type Bool bool
 
 type (
-	Float       = spatial.Float
-	Int         = spatial.Int
-	Vector2     = spatial.Vector2
-	Vector2i    = spatial.Vector2i
-	Rect2       = spatial.Rect2
-	Rect2i      = spatial.Rect2i
-	Vector3     = spatial.Vector3
-	Vector3i    = spatial.Vector3i
-	Transform2D = spatial.Transform2D
-	Vector4     = spatial.Vector4
-	Vector4i    = spatial.Vector4i
-	Plane       = spatial.Plane
-	Quaternion  = spatial.Quaternion
-	AABB        = spatial.AABB
-	Basis       = spatial.Basis
-	Transform3D = spatial.Transform3D
-	Projection  = spatial.Projection
+	Float       = float64
+	Int         = int64
+	Vector2     = xy.Vector2
+	Vector2i    = xy.Vector2i
+	Rect2       = xy.Rect2
+	Rect2i      = xy.Rect2i
+	Vector3     = xy.Vector3
+	Vector3i    = xy.Vector3i
+	Transform2D = xy.Transform2D
+	Vector4     = xy.Vector4
+	Vector4i    = xy.Vector4i
+	Plane       = xy.Plane
+	Quaternion  = xy.Quaternion
+	AABB        = xy.AABB
+	Basis       = xy.Basis
+	Transform3D = xy.Transform3D
+	Projection  = xy.Projection
 )
 
 type Color = uc.Color
 
 type (
-	Side       = spatial.Side
-	EulerOrder = spatial.EulerOrder
+	Side       = xy.Side
+	EulerOrder = xy.EulerOrder
 )
 
 type RID uint64

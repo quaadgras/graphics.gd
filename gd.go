@@ -3,7 +3,7 @@ package gd
 import (
 	gd "grow.graphics/gd/internal"
 	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/internal/spatial"
+	"grow.graphics/xy"
 )
 
 type Axis int
@@ -50,14 +50,14 @@ func Const[F func(T) T, T any](constant F) T {
 }
 
 // NewVector2 constructs a new Vector2 from the given x and y.
-func NewVector2(x, y Float) Vector2 { return spatial.NewVector2(x, y) }
+func NewVector2(x, y Float) Vector2 { return xy.NewVector2(x, y) }
 
 // NewVector2i constructs a new Vector2i from the given x and y.
 func NewVector2i(x, y Int) Vector2i { return Vector2i{int32(x), int32(y)} }
 
 // NewRect2 constructs a Rect2 by setting its position to (x, y), and its size to (width, height).
 func NewRect2(x, y, width, height Float) Rect2 {
-	return spatial.NewRect2(x, y, width, height)
+	return xy.NewRect2(x, y, width, height)
 }
 
 // NewRect2i constructs a Rect2i by setting its position to (x, y), and its size to (width, height).
@@ -66,19 +66,19 @@ func NewRect2i(x, y, width, height Int) Rect2i {
 }
 
 // NewVector3 constructs a new Vector3 from the given x, y, and z.
-func NewVector3(x, y, z Float) Vector3 { return spatial.NewVector3(x, y, z) }
+func NewVector3(x, y, z Float) Vector3 { return xy.NewVector3(x, y, z) }
 
 // NewVector3i constructs a new Vector3i from the given x, y, and z.
 func NewVector3i(x, y, z Int) Vector3i { return Vector3i{int32(x), int32(y), int32(z)} }
 
 // NewTransform2D constructs a new Transform2D from the given rotation and position.
 func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vector2) Transform2D {
-	return spatial.NewTransform2D(rotation, scale, skew, position)
+	return xy.NewTransform2D(rotation, scale, skew, position)
 }
 
 // NewVector4 constructs a new Vector4 from the given x, y, z, and w.
 func NewVector4(x, y, z, w Float) Vector4 {
-	return spatial.NewVector4(x, y, z, w)
+	return xy.NewVector4(x, y, z, w)
 }
 
 // NewVector4i constructs a new Vector4i from the given x, y, z, and w.
@@ -87,16 +87,16 @@ func NewVector4i(x, y, z, w Int) Vector4i {
 }
 
 // NewPlane creates a plane from the three points, given in clockwise order.
-func NewPlane(a, b, c Vector3) Plane { return spatial.NewPlane(a, b, c) }
+func NewPlane(a, b, c Vector3) Plane { return xy.NewPlane(a, b, c) }
 
 // NewBasisScaledBy constructs a pure scale basis matrix with no rotation or shearing. The scale values are set as
 // the diagonal of the matrix, and the other parts of the matrix are zero.
-func NewBasisScaledBy(scale Vector3) Basis { return spatial.NewBasisScaledBy(scale) }
+func NewBasisScaledBy(scale Vector3) Basis { return xy.NewBasisScaledBy(scale) }
 
 // NewBasisRotatedAround constructs a pure rotation basis matrix, rotated around the given axis by angle (in radians).
 // The axis must be a normalized vector.
 func NewBasisRotatedAround(axis Vector3, angle Radians) Basis {
-	return spatial.NewBasisRotatedAround(axis, angle)
+	return xy.NewBasisRotatedAround(axis, angle)
 }
 
 /*
@@ -131,14 +131,14 @@ func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
 }
 
 type (
-	EulerAngles = spatial.EulerAngles
-	Radians     = spatial.Radians
-	Degrees     = spatial.Degrees
+	EulerAngles = xy.EulerAngles
+	Radians     = xy.Radians
+	Degrees     = xy.Degrees
 )
 
 type (
-	Side       = spatial.Side
-	EulerOrder = spatial.EulerOrder
+	Side       = xy.Side
+	EulerOrder = xy.EulerOrder
 )
 
 type (
