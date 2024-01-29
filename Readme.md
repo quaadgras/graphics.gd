@@ -139,6 +139,12 @@ To run the go tests for this module `cd internal && gd test`.
 * 64bit support only.
 * Not tested on Windows.
 
+## See Also
+
+* [Our pure Go zero-dependencies port of Godot's Color Class](https://github.com/grow-graphics/uc)
+* [Our pure Go zero-dependencies port of Godot's Math Variants](https://github.com/grow-graphics/xy)
+* [godot-go](https://github.com/godot-go/godot-go) (Another project aiming to support Go + Godot integration)
+
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use 
 it in any manner you can use the Godot engine. If you use this for a commercially successful
