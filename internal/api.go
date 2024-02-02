@@ -167,7 +167,7 @@ type API struct {
 	cache
 
 	// extensions instances are mapped here.
-	instances map[uintptr]any
+	Instances map[uintptr]any
 }
 
 type Packed interface {

@@ -136,6 +136,9 @@ func (godot Context) Variant(v any) Variant {
 	default:
 		class, ok := v.(IsClass)
 		if ok {
+			if reflect.ValueOf(v).IsZero() {
+				return godot.API.Variants.NewNil(godot)
+			}
 			var arg = call.Arg(frame, class.AsPointer().Pointer())
 			godot.API.variant.FromType[TypeObject](ret, arg.Uintptr())
 		} else {
@@ -252,7 +255,7 @@ func variantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerS
 	return mmm.New[T](ctx.Lifetime, ctx.API, ret)
 }
 
-func letVariantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Context, variant Variant, vtype VariantType) T {
+func LetVariantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Context, variant Variant, vtype VariantType) T {
 	var frame = call.New()
 	var r_ret = call.Ret[Size](frame)
 	mmm.API(variant).variant.IntoType[vtype](r_ret.Uintptr(), call.Arg(frame, mmm.Get(variant)))

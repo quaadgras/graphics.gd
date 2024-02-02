@@ -10,7 +10,6 @@ import (
 	internal "grow.graphics/gd/internal"
 	"runtime.link/api"
 	"runtime.link/api/call"
-	"runtime.link/api/stub"
 	"runtime.link/mmm"
 )
 import "C"
@@ -39,7 +38,7 @@ var background internal.Context
 // linked with Godot successfully.
 func Link() (internal.Context, bool) {
 	if dlsymGD == nil {
-		*godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
+		//*godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
 		return internal.NewContext(godot), false
 	}
 	return background, true

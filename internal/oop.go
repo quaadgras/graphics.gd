@@ -3,6 +3,7 @@
 package gd
 
 import (
+	"fmt"
 	"reflect"
 
 	"runtime.link/mmm"
@@ -58,7 +59,7 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T IsClass](godot Context, class IsClass) (T, bool) {
-	if ref, ok := godot.API.instances[mmm.Get(class.AsPointer())].(T); ok {
+	if ref, ok := godot.API.Instances[mmm.Get(class.AsPointer())].(T); ok {
 		return ref, true
 	}
 	var rtype = reflect.TypeOf([0]T{}).Elem()
@@ -84,6 +85,7 @@ func (ptr Pointer) Pointer() uintptr {
 func (ptr Pointer) Free() {
 	var obj Object
 	obj.super = ptr
+	fmt.Println("Freeing object ")
 	mmm.API(ptr).Object.Destroy(obj)
 	mmm.End(obj.AsPointer())
 }

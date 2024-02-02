@@ -87,6 +87,16 @@ func (s StringName) String() string {
 
 type NodePath mmm.Pointer[API, NodePath, uintptr]
 
+func (s String) NodePath(ctx Context) NodePath {
+	var frame = call.New()
+	call.Arg(frame, mmm.Get(s))
+	var r_ret = call.Ret[uintptr](frame)
+	mmm.API(s).typeset.creation.NodePath[2](r_ret.Uintptr(), frame.Array(0))
+	var raw = r_ret.Get()
+	frame.Free()
+	return mmm.New[NodePath](ctx.Lifetime, ctx.API, raw)
+}
+
 func (n NodePath) Free() {
 	var frame = call.New()
 	mmm.API(n).typeset.destruct.NodePath(call.Arg(frame, mmm.End(n)).Uintptr())

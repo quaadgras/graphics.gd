@@ -669,7 +669,7 @@ func generate() error {
 		}
 		fmt.Fprintf(core, ")")
 		result := classDB.convertType("internal", "", utility.ReturnType)
-		ptrKind, isPtr := isPointer(result)
+		ptrKind, isPtr := classDB.isPointer(result)
 		if result != "" {
 			fmt.Fprintf(core, " %v {\n", result)
 		} else {
@@ -683,7 +683,7 @@ func generate() error {
 				continue
 			}
 			argType := classDB.convertType("internal", arg.Meta, arg.Type)
-			_, argIsPtr := isPointer(argType)
+			_, argIsPtr := classDB.isPointer(argType)
 			if argIsPtr {
 				fmt.Fprintf(core, "\tcall.Arg(frame, mmm.Get(%v))\n", fixReserved(arg.Name))
 			} else {
@@ -701,7 +701,13 @@ func generate() error {
 		}
 		fmt.Fprintf(core, "\tctx.API.utility.%v(r_ret.Uintptr(), frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
 		if isPtr {
-			fmt.Fprintf(core, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
+			_, ok := classDB[result]
+			if ok || result == "Object" {
+				fmt.Fprintf(core, "\tvar ret %v\n", result)
+				fmt.Fprintf(core, "\tret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))\n")
+			} else {
+				fmt.Fprintf(core, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
+			}
 		} else {
 			if result != "" {
 				fmt.Fprintf(core, "\tvar ret = r_ret.Get()\n")
@@ -867,7 +873,7 @@ func generate() error {
 	return nil
 }
 
-func isPointer(t string) (string, bool) {
+func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "gd.")
 	switch t {
 	case "String", "StringName", "NodePath",
@@ -883,6 +889,9 @@ func isPointer(t string) (string, bool) {
 	case "Variant":
 		return "[3]uintptr", true
 	default:
+		if entry, ok := db[t]; ok && !entry.IsEnum {
+			return "uintptr", true
+		}
 		return "", false
 	}
 }
@@ -906,7 +915,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	if method.ReturnType != "" {
 		result = classDB.convertType(pkg, "", method.ReturnType)
 	}
-	ptrKind, isPtr := isPointer(result)
+	ptrKind, isPtr := classDB.isPointer(result)
 
 	prefix := ""
 	if pkg != "internal" {
@@ -928,7 +937,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		}
 		fmt.Fprintf(w, ") %v, api *"+prefix+"API) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
 		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
-		fmt.Fprintf(w, "\tctx := %vNewContext(api)\n", prefix)
+		fmt.Fprintf(w, "\t\tctx := %vNewContext(api)\n", prefix)
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
 
@@ -939,14 +948,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 				continue
 			}
 
-			argPtrKind, argIsPtr := isPointer(argType)
+			argPtrKind, argIsPtr := classDB.isPointer(argType)
 			if argIsPtr {
 				fmt.Fprintf(w, "\t\tvar %v = mmm.New[%v](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
 			} else {
 				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
 			}
 		}
-		fmt.Fprintf(w, "\tself := reflect.ValueOf(class).UnsafePointer()\n")
+		fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
 		if result != "" {
 			fmt.Fprintf(w, "\t\tret := ")
 		}
@@ -957,9 +966,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		}
 		fmt.Fprintf(w, ")\n")
 		if isPtr {
-			fmt.Fprintf(w, "\t\tmmm.End(ret)\n")
+			if _, ok := classDB[result]; ok || result == "gd.Object" {
+				fmt.Fprintf(w, "\t\tmmm.End(ret.AsPointer())\n")
+			} else {
+				fmt.Fprintf(w, "\t\tmmm.End(ret)\n")
+			}
 		}
-		fmt.Fprintf(w, "\tctx.End()\n")
+		fmt.Fprintf(w, "\t\tctx.End()\n")
 		if result != "" {
 			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet[%v](p_back, ret)\n", result)
 		}
@@ -1004,7 +1017,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		}
 
 		argType := classDB.convertType(pkg, arg.Meta, arg.Type)
-		_, argIsPtr := isPointer(argType)
+		_, argIsPtr := classDB.isPointer(argType)
 		if argIsPtr {
 			fmt.Fprintf(w, "\tcall.Arg(frame, mmm.Get(%v))\n", fixReserved(arg.Name))
 		} else {
@@ -1028,7 +1041,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	}
 
 	if isPtr {
-		fmt.Fprintf(w, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
+		_, ok := classDB[result]
+		if ok || result == "gd.Object" {
+			fmt.Fprintf(w, "\tvar ret %v\n", result)
+			fmt.Fprintf(w, "\tret.SetPointer(mmm.New["+prefix+"Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))\n")
+		} else {
+			fmt.Fprintf(w, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
+		}
 	} else if result != "" {
 		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")
 	}

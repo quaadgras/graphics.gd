@@ -1279,9 +1279,10 @@ func (ctx Context) Hash(variable Variant) Int {
 func (ctx Context) InstanceFromId(instance_id Int) Object {
 	var frame = call.New()
 	call.Arg(frame, instance_id)
-	var r_ret = call.Ret[Object](frame)
+	var r_ret = call.Ret[uintptr](frame)
 	ctx.API.utility.instance_from_id(r_ret.Uintptr(), frame.Array(0), 1)
-	var ret = r_ret.Get()
+	var ret Object
+	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
 	frame.Free()
 	return ret
 }
@@ -5219,13 +5220,14 @@ func (self Callable) IsValid() bool {
 /*
 Returns the object on which this [Callable] is called.
 */
-func (self Callable) GetObject() Object {
+func (self Callable) GetObject(ctx Context) Object {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret = call.Ret[Object](frame)
+	var r_ret = call.Ret[uintptr](frame)
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
-	var ret = r_ret.Get()
+	var ret Object
+	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
 	frame.Free()
 	return ret
 }
@@ -5430,13 +5432,14 @@ func (self Signal) IsNull() bool {
 /*
 Returns the object emitting this signal.
 */
-func (self Signal) GetObject() Object {
+func (self Signal) GetObject(ctx Context) Object {
 	var selfPtr = self
 	var frame = call.New()
-	var r_ret = call.Ret[Object](frame)
+	var r_ret = call.Ret[uintptr](frame)
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
-	var ret = r_ret.Get()
+	var ret Object
+	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
 	frame.Free()
 	return ret
 }

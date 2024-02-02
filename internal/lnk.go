@@ -16,7 +16,7 @@ import (
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
 func (Godot *API) Init(level GDExtensionInitializationLevel) {
-	Godot.instances = make(map[uintptr]any)
+	Godot.Instances = make(map[uintptr]any)
 	if level == GDExtensionInitializationLevelCore {
 		Godot.linkTypeset()
 		Godot.linkVariant()
