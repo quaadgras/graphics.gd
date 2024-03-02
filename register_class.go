@@ -94,10 +94,10 @@ func injectDependenciesInto(godot Context, value reflect.Value) {
 		fieldValue := reflect.NewAt(field.Type, unsafe.Add(value.Addr().UnsafePointer(), field.Offset)).Interface()
 
 		container, ok := fieldValue.(gd.PointerToClass)
-		if ok && container.Pointer() == 0 && field.Type.Implements(reflect.TypeOf([0]gd.Singleton{}).Elem()) {
+		if ok && mmm.Get(container.AsPointer()) == 0 && field.Type.Implements(reflect.TypeOf([0]gd.Singleton{}).Elem()) {
 			var name = localCtx.StringName(strings.TrimPrefix(field.Type.Name(), "class"))
 			singleton := godot.API.Object.GetSingleton(localCtx, name)
-			container.SetPointer(mmm.Let[gd.Pointer](godot.Lifetime, godot.API, singleton.Pointer()))
+			container.SetPointer(mmm.Let[gd.Pointer](godot.Lifetime, godot.API, mmm.Get(singleton.AsPointer())))
 		}
 	}
 }
@@ -136,7 +136,7 @@ func (class classImplementation) CreateInstance() Object {
 	var value = reflect.New(class.Type)
 	injectDependenciesInto(ctx, value.Elem())
 	value.Interface().(gd.PointerToClass).SetPointer(
-		mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, super.Pointer()))
+		mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.Get(super.AsPointer())))
 	class.Godot.Object.SetInstance(super, class.Name, &instanceImplementation{
 		object:  mmm.Get(super.AsPointer()),
 		Context: ctx,
@@ -224,11 +224,9 @@ func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.Prop
 		if !field.IsExported() || field.Anonymous {
 			continue
 		}
-
 		if _, ok := field.Type.MethodByName("AsNode"); ok {
 			continue
 		}
-
 		var name = field.Name
 		tag, ok := field.Tag.Lookup("gd")
 		if ok {
@@ -238,9 +236,9 @@ func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.Prop
 			Type:       variantTypeOf(field.Type),
 			Name:       godot.StringName(name),
 			ClassName:  godot.StringName(classNameOf(field.Type)),
-			Hint:       0,
-			HintString: godot.String(""),
-			Usage:      2 | 4,
+			Hint:       PropertyHintResourceType,
+			HintString: godot.String(classNameOf(field.Type)),
+			Usage:      PropertyUsageStorage | PropertyUsageEditor,
 		})
 	}
 	return list

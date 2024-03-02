@@ -1356,6 +1356,7 @@ Performs a case-sensitive comparison to another string. Returns [code]-1[/code] 
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
 */
+//go:nosplit
 func (self String) CasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1373,6 +1374,7 @@ Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
 */
+//go:nosplit
 func (self String) NocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1391,6 +1393,7 @@ When used for sorting, natural order comparison orders sequences of numbers by t
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method nocasecmp_to], and [method casecmp_to].
 */
+//go:nosplit
 func (self String) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1409,6 +1412,7 @@ When used for sorting, natural order comparison orders sequences of numbers by t
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method nocasecmp_to], and [method casecmp_to].
 */
+//go:nosplit
 func (self String) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1424,6 +1428,7 @@ func (self String) NaturalnocasecmpTo(to String) Int {
 /*
 Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
 */
+//go:nosplit
 func (self String) Length() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1438,6 +1443,7 @@ func (self String) Length() Int {
 /*
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
+//go:nosplit
 func (self String) Substr(ctx Context, from Int, len Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1459,6 +1465,7 @@ This is faster than [method split], if you only need one substring.
 print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
 */
+//go:nosplit
 func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1476,6 +1483,7 @@ func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 Splits the string using a Unicode character with code [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
 */
+//go:nosplit
 func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1492,6 +1500,7 @@ func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 /*
 Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
 */
+//go:nosplit
 func (self String) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1524,6 +1533,7 @@ GD.Print("Potato".Find("t", 5)); // Prints -1
 [/codeblocks]
 [b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In GDScript, you may also use the [code]in[/code] operator.
 */
+//go:nosplit
 func (self String) Find(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1540,6 +1550,7 @@ func (self String) Find(what String, from Int) Int {
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
+//go:nosplit
 func (self String) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1557,6 +1568,7 @@ func (self String) Count(what String, from Int, to Int) Int {
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
 */
+//go:nosplit
 func (self String) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1574,6 +1586,7 @@ func (self String) Countn(what String, from Int, to Int) Int {
 /*
 Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
 */
+//go:nosplit
 func (self String) Findn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1590,6 +1603,7 @@ func (self String) Findn(what String, from Int) Int {
 /*
 Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
 */
+//go:nosplit
 func (self String) Rfind(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1606,6 +1620,7 @@ func (self String) Rfind(what String, from Int) Int {
 /*
 Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
 */
+//go:nosplit
 func (self String) Rfindn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -1622,6 +1637,7 @@ func (self String) Rfindn(what String, from Int) Int {
 /*
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
+//go:nosplit
 func (self String) Match(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1637,6 +1653,7 @@ func (self String) Match(expr String) bool {
 /*
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
+//go:nosplit
 func (self String) Matchn(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1652,6 +1669,7 @@ func (self String) Matchn(expr String) bool {
 /*
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
+//go:nosplit
 func (self String) BeginsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1667,6 +1685,7 @@ func (self String) BeginsWith(text String) bool {
 /*
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
+//go:nosplit
 func (self String) EndsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1690,6 +1709,7 @@ print("Window".is_subsequence_of(text))   # Prints false
 print("".is_subsequence_of(text))         # Prints true
 [/codeblock]
 */
+//go:nosplit
 func (self String) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1705,6 +1725,7 @@ func (self String) IsSubsequenceOf(text String) bool {
 /*
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
+//go:nosplit
 func (self String) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -1723,6 +1744,7 @@ Returns an array containing the bigrams (pairs of consecutive characters) of thi
 print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 [/codeblock]
 */
+//go:nosplit
 func (self String) Bigrams(ctx Context) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -1743,6 +1765,7 @@ print("ABC123".similarity("123ABC")) # Prints 0.8
 print("ABC123".similarity("abc123")) # Prints 0.4
 [/codeblock]
 */
+//go:nosplit
 func (self String) Similarity(text String) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -1775,6 +1798,7 @@ print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
 See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
+//go:nosplit
 func (self String) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1791,6 +1815,7 @@ func (self String) Format(ctx Context, values Variant, placeholder String) Strin
 /*
 Replaces all occurrences of [param what] inside the string with the given [param forwhat].
 */
+//go:nosplit
 func (self String) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1807,6 +1832,7 @@ func (self String) Replace(ctx Context, what String, forwhat String) String {
 /*
 Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
 */
+//go:nosplit
 func (self String) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1823,6 +1849,7 @@ func (self String) Replacen(ctx Context, what String, forwhat String) String {
 /*
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
+//go:nosplit
 func (self String) Repeat(ctx Context, count Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1838,6 +1865,7 @@ func (self String) Repeat(ctx Context, count Int) String {
 /*
 Returns the copy of this string in reverse order.
 */
+//go:nosplit
 func (self String) Reverse(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1852,6 +1880,7 @@ func (self String) Reverse(ctx Context) String {
 /*
 Inserts [param what] at the given [param position] in the string.
 */
+//go:nosplit
 func (self String) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1868,6 +1897,7 @@ func (self String) Insert(ctx Context, position Int, what String) String {
 /*
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
+//go:nosplit
 func (self String) Erase(ctx Context, position Int, chars Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1895,6 +1925,7 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 [/codeblocks]
 [b]Note:[/b] This method not the same as the default appearance of properties in the Inspector dock, as it does not capitalize acronyms ([code]"2D"[/code], [code]"FPS"[/code], [code]"PNG"[/code], etc.) as you may expect.
 */
+//go:nosplit
 func (self String) Capitalize(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1909,6 +1940,7 @@ func (self String) Capitalize(ctx Context) String {
 /*
 Returns the string converted to [code]camelCase[/code].
 */
+//go:nosplit
 func (self String) ToCamelCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1923,6 +1955,7 @@ func (self String) ToCamelCase(ctx Context) String {
 /*
 Returns the string converted to [code]PascalCase[/code].
 */
+//go:nosplit
 func (self String) ToPascalCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1937,6 +1970,7 @@ func (self String) ToPascalCase(ctx Context) String {
 /*
 Returns the string converted to [code]snake_case[/code].
 */
+//go:nosplit
 func (self String) ToSnakeCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -1973,6 +2007,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [/codeblocks]
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
+//go:nosplit
 func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2006,6 +2041,7 @@ print(some_array[1])     # Prints "Four"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2029,6 +2065,7 @@ var c = "1| ||4.5".split_floats("|")        # c is [1.0, 0.0, 0.0, 4.5]
 var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
+//go:nosplit
 func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -2061,6 +2098,7 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2076,6 +2114,7 @@ func (self String) Join(ctx Context, parts PackedStringArray) String {
 /*
 Returns the string converted to uppercase.
 */
+//go:nosplit
 func (self String) ToUpper(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2090,6 +2129,7 @@ func (self String) ToUpper(ctx Context) String {
 /*
 Returns the string converted to lowercase.
 */
+//go:nosplit
 func (self String) ToLower(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2108,6 +2148,7 @@ print("Hello World!".left(3))  # Prints "Hel"
 print("Hello World!".left(-4)) # Prints "Hello Wo"
 [/codeblock]
 */
+//go:nosplit
 func (self String) Left(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2127,6 +2168,7 @@ print("Hello World!".right(3))  # Prints "ld!"
 print("Hello World!".right(-4)) # Prints "o World!"
 [/codeblock]
 */
+//go:nosplit
 func (self String) Right(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2143,6 +2185,7 @@ func (self String) Right(ctx Context, length Int) String {
 Strips all non-printable characters from the beginning and the end of the string. These include spaces, tabulations ([code]\t[/code]), and newlines ([code]\n[/code] [code]\r[/code]).
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
+//go:nosplit
 func (self String) StripEdges(ctx Context, left bool, right bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2159,6 +2202,7 @@ func (self String) StripEdges(ctx Context, left bool, right bool) String {
 /*
 Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
 */
+//go:nosplit
 func (self String) StripEscapes(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2174,6 +2218,7 @@ func (self String) StripEscapes(ctx Context) String {
 Removes a set of characters defined in [param chars] from the string's beginning. See also [method rstrip].
 [b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
 */
+//go:nosplit
 func (self String) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2190,6 +2235,7 @@ func (self String) Lstrip(ctx Context, chars String) String {
 Removes a set of characters defined in [param chars] from the string's end. See also [method lstrip].
 [b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
 */
+//go:nosplit
 func (self String) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2216,6 +2262,7 @@ var g = "txt".get_extension()        # g is ""
 var h = "".get_extension()           # h is ""
 [/codeblock]
 */
+//go:nosplit
 func (self String) GetExtension(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2233,6 +2280,7 @@ If the string is a valid file path, returns the full file path, without the exte
 var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 [/codeblock]
 */
+//go:nosplit
 func (self String) GetBasename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2248,6 +2296,7 @@ func (self String) GetBasename(ctx Context) String {
 Concatenates [param file] at the end of the string as a subpath, adding [code]/[/code] if necessary.
 [b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
 */
+//go:nosplit
 func (self String) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2263,6 +2312,7 @@ func (self String) PathJoin(ctx Context, file String) String {
 /*
 Returns the character code at position [param at].
 */
+//go:nosplit
 func (self String) UnicodeAt(at Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2279,6 +2329,7 @@ func (self String) UnicodeAt(at Int) Int {
 Indents every line of the string with the given [param prefix]. Empty lines are not indented. See also [method dedent] to remove indentation.
 For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
 */
+//go:nosplit
 func (self String) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2294,6 +2345,7 @@ func (self String) Indent(ctx Context, prefix String) String {
 /*
 Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
 */
+//go:nosplit
 func (self String) Dedent(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2309,6 +2361,7 @@ func (self String) Dedent(ctx Context) String {
 Returns the 32-bit hash value representing the string's contents.
 [b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, strings with different hash values are guaranteed to be different.
 */
+//go:nosplit
 func (self String) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2323,6 +2376,7 @@ func (self String) Hash() Int {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
 */
+//go:nosplit
 func (self String) Md5Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2337,6 +2391,7 @@ func (self String) Md5Text(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
 */
+//go:nosplit
 func (self String) Sha1Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2351,6 +2406,7 @@ func (self String) Sha1Text(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
 */
+//go:nosplit
 func (self String) Sha256Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2365,6 +2421,7 @@ func (self String) Sha256Text(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
 */
+//go:nosplit
 func (self String) Md5Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2379,6 +2436,7 @@ func (self String) Md5Buffer(ctx Context) PackedByteArray {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
 */
+//go:nosplit
 func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2393,6 +2451,7 @@ func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
 */
+//go:nosplit
 func (self String) Sha256Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -2407,6 +2466,7 @@ func (self String) Sha256Buffer(ctx Context) PackedByteArray {
 /*
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
+//go:nosplit
 func (self String) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2433,6 +2493,7 @@ GD.Print("team".Contains("I"));  // Prints false
 [/codeblocks]
 If you need to know where [param what] is within the string, use [method find].
 */
+//go:nosplit
 func (self String) Contains(what String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2449,6 +2510,7 @@ func (self String) Contains(what String) bool {
 Returns [code]true[/code] if the string is a path to a file or directory, and its starting point is explicitly defined. This method is the opposite of [method is_relative_path].
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
 */
+//go:nosplit
 func (self String) IsAbsolutePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2463,6 +2525,7 @@ func (self String) IsAbsolutePath() bool {
 /*
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
+//go:nosplit
 func (self String) IsRelativePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2481,6 +2544,7 @@ var simple_path = "./path/to///../file".simplify_path()
 print(simple_path) # Prints "path/file"
 [/codeblock]
 */
+//go:nosplit
 func (self String) SimplifyPath(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2498,6 +2562,7 @@ If the string is a valid file path, returns the base directory name.
 var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 [/codeblock]
 */
+//go:nosplit
 func (self String) GetBaseDir(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2515,6 +2580,7 @@ If the string is a valid file path, returns the file name, including the extensi
 var file = "/path/to/icon.png".get_file() # file is "icon.png"
 [/codeblock]
 */
+//go:nosplit
 func (self String) GetFile(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2529,6 +2595,7 @@ func (self String) GetFile(ctx Context) String {
 /*
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
+//go:nosplit
 func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2544,6 +2611,7 @@ func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 /*
 Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
 */
+//go:nosplit
 func (self String) XmlUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2572,6 +2640,7 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) UriEncode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2596,6 +2665,7 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) UriDecode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2610,6 +2680,7 @@ func (self String) UriDecode(ctx Context) String {
 /*
 Returns a copy of the string with special characters escaped using the C language standard.
 */
+//go:nosplit
 func (self String) CEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2625,6 +2696,7 @@ func (self String) CEscape(ctx Context) String {
 Returns a copy of the string with escaped characters replaced by their meanings. Supported escape sequences are [code]\'[/code], [code]\"[/code], [code]\\[/code], [code]\a[/code], [code]\b[/code], [code]\f[/code], [code]\n[/code], [code]\r[/code], [code]\t[/code], [code]\v[/code].
 [b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
 */
+//go:nosplit
 func (self String) CUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2639,6 +2711,7 @@ func (self String) CUnescape(ctx Context) String {
 /*
 Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
 */
+//go:nosplit
 func (self String) JsonEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2653,6 +2726,7 @@ func (self String) JsonEscape(ctx Context) String {
 /*
 Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
 */
+//go:nosplit
 func (self String) ValidateNodeName(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2667,6 +2741,7 @@ func (self String) ValidateNodeName(ctx Context) String {
 /*
 Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
 */
+//go:nosplit
 func (self String) ValidateFilename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2687,6 +2762,7 @@ print("1st_method".is_valid_identifier()) # Prints false
 print("MyMethod#2".is_valid_identifier()) # Prints false
 [/codeblock]
 */
+//go:nosplit
 func (self String) IsValidIdentifier() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2708,6 +2784,7 @@ print("+3".is_valid_int())   # Prints true
 print("-12".is_valid_int())  # Prints true
 [/codeblock]
 */
+//go:nosplit
 func (self String) IsValidInt() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2728,6 +2805,7 @@ print("7e3".is_valid_float())   # Prints true
 print("Hello".is_valid_float()) # Prints false
 [/codeblock]
 */
+//go:nosplit
 func (self String) IsValidFloat() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2750,6 +2828,7 @@ print("2.5".is_valid_hex_number())     # Prints false
 print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 [/codeblock]
 */
+//go:nosplit
 func (self String) IsValidHexNumber(with_prefix bool) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2765,6 +2844,7 @@ func (self String) IsValidHexNumber(with_prefix bool) bool {
 /*
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
+//go:nosplit
 func (self String) IsValidHtmlColor() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2779,6 +2859,7 @@ func (self String) IsValidHtmlColor() bool {
 /*
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
+//go:nosplit
 func (self String) IsValidIpAddress() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2793,6 +2874,7 @@ func (self String) IsValidIpAddress() bool {
 /*
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
+//go:nosplit
 func (self String) IsValidFilename() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -2813,6 +2895,7 @@ var c = "-1.2.3".to_int() # c is -1
 var d = "Hello!".to_int() # d is 0
 [/codeblock]
 */
+//go:nosplit
 func (self String) ToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2834,6 +2917,7 @@ var d = "1e3".to_float()    # d is 1000.0
 var e = "Hello!".to_float() # e is 0.0
 [/codeblock]
 */
+//go:nosplit
 func (self String) ToFloat() Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -2858,6 +2942,7 @@ GD.Print("ab".HexToInt());   // Prints 171
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) HexToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2884,6 +2969,7 @@ GD.Print("-0b10".BinToInt()); // Prints -2
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) BinToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -2898,6 +2984,7 @@ func (self String) BinToInt() Int {
 /*
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
+//go:nosplit
 func (self String) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2914,6 +3001,7 @@ func (self String) Lpad(ctx Context, min_length Int, character String) String {
 /*
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
+//go:nosplit
 func (self String) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2930,6 +3018,7 @@ func (self String) Rpad(ctx Context, min_length Int, character String) String {
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
+//go:nosplit
 func (self String) PadDecimals(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2945,6 +3034,7 @@ func (self String) PadDecimals(ctx Context, digits Int) String {
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
+//go:nosplit
 func (self String) PadZeros(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2960,6 +3050,7 @@ func (self String) PadZeros(ctx Context, digits Int) String {
 /*
 Removes the given [param prefix] from the start of the string, or returns the string unchanged.
 */
+//go:nosplit
 func (self String) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2975,6 +3066,7 @@ func (self String) TrimPrefix(ctx Context, prefix String) String {
 /*
 Removes the given [param suffix] from the end of the string, or returns the string unchanged.
 */
+//go:nosplit
 func (self String) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -2990,6 +3082,7 @@ func (self String) TrimSuffix(ctx Context, suffix String) String {
 /*
 Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces. This is the inverse of [method PackedByteArray.get_string_from_ascii].
 */
+//go:nosplit
 func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3004,6 +3097,7 @@ func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method. This is the inverse of [method PackedByteArray.get_string_from_utf8].
 */
+//go:nosplit
 func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3018,6 +3112,7 @@ func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf16].
 */
+//go:nosplit
 func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3032,6 +3127,7 @@ func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf32].
 */
+//go:nosplit
 func (self String) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3058,6 +3154,7 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self String) HexDecode(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3072,6 +3169,7 @@ func (self String) HexDecode(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_wchar].
 */
+//go:nosplit
 func (self String) ToWcharBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3101,6 +3199,7 @@ GD.Print(n.ToString("e1")); // Prints -5.2e+008
 [/codeblocks]
 [b]Note:[/b] In C#, this method is not implemented. To achieve similar results, see C#'s [url=https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings]Standard numeric format strings[/url]
 */
+//go:nosplit
 func (self String) NumScientific(ctx Context, number Float) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3132,6 +3231,7 @@ String.num(-0.0000012345432123454321)     # Returns "-0.00000123454321"
 String.num(-10000.0000012345432123454321) # Returns "-10000.0000012345"
 [/codeblock]
 */
+//go:nosplit
 func (self String) Num(ctx Context, number Float, decimals Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3150,6 +3250,7 @@ Converts the given [param number] to a string representation, with the given [pa
 By default, [param base] is set to decimal ([code]10[/code]). Other common bases in programming include binary ([code]2[/code]), [url=https://en.wikipedia.org/wiki/Octal]octal[/url] ([code]8[/code]), hexadecimal ([code]16[/code]).
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
+//go:nosplit
 func (self String) NumInt64(ctx Context, number Int, base Int, capitalize_hex bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3169,6 +3270,7 @@ Converts the given unsigned [int] to a string representation, with the given [pa
 By default, [param base] is set to decimal ([code]10[/code]). Other common bases in programming include binary ([code]2[/code]), [url=https://en.wikipedia.org/wiki/Octal]octal[/url] ([code]8[/code]), hexadecimal ([code]16[/code]).
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
+//go:nosplit
 func (self String) NumUint64(ctx Context, number Int, base Int, capitalize_hex bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3190,6 +3292,7 @@ print(String.chr(65))     # Prints "A"
 print(String.chr(129302)) # Prints "🤖" (robot face emoji)
 [/codeblock]
 */
+//go:nosplit
 func (self String) Chr(ctx Context, char Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3206,6 +3309,7 @@ func (self String) Chr(ctx Context, char Int) String {
 Converts [param size] which represents a number of bytes into a human-readable form.
 The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]IEC prefix format[/url], which may end in either [code]"B"[/code], [code]"KiB"[/code], [code]"MiB"[/code], [code]"GiB"[/code], [code]"TiB"[/code], [code]"PiB"[/code], or [code]"EiB"[/code].
 */
+//go:nosplit
 func (self String) HumanizeSize(ctx Context, size Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3223,6 +3327,7 @@ Performs a case-sensitive comparison to another string. Returns [code]-1[/code] 
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
 */
+//go:nosplit
 func (self StringName) CasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3240,6 +3345,7 @@ Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
 */
+//go:nosplit
 func (self StringName) NocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3258,6 +3364,7 @@ When used for sorting, natural order comparison orders sequences of numbers by t
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method nocasecmp_to], and [method casecmp_to].
 */
+//go:nosplit
 func (self StringName) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3276,6 +3383,7 @@ When used for sorting, natural order comparison orders sequences of numbers by t
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method nocasecmp_to], and [method casecmp_to].
 */
+//go:nosplit
 func (self StringName) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3291,6 +3399,7 @@ func (self StringName) NaturalnocasecmpTo(to String) Int {
 /*
 Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
 */
+//go:nosplit
 func (self StringName) Length() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3305,6 +3414,7 @@ func (self StringName) Length() Int {
 /*
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
+//go:nosplit
 func (self StringName) Substr(ctx Context, from Int, len Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3326,6 +3436,7 @@ This is faster than [method split], if you only need one substring.
 print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3343,6 +3454,7 @@ func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String
 Splits the string using a Unicode character with code [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
 */
+//go:nosplit
 func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3359,6 +3471,7 @@ func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 /*
 Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
 */
+//go:nosplit
 func (self StringName) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3391,6 +3504,7 @@ GD.Print("Potato".Find("t", 5)); // Prints -1
 [/codeblocks]
 [b]Note:[/b] If you just want to know whether the string contains [param what], use [method contains]. In GDScript, you may also use the [code]in[/code] operator.
 */
+//go:nosplit
 func (self StringName) Find(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3407,6 +3521,7 @@ func (self StringName) Find(what String, from Int) Int {
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
+//go:nosplit
 func (self StringName) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3424,6 +3539,7 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
 */
+//go:nosplit
 func (self StringName) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3441,6 +3557,7 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 /*
 Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
 */
+//go:nosplit
 func (self StringName) Findn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3457,6 +3574,7 @@ func (self StringName) Findn(what String, from Int) Int {
 /*
 Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
 */
+//go:nosplit
 func (self StringName) Rfind(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3473,6 +3591,7 @@ func (self StringName) Rfind(what String, from Int) Int {
 /*
 Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
 */
+//go:nosplit
 func (self StringName) Rfindn(what String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -3489,6 +3608,7 @@ func (self StringName) Rfindn(what String, from Int) Int {
 /*
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
+//go:nosplit
 func (self StringName) Match(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3504,6 +3624,7 @@ func (self StringName) Match(expr String) bool {
 /*
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
+//go:nosplit
 func (self StringName) Matchn(expr String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3519,6 +3640,7 @@ func (self StringName) Matchn(expr String) bool {
 /*
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
+//go:nosplit
 func (self StringName) BeginsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3534,6 +3656,7 @@ func (self StringName) BeginsWith(text String) bool {
 /*
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
+//go:nosplit
 func (self StringName) EndsWith(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3557,6 +3680,7 @@ print("Window".is_subsequence_of(text))   # Prints false
 print("".is_subsequence_of(text))         # Prints true
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3572,6 +3696,7 @@ func (self StringName) IsSubsequenceOf(text String) bool {
 /*
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
+//go:nosplit
 func (self StringName) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -3590,6 +3715,7 @@ Returns an array containing the bigrams (pairs of consecutive characters) of thi
 print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) Bigrams(ctx Context) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3610,6 +3736,7 @@ print("ABC123".similarity("123ABC")) # Prints 0.8
 print("ABC123".similarity("abc123")) # Prints 0.4
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) Similarity(text String) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -3642,6 +3769,7 @@ print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
 See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
+//go:nosplit
 func (self StringName) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3658,6 +3786,7 @@ func (self StringName) Format(ctx Context, values Variant, placeholder String) S
 /*
 Replaces all occurrences of [param what] inside the string with the given [param forwhat].
 */
+//go:nosplit
 func (self StringName) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3674,6 +3803,7 @@ func (self StringName) Replace(ctx Context, what String, forwhat String) String 
 /*
 Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
 */
+//go:nosplit
 func (self StringName) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3690,6 +3820,7 @@ func (self StringName) Replacen(ctx Context, what String, forwhat String) String
 /*
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
+//go:nosplit
 func (self StringName) Repeat(ctx Context, count Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3705,6 +3836,7 @@ func (self StringName) Repeat(ctx Context, count Int) String {
 /*
 Returns the copy of this string in reverse order.
 */
+//go:nosplit
 func (self StringName) Reverse(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3719,6 +3851,7 @@ func (self StringName) Reverse(ctx Context) String {
 /*
 Inserts [param what] at the given [param position] in the string.
 */
+//go:nosplit
 func (self StringName) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3735,6 +3868,7 @@ func (self StringName) Insert(ctx Context, position Int, what String) String {
 /*
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
+//go:nosplit
 func (self StringName) Erase(ctx Context, position Int, chars Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3762,6 +3896,7 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 [/codeblocks]
 [b]Note:[/b] This method not the same as the default appearance of properties in the Inspector dock, as it does not capitalize acronyms ([code]"2D"[/code], [code]"FPS"[/code], [code]"PNG"[/code], etc.) as you may expect.
 */
+//go:nosplit
 func (self StringName) Capitalize(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3776,6 +3911,7 @@ func (self StringName) Capitalize(ctx Context) String {
 /*
 Returns the string converted to [code]camelCase[/code].
 */
+//go:nosplit
 func (self StringName) ToCamelCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3790,6 +3926,7 @@ func (self StringName) ToCamelCase(ctx Context) String {
 /*
 Returns the string converted to [code]PascalCase[/code].
 */
+//go:nosplit
 func (self StringName) ToPascalCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3804,6 +3941,7 @@ func (self StringName) ToPascalCase(ctx Context) String {
 /*
 Returns the string converted to [code]snake_case[/code].
 */
+//go:nosplit
 func (self StringName) ToSnakeCase(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3840,6 +3978,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [/codeblocks]
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
+//go:nosplit
 func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3873,6 +4012,7 @@ print(some_array[1])     # Prints "Four"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -3896,6 +4036,7 @@ var c = "1| ||4.5".split_floats("|")        # c is [1.0, 0.0, 0.0, 4.5]
 var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -3928,6 +4069,7 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3943,6 +4085,7 @@ func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 /*
 Returns the string converted to uppercase.
 */
+//go:nosplit
 func (self StringName) ToUpper(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3957,6 +4100,7 @@ func (self StringName) ToUpper(ctx Context) String {
 /*
 Returns the string converted to lowercase.
 */
+//go:nosplit
 func (self StringName) ToLower(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3975,6 +4119,7 @@ print("Hello World!".left(3))  # Prints "Hel"
 print("Hello World!".left(-4)) # Prints "Hello Wo"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) Left(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -3994,6 +4139,7 @@ print("Hello World!".right(3))  # Prints "ld!"
 print("Hello World!".right(-4)) # Prints "o World!"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) Right(ctx Context, length Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4010,6 +4156,7 @@ func (self StringName) Right(ctx Context, length Int) String {
 Strips all non-printable characters from the beginning and the end of the string. These include spaces, tabulations ([code]\t[/code]), and newlines ([code]\n[/code] [code]\r[/code]).
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
+//go:nosplit
 func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4026,6 +4173,7 @@ func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 /*
 Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
 */
+//go:nosplit
 func (self StringName) StripEscapes(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4041,6 +4189,7 @@ func (self StringName) StripEscapes(ctx Context) String {
 Removes a set of characters defined in [param chars] from the string's beginning. See also [method rstrip].
 [b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
 */
+//go:nosplit
 func (self StringName) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4057,6 +4206,7 @@ func (self StringName) Lstrip(ctx Context, chars String) String {
 Removes a set of characters defined in [param chars] from the string's end. See also [method lstrip].
 [b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
 */
+//go:nosplit
 func (self StringName) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4083,6 +4233,7 @@ var g = "txt".get_extension()        # g is ""
 var h = "".get_extension()           # h is ""
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) GetExtension(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4100,6 +4251,7 @@ If the string is a valid file path, returns the full file path, without the exte
 var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) GetBasename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4115,6 +4267,7 @@ func (self StringName) GetBasename(ctx Context) String {
 Concatenates [param file] at the end of the string as a subpath, adding [code]/[/code] if necessary.
 [b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
 */
+//go:nosplit
 func (self StringName) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4130,6 +4283,7 @@ func (self StringName) PathJoin(ctx Context, file String) String {
 /*
 Returns the character code at position [param at].
 */
+//go:nosplit
 func (self StringName) UnicodeAt(at Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4146,6 +4300,7 @@ func (self StringName) UnicodeAt(at Int) Int {
 Indents every line of the string with the given [param prefix]. Empty lines are not indented. See also [method dedent] to remove indentation.
 For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
 */
+//go:nosplit
 func (self StringName) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4161,6 +4316,7 @@ func (self StringName) Indent(ctx Context, prefix String) String {
 /*
 Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
 */
+//go:nosplit
 func (self StringName) Dedent(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4175,6 +4331,7 @@ func (self StringName) Dedent(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
 */
+//go:nosplit
 func (self StringName) Md5Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4189,6 +4346,7 @@ func (self StringName) Md5Text(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
 */
+//go:nosplit
 func (self StringName) Sha1Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4203,6 +4361,7 @@ func (self StringName) Sha1Text(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
 */
+//go:nosplit
 func (self StringName) Sha256Text(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4217,6 +4376,7 @@ func (self StringName) Sha256Text(ctx Context) String {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
 */
+//go:nosplit
 func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4231,6 +4391,7 @@ func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
 */
+//go:nosplit
 func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4245,6 +4406,7 @@ func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
 */
+//go:nosplit
 func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4259,6 +4421,7 @@ func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
 /*
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
+//go:nosplit
 func (self StringName) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4285,6 +4448,7 @@ GD.Print("team".Contains("I"));  // Prints false
 [/codeblocks]
 If you need to know where [param what] is within the string, use [method find].
 */
+//go:nosplit
 func (self StringName) Contains(what String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4301,6 +4465,7 @@ func (self StringName) Contains(what String) bool {
 Returns [code]true[/code] if the string is a path to a file or directory, and its starting point is explicitly defined. This method is the opposite of [method is_relative_path].
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
 */
+//go:nosplit
 func (self StringName) IsAbsolutePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4315,6 +4480,7 @@ func (self StringName) IsAbsolutePath() bool {
 /*
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
+//go:nosplit
 func (self StringName) IsRelativePath() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4333,6 +4499,7 @@ var simple_path = "./path/to///../file".simplify_path()
 print(simple_path) # Prints "path/file"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) SimplifyPath(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4350,6 +4517,7 @@ If the string is a valid file path, returns the base directory name.
 var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) GetBaseDir(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4367,6 +4535,7 @@ If the string is a valid file path, returns the file name, including the extensi
 var file = "/path/to/icon.png".get_file() # file is "icon.png"
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) GetFile(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4381,6 +4550,7 @@ func (self StringName) GetFile(ctx Context) String {
 /*
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
+//go:nosplit
 func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4396,6 +4566,7 @@ func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 /*
 Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
 */
+//go:nosplit
 func (self StringName) XmlUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4424,6 +4595,7 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) UriEncode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4448,6 +4620,7 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) UriDecode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4462,6 +4635,7 @@ func (self StringName) UriDecode(ctx Context) String {
 /*
 Returns a copy of the string with special characters escaped using the C language standard.
 */
+//go:nosplit
 func (self StringName) CEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4477,6 +4651,7 @@ func (self StringName) CEscape(ctx Context) String {
 Returns a copy of the string with escaped characters replaced by their meanings. Supported escape sequences are [code]\'[/code], [code]\"[/code], [code]\\[/code], [code]\a[/code], [code]\b[/code], [code]\f[/code], [code]\n[/code], [code]\r[/code], [code]\t[/code], [code]\v[/code].
 [b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
 */
+//go:nosplit
 func (self StringName) CUnescape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4491,6 +4666,7 @@ func (self StringName) CUnescape(ctx Context) String {
 /*
 Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
 */
+//go:nosplit
 func (self StringName) JsonEscape(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4505,6 +4681,7 @@ func (self StringName) JsonEscape(ctx Context) String {
 /*
 Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
 */
+//go:nosplit
 func (self StringName) ValidateNodeName(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4519,6 +4696,7 @@ func (self StringName) ValidateNodeName(ctx Context) String {
 /*
 Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
 */
+//go:nosplit
 func (self StringName) ValidateFilename(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4539,6 +4717,7 @@ print("1st_method".is_valid_identifier()) # Prints false
 print("MyMethod#2".is_valid_identifier()) # Prints false
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) IsValidIdentifier() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4560,6 +4739,7 @@ print("+3".is_valid_int())   # Prints true
 print("-12".is_valid_int())  # Prints true
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) IsValidInt() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4580,6 +4760,7 @@ print("7e3".is_valid_float())   # Prints true
 print("Hello".is_valid_float()) # Prints false
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) IsValidFloat() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4602,6 +4783,7 @@ print("2.5".is_valid_hex_number())     # Prints false
 print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4617,6 +4799,7 @@ func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 /*
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
+//go:nosplit
 func (self StringName) IsValidHtmlColor() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4631,6 +4814,7 @@ func (self StringName) IsValidHtmlColor() bool {
 /*
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
+//go:nosplit
 func (self StringName) IsValidIpAddress() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4645,6 +4829,7 @@ func (self StringName) IsValidIpAddress() bool {
 /*
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
+//go:nosplit
 func (self StringName) IsValidFilename() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4665,6 +4850,7 @@ var c = "-1.2.3".to_int() # c is -1
 var d = "Hello!".to_int() # d is 0
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) ToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4686,6 +4872,7 @@ var d = "1e3".to_float()   # d is 1000.0
 var e = "Hello!".to_int()  # e is 0.0
 [/codeblock]
 */
+//go:nosplit
 func (self StringName) ToFloat() Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -4710,6 +4897,7 @@ GD.Print("ab".HexToInt());   // Prints 171
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) HexToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4736,6 +4924,7 @@ GD.Print("-0b10".BinToInt()); // Prints -2
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) BinToInt() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4750,6 +4939,7 @@ func (self StringName) BinToInt() Int {
 /*
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
+//go:nosplit
 func (self StringName) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4766,6 +4956,7 @@ func (self StringName) Lpad(ctx Context, min_length Int, character String) Strin
 /*
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
+//go:nosplit
 func (self StringName) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4782,6 +4973,7 @@ func (self StringName) Rpad(ctx Context, min_length Int, character String) Strin
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
+//go:nosplit
 func (self StringName) PadDecimals(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4797,6 +4989,7 @@ func (self StringName) PadDecimals(ctx Context, digits Int) String {
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
+//go:nosplit
 func (self StringName) PadZeros(ctx Context, digits Int) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4812,6 +5005,7 @@ func (self StringName) PadZeros(ctx Context, digits Int) String {
 /*
 Removes the given [param prefix] from the start of the string, or returns the string unchanged.
 */
+//go:nosplit
 func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4827,6 +5021,7 @@ func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 /*
 Removes the given [param suffix] from the end of the string, or returns the string unchanged.
 */
+//go:nosplit
 func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -4842,6 +5037,7 @@ func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 /*
 Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces.
 */
+//go:nosplit
 func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4856,6 +5052,7 @@ func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method.
 */
+//go:nosplit
 func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4870,6 +5067,7 @@ func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray].
 */
+//go:nosplit
 func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4884,6 +5082,7 @@ func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray].
 */
+//go:nosplit
 func (self StringName) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4910,6 +5109,7 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self StringName) HexDecode(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4924,6 +5124,7 @@ func (self StringName) HexDecode(ctx Context) PackedByteArray {
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray].
 */
+//go:nosplit
 func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -4939,6 +5140,7 @@ func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 Returns the 32-bit hash value representing the string's contents.
 [b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, strings with different hash values are guaranteed to be different.
 */
+//go:nosplit
 func (self StringName) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4953,6 +5155,7 @@ func (self StringName) Hash() Int {
 /*
 Returns [code]true[/code] if the node path is absolute (as opposed to relative), which means that it starts with a slash character ([code]/[/code]). Absolute node paths can be used to access the root node ([code]"/root"[/code]) or autoloads (e.g. [code]"/global"[/code] if a "global" autoload was registered).
 */
+//go:nosplit
 func (self NodePath) IsAbsolute() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -4968,6 +5171,7 @@ func (self NodePath) IsAbsolute() bool {
 Gets the number of node names which make up the path. Subnames (see [method get_subname_count]) are not included.
 For example, [code]"Path2D/PathFollow2D/Sprite2D"[/code] has 3 names.
 */
+//go:nosplit
 func (self NodePath) GetNameCount() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -4996,6 +5200,7 @@ GD.Print(nodePath.GetName(2)); // Sprite
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self NodePath) GetName(ctx Context, idx Int) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -5012,6 +5217,7 @@ func (self NodePath) GetName(ctx Context, idx Int) StringName {
 Gets the number of resource or property names ("subnames") in the path. Each subname is listed after a colon character ([code]:[/code]) in the node path.
 For example, [code]"Path2D/PathFollow2D/Sprite2D:texture:load_path"[/code] has 2 subnames.
 */
+//go:nosplit
 func (self NodePath) GetSubnameCount() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5026,6 +5232,7 @@ func (self NodePath) GetSubnameCount() Int {
 /*
 Returns the 32-bit hash value representing the [NodePath]'s contents.
 */
+//go:nosplit
 func (self NodePath) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5052,6 +5259,7 @@ GD.Print(nodePath.GetSubname(1)); // load_path
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -5067,6 +5275,7 @@ func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 /*
 Returns all paths concatenated with a slash character ([code]/[/code]) as separator without subnames.
 */
+//go:nosplit
 func (self NodePath) GetConcatenatedNames(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -5091,6 +5300,7 @@ GD.Print(nodePath.GetConcatenatedSubnames()); // texture:load_path
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self NodePath) GetConcatenatedSubnames(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -5121,6 +5331,7 @@ GD.Print(propertyPath); // :position:x
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
 	var selfPtr = self
 	var frame = call.New()
@@ -5135,6 +5346,7 @@ func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
 /*
 Returns [code]true[/code] if the node path is empty.
 */
+//go:nosplit
 func (self NodePath) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5149,6 +5361,7 @@ func (self NodePath) IsEmpty() bool {
 /*
 Calls the method represented by this [Callable]. Unlike [method call], this method expects all arguments to be contained inside the [param arguments] [Array].
 */
+//go:nosplit
 func (self Callable) Callv(ctx Context, arguments Array) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -5164,6 +5377,7 @@ func (self Callable) Callv(ctx Context, arguments Array) Variant {
 /*
 Returns [code]true[/code] if this [Callable] has no target to call the method on.
 */
+//go:nosplit
 func (self Callable) IsNull() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5178,6 +5392,7 @@ func (self Callable) IsNull() bool {
 /*
 Returns [code]true[/code] if this [Callable] is a custom callable. Custom callables are created from [method bind] or [method unbind]. In GDScript, lambda functions are also custom callables.
 */
+//go:nosplit
 func (self Callable) IsCustom() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5192,6 +5407,7 @@ func (self Callable) IsCustom() bool {
 /*
 Returns [code]true[/code] if this [Callable] is a standard callable. This method is the opposite of [method is_custom]. Returns [code]false[/code] if this callable is a lambda function.
 */
+//go:nosplit
 func (self Callable) IsStandard() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5206,6 +5422,7 @@ func (self Callable) IsStandard() bool {
 /*
 Returns [code]true[/code] if the callable's object exists and has a valid method name assigned, or is a custom callable.
 */
+//go:nosplit
 func (self Callable) IsValid() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5220,6 +5437,7 @@ func (self Callable) IsValid() bool {
 /*
 Returns the object on which this [Callable] is called.
 */
+//go:nosplit
 func (self Callable) GetObject(ctx Context) Object {
 	var selfPtr = self
 	var frame = call.New()
@@ -5235,6 +5453,7 @@ func (self Callable) GetObject(ctx Context) Object {
 /*
 Returns the ID of this [Callable]'s object (see [method Object.get_instance_id]).
 */
+//go:nosplit
 func (self Callable) GetObjectId() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5249,6 +5468,7 @@ func (self Callable) GetObjectId() Int {
 /*
 Returns the name of the method represented by this [Callable]. If the callable is a GDScript lambda function, returns the function's name or [code]"<anonymous lambda>"[/code].
 */
+//go:nosplit
 func (self Callable) GetMethod(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -5263,6 +5483,7 @@ func (self Callable) GetMethod(ctx Context) StringName {
 /*
 Returns the total amount of arguments bound (or unbound) via successive [method bind] or [method unbind] calls. If the amount of arguments unbound is greater than the ones bound, this function returns a value less than zero.
 */
+//go:nosplit
 func (self Callable) GetBoundArgumentsCount() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5277,6 +5498,7 @@ func (self Callable) GetBoundArgumentsCount() Int {
 /*
 Return the bound arguments (as long as [method get_bound_arguments_count] is greater than zero), or empty (if [method get_bound_arguments_count] is less than or equal to zero).
 */
+//go:nosplit
 func (self Callable) GetBoundArguments(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5292,6 +5514,7 @@ func (self Callable) GetBoundArguments(ctx Context) Array {
 Returns the 32-bit hash value of this [Callable]'s object.
 [b]Note:[/b] [Callable]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the callables are equal, because different callables can have identical hash values due to hash collisions. The engine uses a 32-bit hash algorithm for [method hash].
 */
+//go:nosplit
 func (self Callable) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5307,6 +5530,7 @@ func (self Callable) Hash() Int {
 Returns a copy of this [Callable] with one or more arguments bound, reading them from an array. When called, the bound arguments are passed [i]after[/i] the arguments supplied by [method call]. See also [method unbind].
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
 */
+//go:nosplit
 func (self Callable) Bindv(ctx Context, arguments Array) Callable {
 	var selfPtr = self
 	var frame = call.New()
@@ -5324,12 +5548,11 @@ Returns a copy of this [Callable] with a number of arguments unbound. In other w
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
 [codeblock]
 func _ready():
-
-	foo.unbind(1).call(1, 2) # Calls foo(1).
-	foo.bind(3, 4).unbind(1).call(1, 2) # Calls foo(1, 3, 4), note that it does not change the arguments from bind.
-
+    foo.unbind(1).call(1, 2) # Calls foo(1).
+    foo.bind(3, 4).unbind(1).call(1, 2) # Calls foo(1, 3, 4), note that it does not change the arguments from bind.
 [/codeblock]
 */
+//go:nosplit
 func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 	var selfPtr = self
 	var frame = call.New()
@@ -5345,6 +5568,7 @@ func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 /*
 Calls the method represented by this [Callable]. Arguments can be passed and should match the method's signature.
 */
+//go:nosplit
 func (self Callable) Call(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -5360,12 +5584,11 @@ func (self Callable) Call(ctx Context) Variant {
 Calls the method represented by this [Callable] in deferred mode, i.e. at the end of the current frame. Arguments can be passed and should match the method's signature.
 [codeblock]
 func _ready():
-
-	grab_focus.call_deferred()
-
+    grab_focus.call_deferred()
 [/codeblock]
 See also [method Object.call_deferred].
 */
+//go:nosplit
 func (self Callable) CallDeferred() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5378,6 +5601,7 @@ func (self Callable) CallDeferred() {
 /*
 Perform an RPC (Remote Procedure Call) on all connected peers. This is used for multiplayer and is normally not available, unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc].
 */
+//go:nosplit
 func (self Callable) Rpc() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5390,6 +5614,7 @@ func (self Callable) Rpc() {
 /*
 Perform an RPC (Remote Procedure Call) on a specific peer ID (see multiplayer documentation for reference). This is used for multiplayer and is normally not available unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc_id].
 */
+//go:nosplit
 func (self Callable) RpcId(peer_id Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5404,6 +5629,7 @@ func (self Callable) RpcId(peer_id Int) {
 Returns a copy of this [Callable] with one or more arguments bound. When called, the bound arguments are passed [i]after[/i] the arguments supplied by [method call]. See also [method unbind].
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
 */
+//go:nosplit
 func (self Callable) Bind(ctx Context) Callable {
 	var selfPtr = self
 	var frame = call.New()
@@ -5418,6 +5644,7 @@ func (self Callable) Bind(ctx Context) Callable {
 /*
 Returns [code]true[/code] if the signal's name does not exist in its object, or the object is not valid.
 */
+//go:nosplit
 func (self Signal) IsNull() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5432,6 +5659,7 @@ func (self Signal) IsNull() bool {
 /*
 Returns the object emitting this signal.
 */
+//go:nosplit
 func (self Signal) GetObject(ctx Context) Object {
 	var selfPtr = self
 	var frame = call.New()
@@ -5447,6 +5675,7 @@ func (self Signal) GetObject(ctx Context) Object {
 /*
 Returns the ID of the object emitting this signal (see [method Object.get_instance_id]).
 */
+//go:nosplit
 func (self Signal) GetObjectId() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5461,6 +5690,7 @@ func (self Signal) GetObjectId() Int {
 /*
 Returns the name of this signal.
 */
+//go:nosplit
 func (self Signal) GetName(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -5477,15 +5707,13 @@ Connects this signal to the specified [param callable]. Optional [param flags] c
 A signal can only be connected once to the same [Callable]. If the signal is already connected, returns [constant ERR_INVALID_PARAMETER] and pushes an error message, unless the signal is connected with [constant Object.CONNECT_REFERENCE_COUNTED]. To prevent this, use [method is_connected] first to check for existing connections.
 [codeblock]
 for button in $Buttons.get_children():
-
-	button.pressed.connect(_on_pressed.bind(button))
+    button.pressed.connect(_on_pressed.bind(button))
 
 func _on_pressed(button):
-
-	print(button.name, " was pressed")
-
+    print(button.name, " was pressed")
 [/codeblock]
 */
+//go:nosplit
 func (self Signal) Connect(callable Callable, flags Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5502,6 +5730,7 @@ func (self Signal) Connect(callable Callable, flags Int) Int {
 /*
 Disconnects this signal from the specified [Callable]. If the connection does not exist, generates an error. Use [method is_connected] to make sure that the connection exists.
 */
+//go:nosplit
 func (self Signal) Disconnect(callable Callable) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5515,6 +5744,7 @@ func (self Signal) Disconnect(callable Callable) {
 /*
 Returns [code]true[/code] if the specified [Callable] is connected to this signal.
 */
+//go:nosplit
 func (self Signal) IsConnected(callable Callable) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5533,6 +5763,7 @@ Returns an [Array] of connections for this signal. Each connection is represente
 - [code]callable[/code] is a reference to the connected [Callable];
 - [code]flags[/code] is a combination of [enum Object.ConnectFlags].
 */
+//go:nosplit
 func (self Signal) GetConnections(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5547,6 +5778,7 @@ func (self Signal) GetConnections(ctx Context) Array {
 /*
 Emits this signal. All [Callable]s connected to this signal will be triggered. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
 */
+//go:nosplit
 func (self Signal) Emit() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5559,6 +5791,7 @@ func (self Signal) Emit() {
 /*
 Returns the number of entries in the dictionary. Empty dictionaries ([code]{ }[/code]) always return [code]0[/code]. See also [method is_empty].
 */
+//go:nosplit
 func (self Dictionary) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5573,6 +5806,7 @@ func (self Dictionary) Size() Int {
 /*
 Returns [code]true[/code] if the dictionary is empty (its size is [code]0[/code]). See also [method size].
 */
+//go:nosplit
 func (self Dictionary) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5587,6 +5821,7 @@ func (self Dictionary) IsEmpty() bool {
 /*
 Clears the dictionary, removing all entries from it.
 */
+//go:nosplit
 func (self Dictionary) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5613,18 +5848,16 @@ print(dict)  # { "item": "sword", "quantity": 15, "color": "silver" }
 [/gdscript]
 [csharp]
 var dict = new Godot.Collections.Dictionary
-
-	{
-	    ["item"] = "sword",
-	    ["quantity"] = 2,
-	};
+{
+    ["item"] = "sword",
+    ["quantity"] = 2,
+};
 
 var otherDict = new Godot.Collections.Dictionary
-
-	{
-	    ["quantity"] = 15,
-	    ["color"] = "silver",
-	};
+{
+    ["quantity"] = 15,
+    ["color"] = "silver",
+};
 
 // Overwriting of existing keys is disabled by default.
 dict.Merge(otherDict);
@@ -5637,6 +5870,7 @@ GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
 [/codeblocks]
 [b]Note:[/b] [method merge] is [i]not[/i] recursive. Nested dictionaries are considered as keys that can be overwritten or not depending on the value of [param overwrite], but they will never be merged together.
 */
+//go:nosplit
 func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5652,11 +5886,10 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 Returns [code]true[/code] if the dictionary contains an entry with the given [param key].
 [codeblocks]
 [gdscript]
-
-	var my_dict = {
-	    "Godot" : 4,
-	    210 : null,
-	}
+var my_dict = {
+    "Godot" : 4,
+    210 : null,
+}
 
 print(my_dict.has("Godot")) # Prints true
 print(my_dict.has(210))     # Prints true
@@ -5664,11 +5897,10 @@ print(my_dict.has(4))       # Prints false
 [/gdscript]
 [csharp]
 var myDict = new Godot.Collections.Dictionary
-
-	{
-	    { "Godot", 4 },
-	    { 210, default },
-	};
+{
+    { "Godot", 4 },
+    { 210, default },
+};
 
 GD.Print(myDict.ContainsKey("Godot")); // Prints true
 GD.Print(myDict.ContainsKey(210));     // Prints true
@@ -5678,12 +5910,11 @@ GD.Print(myDict.ContainsKey(4));       // Prints false
 In GDScript, this is equivalent to the [code]in[/code] operator:
 [codeblock]
 if "Godot" in {"Godot": 4}:
-
-	print("The key is here!") # Will be printed.
-
+    print("The key is here!") # Will be printed.
 [/codeblock]
 [b]Note:[/b] This method returns [code]true[/code] as long as the [param key] exists, even if its corresponding value is [code]null[/code].
 */
+//go:nosplit
 func (self Dictionary) Has(key Variant) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5703,6 +5934,7 @@ var data = {"width" : 10, "height" : 20}
 data.has_all(["height", "width"]) # Returns true
 [/codeblock]
 */
+//go:nosplit
 func (self Dictionary) HasAll(keys Array) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5719,6 +5951,7 @@ func (self Dictionary) HasAll(keys Array) bool {
 Finds and returns the first key whose associated value is equal to [param value], or [code]null[/code] if it is not found.
 [b]Note:[/b] [code]null[/code] is also a valid key. If inside the dictionary, [method find_key] may give misleading results.
 */
+//go:nosplit
 func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -5735,6 +5968,7 @@ func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 Removes the dictionary entry by key, if it exists. Returns [code]true[/code] if the given [param key] existed in the dictionary, otherwise [code]false[/code].
 [b]Note:[/b] Do not erase entries while iterating over the dictionary. You can iterate over the [method keys] array instead.
 */
+//go:nosplit
 func (self Dictionary) Erase(key Variant) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5767,6 +6001,7 @@ GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints true
 [b]Note:[/b] Dictionaries with the same entries but in a different order will not have the same hash.
 [b]Note:[/b] Dictionaries with equal hash values are [i]not[/i] guaranteed to be the same, because of hash collisions. On the contrary, dictionaries with different hash values are guaranteed to be different.
 */
+//go:nosplit
 func (self Dictionary) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5781,6 +6016,7 @@ func (self Dictionary) Hash() Int {
 /*
 Returns the list of keys in the dictionary.
 */
+//go:nosplit
 func (self Dictionary) Keys(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5795,6 +6031,7 @@ func (self Dictionary) Keys(ctx Context) Array {
 /*
 Returns the list of values in this dictionary.
 */
+//go:nosplit
 func (self Dictionary) Values(ctx Context) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -5809,6 +6046,7 @@ func (self Dictionary) Values(ctx Context) Array {
 /*
 Creates and returns a new copy of the dictionary. If [param deep] is [code]true[/code], inner [Dictionary] and [Array] keys and values are also copied, recursively.
 */
+//go:nosplit
 func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 	var selfPtr = self
 	var frame = call.New()
@@ -5824,6 +6062,7 @@ func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 /*
 Returns the corresponding value for the given [param key] in the dictionary. If the [param key] does not exist, returns [param default], or [code]null[/code] if the parameter is omitted.
 */
+//go:nosplit
 func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -5840,6 +6079,7 @@ func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 /*
 Makes the dictionary read-only, i.e. disables modification of the dictionary's contents. Does not apply to nested content, e.g. content of nested dictionaries.
 */
+//go:nosplit
 func (self Dictionary) MakeReadOnly() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5852,6 +6092,7 @@ func (self Dictionary) MakeReadOnly() {
 /*
 Returns [code]true[/code] if the dictionary is read-only. See [method make_read_only]. Dictionaries are automatically read-only if declared with [code]const[/code] keyword.
 */
+//go:nosplit
 func (self Dictionary) IsReadOnly() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5866,6 +6107,7 @@ func (self Dictionary) IsReadOnly() bool {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5880,6 +6122,7 @@ func (self Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -5894,6 +6137,7 @@ func (self Array) IsEmpty() bool {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -5907,6 +6151,7 @@ func (self Array) Clear() {
 Returns a hashed 32-bit integer value representing the array and its contents.
 [b]Note:[/b] [Array]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the arrays are equal, because different arrays can have identical hash values due to hash collisions.
 */
+//go:nosplit
 func (self Array) Hash() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -5921,6 +6166,7 @@ func (self Array) Hash() Int {
 /*
 Assigns elements of another [param array] into the array. Resizes the array to match [param array]. Performs type conversions if the array is typed.
 */
+//go:nosplit
 func (self Array) Assign(array Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5934,6 +6180,7 @@ func (self Array) Assign(array Array) {
 /*
 Appends an element at the end of the array. See also [method push_front].
 */
+//go:nosplit
 func (self Array) PushBack(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5948,6 +6195,7 @@ func (self Array) PushBack(value Variant) {
 Adds an element at the beginning of the array. See also [method push_back].
 [b]Note:[/b] On large arrays, this method is much slower than [method push_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method push_front] will be.
 */
+//go:nosplit
 func (self Array) PushFront(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5961,6 +6209,7 @@ func (self Array) PushFront(value Variant) {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self Array) Append(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5980,6 +6229,7 @@ array1.append_array(array2)
 print(array1) # Prints [1, 2, 3, 4, 5, 6].
 [/codeblock]
 */
+//go:nosplit
 func (self Array) AppendArray(array Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -5994,6 +6244,7 @@ func (self Array) AppendArray(array Array) {
 Resizes the array to contain a different number of elements. If the array size is smaller, elements are cleared, if bigger, new elements are [code]null[/code]. Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 [b]Note:[/b] This method acts in-place and doesn't return a modified array.
 */
+//go:nosplit
 func (self Array) Resize(size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6011,6 +6262,7 @@ Inserts a new element at a given position in the array. The position must be val
 [b]Note:[/b] This method acts in-place and doesn't return a modified array.
 [b]Note:[/b] On large arrays, this method will be slower if the inserted element is close to the beginning of the array (index 0). This is because all elements placed after the newly inserted element have to be reindexed.
 */
+//go:nosplit
 func (self Array) Insert(position Int, value Variant) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6030,6 +6282,7 @@ Removes an element from the array by index. If the index does not exist in the a
 [b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
 [b]Note:[/b] [param position] cannot be negative. To remove an element relative to the end of the array, use [code]arr.remove_at(arr.size() - (i + 1))[/code]. To remove the last element from the array without returning the value, use [code]arr.resize(arr.size() - 1)[/code].
 */
+//go:nosplit
 func (self Array) RemoveAt(position Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6056,6 +6309,7 @@ array.Fill(0); // Initialize the 10 elements to 0.
 [/codeblocks]
 [b]Note:[/b] If [param value] is of a reference type ([Object]-derived, [Array], [Dictionary], etc.) then the array is filled with the references to the same object, i.e. no duplicates are created.
 */
+//go:nosplit
 func (self Array) Fill(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6072,6 +6326,7 @@ Removes the first occurrence of a value from the array. If the value does not ex
 [b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
 [b]Note:[/b] Do not erase entries while iterating over the array.
 */
+//go:nosplit
 func (self Array) Erase(value Variant) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6086,6 +6341,7 @@ func (self Array) Erase(value Variant) {
 Returns the first element of the array. Prints an error and returns [code]null[/code] if the array is empty.
 [b]Note:[/b] Calling this function is not the same as writing [code]array[0][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
 */
+//go:nosplit
 func (self Array) Front(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6101,6 +6357,7 @@ func (self Array) Front(ctx Context) Variant {
 Returns the last element of the array. Prints an error and returns [code]null[/code] if the array is empty.
 [b]Note:[/b] Calling this function is not the same as writing [code]array[-1][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
 */
+//go:nosplit
 func (self Array) Back(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6125,6 +6382,7 @@ GD.Print(array.PickRandom()); // Prints either of the four numbers.
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self Array) PickRandom(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6139,6 +6397,7 @@ func (self Array) PickRandom(ctx Context) Variant {
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
+//go:nosplit
 func (self Array) Find(what Variant, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6155,6 +6414,7 @@ func (self Array) Find(what Variant, from Int) Int {
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
+//go:nosplit
 func (self Array) Rfind(what Variant, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6171,6 +6431,7 @@ func (self Array) Rfind(what Variant, from Int) Int {
 /*
 Returns the number of times an element is in the array.
 */
+//go:nosplit
 func (self Array) Count(value Variant) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6206,22 +6467,19 @@ GD.Print(arr.Contains("7")); // False
 [gdscript]
 # Will evaluate to `true`.
 if 2 in [2, 4, 6, 8]:
-
-	print("Contains!")
-
+    print("Contains!")
 [/gdscript]
 [csharp]
 // As there is no "in" keyword in C#, you have to use Contains
 var array = new Godot.Collections.Array { 2, 4, 6, 8 };
 if (array.Contains(2))
-
-	{
-	    GD.Print("Contains!");
-	}
-
+{
+    GD.Print("Contains!");
+}
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self Array) Has(value Variant) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6237,6 +6495,7 @@ func (self Array) Has(value Variant) bool {
 /*
 Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_front].
 */
+//go:nosplit
 func (self Array) PopBack(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6252,6 +6511,7 @@ func (self Array) PopBack(ctx Context) Variant {
 Removes and returns the first element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_back].
 [b]Note:[/b] On large arrays, this method is much slower than [method pop_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method pop_front] will be.
 */
+//go:nosplit
 func (self Array) PopFront(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6267,6 +6527,7 @@ func (self Array) PopFront(ctx Context) Variant {
 Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Leaves the array untouched and returns [code]null[/code] if the array is empty or if it's accessed out of bounds. An error message is printed when the array is accessed out of bounds, but not when the array is empty.
 [b]Note:[/b] On large arrays, this method can be slower than [method pop_back] as it will reindex the array's elements that are located after the removed element. The larger the array and the lower the index of the removed element, the slower [method pop_at] will be.
 */
+//go:nosplit
 func (self Array) PopAt(ctx Context, position Int) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6302,6 +6563,7 @@ strings.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
 print(strings) # Prints [string1, string2, string10, string11]
 [/codeblock]
 */
+//go:nosplit
 func (self Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6318,27 +6580,25 @@ Sorts the array using a custom method. The custom method receives two arguments 
 [codeblocks]
 [gdscript]
 func sort_ascending(a, b):
-
-	if a[0] < b[0]:
-	    return true
-	return false
+    if a[0] < b[0]:
+        return true
+    return false
 
 func _ready():
+    var my_items = [[5, "Potato"], [9, "Rice"], [4, "Tomato"]]
+    my_items.sort_custom(sort_ascending)
+    print(my_items) # Prints [[4, Tomato], [5, Potato], [9, Rice]].
 
-	var my_items = [[5, "Potato"], [9, "Rice"], [4, "Tomato"]]
-	my_items.sort_custom(sort_ascending)
-	print(my_items) # Prints [[4, Tomato], [5, Potato], [9, Rice]].
-
-	# Descending, lambda version.
-	my_items.sort_custom(func(a, b): return a[0] > b[0])
-	print(my_items) # Prints [[9, Rice], [5, Potato], [4, Tomato]].
-
+    # Descending, lambda version.
+    my_items.sort_custom(func(a, b): return a[0] > b[0])
+    print(my_items) # Prints [[9, Rice], [5, Potato], [4, Tomato]].
 [/gdscript]
 [csharp]
 // There is no custom sort support for Godot.Collections.Array
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self Array) SortCustom(fn Callable) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6352,6 +6612,7 @@ func (self Array) SortCustom(fn Callable) {
 /*
 Shuffles the array such that the items will have a random order. This method uses the global random number generator common to methods such as [method @GlobalScope.randi]. Call [method @GlobalScope.randomize] to ensure that a new seed will be used each time if you want non-reproducible shuffling.
 */
+//go:nosplit
 func (self Array) Shuffle() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6365,6 +6626,7 @@ func (self Array) Shuffle() {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self Array) Bsearch(value Variant, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6382,6 +6644,7 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search and a custom comparison method. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array. The custom method receives two arguments (an element from the array and the value searched for) and must return [code]true[/code] if the first argument is less than the second, and return [code]false[/code] otherwise.
 [b]Note:[/b] Calling [method bsearch_custom] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6399,6 +6662,7 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6412,6 +6676,7 @@ func (self Array) Reverse() {
 Returns a copy of the array.
 If [param deep] is [code]true[/code], a deep copy is performed: all nested arrays and dictionaries are duplicated and will not be shared with the original array. If [code]false[/code], a shallow copy is made and references to the original nested arrays and dictionaries are kept, so that modifying a sub-array or dictionary in the copy will also impact those referenced in the source array. Note that any [Object]-derived elements will be shallow copied regardless of the [param deep] setting.
 */
+//go:nosplit
 func (self Array) Duplicate(ctx Context, deep bool) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6432,6 +6697,7 @@ If specified, [param step] is the relative index between source elements. It can
 If [param deep] is true, each element will be copied by value rather than by reference.
 [b]Note:[/b] To include the first element when [param step] is negative, use [code]arr.slice(begin, -arr.size() - 1, step)[/code] (i.e. [code][0, 1, 2].slice(1, -4, -1)[/code] returns [code][1, 0][/code]).
 */
+//go:nosplit
 func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6452,17 +6718,15 @@ Calls the provided [Callable] on each element in the array and returns a new arr
 The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
 [codeblock]
 func _ready():
-
-	print([1, 2, 3].filter(remove_1)) # Prints [2, 3].
-	print([1, 2, 3].filter(func(number): return number != 1)) # Same as above, but using lambda function.
+    print([1, 2, 3].filter(remove_1)) # Prints [2, 3].
+    print([1, 2, 3].filter(func(number): return number != 1)) # Same as above, but using lambda function.
 
 func remove_1(number):
-
-	return number != 1
-
+    return number != 1
 [/codeblock]
 See also [method any], [method all], [method map] and [method reduce].
 */
+//go:nosplit
 func (self Array) Filter(ctx Context, method Callable) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6480,17 +6744,15 @@ Calls the provided [Callable] for each element in the array and returns a new ar
 The callable's method should take one [Variant] parameter (the current array element) and can return any [Variant].
 [codeblock]
 func _ready():
-
-	print([1, 2, 3].map(negate)) # Prints [-1, -2, -3].
-	print([1, 2, 3].map(func(number): return -number)) # Same as above, but using lambda function.
+    print([1, 2, 3].map(negate)) # Prints [-1, -2, -3].
+    print([1, 2, 3].map(func(number): return -number)) # Same as above, but using lambda function.
 
 func negate(number):
-
-	return -number
-
+    return -number
 [/codeblock]
 See also [method filter], [method reduce], [method any] and [method all].
 */
+//go:nosplit
 func (self Array) Map(ctx Context, method Callable) Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -6508,17 +6770,15 @@ Calls the provided [Callable] for each element in array and accumulates the resu
 The callable's method takes two arguments: the current value of [param accum] and the current array element. If [param accum] is [code]null[/code] (default value), the iteration will start from the second element, with the first one used as initial value of [param accum].
 [codeblock]
 func _ready():
-
-	print([1, 2, 3].reduce(sum, 10)) # Prints 16.
-	print([1, 2, 3].reduce(func(accum, number): return accum + number, 10)) # Same as above, but using lambda function.
+    print([1, 2, 3].reduce(sum, 10)) # Prints 16.
+    print([1, 2, 3].reduce(func(accum, number): return accum + number, 10)) # Same as above, but using lambda function.
 
 func sum(accum, number):
-
-	return accum + number
-
+    return accum + number
 [/codeblock]
 See also [method map], [method filter], [method any] and [method all].
 */
+//go:nosplit
 func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6537,23 +6797,21 @@ Calls the provided [Callable] on each element in the array and returns [code]tru
 The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
 [codeblock]
 func _ready():
+    print([6, 10, 6].any(greater_than_5))  # Prints True (3 elements evaluate to `true`).
+    print([4, 10, 4].any(greater_than_5))  # Prints True (1 elements evaluate to `true`).
+    print([4, 4, 4].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
+    print([].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
 
-	print([6, 10, 6].any(greater_than_5))  # Prints True (3 elements evaluate to `true`).
-	print([4, 10, 4].any(greater_than_5))  # Prints True (1 elements evaluate to `true`).
-	print([4, 4, 4].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
-	print([].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
-
-	print([6, 10, 6].any(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
+    print([6, 10, 6].any(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
 
 func greater_than_5(number):
-
-	return number > 5
-
+    return number > 5
 [/codeblock]
 See also [method all], [method filter], [method map] and [method reduce].
 [b]Note:[/b] Unlike relying on the size of an array returned by [method filter], this method will return as early as possible to improve performance (especially with large arrays).
 [b]Note:[/b] For an empty array, this method always returns [code]false[/code].
 */
+//go:nosplit
 func (self Array) Any(method Callable) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6571,23 +6829,21 @@ Calls the provided [Callable] on each element in the array and returns [code]tru
 The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
 [codeblock]
 func _ready():
+    print([6, 10, 6].all(greater_than_5))  # Prints True (3/3 elements evaluate to `true`).
+    print([4, 10, 4].all(greater_than_5))  # Prints False (1/3 elements evaluate to `true`).
+    print([4, 4, 4].all(greater_than_5))  # Prints False (0/3 elements evaluate to `true`).
+    print([].all(greater_than_5))  # Prints True (0/0 elements evaluate to `true`).
 
-	print([6, 10, 6].all(greater_than_5))  # Prints True (3/3 elements evaluate to `true`).
-	print([4, 10, 4].all(greater_than_5))  # Prints False (1/3 elements evaluate to `true`).
-	print([4, 4, 4].all(greater_than_5))  # Prints False (0/3 elements evaluate to `true`).
-	print([].all(greater_than_5))  # Prints True (0/0 elements evaluate to `true`).
-
-	print([6, 10, 6].all(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
+    print([6, 10, 6].all(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
 
 func greater_than_5(number):
-
-	return number > 5
-
+    return number > 5
 [/codeblock]
 See also [method any], [method filter], [method map] and [method reduce].
 [b]Note:[/b] Unlike relying on the size of an array returned by [method filter], this method will return as early as possible to improve performance (especially with large arrays).
 [b]Note:[/b] For an empty array, this method [url=https://en.wikipedia.org/wiki/Vacuous_truth]always[/url] returns [code]true[/code].
 */
+//go:nosplit
 func (self Array) All(method Callable) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6605,17 +6861,15 @@ Returns the maximum value contained in the array if all elements are of comparab
 To find the maximum value using a custom comparator, you can use [method reduce]. In this example every array element is checked and the first maximum value is returned:
 [codeblock]
 func _ready():
-
-	var arr = [Vector2(0, 1), Vector2(2, 0), Vector2(1, 1), Vector2(1, 0), Vector2(0, 2)]
-	# In this example we compare the lengths.
-	print(arr.reduce(func(max, val): return val if is_length_greater(val, max) else max))
+    var arr = [Vector2(0, 1), Vector2(2, 0), Vector2(1, 1), Vector2(1, 0), Vector2(0, 2)]
+    # In this example we compare the lengths.
+    print(arr.reduce(func(max, val): return val if is_length_greater(val, max) else max))
 
 func is_length_greater(a, b):
-
-	return a.length() > b.length()
-
+    return a.length() > b.length()
 [/codeblock]
 */
+//go:nosplit
 func (self Array) Max(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6631,6 +6885,7 @@ func (self Array) Max(ctx Context) Variant {
 Returns the minimum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
 See also [method max] for an example of using a custom comparator.
 */
+//go:nosplit
 func (self Array) Min(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6645,6 +6900,7 @@ func (self Array) Min(ctx Context) Variant {
 /*
 Returns [code]true[/code] if the array is typed. Typed arrays can only store elements of their associated type and provide type safety for the [code][][/code] operator. Methods of typed array still return [Variant].
 */
+//go:nosplit
 func (self Array) IsTyped() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6659,6 +6915,7 @@ func (self Array) IsTyped() bool {
 /*
 Returns [code]true[/code] if the array is typed the same as [param array].
 */
+//go:nosplit
 func (self Array) IsSameTyped(array Array) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6674,6 +6931,7 @@ func (self Array) IsSameTyped(array Array) bool {
 /*
 Returns the [enum Variant.Type] constant for a typed array. If the [Array] is not typed, returns [constant TYPE_NIL].
 */
+//go:nosplit
 func (self Array) GetTypedBuiltin() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6688,6 +6946,7 @@ func (self Array) GetTypedBuiltin() Int {
 /*
 Returns a class name of a typed [Array] of type [constant TYPE_OBJECT].
 */
+//go:nosplit
 func (self Array) GetTypedClassName(ctx Context) StringName {
 	var selfPtr = self
 	var frame = call.New()
@@ -6702,6 +6961,7 @@ func (self Array) GetTypedClassName(ctx Context) StringName {
 /*
 Returns the script associated with a typed array tied to a class name.
 */
+//go:nosplit
 func (self Array) GetTypedScript(ctx Context) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -6716,6 +6976,7 @@ func (self Array) GetTypedScript(ctx Context) Variant {
 /*
 Makes the array read-only, i.e. disabled modifying of the array's elements. Does not apply to nested content, e.g. content of nested arrays.
 */
+//go:nosplit
 func (self Array) MakeReadOnly() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6728,6 +6989,7 @@ func (self Array) MakeReadOnly() {
 /*
 Returns [code]true[/code] if the array is read-only. See [method make_read_only]. Arrays are automatically read-only if declared with [code]const[/code] keyword.
 */
+//go:nosplit
 func (self Array) IsReadOnly() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6742,6 +7004,7 @@ func (self Array) IsReadOnly() bool {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedByteArray) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6756,6 +7019,7 @@ func (self PackedByteArray) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedByteArray) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6770,6 +7034,7 @@ func (self PackedByteArray) IsEmpty() bool {
 /*
 Changes the byte at the given index.
 */
+//go:nosplit
 func (self PackedByteArray) Set(index Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6784,6 +7049,7 @@ func (self PackedByteArray) Set(index Int, value Int) {
 /*
 Appends an element at the end of the array.
 */
+//go:nosplit
 func (self PackedByteArray) PushBack(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6799,6 +7065,7 @@ func (self PackedByteArray) PushBack(value Int) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedByteArray) Append(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6814,6 +7081,7 @@ func (self PackedByteArray) Append(value Int) bool {
 /*
 Appends a [PackedByteArray] at the end of this array.
 */
+//go:nosplit
 func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6827,6 +7095,7 @@ func (self PackedByteArray) AppendArray(array PackedByteArray) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedByteArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6840,6 +7109,7 @@ func (self PackedByteArray) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6856,6 +7126,7 @@ func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedByteArray) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -6869,6 +7140,7 @@ func (self PackedByteArray) Fill(value Int) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedByteArray) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6884,6 +7156,7 @@ func (self PackedByteArray) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedByteArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6896,6 +7169,7 @@ func (self PackedByteArray) Clear() {
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
+//go:nosplit
 func (self PackedByteArray) Has(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -6911,6 +7185,7 @@ func (self PackedByteArray) Has(value Int) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedByteArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6925,6 +7200,7 @@ Returns the slice of the [PackedByteArray], from [param begin] (inclusive) to [p
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6941,6 +7217,7 @@ func (self PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArr
 /*
 Sorts the elements of the array in ascending order.
 */
+//go:nosplit
 func (self PackedByteArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -6954,6 +7231,7 @@ func (self PackedByteArray) Sort() {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self PackedByteArray) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -6970,6 +7248,7 @@ func (self PackedByteArray) Bsearch(value Int, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedByteArray) Duplicate(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -6984,6 +7263,7 @@ func (self PackedByteArray) Duplicate(ctx Context) PackedByteArray {
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
+//go:nosplit
 func (self PackedByteArray) Find(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7000,6 +7280,7 @@ func (self PackedByteArray) Find(value Int, from Int) Int {
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
+//go:nosplit
 func (self PackedByteArray) Rfind(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7016,6 +7297,7 @@ func (self PackedByteArray) Rfind(value Int, from Int) Int {
 /*
 Returns the number of times an element is in the array.
 */
+//go:nosplit
 func (self PackedByteArray) Count(value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7031,6 +7313,7 @@ func (self PackedByteArray) Count(value Int) Int {
 /*
 Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method get_string_from_utf8] if the content is ASCII/Latin-1 only. Unlike the UTF-8 function this function maps every byte to a character in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use [method get_string_from_utf8]. This is the inverse of [method String.to_ascii_buffer].
 */
+//go:nosplit
 func (self PackedByteArray) GetStringFromAscii(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -7045,6 +7328,7 @@ func (self PackedByteArray) GetStringFromAscii(ctx Context) String {
 /*
 Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not valid UTF-8 string. This is the inverse of [method String.to_utf8_buffer].
 */
+//go:nosplit
 func (self PackedByteArray) GetStringFromUtf8(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -7059,6 +7343,7 @@ func (self PackedByteArray) GetStringFromUtf8(ctx Context) String {
 /*
 Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not valid UTF-16 string. This is the inverse of [method String.to_utf16_buffer].
 */
+//go:nosplit
 func (self PackedByteArray) GetStringFromUtf16(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -7073,6 +7358,7 @@ func (self PackedByteArray) GetStringFromUtf16(ctx Context) String {
 /*
 Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns empty string if source array is not valid UTF-32 string. This is the inverse of [method String.to_utf32_buffer].
 */
+//go:nosplit
 func (self PackedByteArray) GetStringFromUtf32(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -7087,6 +7373,7 @@ func (self PackedByteArray) GetStringFromUtf32(ctx Context) String {
 /*
 Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded array to [String]. Returns empty string if source array is not valid wide string. This is the inverse of [method String.to_wchar_buffer].
 */
+//go:nosplit
 func (self PackedByteArray) GetStringFromWchar(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -7111,6 +7398,7 @@ GD.Print(array.HexEncode()); // Prints: 0b2eff
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self PackedByteArray) HexEncode(ctx Context) String {
 	var selfPtr = self
 	var frame = call.New()
@@ -7125,6 +7413,7 @@ func (self PackedByteArray) HexEncode(ctx Context) String {
 /*
 Returns a new [PackedByteArray] with the data compressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 */
+//go:nosplit
 func (self PackedByteArray) Compress(ctx Context, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7140,6 +7429,7 @@ func (self PackedByteArray) Compress(ctx Context, compression_mode Int) PackedBy
 /*
 Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_size] to the size of the uncompressed data. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 */
+//go:nosplit
 func (self PackedByteArray) Decompress(ctx Context, buffer_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7158,6 +7448,7 @@ Returns a new [PackedByteArray] with the data decompressed. Set the compression 
 This method is potentially slower than [method decompress], as it may have to re-allocate its output buffer multiple times while decompressing, whereas [method decompress] knows it's output buffer size from the beginning.
 GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a small compressed payload to decompress to a potentially very large output. To guard against this, you may provide a maximum size this function is allowed to allocate in bytes via [param max_output_size]. Passing -1 will allow for unbounded output. If any positive value is passed, and the decompression exceeds that amount in bytes, then an error will be returned.
 */
+//go:nosplit
 func (self PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7174,6 +7465,7 @@ func (self PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, 
 /*
 Decodes a 8-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7189,6 +7481,7 @@ func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 /*
 Decodes a 8-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7204,6 +7497,7 @@ func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 /*
 Decodes a 16-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7219,6 +7513,7 @@ func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 /*
 Decodes a 16-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7234,6 +7529,7 @@ func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 /*
 Decodes a 32-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7249,6 +7545,7 @@ func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 /*
 Decodes a 32-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7264,6 +7561,7 @@ func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 /*
 Decodes a 64-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7279,6 +7577,7 @@ func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 /*
 Decodes a 64-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7294,6 +7593,7 @@ func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 /*
 Decodes a 16-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -7309,6 +7609,7 @@ func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 /*
 Decodes a 32-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -7324,6 +7625,7 @@ func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 /*
 Decodes a 64-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	var selfPtr = self
 	var frame = call.New()
@@ -7339,6 +7641,7 @@ func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 /*
 Returns [code]true[/code] if a valid [Variant] value can be decoded at the [param byte_offset]. Returns [code]false[/code] otherwise or when the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
+//go:nosplit
 func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7355,6 +7658,7 @@ func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) b
 /*
 Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
+//go:nosplit
 func (self PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_objects bool) Variant {
 	var selfPtr = self
 	var frame = call.New()
@@ -7371,6 +7675,7 @@ func (self PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_object
 /*
 Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Requires at least 4 bytes of data starting at the offset, otherwise fails.
 */
+//go:nosplit
 func (self PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7389,6 +7694,7 @@ Returns a copy of the data converted to a [PackedInt32Array], where each block o
 The size of the input array must be a multiple of 4 (size of 32-bit integer). The size of the new array will be [code]byte_array.size() / 4[/code].
 If the original data can't be converted to signed 32-bit integers, the resulting data is undefined.
 */
+//go:nosplit
 func (self PackedByteArray) ToInt32Array(ctx Context) PackedInt32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7405,6 +7711,7 @@ Returns a copy of the data converted to a [PackedInt64Array], where each block o
 The size of the input array must be a multiple of 8 (size of 64-bit integer). The size of the new array will be [code]byte_array.size() / 8[/code].
 If the original data can't be converted to signed 64-bit integers, the resulting data is undefined.
 */
+//go:nosplit
 func (self PackedByteArray) ToInt64Array(ctx Context) PackedInt64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7421,6 +7728,7 @@ Returns a copy of the data converted to a [PackedFloat32Array], where each block
 The size of the input array must be a multiple of 4 (size of 32-bit float). The size of the new array will be [code]byte_array.size() / 4[/code].
 If the original data can't be converted to 32-bit floats, the resulting data is undefined.
 */
+//go:nosplit
 func (self PackedByteArray) ToFloat32Array(ctx Context) PackedFloat32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7437,6 +7745,7 @@ Returns a copy of the data converted to a [PackedFloat64Array], where each block
 The size of the input array must be a multiple of 8 (size of 64-bit double). The size of the new array will be [code]byte_array.size() / 8[/code].
 If the original data can't be converted to 64-bit floats, the resulting data is undefined.
 */
+//go:nosplit
 func (self PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7451,6 +7760,7 @@ func (self PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
 /*
 Encodes a 8-bit unsigned integer number (byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7465,6 +7775,7 @@ func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 /*
 Encodes a 8-bit signed integer number (signed byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7479,6 +7790,7 @@ func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 /*
 Encodes a 16-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7493,6 +7805,7 @@ func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 /*
 Encodes a 16-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7507,6 +7820,7 @@ func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 /*
 Encodes a 32-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7521,6 +7835,7 @@ func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 /*
 Encodes a 32-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7535,6 +7850,7 @@ func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 /*
 Encodes a 64-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7549,6 +7865,7 @@ func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 /*
 Encodes a 64-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7563,6 +7880,7 @@ func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 /*
 Encodes a 16-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7577,6 +7895,7 @@ func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 /*
 Encodes a 32-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7591,6 +7910,7 @@ func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 /*
 Encodes a 64-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7605,6 +7925,7 @@ func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 /*
 Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient space must be allocated, depending on the encoded variant's size. If [param allow_objects] is [code]false[/code], [Object]-derived values are not permitted and will instead be serialized as ID-only.
 */
+//go:nosplit
 func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7622,6 +7943,7 @@ func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_obje
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedInt32Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7636,6 +7958,7 @@ func (self PackedInt32Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedInt32Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7650,6 +7973,7 @@ func (self PackedInt32Array) IsEmpty() bool {
 /*
 Changes the integer at the given index.
 */
+//go:nosplit
 func (self PackedInt32Array) Set(index Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7664,6 +7988,7 @@ func (self PackedInt32Array) Set(index Int, value Int) {
 /*
 Appends a value to the array.
 */
+//go:nosplit
 func (self PackedInt32Array) PushBack(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7679,6 +8004,7 @@ func (self PackedInt32Array) PushBack(value Int) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedInt32Array) Append(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7694,6 +8020,7 @@ func (self PackedInt32Array) Append(value Int) bool {
 /*
 Appends a [PackedInt32Array] at the end of this array.
 */
+//go:nosplit
 func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7707,6 +8034,7 @@ func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedInt32Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7720,6 +8048,7 @@ func (self PackedInt32Array) RemoveAt(index Int) {
 /*
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7736,6 +8065,7 @@ func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedInt32Array) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7749,6 +8079,7 @@ func (self PackedInt32Array) Fill(value Int) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedInt32Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7764,6 +8095,7 @@ func (self PackedInt32Array) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedInt32Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7776,6 +8108,7 @@ func (self PackedInt32Array) Clear() {
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
+//go:nosplit
 func (self PackedInt32Array) Has(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7791,6 +8124,7 @@ func (self PackedInt32Array) Has(value Int) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedInt32Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7805,6 +8139,7 @@ Returns the slice of the [PackedInt32Array], from [param begin] (inclusive) to [
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7822,6 +8157,7 @@ func (self PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32A
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
 The size of the new array will be [code]int32_array.size() * 4[/code].
 */
+//go:nosplit
 func (self PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -7836,6 +8172,7 @@ func (self PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 /*
 Sorts the elements of the array in ascending order.
 */
+//go:nosplit
 func (self PackedInt32Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -7849,6 +8186,7 @@ func (self PackedInt32Array) Sort() {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self PackedInt32Array) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7865,6 +8203,7 @@ func (self PackedInt32Array) Bsearch(value Int, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -7879,6 +8218,7 @@ func (self PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
+//go:nosplit
 func (self PackedInt32Array) Find(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7895,6 +8235,7 @@ func (self PackedInt32Array) Find(value Int, from Int) Int {
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
+//go:nosplit
 func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7911,6 +8252,7 @@ func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 /*
 Returns the number of times an element is in the array.
 */
+//go:nosplit
 func (self PackedInt32Array) Count(value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7926,6 +8268,7 @@ func (self PackedInt32Array) Count(value Int) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedInt64Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -7940,6 +8283,7 @@ func (self PackedInt64Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedInt64Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7954,6 +8298,7 @@ func (self PackedInt64Array) IsEmpty() bool {
 /*
 Changes the integer at the given index.
 */
+//go:nosplit
 func (self PackedInt64Array) Set(index Int, value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -7968,6 +8313,7 @@ func (self PackedInt64Array) Set(index Int, value Int) {
 /*
 Appends a value to the array.
 */
+//go:nosplit
 func (self PackedInt64Array) PushBack(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7983,6 +8329,7 @@ func (self PackedInt64Array) PushBack(value Int) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedInt64Array) Append(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -7998,6 +8345,7 @@ func (self PackedInt64Array) Append(value Int) bool {
 /*
 Appends a [PackedInt64Array] at the end of this array.
 */
+//go:nosplit
 func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8011,6 +8359,7 @@ func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedInt64Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8024,6 +8373,7 @@ func (self PackedInt64Array) RemoveAt(index Int) {
 /*
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8040,6 +8390,7 @@ func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedInt64Array) Fill(value Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8053,6 +8404,7 @@ func (self PackedInt64Array) Fill(value Int) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedInt64Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8068,6 +8420,7 @@ func (self PackedInt64Array) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedInt64Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8080,6 +8433,7 @@ func (self PackedInt64Array) Clear() {
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
+//go:nosplit
 func (self PackedInt64Array) Has(value Int) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8095,6 +8449,7 @@ func (self PackedInt64Array) Has(value Int) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedInt64Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8109,6 +8464,7 @@ Returns the slice of the [PackedInt64Array], from [param begin] (inclusive) to [
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -8126,6 +8482,7 @@ func (self PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64A
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
 The size of the new array will be [code]int64_array.size() * 8[/code].
 */
+//go:nosplit
 func (self PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -8140,6 +8497,7 @@ func (self PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 /*
 Sorts the elements of the array in ascending order.
 */
+//go:nosplit
 func (self PackedInt64Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8153,6 +8511,7 @@ func (self PackedInt64Array) Sort() {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self PackedInt64Array) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8169,6 +8528,7 @@ func (self PackedInt64Array) Bsearch(value Int, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -8183,6 +8543,7 @@ func (self PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
+//go:nosplit
 func (self PackedInt64Array) Find(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8199,6 +8560,7 @@ func (self PackedInt64Array) Find(value Int, from Int) Int {
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
+//go:nosplit
 func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8215,6 +8577,7 @@ func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 /*
 Returns the number of times an element is in the array.
 */
+//go:nosplit
 func (self PackedInt64Array) Count(value Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8230,6 +8593,7 @@ func (self PackedInt64Array) Count(value Int) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedFloat32Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8244,6 +8608,7 @@ func (self PackedFloat32Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedFloat32Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8258,6 +8623,7 @@ func (self PackedFloat32Array) IsEmpty() bool {
 /*
 Changes the float at the given index.
 */
+//go:nosplit
 func (self PackedFloat32Array) Set(index Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8272,6 +8638,7 @@ func (self PackedFloat32Array) Set(index Int, value Float) {
 /*
 Appends an element at the end of the array.
 */
+//go:nosplit
 func (self PackedFloat32Array) PushBack(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8287,6 +8654,7 @@ func (self PackedFloat32Array) PushBack(value Float) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedFloat32Array) Append(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8302,6 +8670,7 @@ func (self PackedFloat32Array) Append(value Float) bool {
 /*
 Appends a [PackedFloat32Array] at the end of this array.
 */
+//go:nosplit
 func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8315,6 +8684,7 @@ func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedFloat32Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8328,6 +8698,7 @@ func (self PackedFloat32Array) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8344,6 +8715,7 @@ func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedFloat32Array) Fill(value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8357,6 +8729,7 @@ func (self PackedFloat32Array) Fill(value Float) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedFloat32Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8372,6 +8745,7 @@ func (self PackedFloat32Array) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedFloat32Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8385,6 +8759,7 @@ func (self PackedFloat32Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat32Array) Has(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8400,6 +8775,7 @@ func (self PackedFloat32Array) Has(value Float) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedFloat32Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8414,6 +8790,7 @@ Returns the slice of the [PackedFloat32Array], from [param begin] (inclusive) to
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFloat32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -8431,6 +8808,7 @@ func (self PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFloa
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
 The size of the new array will be [code]float32_array.size() * 4[/code].
 */
+//go:nosplit
 func (self PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -8446,6 +8824,7 @@ func (self PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat32Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8460,6 +8839,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat32Array) Bsearch(value Float, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8476,6 +8856,7 @@ func (self PackedFloat32Array) Bsearch(value Float, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -8491,6 +8872,7 @@ func (self PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat32Array) Find(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8508,6 +8890,7 @@ func (self PackedFloat32Array) Find(value Float, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8525,6 +8908,7 @@ func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
 Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat32Array) Count(value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8540,6 +8924,7 @@ func (self PackedFloat32Array) Count(value Float) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedFloat64Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8554,6 +8939,7 @@ func (self PackedFloat64Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedFloat64Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8568,6 +8954,7 @@ func (self PackedFloat64Array) IsEmpty() bool {
 /*
 Changes the float at the given index.
 */
+//go:nosplit
 func (self PackedFloat64Array) Set(index Int, value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8582,6 +8969,7 @@ func (self PackedFloat64Array) Set(index Int, value Float) {
 /*
 Appends an element at the end of the array.
 */
+//go:nosplit
 func (self PackedFloat64Array) PushBack(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8597,6 +8985,7 @@ func (self PackedFloat64Array) PushBack(value Float) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedFloat64Array) Append(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8612,6 +9001,7 @@ func (self PackedFloat64Array) Append(value Float) bool {
 /*
 Appends a [PackedFloat64Array] at the end of this array.
 */
+//go:nosplit
 func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8625,6 +9015,7 @@ func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedFloat64Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8638,6 +9029,7 @@ func (self PackedFloat64Array) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8654,6 +9046,7 @@ func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedFloat64Array) Fill(value Float) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8667,6 +9060,7 @@ func (self PackedFloat64Array) Fill(value Float) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedFloat64Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8682,6 +9076,7 @@ func (self PackedFloat64Array) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedFloat64Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8695,6 +9090,7 @@ func (self PackedFloat64Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat64Array) Has(value Float) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8710,6 +9106,7 @@ func (self PackedFloat64Array) Has(value Float) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedFloat64Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8724,6 +9121,7 @@ Returns the slice of the [PackedFloat64Array], from [param begin] (inclusive) to
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -8741,6 +9139,7 @@ func (self PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFloa
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
 The size of the new array will be [code]float64_array.size() * 8[/code].
 */
+//go:nosplit
 func (self PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -8756,6 +9155,7 @@ func (self PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat64Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -8770,6 +9170,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat64Array) Bsearch(value Float, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8786,6 +9187,7 @@ func (self PackedFloat64Array) Bsearch(value Float, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -8801,6 +9203,7 @@ func (self PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat64Array) Find(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8818,6 +9221,7 @@ func (self PackedFloat64Array) Find(value Float, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8835,6 +9239,7 @@ func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
 Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedFloat64Array) Count(value Float) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8850,6 +9255,7 @@ func (self PackedFloat64Array) Count(value Float) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedStringArray) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8864,6 +9270,7 @@ func (self PackedStringArray) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedStringArray) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8878,6 +9285,7 @@ func (self PackedStringArray) IsEmpty() bool {
 /*
 Changes the [String] at the given index.
 */
+//go:nosplit
 func (self PackedStringArray) Set(index Int, value String) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8892,6 +9300,7 @@ func (self PackedStringArray) Set(index Int, value String) {
 /*
 Appends a string element at end of the array.
 */
+//go:nosplit
 func (self PackedStringArray) PushBack(value String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8907,6 +9316,7 @@ func (self PackedStringArray) PushBack(value String) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedStringArray) Append(value String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -8922,6 +9332,7 @@ func (self PackedStringArray) Append(value String) bool {
 /*
 Appends a [PackedStringArray] at the end of this array.
 */
+//go:nosplit
 func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8935,6 +9346,7 @@ func (self PackedStringArray) AppendArray(array PackedStringArray) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedStringArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8948,6 +9360,7 @@ func (self PackedStringArray) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedStringArray) Insert(at_index Int, value String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8964,6 +9377,7 @@ func (self PackedStringArray) Insert(at_index Int, value String) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedStringArray) Fill(value String) {
 	var selfPtr = self
 	var frame = call.New()
@@ -8977,6 +9391,7 @@ func (self PackedStringArray) Fill(value String) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedStringArray) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -8992,6 +9407,7 @@ func (self PackedStringArray) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedStringArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9004,6 +9420,7 @@ func (self PackedStringArray) Clear() {
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
+//go:nosplit
 func (self PackedStringArray) Has(value String) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9019,6 +9436,7 @@ func (self PackedStringArray) Has(value String) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedStringArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9033,6 +9451,7 @@ Returns the slice of the [PackedStringArray], from [param begin] (inclusive) to 
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9049,6 +9468,7 @@ func (self PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStrin
 /*
 Returns a [PackedByteArray] with each string encoded as bytes.
 */
+//go:nosplit
 func (self PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9063,6 +9483,7 @@ func (self PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 /*
 Sorts the elements of the array in ascending order.
 */
+//go:nosplit
 func (self PackedStringArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9076,6 +9497,7 @@ func (self PackedStringArray) Sort() {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self PackedStringArray) Bsearch(value String, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9092,6 +9514,7 @@ func (self PackedStringArray) Bsearch(value String, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9106,6 +9529,7 @@ func (self PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
+//go:nosplit
 func (self PackedStringArray) Find(value String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9122,6 +9546,7 @@ func (self PackedStringArray) Find(value String, from Int) Int {
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
+//go:nosplit
 func (self PackedStringArray) Rfind(value String, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9138,6 +9563,7 @@ func (self PackedStringArray) Rfind(value String, from Int) Int {
 /*
 Returns the number of times an element is in the array.
 */
+//go:nosplit
 func (self PackedStringArray) Count(value String) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9153,6 +9579,7 @@ func (self PackedStringArray) Count(value String) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedVector2Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9167,6 +9594,7 @@ func (self PackedVector2Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedVector2Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9181,6 +9609,7 @@ func (self PackedVector2Array) IsEmpty() bool {
 /*
 Changes the [Vector2] at the given index.
 */
+//go:nosplit
 func (self PackedVector2Array) Set(index Int, value Vector2) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9195,6 +9624,7 @@ func (self PackedVector2Array) Set(index Int, value Vector2) {
 /*
 Inserts a [Vector2] at the end.
 */
+//go:nosplit
 func (self PackedVector2Array) PushBack(value Vector2) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9210,6 +9640,7 @@ func (self PackedVector2Array) PushBack(value Vector2) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedVector2Array) Append(value Vector2) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9225,6 +9656,7 @@ func (self PackedVector2Array) Append(value Vector2) bool {
 /*
 Appends a [PackedVector2Array] at the end of this array.
 */
+//go:nosplit
 func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9238,6 +9670,7 @@ func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedVector2Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9251,6 +9684,7 @@ func (self PackedVector2Array) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9267,6 +9701,7 @@ func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedVector2Array) Fill(value Vector2) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9280,6 +9715,7 @@ func (self PackedVector2Array) Fill(value Vector2) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedVector2Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9295,6 +9731,7 @@ func (self PackedVector2Array) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedVector2Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9308,6 +9745,7 @@ func (self PackedVector2Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector2Array) Has(value Vector2) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9323,6 +9761,7 @@ func (self PackedVector2Array) Has(value Vector2) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedVector2Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9337,6 +9776,7 @@ Returns the slice of the [PackedVector2Array], from [param begin] (inclusive) to
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVector2Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -9353,6 +9793,7 @@ func (self PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVect
 /*
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
+//go:nosplit
 func (self PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9368,6 +9809,7 @@ func (self PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector2Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9382,6 +9824,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9398,6 +9841,7 @@ func (self PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -9413,6 +9857,7 @@ func (self PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector2Array) Find(value Vector2, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9430,6 +9875,7 @@ func (self PackedVector2Array) Find(value Vector2, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9447,6 +9893,7 @@ func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
 Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector2Array) Count(value Vector2) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9462,6 +9909,7 @@ func (self PackedVector2Array) Count(value Vector2) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedVector3Array) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9476,6 +9924,7 @@ func (self PackedVector3Array) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedVector3Array) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9490,6 +9939,7 @@ func (self PackedVector3Array) IsEmpty() bool {
 /*
 Changes the [Vector3] at the given index.
 */
+//go:nosplit
 func (self PackedVector3Array) Set(index Int, value Vector3) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9504,6 +9954,7 @@ func (self PackedVector3Array) Set(index Int, value Vector3) {
 /*
 Inserts a [Vector3] at the end.
 */
+//go:nosplit
 func (self PackedVector3Array) PushBack(value Vector3) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9519,6 +9970,7 @@ func (self PackedVector3Array) PushBack(value Vector3) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedVector3Array) Append(value Vector3) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9534,6 +9986,7 @@ func (self PackedVector3Array) Append(value Vector3) bool {
 /*
 Appends a [PackedVector3Array] at the end of this array.
 */
+//go:nosplit
 func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9547,6 +10000,7 @@ func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedVector3Array) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9560,6 +10014,7 @@ func (self PackedVector3Array) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9576,6 +10031,7 @@ func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedVector3Array) Fill(value Vector3) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9589,6 +10045,7 @@ func (self PackedVector3Array) Fill(value Vector3) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedVector3Array) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9604,6 +10061,7 @@ func (self PackedVector3Array) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedVector3Array) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9617,6 +10075,7 @@ func (self PackedVector3Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector3Array) Has(value Vector3) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9632,6 +10091,7 @@ func (self PackedVector3Array) Has(value Vector3) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedVector3Array) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9646,6 +10106,7 @@ Returns the slice of the [PackedVector3Array], from [param begin] (inclusive) to
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVector3Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -9662,6 +10123,7 @@ func (self PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVect
 /*
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
+//go:nosplit
 func (self PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9677,6 +10139,7 @@ func (self PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector3Array) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9691,6 +10154,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9707,6 +10171,7 @@ func (self PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
 	var selfPtr = self
 	var frame = call.New()
@@ -9722,6 +10187,7 @@ func (self PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector3Array) Find(value Vector3, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9739,6 +10205,7 @@ func (self PackedVector3Array) Find(value Vector3, from Int) Int {
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9756,6 +10223,7 @@ func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
 Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
+//go:nosplit
 func (self PackedVector3Array) Count(value Vector3) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9771,6 +10239,7 @@ func (self PackedVector3Array) Count(value Vector3) Int {
 /*
 Returns the number of elements in the array.
 */
+//go:nosplit
 func (self PackedColorArray) Size() Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9785,6 +10254,7 @@ func (self PackedColorArray) Size() Int {
 /*
 Returns [code]true[/code] if the array is empty.
 */
+//go:nosplit
 func (self PackedColorArray) IsEmpty() bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9799,6 +10269,7 @@ func (self PackedColorArray) IsEmpty() bool {
 /*
 Changes the [Color] at the given index.
 */
+//go:nosplit
 func (self PackedColorArray) Set(index Int, value Color) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9813,6 +10284,7 @@ func (self PackedColorArray) Set(index Int, value Color) {
 /*
 Appends a value to the array.
 */
+//go:nosplit
 func (self PackedColorArray) PushBack(value Color) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9828,6 +10300,7 @@ func (self PackedColorArray) PushBack(value Color) bool {
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
+//go:nosplit
 func (self PackedColorArray) Append(value Color) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9843,6 +10316,7 @@ func (self PackedColorArray) Append(value Color) bool {
 /*
 Appends a [PackedColorArray] at the end of this array.
 */
+//go:nosplit
 func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9856,6 +10330,7 @@ func (self PackedColorArray) AppendArray(array PackedColorArray) {
 /*
 Removes an element from the array by index.
 */
+//go:nosplit
 func (self PackedColorArray) RemoveAt(index Int) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9869,6 +10344,7 @@ func (self PackedColorArray) RemoveAt(index Int) {
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
+//go:nosplit
 func (self PackedColorArray) Insert(at_index Int, value Color) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9885,6 +10361,7 @@ func (self PackedColorArray) Insert(at_index Int, value Color) Int {
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
+//go:nosplit
 func (self PackedColorArray) Fill(value Color) {
 	var selfPtr = self
 	var frame = call.New()
@@ -9898,6 +10375,7 @@ func (self PackedColorArray) Fill(value Color) {
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
+//go:nosplit
 func (self PackedColorArray) Resize(new_size Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -9913,6 +10391,7 @@ func (self PackedColorArray) Resize(new_size Int) Int {
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
+//go:nosplit
 func (self PackedColorArray) Clear() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9925,6 +10404,7 @@ func (self PackedColorArray) Clear() {
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
+//go:nosplit
 func (self PackedColorArray) Has(value Color) bool {
 	var selfPtr = self
 	var frame = call.New()
@@ -9940,6 +10420,7 @@ func (self PackedColorArray) Has(value Color) bool {
 /*
 Reverses the order of the elements in the array.
 */
+//go:nosplit
 func (self PackedColorArray) Reverse() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9954,6 +10435,7 @@ Returns the slice of the [PackedColorArray], from [param begin] (inclusive) to [
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
+//go:nosplit
 func (self PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColorArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9970,6 +10452,7 @@ func (self PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColorA
 /*
 Returns a [PackedByteArray] with each color encoded as bytes.
 */
+//go:nosplit
 func (self PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -9984,6 +10467,7 @@ func (self PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 /*
 Sorts the elements of the array in ascending order.
 */
+//go:nosplit
 func (self PackedColorArray) Sort() {
 	var selfPtr = self
 	var frame = call.New()
@@ -9997,6 +10481,7 @@ func (self PackedColorArray) Sort() {
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
+//go:nosplit
 func (self PackedColorArray) Bsearch(value Color, before bool) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -10013,6 +10498,7 @@ func (self PackedColorArray) Bsearch(value Color, before bool) Int {
 /*
 Creates a copy of the array, and returns it.
 */
+//go:nosplit
 func (self PackedColorArray) Duplicate(ctx Context) PackedColorArray {
 	var selfPtr = self
 	var frame = call.New()
@@ -10027,6 +10513,7 @@ func (self PackedColorArray) Duplicate(ctx Context) PackedColorArray {
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
+//go:nosplit
 func (self PackedColorArray) Find(value Color, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -10043,6 +10530,7 @@ func (self PackedColorArray) Find(value Color, from Int) Int {
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
+//go:nosplit
 func (self PackedColorArray) Rfind(value Color, from Int) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -10059,6 +10547,7 @@ func (self PackedColorArray) Rfind(value Color, from Int) Int {
 /*
 Returns the number of times an element is in the array.
 */
+//go:nosplit
 func (self PackedColorArray) Count(value Color) Int {
 	var selfPtr = self
 	var frame = call.New()
@@ -10078,6 +10567,7 @@ type Object struct{ Class[Object, Pointer] }
 Returns the object's built-in class name, as a [String]. See also [method is_class].
 [b]Note:[/b] This method ignores [code]class_name[/code] declarations. If this object's script has defined a [code]class_name[/code], the base, built-in class name is returned instead.
 */
+//go:nosplit
 func (self Object) GetClass(ctx Context) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10106,6 +10596,7 @@ sprite2D.IsClass("Node3D");   // Returns false
 [/codeblocks]
 [b]Note:[/b] This method ignores [code]class_name[/code] declarations in the object's script.
 */
+//go:nosplit
 func (self Object) IsClass(class String) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10133,6 +10624,7 @@ GD.Print(node.GlobalScale); // Prints Vector2(8, 2.5)
 [/codeblocks]
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) Set(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10159,6 +10651,7 @@ var a = node.Get("rotation"); // a is 1.5
 [/codeblocks]
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) Get(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10188,6 +10681,7 @@ GD.Print(node.Position); // Prints (42, -10)
 [/codeblocks]
 [b]Note:[/b] In C#, [param property_path] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10218,6 +10712,7 @@ var b = node.GetIndexed("position:y"); // b is -10
 [b]Note:[/b] In C#, [param property_path] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 [b]Note:[/b] This method does not support actual paths to nodes in the [SceneTree], only sub-property paths. In the context of nodes, use [method Node.get_node_and_resource] instead.
 */
+//go:nosplit
 func (self Object) GetIndexed(ctx Context, property_path NodePath) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10239,6 +10734,7 @@ Returns the object's property list as an [Array] of dictionaries. Each [Dictiona
 - [code]usage[/code] is a combination of [enum PropertyUsageFlags].
 [b]Note:[/b] In GDScript, all class members are treated as properties. In C# and GDExtension, it may be necessary to explicitly mark class members as Godot properties using decorators or attributes.
 */
+//go:nosplit
 func (self Object) GetPropertyList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10259,6 +10755,7 @@ Returns this object's methods and their signatures as an [Array] of dictionaries
 - [code]return[/code] is the returned value, as a [Dictionary];
 [b]Note:[/b] The dictionaries of [code]args[/code] and [code]return[/code] are formatted identically to the results of [method get_property_list], although not all entries are used.
 */
+//go:nosplit
 func (self Object) GetMethodList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10273,6 +10770,7 @@ func (self Object) GetMethodList() ArrayOf[Dictionary] {
 Returns [code]true[/code] if the given [param property] has a custom default value. Use [method property_get_revert] to get the [param property]'s default value.
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_can_revert] to customize the default value. If [method _property_can_revert] is not implemented, this method returns [code]false[/code].
 */
+//go:nosplit
 func (self Object) PropertyCanRevert(property StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10288,6 +10786,7 @@ func (self Object) PropertyCanRevert(property StringName) bool {
 Returns the custom default value of the given [param property]. Use [method property_can_revert] to check if the [param property] has a custom default value.
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_get_revert] to customize the default value. If [method _property_get_revert] is not implemented, this method returns [code]null[/code].
 */
+//go:nosplit
 func (self Object) PropertyGetRevert(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10325,6 +10824,7 @@ player.Notification(NotificationEnterTree, true);
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self Object) Notification(what Int, reversed bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10338,6 +10838,7 @@ func (self Object) Notification(what Int, reversed bool) {
 /*
 Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[/code]. Override [method _to_string] to customize the string representation of the object.
 */
+//go:nosplit
 func (self Object) ToString(ctx Context) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10351,6 +10852,7 @@ func (self Object) ToString(ctx Context) String {
 /*
 Returns the object's unique instance ID. This ID can be saved in [EncodedObjectAsID], and can be used to retrieve this object instance with [method @GlobalScope.instance_from_id].
 */
+//go:nosplit
 func (self Object) GetInstanceId() Int {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10365,6 +10867,7 @@ func (self Object) GetInstanceId() Int {
 Attaches [param script] to the object, and instantiates it. As a result, the script's [method _init] is called. A [Script] is used to extend the object's functionality.
 If a script already exists, its instance is detached, and its property values and state are lost. Built-in property values are still kept.
 */
+//go:nosplit
 func (self Object) SetScript(script Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10377,6 +10880,7 @@ func (self Object) SetScript(script Variant) {
 /*
 Returns the object's [Script] instance, or [code]null[/code] if no script is attached.
 */
+//go:nosplit
 func (self Object) GetScript(ctx Context) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10393,6 +10897,7 @@ If [param value] is [code]null[/code], the entry is removed. This is the equival
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
+//go:nosplit
 func (self Object) SetMeta(name StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10408,6 +10913,7 @@ Removes the given entry [param name] from the object's metadata. See also [metho
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
+//go:nosplit
 func (self Object) RemoveMeta(name StringName) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10422,6 +10928,7 @@ Returns the object's metadata value for the given entry [param name]. If the ent
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
+//go:nosplit
 func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10439,6 +10946,7 @@ Returns [code]true[/code] if a metadata entry is found with the given [param nam
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
+//go:nosplit
 func (self Object) HasMeta(name StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10453,6 +10961,7 @@ func (self Object) HasMeta(name StringName) bool {
 /*
 Returns the object's metadata entry names as a [PackedStringArray].
 */
+//go:nosplit
 func (self Object) GetMetaList() ArrayOf[StringName] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10468,31 +10977,28 @@ Adds a user-defined [param signal]. Optional arguments for the signal can be add
 [codeblocks]
 [gdscript]
 add_user_signal("hurt", [
-
-	{ "name": "damage", "type": TYPE_INT },
-	{ "name": "source", "type": TYPE_OBJECT }
-
+    { "name": "damage", "type": TYPE_INT },
+    { "name": "source", "type": TYPE_OBJECT }
 ])
 [/gdscript]
 [csharp]
 AddUserSignal("Hurt", new Godot.Collections.Array()
-
-	{
-	    new Godot.Collections.Dictionary()
-	    {
-	        { "name", "damage" },
-	        { "type", (int)Variant.Type.Int }
-	    },
-	    new Godot.Collections.Dictionary()
-	    {
-	        { "name", "source" },
-	        { "type", (int)Variant.Type.Object }
-	    }
-	});
-
+{
+    new Godot.Collections.Dictionary()
+    {
+        { "name", "damage" },
+        { "type", (int)Variant.Type.Int }
+    },
+    new Godot.Collections.Dictionary()
+    {
+        { "name", "source" },
+        { "type", (int)Variant.Type.Object }
+    }
+});
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self Object) AddUserSignal(signal String, arguments Array) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10506,6 +11012,7 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 /*
 Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included.
 */
+//go:nosplit
 func (self Object) HasUserSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10532,6 +11039,7 @@ EmitSignal(SignalName.GameOver);
 [/codeblocks]
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot signals. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) EmitSignal(signal StringName) int64 {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10557,6 +11065,7 @@ node.Call(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
 [/codeblocks]
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) Call(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10594,6 +11103,7 @@ var callable = node.rotate.bind(Vector3(1.0, 0.0, 0.0), 1.571)
 get_tree().process_frame.connect(callable, CONNECT_ONE_SHOT)
 [/codeblock]
 */
+//go:nosplit
 func (self Object) CallDeferred(ctx Context, method StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10631,6 +11141,7 @@ GD.Print(node.Rotation); // Prints 90.0
 [/codeblocks]
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) SetDeferred(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10655,6 +11166,7 @@ node.Callv(Node3D.MethodName.Rotate, new Godot.Collections.Array { new Vector3(1
 [/codeblocks]
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) Callv(ctx Context, method StringName, arg_array Array) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10671,6 +11183,7 @@ func (self Object) Callv(ctx Context, method StringName, arg_array Array) Varian
 Returns [code]true[/code] if the given [param method] name exists in the object.
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) HasMethod(method StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10686,6 +11199,7 @@ func (self Object) HasMethod(method StringName) bool {
 Returns [code]true[/code] if the given [param signal] name exists in the object.
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) HasSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10701,6 +11215,7 @@ func (self Object) HasSignal(signal StringName) bool {
 Returns the list of existing signals as an [Array] of dictionaries.
 [b]Note:[/b] Due of the implementation, each [Dictionary] is formatted very similarly to the returned values of [method get_method_list].
 */
+//go:nosplit
 func (self Object) GetSignalList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10717,6 +11232,7 @@ Returns an [Array] of connections for the given [param signal] name. Each connec
 - [code]callable[/code] is a reference to the connected [Callable];
 - [code]flags[/code] is a combination of [enum ConnectFlags].
 */
+//go:nosplit
 func (self Object) GetSignalConnectionList(signal StringName) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10734,6 +11250,7 @@ Returns an [Array] of signal connections received by this object. Each connectio
 - [code]callable[/code] is a reference to the [Callable];
 - [code]flags[/code] is a combination of [enum ConnectFlags].
 */
+//go:nosplit
 func (self Object) GetIncomingConnections() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10753,53 +11270,45 @@ Connecting signals is one of the most common operations in Godot and the API giv
 [codeblocks]
 [gdscript]
 func _ready():
+    var button = Button.new()
+    # `button_down` here is a Signal variant type, and we thus call the Signal.connect() method, not Object.connect().
+    # See discussion below for a more in-depth overview of the API.
+    button.button_down.connect(_on_button_down)
 
-	var button = Button.new()
-	# `button_down` here is a Signal variant type, and we thus call the Signal.connect() method, not Object.connect().
-	# See discussion below for a more in-depth overview of the API.
-	button.button_down.connect(_on_button_down)
-
-	# This assumes that a `Player` class exists, which defines a `hit` signal.
-	var player = Player.new()
-	# We use Signal.connect() again, and we also use the Callable.bind() method,
-	# which returns a new Callable with the parameter binds.
-	player.hit.connect(_on_player_hit.bind("sword", 100))
+    # This assumes that a `Player` class exists, which defines a `hit` signal.
+    var player = Player.new()
+    # We use Signal.connect() again, and we also use the Callable.bind() method,
+    # which returns a new Callable with the parameter binds.
+    player.hit.connect(_on_player_hit.bind("sword", 100))
 
 func _on_button_down():
-
-	print("Button down!")
+    print("Button down!")
 
 func _on_player_hit(weapon_type, damage):
-
-	print("Hit with weapon %s for %d damage." % [weapon_type, damage])
-
+    print("Hit with weapon %s for %d damage." % [weapon_type, damage])
 [/gdscript]
 [csharp]
 public override void _Ready()
+{
+    var button = new Button();
+    // C# supports passing signals as events, so we can use this idiomatic construct:
+    button.ButtonDown += OnButtonDown;
 
-	{
-	    var button = new Button();
-	    // C# supports passing signals as events, so we can use this idiomatic construct:
-	    button.ButtonDown += OnButtonDown;
-
-	    // This assumes that a `Player` class exists, which defines a `Hit` signal.
-	    var player = new Player();
-	    // We can use lambdas when we need to bind additional parameters.
-	    player.Hit += () => OnPlayerHit("sword", 100);
-	}
+    // This assumes that a `Player` class exists, which defines a `Hit` signal.
+    var player = new Player();
+    // We can use lambdas when we need to bind additional parameters.
+    player.Hit += () => OnPlayerHit("sword", 100);
+}
 
 private void OnButtonDown()
-
-	{
-	    GD.Print("Button down!");
-	}
+{
+    GD.Print("Button down!");
+}
 
 private void OnPlayerHit(string weaponType, int damage)
-
-	{
-	    GD.Print($"Hit with weapon {weaponType} for {damage} damage.");
-	}
-
+{
+    GD.Print($"Hit with weapon {weaponType} for {damage} damage.");
+}
 [/csharp]
 [/codeblocks]
 [b][code skip-lint]Object.connect()[/code] or [code skip-lint]Signal.connect()[/code]?[/b]
@@ -10807,41 +11316,35 @@ As seen above, the recommended method to connect signals is not [method Object.c
 [codeblocks]
 [gdscript]
 func _ready():
-
-	var button = Button.new()
-	# Option 1: Object.connect() with an implicit Callable for the defined function.
-	button.connect("button_down", _on_button_down)
-	# Option 2: Object.connect() with a constructed Callable using a target object and method name.
-	button.connect("button_down", Callable(self, "_on_button_down"))
-	# Option 3: Signal.connect() with an implicit Callable for the defined function.
-	button.button_down.connect(_on_button_down)
-	# Option 4: Signal.connect() with a constructed Callable using a target object and method name.
-	button.button_down.connect(Callable(self, "_on_button_down"))
+    var button = Button.new()
+    # Option 1: Object.connect() with an implicit Callable for the defined function.
+    button.connect("button_down", _on_button_down)
+    # Option 2: Object.connect() with a constructed Callable using a target object and method name.
+    button.connect("button_down", Callable(self, "_on_button_down"))
+    # Option 3: Signal.connect() with an implicit Callable for the defined function.
+    button.button_down.connect(_on_button_down)
+    # Option 4: Signal.connect() with a constructed Callable using a target object and method name.
+    button.button_down.connect(Callable(self, "_on_button_down"))
 
 func _on_button_down():
-
-	print("Button down!")
-
+    print("Button down!")
 [/gdscript]
 [csharp]
 public override void _Ready()
-
-	{
-	    var button = new Button();
-	    // Option 1: In C#, we can use signals as events and connect with this idiomatic syntax:
-	    button.ButtonDown += OnButtonDown;
-	    // Option 2: GodotObject.Connect() with a constructed Callable from a method group.
-	    button.Connect(Button.SignalName.ButtonDown, Callable.From(OnButtonDown));
-	    // Option 3: GodotObject.Connect() with a constructed Callable using a target object and method name.
-	    button.Connect(Button.SignalName.ButtonDown, new Callable(this, MethodName.OnButtonDown));
-	}
+{
+    var button = new Button();
+    // Option 1: In C#, we can use signals as events and connect with this idiomatic syntax:
+    button.ButtonDown += OnButtonDown;
+    // Option 2: GodotObject.Connect() with a constructed Callable from a method group.
+    button.Connect(Button.SignalName.ButtonDown, Callable.From(OnButtonDown));
+    // Option 3: GodotObject.Connect() with a constructed Callable using a target object and method name.
+    button.Connect(Button.SignalName.ButtonDown, new Callable(this, MethodName.OnButtonDown));
+}
 
 private void OnButtonDown()
-
-	{
-	    GD.Print("Button down!");
-	}
-
+{
+    GD.Print("Button down!");
+}
 [/csharp]
 [/codeblocks]
 While all options have the same outcome ([code]button[/code]'s [signal BaseButton.button_down] signal will be connected to [code]_on_button_down[/code]), [b]option 3[/b] offers the best validation: it will print a compile-time error if either the [code]button_down[/code] [Signal] or the [code]_on_button_down[/code] [Callable] are not defined. On the other hand, [b]option 2[/b] only relies on string names and will only be able to validate either names at runtime: it will print a runtime error if [code]"button_down"[/code] doesn't correspond to a signal, or if [code]"_on_button_down"[/code] is not a registered method in the object [code]self[/code]. The main reason for using options 1, 2, or 4 would be if you actually need to use strings (e.g. to connect signals programmatically based on strings read from a configuration file). Otherwise, option 3 is the recommended (and fastest) method.
@@ -10851,47 +11354,42 @@ When calling [method emit_signal], the signal parameters can be also passed. The
 [codeblocks]
 [gdscript]
 func _ready():
+    # This assumes that a `Player` class exists, which defines a `hit` signal.
+    var player = Player.new()
+    # Using Callable.bind().
+    player.hit.connect(_on_player_hit.bind("sword", 100))
 
-	# This assumes that a `Player` class exists, which defines a `hit` signal.
-	var player = Player.new()
-	# Using Callable.bind().
-	player.hit.connect(_on_player_hit.bind("sword", 100))
-
-	# Parameters added when emitting the signal are passed first.
-	player.emit_signal("hit", "Dark lord", 5)
+    # Parameters added when emitting the signal are passed first.
+    player.emit_signal("hit", "Dark lord", 5)
 
 # We pass two arguments when emitting (`hit_by`, `level`),
 # and bind two more arguments when connecting (`weapon_type`, `damage`).
 func _on_player_hit(hit_by, level, weapon_type, damage):
-
-	print("Hit by %s (level %d) with weapon %s for %d damage." % [hit_by, level, weapon_type, damage])
-
+    print("Hit by %s (level %d) with weapon %s for %d damage." % [hit_by, level, weapon_type, damage])
 [/gdscript]
 [csharp]
 public override void _Ready()
+{
+    // This assumes that a `Player` class exists, which defines a `Hit` signal.
+    var player = new Player();
+    // Using lambda expressions that create a closure that captures the additional parameters.
+    // The lambda only receives the parameters defined by the signal's delegate.
+    player.Hit += (hitBy, level) => OnPlayerHit(hitBy, level, "sword", 100);
 
-	{
-	    // This assumes that a `Player` class exists, which defines a `Hit` signal.
-	    var player = new Player();
-	    // Using lambda expressions that create a closure that captures the additional parameters.
-	    // The lambda only receives the parameters defined by the signal's delegate.
-	    player.Hit += (hitBy, level) => OnPlayerHit(hitBy, level, "sword", 100);
-
-	    // Parameters added when emitting the signal are passed first.
-	    player.EmitSignal(SignalName.Hit, "Dark lord", 5);
-	}
+    // Parameters added when emitting the signal are passed first.
+    player.EmitSignal(SignalName.Hit, "Dark lord", 5);
+}
 
 // We pass two arguments when emitting (`hit_by`, `level`),
 // and bind two more arguments when connecting (`weapon_type`, `damage`).
 private void OnPlayerHit(string hitBy, int level, string weaponType, int damage)
-
-	{
-	    GD.Print($"Hit by {hitBy} (level {level}) with weapon {weaponType} for {damage} damage.");
-	}
-
+{
+    GD.Print($"Hit by {hitBy} (level {level}) with weapon {weaponType} for {damage} damage.");
+}
 [/csharp]
 [/codeblocks]
 */
+//go:nosplit
 func (self Object) Connect(signal StringName, callable Callable, flags Int) int64 {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10908,6 +11406,7 @@ func (self Object) Connect(signal StringName, callable Callable, flags Int) int6
 /*
 Disconnects a [param signal] by name from a given [param callable]. If the connection does not exist, generates an error. Use [method is_connected] to make sure that the connection exists.
 */
+//go:nosplit
 func (self Object) Disconnect(signal StringName, callable Callable) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10922,6 +11421,7 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 Returns [code]true[/code] if a connection exists between the given [param signal] name and [param callable].
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
+//go:nosplit
 func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10937,6 +11437,7 @@ func (self Object) IsConnected(signal StringName, callable Callable) bool {
 /*
 If set to [code]true[/code], the object becomes unable to emit signals. As such, [method emit_signal] and signal connections will not work, until it is set to [code]false[/code].
 */
+//go:nosplit
 func (self Object) SetBlockSignals(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10949,6 +11450,7 @@ func (self Object) SetBlockSignals(enable bool) {
 /*
 Returns [code]true[/code] if the object is blocking its signals from being emitted. See [method set_block_signals].
 */
+//go:nosplit
 func (self Object) IsBlockingSignals() bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10962,6 +11464,7 @@ func (self Object) IsBlockingSignals() bool {
 /*
 Emits the [signal property_list_changed] signal. This is mainly used to refresh the editor, so that the Inspector and editor plugins are properly updated.
 */
+//go:nosplit
 func (self Object) NotifyPropertyListChanged() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10973,6 +11476,7 @@ func (self Object) NotifyPropertyListChanged() {
 /*
 If set to [code]true[/code], allows the object to translate messages with [method tr] and [method tr_n]. Enabled by default. See also [method can_translate_messages].
 */
+//go:nosplit
 func (self Object) SetMessageTranslation(enable bool) {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -10985,6 +11489,7 @@ func (self Object) SetMessageTranslation(enable bool) {
 /*
 Returns [code]true[/code] if the object is allowed to translate messages with [method tr] and [method tr_n]. See also [method set_message_translation].
 */
+//go:nosplit
 func (self Object) CanTranslateMessages() bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -11000,6 +11505,7 @@ Translates a [param message], using the translation catalogs configured in the P
 If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns the [param message] without changes. See [method set_message_translation].
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
+//go:nosplit
 func (self Object) Tr(ctx Context, message StringName, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -11019,6 +11525,7 @@ The [param n] is the number, or amount, of the message's subject. It is used by 
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended handling these cases with [method tr].
 */
+//go:nosplit
 func (self Object) TrN(ctx Context, message StringName, plural_message StringName, n Int, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -11036,6 +11543,7 @@ func (self Object) TrN(ctx Context, message StringName, plural_message StringNam
 /*
 Returns [code]true[/code] if the [method Node.queue_free] method was called for the object.
 */
+//go:nosplit
 func (self Object) IsQueuedForDeletion() bool {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -11049,6 +11557,7 @@ func (self Object) IsQueuedForDeletion() bool {
 /*
 If this method is called during [constant NOTIFICATION_PREDELETE], this object will reject being freed and will remain allocated. This is mostly an internal function used for error handling to avoid the user from freeing objects when they are not intended to.
 */
+//go:nosplit
 func (self Object) CancelFree() {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
@@ -11056,7 +11565,6 @@ func (self Object) CancelFree() {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_cancel_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 func (self Object) Virtual(name string) reflect.Value {
 	switch name {
 	default:

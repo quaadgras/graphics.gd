@@ -836,24 +836,23 @@ func generate() error {
 				fmt.Fprintf(w, "type %[1]v struct {Class[%[1]v, Pointer]}\n", class.Name)
 			}
 		} else {
-			if class.Inherits != "" {
-				fmt.Fprintf(w, "type %[1]v struct {gd.Class[%[1]v, %v]}\n", class.Name, classDB.nameOf(pkg, class.Inherits))
-			} else {
-				fmt.Fprintf(w, "type %[1]v struct {gd.Class[%[1]v, Pointer]}\n", class.Name)
-			}
+			fmt.Fprintf(w, "type %[1]v struct {_ [0]*%[1]v; ptr gd.Pointer}\n", class.Name, classDB.nameOf(pkg, class.Inherits))
 		}
 		if class.Inherits != "" {
 			var i = 1
 			super := classDB[class.Inherits]
+			fmt.Fprintf(w, "\n//go:nosplit\nfunc (self %[1]v) AsPointer() "+prefix+"Pointer { return self.ptr }\n", class.Name)
+			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self *%[1]v) SetPointer(ptr "+prefix+"Pointer) { self.ptr = ptr }\n", class.Name)
+			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) Super() %[3]v { return *(*%[3]v)(unsafe.Pointer(&self)) }\n", class.Name, super.Name, classDB.nameOf(pkg, super.Name))
 			for super.Name != "" {
-				fmt.Fprintf(w, "\nfunc (self %[1]v) As%[2]v() %[3]v { return *self%s }\n", class.Name, super.Name, classDB.nameOf(pkg, super.Name), strings.Repeat(".Super()", i))
+				fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) As%[2]v() %[3]v { return *(*%[3]v)(unsafe.Pointer(&self)) }\n", class.Name, super.Name, classDB.nameOf(pkg, super.Name))
 				i++
 				super = classDB[super.Inherits]
 			}
 
 		}
 		if singletons[class.Name] {
-			fmt.Fprintf(w, "\nfunc (self %[1]v) IsSingleton() {}\n", class.Name)
+			fmt.Fprintf(w, "\n//go:nosplit\n\nfunc (self %[1]v) IsSingleton() {}\n", class.Name)
 		}
 		for _, method := range class.Methods {
 			classDB.methodCall(w, pkg, class, method, callDefault)
@@ -987,7 +986,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	if !isPtr {
 		context = ""
 	}
-	fmt.Fprintf(w, "func (self %v) %v(%s", class.Name, convertName(method.Name), context)
+	fmt.Fprintf(w, "//go:nosplit\nfunc (self %v) %v(%s", class.Name, convertName(method.Name), context)
 
 	if method.Name == "select" {
 		method.Name = "select_"
@@ -1055,7 +1054,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	if result != "" {
 		fmt.Fprintf(w, "\treturn ret\n")
 	}
-	fmt.Fprintf(w, "}\n")
+	/*if result != "" {
+		fmt.Fprintf(w, "\tvar ret %v\n", result)
+		fmt.Fprintf(w, "\treturn ret\n")
+	}*/
+	fmt.Fprintf(w, "}")
 }
 
 func main() {

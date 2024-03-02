@@ -6,3 +6,5 @@ grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a h1:8QjAMrsqm8iYsCLKz3dT2/aFh
 grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a/go.mod h1:JwNaWFtFaeSmvp34kveQhSGN8dNowvLlz55K/c9bs1E=
 runtime.link v0.0.0-20240121080927-e61cba9606da h1:oqyMrwoXxWqB+wypvhb4HUssAya/FGy5KxWiDkj21FU=
 runtime.link v0.0.0-20240121080927-e61cba9606da/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
+runtime.link v0.0.0-20240302024459-872f5bf0d72b h1:7uQVivER/y7V8UxqHmoRhor4AQ0PIZLhT1UcN3imHb4=
+runtime.link v0.0.0-20240302024459-872f5bf0d72b/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=

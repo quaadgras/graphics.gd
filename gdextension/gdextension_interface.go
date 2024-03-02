@@ -1636,7 +1636,7 @@ func linkCGO(API *gd.API) {
 		C.object_method_bind_call(
 			C.uintptr_t(uintptr(object_method_bind_call)),
 			C.uintptr_t(method),
-			C.uintptr_t(obj.Pointer()),
+			C.uintptr_t(mmm.Get(obj.AsPointer())),
 			C.uintptr_t(frame.Array(0).Uintptr()),
 			C.GDExtensionInt(len(arg)),
 			C.uintptr_t(r_ret.Uintptr()),
@@ -1659,7 +1659,7 @@ func linkCGO(API *gd.API) {
 		C.object_method_bind_ptrcall(
 			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
 			C.uintptr_t(method),
-			C.uintptr_t(obj.Pointer()),
+			C.uintptr_t(mmm.Get(obj.AsPointer())),
 			C.uintptr_t(arg.Uintptr()),
 			C.uintptr_t(ret),
 		)
@@ -1668,7 +1668,7 @@ func linkCGO(API *gd.API) {
 	API.Object.Destroy = func(o gd.Object) {
 		C.object_destroy(
 			C.uintptr_t(uintptr(object_destroy)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 		)
 	}
 	global_get_singleton := dlsymGD("global_get_singleton")
@@ -1688,7 +1688,7 @@ func linkCGO(API *gd.API) {
 	API.Object.GetInstanceBinding = func(o gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
 		var ret = C.object_get_instance_binding(
 			C.uintptr_t(uintptr(object_get_instance_binding)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 			C.uintptr_t(et),
 			unsafe.Pointer(ibt),
 		)
@@ -1699,7 +1699,7 @@ func linkCGO(API *gd.API) {
 		p_val := cgo.NewHandle(val)
 		C.object_set_instance_binding(
 			C.uintptr_t(uintptr(object_set_instance_binding)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 			C.uintptr_t(et),
 			C.uintptr_t(p_val),
 			unsafe.Pointer(ibt),
@@ -1709,7 +1709,7 @@ func linkCGO(API *gd.API) {
 	API.Object.FreeInstanceBinding = func(o gd.Object, et gd.ExtensionToken) {
 		C.object_free_instance_binding(
 			C.uintptr_t(uintptr(object_free_instance_binding)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 			C.uintptr_t(et),
 		)
 	}
@@ -1720,7 +1720,7 @@ func linkCGO(API *gd.API) {
 		var p_val = cgo.NewHandle(a)
 		C.object_set_instance(
 			C.uintptr_t(uintptr(object_set_instance)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 			C.uintptr_t(p_sn.Uintptr()),
 			C.uintptr_t(p_val),
 		)
@@ -1732,7 +1732,7 @@ func linkCGO(API *gd.API) {
 		var r_ret = call.Ret[uintptr](frame)
 		C.object_get_class_name(
 			C.uintptr_t(uintptr(object_get_class_name)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 			C.uintptr_t(token),
 			C.uintptr_t(r_ret.Uintptr()),
 		)
@@ -1744,7 +1744,7 @@ func linkCGO(API *gd.API) {
 	API.Object.CastTo = func(ctx gd.Context, o internal.Object, ct internal.ClassTag) internal.Object {
 		var ret = C.object_cast_to(
 			C.uintptr_t(uintptr(object_cast_to)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 			C.uintptr_t(ct),
 		)
 		var obj gd.Object
@@ -1755,14 +1755,14 @@ func linkCGO(API *gd.API) {
 	API.Object.GetInstanceID = func(o internal.Object) internal.ObjectID {
 		return internal.ObjectID(C.object_get_instance_id(
 			C.uintptr_t(uintptr(object_get_instance_id)),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 		))
 	}
 	ref_get_object := dlsymGD("ref_get_object")
 	API.RefCounted.GetObject = func(ctx gd.Context, rc internal.Object) internal.Object {
 		var ret = C.ref_get_object(
 			C.uintptr_t(uintptr(ref_get_object)),
-			C.uintptr_t(rc.Pointer()),
+			C.uintptr_t(mmm.Get(rc.AsPointer())),
 		)
 		var obj gd.Object
 		obj.SetPointer(mmm.New[gd.Pointer](ctx.Lifetime, ctx.API, uintptr(ret)))
@@ -1772,8 +1772,8 @@ func linkCGO(API *gd.API) {
 	API.RefCounted.SetObject = func(rc internal.Object, o internal.Object) {
 		C.ref_set_object(
 			C.uintptr_t(uintptr(ref_set_object)),
-			C.uintptr_t(rc.Pointer()),
-			C.uintptr_t(o.Pointer()),
+			C.uintptr_t(mmm.Get(rc.AsPointer())),
+			C.uintptr_t(mmm.Get(o.AsPointer())),
 		)
 	}
 

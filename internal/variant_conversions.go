@@ -92,7 +92,7 @@ func (godot Context) Variant(v any) Variant {
 		var arg = call.Arg(frame, val)
 		godot.API.variant.FromType[TypeRid](ret, arg.Uintptr())
 	case Object:
-		var arg = call.Arg(frame, val.Pointer())
+		var arg = call.Arg(frame, mmm.Get(val.AsPointer()))
 		godot.API.variant.FromType[TypeObject](ret, arg.Uintptr())
 	case Callable:
 		var arg = call.Arg(frame, mmm.Get(val))

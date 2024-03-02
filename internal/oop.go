@@ -28,10 +28,6 @@ func (class Class[T, S]) AsObject() Object {
 	return obj
 }
 
-func (class Class[T, S]) Pointer() uintptr {
-	return class.super.Pointer()
-}
-
 // KeepAlive the class until the end of the specified context.
 func (class Class[T, S]) KeepAlive(lt mmm.Lifetime) {
 	mmm.Copy(class.super.AsPointer(), lt)
@@ -121,11 +117,8 @@ type PointerToClass interface {
 }
 
 type IsClass interface {
-	Pointer() uintptr
 	AsPointer() Pointer
 	Virtual(string) reflect.Value
-
-	Pin() Context
 	AsObject() Object
 }
 
