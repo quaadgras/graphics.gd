@@ -6,6 +6,8 @@ var hello: HelloWorld = HelloWorld.new()
 func _ready():
 	hello.Print()
 	
+	print(hello.Arch())
+	
 	$ExtendedNode.StringField = "Hello Property from Godot -> Go -> Godot"
 	print($ExtendedNode.StringField)
 	

@@ -15,6 +15,3 @@ run/main_scene="res://node_2d.tscn"
 config/features=PackedStringArray("4.2")
 config/icon="res://icon.png"
 
-[display]
-
-window/vsync/vsync_mode=0

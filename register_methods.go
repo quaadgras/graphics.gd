@@ -15,7 +15,7 @@ func registerMethods(godot Context, class StringName, rtype reflect.Type) {
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		i := i
 		method := classTypePtr.Method(i)
-		if !method.IsExported() || method.Type.NumIn() < 2 || method.Type.In(1) != reflect.TypeOf(Context{}) || method.Type.NumOut() > 0 {
+		if !method.IsExported() || method.Type.NumIn() < 2 || method.Type.In(1) != reflect.TypeOf(Context{}) {
 			continue
 		}
 		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-2)
@@ -40,7 +40,7 @@ func registerMethods(godot Context, class StringName, rtype reflect.Type) {
 		}
 		godot.API.ClassDB.RegisterClassMethod(godot, godot.API.ExtensionToken, class, gd.Method{
 			Name: godot.StringName(method.Name),
-			// FIXME type check and return an error if argumetns are invalid.
+			// FIXME type check and return an error if arguments are invalid.
 			Call: func(instance any, v ...gd.Variant) (gd.Variant, error) {
 				ctx := gd.NewContext(godot.API)
 				defer ctx.End()
@@ -190,6 +190,7 @@ func slowCall(godot *gd.API, method reflect.Value, p_args gd.UnsafeArgs, p_ret g
 			gd.UnsafeSet[Float](p_ret, val)
 		case String:
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case Vector2:
 			gd.UnsafeSet[Vector2](p_ret, val)
 		case Vector2i:
@@ -224,20 +225,27 @@ func slowCall(godot *gd.API, method reflect.Value, p_args gd.UnsafeArgs, p_ret g
 			gd.UnsafeSet[Color](p_ret, val)
 		case StringName:
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case NodePath:
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case RID:
 			gd.UnsafeSet[RID](p_ret, val)
 		case Object:
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val.AsPointer()))
+			mmm.End(val.AsPointer())
 		case Callable:
 			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case gd.Signal:
 			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case Dictionary:
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case Array:
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
+			mmm.End(val)
 		case PackedByteArray:
 			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
 		case PackedInt32Array:
