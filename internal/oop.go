@@ -3,7 +3,6 @@
 package gd
 
 import (
-	"fmt"
 	"reflect"
 
 	"runtime.link/mmm"
@@ -81,7 +80,6 @@ func (ptr Pointer) Pointer() uintptr {
 func (ptr Pointer) Free() {
 	var obj Object
 	obj.super = ptr
-	fmt.Println("Freeing object ")
 	mmm.API(ptr).Object.Destroy(obj)
 	mmm.End(obj.AsPointer())
 }
