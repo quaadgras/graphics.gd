@@ -20,8 +20,11 @@ be a named struct that embeds a [Class] field specifying the
 parent class to extend.
 
 	type MyClass struct {
-		Class[MyClass, Node2D]
+		Class[MyClass, Node2D] `gd:"MyClass"`
 	}
+
+The tag can be adjusted in order to change the name of the class
+within Godot.
 
 Use this in a main or init function to register your Go structs
 and they will become available within the Godot engine for use
@@ -41,7 +44,18 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
 
-	var className = godot.StringName(classType.Name())
+	// Support 'gd' tag for renaming the class within Godot.
+	var rename = classType.Name()
+	for i := 0; i < classType.NumField(); i++ {
+		field := classType.Field(i)
+		if field.Name == "Class" {
+			if val := field.Tag.Get("gd"); val != "" {
+				rename = val
+			}
+		}
+	}
+
+	var className = godot.StringName(rename)
 	var superName = godot.StringName(strings.TrimPrefix(superType.Name(), "class"))
 
 	godot.API.ClassDB.RegisterClass(godot.API.ExtensionToken, className, superName,
