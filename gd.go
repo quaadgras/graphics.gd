@@ -14,40 +14,6 @@ const (
 	W
 )
 
-// Class can be embedded inside of a struct to represent a new Class type.
-// The extended class will be available by calling the [Class.Super] method.
-type Class[T, S internal.IsClass] struct {
-	internal.Class[T, S]
-}
-
-// Context for ownership and a reference to the Godot API, apart from
-// its use as an ordinary [context.Context] to signal cancellation, this
-// value is not safe to use concurrently. Each goroutine should create
-// its own [Context] and use that instead.
-//
-//	newctx := gd.NewContext(oldctx.API())
-//
-// When a [Context] is freed, it will free all of the objects that were
-// created using it. A [Context] should not be used after free, as it
-// will be recycled and will cause values to be unexpectedly freed.
-//
-// When the context has been passed in as a function argument, always
-// assume that the [Context] will be freed when the function returns.
-// Classes can be moved between contexts using their [KeepAlive] method.
-type Context = internal.Context
-
-// Create a new instance of the given class, which should be an uninitialised
-// pointer to a value of that class. T must be a class from this package.
-func Create[T internal.PointerToClass](ctx Context, ptr T) T {
-	return internal.Create[T](ctx, ptr)
-}
-
-// Const can be used to retrieve a 'constant' value from a structured type.
-func Const[F func(T) T, T any](constant F) T {
-	var zero T
-	return constant(zero)
-}
-
 // NewVector2 constructs a new Vector2 from the given x and y.
 func NewVector2(x, y Float) Vector2 { return xy.NewVector2(x, y) }
 
@@ -96,12 +62,6 @@ func NewBasisScaledBy(scale Vector3) Basis { return xy.NewBasisScaledBy(scale) }
 // The axis must be a normalized vector.
 func NewBasisRotatedAround(axis Vector3, angle Radians) Basis {
 	return xy.NewBasisRotatedAround(axis, angle)
-}
-
-// As attempts to cast the given class to T, returning true
-// if the cast was successful.
-func As[T internal.IsClass](godot Context, class internal.IsClass) (T, bool) {
-	return internal.As[T](godot, class)
 }
 
 type (
