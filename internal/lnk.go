@@ -17,14 +17,12 @@ import (
 // care of this (and you won't need to call it yourself).
 func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	Godot.Instances = make(map[uintptr]any)
-	if level == GDExtensionInitializationLevelCore {
-		Godot.linkSingletons()
+	if level == GDExtensionInitializationLevelScene {
 		Godot.linkTypeset()
 		Godot.linkVariant()
 		Godot.linkUtility()
 		Godot.linkBuiltin()
-	}
-	if level == GDExtensionInitializationLevelScene {
+		Godot.linkSingletons()
 		Godot.linkMethods(false)
 	}
 	if level == GDExtensionInitializationLevelEditor {

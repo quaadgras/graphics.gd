@@ -1,1 +1,3 @@
 go.work
+/example/.godot/
+/example/bin/example.so

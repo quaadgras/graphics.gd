@@ -68,6 +68,12 @@ func useGodot() (string, error) {
 	if gopath == "" {
 		gopath = build.Default.GOPATH
 	}
+
+	// Use existing godot-4.2.1 if available.
+	if binary, err := exec.LookPath("godot-4.2.1"); err == nil {
+		return binary, nil
+	}
+
 	info, err := os.Stat(gopath + "/bin/godot-4.2.1")
 	if os.IsNotExist(err) {
 		switch runtime.GOOS {
