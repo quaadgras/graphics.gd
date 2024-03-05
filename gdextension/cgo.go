@@ -77,7 +77,7 @@ func loadExtension(lookupFunc, classes, configuration unsafe.Pointer) uint8 {
 	*init = internal.ExtensionInitialization[uintptr]{}
 	init.MinimumInitializationLevel = internal.GDExtensionInitializationLevelScene
 	init.Initialize.Set(func(userdata uintptr, level internal.GDExtensionInitializationLevel) {
-		godot.Init(level)
+		godot.Init(background, level)
 		if level == 2 {
 			main()
 		}

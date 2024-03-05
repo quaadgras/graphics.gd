@@ -15,14 +15,14 @@ import (
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
-func (Godot *API) Init(level GDExtensionInitializationLevel) {
+func (Godot *API) Init(static Context, level GDExtensionInitializationLevel) {
 	Godot.Instances = make(map[uintptr]any)
 	if level == GDExtensionInitializationLevelScene {
 		Godot.linkTypeset()
 		Godot.linkVariant()
 		Godot.linkUtility()
 		Godot.linkBuiltin()
-		Godot.linkSingletons()
+		Godot.linkSingletons(static)
 		Godot.linkMethods(false)
 	}
 	if level == GDExtensionInitializationLevelEditor {
@@ -30,9 +30,7 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	}
 }
 
-func (Godot *API) linkSingletons() {
-	static := NewContext(Godot) // FIXME free this?
-
+func (Godot *API) linkSingletons(static Context) {
 	rvalue := reflect.ValueOf(&Godot.Singletons).Elem()
 
 	for i := 0; i < rvalue.NumField(); i++ {
