@@ -4,6 +4,7 @@
 package gd
 
 import "unsafe"
+import gd "grow.graphics/gd/internal"
 import classdb "grow.graphics/gd/internal/classdb"
 
 type AESContext = classdb.AESContext 
@@ -547,7 +548,7 @@ type Range = classdb.Range
 type RayCast2D = classdb.RayCast2D 
 type RayCast3D = classdb.RayCast3D 
 type RectangleShape2D = classdb.RectangleShape2D 
-type RefCounted = classdb.RefCounted 
+type RefCounted = gd.RefCounted 
 type ReferenceRect = classdb.ReferenceRect 
 type ReflectionProbe = classdb.ReflectionProbe 
 type RegEx = classdb.RegEx 

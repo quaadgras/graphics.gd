@@ -4,6 +4,7 @@ package gd
 
 import (
 	"reflect"
+	"unsafe"
 
 	"runtime.link/mmm"
 )
@@ -62,7 +63,11 @@ func As[T IsClass](godot Context, class IsClass) (T, bool) {
 		rtype = rtype.Elem()
 	}
 	var classtag = godot.API.ClassDB.GetClassTag(godot.StringName(rtype.Name()))
-	godot.API.Object.CastTo(Context{Lifetime: mmm.Life(class.AsPointer()), API: godot.API}, class.AsObject(), classtag)
+	casted := godot.API.Object.CastTo(godot, class.AsObject(), classtag)
+	if mmm.Get(casted.AsPointer()) != 0 {
+		mmm.End(class.AsPointer()) // lifetime of the class has transferred to the return value.
+		return (*(*T)(unsafe.Pointer(&casted))), true
+	}
 	var zero T
 	return zero, false
 }
@@ -80,7 +85,21 @@ func (ptr Pointer) Pointer() uintptr {
 func (ptr Pointer) Free() {
 	var obj Object
 	obj.ptr = ptr
-	mmm.API(ptr).Object.Destroy(obj)
+
+	API := mmm.API(ptr)
+
+	ctx := newContext(API)
+	defer ctx.End()
+
+	// Important that we don't destroy RefCounted objects, instead
+	// they should be unreferenced instead.
+	ref := API.Object.CastTo(ctx, obj, API.refCountedClassTag)
+	if mmm.Get(ref.AsPointer()) != 0 {
+		(*(*RefCounted)(unsafe.Pointer(&ref))).Unreference()
+	} else {
+		API.Object.Destroy(obj)
+	}
+	mmm.End(ref.AsPointer())
 	mmm.End(obj.AsPointer())
 }
 

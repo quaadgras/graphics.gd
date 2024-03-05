@@ -129,6 +129,11 @@ func (Godot *API) linkMethods(editor bool) {
 }
 
 func (Godot *API) linkTypeset() {
+	tmp := newContext(Godot)
+	defer tmp.End()
+
+	Godot.refCountedClassTag = Godot.ClassDB.GetClassTag(tmp.StringName("RefCounted"))
+
 	Godot.linkTypesetCreation()
 	Godot.linkTypesetOperator()
 	Godot.linkTypesetDestruct()

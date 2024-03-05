@@ -169,6 +169,8 @@ type API struct {
 	ExtensionToken
 	cache
 
+	refCountedClassTag ClassTag
+
 	// extensions instances are mapped here.
 	Instances  map[uintptr]any
 	Singletons singletons
