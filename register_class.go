@@ -6,10 +6,8 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"unsafe"
 
 	gd "grow.graphics/gd/internal"
-	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
@@ -87,35 +85,6 @@ func convertName(fnName string) string {
 	return strings.Join(joins, "")
 }
 
-// injectDependenciesInto the given freshly allocated value, this
-// function makes sure any [Object] types are instantiated and
-// that any referenced singletons are injected.
-//
-// for node types, that implement Super().AsNode(), this function
-// will assert that any member nodes are children of the node on
-// ready.
-func injectDependenciesInto(godot Context, value reflect.Value) {
-	if value.CanAddr() && value.Kind() != reflect.Struct {
-		panic("gdextension.injectDependenciesInto: value must be an addressable struct")
-	}
-	localCtx := gd.NewContext(godot.API)
-	defer localCtx.End()
-
-	for i := 0; i < value.NumField(); i++ {
-		field := value.Type().Field(i)
-
-		// support private fields.
-		fieldValue := reflect.NewAt(field.Type, unsafe.Add(value.Addr().UnsafePointer(), field.Offset)).Interface()
-
-		container, ok := fieldValue.(gd.PointerToClass)
-		if ok && mmm.Get(container.AsPointer()) == 0 && field.Type.Implements(reflect.TypeOf([0]gd.Singleton{}).Elem()) {
-			var name = localCtx.StringName(strings.TrimPrefix(field.Type.Name(), "class"))
-			singleton := godot.API.Object.GetSingleton(localCtx, name)
-			container.SetPointer(mmm.Let[gd.Pointer](godot.Lifetime, godot.API, mmm.Get(singleton.AsPointer())))
-		}
-	}
-}
-
 type classImplementation struct {
 	Name  StringName
 	Super StringName
@@ -148,7 +117,6 @@ func (class classImplementation) CreateInstance() Object {
 	var super = class.Godot.ClassDB.ConstructObject(ctx, class.Super)
 	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.End(super.AsPointer())))
 	var value = reflect.New(class.Type)
-	injectDependenciesInto(ctx, value.Elem())
 	value.Interface().(gd.PointerToClass).SetPointer(
 		mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.Get(super.AsPointer())))
 	class.Godot.Object.SetInstance(super, class.Name, &instanceImplementation{
@@ -164,19 +132,7 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	ctx := gd.NewContext(class.Godot)
 	defer ctx.End()
 
-	var Engine Object
-	Engine.SetPointer(class.Godot.Object.GetSingleton(ctx, ctx.StringName("Engine")).AsPointer())
-
-	is_editor_hint := func() bool {
-		var selfPtr = Engine.AsPointer()
-		var frame = call.New()
-		var r_ret = call.Ret[bool](frame)
-		mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Engine.Bind_is_editor_hint, Engine.AsObject(), frame.Array(0), r_ret.Uintptr())
-		var ret = r_ret.Get()
-		frame.Free()
-		return ret
-	}
-	if is_editor_hint() {
+	if Engine(ctx).IsEditorHint() {
 		return nil
 	}
 
@@ -186,6 +142,10 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	}
 	var vtype = virtual.Type().In(0)
 	GoName := convertName(name.String())
+
+	if GoName == "Ready" {
+		return nil
+	}
 
 	method, ok := reflect.PtrTo(class.Type).MethodByName(GoName)
 	if !ok {
@@ -307,22 +267,36 @@ func (instance *instanceImplementation) ready() {
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		var field = rvalue.Type().Field(i)
-		var value = reflect.NewAt(field.Type, unsafe.Add(rvalue.Field(i).Addr().UnsafePointer(), field.Offset)).Interface() // support unexported fields.
-		if field.Name == "Class" {
+		if !field.IsExported() || field.Name == "Class" {
 			continue
 		}
-		class, ok := value.(interface {
+		var (
+			value  = rvalue.Field(i).Addr().Interface()
+			rvalue = reflect.ValueOf(value)
+		)
+		if rvalue.Elem().Kind() == reflect.Pointer {
+			rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
+			value = rvalue.Elem().Interface()
+		}
+		type isNode interface {
 			gd.PointerToClass
 
 			AsNode() Node
-		})
+		}
+		class, ok := value.(isNode)
 		if !ok {
 			continue
 		}
 		path := tmp.String(field.Name).NodePath(tmp)
 		if !parent.HasNode(path) {
 			child := instance.Context.API.ClassDB.ConstructObject(instance.Context, tmp.StringName(classNameOf(field.Type)))
-			class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.Get(child.AsPointer())))
+			native, ok := instance.Context.API.Instances[mmm.Get(child.AsPointer())]
+			if ok {
+				rvalue.Elem().Set(reflect.ValueOf(native))
+				class = native.(isNode)
+			} else {
+				class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.Get(child.AsPointer())))
+			}
 			child.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(child.AsPointer())))
 			var mode NodeInternalMode
 			if !field.IsExported() {
@@ -337,6 +311,20 @@ func (instance *instanceImplementation) ready() {
 		if name := node.AsObject().GetClass(tmp).String(); name != classNameOf(field.Type) {
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
-		class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(node.AsPointer())))
+		ref, native := tmp.API.Instances[mmm.Get(node.AsPointer())]
+		if native {
+			rvalue.Elem().Set(reflect.ValueOf(ref))
+			mmm.End(node.AsPointer())
+		} else {
+			class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(node.AsPointer())))
+		}
+	}
+	if !Engine(tmp).IsEditorHint() {
+		impl, ok := instance.Value.(interface {
+			Ready(Context)
+		})
+		if ok {
+			impl.Ready(tmp)
+		}
 	}
 }

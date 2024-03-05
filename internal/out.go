@@ -2325,6 +2325,44 @@ type typeset struct {
 		PackedColorArray   func(uintptr)
 	}
 }
+type singletons struct {
+	AudioServer             StringName
+	CameraServer            StringName
+	ClassDB                 StringName
+	DisplayServer           StringName
+	EditorInterface         StringName
+	Engine                  StringName
+	EngineDebugger          StringName
+	GDExtensionManager      StringName
+	Geometry2D              StringName
+	Geometry3D              StringName
+	IP                      StringName
+	Input                   StringName
+	InputMap                StringName
+	JavaClassWrapper        StringName
+	JavaScriptBridge        StringName
+	Marshalls               StringName
+	NavigationMeshGenerator StringName
+	NavigationServer2D      StringName
+	NavigationServer3D      StringName
+	OS                      StringName
+	Performance             StringName
+	PhysicsServer2D         StringName
+	PhysicsServer2DManager  StringName
+	PhysicsServer3D         StringName
+	PhysicsServer3DManager  StringName
+	ProjectSettings         StringName
+	RenderingServer         StringName
+	ResourceLoader          StringName
+	ResourceSaver           StringName
+	ResourceUID             StringName
+	TextServerManager       StringName
+	ThemeDB                 StringName
+	Time                    StringName
+	TranslationServer       StringName
+	WorkerThreadPool        StringName
+	XRServer                StringName
+}
 type methods struct {
 	AESContext struct {
 		Bind_start        MethodBind `hash:"3122411423"`

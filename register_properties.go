@@ -108,6 +108,11 @@ func classNameOf(rtype reflect.Type) string {
 		return classNameOf(rtype.Elem())
 	}
 	if rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
+		if rtype.Field(0).Anonymous {
+			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
+				return rename
+			}
+		}
 		if rtype.Name() == "" && rtype.Field(0).Anonymous {
 			return rtype.Field(0).Name
 		}

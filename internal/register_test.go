@@ -25,4 +25,10 @@ func TestRegister(t *testing.T) {
 	if tag := godot.API.ClassDB.GetClassTag(godot.StringName("SimpleClass")); tag == 0 {
 		t.Fail()
 	}
+
+	class := gd.Create(godot, new(SimpleClass))
+	if class.AsObject().GetClass(godot).String() != "SimpleClass" {
+		t.Fail()
+	}
+	class.Super().AsNode().SetName(godot.String("SimpleClass"))
 }

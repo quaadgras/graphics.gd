@@ -79,7 +79,7 @@ func (ptr Pointer) Pointer() uintptr {
 
 func (ptr Pointer) Free() {
 	var obj Object
-	obj.super = ptr
+	obj.ptr = ptr
 	mmm.API(ptr).Object.Destroy(obj)
 	mmm.End(obj.AsPointer())
 }

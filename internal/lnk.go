@@ -18,13 +18,28 @@ import (
 func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	Godot.Instances = make(map[uintptr]any)
 	if level == GDExtensionInitializationLevelCore {
+		Godot.linkSingletons()
 		Godot.linkTypeset()
 		Godot.linkVariant()
 		Godot.linkUtility()
 		Godot.linkBuiltin()
 	}
+	if level == GDExtensionInitializationLevelScene {
+		Godot.linkMethods(false)
+	}
 	if level == GDExtensionInitializationLevelEditor {
-		Godot.linkMethods()
+		Godot.linkMethods(true)
+	}
+}
+
+func (Godot *API) linkSingletons() {
+	static := NewContext(Godot) // FIXME free this?
+
+	rvalue := reflect.ValueOf(&Godot.Singletons).Elem()
+
+	for i := 0; i < rvalue.NumField(); i++ {
+		field := rvalue.Type().Field(i)
+		rvalue.Field(i).Set(reflect.ValueOf(static.StringName(field.Name)))
 	}
 }
 
@@ -75,7 +90,7 @@ func (Godot *API) linkBuiltin() {
 // linkMethods, each field of cache.methods is a struct named after
 // the class it represents. Each field of that struct needs to be
 // filled in with a [MethodBind].
-func (Godot *API) linkMethods() {
+func (Godot *API) linkMethods(editor bool) {
 	ctx := NewContext(Godot)
 	defer ctx.End()
 
@@ -83,11 +98,25 @@ func (Godot *API) linkMethods() {
 	for i := 0; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
 		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
+
+		isEditorMethod := false
+		if strings.HasPrefix(class.Name, "Editor") {
+			isEditorMethod = true
+		}
+		switch class.Name {
+		case "FileSystemDock", "ScriptCreateDialog", "ScriptEditor", "ScriptEditorBase":
+			isEditorMethod = true
+		}
+		if editor != isEditorMethod {
+			continue
+		}
+
 		for j := 0; j < class.Type.NumField(); j++ {
 			method := class.Type.Field(j)
 			method.Name = strings.TrimSuffix(method.Name, "_")
 			method.Name = strings.TrimPrefix(method.Name, "Bind_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
+
 			className := ctx.StringName(class.Name)
 			methodName := ctx.StringName(method.Name)
 			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)

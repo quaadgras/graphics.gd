@@ -98,6 +98,7 @@ of a project. Don't forget to write tests!
 * Godot Utility Function -> gd.Context.{pascal(UtilityName)} OR gd.{pascal(UtilityName)} (pure)
 * Godot Enum             -> gd.{EnumName}
 * Godot Enum Value       -> gd.{EnumName}{EnumValueName}
+* Godot Singleton 	     -> gd.{ClassName}(gd.Context) // function returns the singleton, they cannot be stored.
 ```
 
 ## Performance
@@ -107,7 +108,11 @@ It's feasible to write high performance code using this module, keep to Godot ty
 Benchmarking shows method calls from Go -> Godot do not allocate in practice. 
 
 Allocations are currently unavoidable for GDScript -> Go calls (but not 
-for class overrides such as `Process`, which should be allocation free).
+for class virtual method overrides such as `Ready` or `Process`, which 
+should be allocation free).
+
+We've got some ideas to reduce allocations for GDScript -> Go calls, when
+arguments fit entirely within registers. TBA.
 
 ## Examples
 

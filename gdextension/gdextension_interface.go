@@ -1458,7 +1458,7 @@ func linkCGO(API *gd.API) {
 	API.XMLParser.OpenBuffer = func(x gd.Object, b []byte) error {
 		var pin runtime.Pinner
 		pin.Pin(&b[0])
-		mmm.Pin[pinner](x.Pin().Lifetime, &pin, [0]uintptr{})
+		mmm.Pin[pinner](mmm.Life(x.AsPointer()), &pin, [0]uintptr{})
 
 		var frame = call.New()
 		var p_self = call.Arg(frame, mmm.Get(x.AsPointer()))

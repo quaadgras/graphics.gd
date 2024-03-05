@@ -10561,7 +10561,16 @@ func (self PackedColorArray) Count(value Color) Int {
 }
 
 type ObjectConnectFlags int64
-type Object struct{ Class[Object, Pointer] }
+type Object struct {
+	_   [0]*Object
+	ptr Pointer
+}
+
+//go:nosplit
+func (self Object) AsPointer() Pointer { return self.ptr }
+
+//go:nosplit
+func (self *Object) SetPointer(ptr Pointer) { self.ptr = ptr }
 
 /*
 Returns the object's built-in class name, as a [String]. See also [method is_class].
@@ -11568,6 +11577,6 @@ func (self Object) CancelFree() {
 func (self Object) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return VirtualByName(self.Super(), name)
+		return reflect.Value{}
 	}
 }

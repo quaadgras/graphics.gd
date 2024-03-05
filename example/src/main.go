@@ -60,8 +60,6 @@ type ExtendedNode struct {
 	gd.Class[ExtendedNode, gd.Node2D]
 
 	StringField gd.String
-
-	engine gd.Engine
 }
 
 func (e *ExtendedNode) Ready(godot gd.Context) {
@@ -74,7 +72,7 @@ func (e *ExtendedNode) Ready(godot gd.Context) {
 	var obj = gd.Create(godot, new(gd.Object))
 	fmt.Println(obj.GetClass(godot).String())
 
-	fmt.Println(e.engine.GetSingletonList(godot))
+	fmt.Println(gd.Engine(godot).GetSingletonList(godot))
 	fmt.Println("Scene is ready!")
 
 	fmt.Println("sin=", godot.Sin(1.5))

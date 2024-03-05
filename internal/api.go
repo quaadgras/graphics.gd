@@ -163,11 +163,15 @@ type API struct {
 
 	GetLibraryPath func(Context, ExtensionToken) String
 
+	// The following fields are primarily reserved for internal use within the gd module,
+	// no backwards compatibility is guaranteed for these fields.
+
 	ExtensionToken
 	cache
 
 	// extensions instances are mapped here.
-	Instances map[uintptr]any
+	Instances  map[uintptr]any
+	Singletons singletons
 }
 
 type Packed interface {
@@ -324,6 +328,11 @@ type ClassInterface interface {
 	IsExposed() bool
 
 	CreateInstance() Object
+
+	// ReloadInstance is used to reload an existing object instance
+	// when the Go shared library is reloaded from the editor.
+	//ReloadInstance(Object) ObjectInterface
+
 	GetVirtual(StringName) any
 }
 
