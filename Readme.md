@@ -98,7 +98,7 @@ of a project. Don't forget to write tests!
 * Godot Utility Function -> gd.Context.{pascal(UtilityName)} OR gd.{pascal(UtilityName)} (pure)
 * Godot Enum             -> gd.{EnumName}
 * Godot Enum Value       -> gd.{EnumName}{EnumValueName}
-* Godot Singleton 	     -> gd.{ClassName}(gd.Context) // function returns the singleton, they cannot be stored.
+* Godot Singleton        -> gd.{ClassName}(gd.Context) // function returns the singleton, they cannot be stored.
 ```
 
 ## Performance
