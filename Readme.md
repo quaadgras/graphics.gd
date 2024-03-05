@@ -1,6 +1,6 @@
 # Godot 4.2.1 + Go [![Go Reference](https://pkg.go.dev/badge/grow.graphics/gd.svg)](https://pkg.go.dev/grow.graphics/gd)
 
-This module provides a safe and simple way to work with Godot 4.2.1, in Go.
+This module provides a safe and simple way to work with Godot 4.2.1, in Go via the GDExtension interface.
 
 You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
