@@ -142,6 +142,8 @@ To run the go tests for this module `cd internal && gd test`.
 * No support for script extensions.
 * 64bit support only.
 * Not tested on Windows.
+* No planned support for Web export or proprietary consoles.
+* Android/MetaQuest not working right now (support is planned).
 
 ## See Also
 
