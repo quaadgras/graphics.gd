@@ -1797,6 +1797,13 @@ print("User {} is {}.".format([42, "Godot"], "{}"))
 print("User {id} is {name}.".format([["id", 42], ["name", "Godot"]]))
 [/codeblock]
 See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.html]GDScript format string[/url] tutorial.
+[b]Note:[/b] The replacement of placeholders is not done all at once, instead each placeholder is replaced in the order they are passed, this means that if one of the replacement strings contains a key it will also be replaced. This can be very powerful, but can also cause unexpected results if you are not careful. If you do not need to perform replacement in the replacement strings, make sure your replacements do not contain placeholders to ensure reliable results.
+[codeblock]
+print("{0} {1}".format(["{1}", "x"]))                       # Prints "x x".
+print("{0} {1}".format(["x", "{0}"]))                       # Prints "x {0}".
+print("{foo} {bar}".format({"foo": "{bar}", "bar": "baz"})) # Prints "baz baz".
+print("{foo} {bar}".format({"bar": "baz", "foo": "{bar}"})) # Prints "{bar} baz".
+[/codeblock]
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
 //go:nosplit
@@ -1918,13 +1925,14 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 [gdscript]
 "move_local_x".capitalize()   # Returns "Move Local X"
 "sceneFile_path".capitalize() # Returns "Scene File Path"
+"2D, FPS, PNG".capitalize()   # Returns "2d, Fps, Png"
 [/gdscript]
 [csharp]
 "move_local_x".Capitalize();   // Returns "Move Local X"
 "sceneFile_path".Capitalize(); // Returns "Scene File Path"
+"2D, FPS, PNG".Capitalize();   // Returns "2d, Fps, Png"
 [/csharp]
 [/codeblocks]
-[b]Note:[/b] This method not the same as the default appearance of properties in the Inspector dock, as it does not capitalize acronyms ([code]"2D"[/code], [code]"FPS"[/code], [code]"PNG"[/code], etc.) as you may expect.
 */
 //go:nosplit
 func (self String) Capitalize(ctx Context) String {
@@ -1970,6 +1978,19 @@ func (self String) ToPascalCase(ctx Context) String {
 
 /*
 Returns the string converted to [code]snake_case[/code].
+[b]Note:[/b] Numbers followed by a [i]single[/i] letter are not separated in the conversion to keep some words (such as "2D") together.
+[codeblocks]
+[gdscript]
+"Node2D".to_snake_case()               # Returns "node_2d"
+"2nd place".to_snake_case()            # Returns "2_nd_place"
+"Texture3DAssetFolder".to_snake_case() # Returns "texture_3d_asset_folder"
+[/gdscript]
+[csharp]
+"Node2D".ToSnakeCase();               // Returns "node_2d"
+"2nd place".ToSnakeCase();            // Returns "2_nd_place"
+"Texture3DAssetFolder".ToSnakeCase(); // Returns "texture_3d_asset_folder"
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self String) ToSnakeCase(ctx Context) String {
@@ -2113,7 +2134,7 @@ func (self String) Join(ctx Context, parts PackedStringArray) String {
 }
 
 /*
-Returns the string converted to uppercase.
+Returns the string converted to [code]UPPERCASE[/code].
 */
 //go:nosplit
 func (self String) ToUpper(ctx Context) String {
@@ -2128,7 +2149,7 @@ func (self String) ToUpper(ctx Context) String {
 }
 
 /*
-Returns the string converted to lowercase.
+Returns the string converted to [code]lowercase[/code].
 */
 //go:nosplit
 func (self String) ToLower(ctx Context) String {
@@ -2360,7 +2381,7 @@ func (self String) Dedent(ctx Context) String {
 
 /*
 Returns the 32-bit hash value representing the string's contents.
-[b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, strings with different hash values are guaranteed to be different.
+[b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the contrary, strings with different hash values are guaranteed to be different.
 */
 //go:nosplit
 func (self String) Hash() Int {
@@ -3187,8 +3208,8 @@ Converts the given [param number] to a string representation, in scientific nota
 [codeblocks]
 [gdscript]
 var n = -5.2e8
-print(n)                       # Prints -520000000
-print(String.NumScientific(n)) # Prints -5.2e+08
+print(n)                        # Prints -520000000
+print(String.num_scientific(n)) # Prints -5.2e+08
 [/gdscript]
 [csharp]
 // This method is not implemented in C#.
@@ -3889,13 +3910,14 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 [gdscript]
 "move_local_x".capitalize()   # Returns "Move Local X"
 "sceneFile_path".capitalize() # Returns "Scene File Path"
+"2D, FPS, PNG".capitalize()   # Returns "2d, Fps, Png"
 [/gdscript]
 [csharp]
 "move_local_x".Capitalize();   // Returns "Move Local X"
 "sceneFile_path".Capitalize(); // Returns "Scene File Path"
+"2D, FPS, PNG".Capitalize();   // Returns "2d, Fps, Png"
 [/csharp]
 [/codeblocks]
-[b]Note:[/b] This method not the same as the default appearance of properties in the Inspector dock, as it does not capitalize acronyms ([code]"2D"[/code], [code]"FPS"[/code], [code]"PNG"[/code], etc.) as you may expect.
 */
 //go:nosplit
 func (self StringName) Capitalize(ctx Context) String {
@@ -3941,6 +3963,19 @@ func (self StringName) ToPascalCase(ctx Context) String {
 
 /*
 Returns the string converted to [code]snake_case[/code].
+[b]Note:[/b] Numbers followed by a [i]single[/i] letter are not separated in the conversion to keep some words (such as "2D") together.
+[codeblocks]
+[gdscript]
+"Node2D".to_snake_case()               # Returns "node_2d"
+"2nd place".to_snake_case()            # Returns "2_nd_place"
+"Texture3DAssetFolder".to_snake_case() # Returns "texture_3d_asset_folder"
+[/gdscript]
+[csharp]
+"Node2D".ToSnakeCase();               // Returns "node_2d"
+"2nd place".ToSnakeCase();            // Returns "2_nd_place"
+"Texture3DAssetFolder".ToSnakeCase(); // Returns "texture_3d_asset_folder"
+[/csharp]
+[/codeblocks]
 */
 //go:nosplit
 func (self StringName) ToSnakeCase(ctx Context) String {
@@ -4084,7 +4119,7 @@ func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 }
 
 /*
-Returns the string converted to uppercase.
+Returns the string converted to [code]UPPERCASE[/code].
 */
 //go:nosplit
 func (self StringName) ToUpper(ctx Context) String {
@@ -4099,7 +4134,7 @@ func (self StringName) ToUpper(ctx Context) String {
 }
 
 /*
-Returns the string converted to lowercase.
+Returns the string converted to [code]lowercase[/code].
 */
 //go:nosplit
 func (self StringName) ToLower(ctx Context) String {
@@ -5139,7 +5174,7 @@ func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 
 /*
 Returns the 32-bit hash value representing the string's contents.
-[b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, strings with different hash values are guaranteed to be different.
+[b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the contrary, strings with different hash values are guaranteed to be different.
 */
 //go:nosplit
 func (self StringName) Hash() Int {
@@ -5587,6 +5622,7 @@ Calls the method represented by this [Callable] in deferred mode, i.e. at the en
 func _ready():
     grab_focus.call_deferred()
 [/codeblock]
+[b]Note:[/b] Deferred calls are processed at idle time. Idle time happens mainly at the end of process and physics frames. In it, deferred calls will be run until there are none left, which means you can defer calls from other deferred calls and they'll still be run in the current idle time cycle. This means you should not call a method deferred from itself (or from a method called by it), as this causes infinite recursion the same way as if you had called the method directly.
 See also [method Object.call_deferred].
 */
 //go:nosplit
@@ -6243,6 +6279,7 @@ func (self Array) AppendArray(array Array) {
 
 /*
 Resizes the array to contain a different number of elements. If the array size is smaller, elements are cleared, if bigger, new elements are [code]null[/code]. Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
+Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 [b]Note:[/b] This method acts in-place and doesn't return a modified array.
 */
 //go:nosplit
@@ -6525,7 +6562,7 @@ func (self Array) PopFront(ctx Context) Variant {
 }
 
 /*
-Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Leaves the array untouched and returns [code]null[/code] if the array is empty or if it's accessed out of bounds. An error message is printed when the array is accessed out of bounds, but not when the array is empty.
+Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Leaves the array unchanged and returns [code]null[/code] if the array is empty or if it's accessed out of bounds. An error message is printed when the array is accessed out of bounds, but not when the array is empty.
 [b]Note:[/b] On large arrays, this method can be slower than [method pop_back] as it will reindex the array's elements that are located after the removed element. The larger the array and the lower the index of the removed element, the slower [method pop_at] will be.
 */
 //go:nosplit
@@ -6625,6 +6662,11 @@ func (self Array) Shuffle() {
 
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[codeblock]
+var array = ["a", "b", "c", "c", "d", "e"]
+print(array.bsearch("c", true))  # Prints 2, at the first matching element.
+print(array.bsearch("c", false)) # Prints 4, after the last matching element, pointing to "d".
+[/codeblock]
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
@@ -6643,6 +6685,7 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search and a custom comparison method. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array. The custom method receives two arguments (an element from the array and the value searched for) and must return [code]true[/code] if the first argument is less than the second, and return [code]false[/code] otherwise.
+[b]Note:[/b] The custom method must accept the two arguments in any order, you cannot rely on that the first argument will always be from the array.
 [b]Note:[/b] Calling [method bsearch_custom] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
@@ -6930,7 +6973,7 @@ func (self Array) IsSameTyped(array Array) bool {
 }
 
 /*
-Returns the [enum Variant.Type] constant for a typed array. If the [Array] is not typed, returns [constant TYPE_NIL].
+Returns the built-in type of the typed array as a [enum Variant.Type] constant. If the array is not typed, returns [constant TYPE_NIL].
 */
 //go:nosplit
 func (self Array) GetTypedBuiltin() Int {
@@ -6945,7 +6988,7 @@ func (self Array) GetTypedBuiltin() Int {
 }
 
 /*
-Returns a class name of a typed [Array] of type [constant TYPE_OBJECT].
+Returns the [b]native[/b] class name of the typed array if the built-in type is [constant TYPE_OBJECT]. Otherwise, this method returns an empty string.
 */
 //go:nosplit
 func (self Array) GetTypedClassName(ctx Context) StringName {
@@ -6960,7 +7003,7 @@ func (self Array) GetTypedClassName(ctx Context) StringName {
 }
 
 /*
-Returns the script associated with a typed array tied to a class name.
+Returns the script associated with the typed array. This method returns a [Script] instance or [code]null[/code].
 */
 //go:nosplit
 func (self Array) GetTypedScript(ctx Context) Variant {
@@ -7139,7 +7182,7 @@ func (self PackedByteArray) Fill(value Int) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedByteArray) Resize(new_size Int) Int {
@@ -7429,6 +7472,7 @@ func (self PackedByteArray) Compress(ctx Context, compression_mode Int) PackedBy
 
 /*
 Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_size] to the size of the uncompressed data. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
+[b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
 func (self PackedByteArray) Decompress(ctx Context, buffer_size Int, compression_mode Int) PackedByteArray {
@@ -7448,6 +7492,7 @@ func (self PackedByteArray) Decompress(ctx Context, buffer_size Int, compression
 Returns a new [PackedByteArray] with the data decompressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants. [b]This method only accepts brotli, gzip, and deflate compression modes.[/b]
 This method is potentially slower than [method decompress], as it may have to re-allocate its output buffer multiple times while decompressing, whereas [method decompress] knows it's output buffer size from the beginning.
 GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a small compressed payload to decompress to a potentially very large output. To guard against this, you may provide a maximum size this function is allowed to allocate in bytes via [param max_output_size]. Passing -1 will allow for unbounded output. If any positive value is passed, and the decompression exceeds that amount in bytes, then an error will be returned.
+[b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
 func (self PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, compression_mode Int) PackedByteArray {
@@ -8078,7 +8123,7 @@ func (self PackedInt32Array) Fill(value Int) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedInt32Array) Resize(new_size Int) Int {
@@ -8403,7 +8448,7 @@ func (self PackedInt64Array) Fill(value Int) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedInt64Array) Resize(new_size Int) Int {
@@ -8728,7 +8773,7 @@ func (self PackedFloat32Array) Fill(value Float) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedFloat32Array) Resize(new_size Int) Int {
@@ -9059,7 +9104,7 @@ func (self PackedFloat64Array) Fill(value Float) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedFloat64Array) Resize(new_size Int) Int {
@@ -9390,7 +9435,7 @@ func (self PackedStringArray) Fill(value String) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedStringArray) Resize(new_size Int) Int {
@@ -9714,7 +9759,7 @@ func (self PackedVector2Array) Fill(value Vector2) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedVector2Array) Resize(new_size Int) Int {
@@ -10044,7 +10089,7 @@ func (self PackedVector3Array) Fill(value Vector3) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedVector3Array) Resize(new_size Int) Int {
@@ -10374,7 +10419,7 @@ func (self PackedColorArray) Fill(value Color) {
 }
 
 /*
-Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
 //go:nosplit
 func (self PackedColorArray) Resize(new_size Int) Int {
@@ -10628,7 +10673,7 @@ print(node.global_scale) # Prints (8, 2.5)
 [/gdscript]
 [csharp]
 var node = new Node2D();
-node.Set("global_scale", new Vector2(8, 2.5));
+node.Set(Node2D.PropertyName.GlobalScale, new Vector2(8, 2.5));
 GD.Print(node.GlobalScale); // Prints Vector2(8, 2.5)
 [/csharp]
 [/codeblocks]
@@ -10656,7 +10701,7 @@ var a = node.get("rotation") # a is 1.5
 [csharp]
 var node = new Node2D();
 node.Rotation = 1.5f;
-var a = node.Get("rotation"); // a is 1.5
+var a = node.Get(Node2D.PropertyName.Rotation); // a is 1.5
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
@@ -11089,7 +11134,7 @@ func (self Object) Call(ctx Context, method StringName) Variant {
 
 /*
 Calls the [param method] on the object during idle time. Always returns null, [b]not[/b] the method's result.
-Idle time happens mainly at the end of process and physics frames. In it, deferred calls will be run until there are none left, which means you can defer calls from other deferred calls and they'll still be run in the current idle time cycle. If not done carefully, this can result in infinite recursion without causing a stack overflow, which will hang the game similarly to an infinite loop.
+Idle time happens mainly at the end of process and physics frames. In it, deferred calls will be run until there are none left, which means you can defer calls from other deferred calls and they'll still be run in the current idle time cycle. This means you should not call a method deferred from itself (or from a method called by it), as this causes infinite recursion the same way as if you had called the method directly.
 This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
 [codeblocks]
 [gdscript]
@@ -11132,21 +11177,21 @@ Assigns [param value] to the given [param property], at the end of the current f
 var node = Node2D.new()
 add_child(node)
 
-node.rotation = 45.0
-node.set_deferred("rotation", 90.0)
-print(node.rotation) # Prints 45.0
+node.rotation = 1.5
+node.set_deferred("rotation", 3.0)
+print(node.rotation) # Prints 1.5
 
 await get_tree().process_frame
-print(node.rotation) # Prints 90.0
+print(node.rotation) # Prints 3.0
 [/gdscript]
 [csharp]
 var node = new Node2D();
-node.Rotation = 45f;
-node.SetDeferred("rotation", 90f);
-GD.Print(node.Rotation); // Prints 45.0
+node.Rotation = 1.5f;
+node.SetDeferred(Node2D.PropertyName.Rotation, 3f);
+GD.Print(node.Rotation); // Prints 1.5
 
 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-GD.Print(node.Rotation); // Prints 90.0
+GD.Print(node.Rotation); // Prints 3.0
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.

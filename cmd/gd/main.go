@@ -69,17 +69,17 @@ func useGodot() (string, error) {
 		gopath = build.Default.GOPATH
 	}
 
-	// Use existing godot-4.2.1 if available.
-	if binary, err := exec.LookPath("godot-4.2.1"); err == nil {
+	// Use existing godot-4.2.2 if available.
+	if binary, err := exec.LookPath("godot-4.2.2"); err == nil {
 		return binary, nil
 	}
 
-	info, err := os.Stat(gopath + "/bin/godot-4.2.1")
+	info, err := os.Stat(gopath + "/bin/godot-4.2.2")
 	if os.IsNotExist(err) {
 		switch runtime.GOOS {
 		case "linux":
-			fmt.Println("gd: downloading Godot v4.2.1 stable for linux")
-			resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/4.2.1-stable/Godot_v4.2.1-stable_linux.x86_64.zip")
+			fmt.Println("gd: downloading Godot v4.2.2 stable for linux")
+			resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip")
 			if err != nil {
 				return "", err
 			}
@@ -95,12 +95,12 @@ func useGodot() (string, error) {
 			if err != nil {
 				return "", err
 			}
-			inZip, err := archive.Open("Godot_v4.2.1-stable_linux.x86_64")
+			inZip, err := archive.Open("Godot_v4.2.2-stable_linux.x86_64")
 			if err != nil {
 				return "", err
 			}
 			defer inZip.Close()
-			file, err := os.Create(gopath + "/bin/godot-4.2.1")
+			file, err := os.Create(gopath + "/bin/godot-4.2.2")
 			if err != nil {
 				return "", err
 			}
@@ -114,13 +114,14 @@ func useGodot() (string, error) {
 		}
 	} else if err != nil {
 		return "", err
-	}
-	if info.Mode()&0111 == 0 {
-		if err := os.Chmod(gopath+"/bin/godot-4.2.1", 0755); err != nil {
-			return "", err
+	} else {
+		if info.Mode()&0111 == 0 {
+			if err := os.Chmod(gopath+"/bin/godot-4.2.2", 0755); err != nil {
+				return "", err
+			}
 		}
 	}
-	return gopath + "/bin/godot-4.2.1", nil
+	return gopath + "/bin/godot-4.2.2", nil
 }
 
 func wrap() error {
@@ -129,7 +130,7 @@ func wrap() error {
 	}
 	godot, err := useGodot()
 	if err != nil {
-		return fmt.Errorf("gd requires Godot to be installed as a binary at $GOPATH/bin/godot-4.2.1: %w", err)
+		return fmt.Errorf("gd requires Godot to be installed as a binary at $GOPATH/bin/godot-4.2.2: %w", err)
 	}
 
 	wd, err := os.Getwd()

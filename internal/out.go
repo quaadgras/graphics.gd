@@ -12094,6 +12094,7 @@ type methods struct {
 		Bind_canvas_item_set_use_parent_material                       MethodBind `hash:"1265174801"`
 		Bind_canvas_item_set_visibility_notifier                       MethodBind `hash:"3568945579"`
 		Bind_canvas_item_set_canvas_group_mode                         MethodBind `hash:"3973586316"`
+		Bind_debug_canvas_item_get_rect                                MethodBind `hash:"624227424"`
 		Bind_canvas_light_create                                       MethodBind `hash:"529393457"`
 		Bind_canvas_light_attach_to_canvas                             MethodBind `hash:"395945892"`
 		Bind_canvas_light_set_enabled                                  MethodBind `hash:"1265174801"`
