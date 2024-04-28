@@ -102,14 +102,11 @@ func (class classImplementation) IsVirtual() bool {
 }
 
 func (class classImplementation) IsAbstract() bool {
-	if class.Type.Kind() == reflect.Interface {
-		return true
-	}
-	return false
+	return class.Type.Kind() == reflect.Interface
 }
 
 func (class classImplementation) IsExposed() bool {
-	return true
+	return true // TODO return false if the Go type is not exported.
 }
 
 func (class classImplementation) CreateInstance() Object {
@@ -125,6 +122,32 @@ func (class classImplementation) CreateInstance() Object {
 		Value:   value.Interface(),
 	})
 	class.Godot.Instances[mmm.Get(super.AsPointer())] = value.Interface()
+
+	value = value.Elem()
+
+	// TODO cache this check
+	for i := 0; i < value.NumField(); i++ {
+		var field = value.Type().Field(i)
+		if !field.IsExported() || field.Name == "Class" {
+			continue
+		}
+		var (
+			rvalue = value.Field(i).Addr()
+		)
+		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
+		if setter, ok := rvalue.Interface().(isSignal); ok {
+			signal := ctx.SignalOf(ctx, super, ctx.StringName(field.Name))
+			scoped := mmm.Let[gd.Signal](ctx.Lifetime, ctx.API, mmm.End(signal))
+			setter.setSignal(scoped)
+			emit := rvalue.Elem().FieldByName("Emit")
+			fnType := emit.Type()
+			emit.Set(reflect.MakeFunc(fnType, func(args []reflect.Value) (results []reflect.Value) {
+				scoped.Emit() // FIXME need support for variadic arguments now.
+				return nil
+			}))
+		}
+	}
+
 	return super
 }
 
@@ -142,12 +165,10 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	}
 	var vtype = virtual.Type().In(0)
 	GoName := convertName(name.String())
-
 	if GoName == "Ready" {
-		return nil
+		return nil // special case, as we override this method for all node types, so that we can assert the scene tree.
 	}
-
-	method, ok := reflect.PtrTo(class.Type).MethodByName(GoName)
+	method, ok := reflect.PointerTo(class.Type).MethodByName(GoName)
 	if !ok {
 		return nil
 	}
@@ -255,8 +276,8 @@ func (instance *instanceImplementation) Free() {
 // ready is responsible for asserting the scene tree for struct members that implement
 // Super().AsNode() and asserting that these nodes are added as children to the Super.
 //
-// TODO this could be pre-compiled for a given [Register] type and cached in order to
-// avoid any use of reflection at instantiation time.
+// TODO this could be partially pre-compiled for a given [Register] type and cached in
+// order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
 	tmp := gd.NewContext(instance.Context.API)
 	defer tmp.End()

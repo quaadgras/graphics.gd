@@ -51,18 +51,6 @@ func (c Callable) Free() {
 	frame.Free()
 }
 
-type Signal mmm.Pointer[API, Signal, [2]uintptr]
-
-type IsSignal interface{ signal() }
-
-func (s Signal) signal() {}
-
-func (s Signal) Free() {
-	var frame = call.New()
-	mmm.API(s).typeset.destruct.Signal(call.Arg(frame, mmm.End(s)).Uintptr())
-	frame.Free()
-}
-
 type Dictionary mmm.Pointer[API, Dictionary, uintptr]
 
 func (d Dictionary) Index(ctx Context, key Variant) Variant {

@@ -75,6 +75,8 @@ type (
 	EulerOrder = xy.EulerOrder
 )
 
+type privateSignal = internal.Signal
+
 type (
 	Bool   = internal.Bool
 	Int    = internal.Int
@@ -104,9 +106,10 @@ type (
 	Object     = internal.Object
 	Callable   = internal.Callable
 
-	// Signal's T must be a function type.
+	// Signal's T must be a function type that represents the arguments that are required
+	// to be passed to the signal.
 	Signal[T any] struct {
-		internal.Signal
+		privateSignal // methods are exported but the field is not accessible
 
 		Emit T
 	}
@@ -124,3 +127,10 @@ type (
 	PackedVector3Array = internal.PackedVector3Array
 	PackedColorArray   = internal.PackedColorArray
 )
+
+type isSignal interface {
+	internal.IsSignal
+	setSignal(internal.Signal)
+}
+
+func (s *Signal[T]) setSignal(signal internal.Signal) { s.privateSignal = signal }
