@@ -138,7 +138,7 @@ To run the go tests for this module `cd internal && gd test`.
 ## Known Limitations
 
 * No support for indexed properties
-* No support for Godot functions with varargs.
+* No support for Godot class functions with varargs.
 * No support for script extensions.
 * 64bit support only.
 * Not tested on Windows.
