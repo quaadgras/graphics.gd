@@ -875,10 +875,13 @@ func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
 	return ret
 }
 
-func (ctx Context) Max(arg1 Variant, arg2 Variant) Variant {
+func (ctx Context) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
 	call.Arg(frame, mmm.Get(arg2))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[[3]uintptr](frame)
 	ctx.API.utility.max(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
@@ -908,10 +911,13 @@ func (ctx Context) Maxf(a Float, b Float) Float {
 	return ret
 }
 
-func (ctx Context) Min(arg1 Variant, arg2 Variant) Variant {
+func (ctx Context) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
 	call.Arg(frame, mmm.Get(arg2))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[[3]uintptr](frame)
 	ctx.API.utility.min(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
@@ -1105,9 +1111,12 @@ func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
 	return ret
 }
 
-func (ctx Context) Str(arg1 Variant) String {
+func (ctx Context) Str(arg1 Variant, args ...Variant) String {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[uintptr](frame)
 	ctx.API.utility.str(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
@@ -1135,73 +1144,100 @@ func (ctx Context) TypeToString(atype Int) String {
 	return ret
 }
 
-func (ctx Context) Print(arg1 Variant) {
+func (ctx Context) Print(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.print(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) PrintRich(arg1 Variant) {
+func (ctx Context) PrintRich(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.print_rich(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) Printerr(arg1 Variant) {
+func (ctx Context) Printerr(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.printerr(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) Printt(arg1 Variant) {
+func (ctx Context) Printt(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.printt(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) Prints(arg1 Variant) {
+func (ctx Context) Prints(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.prints(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) Printraw(arg1 Variant) {
+func (ctx Context) Printraw(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.printraw(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) PrintVerbose(arg1 Variant) {
+func (ctx Context) PrintVerbose(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.print_verbose(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) PushError(arg1 Variant) {
+func (ctx Context) PushError(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.push_error(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
-func (ctx Context) PushWarning(arg1 Variant) {
+func (ctx Context) PushWarning(arg1 Variant, args ...Variant) {
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(arg1))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	ctx.API.utility.push_warning(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
@@ -5605,12 +5641,15 @@ func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 Calls the method represented by this [Callable]. Arguments can be passed and should match the method's signature.
 */
 //go:nosplit
-func (self Callable) Call(ctx Context) Variant {
+func (self Callable) Call(ctx Context, args ...Variant) Variant {
 	var selfPtr = self
 	var frame = call.New()
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[[3]uintptr](frame)
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(selfPtr).builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5626,12 +5665,15 @@ func _ready():
 See also [method Object.call_deferred].
 */
 //go:nosplit
-func (self Callable) CallDeferred() {
+func (self Callable) CallDeferred(args ...Variant) {
 	var selfPtr = self
 	var frame = call.New()
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(selfPtr).builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5639,12 +5681,15 @@ func (self Callable) CallDeferred() {
 Perform an RPC (Remote Procedure Call) on all connected peers. This is used for multiplayer and is normally not available, unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc].
 */
 //go:nosplit
-func (self Callable) Rpc() {
+func (self Callable) Rpc(args ...Variant) {
 	var selfPtr = self
 	var frame = call.New()
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(selfPtr).builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5652,13 +5697,16 @@ func (self Callable) Rpc() {
 Perform an RPC (Remote Procedure Call) on a specific peer ID (see multiplayer documentation for reference). This is used for multiplayer and is normally not available unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc_id].
 */
 //go:nosplit
-func (self Callable) RpcId(peer_id Int) {
+func (self Callable) RpcId(peer_id Int, args ...Variant) {
 	var selfPtr = self
 	var frame = call.New()
 	call.Arg(frame, peer_id)
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(selfPtr).builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+1)
 	frame.Free()
 }
 
@@ -5667,12 +5715,15 @@ Returns a copy of this [Callable] with one or more arguments bound. When called,
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
 */
 //go:nosplit
-func (self Callable) Bind(ctx Context) Callable {
+func (self Callable) Bind(ctx Context, args ...Variant) Callable {
 	var selfPtr = self
 	var frame = call.New()
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[[2]uintptr](frame)
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(selfPtr).builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5816,12 +5867,15 @@ func (self Signal) GetConnections(ctx Context) Array {
 Emits this signal. All [Callable]s connected to this signal will be triggered. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
 */
 //go:nosplit
-func (self Signal) Emit() {
+func (self Signal) Emit(args ...Variant) {
 	var selfPtr = self
 	var frame = call.New()
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret call.Nil
 	var p_self = call.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(selfPtr).builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -11095,11 +11149,17 @@ EmitSignal(SignalName.GameOver);
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot signals. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) EmitSignal(signal StringName) int64 {
+func (self Object) EmitSignal(signal StringName, args ...Variant) int64 {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(signal))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[int64](frame)
+	if len(args) > 0 {
+		panic(`varargs not supported for class methods yet`)
+	}
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_emit_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11121,11 +11181,17 @@ node.Call(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) Call(ctx Context, method StringName) Variant {
+func (self Object) Call(ctx Context, method StringName, args ...Variant) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(method))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[[3]uintptr](frame)
+	if len(args) > 0 {
+		panic(`varargs not supported for class methods yet`)
+	}
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_call, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -11159,11 +11225,17 @@ get_tree().process_frame.connect(callable, CONNECT_ONE_SHOT)
 [/codeblock]
 */
 //go:nosplit
-func (self Object) CallDeferred(ctx Context, method StringName) Variant {
+func (self Object) CallDeferred(ctx Context, method StringName, args ...Variant) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = call.New()
 	call.Arg(frame, mmm.Get(method))
+	for _, arg := range args {
+		call.Arg(frame, arg)
+	}
 	var r_ret = call.Ret[[3]uintptr](frame)
+	if len(args) > 0 {
+		panic(`varargs not supported for class methods yet`)
+	}
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_call_deferred, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()

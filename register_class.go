@@ -142,7 +142,12 @@ func (class classImplementation) CreateInstance() Object {
 			emit := rvalue.Elem().FieldByName("Emit")
 			fnType := emit.Type()
 			emit.Set(reflect.MakeFunc(fnType, func(args []reflect.Value) (results []reflect.Value) {
-				scoped.Emit() // FIXME need support for variadic arguments now.
+				tmp := gd.NewContext(ctx.API)
+				var variants = make([]gd.Variant, 0, len(args))
+				for _, arg := range args {
+					variants = append(variants, tmp.Variant(arg.Interface()))
+				}
+				scoped.Emit(variants...)
 				return nil
 			}))
 		}

@@ -670,6 +670,12 @@ func generate() error {
 			}
 			fmt.Fprintf(core, "%v %v", fixReserved(arg.Name), classDB.convertType("internal", arg.Meta, arg.Type))
 		}
+		if utility.IsVararg {
+			if len(utility.Arguments) > 0 {
+				fmt.Fprintf(core, ", ")
+			}
+			fmt.Fprintf(core, "args ...Variant")
+		}
 		fmt.Fprintf(core, ")")
 		result := classDB.convertType("internal", "", utility.ReturnType)
 		ptrKind, isPtr := classDB.isPointer(result)
@@ -692,6 +698,11 @@ func generate() error {
 			} else {
 				fmt.Fprintf(core, "\tcall.Arg(frame, %v)\n", fixReserved(arg.Name))
 			}
+		}
+		if utility.IsVararg {
+			fmt.Fprintf(core, "\tfor _, arg := range args {\n")
+			fmt.Fprintf(core, "\t\tcall.Arg(frame, arg)\n")
+			fmt.Fprintf(core, "\t}\n")
 		}
 		if isPtr {
 			fmt.Fprintf(core, "\tvar r_ret = call.Ret[%v](frame)\n", ptrKind)
@@ -1013,6 +1024,12 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 		}
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
 	}
+	if method.IsVararg {
+		if len(method.Arguments) > 0 || isPtr {
+			fmt.Fprint(w, ", ")
+		}
+		fmt.Fprintf(w, "args ..."+prefix+"Variant")
+	}
 	fmt.Fprintf(w, ") %v {\n", result)
 	if ctype == callBuiltin {
 		fmt.Fprintf(w, "\tvar selfPtr = self\n")
@@ -1035,6 +1052,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 			fmt.Fprintf(w, "\tcall.Arg(frame, %v)\n", fixReserved(arg.Name))
 		}
 	}
+	if method.IsVararg {
+		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
+		fmt.Fprintf(w, "\t\tcall.Arg(frame, arg)\n")
+		fmt.Fprintf(w, "\t}\n")
+	}
 	if isPtr {
 		fmt.Fprintf(w, "\tvar r_ret = call.Ret[%v](frame)\n", ptrKind)
 	} else {
@@ -1046,8 +1068,15 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class Class, method M
 	}
 	if ctype == callBuiltin {
 		fmt.Fprintf(w, "\tvar p_self = call.Arg(frame, mmm.Get(selfPtr))\n")
-		fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+		if method.IsVararg {
+			fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, len(method.Arguments))
+		} else {
+			fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+		}
 	} else {
+		if method.IsVararg {
+			fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
+		}
 		fmt.Fprintf(w, "\tmmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
 	}
 
