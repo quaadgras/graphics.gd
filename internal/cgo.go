@@ -6,7 +6,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"runtime.link/api/call"
+	"grow.graphics/gd/internal/callframe"
 )
 
 // cache is responsible for keeping a local copy for the various
@@ -21,8 +21,8 @@ type cache struct {
 }
 
 type variant struct {
-	FromType [TypeMax]func(ret call.Ptr[[3]uintptr], arg uintptr)
-	IntoType [TypeMax]func(ret uintptr, arg call.Ptr[[3]uintptr])
+	FromType [TypeMax]func(ret callframe.Ptr[[3]uintptr], arg uintptr)
+	IntoType [TypeMax]func(ret uintptr, arg callframe.Ptr[[3]uintptr])
 }
 
 type ObjectID uint64

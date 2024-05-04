@@ -6,7 +6,7 @@ package gd
 import "unsafe"
 import "reflect"
 import "runtime.link/mmm"
-import "runtime.link/api/call"
+import "grow.graphics/gd/internal/callframe"
 
 type Corner int64
 
@@ -141,9 +141,9 @@ const (
 type VariantOperator int64
 
 func (ctx Context) Sin(angle_rad Float) Float {
-	var frame = call.New()
-	call.Arg(frame, angle_rad)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, angle_rad)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.sin(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,9 +151,9 @@ func (ctx Context) Sin(angle_rad Float) Float {
 }
 
 func (ctx Context) Cos(angle_rad Float) Float {
-	var frame = call.New()
-	call.Arg(frame, angle_rad)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, angle_rad)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.cos(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,9 +161,9 @@ func (ctx Context) Cos(angle_rad Float) Float {
 }
 
 func (ctx Context) Tan(angle_rad Float) Float {
-	var frame = call.New()
-	call.Arg(frame, angle_rad)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, angle_rad)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.tan(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -171,9 +171,9 @@ func (ctx Context) Tan(angle_rad Float) Float {
 }
 
 func (ctx Context) Sinh(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.sinh(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -181,9 +181,9 @@ func (ctx Context) Sinh(x Float) Float {
 }
 
 func (ctx Context) Cosh(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.cosh(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -191,9 +191,9 @@ func (ctx Context) Cosh(x Float) Float {
 }
 
 func (ctx Context) Tanh(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.tanh(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -201,9 +201,9 @@ func (ctx Context) Tanh(x Float) Float {
 }
 
 func (ctx Context) Asin(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.asin(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,9 +211,9 @@ func (ctx Context) Asin(x Float) Float {
 }
 
 func (ctx Context) Acos(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.acos(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -221,9 +221,9 @@ func (ctx Context) Acos(x Float) Float {
 }
 
 func (ctx Context) Atan(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.atan(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -231,10 +231,10 @@ func (ctx Context) Atan(x Float) Float {
 }
 
 func (ctx Context) Atan2(y Float, x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, y)
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, y)
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.atan2(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -242,9 +242,9 @@ func (ctx Context) Atan2(y Float, x Float) Float {
 }
 
 func (ctx Context) Asinh(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.asinh(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -252,9 +252,9 @@ func (ctx Context) Asinh(x Float) Float {
 }
 
 func (ctx Context) Acosh(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.acosh(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -262,9 +262,9 @@ func (ctx Context) Acosh(x Float) Float {
 }
 
 func (ctx Context) Atanh(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.atanh(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -272,9 +272,9 @@ func (ctx Context) Atanh(x Float) Float {
 }
 
 func (ctx Context) Sqrt(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.sqrt(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,10 +282,10 @@ func (ctx Context) Sqrt(x Float) Float {
 }
 
 func (ctx Context) Fmod(x Float, y Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	call.Arg(frame, y)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	callframe.Arg(frame, y)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.fmod(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -293,10 +293,10 @@ func (ctx Context) Fmod(x Float, y Float) Float {
 }
 
 func (ctx Context) Fposmod(x Float, y Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	call.Arg(frame, y)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	callframe.Arg(frame, y)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.fposmod(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -304,10 +304,10 @@ func (ctx Context) Fposmod(x Float, y Float) Float {
 }
 
 func (ctx Context) Posmod(x Int, y Int) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	call.Arg(frame, y)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	callframe.Arg(frame, y)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.posmod(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -315,9 +315,9 @@ func (ctx Context) Posmod(x Int, y Int) Int {
 }
 
 func (ctx Context) Floor(x Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(x))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(x))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.floor(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -325,9 +325,9 @@ func (ctx Context) Floor(x Variant) Variant {
 }
 
 func (ctx Context) Floorf(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.floorf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -335,9 +335,9 @@ func (ctx Context) Floorf(x Float) Float {
 }
 
 func (ctx Context) Floori(x Float) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.floori(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -345,9 +345,9 @@ func (ctx Context) Floori(x Float) Int {
 }
 
 func (ctx Context) Ceil(x Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(x))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(x))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.ceil(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -355,9 +355,9 @@ func (ctx Context) Ceil(x Variant) Variant {
 }
 
 func (ctx Context) Ceilf(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.ceilf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -365,9 +365,9 @@ func (ctx Context) Ceilf(x Float) Float {
 }
 
 func (ctx Context) Ceili(x Float) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.ceili(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -375,9 +375,9 @@ func (ctx Context) Ceili(x Float) Int {
 }
 
 func (ctx Context) Round(x Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(x))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(x))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.round(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -385,9 +385,9 @@ func (ctx Context) Round(x Variant) Variant {
 }
 
 func (ctx Context) Roundf(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.roundf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -395,9 +395,9 @@ func (ctx Context) Roundf(x Float) Float {
 }
 
 func (ctx Context) Roundi(x Float) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.roundi(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -405,9 +405,9 @@ func (ctx Context) Roundi(x Float) Int {
 }
 
 func (ctx Context) Abs(x Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(x))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(x))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.abs(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -415,9 +415,9 @@ func (ctx Context) Abs(x Variant) Variant {
 }
 
 func (ctx Context) Absf(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.absf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -425,9 +425,9 @@ func (ctx Context) Absf(x Float) Float {
 }
 
 func (ctx Context) Absi(x Int) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.absi(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -435,9 +435,9 @@ func (ctx Context) Absi(x Int) Int {
 }
 
 func (ctx Context) Sign(x Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(x))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(x))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.sign(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -445,9 +445,9 @@ func (ctx Context) Sign(x Variant) Variant {
 }
 
 func (ctx Context) Signf(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.signf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -455,9 +455,9 @@ func (ctx Context) Signf(x Float) Float {
 }
 
 func (ctx Context) Signi(x Int) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.signi(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -465,10 +465,10 @@ func (ctx Context) Signi(x Int) Int {
 }
 
 func (ctx Context) Snapped(x Variant, step Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(x))
-	call.Arg(frame, mmm.Get(step))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(x))
+	callframe.Arg(frame, mmm.Get(step))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.snapped(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -476,10 +476,10 @@ func (ctx Context) Snapped(x Variant, step Variant) Variant {
 }
 
 func (ctx Context) Snappedf(x Float, step Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	call.Arg(frame, step)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	callframe.Arg(frame, step)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.snappedf(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -487,10 +487,10 @@ func (ctx Context) Snappedf(x Float, step Float) Float {
 }
 
 func (ctx Context) Snappedi(x Float, step Int) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	call.Arg(frame, step)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	callframe.Arg(frame, step)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.snappedi(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -498,10 +498,10 @@ func (ctx Context) Snappedi(x Float, step Int) Int {
 }
 
 func (ctx Context) Pow(base Float, exp Float) Float {
-	var frame = call.New()
-	call.Arg(frame, base)
-	call.Arg(frame, exp)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, base)
+	callframe.Arg(frame, exp)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.pow(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -509,9 +509,9 @@ func (ctx Context) Pow(base Float, exp Float) Float {
 }
 
 func (ctx Context) Log(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.log(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -519,9 +519,9 @@ func (ctx Context) Log(x Float) Float {
 }
 
 func (ctx Context) Exp(x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.exp(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -529,9 +529,9 @@ func (ctx Context) Exp(x Float) Float {
 }
 
 func (ctx Context) IsNan(x Float) bool {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_nan(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -539,9 +539,9 @@ func (ctx Context) IsNan(x Float) bool {
 }
 
 func (ctx Context) IsInf(x Float) bool {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_inf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -549,10 +549,10 @@ func (ctx Context) IsInf(x Float) bool {
 }
 
 func (ctx Context) IsEqualApprox(a Float, b Float) bool {
-	var frame = call.New()
-	call.Arg(frame, a)
-	call.Arg(frame, b)
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, a)
+	callframe.Arg(frame, b)
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_equal_approx(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -560,9 +560,9 @@ func (ctx Context) IsEqualApprox(a Float, b Float) bool {
 }
 
 func (ctx Context) IsZeroApprox(x Float) bool {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_zero_approx(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -570,9 +570,9 @@ func (ctx Context) IsZeroApprox(x Float) bool {
 }
 
 func (ctx Context) IsFinite(x Float) bool {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_finite(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -580,10 +580,10 @@ func (ctx Context) IsFinite(x Float) bool {
 }
 
 func (ctx Context) Ease(x Float, curve Float) Float {
-	var frame = call.New()
-	call.Arg(frame, x)
-	call.Arg(frame, curve)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	callframe.Arg(frame, curve)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.ease(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -591,9 +591,9 @@ func (ctx Context) Ease(x Float, curve Float) Float {
 }
 
 func (ctx Context) StepDecimals(x Float) Int {
-	var frame = call.New()
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.step_decimals(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -601,11 +601,11 @@ func (ctx Context) StepDecimals(x Float) Int {
 }
 
 func (ctx Context) Lerp(from Variant, to Variant, weight Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(from))
-	call.Arg(frame, mmm.Get(to))
-	call.Arg(frame, mmm.Get(weight))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(from))
+	callframe.Arg(frame, mmm.Get(to))
+	callframe.Arg(frame, mmm.Get(weight))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.lerp(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -613,11 +613,11 @@ func (ctx Context) Lerp(from Variant, to Variant, weight Variant) Variant {
 }
 
 func (ctx Context) Lerpf(from Float, to Float, weight Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, weight)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, weight)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.lerpf(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -625,13 +625,13 @@ func (ctx Context) Lerpf(from Float, to Float, weight Float) Float {
 }
 
 func (ctx Context) CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, pre)
-	call.Arg(frame, post)
-	call.Arg(frame, weight)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, pre)
+	callframe.Arg(frame, post)
+	callframe.Arg(frame, weight)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.cubic_interpolate(r_ret.Uintptr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -639,13 +639,13 @@ func (ctx Context) CubicInterpolate(from Float, to Float, pre Float, post Float,
 }
 
 func (ctx Context) CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, pre)
-	call.Arg(frame, post)
-	call.Arg(frame, weight)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, pre)
+	callframe.Arg(frame, post)
+	callframe.Arg(frame, weight)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.cubic_interpolate_angle(r_ret.Uintptr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -653,16 +653,16 @@ func (ctx Context) CubicInterpolateAngle(from Float, to Float, pre Float, post F
 }
 
 func (ctx Context) CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, pre)
-	call.Arg(frame, post)
-	call.Arg(frame, weight)
-	call.Arg(frame, to_t)
-	call.Arg(frame, pre_t)
-	call.Arg(frame, post_t)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, pre)
+	callframe.Arg(frame, post)
+	callframe.Arg(frame, weight)
+	callframe.Arg(frame, to_t)
+	callframe.Arg(frame, pre_t)
+	callframe.Arg(frame, post_t)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.cubic_interpolate_in_time(r_ret.Uintptr(), frame.Array(0), 8)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -670,16 +670,16 @@ func (ctx Context) CubicInterpolateInTime(from Float, to Float, pre Float, post 
 }
 
 func (ctx Context) CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, pre)
-	call.Arg(frame, post)
-	call.Arg(frame, weight)
-	call.Arg(frame, to_t)
-	call.Arg(frame, pre_t)
-	call.Arg(frame, post_t)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, pre)
+	callframe.Arg(frame, post)
+	callframe.Arg(frame, weight)
+	callframe.Arg(frame, to_t)
+	callframe.Arg(frame, pre_t)
+	callframe.Arg(frame, post_t)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.cubic_interpolate_angle_in_time(r_ret.Uintptr(), frame.Array(0), 8)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -687,13 +687,13 @@ func (ctx Context) CubicInterpolateAngleInTime(from Float, to Float, pre Float, 
 }
 
 func (ctx Context) BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
-	var frame = call.New()
-	call.Arg(frame, start)
-	call.Arg(frame, control_1)
-	call.Arg(frame, control_2)
-	call.Arg(frame, end)
-	call.Arg(frame, t)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, start)
+	callframe.Arg(frame, control_1)
+	callframe.Arg(frame, control_2)
+	callframe.Arg(frame, end)
+	callframe.Arg(frame, t)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.bezier_interpolate(r_ret.Uintptr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -701,13 +701,13 @@ func (ctx Context) BezierInterpolate(start Float, control_1 Float, control_2 Flo
 }
 
 func (ctx Context) BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
-	var frame = call.New()
-	call.Arg(frame, start)
-	call.Arg(frame, control_1)
-	call.Arg(frame, control_2)
-	call.Arg(frame, end)
-	call.Arg(frame, t)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, start)
+	callframe.Arg(frame, control_1)
+	callframe.Arg(frame, control_2)
+	callframe.Arg(frame, end)
+	callframe.Arg(frame, t)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.bezier_derivative(r_ret.Uintptr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -715,10 +715,10 @@ func (ctx Context) BezierDerivative(start Float, control_1 Float, control_2 Floa
 }
 
 func (ctx Context) AngleDifference(from Float, to Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.angle_difference(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -726,11 +726,11 @@ func (ctx Context) AngleDifference(from Float, to Float) Float {
 }
 
 func (ctx Context) LerpAngle(from Float, to Float, weight Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, weight)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, weight)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.lerp_angle(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -738,11 +738,11 @@ func (ctx Context) LerpAngle(from Float, to Float, weight Float) Float {
 }
 
 func (ctx Context) InverseLerp(from Float, to Float, weight Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, weight)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, weight)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.inverse_lerp(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -750,13 +750,13 @@ func (ctx Context) InverseLerp(from Float, to Float, weight Float) Float {
 }
 
 func (ctx Context) Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Float {
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, istart)
-	call.Arg(frame, istop)
-	call.Arg(frame, ostart)
-	call.Arg(frame, ostop)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, istart)
+	callframe.Arg(frame, istop)
+	callframe.Arg(frame, ostart)
+	callframe.Arg(frame, ostop)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.remap(r_ret.Uintptr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -764,11 +764,11 @@ func (ctx Context) Remap(value Float, istart Float, istop Float, ostart Float, o
 }
 
 func (ctx Context) Smoothstep(from Float, to Float, x Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, x)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, x)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.smoothstep(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -776,11 +776,11 @@ func (ctx Context) Smoothstep(from Float, to Float, x Float) Float {
 }
 
 func (ctx Context) MoveToward(from Float, to Float, delta Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, delta)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, delta)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.move_toward(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -788,11 +788,11 @@ func (ctx Context) MoveToward(from Float, to Float, delta Float) Float {
 }
 
 func (ctx Context) RotateToward(from Float, to Float, delta Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	call.Arg(frame, delta)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	callframe.Arg(frame, delta)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.rotate_toward(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -800,9 +800,9 @@ func (ctx Context) RotateToward(from Float, to Float, delta Float) Float {
 }
 
 func (ctx Context) DegToRad(deg Float) Float {
-	var frame = call.New()
-	call.Arg(frame, deg)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, deg)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.deg_to_rad(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -810,9 +810,9 @@ func (ctx Context) DegToRad(deg Float) Float {
 }
 
 func (ctx Context) RadToDeg(rad Float) Float {
-	var frame = call.New()
-	call.Arg(frame, rad)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, rad)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.rad_to_deg(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -820,9 +820,9 @@ func (ctx Context) RadToDeg(rad Float) Float {
 }
 
 func (ctx Context) LinearToDb(lin Float) Float {
-	var frame = call.New()
-	call.Arg(frame, lin)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, lin)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.linear_to_db(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -830,9 +830,9 @@ func (ctx Context) LinearToDb(lin Float) Float {
 }
 
 func (ctx Context) DbToLinear(db Float) Float {
-	var frame = call.New()
-	call.Arg(frame, db)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, db)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.db_to_linear(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -840,11 +840,11 @@ func (ctx Context) DbToLinear(db Float) Float {
 }
 
 func (ctx Context) Wrap(value Variant, min Variant, max Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, mmm.Get(min))
-	call.Arg(frame, mmm.Get(max))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, mmm.Get(min))
+	callframe.Arg(frame, mmm.Get(max))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.wrap(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -852,11 +852,11 @@ func (ctx Context) Wrap(value Variant, min Variant, max Variant) Variant {
 }
 
 func (ctx Context) Wrapi(value Int, min Int, max Int) Int {
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, min)
-	call.Arg(frame, max)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, min)
+	callframe.Arg(frame, max)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.wrapi(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -864,11 +864,11 @@ func (ctx Context) Wrapi(value Int, min Int, max Int) Int {
 }
 
 func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, min)
-	call.Arg(frame, max)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, min)
+	callframe.Arg(frame, max)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.wrapf(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -876,13 +876,13 @@ func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
 }
 
 func (ctx Context) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
-	call.Arg(frame, mmm.Get(arg2))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
+	callframe.Arg(frame, mmm.Get(arg2))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.max(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -890,10 +890,10 @@ func (ctx Context) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 }
 
 func (ctx Context) Maxi(a Int, b Int) Int {
-	var frame = call.New()
-	call.Arg(frame, a)
-	call.Arg(frame, b)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, a)
+	callframe.Arg(frame, b)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.maxi(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -901,10 +901,10 @@ func (ctx Context) Maxi(a Int, b Int) Int {
 }
 
 func (ctx Context) Maxf(a Float, b Float) Float {
-	var frame = call.New()
-	call.Arg(frame, a)
-	call.Arg(frame, b)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, a)
+	callframe.Arg(frame, b)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.maxf(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -912,13 +912,13 @@ func (ctx Context) Maxf(a Float, b Float) Float {
 }
 
 func (ctx Context) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
-	call.Arg(frame, mmm.Get(arg2))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
+	callframe.Arg(frame, mmm.Get(arg2))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.min(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -926,10 +926,10 @@ func (ctx Context) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 }
 
 func (ctx Context) Mini(a Int, b Int) Int {
-	var frame = call.New()
-	call.Arg(frame, a)
-	call.Arg(frame, b)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, a)
+	callframe.Arg(frame, b)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.mini(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -937,10 +937,10 @@ func (ctx Context) Mini(a Int, b Int) Int {
 }
 
 func (ctx Context) Minf(a Float, b Float) Float {
-	var frame = call.New()
-	call.Arg(frame, a)
-	call.Arg(frame, b)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, a)
+	callframe.Arg(frame, b)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.minf(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -948,11 +948,11 @@ func (ctx Context) Minf(a Float, b Float) Float {
 }
 
 func (ctx Context) Clamp(value Variant, min Variant, max Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, mmm.Get(min))
-	call.Arg(frame, mmm.Get(max))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, mmm.Get(min))
+	callframe.Arg(frame, mmm.Get(max))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.clamp(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -960,11 +960,11 @@ func (ctx Context) Clamp(value Variant, min Variant, max Variant) Variant {
 }
 
 func (ctx Context) Clampi(value Int, min Int, max Int) Int {
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, min)
-	call.Arg(frame, max)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, min)
+	callframe.Arg(frame, max)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.clampi(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -972,11 +972,11 @@ func (ctx Context) Clampi(value Int, min Int, max Int) Int {
 }
 
 func (ctx Context) Clampf(value Float, min Float, max Float) Float {
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, min)
-	call.Arg(frame, max)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, min)
+	callframe.Arg(frame, max)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.clampf(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -984,9 +984,9 @@ func (ctx Context) Clampf(value Float, min Float, max Float) Float {
 }
 
 func (ctx Context) NearestPo2(value Int) Int {
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.nearest_po2(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -994,10 +994,10 @@ func (ctx Context) NearestPo2(value Int) Int {
 }
 
 func (ctx Context) Pingpong(value Float, length Float) Float {
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, length)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, length)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.pingpong(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1005,15 +1005,15 @@ func (ctx Context) Pingpong(value Float, length Float) Float {
 }
 
 func (ctx Context) Randomize() {
-	var frame = call.New()
-	var r_ret call.Nil
+	var frame = callframe.New()
+	var r_ret callframe.Nil
 	ctx.API.utility.randomize(r_ret.Uintptr(), frame.Array(0), 0)
 	frame.Free()
 }
 
 func (ctx Context) Randi() Int {
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.randi(r_ret.Uintptr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1021,8 +1021,8 @@ func (ctx Context) Randi() Int {
 }
 
 func (ctx Context) Randf() Float {
-	var frame = call.New()
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.randf(r_ret.Uintptr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1030,10 +1030,10 @@ func (ctx Context) Randf() Float {
 }
 
 func (ctx Context) RandiRange(from Int, to Int) Int {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.randi_range(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1041,10 +1041,10 @@ func (ctx Context) RandiRange(from Int, to Int) Int {
 }
 
 func (ctx Context) RandfRange(from Float, to Float) Float {
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.randf_range(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1052,10 +1052,10 @@ func (ctx Context) RandfRange(from Float, to Float) Float {
 }
 
 func (ctx Context) Randfn(mean Float, deviation Float) Float {
-	var frame = call.New()
-	call.Arg(frame, mean)
-	call.Arg(frame, deviation)
-	var r_ret = call.Ret[Float](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mean)
+	callframe.Arg(frame, deviation)
+	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.randfn(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1063,17 +1063,17 @@ func (ctx Context) Randfn(mean Float, deviation Float) Float {
 }
 
 func (ctx Context) Seed(base Int) {
-	var frame = call.New()
-	call.Arg(frame, base)
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, base)
+	var r_ret callframe.Nil
 	ctx.API.utility.seed(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) RandFromSeed(seed Int) PackedInt64Array {
-	var frame = call.New()
-	call.Arg(frame, seed)
-	var r_ret = call.Ret[[2]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, seed)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
 	ctx.API.utility.rand_from_seed(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1081,9 +1081,9 @@ func (ctx Context) RandFromSeed(seed Int) PackedInt64Array {
 }
 
 func (ctx Context) Weakref(obj Variant) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(obj))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(obj))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.weakref(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1091,9 +1091,9 @@ func (ctx Context) Weakref(obj Variant) Variant {
 }
 
 func (ctx Context) Typeof(variable Variant) Int {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(variable))
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variable))
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.typeof(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1101,10 +1101,10 @@ func (ctx Context) Typeof(variable Variant) Int {
 }
 
 func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(variant))
-	call.Arg(frame, atype)
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variant))
+	callframe.Arg(frame, atype)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.type_convert(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1112,12 +1112,12 @@ func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
 }
 
 func (ctx Context) Str(arg1 Variant, args ...Variant) String {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.str(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1125,9 +1125,9 @@ func (ctx Context) Str(arg1 Variant, args ...Variant) String {
 }
 
 func (ctx Context) ErrorString(error Int) String {
-	var frame = call.New()
-	call.Arg(frame, error)
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, error)
+	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.error_string(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1135,9 +1135,9 @@ func (ctx Context) ErrorString(error Int) String {
 }
 
 func (ctx Context) TypeToString(atype Int) String {
-	var frame = call.New()
-	call.Arg(frame, atype)
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, atype)
+	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.type_string(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1145,108 +1145,108 @@ func (ctx Context) TypeToString(atype Int) String {
 }
 
 func (ctx Context) Print(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.print(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) PrintRich(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.print_rich(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) Printerr(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.printerr(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) Printt(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.printt(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) Prints(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.prints(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) Printraw(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.printraw(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) PrintVerbose(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.print_verbose(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) PushError(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.push_error(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) PushWarning(arg1 Variant, args ...Variant) {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arg1))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
+	var r_ret callframe.Nil
 	ctx.API.utility.push_warning(r_ret.Uintptr(), frame.Array(0), 1)
 	frame.Free()
 }
 
 func (ctx Context) VarToStr(variable Variant) String {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(variable))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variable))
+	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.var_to_str(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1254,9 +1254,9 @@ func (ctx Context) VarToStr(variable Variant) String {
 }
 
 func (ctx Context) StrToVar(s String) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(s))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.str_to_var(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1264,9 +1264,9 @@ func (ctx Context) StrToVar(s String) Variant {
 }
 
 func (ctx Context) VarToBytes(variable Variant) PackedByteArray {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(variable))
-	var r_ret = call.Ret[[2]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variable))
+	var r_ret = callframe.Ret[[2]uintptr](frame)
 	ctx.API.utility.var_to_bytes(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1274,9 +1274,9 @@ func (ctx Context) VarToBytes(variable Variant) PackedByteArray {
 }
 
 func (ctx Context) BytesToVar(bytes PackedByteArray) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(bytes))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(bytes))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.bytes_to_var(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1284,9 +1284,9 @@ func (ctx Context) BytesToVar(bytes PackedByteArray) Variant {
 }
 
 func (ctx Context) VarToBytesWithObjects(variable Variant) PackedByteArray {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(variable))
-	var r_ret = call.Ret[[2]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variable))
+	var r_ret = callframe.Ret[[2]uintptr](frame)
 	ctx.API.utility.var_to_bytes_with_objects(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1294,9 +1294,9 @@ func (ctx Context) VarToBytesWithObjects(variable Variant) PackedByteArray {
 }
 
 func (ctx Context) BytesToVarWithObjects(bytes PackedByteArray) Variant {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(bytes))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(bytes))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.bytes_to_var_with_objects(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1304,9 +1304,9 @@ func (ctx Context) BytesToVarWithObjects(bytes PackedByteArray) Variant {
 }
 
 func (ctx Context) Hash(variable Variant) Int {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(variable))
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variable))
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.hash(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1314,9 +1314,9 @@ func (ctx Context) Hash(variable Variant) Int {
 }
 
 func (ctx Context) InstanceFromId(instance_id Int) Object {
-	var frame = call.New()
-	call.Arg(frame, instance_id)
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, instance_id)
+	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.instance_from_id(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret Object
 	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
@@ -1325,9 +1325,9 @@ func (ctx Context) InstanceFromId(instance_id Int) Object {
 }
 
 func (ctx Context) IsInstanceIdValid(id Int) bool {
-	var frame = call.New()
-	call.Arg(frame, id)
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, id)
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_instance_id_valid(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1335,9 +1335,9 @@ func (ctx Context) IsInstanceIdValid(id Int) bool {
 }
 
 func (ctx Context) IsInstanceValid(instance Variant) bool {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(instance))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(instance))
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_instance_valid(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1345,8 +1345,8 @@ func (ctx Context) IsInstanceValid(instance Variant) bool {
 }
 
 func (ctx Context) RidAllocateId() Int {
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.rid_allocate_id(r_ret.Uintptr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1354,9 +1354,9 @@ func (ctx Context) RidAllocateId() Int {
 }
 
 func (ctx Context) RidFromInt64(base Int) RID {
-	var frame = call.New()
-	call.Arg(frame, base)
-	var r_ret = call.Ret[RID](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, base)
+	var r_ret = callframe.Ret[RID](frame)
 	ctx.API.utility.rid_from_int64(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1364,10 +1364,10 @@ func (ctx Context) RidFromInt64(base Int) RID {
 }
 
 func (ctx Context) IsSame(a Variant, b Variant) bool {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(a))
-	call.Arg(frame, mmm.Get(b))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(a))
+	callframe.Arg(frame, mmm.Get(b))
+	var r_ret = callframe.Ret[bool](frame)
 	ctx.API.utility.is_same(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1396,10 +1396,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self String) CasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1414,10 +1414,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self String) NocasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1433,10 +1433,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self String) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1452,10 +1452,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self String) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1468,9 +1468,9 @@ Returns the number of characters in the string. Empty strings ([code]""[/code]) 
 //go:nosplit
 func (self String) Length() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1483,11 +1483,11 @@ Returns part of the string from the position [param from] with length [param len
 //go:nosplit
 func (self String) Substr(ctx Context, from Int, len Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, len)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, len)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1505,11 +1505,11 @@ print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 //go:nosplit
 func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, slice)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, slice)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1523,11 +1523,11 @@ This is faster than [method split], if you only need one substring.
 //go:nosplit
 func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, delimiter)
-	call.Arg(frame, slice)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, delimiter)
+	callframe.Arg(frame, slice)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1540,10 +1540,10 @@ Returns the total number of slices when the string is split with the given [para
 //go:nosplit
 func (self String) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1573,11 +1573,11 @@ GD.Print("Potato".Find("t", 5)); // Prints -1
 //go:nosplit
 func (self String) Find(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1590,12 +1590,12 @@ Returns the number of occurrences of the substring [param what] between [param f
 //go:nosplit
 func (self String) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1608,12 +1608,12 @@ Returns the number of occurrences of the substring [param what] between [param f
 //go:nosplit
 func (self String) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1626,11 +1626,11 @@ Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [par
 //go:nosplit
 func (self String) Findn(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1643,11 +1643,11 @@ Returns the index of the [b]last[/b] occurrence of [param what] in this string, 
 //go:nosplit
 func (self String) Rfind(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1660,11 +1660,11 @@ Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [para
 //go:nosplit
 func (self String) Rfindn(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1677,10 +1677,10 @@ Does a simple expression match (also called "glob" or "globbing"), where [code]*
 //go:nosplit
 func (self String) Match(expr String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(expr))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(expr))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1693,10 +1693,10 @@ Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] mat
 //go:nosplit
 func (self String) Matchn(expr String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(expr))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(expr))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1709,10 +1709,10 @@ Returns [code]true[/code] if the string begins with the given [param text]. See 
 //go:nosplit
 func (self String) BeginsWith(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1725,10 +1725,10 @@ Returns [code]true[/code] if the string ends with the given [param text]. See al
 //go:nosplit
 func (self String) EndsWith(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1749,10 +1749,10 @@ print("".is_subsequence_of(text))         # Prints true
 //go:nosplit
 func (self String) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1765,10 +1765,10 @@ Returns [code]true[/code] if all characters of this string can be found in [para
 //go:nosplit
 func (self String) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1784,9 +1784,9 @@ print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 //go:nosplit
 func (self String) Bigrams(ctx Context) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1805,10 +1805,10 @@ print("ABC123".similarity("abc123")) # Prints 0.4
 //go:nosplit
 func (self String) Similarity(text String) Float {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1845,11 +1845,11 @@ print("{foo} {bar}".format({"bar": "baz", "foo": "{bar}"})) # Prints "{bar} baz"
 //go:nosplit
 func (self String) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(values))
-	call.Arg(frame, mmm.Get(placeholder))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(values))
+	callframe.Arg(frame, mmm.Get(placeholder))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1862,11 +1862,11 @@ Replaces all occurrences of [param what] inside the string with the given [param
 //go:nosplit
 func (self String) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, mmm.Get(forwhat))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, mmm.Get(forwhat))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1879,11 +1879,11 @@ Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the stri
 //go:nosplit
 func (self String) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, mmm.Get(forwhat))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, mmm.Get(forwhat))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1896,10 +1896,10 @@ Repeats this string a number of times. [param count] needs to be greater than [c
 //go:nosplit
 func (self String) Repeat(ctx Context, count Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, count)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, count)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1912,9 +1912,9 @@ Returns the copy of this string in reverse order.
 //go:nosplit
 func (self String) Reverse(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1927,11 +1927,11 @@ Inserts [param what] at the given [param position] in the string.
 //go:nosplit
 func (self String) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	call.Arg(frame, mmm.Get(what))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	callframe.Arg(frame, mmm.Get(what))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1944,11 +1944,11 @@ Returns a string with [param chars] characters erased starting from [param posit
 //go:nosplit
 func (self String) Erase(ctx Context, position Int, chars Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	call.Arg(frame, chars)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	callframe.Arg(frame, chars)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1973,9 +1973,9 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 //go:nosplit
 func (self String) Capitalize(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -1988,9 +1988,9 @@ Returns the string converted to [code]camelCase[/code].
 //go:nosplit
 func (self String) ToCamelCase(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2003,9 +2003,9 @@ Returns the string converted to [code]PascalCase[/code].
 //go:nosplit
 func (self String) ToPascalCase(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2031,9 +2031,9 @@ Returns the string converted to [code]snake_case[/code].
 //go:nosplit
 func (self String) ToSnakeCase(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2068,12 +2068,12 @@ GD.Print(someArray[2]); // Prints "Three"
 //go:nosplit
 func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, allow_empty)
-	call.Arg(frame, maxsplit)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, allow_empty)
+	callframe.Arg(frame, maxsplit)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2102,12 +2102,12 @@ print(some_array[1])     # Prints "Four"
 //go:nosplit
 func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, allow_empty)
-	call.Arg(frame, maxsplit)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, allow_empty)
+	callframe.Arg(frame, maxsplit)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2126,11 +2126,11 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 //go:nosplit
 func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, allow_empty)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, allow_empty)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2159,10 +2159,10 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 //go:nosplit
 func (self String) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(parts))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(parts))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2175,9 +2175,9 @@ Returns the string converted to [code]UPPERCASE[/code].
 //go:nosplit
 func (self String) ToUpper(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2190,9 +2190,9 @@ Returns the string converted to [code]lowercase[/code].
 //go:nosplit
 func (self String) ToLower(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2209,10 +2209,10 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 //go:nosplit
 func (self String) Left(ctx Context, length Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, length)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, length)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2229,10 +2229,10 @@ print("Hello World!".right(-4)) # Prints "o World!"
 //go:nosplit
 func (self String) Right(ctx Context, length Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, length)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, length)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2246,11 +2246,11 @@ If [param left] is [code]false[/code], ignores the string's beginning. Likewise,
 //go:nosplit
 func (self String) StripEdges(ctx Context, left bool, right bool) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, left)
-	call.Arg(frame, right)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, left)
+	callframe.Arg(frame, right)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2263,9 +2263,9 @@ Strips all escape characters from the string. These include all non-printable co
 //go:nosplit
 func (self String) StripEscapes(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2279,10 +2279,10 @@ Removes a set of characters defined in [param chars] from the string's beginning
 //go:nosplit
 func (self String) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(chars))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(chars))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2296,10 +2296,10 @@ Removes a set of characters defined in [param chars] from the string's end. See 
 //go:nosplit
 func (self String) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(chars))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(chars))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2323,9 +2323,9 @@ var h = "".get_extension()           # h is ""
 //go:nosplit
 func (self String) GetExtension(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2341,9 +2341,9 @@ var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 //go:nosplit
 func (self String) GetBasename(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2357,10 +2357,10 @@ Concatenates [param file] at the end of the string as a subpath, adding [code]/[
 //go:nosplit
 func (self String) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(file))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(file))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2373,10 +2373,10 @@ Returns the character code at position [param at].
 //go:nosplit
 func (self String) UnicodeAt(at Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2390,10 +2390,10 @@ For example, the string can be indented with two tabulations using [code]"\t\t"[
 //go:nosplit
 func (self String) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(prefix))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(prefix))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2406,9 +2406,9 @@ Returns a copy of the string with indentation (leading tabs and spaces) removed.
 //go:nosplit
 func (self String) Dedent(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2422,9 +2422,9 @@ Returns the 32-bit hash value representing the string's contents.
 //go:nosplit
 func (self String) Hash() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2437,9 +2437,9 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self String) Md5Text(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2452,9 +2452,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self String) Sha1Text(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2467,9 +2467,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self String) Sha256Text(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2482,9 +2482,9 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self String) Md5Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2497,9 +2497,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2512,9 +2512,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self String) Sha256Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2527,9 +2527,9 @@ Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/co
 //go:nosplit
 func (self String) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2554,10 +2554,10 @@ If you need to know where [param what] is within the string, use [method find].
 //go:nosplit
 func (self String) Contains(what String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2571,9 +2571,9 @@ This includes all paths starting with [code]"res://"[/code], [code]"user://"[/co
 //go:nosplit
 func (self String) IsAbsolutePath() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2586,9 +2586,9 @@ Returns [code]true[/code] if the string is a path, and its starting point is dep
 //go:nosplit
 func (self String) IsRelativePath() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2605,9 +2605,9 @@ print(simple_path) # Prints "path/file"
 //go:nosplit
 func (self String) SimplifyPath(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2623,9 +2623,9 @@ var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 //go:nosplit
 func (self String) GetBaseDir(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2641,9 +2641,9 @@ var file = "/path/to/icon.png".get_file() # file is "icon.png"
 //go:nosplit
 func (self String) GetFile(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2656,10 +2656,10 @@ Returns a copy of the string with special characters escaped using the XML stand
 //go:nosplit
 func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, escape_quotes)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, escape_quotes)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2672,9 +2672,9 @@ Returns a copy of the string with escaped characters replaced by their meanings 
 //go:nosplit
 func (self String) XmlUnescape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2701,9 +2701,9 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 //go:nosplit
 func (self String) UriEncode(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2726,9 +2726,9 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 //go:nosplit
 func (self String) UriDecode(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2741,9 +2741,9 @@ Returns a copy of the string with special characters escaped using the C languag
 //go:nosplit
 func (self String) CEscape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2757,9 +2757,9 @@ Returns a copy of the string with escaped characters replaced by their meanings.
 //go:nosplit
 func (self String) CUnescape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2772,9 +2772,9 @@ Returns a copy of the string with special characters escaped using the JSON stan
 //go:nosplit
 func (self String) JsonEscape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2787,9 +2787,9 @@ Returns a copy of the string with all characters that are not allowed in [member
 //go:nosplit
 func (self String) ValidateNodeName(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2802,9 +2802,9 @@ Returns a copy of the string with all characters that are not allowed in [method
 //go:nosplit
 func (self String) ValidateFilename(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -2823,9 +2823,9 @@ print("MyMethod#2".is_valid_identifier()) # Prints false
 //go:nosplit
 func (self String) IsValidIdentifier() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2845,9 +2845,9 @@ print("-12".is_valid_int())  # Prints true
 //go:nosplit
 func (self String) IsValidInt() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2866,9 +2866,9 @@ print("Hello".is_valid_float()) # Prints false
 //go:nosplit
 func (self String) IsValidFloat() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2889,10 +2889,10 @@ print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 //go:nosplit
 func (self String) IsValidHexNumber(with_prefix bool) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, with_prefix)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, with_prefix)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2905,9 +2905,9 @@ Returns [code]true[/code] if this string is a valid color in hexadecimal HTML no
 //go:nosplit
 func (self String) IsValidHtmlColor() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2920,9 +2920,9 @@ Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv
 //go:nosplit
 func (self String) IsValidIpAddress() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2935,9 +2935,9 @@ Returns [code]true[/code] if this string does not contain characters that are no
 //go:nosplit
 func (self String) IsValidFilename() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2956,9 +2956,9 @@ var d = "Hello!".to_int() # d is 0
 //go:nosplit
 func (self String) ToInt() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2978,9 +2978,9 @@ var e = "Hello!".to_float() # e is 0.0
 //go:nosplit
 func (self String) ToFloat() Float {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3003,9 +3003,9 @@ GD.Print("ab".HexToInt());   // Prints 171
 //go:nosplit
 func (self String) HexToInt() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3030,9 +3030,9 @@ GD.Print("-0b10".BinToInt()); // Prints -2
 //go:nosplit
 func (self String) BinToInt() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3045,11 +3045,11 @@ Formats the string to be at least [param min_length] long by adding [param chara
 //go:nosplit
 func (self String) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, min_length)
-	call.Arg(frame, mmm.Get(character))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, min_length)
+	callframe.Arg(frame, mmm.Get(character))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3062,11 +3062,11 @@ Formats the string to be at least [param min_length] long, by adding [param char
 //go:nosplit
 func (self String) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, min_length)
-	call.Arg(frame, mmm.Get(character))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, min_length)
+	callframe.Arg(frame, mmm.Get(character))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3079,10 +3079,10 @@ Formats the string representing a number to have an exact number of [param digit
 //go:nosplit
 func (self String) PadDecimals(ctx Context, digits Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, digits)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, digits)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3095,10 +3095,10 @@ Formats the string representing a number to have an exact number of [param digit
 //go:nosplit
 func (self String) PadZeros(ctx Context, digits Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, digits)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, digits)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3111,10 +3111,10 @@ Removes the given [param prefix] from the start of the string, or returns the st
 //go:nosplit
 func (self String) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(prefix))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(prefix))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3127,10 +3127,10 @@ Removes the given [param suffix] from the end of the string, or returns the stri
 //go:nosplit
 func (self String) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(suffix))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(suffix))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3143,9 +3143,9 @@ Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/L
 //go:nosplit
 func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3158,9 +3158,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] en
 //go:nosplit
 func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3173,9 +3173,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] 
 //go:nosplit
 func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3188,9 +3188,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] 
 //go:nosplit
 func (self String) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3215,9 +3215,9 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 //go:nosplit
 func (self String) HexDecode(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3230,9 +3230,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide 
 //go:nosplit
 func (self String) ToWcharBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3260,10 +3260,10 @@ GD.Print(n.ToString("e1")); // Prints -5.2e+008
 //go:nosplit
 func (self String) NumScientific(ctx Context, number Float) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, number)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, number)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.num_scientific(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3292,11 +3292,11 @@ String.num(-10000.0000012345432123454321) # Returns "-10000.0000012345"
 //go:nosplit
 func (self String) Num(ctx Context, number Float, decimals Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, number)
-	call.Arg(frame, decimals)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, number)
+	callframe.Arg(frame, decimals)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.num(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3311,12 +3311,12 @@ If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represe
 //go:nosplit
 func (self String) NumInt64(ctx Context, number Int, base Int, capitalize_hex bool) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, number)
-	call.Arg(frame, base)
-	call.Arg(frame, capitalize_hex)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, number)
+	callframe.Arg(frame, base)
+	callframe.Arg(frame, capitalize_hex)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.num_int64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3331,12 +3331,12 @@ If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represe
 //go:nosplit
 func (self String) NumUint64(ctx Context, number Int, base Int, capitalize_hex bool) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, number)
-	call.Arg(frame, base)
-	call.Arg(frame, capitalize_hex)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, number)
+	callframe.Arg(frame, base)
+	callframe.Arg(frame, capitalize_hex)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.num_uint64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3353,10 +3353,10 @@ print(String.chr(129302)) # Prints "🤖" (robot face emoji)
 //go:nosplit
 func (self String) Chr(ctx Context, char Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, char)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, char)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.chr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3370,10 +3370,10 @@ The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]I
 //go:nosplit
 func (self String) HumanizeSize(ctx Context, size Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, size)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, size)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.String.humanize_size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3388,10 +3388,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self StringName) CasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3406,10 +3406,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self StringName) NocasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3425,10 +3425,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self StringName) NaturalcasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3444,10 +3444,10 @@ To get a [bool] result from a string comparison, use the [code]==[/code] operato
 //go:nosplit
 func (self StringName) NaturalnocasecmpTo(to String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(to))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3460,9 +3460,9 @@ Returns the number of characters in the string. Empty strings ([code]""[/code]) 
 //go:nosplit
 func (self StringName) Length() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3475,11 +3475,11 @@ Returns part of the string from the position [param from] with length [param len
 //go:nosplit
 func (self StringName) Substr(ctx Context, from Int, len Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, from)
-	call.Arg(frame, len)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, len)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3497,11 +3497,11 @@ print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 //go:nosplit
 func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, slice)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, slice)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3515,11 +3515,11 @@ This is faster than [method split], if you only need one substring.
 //go:nosplit
 func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, delimiter)
-	call.Arg(frame, slice)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, delimiter)
+	callframe.Arg(frame, slice)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3532,10 +3532,10 @@ Returns the total number of slices when the string is split with the given [para
 //go:nosplit
 func (self StringName) GetSliceCount(delimiter String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3565,11 +3565,11 @@ GD.Print("Potato".Find("t", 5)); // Prints -1
 //go:nosplit
 func (self StringName) Find(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3582,12 +3582,12 @@ Returns the number of occurrences of the substring [param what] between [param f
 //go:nosplit
 func (self StringName) Count(what String, from Int, to Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3600,12 +3600,12 @@ Returns the number of occurrences of the substring [param what] between [param f
 //go:nosplit
 func (self StringName) Countn(what String, from Int, to Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	call.Arg(frame, to)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	callframe.Arg(frame, to)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3618,11 +3618,11 @@ Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [par
 //go:nosplit
 func (self StringName) Findn(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3635,11 +3635,11 @@ Returns the index of the [b]last[/b] occurrence of [param what] in this string, 
 //go:nosplit
 func (self StringName) Rfind(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3652,11 +3652,11 @@ Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [para
 //go:nosplit
 func (self StringName) Rfindn(what String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3669,10 +3669,10 @@ Does a simple expression match (also called "glob" or "globbing"), where [code]*
 //go:nosplit
 func (self StringName) Match(expr String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(expr))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(expr))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3685,10 +3685,10 @@ Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] mat
 //go:nosplit
 func (self StringName) Matchn(expr String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(expr))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(expr))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3701,10 +3701,10 @@ Returns [code]true[/code] if the string begins with the given [param text]. See 
 //go:nosplit
 func (self StringName) BeginsWith(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3717,10 +3717,10 @@ Returns [code]true[/code] if the string ends with the given [param text]. See al
 //go:nosplit
 func (self StringName) EndsWith(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3741,10 +3741,10 @@ print("".is_subsequence_of(text))         # Prints true
 //go:nosplit
 func (self StringName) IsSubsequenceOf(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3757,10 +3757,10 @@ Returns [code]true[/code] if all characters of this string can be found in [para
 //go:nosplit
 func (self StringName) IsSubsequenceOfn(text String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3776,9 +3776,9 @@ print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 //go:nosplit
 func (self StringName) Bigrams(ctx Context) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3797,10 +3797,10 @@ print("ABC123".similarity("abc123")) # Prints 0.4
 //go:nosplit
 func (self StringName) Similarity(text String) Float {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(text))
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(text))
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3830,11 +3830,11 @@ See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.
 //go:nosplit
 func (self StringName) Format(ctx Context, values Variant, placeholder String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(values))
-	call.Arg(frame, mmm.Get(placeholder))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(values))
+	callframe.Arg(frame, mmm.Get(placeholder))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3847,11 +3847,11 @@ Replaces all occurrences of [param what] inside the string with the given [param
 //go:nosplit
 func (self StringName) Replace(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, mmm.Get(forwhat))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, mmm.Get(forwhat))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3864,11 +3864,11 @@ Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the stri
 //go:nosplit
 func (self StringName) Replacen(ctx Context, what String, forwhat String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, mmm.Get(forwhat))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, mmm.Get(forwhat))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3881,10 +3881,10 @@ Repeats this string a number of times. [param count] needs to be greater than [c
 //go:nosplit
 func (self StringName) Repeat(ctx Context, count Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, count)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, count)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3897,9 +3897,9 @@ Returns the copy of this string in reverse order.
 //go:nosplit
 func (self StringName) Reverse(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3912,11 +3912,11 @@ Inserts [param what] at the given [param position] in the string.
 //go:nosplit
 func (self StringName) Insert(ctx Context, position Int, what String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	call.Arg(frame, mmm.Get(what))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	callframe.Arg(frame, mmm.Get(what))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3929,11 +3929,11 @@ Returns a string with [param chars] characters erased starting from [param posit
 //go:nosplit
 func (self StringName) Erase(ctx Context, position Int, chars Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	call.Arg(frame, chars)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	callframe.Arg(frame, chars)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3958,9 +3958,9 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 //go:nosplit
 func (self StringName) Capitalize(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3973,9 +3973,9 @@ Returns the string converted to [code]camelCase[/code].
 //go:nosplit
 func (self StringName) ToCamelCase(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -3988,9 +3988,9 @@ Returns the string converted to [code]PascalCase[/code].
 //go:nosplit
 func (self StringName) ToPascalCase(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4016,9 +4016,9 @@ Returns the string converted to [code]snake_case[/code].
 //go:nosplit
 func (self StringName) ToSnakeCase(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4053,12 +4053,12 @@ GD.Print(someArray[2]); // Prints "Three"
 //go:nosplit
 func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, allow_empty)
-	call.Arg(frame, maxsplit)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, allow_empty)
+	callframe.Arg(frame, maxsplit)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4087,12 +4087,12 @@ print(some_array[1])     # Prints "Four"
 //go:nosplit
 func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, allow_empty)
-	call.Arg(frame, maxsplit)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, allow_empty)
+	callframe.Arg(frame, maxsplit)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4111,11 +4111,11 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 //go:nosplit
 func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(delimiter))
-	call.Arg(frame, allow_empty)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(delimiter))
+	callframe.Arg(frame, allow_empty)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4144,10 +4144,10 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 //go:nosplit
 func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(parts))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(parts))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4160,9 +4160,9 @@ Returns the string converted to [code]UPPERCASE[/code].
 //go:nosplit
 func (self StringName) ToUpper(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4175,9 +4175,9 @@ Returns the string converted to [code]lowercase[/code].
 //go:nosplit
 func (self StringName) ToLower(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4194,10 +4194,10 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 //go:nosplit
 func (self StringName) Left(ctx Context, length Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, length)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, length)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4214,10 +4214,10 @@ print("Hello World!".right(-4)) # Prints "o World!"
 //go:nosplit
 func (self StringName) Right(ctx Context, length Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, length)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, length)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4231,11 +4231,11 @@ If [param left] is [code]false[/code], ignores the string's beginning. Likewise,
 //go:nosplit
 func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, left)
-	call.Arg(frame, right)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, left)
+	callframe.Arg(frame, right)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4248,9 +4248,9 @@ Strips all escape characters from the string. These include all non-printable co
 //go:nosplit
 func (self StringName) StripEscapes(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4264,10 +4264,10 @@ Removes a set of characters defined in [param chars] from the string's beginning
 //go:nosplit
 func (self StringName) Lstrip(ctx Context, chars String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(chars))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(chars))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4281,10 +4281,10 @@ Removes a set of characters defined in [param chars] from the string's end. See 
 //go:nosplit
 func (self StringName) Rstrip(ctx Context, chars String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(chars))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(chars))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4308,9 +4308,9 @@ var h = "".get_extension()           # h is ""
 //go:nosplit
 func (self StringName) GetExtension(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4326,9 +4326,9 @@ var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 //go:nosplit
 func (self StringName) GetBasename(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4342,10 +4342,10 @@ Concatenates [param file] at the end of the string as a subpath, adding [code]/[
 //go:nosplit
 func (self StringName) PathJoin(ctx Context, file String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(file))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(file))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4358,10 +4358,10 @@ Returns the character code at position [param at].
 //go:nosplit
 func (self StringName) UnicodeAt(at Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4375,10 +4375,10 @@ For example, the string can be indented with two tabulations using [code]"\t\t"[
 //go:nosplit
 func (self StringName) Indent(ctx Context, prefix String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(prefix))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(prefix))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4391,9 +4391,9 @@ Returns a copy of the string with indentation (leading tabs and spaces) removed.
 //go:nosplit
 func (self StringName) Dedent(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4406,9 +4406,9 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self StringName) Md5Text(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4421,9 +4421,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self StringName) Sha1Text(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4436,9 +4436,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self StringName) Sha256Text(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4451,9 +4451,9 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4466,9 +4466,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4481,9 +4481,9 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4496,9 +4496,9 @@ Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/co
 //go:nosplit
 func (self StringName) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4523,10 +4523,10 @@ If you need to know where [param what] is within the string, use [method find].
 //go:nosplit
 func (self StringName) Contains(what String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4540,9 +4540,9 @@ This includes all paths starting with [code]"res://"[/code], [code]"user://"[/co
 //go:nosplit
 func (self StringName) IsAbsolutePath() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4555,9 +4555,9 @@ Returns [code]true[/code] if the string is a path, and its starting point is dep
 //go:nosplit
 func (self StringName) IsRelativePath() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4574,9 +4574,9 @@ print(simple_path) # Prints "path/file"
 //go:nosplit
 func (self StringName) SimplifyPath(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4592,9 +4592,9 @@ var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 //go:nosplit
 func (self StringName) GetBaseDir(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4610,9 +4610,9 @@ var file = "/path/to/icon.png".get_file() # file is "icon.png"
 //go:nosplit
 func (self StringName) GetFile(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4625,10 +4625,10 @@ Returns a copy of the string with special characters escaped using the XML stand
 //go:nosplit
 func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, escape_quotes)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, escape_quotes)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4641,9 +4641,9 @@ Returns a copy of the string with escaped characters replaced by their meanings 
 //go:nosplit
 func (self StringName) XmlUnescape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4670,9 +4670,9 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 //go:nosplit
 func (self StringName) UriEncode(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4695,9 +4695,9 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 //go:nosplit
 func (self StringName) UriDecode(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4710,9 +4710,9 @@ Returns a copy of the string with special characters escaped using the C languag
 //go:nosplit
 func (self StringName) CEscape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4726,9 +4726,9 @@ Returns a copy of the string with escaped characters replaced by their meanings.
 //go:nosplit
 func (self StringName) CUnescape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4741,9 +4741,9 @@ Returns a copy of the string with special characters escaped using the JSON stan
 //go:nosplit
 func (self StringName) JsonEscape(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4756,9 +4756,9 @@ Returns a copy of the string with all characters that are not allowed in [member
 //go:nosplit
 func (self StringName) ValidateNodeName(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4771,9 +4771,9 @@ Returns a copy of the string with all characters that are not allowed in [method
 //go:nosplit
 func (self StringName) ValidateFilename(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -4792,9 +4792,9 @@ print("MyMethod#2".is_valid_identifier()) # Prints false
 //go:nosplit
 func (self StringName) IsValidIdentifier() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4814,9 +4814,9 @@ print("-12".is_valid_int())  # Prints true
 //go:nosplit
 func (self StringName) IsValidInt() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4835,9 +4835,9 @@ print("Hello".is_valid_float()) # Prints false
 //go:nosplit
 func (self StringName) IsValidFloat() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4858,10 +4858,10 @@ print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 //go:nosplit
 func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, with_prefix)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, with_prefix)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4874,9 +4874,9 @@ Returns [code]true[/code] if this string is a valid color in hexadecimal HTML no
 //go:nosplit
 func (self StringName) IsValidHtmlColor() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4889,9 +4889,9 @@ Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv
 //go:nosplit
 func (self StringName) IsValidIpAddress() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4904,9 +4904,9 @@ Returns [code]true[/code] if this string does not contain characters that are no
 //go:nosplit
 func (self StringName) IsValidFilename() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4925,9 +4925,9 @@ var d = "Hello!".to_int() # d is 0
 //go:nosplit
 func (self StringName) ToInt() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4947,9 +4947,9 @@ var e = "Hello!".to_int()  # e is 0.0
 //go:nosplit
 func (self StringName) ToFloat() Float {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4972,9 +4972,9 @@ GD.Print("ab".HexToInt());   // Prints 171
 //go:nosplit
 func (self StringName) HexToInt() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4999,9 +4999,9 @@ GD.Print("-0b10".BinToInt()); // Prints -2
 //go:nosplit
 func (self StringName) BinToInt() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5014,11 +5014,11 @@ Formats the string to be at least [param min_length] long by adding [param chara
 //go:nosplit
 func (self StringName) Lpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, min_length)
-	call.Arg(frame, mmm.Get(character))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, min_length)
+	callframe.Arg(frame, mmm.Get(character))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5031,11 +5031,11 @@ Formats the string to be at least [param min_length] long, by adding [param char
 //go:nosplit
 func (self StringName) Rpad(ctx Context, min_length Int, character String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, min_length)
-	call.Arg(frame, mmm.Get(character))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, min_length)
+	callframe.Arg(frame, mmm.Get(character))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5048,10 +5048,10 @@ Formats the string representing a number to have an exact number of [param digit
 //go:nosplit
 func (self StringName) PadDecimals(ctx Context, digits Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, digits)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, digits)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5064,10 +5064,10 @@ Formats the string representing a number to have an exact number of [param digit
 //go:nosplit
 func (self StringName) PadZeros(ctx Context, digits Int) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, digits)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, digits)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5080,10 +5080,10 @@ Removes the given [param prefix] from the start of the string, or returns the st
 //go:nosplit
 func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(prefix))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(prefix))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5096,10 +5096,10 @@ Removes the given [param suffix] from the end of the string, or returns the stri
 //go:nosplit
 func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(suffix))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(suffix))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5112,9 +5112,9 @@ Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/L
 //go:nosplit
 func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5127,9 +5127,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] en
 //go:nosplit
 func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5142,9 +5142,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] 
 //go:nosplit
 func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5157,9 +5157,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] 
 //go:nosplit
 func (self StringName) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5184,9 +5184,9 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 //go:nosplit
 func (self StringName) HexDecode(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5199,9 +5199,9 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide 
 //go:nosplit
 func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5215,9 +5215,9 @@ Returns the 32-bit hash value representing the string's contents.
 //go:nosplit
 func (self StringName) Hash() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.StringName.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5230,9 +5230,9 @@ Returns [code]true[/code] if the node path is absolute (as opposed to relative),
 //go:nosplit
 func (self NodePath) IsAbsolute() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.is_absolute(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5246,9 +5246,9 @@ For example, [code]"Path2D/PathFollow2D/Sprite2D"[/code] has 3 names.
 //go:nosplit
 func (self NodePath) GetNameCount() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_name_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5275,10 +5275,10 @@ GD.Print(nodePath.GetName(2)); // Sprite
 //go:nosplit
 func (self NodePath) GetName(ctx Context, idx Int) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, idx)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, idx)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5292,9 +5292,9 @@ For example, [code]"Path2D/PathFollow2D/Sprite2D:texture:load_path"[/code] has 2
 //go:nosplit
 func (self NodePath) GetSubnameCount() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_subname_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5307,9 +5307,9 @@ Returns the 32-bit hash value representing the [NodePath]'s contents.
 //go:nosplit
 func (self NodePath) Hash() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5334,10 +5334,10 @@ GD.Print(nodePath.GetSubname(1)); // load_path
 //go:nosplit
 func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, idx)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, idx)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_subname(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5350,9 +5350,9 @@ Returns all paths concatenated with a slash character ([code]/[/code]) as separa
 //go:nosplit
 func (self NodePath) GetConcatenatedNames(ctx Context) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_concatenated_names(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5375,9 +5375,9 @@ GD.Print(nodePath.GetConcatenatedSubnames()); // texture:load_path
 //go:nosplit
 func (self NodePath) GetConcatenatedSubnames(ctx Context) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_concatenated_subnames(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5406,9 +5406,9 @@ GD.Print(propertyPath); // :position:x
 //go:nosplit
 func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.get_as_property_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5421,9 +5421,9 @@ Returns [code]true[/code] if the node path is empty.
 //go:nosplit
 func (self NodePath) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.NodePath.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5436,10 +5436,10 @@ Calls the method represented by this [Callable]. Unlike [method call], this meth
 //go:nosplit
 func (self Callable) Callv(ctx Context, arguments Array) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arguments))
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arguments))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.callv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5452,9 +5452,9 @@ Returns [code]true[/code] if this [Callable] has no target to call the method on
 //go:nosplit
 func (self Callable) IsNull() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5467,9 +5467,9 @@ Returns [code]true[/code] if this [Callable] is a custom callable. Custom callab
 //go:nosplit
 func (self Callable) IsCustom() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.is_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5482,9 +5482,9 @@ Returns [code]true[/code] if this [Callable] is a standard callable. This method
 //go:nosplit
 func (self Callable) IsStandard() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.is_standard(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5497,9 +5497,9 @@ Returns [code]true[/code] if the callable's object exists and has a valid method
 //go:nosplit
 func (self Callable) IsValid() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.is_valid(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5512,9 +5512,9 @@ Returns the object on which this [Callable] is called.
 //go:nosplit
 func (self Callable) GetObject(ctx Context) Object {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
 	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
@@ -5528,9 +5528,9 @@ Returns the ID of this [Callable]'s object (see [method Object.get_instance_id])
 //go:nosplit
 func (self Callable) GetObjectId() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5543,9 +5543,9 @@ Returns the name of the method represented by this [Callable]. If the callable i
 //go:nosplit
 func (self Callable) GetMethod(ctx Context) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_method(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5558,9 +5558,9 @@ Returns the total amount of arguments bound (or unbound) via successive [method 
 //go:nosplit
 func (self Callable) GetBoundArgumentsCount() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_bound_arguments_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5573,9 +5573,9 @@ Return the bound arguments (as long as [method get_bound_arguments_count] is gre
 //go:nosplit
 func (self Callable) GetBoundArguments(ctx Context) Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_bound_arguments(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5589,9 +5589,9 @@ Returns the 32-bit hash value of this [Callable]'s object.
 //go:nosplit
 func (self Callable) Hash() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5605,10 +5605,10 @@ Returns a copy of this [Callable] with one or more arguments bound, reading them
 //go:nosplit
 func (self Callable) Bindv(ctx Context, arguments Array) Callable {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(arguments))
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(arguments))
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.bindv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5627,10 +5627,10 @@ func _ready():
 //go:nosplit
 func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, argcount)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, argcount)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.unbind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5643,12 +5643,12 @@ Calls the method represented by this [Callable]. Arguments can be passed and sho
 //go:nosplit
 func (self Callable) Call(ctx Context, args ...Variant) Variant {
 	var selfPtr = self
-	var frame = call.New()
+	var frame = callframe.New()
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5667,12 +5667,12 @@ See also [method Object.call_deferred].
 //go:nosplit
 func (self Callable) CallDeferred(args ...Variant) {
 	var selfPtr = self
-	var frame = call.New()
+	var frame = callframe.New()
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
@@ -5683,12 +5683,12 @@ Perform an RPC (Remote Procedure Call) on all connected peers. This is used for 
 //go:nosplit
 func (self Callable) Rpc(args ...Variant) {
 	var selfPtr = self
-	var frame = call.New()
+	var frame = callframe.New()
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
@@ -5699,13 +5699,13 @@ Perform an RPC (Remote Procedure Call) on a specific peer ID (see multiplayer do
 //go:nosplit
 func (self Callable) RpcId(peer_id Int, args ...Variant) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, peer_id)
+	var frame = callframe.New()
+	callframe.Arg(frame, peer_id)
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+1)
 	frame.Free()
 }
@@ -5717,12 +5717,12 @@ Returns a copy of this [Callable] with one or more arguments bound. When called,
 //go:nosplit
 func (self Callable) Bind(ctx Context, args ...Variant) Callable {
 	var selfPtr = self
-	var frame = call.New()
+	var frame = callframe.New()
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5735,9 +5735,9 @@ Returns [code]true[/code] if the signal's name does not exist in its object, or 
 //go:nosplit
 func (self Signal) IsNull() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5750,9 +5750,9 @@ Returns the object emitting this signal.
 //go:nosplit
 func (self Signal) GetObject(ctx Context) Object {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
 	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
@@ -5766,9 +5766,9 @@ Returns the ID of the object emitting this signal (see [method Object.get_instan
 //go:nosplit
 func (self Signal) GetObjectId() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5781,9 +5781,9 @@ Returns the name of this signal.
 //go:nosplit
 func (self Signal) GetName(ctx Context) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5804,11 +5804,11 @@ func _on_pressed(button):
 //go:nosplit
 func (self Signal) Connect(callable Callable, flags Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(callable))
-	call.Arg(frame, flags)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(callable))
+	callframe.Arg(frame, flags)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.connect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5821,10 +5821,10 @@ Disconnects this signal from the specified [Callable]. If the connection does no
 //go:nosplit
 func (self Signal) Disconnect(callable Callable) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(callable))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(callable))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.disconnect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -5835,10 +5835,10 @@ Returns [code]true[/code] if the specified [Callable] is connected to this signa
 //go:nosplit
 func (self Signal) IsConnected(callable Callable) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(callable))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(callable))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.is_connected(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5854,9 +5854,9 @@ Returns an [Array] of connections for this signal. Each connection is represente
 //go:nosplit
 func (self Signal) GetConnections(ctx Context) Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.get_connections(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -5869,12 +5869,12 @@ Emits this signal. All [Callable]s connected to this signal will be triggered. T
 //go:nosplit
 func (self Signal) Emit(args ...Variant) {
 	var selfPtr = self
-	var frame = call.New()
+	var frame = callframe.New()
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
@@ -5885,9 +5885,9 @@ Returns the number of entries in the dictionary. Empty dictionaries ([code]{ }[/
 //go:nosplit
 func (self Dictionary) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5900,9 +5900,9 @@ Returns [code]true[/code] if the dictionary is empty (its size is [code]0[/code]
 //go:nosplit
 func (self Dictionary) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5915,9 +5915,9 @@ Clears the dictionary, removing all entries from it.
 //go:nosplit
 func (self Dictionary) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -5964,11 +5964,11 @@ GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
 //go:nosplit
 func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(dictionary))
-	call.Arg(frame, overwrite)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(dictionary))
+	callframe.Arg(frame, overwrite)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.merge(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -6008,10 +6008,10 @@ if "Godot" in {"Godot": 4}:
 //go:nosplit
 func (self Dictionary) Has(key Variant) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(key))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(key))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6028,10 +6028,10 @@ data.has_all(["height", "width"]) # Returns true
 //go:nosplit
 func (self Dictionary) HasAll(keys Array) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(keys))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(keys))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.has_all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6045,10 +6045,10 @@ Finds and returns the first key whose associated value is equal to [param value]
 //go:nosplit
 func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.find_key(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6062,10 +6062,10 @@ Removes the dictionary entry by key, if it exists. Returns [code]true[/code] if 
 //go:nosplit
 func (self Dictionary) Erase(key Variant) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(key))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(key))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6095,9 +6095,9 @@ GD.Print(GD.Hash(dict1) == GD.Hash(dict2)); // Prints true
 //go:nosplit
 func (self Dictionary) Hash() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6110,9 +6110,9 @@ Returns the list of keys in the dictionary.
 //go:nosplit
 func (self Dictionary) Keys(ctx Context) Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.keys(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6125,9 +6125,9 @@ Returns the list of values in this dictionary.
 //go:nosplit
 func (self Dictionary) Values(ctx Context) Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.values(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6140,10 +6140,10 @@ Creates and returns a new copy of the dictionary. If [param deep] is [code]true[
 //go:nosplit
 func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, deep)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, deep)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6156,11 +6156,11 @@ Returns the corresponding value for the given [param key] in the dictionary. If 
 //go:nosplit
 func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(key))
-	call.Arg(frame, mmm.Get(def))
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(key))
+	callframe.Arg(frame, mmm.Get(def))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.get(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6173,9 +6173,9 @@ Makes the dictionary read-only, i.e. disables modification of the dictionary's c
 //go:nosplit
 func (self Dictionary) MakeReadOnly() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -6186,9 +6186,9 @@ Returns [code]true[/code] if the dictionary is read-only. See [method make_read_
 //go:nosplit
 func (self Dictionary) IsReadOnly() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Dictionary.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6201,9 +6201,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6216,9 +6216,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6231,9 +6231,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -6245,9 +6245,9 @@ Returns a hashed 32-bit integer value representing the array and its contents.
 //go:nosplit
 func (self Array) Hash() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6260,10 +6260,10 @@ Assigns elements of another [param array] into the array. Resizes the array to m
 //go:nosplit
 func (self Array) Assign(array Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.assign(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6274,10 +6274,10 @@ Appends an element at the end of the array. See also [method push_front].
 //go:nosplit
 func (self Array) PushBack(value Variant) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6289,10 +6289,10 @@ Adds an element at the beginning of the array. See also [method push_back].
 //go:nosplit
 func (self Array) PushFront(value Variant) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.push_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6303,10 +6303,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self Array) Append(value Variant) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6323,10 +6323,10 @@ print(array1) # Prints [1, 2, 3, 4, 5, 6].
 //go:nosplit
 func (self Array) AppendArray(array Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6339,10 +6339,10 @@ Calling [method resize] once and assigning the new values is faster than adding 
 //go:nosplit
 func (self Array) Resize(size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6357,11 +6357,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self Array) Insert(position Int, value Variant) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6377,10 +6377,10 @@ Removes an element from the array by index. If the index does not exist in the a
 //go:nosplit
 func (self Array) RemoveAt(position Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6404,10 +6404,10 @@ array.Fill(0); // Initialize the 10 elements to 0.
 //go:nosplit
 func (self Array) Fill(value Variant) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6421,10 +6421,10 @@ Removes the first occurrence of a value from the array. If the value does not ex
 //go:nosplit
 func (self Array) Erase(value Variant) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6436,9 +6436,9 @@ Returns the first element of the array. Prints an error and returns [code]null[/
 //go:nosplit
 func (self Array) Front(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6452,9 +6452,9 @@ Returns the last element of the array. Prints an error and returns [code]null[/c
 //go:nosplit
 func (self Array) Back(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6477,9 +6477,9 @@ GD.Print(array.PickRandom()); // Prints either of the four numbers.
 //go:nosplit
 func (self Array) PickRandom(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.pick_random(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6492,11 +6492,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self Array) Find(what Variant, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6509,11 +6509,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self Array) Rfind(what Variant, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(what))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6526,10 +6526,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self Array) Count(value Variant) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6574,10 +6574,10 @@ if (array.Contains(2))
 //go:nosplit
 func (self Array) Has(value Variant) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6590,9 +6590,9 @@ Removes and returns the last element of the array. Returns [code]null[/code] if 
 //go:nosplit
 func (self Array) PopBack(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.pop_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6606,9 +6606,9 @@ Removes and returns the first element of the array. Returns [code]null[/code] if
 //go:nosplit
 func (self Array) PopFront(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.pop_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6622,10 +6622,10 @@ Removes and returns the element of the array at index [param position]. If negat
 //go:nosplit
 func (self Array) PopAt(ctx Context, position Int) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, position)
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, position)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.pop_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6658,9 +6658,9 @@ print(strings) # Prints [string1, string2, string10, string11]
 //go:nosplit
 func (self Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -6693,10 +6693,10 @@ func _ready():
 //go:nosplit
 func (self Array) SortCustom(fn Callable) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(fn))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(fn))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.sort_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -6707,9 +6707,9 @@ Shuffles the array such that the items will have a random order. This method use
 //go:nosplit
 func (self Array) Shuffle() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.shuffle(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -6726,11 +6726,11 @@ print(array.bsearch("c", false)) # Prints 4, after the last matching element, po
 //go:nosplit
 func (self Array) Bsearch(value Variant, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6745,12 +6745,12 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, mmm.Get(fn))
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, mmm.Get(fn))
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.bsearch_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6763,9 +6763,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -6777,10 +6777,10 @@ If [param deep] is [code]true[/code], a deep copy is performed: all nested array
 //go:nosplit
 func (self Array) Duplicate(ctx Context, deep bool) Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, deep)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, deep)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6798,13 +6798,13 @@ If [param deep] is true, each element will be copied by value rather than by ref
 //go:nosplit
 func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	call.Arg(frame, step)
-	call.Arg(frame, deep)
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	callframe.Arg(frame, step)
+	callframe.Arg(frame, deep)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 4)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6827,10 +6827,10 @@ See also [method any], [method all], [method map] and [method reduce].
 //go:nosplit
 func (self Array) Filter(ctx Context, method Callable) Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.filter(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6853,10 +6853,10 @@ See also [method filter], [method reduce], [method any] and [method all].
 //go:nosplit
 func (self Array) Map(ctx Context, method Callable) Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.map_(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6879,11 +6879,11 @@ See also [method map], [method filter], [method any] and [method all].
 //go:nosplit
 func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	call.Arg(frame, mmm.Get(accum))
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	callframe.Arg(frame, mmm.Get(accum))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.reduce(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6912,10 +6912,10 @@ See also [method all], [method filter], [method map] and [method reduce].
 //go:nosplit
 func (self Array) Any(method Callable) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.any(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6944,10 +6944,10 @@ See also [method any], [method filter], [method map] and [method reduce].
 //go:nosplit
 func (self Array) All(method Callable) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6970,9 +6970,9 @@ func is_length_greater(a, b):
 //go:nosplit
 func (self Array) Max(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.max(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -6986,9 +6986,9 @@ See also [method max] for an example of using a custom comparator.
 //go:nosplit
 func (self Array) Min(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.min(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7001,9 +7001,9 @@ Returns [code]true[/code] if the array is typed. Typed arrays can only store ele
 //go:nosplit
 func (self Array) IsTyped() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.is_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7016,10 +7016,10 @@ Returns [code]true[/code] if the array is typed the same as [param array].
 //go:nosplit
 func (self Array) IsSameTyped(array Array) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.is_same_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7032,9 +7032,9 @@ Returns the built-in type of the typed array as a [enum Variant.Type] constant. 
 //go:nosplit
 func (self Array) GetTypedBuiltin() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.get_typed_builtin(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7047,9 +7047,9 @@ Returns the [b]native[/b] class name of the typed array if the built-in type is 
 //go:nosplit
 func (self Array) GetTypedClassName(ctx Context) StringName {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.get_typed_class_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7062,9 +7062,9 @@ Returns the script associated with the typed array. This method returns a [Scrip
 //go:nosplit
 func (self Array) GetTypedScript(ctx Context) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.get_typed_script(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7077,9 +7077,9 @@ Makes the array read-only, i.e. disabled modifying of the array's elements. Does
 //go:nosplit
 func (self Array) MakeReadOnly() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -7090,9 +7090,9 @@ Returns [code]true[/code] if the array is read-only. See [method make_read_only]
 //go:nosplit
 func (self Array) IsReadOnly() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Array.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7105,9 +7105,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedByteArray) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7120,9 +7120,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedByteArray) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7135,11 +7135,11 @@ Changes the byte at the given index.
 //go:nosplit
 func (self PackedByteArray) Set(index Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7150,10 +7150,10 @@ Appends an element at the end of the array.
 //go:nosplit
 func (self PackedByteArray) PushBack(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7166,10 +7166,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedByteArray) Append(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7182,10 +7182,10 @@ Appends a [PackedByteArray] at the end of this array.
 //go:nosplit
 func (self PackedByteArray) AppendArray(array PackedByteArray) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -7196,10 +7196,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedByteArray) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -7210,11 +7210,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedByteArray) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7227,10 +7227,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedByteArray) Fill(value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -7241,10 +7241,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedByteArray) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7257,9 +7257,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedByteArray) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -7270,10 +7270,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedByteArray) Has(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7286,9 +7286,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedByteArray) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -7301,11 +7301,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7318,9 +7318,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedByteArray) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -7332,11 +7332,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedByteArray) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7349,9 +7349,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedByteArray) Duplicate(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7364,11 +7364,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedByteArray) Find(value Int, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7381,11 +7381,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedByteArray) Rfind(value Int, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7398,10 +7398,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedByteArray) Count(value Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7414,9 +7414,9 @@ Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method ge
 //go:nosplit
 func (self PackedByteArray) GetStringFromAscii(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.get_string_from_ascii(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7429,9 +7429,9 @@ Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_as
 //go:nosplit
 func (self PackedByteArray) GetStringFromUtf8(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.get_string_from_utf8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7444,9 +7444,9 @@ Converts UTF-16 encoded array to [String]. If the BOM is missing, system endiann
 //go:nosplit
 func (self PackedByteArray) GetStringFromUtf16(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.get_string_from_utf16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7459,9 +7459,9 @@ Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns
 //go:nosplit
 func (self PackedByteArray) GetStringFromUtf32(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.get_string_from_utf32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7474,9 +7474,9 @@ Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on othe
 //go:nosplit
 func (self PackedByteArray) GetStringFromWchar(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.get_string_from_wchar(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7499,9 +7499,9 @@ GD.Print(array.HexEncode()); // Prints: 0b2eff
 //go:nosplit
 func (self PackedByteArray) HexEncode(ctx Context) String {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.hex_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7514,10 +7514,10 @@ Returns a new [PackedByteArray] with the data compressed. Set the compression mo
 //go:nosplit
 func (self PackedByteArray) Compress(ctx Context, compression_mode Int) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, compression_mode)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, compression_mode)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.compress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7531,11 +7531,11 @@ Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_si
 //go:nosplit
 func (self PackedByteArray) Decompress(ctx Context, buffer_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, buffer_size)
-	call.Arg(frame, compression_mode)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, buffer_size)
+	callframe.Arg(frame, compression_mode)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decompress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7551,11 +7551,11 @@ GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a
 //go:nosplit
 func (self PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, max_output_size)
-	call.Arg(frame, compression_mode)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, max_output_size)
+	callframe.Arg(frame, compression_mode)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decompress_dynamic(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7568,10 +7568,10 @@ Decodes a 8-bit unsigned integer number from the bytes starting at [param byte_o
 //go:nosplit
 func (self PackedByteArray) DecodeU8(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7584,10 +7584,10 @@ Decodes a 8-bit signed integer number from the bytes starting at [param byte_off
 //go:nosplit
 func (self PackedByteArray) DecodeS8(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7600,10 +7600,10 @@ Decodes a 16-bit unsigned integer number from the bytes starting at [param byte_
 //go:nosplit
 func (self PackedByteArray) DecodeU16(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7616,10 +7616,10 @@ Decodes a 16-bit signed integer number from the bytes starting at [param byte_of
 //go:nosplit
 func (self PackedByteArray) DecodeS16(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7632,10 +7632,10 @@ Decodes a 32-bit unsigned integer number from the bytes starting at [param byte_
 //go:nosplit
 func (self PackedByteArray) DecodeU32(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7648,10 +7648,10 @@ Decodes a 32-bit signed integer number from the bytes starting at [param byte_of
 //go:nosplit
 func (self PackedByteArray) DecodeS32(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7664,10 +7664,10 @@ Decodes a 64-bit unsigned integer number from the bytes starting at [param byte_
 //go:nosplit
 func (self PackedByteArray) DecodeU64(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7680,10 +7680,10 @@ Decodes a 64-bit signed integer number from the bytes starting at [param byte_of
 //go:nosplit
 func (self PackedByteArray) DecodeS64(byte_offset Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7696,10 +7696,10 @@ Decodes a 16-bit floating point number from the bytes starting at [param byte_of
 //go:nosplit
 func (self PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7712,10 +7712,10 @@ Decodes a 32-bit floating point number from the bytes starting at [param byte_of
 //go:nosplit
 func (self PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7728,10 +7728,10 @@ Decodes a 64-bit floating point number from the bytes starting at [param byte_of
 //go:nosplit
 func (self PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	var r_ret = call.Ret[Float](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	var r_ret = callframe.Ret[Float](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7744,11 +7744,11 @@ Returns [code]true[/code] if a valid [Variant] value can be decoded at the [para
 //go:nosplit
 func (self PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, allow_objects)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, allow_objects)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.has_encoded_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7761,11 +7761,11 @@ Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [cod
 //go:nosplit
 func (self PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_objects bool) Variant {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, allow_objects)
-	var r_ret = call.Ret[[3]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, allow_objects)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7778,11 +7778,11 @@ Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Re
 //go:nosplit
 func (self PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, allow_objects)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, allow_objects)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.decode_var_size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7797,9 +7797,9 @@ If the original data can't be converted to signed 32-bit integers, the resulting
 //go:nosplit
 func (self PackedByteArray) ToInt32Array(ctx Context) PackedInt32Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.to_int32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7814,9 +7814,9 @@ If the original data can't be converted to signed 64-bit integers, the resulting
 //go:nosplit
 func (self PackedByteArray) ToInt64Array(ctx Context) PackedInt64Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.to_int64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7831,9 +7831,9 @@ If the original data can't be converted to 32-bit floats, the resulting data is 
 //go:nosplit
 func (self PackedByteArray) ToFloat32Array(ctx Context) PackedFloat32Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.to_float32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7848,9 +7848,9 @@ If the original data can't be converted to 64-bit floats, the resulting data is 
 //go:nosplit
 func (self PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.to_float64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7863,11 +7863,11 @@ Encodes a 8-bit unsigned integer number (byte) at the index of [param byte_offse
 //go:nosplit
 func (self PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7878,11 +7878,11 @@ Encodes a 8-bit signed integer number (signed byte) at the index of [param byte_
 //go:nosplit
 func (self PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7893,11 +7893,11 @@ Encodes a 16-bit unsigned integer number as bytes at the index of [param byte_of
 //go:nosplit
 func (self PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7908,11 +7908,11 @@ Encodes a 16-bit signed integer number as bytes at the index of [param byte_offs
 //go:nosplit
 func (self PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7923,11 +7923,11 @@ Encodes a 32-bit unsigned integer number as bytes at the index of [param byte_of
 //go:nosplit
 func (self PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7938,11 +7938,11 @@ Encodes a 32-bit signed integer number as bytes at the index of [param byte_offs
 //go:nosplit
 func (self PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7953,11 +7953,11 @@ Encodes a 64-bit unsigned integer number as bytes at the index of [param byte_of
 //go:nosplit
 func (self PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7968,11 +7968,11 @@ Encodes a 64-bit signed integer number as bytes at the index of [param byte_offs
 //go:nosplit
 func (self PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7983,11 +7983,11 @@ Encodes a 16-bit floating point number as bytes at the index of [param byte_offs
 //go:nosplit
 func (self PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -7998,11 +7998,11 @@ Encodes a 32-bit floating point number as bytes at the index of [param byte_offs
 //go:nosplit
 func (self PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -8013,11 +8013,11 @@ Encodes a 64-bit floating point number as bytes at the index of [param byte_offs
 //go:nosplit
 func (self PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -8028,12 +8028,12 @@ Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient spac
 //go:nosplit
 func (self PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, byte_offset)
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, allow_objects)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, byte_offset)
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, allow_objects)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedByteArray.encode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8046,9 +8046,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedInt32Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8061,9 +8061,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedInt32Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8076,11 +8076,11 @@ Changes the integer at the given index.
 //go:nosplit
 func (self PackedInt32Array) Set(index Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -8091,10 +8091,10 @@ Appends a value to the array.
 //go:nosplit
 func (self PackedInt32Array) PushBack(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8107,10 +8107,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedInt32Array) Append(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8123,10 +8123,10 @@ Appends a [PackedInt32Array] at the end of this array.
 //go:nosplit
 func (self PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8137,10 +8137,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedInt32Array) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8151,11 +8151,11 @@ Inserts a new integer at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedInt32Array) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8168,10 +8168,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedInt32Array) Fill(value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8182,10 +8182,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedInt32Array) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8198,9 +8198,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedInt32Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8211,10 +8211,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedInt32Array) Has(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8227,9 +8227,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedInt32Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8242,11 +8242,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8260,9 +8260,9 @@ The size of the new array will be [code]int32_array.size() * 4[/code].
 //go:nosplit
 func (self PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8275,9 +8275,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedInt32Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8289,11 +8289,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedInt32Array) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8306,9 +8306,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8321,11 +8321,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedInt32Array) Find(value Int, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8338,11 +8338,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedInt32Array) Rfind(value Int, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8355,10 +8355,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedInt32Array) Count(value Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8371,9 +8371,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedInt64Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8386,9 +8386,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedInt64Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8401,11 +8401,11 @@ Changes the integer at the given index.
 //go:nosplit
 func (self PackedInt64Array) Set(index Int, value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -8416,10 +8416,10 @@ Appends a value to the array.
 //go:nosplit
 func (self PackedInt64Array) PushBack(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8432,10 +8432,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedInt64Array) Append(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8448,10 +8448,10 @@ Appends a [PackedInt64Array] at the end of this array.
 //go:nosplit
 func (self PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8462,10 +8462,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedInt64Array) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8476,11 +8476,11 @@ Inserts a new integer at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedInt64Array) Insert(at_index Int, value Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8493,10 +8493,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedInt64Array) Fill(value Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8507,10 +8507,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedInt64Array) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8523,9 +8523,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedInt64Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8536,10 +8536,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedInt64Array) Has(value Int) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8552,9 +8552,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedInt64Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8567,11 +8567,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8585,9 +8585,9 @@ The size of the new array will be [code]int64_array.size() * 8[/code].
 //go:nosplit
 func (self PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8600,9 +8600,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedInt64Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8614,11 +8614,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedInt64Array) Bsearch(value Int, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8631,9 +8631,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8646,11 +8646,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedInt64Array) Find(value Int, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8663,11 +8663,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedInt64Array) Rfind(value Int, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8680,10 +8680,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedInt64Array) Count(value Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedInt64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8696,9 +8696,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedFloat32Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8711,9 +8711,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedFloat32Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8726,11 +8726,11 @@ Changes the float at the given index.
 //go:nosplit
 func (self PackedFloat32Array) Set(index Int, value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -8741,10 +8741,10 @@ Appends an element at the end of the array.
 //go:nosplit
 func (self PackedFloat32Array) PushBack(value Float) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8757,10 +8757,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedFloat32Array) Append(value Float) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8773,10 +8773,10 @@ Appends a [PackedFloat32Array] at the end of this array.
 //go:nosplit
 func (self PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8787,10 +8787,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedFloat32Array) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8801,11 +8801,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8818,10 +8818,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedFloat32Array) Fill(value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -8832,10 +8832,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedFloat32Array) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8848,9 +8848,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedFloat32Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8862,10 +8862,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedFloat32Array) Has(value Float) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8878,9 +8878,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedFloat32Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8893,11 +8893,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFloat32Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8911,9 +8911,9 @@ The size of the new array will be [code]float32_array.size() * 4[/code].
 //go:nosplit
 func (self PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8927,9 +8927,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedFloat32Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -8942,11 +8942,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedFloat32Array) Bsearch(value Float, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8959,9 +8959,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8975,11 +8975,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedFloat32Array) Find(value Float, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8993,11 +8993,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedFloat32Array) Rfind(value Float, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9011,10 +9011,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedFloat32Array) Count(value Float) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9027,9 +9027,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedFloat64Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9042,9 +9042,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedFloat64Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9057,11 +9057,11 @@ Changes the float at the given index.
 //go:nosplit
 func (self PackedFloat64Array) Set(index Int, value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -9072,10 +9072,10 @@ Appends an element at the end of the array.
 //go:nosplit
 func (self PackedFloat64Array) PushBack(value Float) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9088,10 +9088,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedFloat64Array) Append(value Float) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9104,10 +9104,10 @@ Appends a [PackedFloat64Array] at the end of this array.
 //go:nosplit
 func (self PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9118,10 +9118,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedFloat64Array) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9132,11 +9132,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9149,10 +9149,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedFloat64Array) Fill(value Float) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9163,10 +9163,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedFloat64Array) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9179,9 +9179,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedFloat64Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9193,10 +9193,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedFloat64Array) Has(value Float) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9209,9 +9209,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedFloat64Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9224,11 +9224,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFloat64Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9242,9 +9242,9 @@ The size of the new array will be [code]float64_array.size() * 8[/code].
 //go:nosplit
 func (self PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9258,9 +9258,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedFloat64Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9273,11 +9273,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedFloat64Array) Bsearch(value Float, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9290,9 +9290,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9306,11 +9306,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedFloat64Array) Find(value Float, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9324,11 +9324,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedFloat64Array) Rfind(value Float, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9342,10 +9342,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedFloat64Array) Count(value Float) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedFloat64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9358,9 +9358,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedStringArray) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9373,9 +9373,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedStringArray) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9388,11 +9388,11 @@ Changes the [String] at the given index.
 //go:nosplit
 func (self PackedStringArray) Set(index Int, value String) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -9403,10 +9403,10 @@ Appends a string element at end of the array.
 //go:nosplit
 func (self PackedStringArray) PushBack(value String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9419,10 +9419,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedStringArray) Append(value String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9435,10 +9435,10 @@ Appends a [PackedStringArray] at the end of this array.
 //go:nosplit
 func (self PackedStringArray) AppendArray(array PackedStringArray) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9449,10 +9449,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedStringArray) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9463,11 +9463,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedStringArray) Insert(at_index Int, value String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9480,10 +9480,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedStringArray) Fill(value String) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9494,10 +9494,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedStringArray) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9510,9 +9510,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedStringArray) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9523,10 +9523,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedStringArray) Has(value String) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9539,9 +9539,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedStringArray) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9554,11 +9554,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9571,9 +9571,9 @@ Returns a [PackedByteArray] with each string encoded as bytes.
 //go:nosplit
 func (self PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9586,9 +9586,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedStringArray) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9600,11 +9600,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedStringArray) Bsearch(value String, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9617,9 +9617,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9632,11 +9632,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedStringArray) Find(value String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9649,11 +9649,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedStringArray) Rfind(value String, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9666,10 +9666,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedStringArray) Count(value String) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(value))
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedStringArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9682,9 +9682,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedVector2Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9697,9 +9697,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedVector2Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9712,11 +9712,11 @@ Changes the [Vector2] at the given index.
 //go:nosplit
 func (self PackedVector2Array) Set(index Int, value Vector2) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -9727,10 +9727,10 @@ Inserts a [Vector2] at the end.
 //go:nosplit
 func (self PackedVector2Array) PushBack(value Vector2) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9743,10 +9743,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedVector2Array) Append(value Vector2) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9759,10 +9759,10 @@ Appends a [PackedVector2Array] at the end of this array.
 //go:nosplit
 func (self PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9773,10 +9773,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedVector2Array) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9787,11 +9787,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9804,10 +9804,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedVector2Array) Fill(value Vector2) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -9818,10 +9818,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedVector2Array) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9834,9 +9834,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedVector2Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9848,10 +9848,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedVector2Array) Has(value Vector2) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9864,9 +9864,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedVector2Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9879,11 +9879,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVector2Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9896,9 +9896,9 @@ Returns a [PackedByteArray] with each vector encoded as bytes.
 //go:nosplit
 func (self PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9912,9 +9912,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedVector2Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -9927,11 +9927,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9944,9 +9944,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9960,11 +9960,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedVector2Array) Find(value Vector2, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9978,11 +9978,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9996,10 +9996,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedVector2Array) Count(value Vector2) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector2Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10012,9 +10012,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedVector3Array) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10027,9 +10027,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedVector3Array) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10042,11 +10042,11 @@ Changes the [Vector3] at the given index.
 //go:nosplit
 func (self PackedVector3Array) Set(index Int, value Vector3) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -10057,10 +10057,10 @@ Inserts a [Vector3] at the end.
 //go:nosplit
 func (self PackedVector3Array) PushBack(value Vector3) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10073,10 +10073,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedVector3Array) Append(value Vector3) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10089,10 +10089,10 @@ Appends a [PackedVector3Array] at the end of this array.
 //go:nosplit
 func (self PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -10103,10 +10103,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedVector3Array) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -10117,11 +10117,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10134,10 +10134,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedVector3Array) Fill(value Vector3) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -10148,10 +10148,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedVector3Array) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10164,9 +10164,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedVector3Array) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -10178,10 +10178,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedVector3Array) Has(value Vector3) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10194,9 +10194,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedVector3Array) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -10209,11 +10209,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVector3Array {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedVector3Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10226,9 +10226,9 @@ Returns a [PackedByteArray] with each vector encoded as bytes.
 //go:nosplit
 func (self PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10242,9 +10242,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedVector3Array) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -10257,11 +10257,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10274,9 +10274,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedVector3Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10290,11 +10290,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedVector3Array) Find(value Vector3, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10308,11 +10308,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10326,10 +10326,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedVector3Array) Count(value Vector3) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedVector3Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10342,9 +10342,9 @@ Returns the number of elements in the array.
 //go:nosplit
 func (self PackedColorArray) Size() Int {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10357,9 +10357,9 @@ Returns [code]true[/code] if the array is empty.
 //go:nosplit
 func (self PackedColorArray) IsEmpty() bool {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10372,11 +10372,11 @@ Changes the [Color] at the given index.
 //go:nosplit
 func (self PackedColorArray) Set(index Int, value Color) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
@@ -10387,10 +10387,10 @@ Appends a value to the array.
 //go:nosplit
 func (self PackedColorArray) PushBack(value Color) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10403,10 +10403,10 @@ Appends an element at the end of the array (alias of [method push_back]).
 //go:nosplit
 func (self PackedColorArray) Append(value Color) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10419,10 +10419,10 @@ Appends a [PackedColorArray] at the end of this array.
 //go:nosplit
 func (self PackedColorArray) AppendArray(array PackedColorArray) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(array))
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -10433,10 +10433,10 @@ Removes an element from the array by index.
 //go:nosplit
 func (self PackedColorArray) RemoveAt(index Int) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, index)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -10447,11 +10447,11 @@ Inserts a new element at a given position in the array. The position must be val
 //go:nosplit
 func (self PackedColorArray) Insert(at_index Int, value Color) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, at_index)
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10464,10 +10464,10 @@ Assigns the given value to all elements in the array. This can typically be used
 //go:nosplit
 func (self PackedColorArray) Fill(value Color) {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
@@ -10478,10 +10478,10 @@ Sets the size of the array. If the array is grown, reserves elements at the end 
 //go:nosplit
 func (self PackedColorArray) Resize(new_size Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, new_size)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10494,9 +10494,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 //go:nosplit
 func (self PackedColorArray) Clear() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -10507,10 +10507,10 @@ Returns [code]true[/code] if the array contains [param value].
 //go:nosplit
 func (self PackedColorArray) Has(value Color) bool {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[bool](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10523,9 +10523,9 @@ Reverses the order of the elements in the array.
 //go:nosplit
 func (self PackedColorArray) Reverse() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -10538,11 +10538,11 @@ If either [param begin] or [param end] are negative, they will be relative to th
 //go:nosplit
 func (self PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColorArray {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, begin)
-	call.Arg(frame, end)
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedColorArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10555,9 +10555,9 @@ Returns a [PackedByteArray] with each color encoded as bytes.
 //go:nosplit
 func (self PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10570,9 +10570,9 @@ Sorts the elements of the array in ascending order.
 //go:nosplit
 func (self PackedColorArray) Sort() {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret call.Nil
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
@@ -10584,11 +10584,11 @@ Finds the index of an existing value (or the insertion index that maintains sort
 //go:nosplit
 func (self PackedColorArray) Bsearch(value Color, before bool) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, before)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10601,9 +10601,9 @@ Creates a copy of the array, and returns it.
 //go:nosplit
 func (self PackedColorArray) Duplicate(ctx Context) PackedColorArray {
 	var selfPtr = self
-	var frame = call.New()
-	var r_ret = call.Ret[[2]uintptr](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedColorArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10616,11 +10616,11 @@ Searches the array for a value and returns its index or [code]-1[/code] if not f
 //go:nosplit
 func (self PackedColorArray) Find(value Color, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10633,11 +10633,11 @@ Searches the array in reverse order. Optionally, a start search index can be pas
 //go:nosplit
 func (self PackedColorArray) Rfind(value Color, from Int) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	call.Arg(frame, from)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10650,10 +10650,10 @@ Returns the number of times an element is in the array.
 //go:nosplit
 func (self PackedColorArray) Count(value Color) Int {
 	var selfPtr = self
-	var frame = call.New()
-	call.Arg(frame, value)
-	var r_ret = call.Ret[Int](frame)
-	var p_self = call.Arg(frame, mmm.Get(selfPtr))
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.PackedColorArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10679,8 +10679,8 @@ Returns the object's built-in class name, as a [String]. See also [method is_cla
 //go:nosplit
 func (self Object) GetClass(ctx Context) String {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10708,9 +10708,9 @@ sprite2D.IsClass("Node3D");   // Returns false
 //go:nosplit
 func (self Object) IsClass(class String) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(class))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(class))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_is_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10736,10 +10736,10 @@ GD.Print(node.GlobalScale); // Prints Vector2(8, 2.5)
 //go:nosplit
 func (self Object) Set(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property))
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property))
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -10763,9 +10763,9 @@ var a = node.Get(Node2D.PropertyName.Rotation); // a is 1.5
 //go:nosplit
 func (self Object) Get(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10793,10 +10793,10 @@ GD.Print(node.Position); // Prints (42, -10)
 //go:nosplit
 func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property_path))
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property_path))
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_indexed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -10824,9 +10824,9 @@ var b = node.GetIndexed("position:y"); // b is -10
 //go:nosplit
 func (self Object) GetIndexed(ctx Context, property_path NodePath) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property_path))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property_path))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_indexed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10846,8 +10846,8 @@ Returns the object's property list as an [Array] of dictionaries. Each [Dictiona
 //go:nosplit
 func (self Object) GetPropertyList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[ArrayOf[Dictionary]](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[ArrayOf[Dictionary]](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_property_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10867,8 +10867,8 @@ Returns this object's methods and their signatures as an [Array] of dictionaries
 //go:nosplit
 func (self Object) GetMethodList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[ArrayOf[Dictionary]](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[ArrayOf[Dictionary]](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_method_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10882,9 +10882,9 @@ Returns [code]true[/code] if the given [param property] has a custom default val
 //go:nosplit
 func (self Object) PropertyCanRevert(property StringName) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_property_can_revert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10898,9 +10898,9 @@ Returns the custom default value of the given [param property]. Use [method prop
 //go:nosplit
 func (self Object) PropertyGetRevert(ctx Context, property StringName) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_property_get_revert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10936,10 +10936,10 @@ player.Notification(NotificationEnterTree, true);
 //go:nosplit
 func (self Object) Notification(what Int, reversed bool) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, what)
-	call.Arg(frame, reversed)
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, what)
+	callframe.Arg(frame, reversed)
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -10950,8 +10950,8 @@ Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[
 //go:nosplit
 func (self Object) ToString(ctx Context) String {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_to_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10964,8 +10964,8 @@ Returns the object's unique instance ID. This ID can be saved in [EncodedObjectA
 //go:nosplit
 func (self Object) GetInstanceId() Int {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10979,9 +10979,9 @@ If a script already exists, its instance is detached, and its property values an
 //go:nosplit
 func (self Object) SetScript(script Variant) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(script))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(script))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -10992,8 +10992,8 @@ Returns the object's [Script] instance, or [code]null[/code] if no script is att
 //go:nosplit
 func (self Object) GetScript(ctx Context) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -11009,10 +11009,10 @@ If [param value] is [code]null[/code], the entry is removed. This is the equival
 //go:nosplit
 func (self Object) SetMeta(name StringName, value Variant) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(name))
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11025,9 +11025,9 @@ Removes the given entry [param name] from the object's metadata. See also [metho
 //go:nosplit
 func (self Object) RemoveMeta(name StringName) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(name))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(name))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_remove_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11040,10 +11040,10 @@ Returns the object's metadata value for the given entry [param name]. If the ent
 //go:nosplit
 func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(name))
-	call.Arg(frame, mmm.Get(def))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, mmm.Get(def))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -11058,9 +11058,9 @@ Returns [code]true[/code] if a metadata entry is found with the given [param nam
 //go:nosplit
 func (self Object) HasMeta(name StringName) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(name))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(name))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_has_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11073,8 +11073,8 @@ Returns the object's metadata entry names as a [PackedStringArray].
 //go:nosplit
 func (self Object) GetMetaList() ArrayOf[StringName] {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[ArrayOf[StringName]](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[ArrayOf[StringName]](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_meta_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11110,10 +11110,10 @@ AddUserSignal("Hurt", new Godot.Collections.Array()
 //go:nosplit
 func (self Object) AddUserSignal(signal String, arguments Array) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	call.Arg(frame, mmm.Get(arguments))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	callframe.Arg(frame, mmm.Get(arguments))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_add_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11124,9 +11124,9 @@ Returns [code]true[/code] if the given user-defined [param signal] name exists. 
 //go:nosplit
 func (self Object) HasUserSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_has_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11151,12 +11151,12 @@ EmitSignal(SignalName.GameOver);
 //go:nosplit
 func (self Object) EmitSignal(signal StringName, args ...Variant) int64 {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[int64](frame)
+	var r_ret = callframe.Ret[int64](frame)
 	if len(args) > 0 {
 		panic(`varargs not supported for class methods yet`)
 	}
@@ -11183,12 +11183,12 @@ node.Call(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
 //go:nosplit
 func (self Object) Call(ctx Context, method StringName, args ...Variant) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	if len(args) > 0 {
 		panic(`varargs not supported for class methods yet`)
 	}
@@ -11227,12 +11227,12 @@ get_tree().process_frame.connect(callable, CONNECT_ONE_SHOT)
 //go:nosplit
 func (self Object) CallDeferred(ctx Context, method StringName, args ...Variant) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
 	for _, arg := range args {
-		call.Arg(frame, arg)
+		callframe.Arg(frame, arg)
 	}
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	if len(args) > 0 {
 		panic(`varargs not supported for class methods yet`)
 	}
@@ -11271,10 +11271,10 @@ GD.Print(node.Rotation); // Prints 3.0
 //go:nosplit
 func (self Object) SetDeferred(property StringName, value Variant) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(property))
-	call.Arg(frame, mmm.Get(value))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(property))
+	callframe.Arg(frame, mmm.Get(value))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_deferred, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11296,10 +11296,10 @@ node.Callv(Node3D.MethodName.Rotate, new Godot.Collections.Array { new Vector3(1
 //go:nosplit
 func (self Object) Callv(ctx Context, method StringName, arg_array Array) Variant {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	call.Arg(frame, mmm.Get(arg_array))
-	var r_ret = call.Ret[[3]uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	callframe.Arg(frame, mmm.Get(arg_array))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_callv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -11313,9 +11313,9 @@ Returns [code]true[/code] if the given [param method] name exists in the object.
 //go:nosplit
 func (self Object) HasMethod(method StringName) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(method))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_has_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11329,9 +11329,9 @@ Returns [code]true[/code] if the given [param signal] name exists in the object.
 //go:nosplit
 func (self Object) HasSignal(signal StringName) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_has_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11345,8 +11345,8 @@ Returns the list of existing signals as an [Array] of dictionaries.
 //go:nosplit
 func (self Object) GetSignalList() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[ArrayOf[Dictionary]](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[ArrayOf[Dictionary]](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11362,9 +11362,9 @@ Returns an [Array] of connections for the given [param signal] name. Each connec
 //go:nosplit
 func (self Object) GetSignalConnectionList(signal StringName) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	var r_ret = call.Ret[ArrayOf[Dictionary]](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	var r_ret = callframe.Ret[ArrayOf[Dictionary]](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_signal_connection_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11380,8 +11380,8 @@ Returns an [Array] of signal connections received by this object. Each connectio
 //go:nosplit
 func (self Object) GetIncomingConnections() ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[ArrayOf[Dictionary]](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[ArrayOf[Dictionary]](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_incoming_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11519,11 +11519,11 @@ private void OnPlayerHit(string hitBy, int level, string weaponType, int damage)
 //go:nosplit
 func (self Object) Connect(signal StringName, callable Callable, flags Int) int64 {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	call.Arg(frame, mmm.Get(callable))
-	call.Arg(frame, flags)
-	var r_ret = call.Ret[int64](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	callframe.Arg(frame, mmm.Get(callable))
+	callframe.Arg(frame, flags)
+	var r_ret = callframe.Ret[int64](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_connect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11536,10 +11536,10 @@ Disconnects a [param signal] by name from a given [param callable]. If the conne
 //go:nosplit
 func (self Object) Disconnect(signal StringName, callable Callable) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	call.Arg(frame, mmm.Get(callable))
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	callframe.Arg(frame, mmm.Get(callable))
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_disconnect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11551,10 +11551,10 @@ Returns [code]true[/code] if a connection exists between the given [param signal
 //go:nosplit
 func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(signal))
-	call.Arg(frame, mmm.Get(callable))
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	callframe.Arg(frame, mmm.Get(callable))
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_is_connected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11567,9 +11567,9 @@ If set to [code]true[/code], the object becomes unable to emit signals. As such,
 //go:nosplit
 func (self Object) SetBlockSignals(enable bool) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, enable)
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_block_signals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11580,8 +11580,8 @@ Returns [code]true[/code] if the object is blocking its signals from being emitt
 //go:nosplit
 func (self Object) IsBlockingSignals() bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_is_blocking_signals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11594,8 +11594,8 @@ Emits the [signal property_list_changed] signal. This is mainly used to refresh 
 //go:nosplit
 func (self Object) NotifyPropertyListChanged() {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret call.Nil
+	var frame = callframe.New()
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_notify_property_list_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11606,9 +11606,9 @@ If set to [code]true[/code], allows the object to translate messages with [metho
 //go:nosplit
 func (self Object) SetMessageTranslation(enable bool) {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, enable)
-	var r_ret call.Nil
+	var frame = callframe.New()
+	callframe.Arg(frame, enable)
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_message_translation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11619,8 +11619,8 @@ Returns [code]true[/code] if the object is allowed to translate messages with [m
 //go:nosplit
 func (self Object) CanTranslateMessages() bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_can_translate_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11635,10 +11635,10 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_game
 //go:nosplit
 func (self Object) Tr(ctx Context, message StringName, context StringName) String {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(message))
-	call.Arg(frame, mmm.Get(context))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(message))
+	callframe.Arg(frame, mmm.Get(context))
+	var r_ret = callframe.Ret[uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_tr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -11655,12 +11655,12 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 //go:nosplit
 func (self Object) TrN(ctx Context, message StringName, plural_message StringName, n Int, context StringName) String {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(message))
-	call.Arg(frame, mmm.Get(plural_message))
-	call.Arg(frame, n)
-	call.Arg(frame, mmm.Get(context))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(message))
+	callframe.Arg(frame, mmm.Get(plural_message))
+	callframe.Arg(frame, n)
+	callframe.Arg(frame, mmm.Get(context))
+	var r_ret = callframe.Ret[uintptr](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_tr_n, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -11673,8 +11673,8 @@ Returns [code]true[/code] if the [method Node.queue_free] method was called for 
 //go:nosplit
 func (self Object) IsQueuedForDeletion() bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_is_queued_for_deletion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11687,8 +11687,8 @@ If this method is called during [constant NOTIFICATION_PREDELETE], this object w
 //go:nosplit
 func (self Object) CancelFree() {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret call.Nil
+	var frame = callframe.New()
+	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_cancel_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
@@ -11730,8 +11730,8 @@ Returns whether the initialization was successful.
 //go:nosplit
 func (self RefCounted) InitRef() bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RefCounted.Bind_init_ref, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11745,8 +11745,8 @@ Returns [code]true[/code] if the increment was successful, [code]false[/code] ot
 //go:nosplit
 func (self RefCounted) Reference() bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RefCounted.Bind_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11760,8 +11760,8 @@ Returns [code]true[/code] if the object should be freed after the decrement, [co
 //go:nosplit
 func (self RefCounted) Unreference() bool {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[bool](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RefCounted.Bind_unreference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11774,8 +11774,8 @@ Returns the current reference count.
 //go:nosplit
 func (self RefCounted) GetReferenceCount() Int {
 	var selfPtr = self.AsPointer()
-	var frame = call.New()
-	var r_ret = call.Ret[Int](frame)
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RefCounted.Bind_get_reference_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()

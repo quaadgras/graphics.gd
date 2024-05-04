@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"runtime.link/api/call"
+	"grow.graphics/gd/internal/callframe"
 )
 
 // Link needs to be called once for the API to load in all of the
@@ -54,7 +54,7 @@ func (Godot *API) linkUtility() {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
 		}
-		*(value.Interface().(*func(ret uintptr, args call.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, Int(hash))
+		*(value.Interface().(*func(ret uintptr, args callframe.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, Int(hash))
 	}
 }
 
@@ -78,7 +78,7 @@ func (Godot *API) linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*func(base uintptr, args call.Args, ret uintptr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, Int(hash))
+			*(direct.Interface().(*func(base uintptr, args callframe.Args, ret uintptr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, Int(hash))
 		}
 	}
 }
@@ -148,7 +148,7 @@ func (Godot *API) linkTypesetCreation() {
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
 			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*func(uintptr, call.Args))) = Godot.Variants.GetPointerConstructor(vtype, int32(i))
+			*(value.Interface().(*func(uintptr, callframe.Args))) = Godot.Variants.GetPointerConstructor(vtype, int32(i))
 		}
 	}
 }

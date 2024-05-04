@@ -5,8 +5,9 @@ package gd
 import (
 	"unsafe"
 
+	"grow.graphics/gd/internal/callframe"
+
 	"runtime.link/api"
-	"runtime.link/api/call"
 	"runtime.link/mmm"
 )
 
@@ -61,11 +62,11 @@ type API struct {
 		GetTypeName               func(ctx Context, self VariantType) String
 		CanConvert                func(self Variant, to VariantType) bool
 		CanConvertStrict          func(self Variant, to VariantType) bool
-		FromTypeConstructor       func(VariantType) func(ret call.Ptr[[3]uintptr], arg uintptr)
-		ToTypeConstructor         func(VariantType) func(ret uintptr, arg call.Ptr[[3]uintptr])
+		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[[3]uintptr], arg uintptr)
+		ToTypeConstructor         func(VariantType) func(ret uintptr, arg callframe.Ptr[[3]uintptr])
 		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret uintptr)
-		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base uintptr, args call.Args, ret uintptr, c int32)
-		GetPointerConstructor     func(vtype VariantType, index int32) func(base uintptr, args call.Args)
+		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base uintptr, args callframe.Args, ret uintptr, c int32)
+		GetPointerConstructor     func(vtype VariantType, index int32) func(base uintptr, args callframe.Args)
 		GetPointerDestructor      func(VariantType) func(base uintptr)
 		Construct                 func(ctx Context, t VariantType, args ...Variant) (Variant, error)
 		GetPointerSetter          func(VariantType, StringName) func(base, arg uintptr)
@@ -76,7 +77,7 @@ type API struct {
 		GetPointerKeyedGetter     func(VariantType) func(base uintptr, key uintptr, ret uintptr)
 		GetPointerKeyedChecker    func(VariantType) func(base uintptr, key uintptr) uint32
 		GetConstantValue          func(ctx Context, t VariantType, name StringName) Variant
-		GetPointerUtilityFunction func(name StringName, hash Int) func(ret uintptr, args call.Args, c int32)
+		GetPointerUtilityFunction func(name StringName, hash Int) func(ret uintptr, args callframe.Args, c int32)
 	}
 	Strings struct {
 		New        func(Context, string) String
@@ -122,7 +123,7 @@ type API struct {
 	}
 	Object struct {
 		MethodBindCall        func(ctx Context, method MethodBind, obj Object, arg ...Variant) (Variant, error)
-		MethodBindPointerCall func(method MethodBind, obj Object, arg call.Args, ret uintptr)
+		MethodBindPointerCall func(method MethodBind, obj Object, arg callframe.Args, ret uintptr)
 		Destroy               func(Object)
 		GetSingleton          func(ctx Context, name StringName) Object
 		GetInstanceBinding    func(Object, ExtensionToken, InstanceBindingType) any
@@ -292,19 +293,6 @@ const (
 	GDExtensionInitializationLevelScene   GDExtensionInitializationLevel = 2
 	GDExtensionInitializationLevelEditor  GDExtensionInitializationLevel = 3
 )
-
-type ExtensionInitialization[T any] struct {
-	MinimumInitializationLevel GDExtensionInitializationLevel
-	Userdata                   T
-	Initialize                 call.Back[func(userdata T, level GDExtensionInitializationLevel)]
-	Deinitialize               call.Back[func(userdata T, level GDExtensionInitializationLevel)]
-}
-
-type InstanceBindingCallbacks struct {
-	Create    call.Back[func(token, instance unsafe.Pointer) unsafe.Pointer]
-	Free      call.Back[func(token, instance, binding unsafe.Pointer)]
-	Reference call.Back[func(token, binding unsafe.Pointer, reference bool) bool]
-}
 
 type PropertyInfo struct {
 	Type       VariantType

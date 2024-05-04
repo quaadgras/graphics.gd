@@ -6,9 +6,10 @@ import (
 	"reflect"
 	"strings"
 
+	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/uc"
 	"grow.graphics/xy"
-	"runtime.link/api/call"
+
 	"runtime.link/mmm"
 )
 
@@ -46,8 +47,8 @@ type RID uint64
 type Callable mmm.Pointer[API, Callable, [2]uintptr]
 
 func (c Callable) Free() {
-	var frame = call.New()
-	mmm.API(c).typeset.destruct.Callable(call.Arg(frame, mmm.End(c)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(c).typeset.destruct.Callable(callframe.Arg(frame, mmm.End(c)).Uintptr())
 	frame.Free()
 }
 
@@ -62,8 +63,8 @@ func (d Dictionary) SetIndex(key Variant, value Variant) {
 }
 
 func (d Dictionary) Free() {
-	var frame = call.New()
-	mmm.API(d).typeset.destruct.Dictionary(call.Arg(frame, mmm.End(d)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(d).typeset.destruct.Dictionary(callframe.Arg(frame, mmm.End(d)).Uintptr())
 	frame.Free()
 }
 
@@ -78,8 +79,8 @@ func (a Array) SetIndex(index Int, value Variant) {
 }
 
 func (a Array) Free() {
-	var frame = call.New()
-	mmm.API(a).typeset.destruct.Array(call.Arg(frame, mmm.End(a)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(a).typeset.destruct.Array(callframe.Arg(frame, mmm.End(a)).Uintptr())
 	frame.Free()
 }
 
@@ -96,8 +97,8 @@ func (p PackedByteArray) SetIndex(idx Int, value byte) {
 }
 
 func (p PackedByteArray) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedByteArray(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedByteArray(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -112,8 +113,8 @@ func (p PackedInt32Array) SetIndex(idx Int, value int32) {
 }
 
 func (p PackedInt32Array) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedInt32Array(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedInt32Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -128,8 +129,8 @@ func (p PackedInt64Array) SetIndex(idx Int, value int64) {
 }
 
 func (p PackedInt64Array) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedInt64Array(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedInt64Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -144,8 +145,8 @@ func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
 }
 
 func (p PackedFloat32Array) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedFloat32Array(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedFloat32Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -160,8 +161,8 @@ func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
 }
 
 func (p PackedFloat64Array) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedFloat64Array(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedFloat64Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -196,8 +197,8 @@ func (p PackedStringArray) AsSlice(ctx Context) []String {
 }
 
 func (p PackedStringArray) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedStringArray(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedStringArray(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -212,8 +213,8 @@ func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
 }
 
 func (p PackedVector2Array) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedVector2Array(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedVector2Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -228,8 +229,8 @@ func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
 }
 
 func (p PackedVector3Array) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedVector3Array(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedVector3Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 
@@ -244,8 +245,8 @@ func (p PackedColorArray) SetIndex(idx Int, value Color) {
 }
 
 func (p PackedColorArray) Free() {
-	var frame = call.New()
-	mmm.API(p).typeset.destruct.PackedColorArray(call.Arg(frame, mmm.End(p)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedColorArray(callframe.Arg(frame, mmm.End(p)).Uintptr())
 	frame.Free()
 }
 

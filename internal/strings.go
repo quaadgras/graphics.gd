@@ -3,16 +3,17 @@
 package gd
 
 import (
-	"runtime.link/api/call"
+	"grow.graphics/gd/internal/callframe"
+
 	"runtime.link/mmm"
 )
 
 type String mmm.Pointer[API, String, uintptr]
 
 func (s String) StringName(ctx Context) StringName {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(s))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var r_ret = callframe.Ret[uintptr](frame)
 	mmm.API(s).typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -21,9 +22,9 @@ func (s String) StringName(ctx Context) StringName {
 
 // Copy returns a copy of the string that is owned by the provided context.
 func (s String) Copy(ctx Context) String {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(s))
-	var ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var ret = callframe.Ret[uintptr](frame)
 	ctx.API.typeset.creation.String[1](ret.Uintptr(), frame.Array(0))
 	var raw = ret.Get()
 	frame.Free()
@@ -31,8 +32,8 @@ func (s String) Copy(ctx Context) String {
 }
 
 func (s String) Free() {
-	var frame = call.New()
-	mmm.API(s).typeset.destruct.String(call.Arg(frame, mmm.End(s)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(s).typeset.destruct.String(callframe.Arg(frame, mmm.End(s)).Uintptr())
 	frame.Free()
 }
 
@@ -48,9 +49,9 @@ func (s String) String() string {
 }
 
 func (Godot *API) StringFromStringName(ctx Context, s StringName) String {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(s))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var r_ret = callframe.Ret[uintptr](frame)
 	Godot.typeset.creation.String[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -60,9 +61,9 @@ func (Godot *API) StringFromStringName(ctx Context, s StringName) String {
 type StringName mmm.Pointer[API, StringName, uintptr]
 
 func (Godot *API) StringNameFromString(ctx Context, s String) StringName {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(s))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var r_ret = callframe.Ret[uintptr](frame)
 	Godot.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -70,8 +71,8 @@ func (Godot *API) StringNameFromString(ctx Context, s String) StringName {
 }
 
 func (s StringName) Free() {
-	var frame = call.New()
-	mmm.API(s).typeset.destruct.StringName(call.Arg(frame, mmm.End(s)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(s).typeset.destruct.StringName(callframe.Arg(frame, mmm.End(s)).Uintptr())
 	frame.Free()
 }
 
@@ -88,9 +89,9 @@ func (s StringName) String() string {
 type NodePath mmm.Pointer[API, NodePath, uintptr]
 
 func (s String) NodePath(ctx Context) NodePath {
-	var frame = call.New()
-	call.Arg(frame, mmm.Get(s))
-	var r_ret = call.Ret[uintptr](frame)
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var r_ret = callframe.Ret[uintptr](frame)
 	mmm.API(s).typeset.creation.NodePath[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -98,7 +99,7 @@ func (s String) NodePath(ctx Context) NodePath {
 }
 
 func (n NodePath) Free() {
-	var frame = call.New()
-	mmm.API(n).typeset.destruct.NodePath(call.Arg(frame, mmm.End(n)).Uintptr())
+	var frame = callframe.New()
+	mmm.API(n).typeset.destruct.NodePath(callframe.Arg(frame, mmm.End(n)).Uintptr())
 	frame.Free()
 }
