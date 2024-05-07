@@ -49,7 +49,7 @@ subdirectory where you can manage your assets via the Godot Editor.
 
 Running the command without any arguments will startup the editor. 
 
-**NOTE** On linux, `gd` will download Godot for you automatically!
+**NOTE** On linux (and macos if you have brew), `gd` will download Godot for you automatically!
 
 ## Design Principles
 
