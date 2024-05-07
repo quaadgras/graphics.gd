@@ -407,7 +407,7 @@ typedef struct {
 	 * `free_func` is necessary if `callable_userdata` needs to be cleaned up when the callable is freed.
 	 */
 	uintptr_t callable_userdata;
-	void *token;
+	uintptr_t token;
 
 	GDObjectInstanceID object_id;
 

@@ -263,16 +263,16 @@ static inline void file_access_store_buffer(pointer fn, pointer p_self, const by
 static inline uint64_t file_access_get_buffer(pointer fn, pointer p_self, bytes r_buffer, uint64_t p_length) {
 	return ((GDExtensionInterfaceFileAccessGetBuffer)fn)((GDExtensionConstObjectPtr)p_self, (uint8_t *)r_buffer, p_length);
 }
-static inline pointer packed_T_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline void *packed_T_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-static inline const pointer packed_T_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
-	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
+static inline const void *packed_T_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+	return ((GDExtensionInterfacePackedByteArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-static inline pointer array_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline void *array_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (pointer)((GDExtensionInterfaceArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
 }
-static inline const pointer array_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
+static inline const void *array_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return (const pointer)((GDExtensionInterfaceArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
 }
 static inline void array_ref(pointer fn, pointer p_self, pointer p_from) {
@@ -281,7 +281,7 @@ static inline void array_ref(pointer fn, pointer p_self, pointer p_from) {
 static inline void array_set_typed(pointer fn, pointer p_self, GDExtensionVariantType p_type, pointer p_class_name, pointer p_script) {
 	((GDExtensionInterfaceArraySetTyped)fn)((GDExtensionTypePtr)p_self, p_type, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstVariantPtr)p_script);
 }
-static inline pointer dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
+static inline void *dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
 	return (pointer)((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
 }
 static inline void object_method_bind_call(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, GDExtensionInt count, pointer r_ret, GDExtensionCallError *r_error) {
@@ -334,7 +334,7 @@ static inline pointer classdb_get_class_tag(pointer fn, pointer p_classname) {
 static inline pointer classdb_get_method_bind(pointer fn, pointer p_classname, pointer p_methodname, GDExtensionInt hash) {
 	return (pointer)((GDExtensionInterfaceClassdbGetMethodBind)fn)((GDExtensionConstStringNamePtr)p_classname, (GDExtensionConstStringNamePtr)p_methodname, hash);
 }
-static inline void get_library_path(pointer fn, void *p_token, pointer r_ret) {
+static inline void get_library_path(pointer fn, pointer p_token, pointer r_ret) {
 	((GDExtensionInterfaceGetLibraryPath)fn)((void *)p_token, (GDExtensionUninitializedStringPtr)r_ret);
 }
 
@@ -447,7 +447,7 @@ func doInitialization(init *initialization) {
 }
 
 //export initialize
-func initialize(userdata unsafe.Pointer, level initializationLevel) {
+func initialize(_ unsafe.Pointer, level initializationLevel) {
 	godot.Init(background, gd.GDExtensionInitializationLevel(level))
 	if level == 2 {
 		main()
@@ -455,7 +455,7 @@ func initialize(userdata unsafe.Pointer, level initializationLevel) {
 }
 
 //export deinitialize
-func deinitialize(userdata unsafe.Pointer, level initializationLevel) {
+func deinitialize(_ unsafe.Pointer, level initializationLevel) {
 	if level == 0 {
 		background.End()
 	}
@@ -959,10 +959,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_other.Uintptr()),
 		)
 		frame.Free()
-		if ret != 0 {
-			return true
-		}
-		return false
+		return ret != 0
 	}
 	variant_booleanize := dlsymGD("variant_booleanize")
 	API.Variants.Booleanize = func(self gd.Variant) bool {
@@ -973,10 +970,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_self.Uintptr()),
 		)
 		frame.Free()
-		if ret != 0 {
-			return true
-		}
-		return false
+		return ret != 0
 	}
 	variant_duplicate := dlsymGD("variant_duplicate")
 	API.Variants.Duplicate = func(ctx gd.Context, self gd.Variant, deep bool) gd.Variant {
@@ -1033,10 +1027,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_method.Uintptr()),
 		)
 		frame.Free()
-		if ret != 0 {
-			return true
-		}
-		return false
+		return ret != 0
 	}
 	variant_has_member := dlsymGD("variant_has_member")
 	API.Variants.HasMember = func(self gd.Variant, member gd.StringName) bool {
@@ -1049,10 +1040,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_member.Uintptr()),
 		)
 		frame.Free()
-		if ret != 0 {
-			return true
-		}
-		return false
+		return ret != 0
 	}
 	variant_has_key := dlsymGD("variant_has_key")
 	API.Variants.HasKey = func(self gd.Variant, key gd.Variant) (hasKey, valid bool) {
@@ -1096,10 +1084,7 @@ func linkCGO(API *gd.API) {
 			C.GDExtensionVariantType(toType),
 		)
 		frame.Free()
-		if ret != 0 {
-			return true
-		}
-		return false
+		return ret != 0
 	}
 	variant_can_convert_strict := dlsymGD("variant_can_convert_strict")
 	API.Variants.CanConvertStrict = func(self gd.Variant, toType gd.VariantType) bool {
@@ -1111,10 +1096,7 @@ func linkCGO(API *gd.API) {
 			C.GDExtensionVariantType(toType),
 		)
 		frame.Free()
-		if ret != 0 {
-			return true
-		}
-		return false
+		return ret != 0
 	}
 	get_variant_from_type_constructor := dlsymGD("get_variant_from_type_constructor")
 	API.Variants.FromTypeConstructor = func(vt gd.VariantType) func(ret callframe.Ptr[[3]uintptr], arg uintptr) {
@@ -1556,7 +1538,7 @@ func linkCGO(API *gd.API) {
 			C.GDExtensionInt(i),
 		)
 		frame.Free()
-		return mmm.Let[gd.String](ctx.Lifetime, ctx.API, uintptr(*(*uintptr)(unsafe.Pointer(uintptr(ret)))))
+		return mmm.Let[gd.String](ctx.Lifetime, ctx.API, uintptr(*(*uintptr)(ret)))
 	}
 	packed_string_array_operator_index := dlsymGD("packed_string_array_operator_index")
 	API.PackedStringArray.SetIndex = func(psa gd.PackedStringArray, i gd.Int, v gd.String) {
@@ -1567,7 +1549,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_self.Uintptr()),
 			C.GDExtensionInt(i),
 		)
-		*(*uintptr)(unsafe.Pointer(uintptr(ptr))) = mmm.Get(v)
+		*(*uintptr)(ptr) = mmm.Get(v)
 		frame.Free()
 	}
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
@@ -1581,7 +1563,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_self.Uintptr()),
 			C.GDExtensionInt(i),
 		)
-		var ptr = (*[3]uintptr)(unsafe.Pointer(uintptr(r_ret)))
+		var ptr = (*[3]uintptr)(r_ret)
 		var ret = mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *ptr)
 		frame.Free()
 		return ret.Copy(ctx)
@@ -1602,7 +1584,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_copy.Uintptr()),
 			C.uintptr_t(p_value.Uintptr()),
 		)
-		*(*[3]uintptr)(unsafe.Pointer(uintptr(ptr))) = p_copy.Get()
+		*(*[3]uintptr)(ptr) = p_copy.Get()
 		frame.Free()
 	}
 	array_ref := dlsymGD("array_ref")
@@ -1642,7 +1624,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_self.Uintptr()),
 			C.uintptr_t(p_key.Uintptr()),
 		)
-		var r_ret = *(*[3]uintptr)(unsafe.Pointer(uintptr(ptr)))
+		var r_ret = *(*[3]uintptr)(ptr)
 		var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret)
 		frame.Free()
 		return ret
@@ -1663,7 +1645,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_copy.Uintptr()),
 			C.uintptr_t(p_value.Uintptr()),
 		)
-		*(*[3]uintptr)(unsafe.Pointer(uintptr(ptr))) = p_copy.Get()
+		*(*[3]uintptr)(ptr) = p_copy.Get()
 		frame.Free()
 	}
 	object_method_bind_call := dlsymGD("object_method_bind_call")
@@ -1855,7 +1837,7 @@ func linkCGO(API *gd.API) {
 		var r_ret = callframe.Ret[uintptr](frame)
 		C.get_library_path(
 			C.uintptr_t(uintptr(get_library_path)),
-			unsafe.Pointer(et),
+			C.uintptr_t(et),
 			C.uintptr_t(r_ret.Uintptr()),
 		)
 		var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
@@ -1868,7 +1850,7 @@ func linkCGO(API *gd.API) {
 		var frame = callframe.New()
 		var r_callable = callframe.Ret[[2]uintptr](frame)
 		var info C.GDExtensionCallableCustomInfo
-		info.token = unsafe.Pointer(ctx.API.ExtensionToken)
+		info.token = C.uintptr_t(ctx.API.ExtensionToken)
 		info.callable_userdata = C.uintptr_t(cgo.NewHandle(fn))
 		C.callable_custom_create(
 			C.uintptr_t(uintptr(callable_custom_create)),
@@ -2275,7 +2257,7 @@ func get_property_list_func(p_instance uintptr, p_length *uint32) *C.GDExtension
 }
 
 //export free_property_list_func
-func free_property_list_func(p_instance uintptr, p_properties *C.GDExtensionPropertyInfo) {
+func free_property_list_func(_ uintptr, p_properties *C.GDExtensionPropertyInfo) {
 	propertyLists[p_properties].End()
 }
 
@@ -2330,12 +2312,13 @@ func create_instance_func(p_class uintptr) uintptr {
 }
 
 //export free_instance_func
-func free_instance_func(p_class, p_instance uintptr) {
+func free_instance_func(_, p_instance uintptr) {
 	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Free()
 }
 
 //export recreate_instance_func
 func recreate_instance_func(p_class, p_super uintptr) uintptr {
+	_, _ = p_super, p_class
 	return 0
 }
 
