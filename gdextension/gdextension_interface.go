@@ -354,8 +354,8 @@ extern void property_get_revert_func(pointer p_instance, void* p_name, void* r_r
 //extern *validate_property_func;
 extern void notification_func(pointer p_instance, int32_t p_notification, bool reversed);
 extern void to_string_func(pointer p_instance, void* valid, void* r_ret);
-extern void reference_func();
-extern void unreference_func();
+extern void reference_func(pointer p_instance);
+extern void unreference_func(pointer p_instance);
 extern pointer create_instance_func(pointer p_class);
 extern void free_instance_func(pointer p_class, pointer p_instance);
 //extern *recreate_instance_func;
