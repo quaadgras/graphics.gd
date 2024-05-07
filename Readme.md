@@ -139,9 +139,9 @@ To run the go tests for this module `cd internal && gd test`.
 
 * Windows (should work, but untested)
 * Linux   (including Steam Deck)
-* Mac
+* Mac     (including Apple Silicon)
 * Android (including MetaQuest)
-* IOS (should work, but no workflow has been tested)
+* IOS     (should work, untested)
 
 ## Known Limitations
 
