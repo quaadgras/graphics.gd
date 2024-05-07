@@ -23,7 +23,7 @@ var frames sync.Pool
 type Frame struct {
 	len uint8
 	idx uint8
-	oom bool
+	//oom bool
 
 	pin runtime.Pinner
 	ptr [16]*uintptr
@@ -88,6 +88,11 @@ type Ptr[T comparable] struct {
 // Uintptr returns the uintptr value of the pointer. Useful for passing to C code.
 func (ptr Ptr[T]) Uintptr() uintptr {
 	return uintptr(ptr.void)
+}
+
+// UnsafePoiner returns the unsafe.Pointer value of the pointer.
+func (ptr Ptr[T]) UnsafePointer() unsafe.Pointer {
+	return ptr.void
 }
 
 // Get returns the value of the pointer.

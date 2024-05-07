@@ -63,8 +63,9 @@ func (frame callFrame) Back() CallFrameBack {
 	return CallFrameBack(unsafe.Pointer(&unsafeFrame.back[0]))
 }
 
-func (Godot API) NewFrame() callFrame {
-	frame, ok := callFrames.Get().(callFrame)
+func (Godot API) NewFrame() (frame callFrame) {
+	var ok bool
+	frame.ptr, ok = callFrames.Get().(unsafe.Pointer)
 	if !ok {
 		frame = callFrame{
 			ptr: Godot.Memory.Allocate(unsafe.Sizeof(unsafeCallFrame{})),
@@ -80,7 +81,7 @@ func (Godot API) NewFrame() callFrame {
 	return frame
 }
 
-func (frame callFrame) Free() { callFrames.Put(frame) }
+func (frame callFrame) Free() { callFrames.Put(frame.ptr) }
 
 func FrameSet[T any](index int, frame callFrame, value T) {
 	unsafeFrame := (*unsafeCallFrame)(frame.ptr)
@@ -101,13 +102,13 @@ func FrameGet[T any](frame callFrame) T {
 	return mmm.Make[API, PackedByteArray](ctx, self.API, ret)
 }*/
 
-type UnsafeArgs uintptr
+type UnsafeArgs unsafe.Pointer
 
 func UnsafeGet[T any](frame UnsafeArgs, index int) T {
 	return *unsafe.Slice((**T)(unsafe.Pointer(frame)), index+1)[index]
 }
 
-type UnsafeBack uintptr
+type UnsafeBack unsafe.Pointer
 
 func UnsafeSet[T any](frame UnsafeBack, value T) {
 	*(*T)(unsafe.Pointer(frame)) = value

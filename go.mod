@@ -9,4 +9,7 @@ require (
 	runtime.link v0.0.0-20240428070921-e0d9b4c402dc
 )
 
-require grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a
+require (
+	golang.org/x/text v0.15.0
+	grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a
+)

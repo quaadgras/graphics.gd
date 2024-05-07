@@ -40,7 +40,7 @@ func (class Class[T, S]) Pin() Context {
 	}
 }
 
-func (class Class[T, S]) class() S { return class.super }
+func (class Class[T, S]) class() S { return class.super } //lint:ignore U1000 false positive.
 
 func (class *Class[T, S]) Super() *S { return &class.super }
 

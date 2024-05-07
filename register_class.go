@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"strings"
 
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	gd "grow.graphics/gd/internal"
 	"runtime.link/mmm"
 )
@@ -80,7 +82,7 @@ func convertName(fnName string) string {
 	joins := []string{}
 	split := strings.Split(fnName, "_")
 	for _, word := range split {
-		joins = append(joins, strings.Title(word))
+		joins = append(joins, cases.Title(language.English).String(word))
 	}
 	return strings.Join(joins, "")
 }

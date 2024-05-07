@@ -2,7 +2,6 @@ package callframe_test
 
 import (
 	"testing"
-	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
 )
@@ -12,7 +11,7 @@ func TestFrame(t *testing.T) {
 
 	ptr := callframe.Arg(frame, 100)
 
-	if *(*int)(unsafe.Pointer(ptr.Uintptr())) != 100 {
+	if *(*int)(ptr.UnsafePointer()) != 100 {
 		t.Fatal("ptr != 100")
 	}
 }
@@ -30,7 +29,7 @@ func BenchmarkFrame(b *testing.B) {
 		ret := callframe.Ret[int](frame)
 		ptr2 := callframe.Arg(frame, 200)
 		ptr3 := callframe.Arg(frame, 300)
-		TestEscape((*int)(unsafe.Pointer(ptr1.Uintptr())), (*int)(unsafe.Pointer(ptr2.Uintptr())), (*int)(unsafe.Pointer(ptr3.Uintptr())), (*int)(unsafe.Pointer(ret.Uintptr())))
+		TestEscape((*int)(ptr1.UnsafePointer()), (*int)(ptr2.UnsafePointer()), (*int)(ptr3.UnsafePointer()), (*int)(ret.UnsafePointer()))
 		if ret.Get() != 22 {
 			b.Fatal("ret != 22")
 		}
