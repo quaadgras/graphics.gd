@@ -264,16 +264,16 @@ static inline uint64_t file_access_get_buffer(pointer fn, pointer p_self, bytes 
 	return ((GDExtensionInterfaceFileAccessGetBuffer)fn)((GDExtensionConstObjectPtr)p_self, (uint8_t *)r_buffer, p_length);
 }
 static inline void *packed_T_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
-	return (pointer)((GDExtensionInterfacePackedByteArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
+	return ((GDExtensionInterfacePackedByteArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
 }
 static inline const void *packed_T_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
 	return ((GDExtensionInterfacePackedByteArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
 }
 static inline void *array_operator_index(pointer fn, pointer p_self, GDExtensionInt p_index) {
-	return (pointer)((GDExtensionInterfaceArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
+	return ((GDExtensionInterfaceArrayOperatorIndex)fn)((GDExtensionTypePtr)p_self, p_index);
 }
 static inline const void *array_operator_index_const(pointer fn, pointer p_self, GDExtensionInt p_index) {
-	return (const pointer)((GDExtensionInterfaceArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
+	return ((GDExtensionInterfaceArrayOperatorIndexConst)fn)((GDExtensionTypePtr)p_self, p_index);
 }
 static inline void array_ref(pointer fn, pointer p_self, pointer p_from) {
 	((GDExtensionInterfaceArrayRef)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstTypePtr)p_from);
@@ -282,7 +282,7 @@ static inline void array_set_typed(pointer fn, pointer p_self, GDExtensionVarian
 	((GDExtensionInterfaceArraySetTyped)fn)((GDExtensionTypePtr)p_self, p_type, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstVariantPtr)p_script);
 }
 static inline void *dictionary_operator_index(pointer fn, pointer p_self, pointer p_key) {
-	return (pointer)((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
+	return ((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
 }
 static inline void object_method_bind_call(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, GDExtensionInt count, pointer r_ret, GDExtensionCallError *r_error) {
 	((GDExtensionInterfaceObjectMethodBindCall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
