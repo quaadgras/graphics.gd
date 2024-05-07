@@ -12,7 +12,8 @@ func (godot Context) Callable(fn any) Callable {
 		godot := NewContext(godot.API)
 		defer godot.End()
 
-		var vargs = make([]reflect.Value, 0, len(args))
+		var vargs = make([]reflect.Value, 0, len(args)+1)
+		vargs = append(vargs, reflect.ValueOf(godot))
 		for _, arg := range args {
 			vargs = append(vargs, reflect.ValueOf(arg.Interface(godot)))
 		}

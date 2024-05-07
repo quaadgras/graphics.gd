@@ -2383,6 +2383,7 @@ func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensio
 		return
 	}
 	*(*[3]uintptr)(p_ret) = mmm.Get(ret)
+	*issue = C.GDExtensionCallError{}
 }
 
 //export method_call
