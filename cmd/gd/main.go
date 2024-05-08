@@ -87,7 +87,7 @@ func useGodot() (string, error) {
 		case "darwin":
 			if _, err := exec.LookPath("brew"); err == nil {
 				fmt.Println("gd: downloading Godot v4.2.2 stable for macOS (via brew)")
-				if err := exec.Command("brew", "install", "godot@4.2.2").Run(); err != nil {
+				if err := exec.Command("brew", "install", "godot").Run(); err != nil {
 					return "", err
 				}
 			}
