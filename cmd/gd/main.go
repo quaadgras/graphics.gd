@@ -201,6 +201,7 @@ func wrap() error {
 	}
 	if len(os.Args) == 1 {
 		golang := exec.Command("go", "build", "-buildmode=c-shared", "-o", "./graphics/"+libraryName)
+		golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		golang.Stderr = os.Stderr
 		golang.Stdout = os.Stdout
 		golang.Stdin = os.Stdin
@@ -227,6 +228,7 @@ func wrap() error {
 		args = []string{"test", "-buildmode=c-shared", "-c", "-o", "./graphics/" + libraryName}
 	}
 	golang := exec.Command("go", args...)
+	golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 	golang.Stderr = os.Stderr
 	golang.Stdout = os.Stdout
 	golang.Stdin = os.Stdin
