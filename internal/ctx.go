@@ -47,7 +47,7 @@ func Create[T PointerToClass](ctx Context, ptr T) T {
 	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())]; ok {
 		return native.(T)
 	}
-	ptr.SetPointer(mmm.Let[Pointer](ctx.Lifetime, ctx.API, mmm.Get(object.AsPointer())))
+	ptr.SetPointer(object.AsPointer())
 	return ptr
 }
 
