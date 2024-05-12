@@ -45,14 +45,13 @@ sure that your `$GOPATH/bin` is in your `$PATH` and run:
 
 Now when you can run `gd run`, `gd test` on the main package in your project's 
 directory, things will work as expected. The tool will create a "graphics" 
-subdirectory where you can manage your assets via the Godot Editor. If you are
-working on Windows, you'll want to 
-[setup CGO](https://github.com/go101/go101/wiki/CGO-Environment-Setup) 
-with an appropriate C compiler, we recommend using GCC, Clang or Zig.
+subdirectory where you can manage your assets via the Godot Editor.
 
 Running the command without any arguments will startup the editor. 
 
 **NOTE** On linux (and macos if you have brew), `gd` will download Godot for you automatically!
+**HINT**  On Windows, you'll want to 
+[setup CGO](https://github.com/go101/go101/wiki/CGO-Environment-Setup).
 
 ## Design Principles
 
