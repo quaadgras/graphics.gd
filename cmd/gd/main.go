@@ -179,6 +179,15 @@ func wrap() error {
 		if err := setupFile(false, "./graphics/.godot/extension_list.cfg", extension_list_cfg); err != nil {
 			return err
 		}
+		_, err := os.Stat("./graphics/.godot")
+		if os.IsNotExist(err) {
+			godot := exec.Command(godot, "--import", "--headless")
+			godot.Dir = "./graphics"
+			godot.Stderr = os.Stderr
+			godot.Stdout = os.Stdout
+			godot.Stdin = os.Stdin
+			return godot.Run()
+		}
 		return nil
 	}
 	var libraryName = fmt.Sprintf("%v_%v", runtime.GOOS, runtime.GOARCH)
