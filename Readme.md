@@ -28,7 +28,7 @@ func main() {
 	if !ok {
 		return
 	}
-	gd.RegisterClass[HelloWorld](godot)
+	gd.Register[HelloWorld](godot)
 }
 
 ```
