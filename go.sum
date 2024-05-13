@@ -1,10 +1,8 @@
-github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
-github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 golang.org/x/text v0.15.0 h1:h1V/4gjBv8v9cjcR6+AR5+/cIYK5N/WAgiv4xlsEtAk=
 golang.org/x/text v0.15.0/go.mod h1:18ZOQIKpY8NJVqYksKHtTdi31H5itFRjB5/qKTNYzSU=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
 grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a h1:8QjAMrsqm8iYsCLKz3dT2/aFhjlOQ/2U7+4eOusmP0E=
 grow.graphics/xy v0.0.0-20240129001410-305eed4d9a6a/go.mod h1:JwNaWFtFaeSmvp34kveQhSGN8dNowvLlz55K/c9bs1E=
-runtime.link v0.0.0-20240428070921-e0d9b4c402dc h1:nOF5WNAID+upQfYiSzq6uLp9mTiq8YQmitM3yaeHr/8=
-runtime.link v0.0.0-20240428070921-e0d9b4c402dc/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
+runtime.link v0.0.0-20240513040912-fa84cb01d1ec h1:uetPAy4jSy+x41DZZFUexSEr7Bf32zA1U7EBOW1u/RM=
+runtime.link v0.0.0-20240513040912-fa84cb01d1ec/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
