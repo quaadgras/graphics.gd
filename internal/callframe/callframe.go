@@ -71,6 +71,7 @@ func (frame *Frame) Array(i int) Args {
 func (frame *Frame) Free() {
 	frame.len = 0
 	frame.idx = 0
+	clear(frame.buf[:frame.len])
 	frame.pin.Unpin()
 	frames.Put(frame)
 }
