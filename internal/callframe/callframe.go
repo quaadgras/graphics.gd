@@ -69,9 +69,9 @@ func (frame *Frame) Array(i int) Args {
 // Free recycles the [Frame]. Do not reuse the frame after
 // calling this method.
 func (frame *Frame) Free() {
+	clear(frame.buf[:frame.len])
 	frame.len = 0
 	frame.idx = 0
-	clear(frame.buf[:frame.len])
 	frame.pin.Unpin()
 	frames.Put(frame)
 }
