@@ -139,7 +139,7 @@ To run the go tests for this module `cd internal && gd test`.
 
 ## Supported Platforms
 
-* Windows (should work, but untested)
+* Windows
 * Linux   (including Steam Deck)
 * Mac     (including Apple Silicon)
 * Android (including MetaQuest)
