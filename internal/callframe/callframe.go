@@ -103,8 +103,7 @@ func (ptr Ptr[T]) Get() T {
 
 // Arg adds a new argument to the call frame.
 func Arg[T comparable](frame *Frame, arg T) Ptr[T] {
-	size := unsafe.Sizeof(arg) / unsafe.Sizeof(uintptr(0))
-
+	size := Align(unsafe.Sizeof(arg), unsafe.Sizeof(uintptr(0)))
 	if uintptr(frame.idx)+size >= uintptr(len(frame.buf)) {
 		copy := arg
 		ptr := Ptr[T]{void: unsafe.Pointer(&copy)}
@@ -123,11 +122,16 @@ func Arg[T comparable](frame *Frame, arg T) Ptr[T] {
 	return Ptr[T]{void: unsafe.Pointer(frame.ptr[frame.len-1])}
 }
 
+// Align a size to the next multiple of alignment (rounding up).
+func Align(size uintptr, alignment uintptr) uintptr {
+	return (size + alignment - 1) &^ (alignment - 1)
+}
+
 // Ret prepares an expected return value that will be available after the call has been
 // made.
 func Ret[T comparable](frame *Frame) Ptr[T] {
 	var zero T
-	size := unsafe.Sizeof(zero) / unsafe.Sizeof(uintptr(0))
+	size := Align(unsafe.Sizeof(zero), unsafe.Sizeof(uintptr(0)))
 	if uintptr(frame.idx)+size >= uintptr(len(frame.buf)) || frame.len >= uint8(len(frame.ptr)) {
 		ptr := Ptr[T]{void: unsafe.Pointer(new(T))}
 		frame.pin.Pin(ptr)
