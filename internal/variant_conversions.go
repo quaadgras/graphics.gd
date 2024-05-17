@@ -93,45 +93,87 @@ func (godot Context) Variant(v any) Variant {
 		var arg = callframe.Arg(frame, val)
 		godot.API.variant.FromType[TypeRid](ret, arg.Uintptr())
 	case Object:
+		if mmm.Get(val.AsPointer()) == 0 {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val.AsPointer()))
 		godot.API.variant.FromType[TypeObject](ret, arg.Uintptr())
 	case Callable:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypeCallable](ret, arg.Uintptr())
 	case Signal:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypeSignal](ret, arg.Uintptr())
 	case Dictionary:
+		if mmm.Get(val) == 0 {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypeDictionary](ret, arg.Uintptr())
 	case Array:
+		if mmm.Get(val) == 0 {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypeArray](ret, arg.Uintptr())
 	case PackedByteArray:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedByteArray](ret, arg.Uintptr())
 	case PackedInt32Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedInt32Array](ret, arg.Uintptr())
 	case PackedInt64Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedInt64Array](ret, arg.Uintptr())
 	case PackedFloat32Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedFloat32Array](ret, arg.Uintptr())
 	case PackedFloat64Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedFloat64Array](ret, arg.Uintptr())
 	case PackedStringArray:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedStringArray](ret, arg.Uintptr())
 	case PackedVector2Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedVector2Array](ret, arg.Uintptr())
 	case PackedVector3Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedVector3Array](ret, arg.Uintptr())
 	case PackedColorArray:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedColorArray](ret, arg.Uintptr())
 	default:
