@@ -205,7 +205,14 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if !field.IsValid() {
 		return false
 	}
-	field.Set(reflect.ValueOf(value.Interface(instance.Context)))
+	converted := value.Interface(instance.Context)
+	if converted == nil {
+		return false
+	}
+	if !reflect.TypeOf(converted).AssignableTo(field.Type()) {
+		return false
+	}
+	field.Set(reflect.ValueOf(converted))
 	return true
 }
 
