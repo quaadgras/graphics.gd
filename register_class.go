@@ -255,7 +255,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 		}
 		return false
 	}
-	field.Set(reflect.ValueOf(converted))
+	field.Set(converted)
 	return true
 }
 

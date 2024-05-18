@@ -1800,13 +1800,19 @@ func linkCGO(API *gd.API) {
 				panic("use after free")
 			}
 		}
+
+		var pinner runtime.Pinner
+		var bindings C.GDExtensionInstanceBindingCallbacks
+		pinner.Pin(&bindings)
+		defer pinner.Unpin()
+
 		p_val := cgo.NewHandle(val)
 		C.object_set_instance_binding(
 			C.uintptr_t(uintptr(object_set_instance_binding)),
 			C.uintptr_t(self[0]),
 			C.uintptr_t(et),
 			C.uintptr_t(p_val),
-			unsafe.Pointer(ibt),
+			unsafe.Pointer(&bindings),
 		)
 	}
 	object_free_instance_binding := dlsymGD("object_free_instance_binding")
