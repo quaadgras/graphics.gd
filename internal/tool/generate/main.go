@@ -1,8 +1,3 @@
-//go:build generate
-
-//go:generate go run -tags generate .
-//go:generate go fmt ./
-
 package main
 
 import (
@@ -21,7 +16,7 @@ import (
 // LoadSpecification, either from a local file or by downloading
 // it from the Godot Github repository.
 func LoadSpecification() (*gdjson.Specification, error) {
-	file, err := os.Open("../extension_api.json")
+	file, err := os.Open("./extension_api.json")
 	if os.IsNotExist(err) {
 		req, err := http.NewRequest("GET", "https://raw.githubusercontent.com/godotengine/godot-headers/master/extension_api.json", nil)
 		if err != nil {
@@ -31,7 +26,7 @@ func LoadSpecification() (*gdjson.Specification, error) {
 		if err != nil {
 			return nil, err
 		}
-		file, err = os.Create("../extension_api.json")
+		file, err = os.Create("./extension_api.json")
 		if err != nil {
 			return nil, err
 		}
@@ -395,7 +390,7 @@ func generate() error {
 		classDB[class.Name] = class
 	}
 
-	file, err := os.Open("../extension_api.json")
+	file, err := os.Open("./extension_api.json")
 	if os.IsNotExist(err) {
 		req, err := http.NewRequest("GET", "https://raw.githubusercontent.com/godotengine/godot-headers/master/extension_api.json", nil)
 		if err != nil {
@@ -421,7 +416,7 @@ func generate() error {
 		resp.Body.Close()
 	}
 
-	out, err := os.Create("./out.go")
+	out, err := os.Create("./internal/out.go")
 	if err != nil {
 		return err
 	}
@@ -433,7 +428,7 @@ func generate() error {
 	fmt.Fprintln(out, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(out)
 
-	core, err := os.Create("./all.go")
+	core, err := os.Create("./internal/all.go")
 	if err != nil {
 		return err
 	}
@@ -448,7 +443,7 @@ func generate() error {
 	fmt.Fprintln(core, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(core)
 
-	all, err := os.Create("./classdb/all.go")
+	all, err := os.Create("./internal/classdb/all.go")
 	if err != nil {
 		return err
 	}
@@ -464,7 +459,7 @@ func generate() error {
 	fmt.Fprintln(all, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(all)
 
-	enums, err := os.Create("../enums.go")
+	enums, err := os.Create("./enums.go")
 	if err != nil {
 		return err
 	}
@@ -477,7 +472,7 @@ func generate() error {
 	fmt.Fprintln(enums, `import classdb "grow.graphics/gd/internal/classdb"`)
 	fmt.Fprintln(enums)
 
-	classdb, err := os.Create("../classdb.go")
+	classdb, err := os.Create("./classdb.go")
 	if err != nil {
 		return err
 	}
@@ -569,7 +564,7 @@ func generate() error {
 			_, ok := classDB[result]
 			if ok || result == "Object" {
 				fmt.Fprintf(core, "\tvar ret %v\n", result)
-				fmt.Fprintf(core, "\tret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))\n")
+				fmt.Fprintf(core, "\tret.SetPointer(PointerMustAssertInstanceID(ctx, r_ret.Get()))\n")
 			} else {
 				fmt.Fprintf(core, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
 			}
@@ -706,10 +701,10 @@ func generate() error {
 			} else {
 				fmt.Fprintf(classdb, "type %v = %v \n", class.Name, classDB.nameOf("gd", class.Name))
 			}
+			fmt.Fprintf(w, "type %[1]v struct {_ [0]*%[1]v; ptr "+prefix+"Pointer}\n", class.Name, classDB.nameOf(pkg, class.Inherits))
+			fmt.Fprintf(w, "\n//go:nosplit\nfunc (self %[1]v) AsPointer() "+prefix+"Pointer { return self.ptr }\n", class.Name)
+			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self *%[1]v) SetPointer(ptr "+prefix+"Pointer) { self.ptr = ptr }\n", class.Name)
 		}
-		fmt.Fprintf(w, "type %[1]v struct {_ [0]*%[1]v; ptr "+prefix+"Pointer}\n", class.Name, classDB.nameOf(pkg, class.Inherits))
-		fmt.Fprintf(w, "\n//go:nosplit\nfunc (self %[1]v) AsPointer() "+prefix+"Pointer { return self.ptr }\n", class.Name)
-		fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self *%[1]v) SetPointer(ptr "+prefix+"Pointer) { self.ptr = ptr }\n", class.Name)
 		if class.Inherits != "" {
 			var i = 1
 			super := classDB[class.Inherits]
@@ -817,13 +812,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			_, ok := classDB[arg.Type]
 			if ok {
 				fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), argType)
-				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.New["+prefix+"Pointer](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[uintptr](p_args,%d)))\n", fixReserved(arg.Name), i)
+				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Let["+prefix+"Pointer](ctx.Lifetime, ctx.API, [2]uintptr{"+prefix+"UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
 				continue
 			}
 
 			argPtrKind, argIsPtr := classDB.isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = mmm.New[%v](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
+				fmt.Fprintf(w, "\t\tvar %v = mmm.Let[%v](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
 			} else {
 				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
 			}
@@ -891,7 +886,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	for _, arg := range method.Arguments {
 		_, ok := classDB[arg.Type]
 		if ok {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, mmm.Get(%v.AsPointer()))\n", fixReserved(arg.Name))
+			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
+			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
+				fmt.Fprintf(w, "\tcallframe.Arg(frame, mmm.End(%v.AsPointer())[0])\n", fixReserved(arg.Name))
+			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
+				fmt.Fprintf(w, "\tcallframe.Arg(frame, mmm.Get(%v.AsPointer())[0])\n", fixReserved(arg.Name))
+			default:
+				panic("unknown ownership: " + fmt.Sprint(semantics))
+			}
 			continue
 		}
 
@@ -935,7 +937,18 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		_, ok := classDB[result]
 		if ok || result == "gd.Object" {
 			fmt.Fprintf(w, "\tvar ret %v\n", result)
-			fmt.Fprintf(w, "\tret.SetPointer(mmm.New["+prefix+"Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))\n")
+
+			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
+			case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
+				fmt.Fprintf(w, "\tret.SetPointer("+prefix+"PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))\n")
+			case gdjson.LifetimeBoundToClass:
+				fmt.Fprintf(w, "\tret.SetPointer("+prefix+"PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))\n")
+			case gdjson.MustAssertInstanceID:
+				fmt.Fprintf(w, "\tret.SetPointer("+prefix+"PointerMustAssertInstanceID(ctx, r_ret.Get()))\n")
+			default:
+				panic("unknown ownership: " + fmt.Sprint(semantics))
+			}
+
 		} else {
 			fmt.Fprintf(w, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
 		}

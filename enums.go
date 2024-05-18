@@ -6,299 +6,298 @@ package gd
 import gd "grow.graphics/gd/internal"
 import classdb "grow.graphics/gd/internal/classdb"
 
-
 type Corner = gd.Corner
 
 const (
-	CornerTopLeft Corner = 0
-	CornerTopRight Corner = 1
+	CornerTopLeft     Corner = 0
+	CornerTopRight    Corner = 1
 	CornerBottomRight Corner = 2
-	CornerBottomLeft Corner = 3
+	CornerBottomLeft  Corner = 3
 )
 
 type Orientation = gd.Orientation
 
 const (
-	Vertical Orientation = 1
+	Vertical   Orientation = 1
 	Horizontal Orientation = 0
 )
 
 type ClockDirection = gd.ClockDirection
 
 const (
-	Clockwise ClockDirection = 0
+	Clockwise        ClockDirection = 0
 	Counterclockwise ClockDirection = 1
 )
 
 type HorizontalAlignment = gd.HorizontalAlignment
 
 const (
-	HorizontalAlignmentLeft HorizontalAlignment = 0
+	HorizontalAlignmentLeft   HorizontalAlignment = 0
 	HorizontalAlignmentCenter HorizontalAlignment = 1
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	HorizontalAlignmentFill HorizontalAlignment = 3
+	HorizontalAlignmentRight  HorizontalAlignment = 2
+	HorizontalAlignmentFill   HorizontalAlignment = 3
 )
 
 type VerticalAlignment = gd.VerticalAlignment
 
 const (
-	VerticalAlignmentTop VerticalAlignment = 0
+	VerticalAlignmentTop    VerticalAlignment = 0
 	VerticalAlignmentCenter VerticalAlignment = 1
 	VerticalAlignmentBottom VerticalAlignment = 2
-	VerticalAlignmentFill VerticalAlignment = 3
+	VerticalAlignmentFill   VerticalAlignment = 3
 )
 
 type InlineAlignment = gd.InlineAlignment
 
 const (
-	InlineAlignmentTopTo InlineAlignment = 0
-	InlineAlignmentCenterTo InlineAlignment = 1
+	InlineAlignmentTopTo      InlineAlignment = 0
+	InlineAlignmentCenterTo   InlineAlignment = 1
 	InlineAlignmentBaselineTo InlineAlignment = 3
-	InlineAlignmentBottomTo InlineAlignment = 2
-	InlineAlignmentToTop InlineAlignment = 0
-	InlineAlignmentToCenter InlineAlignment = 4
+	InlineAlignmentBottomTo   InlineAlignment = 2
+	InlineAlignmentToTop      InlineAlignment = 0
+	InlineAlignmentToCenter   InlineAlignment = 4
 	InlineAlignmentToBaseline InlineAlignment = 8
-	InlineAlignmentToBottom InlineAlignment = 12
-	InlineAlignmentTop InlineAlignment = 0
-	InlineAlignmentCenter InlineAlignment = 5
-	InlineAlignmentBottom InlineAlignment = 14
-	InlineAlignmentImageMask InlineAlignment = 3
-	InlineAlignmentTextMask InlineAlignment = 12
+	InlineAlignmentToBottom   InlineAlignment = 12
+	InlineAlignmentTop        InlineAlignment = 0
+	InlineAlignmentCenter     InlineAlignment = 5
+	InlineAlignmentBottom     InlineAlignment = 14
+	InlineAlignmentImageMask  InlineAlignment = 3
+	InlineAlignmentTextMask   InlineAlignment = 12
 )
 
 type Key = gd.Key
 
 const (
-	KeyNone Key = 0
-	KeySpecial Key = 4194304
-	KeyEscape Key = 4194305
-	KeyTab Key = 4194306
-	KeyBacktab Key = 4194307
-	KeyBackspace Key = 4194308
-	KeyEnter Key = 4194309
-	KeyKpEnter Key = 4194310
-	KeyInsert Key = 4194311
-	KeyDelete Key = 4194312
-	KeyPause Key = 4194313
-	KeyPrint Key = 4194314
-	KeySysreq Key = 4194315
-	KeyClear Key = 4194316
-	KeyHome Key = 4194317
-	KeyEnd Key = 4194318
-	KeyLeft Key = 4194319
-	KeyUp Key = 4194320
-	KeyRight Key = 4194321
-	KeyDown Key = 4194322
-	KeyPageup Key = 4194323
-	KeyPagedown Key = 4194324
-	KeyShift Key = 4194325
-	KeyCtrl Key = 4194326
-	KeyMeta Key = 4194327
-	KeyAlt Key = 4194328
-	KeyCapslock Key = 4194329
-	KeyNumlock Key = 4194330
-	KeyScrolllock Key = 4194331
-	KeyF1 Key = 4194332
-	KeyF2 Key = 4194333
-	KeyF3 Key = 4194334
-	KeyF4 Key = 4194335
-	KeyF5 Key = 4194336
-	KeyF6 Key = 4194337
-	KeyF7 Key = 4194338
-	KeyF8 Key = 4194339
-	KeyF9 Key = 4194340
-	KeyF10 Key = 4194341
-	KeyF11 Key = 4194342
-	KeyF12 Key = 4194343
-	KeyF13 Key = 4194344
-	KeyF14 Key = 4194345
-	KeyF15 Key = 4194346
-	KeyF16 Key = 4194347
-	KeyF17 Key = 4194348
-	KeyF18 Key = 4194349
-	KeyF19 Key = 4194350
-	KeyF20 Key = 4194351
-	KeyF21 Key = 4194352
-	KeyF22 Key = 4194353
-	KeyF23 Key = 4194354
-	KeyF24 Key = 4194355
-	KeyF25 Key = 4194356
-	KeyF26 Key = 4194357
-	KeyF27 Key = 4194358
-	KeyF28 Key = 4194359
-	KeyF29 Key = 4194360
-	KeyF30 Key = 4194361
-	KeyF31 Key = 4194362
-	KeyF32 Key = 4194363
-	KeyF33 Key = 4194364
-	KeyF34 Key = 4194365
-	KeyF35 Key = 4194366
-	KeyKpMultiply Key = 4194433
-	KeyKpDivide Key = 4194434
-	KeyKpSubtract Key = 4194435
-	KeyKpPeriod Key = 4194436
-	KeyKpAdd Key = 4194437
-	KeyKp0 Key = 4194438
-	KeyKp1 Key = 4194439
-	KeyKp2 Key = 4194440
-	KeyKp3 Key = 4194441
-	KeyKp4 Key = 4194442
-	KeyKp5 Key = 4194443
-	KeyKp6 Key = 4194444
-	KeyKp7 Key = 4194445
-	KeyKp8 Key = 4194446
-	KeyKp9 Key = 4194447
-	KeyMenu Key = 4194370
-	KeyHyper Key = 4194371
-	KeyHelp Key = 4194373
-	KeyBack Key = 4194376
-	KeyForward Key = 4194377
-	KeyStop Key = 4194378
-	KeyRefresh Key = 4194379
-	KeyVolumedown Key = 4194380
-	KeyVolumemute Key = 4194381
-	KeyVolumeup Key = 4194382
-	KeyMediaplay Key = 4194388
-	KeyMediastop Key = 4194389
+	KeyNone          Key = 0
+	KeySpecial       Key = 4194304
+	KeyEscape        Key = 4194305
+	KeyTab           Key = 4194306
+	KeyBacktab       Key = 4194307
+	KeyBackspace     Key = 4194308
+	KeyEnter         Key = 4194309
+	KeyKpEnter       Key = 4194310
+	KeyInsert        Key = 4194311
+	KeyDelete        Key = 4194312
+	KeyPause         Key = 4194313
+	KeyPrint         Key = 4194314
+	KeySysreq        Key = 4194315
+	KeyClear         Key = 4194316
+	KeyHome          Key = 4194317
+	KeyEnd           Key = 4194318
+	KeyLeft          Key = 4194319
+	KeyUp            Key = 4194320
+	KeyRight         Key = 4194321
+	KeyDown          Key = 4194322
+	KeyPageup        Key = 4194323
+	KeyPagedown      Key = 4194324
+	KeyShift         Key = 4194325
+	KeyCtrl          Key = 4194326
+	KeyMeta          Key = 4194327
+	KeyAlt           Key = 4194328
+	KeyCapslock      Key = 4194329
+	KeyNumlock       Key = 4194330
+	KeyScrolllock    Key = 4194331
+	KeyF1            Key = 4194332
+	KeyF2            Key = 4194333
+	KeyF3            Key = 4194334
+	KeyF4            Key = 4194335
+	KeyF5            Key = 4194336
+	KeyF6            Key = 4194337
+	KeyF7            Key = 4194338
+	KeyF8            Key = 4194339
+	KeyF9            Key = 4194340
+	KeyF10           Key = 4194341
+	KeyF11           Key = 4194342
+	KeyF12           Key = 4194343
+	KeyF13           Key = 4194344
+	KeyF14           Key = 4194345
+	KeyF15           Key = 4194346
+	KeyF16           Key = 4194347
+	KeyF17           Key = 4194348
+	KeyF18           Key = 4194349
+	KeyF19           Key = 4194350
+	KeyF20           Key = 4194351
+	KeyF21           Key = 4194352
+	KeyF22           Key = 4194353
+	KeyF23           Key = 4194354
+	KeyF24           Key = 4194355
+	KeyF25           Key = 4194356
+	KeyF26           Key = 4194357
+	KeyF27           Key = 4194358
+	KeyF28           Key = 4194359
+	KeyF29           Key = 4194360
+	KeyF30           Key = 4194361
+	KeyF31           Key = 4194362
+	KeyF32           Key = 4194363
+	KeyF33           Key = 4194364
+	KeyF34           Key = 4194365
+	KeyF35           Key = 4194366
+	KeyKpMultiply    Key = 4194433
+	KeyKpDivide      Key = 4194434
+	KeyKpSubtract    Key = 4194435
+	KeyKpPeriod      Key = 4194436
+	KeyKpAdd         Key = 4194437
+	KeyKp0           Key = 4194438
+	KeyKp1           Key = 4194439
+	KeyKp2           Key = 4194440
+	KeyKp3           Key = 4194441
+	KeyKp4           Key = 4194442
+	KeyKp5           Key = 4194443
+	KeyKp6           Key = 4194444
+	KeyKp7           Key = 4194445
+	KeyKp8           Key = 4194446
+	KeyKp9           Key = 4194447
+	KeyMenu          Key = 4194370
+	KeyHyper         Key = 4194371
+	KeyHelp          Key = 4194373
+	KeyBack          Key = 4194376
+	KeyForward       Key = 4194377
+	KeyStop          Key = 4194378
+	KeyRefresh       Key = 4194379
+	KeyVolumedown    Key = 4194380
+	KeyVolumemute    Key = 4194381
+	KeyVolumeup      Key = 4194382
+	KeyMediaplay     Key = 4194388
+	KeyMediastop     Key = 4194389
 	KeyMediaprevious Key = 4194390
-	KeyMedianext Key = 4194391
-	KeyMediarecord Key = 4194392
-	KeyHomepage Key = 4194393
-	KeyFavorites Key = 4194394
-	KeySearch Key = 4194395
-	KeyStandby Key = 4194396
-	KeyOpenurl Key = 4194397
-	KeyLaunchmail Key = 4194398
-	KeyLaunchmedia Key = 4194399
-	KeyLaunch0 Key = 4194400
-	KeyLaunch1 Key = 4194401
-	KeyLaunch2 Key = 4194402
-	KeyLaunch3 Key = 4194403
-	KeyLaunch4 Key = 4194404
-	KeyLaunch5 Key = 4194405
-	KeyLaunch6 Key = 4194406
-	KeyLaunch7 Key = 4194407
-	KeyLaunch8 Key = 4194408
-	KeyLaunch9 Key = 4194409
-	KeyLauncha Key = 4194410
-	KeyLaunchb Key = 4194411
-	KeyLaunchc Key = 4194412
-	KeyLaunchd Key = 4194413
-	KeyLaunche Key = 4194414
-	KeyLaunchf Key = 4194415
-	KeyGlobe Key = 4194416
-	KeyKeyboard Key = 4194417
-	KeyJisEisu Key = 4194418
-	KeyJisKana Key = 4194419
-	KeyUnknown Key = 8388607
-	KeySpace Key = 32
-	KeyExclam Key = 33
-	KeyQuotedbl Key = 34
-	KeyNumbersign Key = 35
-	KeyDollar Key = 36
-	KeyPercent Key = 37
-	KeyAmpersand Key = 38
-	KeyApostrophe Key = 39
-	KeyParenleft Key = 40
-	KeyParenright Key = 41
-	KeyAsterisk Key = 42
-	KeyPlus Key = 43
-	KeyComma Key = 44
-	KeyMinus Key = 45
-	KeyPeriod Key = 46
-	KeySlash Key = 47
-	Key0 Key = 48
-	Key1 Key = 49
-	Key2 Key = 50
-	Key3 Key = 51
-	Key4 Key = 52
-	Key5 Key = 53
-	Key6 Key = 54
-	Key7 Key = 55
-	Key8 Key = 56
-	Key9 Key = 57
-	KeyColon Key = 58
-	KeySemicolon Key = 59
-	KeyLess Key = 60
-	KeyEqual Key = 61
-	KeyGreater Key = 62
-	KeyQuestion Key = 63
-	KeyAt Key = 64
-	KeyA Key = 65
-	KeyB Key = 66
-	KeyC Key = 67
-	KeyD Key = 68
-	KeyE Key = 69
-	KeyF Key = 70
-	KeyG Key = 71
-	KeyH Key = 72
-	KeyI Key = 73
-	KeyJ Key = 74
-	KeyK Key = 75
-	KeyL Key = 76
-	KeyM Key = 77
-	KeyN Key = 78
-	KeyO Key = 79
-	KeyP Key = 80
-	KeyQ Key = 81
-	KeyR Key = 82
-	KeyS Key = 83
-	KeyT Key = 84
-	KeyU Key = 85
-	KeyV Key = 86
-	KeyW Key = 87
-	KeyX Key = 88
-	KeyY Key = 89
-	KeyZ Key = 90
-	KeyBracketleft Key = 91
-	KeyBackslash Key = 92
-	KeyBracketright Key = 93
-	KeyAsciicircum Key = 94
-	KeyUnderscore Key = 95
-	KeyQuoteleft Key = 96
-	KeyBraceleft Key = 123
-	KeyBar Key = 124
-	KeyBraceright Key = 125
-	KeyAsciitilde Key = 126
-	KeyYen Key = 165
-	KeySection Key = 167
+	KeyMedianext     Key = 4194391
+	KeyMediarecord   Key = 4194392
+	KeyHomepage      Key = 4194393
+	KeyFavorites     Key = 4194394
+	KeySearch        Key = 4194395
+	KeyStandby       Key = 4194396
+	KeyOpenurl       Key = 4194397
+	KeyLaunchmail    Key = 4194398
+	KeyLaunchmedia   Key = 4194399
+	KeyLaunch0       Key = 4194400
+	KeyLaunch1       Key = 4194401
+	KeyLaunch2       Key = 4194402
+	KeyLaunch3       Key = 4194403
+	KeyLaunch4       Key = 4194404
+	KeyLaunch5       Key = 4194405
+	KeyLaunch6       Key = 4194406
+	KeyLaunch7       Key = 4194407
+	KeyLaunch8       Key = 4194408
+	KeyLaunch9       Key = 4194409
+	KeyLauncha       Key = 4194410
+	KeyLaunchb       Key = 4194411
+	KeyLaunchc       Key = 4194412
+	KeyLaunchd       Key = 4194413
+	KeyLaunche       Key = 4194414
+	KeyLaunchf       Key = 4194415
+	KeyGlobe         Key = 4194416
+	KeyKeyboard      Key = 4194417
+	KeyJisEisu       Key = 4194418
+	KeyJisKana       Key = 4194419
+	KeyUnknown       Key = 8388607
+	KeySpace         Key = 32
+	KeyExclam        Key = 33
+	KeyQuotedbl      Key = 34
+	KeyNumbersign    Key = 35
+	KeyDollar        Key = 36
+	KeyPercent       Key = 37
+	KeyAmpersand     Key = 38
+	KeyApostrophe    Key = 39
+	KeyParenleft     Key = 40
+	KeyParenright    Key = 41
+	KeyAsterisk      Key = 42
+	KeyPlus          Key = 43
+	KeyComma         Key = 44
+	KeyMinus         Key = 45
+	KeyPeriod        Key = 46
+	KeySlash         Key = 47
+	Key0             Key = 48
+	Key1             Key = 49
+	Key2             Key = 50
+	Key3             Key = 51
+	Key4             Key = 52
+	Key5             Key = 53
+	Key6             Key = 54
+	Key7             Key = 55
+	Key8             Key = 56
+	Key9             Key = 57
+	KeyColon         Key = 58
+	KeySemicolon     Key = 59
+	KeyLess          Key = 60
+	KeyEqual         Key = 61
+	KeyGreater       Key = 62
+	KeyQuestion      Key = 63
+	KeyAt            Key = 64
+	KeyA             Key = 65
+	KeyB             Key = 66
+	KeyC             Key = 67
+	KeyD             Key = 68
+	KeyE             Key = 69
+	KeyF             Key = 70
+	KeyG             Key = 71
+	KeyH             Key = 72
+	KeyI             Key = 73
+	KeyJ             Key = 74
+	KeyK             Key = 75
+	KeyL             Key = 76
+	KeyM             Key = 77
+	KeyN             Key = 78
+	KeyO             Key = 79
+	KeyP             Key = 80
+	KeyQ             Key = 81
+	KeyR             Key = 82
+	KeyS             Key = 83
+	KeyT             Key = 84
+	KeyU             Key = 85
+	KeyV             Key = 86
+	KeyW             Key = 87
+	KeyX             Key = 88
+	KeyY             Key = 89
+	KeyZ             Key = 90
+	KeyBracketleft   Key = 91
+	KeyBackslash     Key = 92
+	KeyBracketright  Key = 93
+	KeyAsciicircum   Key = 94
+	KeyUnderscore    Key = 95
+	KeyQuoteleft     Key = 96
+	KeyBraceleft     Key = 123
+	KeyBar           Key = 124
+	KeyBraceright    Key = 125
+	KeyAsciitilde    Key = 126
+	KeyYen           Key = 165
+	KeySection       Key = 167
 )
 
 type KeyModifierMask = gd.KeyModifierMask
 
 const (
-	KeyCodeMask KeyModifierMask = 8388607
+	KeyCodeMask            KeyModifierMask = 8388607
 	KeyModifierMaskDefault KeyModifierMask = 532676608
-	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
-	KeyMaskShift KeyModifierMask = 33554432
-	KeyMaskAlt KeyModifierMask = 67108864
-	KeyMaskMeta KeyModifierMask = 134217728
-	KeyMaskCtrl KeyModifierMask = 268435456
-	KeyMaskKpad KeyModifierMask = 536870912
-	KeyMaskGroupSwitch KeyModifierMask = 1073741824
+	KeyMaskCmdOrCtrl       KeyModifierMask = 16777216
+	KeyMaskShift           KeyModifierMask = 33554432
+	KeyMaskAlt             KeyModifierMask = 67108864
+	KeyMaskMeta            KeyModifierMask = 134217728
+	KeyMaskCtrl            KeyModifierMask = 268435456
+	KeyMaskKpad            KeyModifierMask = 536870912
+	KeyMaskGroupSwitch     KeyModifierMask = 1073741824
 )
 
 type MouseButton = gd.MouseButton
 
 const (
-	MouseButtonNone MouseButton = 0
-	MouseButtonLeft MouseButton = 1
-	MouseButtonRight MouseButton = 2
-	MouseButtonMiddle MouseButton = 3
-	MouseButtonWheelUp MouseButton = 4
-	MouseButtonWheelDown MouseButton = 5
-	MouseButtonWheelLeft MouseButton = 6
+	MouseButtonNone       MouseButton = 0
+	MouseButtonLeft       MouseButton = 1
+	MouseButtonRight      MouseButton = 2
+	MouseButtonMiddle     MouseButton = 3
+	MouseButtonWheelUp    MouseButton = 4
+	MouseButtonWheelDown  MouseButton = 5
+	MouseButtonWheelLeft  MouseButton = 6
 	MouseButtonWheelRight MouseButton = 7
-	MouseButtonXbutton1 MouseButton = 8
-	MouseButtonXbutton2 MouseButton = 9
+	MouseButtonXbutton1   MouseButton = 8
+	MouseButtonXbutton2   MouseButton = 9
 )
 
 type MouseButtonMask = gd.MouseButtonMask
 
 const (
-	MouseButtonMaskLeft MouseButtonMask = 1
-	MouseButtonMaskRight MouseButtonMask = 2
-	MouseButtonMaskMiddle MouseButtonMask = 4
+	MouseButtonMaskLeft       MouseButtonMask = 1
+	MouseButtonMaskRight      MouseButtonMask = 2
+	MouseButtonMaskMiddle     MouseButtonMask = 4
 	MouseButtonMaskMbXbutton1 MouseButtonMask = 128
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
@@ -306,291 +305,291 @@ const (
 type JoyButton = gd.JoyButton
 
 const (
-	JoyButtonInvalid JoyButton = -1
-	JoyButtonA JoyButton = 0
-	JoyButtonB JoyButton = 1
-	JoyButtonX JoyButton = 2
-	JoyButtonY JoyButton = 3
-	JoyButtonBack JoyButton = 4
-	JoyButtonGuide JoyButton = 5
-	JoyButtonStart JoyButton = 6
-	JoyButtonLeftStick JoyButton = 7
-	JoyButtonRightStick JoyButton = 8
-	JoyButtonLeftShoulder JoyButton = 9
+	JoyButtonInvalid       JoyButton = -1
+	JoyButtonA             JoyButton = 0
+	JoyButtonB             JoyButton = 1
+	JoyButtonX             JoyButton = 2
+	JoyButtonY             JoyButton = 3
+	JoyButtonBack          JoyButton = 4
+	JoyButtonGuide         JoyButton = 5
+	JoyButtonStart         JoyButton = 6
+	JoyButtonLeftStick     JoyButton = 7
+	JoyButtonRightStick    JoyButton = 8
+	JoyButtonLeftShoulder  JoyButton = 9
 	JoyButtonRightShoulder JoyButton = 10
-	JoyButtonDpadUp JoyButton = 11
-	JoyButtonDpadDown JoyButton = 12
-	JoyButtonDpadLeft JoyButton = 13
-	JoyButtonDpadRight JoyButton = 14
-	JoyButtonMisc1 JoyButton = 15
-	JoyButtonPaddle1 JoyButton = 16
-	JoyButtonPaddle2 JoyButton = 17
-	JoyButtonPaddle3 JoyButton = 18
-	JoyButtonPaddle4 JoyButton = 19
-	JoyButtonTouchpad JoyButton = 20
-	JoyButtonSdlMax JoyButton = 21
-	JoyButtonMax JoyButton = 128
+	JoyButtonDpadUp        JoyButton = 11
+	JoyButtonDpadDown      JoyButton = 12
+	JoyButtonDpadLeft      JoyButton = 13
+	JoyButtonDpadRight     JoyButton = 14
+	JoyButtonMisc1         JoyButton = 15
+	JoyButtonPaddle1       JoyButton = 16
+	JoyButtonPaddle2       JoyButton = 17
+	JoyButtonPaddle3       JoyButton = 18
+	JoyButtonPaddle4       JoyButton = 19
+	JoyButtonTouchpad      JoyButton = 20
+	JoyButtonSdlMax        JoyButton = 21
+	JoyButtonMax           JoyButton = 128
 )
 
 type JoyAxis = gd.JoyAxis
 
 const (
-	JoyAxisInvalid JoyAxis = -1
-	JoyAxisLeftX JoyAxis = 0
-	JoyAxisLeftY JoyAxis = 1
-	JoyAxisRightX JoyAxis = 2
-	JoyAxisRightY JoyAxis = 3
-	JoyAxisTriggerLeft JoyAxis = 4
+	JoyAxisInvalid      JoyAxis = -1
+	JoyAxisLeftX        JoyAxis = 0
+	JoyAxisLeftY        JoyAxis = 1
+	JoyAxisRightX       JoyAxis = 2
+	JoyAxisRightY       JoyAxis = 3
+	JoyAxisTriggerLeft  JoyAxis = 4
 	JoyAxisTriggerRight JoyAxis = 5
-	JoyAxisSdlMax JoyAxis = 6
-	JoyAxisMax JoyAxis = 10
+	JoyAxisSdlMax       JoyAxis = 6
+	JoyAxisMax          JoyAxis = 10
 )
 
 type MIDIMessage = gd.MIDIMessage
 
 const (
-	MidiMessageNone MIDIMessage = 0
-	MidiMessageNoteOff MIDIMessage = 8
-	MidiMessageNoteOn MIDIMessage = 9
-	MidiMessageAftertouch MIDIMessage = 10
-	MidiMessageControlChange MIDIMessage = 11
-	MidiMessageProgramChange MIDIMessage = 12
-	MidiMessageChannelPressure MIDIMessage = 13
-	MidiMessagePitchBend MIDIMessage = 14
-	MidiMessageSystemExclusive MIDIMessage = 240
-	MidiMessageQuarterFrame MIDIMessage = 241
+	MidiMessageNone                MIDIMessage = 0
+	MidiMessageNoteOff             MIDIMessage = 8
+	MidiMessageNoteOn              MIDIMessage = 9
+	MidiMessageAftertouch          MIDIMessage = 10
+	MidiMessageControlChange       MIDIMessage = 11
+	MidiMessageProgramChange       MIDIMessage = 12
+	MidiMessageChannelPressure     MIDIMessage = 13
+	MidiMessagePitchBend           MIDIMessage = 14
+	MidiMessageSystemExclusive     MIDIMessage = 240
+	MidiMessageQuarterFrame        MIDIMessage = 241
 	MidiMessageSongPositionPointer MIDIMessage = 242
-	MidiMessageSongSelect MIDIMessage = 243
-	MidiMessageTuneRequest MIDIMessage = 246
-	MidiMessageTimingClock MIDIMessage = 248
-	MidiMessageStart MIDIMessage = 250
-	MidiMessageContinue MIDIMessage = 251
-	MidiMessageStop MIDIMessage = 252
-	MidiMessageActiveSensing MIDIMessage = 254
-	MidiMessageSystemReset MIDIMessage = 255
+	MidiMessageSongSelect          MIDIMessage = 243
+	MidiMessageTuneRequest         MIDIMessage = 246
+	MidiMessageTimingClock         MIDIMessage = 248
+	MidiMessageStart               MIDIMessage = 250
+	MidiMessageContinue            MIDIMessage = 251
+	MidiMessageStop                MIDIMessage = 252
+	MidiMessageActiveSensing       MIDIMessage = 254
+	MidiMessageSystemReset         MIDIMessage = 255
 )
 
 type Error = gd.Error
 
 const (
-	Ok Error = 0
-	Failed Error = 1
-	ErrUnavailable Error = 2
-	ErrUnconfigured Error = 3
-	ErrUnauthorized Error = 4
-	ErrParameterRangeError Error = 5
-	ErrOutOfMemory Error = 6
-	ErrFileNotFound Error = 7
-	ErrFileBadDrive Error = 8
-	ErrFileBadPath Error = 9
-	ErrFileNoPermission Error = 10
-	ErrFileAlreadyInUse Error = 11
-	ErrFileCantOpen Error = 12
-	ErrFileCantWrite Error = 13
-	ErrFileCantRead Error = 14
-	ErrFileUnrecognized Error = 15
-	ErrFileCorrupt Error = 16
+	Ok                         Error = 0
+	Failed                     Error = 1
+	ErrUnavailable             Error = 2
+	ErrUnconfigured            Error = 3
+	ErrUnauthorized            Error = 4
+	ErrParameterRangeError     Error = 5
+	ErrOutOfMemory             Error = 6
+	ErrFileNotFound            Error = 7
+	ErrFileBadDrive            Error = 8
+	ErrFileBadPath             Error = 9
+	ErrFileNoPermission        Error = 10
+	ErrFileAlreadyInUse        Error = 11
+	ErrFileCantOpen            Error = 12
+	ErrFileCantWrite           Error = 13
+	ErrFileCantRead            Error = 14
+	ErrFileUnrecognized        Error = 15
+	ErrFileCorrupt             Error = 16
 	ErrFileMissingDependencies Error = 17
-	ErrFileEof Error = 18
-	ErrCantOpen Error = 19
-	ErrCantCreate Error = 20
-	ErrQueryFailed Error = 21
-	ErrAlreadyInUse Error = 22
-	ErrLocked Error = 23
-	ErrTimeout Error = 24
-	ErrCantConnect Error = 25
-	ErrCantResolve Error = 26
-	ErrConnectionError Error = 27
-	ErrCantAcquireResource Error = 28
-	ErrCantFork Error = 29
-	ErrInvalidData Error = 30
-	ErrInvalidParameter Error = 31
-	ErrAlreadyExists Error = 32
-	ErrDoesNotExist Error = 33
-	ErrDatabaseCantRead Error = 34
-	ErrDatabaseCantWrite Error = 35
-	ErrCompilationFailed Error = 36
-	ErrMethodNotFound Error = 37
-	ErrLinkFailed Error = 38
-	ErrScriptFailed Error = 39
-	ErrCyclicLink Error = 40
-	ErrInvalidDeclaration Error = 41
-	ErrDuplicateSymbol Error = 42
-	ErrParseError Error = 43
-	ErrBusy Error = 44
-	ErrSkip Error = 45
-	ErrHelp Error = 46
-	ErrBug Error = 47
-	ErrPrinterOnFire Error = 48
+	ErrFileEof                 Error = 18
+	ErrCantOpen                Error = 19
+	ErrCantCreate              Error = 20
+	ErrQueryFailed             Error = 21
+	ErrAlreadyInUse            Error = 22
+	ErrLocked                  Error = 23
+	ErrTimeout                 Error = 24
+	ErrCantConnect             Error = 25
+	ErrCantResolve             Error = 26
+	ErrConnectionError         Error = 27
+	ErrCantAcquireResource     Error = 28
+	ErrCantFork                Error = 29
+	ErrInvalidData             Error = 30
+	ErrInvalidParameter        Error = 31
+	ErrAlreadyExists           Error = 32
+	ErrDoesNotExist            Error = 33
+	ErrDatabaseCantRead        Error = 34
+	ErrDatabaseCantWrite       Error = 35
+	ErrCompilationFailed       Error = 36
+	ErrMethodNotFound          Error = 37
+	ErrLinkFailed              Error = 38
+	ErrScriptFailed            Error = 39
+	ErrCyclicLink              Error = 40
+	ErrInvalidDeclaration      Error = 41
+	ErrDuplicateSymbol         Error = 42
+	ErrParseError              Error = 43
+	ErrBusy                    Error = 44
+	ErrSkip                    Error = 45
+	ErrHelp                    Error = 46
+	ErrBug                     Error = 47
+	ErrPrinterOnFire           Error = 48
 )
 
 type PropertyHint = gd.PropertyHint
 
 const (
-	PropertyHintNone PropertyHint = 0
-	PropertyHintRange PropertyHint = 1
-	PropertyHintEnum PropertyHint = 2
-	PropertyHintEnumSuggestion PropertyHint = 3
-	PropertyHintExpEasing PropertyHint = 4
-	PropertyHintLink PropertyHint = 5
-	PropertyHintFlags PropertyHint = 6
-	PropertyHintLayers2dRender PropertyHint = 7
-	PropertyHintLayers2dPhysics PropertyHint = 8
-	PropertyHintLayers2dNavigation PropertyHint = 9
-	PropertyHintLayers3dRender PropertyHint = 10
-	PropertyHintLayers3dPhysics PropertyHint = 11
-	PropertyHintLayers3dNavigation PropertyHint = 12
-	PropertyHintLayersAvoidance PropertyHint = 37
-	PropertyHintFile PropertyHint = 13
-	PropertyHintDir PropertyHint = 14
-	PropertyHintGlobalFile PropertyHint = 15
-	PropertyHintGlobalDir PropertyHint = 16
-	PropertyHintResourceType PropertyHint = 17
-	PropertyHintMultilineText PropertyHint = 18
-	PropertyHintExpression PropertyHint = 19
-	PropertyHintPlaceholderText PropertyHint = 20
-	PropertyHintColorNoAlpha PropertyHint = 21
-	PropertyHintObjectId PropertyHint = 22
-	PropertyHintTypeString PropertyHint = 23
+	PropertyHintNone                 PropertyHint = 0
+	PropertyHintRange                PropertyHint = 1
+	PropertyHintEnum                 PropertyHint = 2
+	PropertyHintEnumSuggestion       PropertyHint = 3
+	PropertyHintExpEasing            PropertyHint = 4
+	PropertyHintLink                 PropertyHint = 5
+	PropertyHintFlags                PropertyHint = 6
+	PropertyHintLayers2dRender       PropertyHint = 7
+	PropertyHintLayers2dPhysics      PropertyHint = 8
+	PropertyHintLayers2dNavigation   PropertyHint = 9
+	PropertyHintLayers3dRender       PropertyHint = 10
+	PropertyHintLayers3dPhysics      PropertyHint = 11
+	PropertyHintLayers3dNavigation   PropertyHint = 12
+	PropertyHintLayersAvoidance      PropertyHint = 37
+	PropertyHintFile                 PropertyHint = 13
+	PropertyHintDir                  PropertyHint = 14
+	PropertyHintGlobalFile           PropertyHint = 15
+	PropertyHintGlobalDir            PropertyHint = 16
+	PropertyHintResourceType         PropertyHint = 17
+	PropertyHintMultilineText        PropertyHint = 18
+	PropertyHintExpression           PropertyHint = 19
+	PropertyHintPlaceholderText      PropertyHint = 20
+	PropertyHintColorNoAlpha         PropertyHint = 21
+	PropertyHintObjectId             PropertyHint = 22
+	PropertyHintTypeString           PropertyHint = 23
 	PropertyHintNodePathToEditedNode PropertyHint = 24
-	PropertyHintObjectTooBig PropertyHint = 25
-	PropertyHintNodePathValidTypes PropertyHint = 26
-	PropertyHintSaveFile PropertyHint = 27
-	PropertyHintGlobalSaveFile PropertyHint = 28
-	PropertyHintIntIsObjectid PropertyHint = 29
-	PropertyHintIntIsPointer PropertyHint = 30
-	PropertyHintArrayType PropertyHint = 31
-	PropertyHintLocaleId PropertyHint = 32
-	PropertyHintLocalizableString PropertyHint = 33
-	PropertyHintNodeType PropertyHint = 34
-	PropertyHintHideQuaternionEdit PropertyHint = 35
-	PropertyHintPassword PropertyHint = 36
-	PropertyHintMax PropertyHint = 38
+	PropertyHintObjectTooBig         PropertyHint = 25
+	PropertyHintNodePathValidTypes   PropertyHint = 26
+	PropertyHintSaveFile             PropertyHint = 27
+	PropertyHintGlobalSaveFile       PropertyHint = 28
+	PropertyHintIntIsObjectid        PropertyHint = 29
+	PropertyHintIntIsPointer         PropertyHint = 30
+	PropertyHintArrayType            PropertyHint = 31
+	PropertyHintLocaleId             PropertyHint = 32
+	PropertyHintLocalizableString    PropertyHint = 33
+	PropertyHintNodeType             PropertyHint = 34
+	PropertyHintHideQuaternionEdit   PropertyHint = 35
+	PropertyHintPassword             PropertyHint = 36
+	PropertyHintMax                  PropertyHint = 38
 )
 
 type PropertyUsageFlags = gd.PropertyUsageFlags
 
 const (
-	PropertyUsageNone PropertyUsageFlags = 0
-	PropertyUsageStorage PropertyUsageFlags = 2
-	PropertyUsageEditor PropertyUsageFlags = 4
-	PropertyUsageInternal PropertyUsageFlags = 8
-	PropertyUsageCheckable PropertyUsageFlags = 16
-	PropertyUsageChecked PropertyUsageFlags = 32
-	PropertyUsageGroup PropertyUsageFlags = 64
-	PropertyUsageCategory PropertyUsageFlags = 128
-	PropertyUsageSubgroup PropertyUsageFlags = 256
-	PropertyUsageClassIsBitfield PropertyUsageFlags = 512
-	PropertyUsageNoInstanceState PropertyUsageFlags = 1024
-	PropertyUsageRestartIfChanged PropertyUsageFlags = 2048
-	PropertyUsageScriptVariable PropertyUsageFlags = 4096
-	PropertyUsageStoreIfNull PropertyUsageFlags = 8192
-	PropertyUsageUpdateAllIfModified PropertyUsageFlags = 16384
-	PropertyUsageScriptDefaultValue PropertyUsageFlags = 32768
-	PropertyUsageClassIsEnum PropertyUsageFlags = 65536
-	PropertyUsageNilIsVariant PropertyUsageFlags = 131072
-	PropertyUsageArray PropertyUsageFlags = 262144
-	PropertyUsageAlwaysDuplicate PropertyUsageFlags = 524288
-	PropertyUsageNeverDuplicate PropertyUsageFlags = 1048576
-	PropertyUsageHighEndGfx PropertyUsageFlags = 2097152
-	PropertyUsageNodePathFromSceneRoot PropertyUsageFlags = 4194304
-	PropertyUsageResourceNotPersistent PropertyUsageFlags = 8388608
-	PropertyUsageKeyingIncrements PropertyUsageFlags = 16777216
-	PropertyUsageDeferredSetResource PropertyUsageFlags = 33554432
+	PropertyUsageNone                    PropertyUsageFlags = 0
+	PropertyUsageStorage                 PropertyUsageFlags = 2
+	PropertyUsageEditor                  PropertyUsageFlags = 4
+	PropertyUsageInternal                PropertyUsageFlags = 8
+	PropertyUsageCheckable               PropertyUsageFlags = 16
+	PropertyUsageChecked                 PropertyUsageFlags = 32
+	PropertyUsageGroup                   PropertyUsageFlags = 64
+	PropertyUsageCategory                PropertyUsageFlags = 128
+	PropertyUsageSubgroup                PropertyUsageFlags = 256
+	PropertyUsageClassIsBitfield         PropertyUsageFlags = 512
+	PropertyUsageNoInstanceState         PropertyUsageFlags = 1024
+	PropertyUsageRestartIfChanged        PropertyUsageFlags = 2048
+	PropertyUsageScriptVariable          PropertyUsageFlags = 4096
+	PropertyUsageStoreIfNull             PropertyUsageFlags = 8192
+	PropertyUsageUpdateAllIfModified     PropertyUsageFlags = 16384
+	PropertyUsageScriptDefaultValue      PropertyUsageFlags = 32768
+	PropertyUsageClassIsEnum             PropertyUsageFlags = 65536
+	PropertyUsageNilIsVariant            PropertyUsageFlags = 131072
+	PropertyUsageArray                   PropertyUsageFlags = 262144
+	PropertyUsageAlwaysDuplicate         PropertyUsageFlags = 524288
+	PropertyUsageNeverDuplicate          PropertyUsageFlags = 1048576
+	PropertyUsageHighEndGfx              PropertyUsageFlags = 2097152
+	PropertyUsageNodePathFromSceneRoot   PropertyUsageFlags = 4194304
+	PropertyUsageResourceNotPersistent   PropertyUsageFlags = 8388608
+	PropertyUsageKeyingIncrements        PropertyUsageFlags = 16777216
+	PropertyUsageDeferredSetResource     PropertyUsageFlags = 33554432
 	PropertyUsageEditorInstantiateObject PropertyUsageFlags = 67108864
-	PropertyUsageEditorBasicSetting PropertyUsageFlags = 134217728
-	PropertyUsageReadOnly PropertyUsageFlags = 268435456
-	PropertyUsageSecret PropertyUsageFlags = 536870912
-	PropertyUsageDefault PropertyUsageFlags = 6
-	PropertyUsageNoEditor PropertyUsageFlags = 2
+	PropertyUsageEditorBasicSetting      PropertyUsageFlags = 134217728
+	PropertyUsageReadOnly                PropertyUsageFlags = 268435456
+	PropertyUsageSecret                  PropertyUsageFlags = 536870912
+	PropertyUsageDefault                 PropertyUsageFlags = 6
+	PropertyUsageNoEditor                PropertyUsageFlags = 2
 )
 
 type MethodFlags = gd.MethodFlags
 
 const (
-	MethodFlagNormal MethodFlags = 1
-	MethodFlagEditor MethodFlags = 2
-	MethodFlagConst MethodFlags = 4
-	MethodFlagVirtual MethodFlags = 8
-	MethodFlagVararg MethodFlags = 16
-	MethodFlagStatic MethodFlags = 32
+	MethodFlagNormal     MethodFlags = 1
+	MethodFlagEditor     MethodFlags = 2
+	MethodFlagConst      MethodFlags = 4
+	MethodFlagVirtual    MethodFlags = 8
+	MethodFlagVararg     MethodFlags = 16
+	MethodFlagStatic     MethodFlags = 32
 	MethodFlagObjectCore MethodFlags = 64
-	MethodFlagsDefault MethodFlags = 1
+	MethodFlagsDefault   MethodFlags = 1
 )
 
 type VariantType = gd.VariantType
 
 const (
-	TypeNil VariantType = 0
-	TypeBool VariantType = 1
-	TypeInt VariantType = 2
-	TypeFloat VariantType = 3
-	TypeString VariantType = 4
-	TypeVector2 VariantType = 5
-	TypeVector2i VariantType = 6
-	TypeRect2 VariantType = 7
-	TypeRect2i VariantType = 8
-	TypeVector3 VariantType = 9
-	TypeVector3i VariantType = 10
-	TypeTransform2d VariantType = 11
-	TypeVector4 VariantType = 12
-	TypeVector4i VariantType = 13
-	TypePlane VariantType = 14
-	TypeQuaternion VariantType = 15
-	TypeAabb VariantType = 16
-	TypeBasis VariantType = 17
-	TypeTransform3d VariantType = 18
-	TypeProjection VariantType = 19
-	TypeColor VariantType = 20
-	TypeStringName VariantType = 21
-	TypeNodePath VariantType = 22
-	TypeRid VariantType = 23
-	TypeObject VariantType = 24
-	TypeCallable VariantType = 25
-	TypeSignal VariantType = 26
-	TypeDictionary VariantType = 27
-	TypeArray VariantType = 28
-	TypePackedByteArray VariantType = 29
-	TypePackedInt32Array VariantType = 30
-	TypePackedInt64Array VariantType = 31
+	TypeNil                VariantType = 0
+	TypeBool               VariantType = 1
+	TypeInt                VariantType = 2
+	TypeFloat              VariantType = 3
+	TypeString             VariantType = 4
+	TypeVector2            VariantType = 5
+	TypeVector2i           VariantType = 6
+	TypeRect2              VariantType = 7
+	TypeRect2i             VariantType = 8
+	TypeVector3            VariantType = 9
+	TypeVector3i           VariantType = 10
+	TypeTransform2d        VariantType = 11
+	TypeVector4            VariantType = 12
+	TypeVector4i           VariantType = 13
+	TypePlane              VariantType = 14
+	TypeQuaternion         VariantType = 15
+	TypeAabb               VariantType = 16
+	TypeBasis              VariantType = 17
+	TypeTransform3d        VariantType = 18
+	TypeProjection         VariantType = 19
+	TypeColor              VariantType = 20
+	TypeStringName         VariantType = 21
+	TypeNodePath           VariantType = 22
+	TypeRid                VariantType = 23
+	TypeObject             VariantType = 24
+	TypeCallable           VariantType = 25
+	TypeSignal             VariantType = 26
+	TypeDictionary         VariantType = 27
+	TypeArray              VariantType = 28
+	TypePackedByteArray    VariantType = 29
+	TypePackedInt32Array   VariantType = 30
+	TypePackedInt64Array   VariantType = 31
 	TypePackedFloat32Array VariantType = 32
 	TypePackedFloat64Array VariantType = 33
-	TypePackedStringArray VariantType = 34
+	TypePackedStringArray  VariantType = 34
 	TypePackedVector2Array VariantType = 35
 	TypePackedVector3Array VariantType = 36
-	TypePackedColorArray VariantType = 37
-	TypeMax VariantType = 38
+	TypePackedColorArray   VariantType = 37
+	TypeMax                VariantType = 38
 )
 
 type VariantOperator = gd.VariantOperator
 
 const (
-	OpEqual VariantOperator = 0
-	OpNotEqual VariantOperator = 1
-	OpLess VariantOperator = 2
-	OpLessEqual VariantOperator = 3
-	OpGreater VariantOperator = 4
+	OpEqual        VariantOperator = 0
+	OpNotEqual     VariantOperator = 1
+	OpLess         VariantOperator = 2
+	OpLessEqual    VariantOperator = 3
+	OpGreater      VariantOperator = 4
 	OpGreaterEqual VariantOperator = 5
-	OpAdd VariantOperator = 6
-	OpSubtract VariantOperator = 7
-	OpMultiply VariantOperator = 8
-	OpDivide VariantOperator = 9
-	OpNegate VariantOperator = 10
-	OpPositive VariantOperator = 11
-	OpModule VariantOperator = 12
-	OpPower VariantOperator = 13
-	OpShiftLeft VariantOperator = 14
-	OpShiftRight VariantOperator = 15
-	OpBitAnd VariantOperator = 16
-	OpBitOr VariantOperator = 17
-	OpBitXor VariantOperator = 18
-	OpBitNegate VariantOperator = 19
-	OpAnd VariantOperator = 20
-	OpOr VariantOperator = 21
-	OpXor VariantOperator = 22
-	OpNot VariantOperator = 23
-	OpIn VariantOperator = 24
-	OpMax VariantOperator = 25
+	OpAdd          VariantOperator = 6
+	OpSubtract     VariantOperator = 7
+	OpMultiply     VariantOperator = 8
+	OpDivide       VariantOperator = 9
+	OpNegate       VariantOperator = 10
+	OpPositive     VariantOperator = 11
+	OpModule       VariantOperator = 12
+	OpPower        VariantOperator = 13
+	OpShiftLeft    VariantOperator = 14
+	OpShiftRight   VariantOperator = 15
+	OpBitAnd       VariantOperator = 16
+	OpBitOr        VariantOperator = 17
+	OpBitXor       VariantOperator = 18
+	OpBitNegate    VariantOperator = 19
+	OpAnd          VariantOperator = 20
+	OpOr           VariantOperator = 21
+	OpXor          VariantOperator = 22
+	OpNot          VariantOperator = 23
+	OpIn           VariantOperator = 24
+	OpMax          VariantOperator = 25
 )
 
 type Vector2Axis = gd.Vector2Axis
@@ -644,11 +643,11 @@ const (
 type ProjectionPlanes = gd.ProjectionPlanes
 
 const (
-	ProjectionPlaneNear ProjectionPlanes = 0
-	ProjectionPlaneFar ProjectionPlanes = 1
-	ProjectionPlaneLeft ProjectionPlanes = 2
-	ProjectionPlaneTop ProjectionPlanes = 3
-	ProjectionPlaneRight ProjectionPlanes = 4
+	ProjectionPlaneNear   ProjectionPlanes = 0
+	ProjectionPlaneFar    ProjectionPlanes = 1
+	ProjectionPlaneLeft   ProjectionPlanes = 2
+	ProjectionPlaneTop    ProjectionPlanes = 3
+	ProjectionPlaneRight  ProjectionPlanes = 4
 	ProjectionPlaneBottom ProjectionPlanes = 5
 )
 
@@ -659,7 +658,7 @@ const (
 	AESContextModeEcbDecrypt AESContextMode = 1
 	AESContextModeCbcEncrypt AESContextMode = 2
 	AESContextModeCbcDecrypt AESContextMode = 3
-	AESContextModeMax AESContextMode = 4
+	AESContextModeMax        AESContextMode = 4
 )
 
 type AStarGrid2DHeuristic = classdb.AStarGrid2DHeuristic
@@ -667,66 +666,66 @@ type AStarGrid2DHeuristic = classdb.AStarGrid2DHeuristic
 const (
 	AStarGrid2DHeuristicEuclidean AStarGrid2DHeuristic = 0
 	AStarGrid2DHeuristicManhattan AStarGrid2DHeuristic = 1
-	AStarGrid2DHeuristicOctile AStarGrid2DHeuristic = 2
+	AStarGrid2DHeuristicOctile    AStarGrid2DHeuristic = 2
 	AStarGrid2DHeuristicChebyshev AStarGrid2DHeuristic = 3
-	AStarGrid2DHeuristicMax AStarGrid2DHeuristic = 4
+	AStarGrid2DHeuristicMax       AStarGrid2DHeuristic = 4
 )
 
 type AStarGrid2DDiagonalMode = classdb.AStarGrid2DDiagonalMode
 
 const (
-	AStarGrid2DDiagonalModeAlways AStarGrid2DDiagonalMode = 0
-	AStarGrid2DDiagonalModeNever AStarGrid2DDiagonalMode = 1
+	AStarGrid2DDiagonalModeAlways             AStarGrid2DDiagonalMode = 0
+	AStarGrid2DDiagonalModeNever              AStarGrid2DDiagonalMode = 1
 	AStarGrid2DDiagonalModeAtLeastOneWalkable AStarGrid2DDiagonalMode = 2
-	AStarGrid2DDiagonalModeOnlyIfNoObstacles AStarGrid2DDiagonalMode = 3
-	AStarGrid2DDiagonalModeMax AStarGrid2DDiagonalMode = 4
+	AStarGrid2DDiagonalModeOnlyIfNoObstacles  AStarGrid2DDiagonalMode = 3
+	AStarGrid2DDiagonalModeMax                AStarGrid2DDiagonalMode = 4
 )
 
 type AnimationTrackType = classdb.AnimationTrackType
 
 const (
-	AnimationTypeValue AnimationTrackType = 0
+	AnimationTypeValue      AnimationTrackType = 0
 	AnimationTypePosition3d AnimationTrackType = 1
 	AnimationTypeRotation3d AnimationTrackType = 2
-	AnimationTypeScale3d AnimationTrackType = 3
+	AnimationTypeScale3d    AnimationTrackType = 3
 	AnimationTypeBlendShape AnimationTrackType = 4
-	AnimationTypeMethod AnimationTrackType = 5
-	AnimationTypeBezier AnimationTrackType = 6
-	AnimationTypeAudio AnimationTrackType = 7
-	AnimationTypeAnimation AnimationTrackType = 8
+	AnimationTypeMethod     AnimationTrackType = 5
+	AnimationTypeBezier     AnimationTrackType = 6
+	AnimationTypeAudio      AnimationTrackType = 7
+	AnimationTypeAnimation  AnimationTrackType = 8
 )
 
 type AnimationInterpolationType = classdb.AnimationInterpolationType
 
 const (
-	AnimationInterpolationNearest AnimationInterpolationType = 0
-	AnimationInterpolationLinear AnimationInterpolationType = 1
-	AnimationInterpolationCubic AnimationInterpolationType = 2
+	AnimationInterpolationNearest     AnimationInterpolationType = 0
+	AnimationInterpolationLinear      AnimationInterpolationType = 1
+	AnimationInterpolationCubic       AnimationInterpolationType = 2
 	AnimationInterpolationLinearAngle AnimationInterpolationType = 3
-	AnimationInterpolationCubicAngle AnimationInterpolationType = 4
+	AnimationInterpolationCubicAngle  AnimationInterpolationType = 4
 )
 
 type AnimationUpdateMode = classdb.AnimationUpdateMode
 
 const (
 	AnimationUpdateContinuous AnimationUpdateMode = 0
-	AnimationUpdateDiscrete AnimationUpdateMode = 1
-	AnimationUpdateCapture AnimationUpdateMode = 2
+	AnimationUpdateDiscrete   AnimationUpdateMode = 1
+	AnimationUpdateCapture    AnimationUpdateMode = 2
 )
 
 type AnimationLoopMode = classdb.AnimationLoopMode
 
 const (
-	AnimationLoopNone AnimationLoopMode = 0
-	AnimationLoopLinear AnimationLoopMode = 1
+	AnimationLoopNone     AnimationLoopMode = 0
+	AnimationLoopLinear   AnimationLoopMode = 1
 	AnimationLoopPingpong AnimationLoopMode = 2
 )
 
 type AnimationLoopedFlag = classdb.AnimationLoopedFlag
 
 const (
-	AnimationLoopedFlagNone AnimationLoopedFlag = 0
-	AnimationLoopedFlagEnd AnimationLoopedFlag = 1
+	AnimationLoopedFlagNone  AnimationLoopedFlag = 0
+	AnimationLoopedFlagEnd   AnimationLoopedFlag = 1
 	AnimationLoopedFlagStart AnimationLoopedFlag = 2
 )
 
@@ -734,22 +733,22 @@ type AnimationFindMode = classdb.AnimationFindMode
 
 const (
 	AnimationFindModeNearest AnimationFindMode = 0
-	AnimationFindModeApprox AnimationFindMode = 1
-	AnimationFindModeExact AnimationFindMode = 2
+	AnimationFindModeApprox  AnimationFindMode = 1
+	AnimationFindModeExact   AnimationFindMode = 2
 )
 
 type AnimationMixerAnimationCallbackModeProcess = classdb.AnimationMixerAnimationCallbackModeProcess
 
 const (
 	AnimationMixerAnimationCallbackModeProcessPhysics AnimationMixerAnimationCallbackModeProcess = 0
-	AnimationMixerAnimationCallbackModeProcessIdle AnimationMixerAnimationCallbackModeProcess = 1
-	AnimationMixerAnimationCallbackModeProcessManual AnimationMixerAnimationCallbackModeProcess = 2
+	AnimationMixerAnimationCallbackModeProcessIdle    AnimationMixerAnimationCallbackModeProcess = 1
+	AnimationMixerAnimationCallbackModeProcessManual  AnimationMixerAnimationCallbackModeProcess = 2
 )
 
 type AnimationMixerAnimationCallbackModeMethod = classdb.AnimationMixerAnimationCallbackModeMethod
 
 const (
-	AnimationMixerAnimationCallbackModeMethodDeferred AnimationMixerAnimationCallbackModeMethod = 0
+	AnimationMixerAnimationCallbackModeMethodDeferred  AnimationMixerAnimationCallbackModeMethod = 0
 	AnimationMixerAnimationCallbackModeMethodImmediate AnimationMixerAnimationCallbackModeMethod = 1
 )
 
@@ -757,40 +756,40 @@ type AnimationNodeFilterAction = classdb.AnimationNodeFilterAction
 
 const (
 	AnimationNodeFilterIgnore AnimationNodeFilterAction = 0
-	AnimationNodeFilterPass AnimationNodeFilterAction = 1
-	AnimationNodeFilterStop AnimationNodeFilterAction = 2
-	AnimationNodeFilterBlend AnimationNodeFilterAction = 3
+	AnimationNodeFilterPass   AnimationNodeFilterAction = 1
+	AnimationNodeFilterStop   AnimationNodeFilterAction = 2
+	AnimationNodeFilterBlend  AnimationNodeFilterAction = 3
 )
 
 type AnimationNodeAnimationPlayMode = classdb.AnimationNodeAnimationPlayMode
 
 const (
-	AnimationNodeAnimationPlayModeForward AnimationNodeAnimationPlayMode = 0
+	AnimationNodeAnimationPlayModeForward  AnimationNodeAnimationPlayMode = 0
 	AnimationNodeAnimationPlayModeBackward AnimationNodeAnimationPlayMode = 1
 )
 
 type AnimationNodeBlendSpace1DBlendMode = classdb.AnimationNodeBlendSpace1DBlendMode
 
 const (
-	AnimationNodeBlendSpace1DBlendModeInterpolated AnimationNodeBlendSpace1DBlendMode = 0
-	AnimationNodeBlendSpace1DBlendModeDiscrete AnimationNodeBlendSpace1DBlendMode = 1
+	AnimationNodeBlendSpace1DBlendModeInterpolated  AnimationNodeBlendSpace1DBlendMode = 0
+	AnimationNodeBlendSpace1DBlendModeDiscrete      AnimationNodeBlendSpace1DBlendMode = 1
 	AnimationNodeBlendSpace1DBlendModeDiscreteCarry AnimationNodeBlendSpace1DBlendMode = 2
 )
 
 type AnimationNodeBlendSpace2DBlendMode = classdb.AnimationNodeBlendSpace2DBlendMode
 
 const (
-	AnimationNodeBlendSpace2DBlendModeInterpolated AnimationNodeBlendSpace2DBlendMode = 0
-	AnimationNodeBlendSpace2DBlendModeDiscrete AnimationNodeBlendSpace2DBlendMode = 1
+	AnimationNodeBlendSpace2DBlendModeInterpolated  AnimationNodeBlendSpace2DBlendMode = 0
+	AnimationNodeBlendSpace2DBlendModeDiscrete      AnimationNodeBlendSpace2DBlendMode = 1
 	AnimationNodeBlendSpace2DBlendModeDiscreteCarry AnimationNodeBlendSpace2DBlendMode = 2
 )
 
 type AnimationNodeOneShotOneShotRequest = classdb.AnimationNodeOneShotOneShotRequest
 
 const (
-	AnimationNodeOneShotOneShotRequestNone AnimationNodeOneShotOneShotRequest = 0
-	AnimationNodeOneShotOneShotRequestFire AnimationNodeOneShotOneShotRequest = 1
-	AnimationNodeOneShotOneShotRequestAbort AnimationNodeOneShotOneShotRequest = 2
+	AnimationNodeOneShotOneShotRequestNone    AnimationNodeOneShotOneShotRequest = 0
+	AnimationNodeOneShotOneShotRequestFire    AnimationNodeOneShotOneShotRequest = 1
+	AnimationNodeOneShotOneShotRequestAbort   AnimationNodeOneShotOneShotRequest = 2
 	AnimationNodeOneShotOneShotRequestFadeOut AnimationNodeOneShotOneShotRequest = 3
 )
 
@@ -798,14 +797,14 @@ type AnimationNodeOneShotMixMode = classdb.AnimationNodeOneShotMixMode
 
 const (
 	AnimationNodeOneShotMixModeBlend AnimationNodeOneShotMixMode = 0
-	AnimationNodeOneShotMixModeAdd AnimationNodeOneShotMixMode = 1
+	AnimationNodeOneShotMixModeAdd   AnimationNodeOneShotMixMode = 1
 )
 
 type AnimationNodeStateMachineStateMachineType = classdb.AnimationNodeStateMachineStateMachineType
 
 const (
-	AnimationNodeStateMachineStateMachineTypeRoot AnimationNodeStateMachineStateMachineType = 0
-	AnimationNodeStateMachineStateMachineTypeNested AnimationNodeStateMachineStateMachineType = 1
+	AnimationNodeStateMachineStateMachineTypeRoot    AnimationNodeStateMachineStateMachineType = 0
+	AnimationNodeStateMachineStateMachineTypeNested  AnimationNodeStateMachineStateMachineType = 1
 	AnimationNodeStateMachineStateMachineTypeGrouped AnimationNodeStateMachineStateMachineType = 2
 )
 
@@ -813,30 +812,30 @@ type AnimationNodeStateMachineTransitionSwitchMode = classdb.AnimationNodeStateM
 
 const (
 	AnimationNodeStateMachineTransitionSwitchModeImmediate AnimationNodeStateMachineTransitionSwitchMode = 0
-	AnimationNodeStateMachineTransitionSwitchModeSync AnimationNodeStateMachineTransitionSwitchMode = 1
-	AnimationNodeStateMachineTransitionSwitchModeAtEnd AnimationNodeStateMachineTransitionSwitchMode = 2
+	AnimationNodeStateMachineTransitionSwitchModeSync      AnimationNodeStateMachineTransitionSwitchMode = 1
+	AnimationNodeStateMachineTransitionSwitchModeAtEnd     AnimationNodeStateMachineTransitionSwitchMode = 2
 )
 
 type AnimationNodeStateMachineTransitionAdvanceMode = classdb.AnimationNodeStateMachineTransitionAdvanceMode
 
 const (
 	AnimationNodeStateMachineTransitionAdvanceModeDisabled AnimationNodeStateMachineTransitionAdvanceMode = 0
-	AnimationNodeStateMachineTransitionAdvanceModeEnabled AnimationNodeStateMachineTransitionAdvanceMode = 1
-	AnimationNodeStateMachineTransitionAdvanceModeAuto AnimationNodeStateMachineTransitionAdvanceMode = 2
+	AnimationNodeStateMachineTransitionAdvanceModeEnabled  AnimationNodeStateMachineTransitionAdvanceMode = 1
+	AnimationNodeStateMachineTransitionAdvanceModeAuto     AnimationNodeStateMachineTransitionAdvanceMode = 2
 )
 
 type AnimationPlayerAnimationProcessCallback = classdb.AnimationPlayerAnimationProcessCallback
 
 const (
 	AnimationPlayerAnimationProcessPhysics AnimationPlayerAnimationProcessCallback = 0
-	AnimationPlayerAnimationProcessIdle AnimationPlayerAnimationProcessCallback = 1
-	AnimationPlayerAnimationProcessManual AnimationPlayerAnimationProcessCallback = 2
+	AnimationPlayerAnimationProcessIdle    AnimationPlayerAnimationProcessCallback = 1
+	AnimationPlayerAnimationProcessManual  AnimationPlayerAnimationProcessCallback = 2
 )
 
 type AnimationPlayerAnimationMethodCallMode = classdb.AnimationPlayerAnimationMethodCallMode
 
 const (
-	AnimationPlayerAnimationMethodCallDeferred AnimationPlayerAnimationMethodCallMode = 0
+	AnimationPlayerAnimationMethodCallDeferred  AnimationPlayerAnimationMethodCallMode = 0
 	AnimationPlayerAnimationMethodCallImmediate AnimationPlayerAnimationMethodCallMode = 1
 )
 
@@ -844,27 +843,27 @@ type AnimationTreeAnimationProcessCallback = classdb.AnimationTreeAnimationProce
 
 const (
 	AnimationTreeAnimationProcessPhysics AnimationTreeAnimationProcessCallback = 0
-	AnimationTreeAnimationProcessIdle AnimationTreeAnimationProcessCallback = 1
-	AnimationTreeAnimationProcessManual AnimationTreeAnimationProcessCallback = 2
+	AnimationTreeAnimationProcessIdle    AnimationTreeAnimationProcessCallback = 1
+	AnimationTreeAnimationProcessManual  AnimationTreeAnimationProcessCallback = 2
 )
 
 type Area2DSpaceOverride = classdb.Area2DSpaceOverride
 
 const (
-	Area2DSpaceOverrideDisabled Area2DSpaceOverride = 0
-	Area2DSpaceOverrideCombine Area2DSpaceOverride = 1
+	Area2DSpaceOverrideDisabled       Area2DSpaceOverride = 0
+	Area2DSpaceOverrideCombine        Area2DSpaceOverride = 1
 	Area2DSpaceOverrideCombineReplace Area2DSpaceOverride = 2
-	Area2DSpaceOverrideReplace Area2DSpaceOverride = 3
+	Area2DSpaceOverrideReplace        Area2DSpaceOverride = 3
 	Area2DSpaceOverrideReplaceCombine Area2DSpaceOverride = 4
 )
 
 type Area3DSpaceOverride = classdb.Area3DSpaceOverride
 
 const (
-	Area3DSpaceOverrideDisabled Area3DSpaceOverride = 0
-	Area3DSpaceOverrideCombine Area3DSpaceOverride = 1
+	Area3DSpaceOverrideDisabled       Area3DSpaceOverride = 0
+	Area3DSpaceOverrideCombine        Area3DSpaceOverride = 1
 	Area3DSpaceOverrideCombineReplace Area3DSpaceOverride = 2
-	Area3DSpaceOverrideReplace Area3DSpaceOverride = 3
+	Area3DSpaceOverrideReplace        Area3DSpaceOverride = 3
 	Area3DSpaceOverrideReplaceCombine Area3DSpaceOverride = 4
 )
 
@@ -873,24 +872,24 @@ type AspectRatioContainerStretchMode = classdb.AspectRatioContainerStretchMode
 const (
 	AspectRatioContainerStretchWidthControlsHeight AspectRatioContainerStretchMode = 0
 	AspectRatioContainerStretchHeightControlsWidth AspectRatioContainerStretchMode = 1
-	AspectRatioContainerStretchFit AspectRatioContainerStretchMode = 2
-	AspectRatioContainerStretchCover AspectRatioContainerStretchMode = 3
+	AspectRatioContainerStretchFit                 AspectRatioContainerStretchMode = 2
+	AspectRatioContainerStretchCover               AspectRatioContainerStretchMode = 3
 )
 
 type AspectRatioContainerAlignmentMode = classdb.AspectRatioContainerAlignmentMode
 
 const (
-	AspectRatioContainerAlignmentBegin AspectRatioContainerAlignmentMode = 0
+	AspectRatioContainerAlignmentBegin  AspectRatioContainerAlignmentMode = 0
 	AspectRatioContainerAlignmentCenter AspectRatioContainerAlignmentMode = 1
-	AspectRatioContainerAlignmentEnd AspectRatioContainerAlignmentMode = 2
+	AspectRatioContainerAlignmentEnd    AspectRatioContainerAlignmentMode = 2
 )
 
 type AudioEffectDistortionMode = classdb.AudioEffectDistortionMode
 
 const (
-	AudioEffectDistortionModeClip AudioEffectDistortionMode = 0
-	AudioEffectDistortionModeAtan AudioEffectDistortionMode = 1
-	AudioEffectDistortionModeLofi AudioEffectDistortionMode = 2
+	AudioEffectDistortionModeClip      AudioEffectDistortionMode = 0
+	AudioEffectDistortionModeAtan      AudioEffectDistortionMode = 1
+	AudioEffectDistortionModeLofi      AudioEffectDistortionMode = 2
 	AudioEffectDistortionModeOverdrive AudioEffectDistortionMode = 3
 	AudioEffectDistortionModeWaveshape AudioEffectDistortionMode = 4
 )
@@ -898,7 +897,7 @@ const (
 type AudioEffectFilterFilterDB = classdb.AudioEffectFilterFilterDB
 
 const (
-	AudioEffectFilterFilter6db AudioEffectFilterFilterDB = 0
+	AudioEffectFilterFilter6db  AudioEffectFilterFilterDB = 0
 	AudioEffectFilterFilter12db AudioEffectFilterFilterDB = 1
 	AudioEffectFilterFilter18db AudioEffectFilterFilterDB = 2
 	AudioEffectFilterFilter24db AudioEffectFilterFilterDB = 3
@@ -907,30 +906,30 @@ const (
 type AudioEffectPitchShiftFFTSize = classdb.AudioEffectPitchShiftFFTSize
 
 const (
-	AudioEffectPitchShiftFftSize256 AudioEffectPitchShiftFFTSize = 0
-	AudioEffectPitchShiftFftSize512 AudioEffectPitchShiftFFTSize = 1
+	AudioEffectPitchShiftFftSize256  AudioEffectPitchShiftFFTSize = 0
+	AudioEffectPitchShiftFftSize512  AudioEffectPitchShiftFFTSize = 1
 	AudioEffectPitchShiftFftSize1024 AudioEffectPitchShiftFFTSize = 2
 	AudioEffectPitchShiftFftSize2048 AudioEffectPitchShiftFFTSize = 3
 	AudioEffectPitchShiftFftSize4096 AudioEffectPitchShiftFFTSize = 4
-	AudioEffectPitchShiftFftSizeMax AudioEffectPitchShiftFFTSize = 5
+	AudioEffectPitchShiftFftSizeMax  AudioEffectPitchShiftFFTSize = 5
 )
 
 type AudioEffectSpectrumAnalyzerFFTSize = classdb.AudioEffectSpectrumAnalyzerFFTSize
 
 const (
-	AudioEffectSpectrumAnalyzerFftSize256 AudioEffectSpectrumAnalyzerFFTSize = 0
-	AudioEffectSpectrumAnalyzerFftSize512 AudioEffectSpectrumAnalyzerFFTSize = 1
+	AudioEffectSpectrumAnalyzerFftSize256  AudioEffectSpectrumAnalyzerFFTSize = 0
+	AudioEffectSpectrumAnalyzerFftSize512  AudioEffectSpectrumAnalyzerFFTSize = 1
 	AudioEffectSpectrumAnalyzerFftSize1024 AudioEffectSpectrumAnalyzerFFTSize = 2
 	AudioEffectSpectrumAnalyzerFftSize2048 AudioEffectSpectrumAnalyzerFFTSize = 3
 	AudioEffectSpectrumAnalyzerFftSize4096 AudioEffectSpectrumAnalyzerFFTSize = 4
-	AudioEffectSpectrumAnalyzerFftSizeMax AudioEffectSpectrumAnalyzerFFTSize = 5
+	AudioEffectSpectrumAnalyzerFftSizeMax  AudioEffectSpectrumAnalyzerFFTSize = 5
 )
 
 type AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = classdb.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode
 
 const (
 	AudioEffectSpectrumAnalyzerInstanceMagnitudeAverage AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 0
-	AudioEffectSpectrumAnalyzerInstanceMagnitudeMax AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 1
+	AudioEffectSpectrumAnalyzerInstanceMagnitudeMax     AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 1
 )
 
 type AudioServerSpeakerMode = classdb.AudioServerSpeakerMode
@@ -945,25 +944,25 @@ const (
 type AudioStreamPlayerMixTarget = classdb.AudioStreamPlayerMixTarget
 
 const (
-	AudioStreamPlayerMixTargetStereo AudioStreamPlayerMixTarget = 0
+	AudioStreamPlayerMixTargetStereo   AudioStreamPlayerMixTarget = 0
 	AudioStreamPlayerMixTargetSurround AudioStreamPlayerMixTarget = 1
-	AudioStreamPlayerMixTargetCenter AudioStreamPlayerMixTarget = 2
+	AudioStreamPlayerMixTargetCenter   AudioStreamPlayerMixTarget = 2
 )
 
 type AudioStreamPlayer3DAttenuationModel = classdb.AudioStreamPlayer3DAttenuationModel
 
 const (
-	AudioStreamPlayer3DAttenuationInverseDistance AudioStreamPlayer3DAttenuationModel = 0
+	AudioStreamPlayer3DAttenuationInverseDistance       AudioStreamPlayer3DAttenuationModel = 0
 	AudioStreamPlayer3DAttenuationInverseSquareDistance AudioStreamPlayer3DAttenuationModel = 1
-	AudioStreamPlayer3DAttenuationLogarithmic AudioStreamPlayer3DAttenuationModel = 2
-	AudioStreamPlayer3DAttenuationDisabled AudioStreamPlayer3DAttenuationModel = 3
+	AudioStreamPlayer3DAttenuationLogarithmic           AudioStreamPlayer3DAttenuationModel = 2
+	AudioStreamPlayer3DAttenuationDisabled              AudioStreamPlayer3DAttenuationModel = 3
 )
 
 type AudioStreamPlayer3DDopplerTracking = classdb.AudioStreamPlayer3DDopplerTracking
 
 const (
-	AudioStreamPlayer3DDopplerTrackingDisabled AudioStreamPlayer3DDopplerTracking = 0
-	AudioStreamPlayer3DDopplerTrackingIdleStep AudioStreamPlayer3DDopplerTracking = 1
+	AudioStreamPlayer3DDopplerTrackingDisabled    AudioStreamPlayer3DDopplerTracking = 0
+	AudioStreamPlayer3DDopplerTrackingIdleStep    AudioStreamPlayer3DDopplerTracking = 1
 	AudioStreamPlayer3DDopplerTrackingPhysicsStep AudioStreamPlayer3DDopplerTracking = 2
 )
 
@@ -971,15 +970,15 @@ type AudioStreamRandomizerPlaybackMode = classdb.AudioStreamRandomizerPlaybackMo
 
 const (
 	AudioStreamRandomizerPlaybackRandomNoRepeats AudioStreamRandomizerPlaybackMode = 0
-	AudioStreamRandomizerPlaybackRandom AudioStreamRandomizerPlaybackMode = 1
-	AudioStreamRandomizerPlaybackSequential AudioStreamRandomizerPlaybackMode = 2
+	AudioStreamRandomizerPlaybackRandom          AudioStreamRandomizerPlaybackMode = 1
+	AudioStreamRandomizerPlaybackSequential      AudioStreamRandomizerPlaybackMode = 2
 )
 
 type AudioStreamWAVFormat = classdb.AudioStreamWAVFormat
 
 const (
-	AudioStreamWAVFormat8Bits AudioStreamWAVFormat = 0
-	AudioStreamWAVFormat16Bits AudioStreamWAVFormat = 1
+	AudioStreamWAVFormat8Bits    AudioStreamWAVFormat = 0
+	AudioStreamWAVFormat16Bits   AudioStreamWAVFormat = 1
 	AudioStreamWAVFormatImaAdpcm AudioStreamWAVFormat = 2
 )
 
@@ -987,7 +986,7 @@ type AudioStreamWAVLoopMode = classdb.AudioStreamWAVLoopMode
 
 const (
 	AudioStreamWAVLoopDisabled AudioStreamWAVLoopMode = 0
-	AudioStreamWAVLoopForward AudioStreamWAVLoopMode = 1
+	AudioStreamWAVLoopForward  AudioStreamWAVLoopMode = 1
 	AudioStreamWAVLoopPingpong AudioStreamWAVLoopMode = 2
 	AudioStreamWAVLoopBackward AudioStreamWAVLoopMode = 3
 )
@@ -996,61 +995,61 @@ type BackBufferCopyCopyMode = classdb.BackBufferCopyCopyMode
 
 const (
 	BackBufferCopyCopyModeDisabled BackBufferCopyCopyMode = 0
-	BackBufferCopyCopyModeRect BackBufferCopyCopyMode = 1
+	BackBufferCopyCopyModeRect     BackBufferCopyCopyMode = 1
 	BackBufferCopyCopyModeViewport BackBufferCopyCopyMode = 2
 )
 
 type BaseButtonDrawMode = classdb.BaseButtonDrawMode
 
 const (
-	BaseButtonDrawNormal BaseButtonDrawMode = 0
-	BaseButtonDrawPressed BaseButtonDrawMode = 1
-	BaseButtonDrawHover BaseButtonDrawMode = 2
-	BaseButtonDrawDisabled BaseButtonDrawMode = 3
+	BaseButtonDrawNormal       BaseButtonDrawMode = 0
+	BaseButtonDrawPressed      BaseButtonDrawMode = 1
+	BaseButtonDrawHover        BaseButtonDrawMode = 2
+	BaseButtonDrawDisabled     BaseButtonDrawMode = 3
 	BaseButtonDrawHoverPressed BaseButtonDrawMode = 4
 )
 
 type BaseButtonActionMode = classdb.BaseButtonActionMode
 
 const (
-	BaseButtonActionModeButtonPress BaseButtonActionMode = 0
+	BaseButtonActionModeButtonPress   BaseButtonActionMode = 0
 	BaseButtonActionModeButtonRelease BaseButtonActionMode = 1
 )
 
 type BaseMaterial3DTextureParam = classdb.BaseMaterial3DTextureParam
 
 const (
-	BaseMaterial3DTextureAlbedo BaseMaterial3DTextureParam = 0
-	BaseMaterial3DTextureMetallic BaseMaterial3DTextureParam = 1
-	BaseMaterial3DTextureRoughness BaseMaterial3DTextureParam = 2
-	BaseMaterial3DTextureEmission BaseMaterial3DTextureParam = 3
-	BaseMaterial3DTextureNormal BaseMaterial3DTextureParam = 4
-	BaseMaterial3DTextureRim BaseMaterial3DTextureParam = 5
-	BaseMaterial3DTextureClearcoat BaseMaterial3DTextureParam = 6
-	BaseMaterial3DTextureFlowmap BaseMaterial3DTextureParam = 7
-	BaseMaterial3DTextureAmbientOcclusion BaseMaterial3DTextureParam = 8
-	BaseMaterial3DTextureHeightmap BaseMaterial3DTextureParam = 9
-	BaseMaterial3DTextureSubsurfaceScattering BaseMaterial3DTextureParam = 10
+	BaseMaterial3DTextureAlbedo                  BaseMaterial3DTextureParam = 0
+	BaseMaterial3DTextureMetallic                BaseMaterial3DTextureParam = 1
+	BaseMaterial3DTextureRoughness               BaseMaterial3DTextureParam = 2
+	BaseMaterial3DTextureEmission                BaseMaterial3DTextureParam = 3
+	BaseMaterial3DTextureNormal                  BaseMaterial3DTextureParam = 4
+	BaseMaterial3DTextureRim                     BaseMaterial3DTextureParam = 5
+	BaseMaterial3DTextureClearcoat               BaseMaterial3DTextureParam = 6
+	BaseMaterial3DTextureFlowmap                 BaseMaterial3DTextureParam = 7
+	BaseMaterial3DTextureAmbientOcclusion        BaseMaterial3DTextureParam = 8
+	BaseMaterial3DTextureHeightmap               BaseMaterial3DTextureParam = 9
+	BaseMaterial3DTextureSubsurfaceScattering    BaseMaterial3DTextureParam = 10
 	BaseMaterial3DTextureSubsurfaceTransmittance BaseMaterial3DTextureParam = 11
-	BaseMaterial3DTextureBacklight BaseMaterial3DTextureParam = 12
-	BaseMaterial3DTextureRefraction BaseMaterial3DTextureParam = 13
-	BaseMaterial3DTextureDetailMask BaseMaterial3DTextureParam = 14
-	BaseMaterial3DTextureDetailAlbedo BaseMaterial3DTextureParam = 15
-	BaseMaterial3DTextureDetailNormal BaseMaterial3DTextureParam = 16
-	BaseMaterial3DTextureOrm BaseMaterial3DTextureParam = 17
-	BaseMaterial3DTextureMax BaseMaterial3DTextureParam = 18
+	BaseMaterial3DTextureBacklight               BaseMaterial3DTextureParam = 12
+	BaseMaterial3DTextureRefraction              BaseMaterial3DTextureParam = 13
+	BaseMaterial3DTextureDetailMask              BaseMaterial3DTextureParam = 14
+	BaseMaterial3DTextureDetailAlbedo            BaseMaterial3DTextureParam = 15
+	BaseMaterial3DTextureDetailNormal            BaseMaterial3DTextureParam = 16
+	BaseMaterial3DTextureOrm                     BaseMaterial3DTextureParam = 17
+	BaseMaterial3DTextureMax                     BaseMaterial3DTextureParam = 18
 )
 
 type BaseMaterial3DTextureFilter = classdb.BaseMaterial3DTextureFilter
 
 const (
-	BaseMaterial3DTextureFilterNearest BaseMaterial3DTextureFilter = 0
-	BaseMaterial3DTextureFilterLinear BaseMaterial3DTextureFilter = 1
-	BaseMaterial3DTextureFilterNearestWithMipmaps BaseMaterial3DTextureFilter = 2
-	BaseMaterial3DTextureFilterLinearWithMipmaps BaseMaterial3DTextureFilter = 3
+	BaseMaterial3DTextureFilterNearest                       BaseMaterial3DTextureFilter = 0
+	BaseMaterial3DTextureFilterLinear                        BaseMaterial3DTextureFilter = 1
+	BaseMaterial3DTextureFilterNearestWithMipmaps            BaseMaterial3DTextureFilter = 2
+	BaseMaterial3DTextureFilterLinearWithMipmaps             BaseMaterial3DTextureFilter = 3
 	BaseMaterial3DTextureFilterNearestWithMipmapsAnisotropic BaseMaterial3DTextureFilter = 4
-	BaseMaterial3DTextureFilterLinearWithMipmapsAnisotropic BaseMaterial3DTextureFilter = 5
-	BaseMaterial3DTextureFilterMax BaseMaterial3DTextureFilter = 6
+	BaseMaterial3DTextureFilterLinearWithMipmapsAnisotropic  BaseMaterial3DTextureFilter = 5
+	BaseMaterial3DTextureFilterMax                           BaseMaterial3DTextureFilter = 6
 )
 
 type BaseMaterial3DDetailUV = classdb.BaseMaterial3DDetailUV
@@ -1063,39 +1062,39 @@ const (
 type BaseMaterial3DTransparency = classdb.BaseMaterial3DTransparency
 
 const (
-	BaseMaterial3DTransparencyDisabled BaseMaterial3DTransparency = 0
-	BaseMaterial3DTransparencyAlpha BaseMaterial3DTransparency = 1
-	BaseMaterial3DTransparencyAlphaScissor BaseMaterial3DTransparency = 2
-	BaseMaterial3DTransparencyAlphaHash BaseMaterial3DTransparency = 3
+	BaseMaterial3DTransparencyDisabled          BaseMaterial3DTransparency = 0
+	BaseMaterial3DTransparencyAlpha             BaseMaterial3DTransparency = 1
+	BaseMaterial3DTransparencyAlphaScissor      BaseMaterial3DTransparency = 2
+	BaseMaterial3DTransparencyAlphaHash         BaseMaterial3DTransparency = 3
 	BaseMaterial3DTransparencyAlphaDepthPrePass BaseMaterial3DTransparency = 4
-	BaseMaterial3DTransparencyMax BaseMaterial3DTransparency = 5
+	BaseMaterial3DTransparencyMax               BaseMaterial3DTransparency = 5
 )
 
 type BaseMaterial3DShadingMode = classdb.BaseMaterial3DShadingMode
 
 const (
-	BaseMaterial3DShadingModeUnshaded BaseMaterial3DShadingMode = 0
-	BaseMaterial3DShadingModePerPixel BaseMaterial3DShadingMode = 1
+	BaseMaterial3DShadingModeUnshaded  BaseMaterial3DShadingMode = 0
+	BaseMaterial3DShadingModePerPixel  BaseMaterial3DShadingMode = 1
 	BaseMaterial3DShadingModePerVertex BaseMaterial3DShadingMode = 2
-	BaseMaterial3DShadingModeMax BaseMaterial3DShadingMode = 3
+	BaseMaterial3DShadingModeMax       BaseMaterial3DShadingMode = 3
 )
 
 type BaseMaterial3DFeature = classdb.BaseMaterial3DFeature
 
 const (
-	BaseMaterial3DFeatureEmission BaseMaterial3DFeature = 0
-	BaseMaterial3DFeatureNormalMapping BaseMaterial3DFeature = 1
-	BaseMaterial3DFeatureRim BaseMaterial3DFeature = 2
-	BaseMaterial3DFeatureClearcoat BaseMaterial3DFeature = 3
-	BaseMaterial3DFeatureAnisotropy BaseMaterial3DFeature = 4
-	BaseMaterial3DFeatureAmbientOcclusion BaseMaterial3DFeature = 5
-	BaseMaterial3DFeatureHeightMapping BaseMaterial3DFeature = 6
-	BaseMaterial3DFeatureSubsurfaceScattering BaseMaterial3DFeature = 7
+	BaseMaterial3DFeatureEmission                BaseMaterial3DFeature = 0
+	BaseMaterial3DFeatureNormalMapping           BaseMaterial3DFeature = 1
+	BaseMaterial3DFeatureRim                     BaseMaterial3DFeature = 2
+	BaseMaterial3DFeatureClearcoat               BaseMaterial3DFeature = 3
+	BaseMaterial3DFeatureAnisotropy              BaseMaterial3DFeature = 4
+	BaseMaterial3DFeatureAmbientOcclusion        BaseMaterial3DFeature = 5
+	BaseMaterial3DFeatureHeightMapping           BaseMaterial3DFeature = 6
+	BaseMaterial3DFeatureSubsurfaceScattering    BaseMaterial3DFeature = 7
 	BaseMaterial3DFeatureSubsurfaceTransmittance BaseMaterial3DFeature = 8
-	BaseMaterial3DFeatureBacklight BaseMaterial3DFeature = 9
-	BaseMaterial3DFeatureRefraction BaseMaterial3DFeature = 10
-	BaseMaterial3DFeatureDetail BaseMaterial3DFeature = 11
-	BaseMaterial3DFeatureMax BaseMaterial3DFeature = 12
+	BaseMaterial3DFeatureBacklight               BaseMaterial3DFeature = 9
+	BaseMaterial3DFeatureRefraction              BaseMaterial3DFeature = 10
+	BaseMaterial3DFeatureDetail                  BaseMaterial3DFeature = 11
+	BaseMaterial3DFeatureMax                     BaseMaterial3DFeature = 12
 )
 
 type BaseMaterial3DBlendMode = classdb.BaseMaterial3DBlendMode
@@ -1110,8 +1109,8 @@ const (
 type BaseMaterial3DAlphaAntiAliasing = classdb.BaseMaterial3DAlphaAntiAliasing
 
 const (
-	BaseMaterial3DAlphaAntialiasingOff BaseMaterial3DAlphaAntiAliasing = 0
-	BaseMaterial3DAlphaAntialiasingAlphaToCoverage BaseMaterial3DAlphaAntiAliasing = 1
+	BaseMaterial3DAlphaAntialiasingOff                     BaseMaterial3DAlphaAntiAliasing = 0
+	BaseMaterial3DAlphaAntialiasingAlphaToCoverage         BaseMaterial3DAlphaAntiAliasing = 1
 	BaseMaterial3DAlphaAntialiasingAlphaToCoverageAndToOne BaseMaterial3DAlphaAntiAliasing = 2
 )
 
@@ -1119,110 +1118,110 @@ type BaseMaterial3DDepthDrawMode = classdb.BaseMaterial3DDepthDrawMode
 
 const (
 	BaseMaterial3DDepthDrawOpaqueOnly BaseMaterial3DDepthDrawMode = 0
-	BaseMaterial3DDepthDrawAlways BaseMaterial3DDepthDrawMode = 1
-	BaseMaterial3DDepthDrawDisabled BaseMaterial3DDepthDrawMode = 2
+	BaseMaterial3DDepthDrawAlways     BaseMaterial3DDepthDrawMode = 1
+	BaseMaterial3DDepthDrawDisabled   BaseMaterial3DDepthDrawMode = 2
 )
 
 type BaseMaterial3DCullMode = classdb.BaseMaterial3DCullMode
 
 const (
-	BaseMaterial3DCullBack BaseMaterial3DCullMode = 0
-	BaseMaterial3DCullFront BaseMaterial3DCullMode = 1
+	BaseMaterial3DCullBack     BaseMaterial3DCullMode = 0
+	BaseMaterial3DCullFront    BaseMaterial3DCullMode = 1
 	BaseMaterial3DCullDisabled BaseMaterial3DCullMode = 2
 )
 
 type BaseMaterial3DFlags = classdb.BaseMaterial3DFlags
 
 const (
-	BaseMaterial3DFlagDisableDepthTest BaseMaterial3DFlags = 0
-	BaseMaterial3DFlagAlbedoFromVertexColor BaseMaterial3DFlags = 1
-	BaseMaterial3DFlagSrgbVertexColor BaseMaterial3DFlags = 2
-	BaseMaterial3DFlagUsePointSize BaseMaterial3DFlags = 3
-	BaseMaterial3DFlagFixedSize BaseMaterial3DFlags = 4
-	BaseMaterial3DFlagBillboardKeepScale BaseMaterial3DFlags = 5
-	BaseMaterial3DFlagUv1UseTriplanar BaseMaterial3DFlags = 6
-	BaseMaterial3DFlagUv2UseTriplanar BaseMaterial3DFlags = 7
-	BaseMaterial3DFlagUv1UseWorldTriplanar BaseMaterial3DFlags = 8
-	BaseMaterial3DFlagUv2UseWorldTriplanar BaseMaterial3DFlags = 9
-	BaseMaterial3DFlagAoOnUv2 BaseMaterial3DFlags = 10
-	BaseMaterial3DFlagEmissionOnUv2 BaseMaterial3DFlags = 11
+	BaseMaterial3DFlagDisableDepthTest       BaseMaterial3DFlags = 0
+	BaseMaterial3DFlagAlbedoFromVertexColor  BaseMaterial3DFlags = 1
+	BaseMaterial3DFlagSrgbVertexColor        BaseMaterial3DFlags = 2
+	BaseMaterial3DFlagUsePointSize           BaseMaterial3DFlags = 3
+	BaseMaterial3DFlagFixedSize              BaseMaterial3DFlags = 4
+	BaseMaterial3DFlagBillboardKeepScale     BaseMaterial3DFlags = 5
+	BaseMaterial3DFlagUv1UseTriplanar        BaseMaterial3DFlags = 6
+	BaseMaterial3DFlagUv2UseTriplanar        BaseMaterial3DFlags = 7
+	BaseMaterial3DFlagUv1UseWorldTriplanar   BaseMaterial3DFlags = 8
+	BaseMaterial3DFlagUv2UseWorldTriplanar   BaseMaterial3DFlags = 9
+	BaseMaterial3DFlagAoOnUv2                BaseMaterial3DFlags = 10
+	BaseMaterial3DFlagEmissionOnUv2          BaseMaterial3DFlags = 11
 	BaseMaterial3DFlagAlbedoTextureForceSrgb BaseMaterial3DFlags = 12
-	BaseMaterial3DFlagDontReceiveShadows BaseMaterial3DFlags = 13
-	BaseMaterial3DFlagDisableAmbientLight BaseMaterial3DFlags = 14
-	BaseMaterial3DFlagUseShadowToOpacity BaseMaterial3DFlags = 15
-	BaseMaterial3DFlagUseTextureRepeat BaseMaterial3DFlags = 16
-	BaseMaterial3DFlagInvertHeightmap BaseMaterial3DFlags = 17
-	BaseMaterial3DFlagSubsurfaceModeSkin BaseMaterial3DFlags = 18
-	BaseMaterial3DFlagParticleTrailsMode BaseMaterial3DFlags = 19
-	BaseMaterial3DFlagAlbedoTextureMsdf BaseMaterial3DFlags = 20
-	BaseMaterial3DFlagDisableFog BaseMaterial3DFlags = 21
-	BaseMaterial3DFlagMax BaseMaterial3DFlags = 22
+	BaseMaterial3DFlagDontReceiveShadows     BaseMaterial3DFlags = 13
+	BaseMaterial3DFlagDisableAmbientLight    BaseMaterial3DFlags = 14
+	BaseMaterial3DFlagUseShadowToOpacity     BaseMaterial3DFlags = 15
+	BaseMaterial3DFlagUseTextureRepeat       BaseMaterial3DFlags = 16
+	BaseMaterial3DFlagInvertHeightmap        BaseMaterial3DFlags = 17
+	BaseMaterial3DFlagSubsurfaceModeSkin     BaseMaterial3DFlags = 18
+	BaseMaterial3DFlagParticleTrailsMode     BaseMaterial3DFlags = 19
+	BaseMaterial3DFlagAlbedoTextureMsdf      BaseMaterial3DFlags = 20
+	BaseMaterial3DFlagDisableFog             BaseMaterial3DFlags = 21
+	BaseMaterial3DFlagMax                    BaseMaterial3DFlags = 22
 )
 
 type BaseMaterial3DDiffuseMode = classdb.BaseMaterial3DDiffuseMode
 
 const (
-	BaseMaterial3DDiffuseBurley BaseMaterial3DDiffuseMode = 0
-	BaseMaterial3DDiffuseLambert BaseMaterial3DDiffuseMode = 1
+	BaseMaterial3DDiffuseBurley      BaseMaterial3DDiffuseMode = 0
+	BaseMaterial3DDiffuseLambert     BaseMaterial3DDiffuseMode = 1
 	BaseMaterial3DDiffuseLambertWrap BaseMaterial3DDiffuseMode = 2
-	BaseMaterial3DDiffuseToon BaseMaterial3DDiffuseMode = 3
+	BaseMaterial3DDiffuseToon        BaseMaterial3DDiffuseMode = 3
 )
 
 type BaseMaterial3DSpecularMode = classdb.BaseMaterial3DSpecularMode
 
 const (
 	BaseMaterial3DSpecularSchlickGgx BaseMaterial3DSpecularMode = 0
-	BaseMaterial3DSpecularToon BaseMaterial3DSpecularMode = 1
-	BaseMaterial3DSpecularDisabled BaseMaterial3DSpecularMode = 2
+	BaseMaterial3DSpecularToon       BaseMaterial3DSpecularMode = 1
+	BaseMaterial3DSpecularDisabled   BaseMaterial3DSpecularMode = 2
 )
 
 type BaseMaterial3DBillboardMode = classdb.BaseMaterial3DBillboardMode
 
 const (
-	BaseMaterial3DBillboardDisabled BaseMaterial3DBillboardMode = 0
-	BaseMaterial3DBillboardEnabled BaseMaterial3DBillboardMode = 1
-	BaseMaterial3DBillboardFixedY BaseMaterial3DBillboardMode = 2
+	BaseMaterial3DBillboardDisabled  BaseMaterial3DBillboardMode = 0
+	BaseMaterial3DBillboardEnabled   BaseMaterial3DBillboardMode = 1
+	BaseMaterial3DBillboardFixedY    BaseMaterial3DBillboardMode = 2
 	BaseMaterial3DBillboardParticles BaseMaterial3DBillboardMode = 3
 )
 
 type BaseMaterial3DTextureChannel = classdb.BaseMaterial3DTextureChannel
 
 const (
-	BaseMaterial3DTextureChannelRed BaseMaterial3DTextureChannel = 0
-	BaseMaterial3DTextureChannelGreen BaseMaterial3DTextureChannel = 1
-	BaseMaterial3DTextureChannelBlue BaseMaterial3DTextureChannel = 2
-	BaseMaterial3DTextureChannelAlpha BaseMaterial3DTextureChannel = 3
+	BaseMaterial3DTextureChannelRed       BaseMaterial3DTextureChannel = 0
+	BaseMaterial3DTextureChannelGreen     BaseMaterial3DTextureChannel = 1
+	BaseMaterial3DTextureChannelBlue      BaseMaterial3DTextureChannel = 2
+	BaseMaterial3DTextureChannelAlpha     BaseMaterial3DTextureChannel = 3
 	BaseMaterial3DTextureChannelGrayscale BaseMaterial3DTextureChannel = 4
 )
 
 type BaseMaterial3DEmissionOperator = classdb.BaseMaterial3DEmissionOperator
 
 const (
-	BaseMaterial3DEmissionOpAdd BaseMaterial3DEmissionOperator = 0
+	BaseMaterial3DEmissionOpAdd      BaseMaterial3DEmissionOperator = 0
 	BaseMaterial3DEmissionOpMultiply BaseMaterial3DEmissionOperator = 1
 )
 
 type BaseMaterial3DDistanceFadeMode = classdb.BaseMaterial3DDistanceFadeMode
 
 const (
-	BaseMaterial3DDistanceFadeDisabled BaseMaterial3DDistanceFadeMode = 0
-	BaseMaterial3DDistanceFadePixelAlpha BaseMaterial3DDistanceFadeMode = 1
-	BaseMaterial3DDistanceFadePixelDither BaseMaterial3DDistanceFadeMode = 2
+	BaseMaterial3DDistanceFadeDisabled     BaseMaterial3DDistanceFadeMode = 0
+	BaseMaterial3DDistanceFadePixelAlpha   BaseMaterial3DDistanceFadeMode = 1
+	BaseMaterial3DDistanceFadePixelDither  BaseMaterial3DDistanceFadeMode = 2
 	BaseMaterial3DDistanceFadeObjectDither BaseMaterial3DDistanceFadeMode = 3
 )
 
 type BoxContainerAlignmentMode = classdb.BoxContainerAlignmentMode
 
 const (
-	BoxContainerAlignmentBegin BoxContainerAlignmentMode = 0
+	BoxContainerAlignmentBegin  BoxContainerAlignmentMode = 0
 	BoxContainerAlignmentCenter BoxContainerAlignmentMode = 1
-	BoxContainerAlignmentEnd BoxContainerAlignmentMode = 2
+	BoxContainerAlignmentEnd    BoxContainerAlignmentMode = 2
 )
 
 type CPUParticles2DDrawOrder = classdb.CPUParticles2DDrawOrder
 
 const (
-	CPUParticles2DDrawOrderIndex CPUParticles2DDrawOrder = 0
+	CPUParticles2DDrawOrderIndex    CPUParticles2DDrawOrder = 0
 	CPUParticles2DDrawOrderLifetime CPUParticles2DDrawOrder = 1
 )
 
@@ -1230,46 +1229,46 @@ type CPUParticles2DParameter = classdb.CPUParticles2DParameter
 
 const (
 	CPUParticles2DParamInitialLinearVelocity CPUParticles2DParameter = 0
-	CPUParticles2DParamAngularVelocity CPUParticles2DParameter = 1
-	CPUParticles2DParamOrbitVelocity CPUParticles2DParameter = 2
-	CPUParticles2DParamLinearAccel CPUParticles2DParameter = 3
-	CPUParticles2DParamRadialAccel CPUParticles2DParameter = 4
-	CPUParticles2DParamTangentialAccel CPUParticles2DParameter = 5
-	CPUParticles2DParamDamping CPUParticles2DParameter = 6
-	CPUParticles2DParamAngle CPUParticles2DParameter = 7
-	CPUParticles2DParamScale CPUParticles2DParameter = 8
-	CPUParticles2DParamHueVariation CPUParticles2DParameter = 9
-	CPUParticles2DParamAnimSpeed CPUParticles2DParameter = 10
-	CPUParticles2DParamAnimOffset CPUParticles2DParameter = 11
-	CPUParticles2DParamMax CPUParticles2DParameter = 12
+	CPUParticles2DParamAngularVelocity       CPUParticles2DParameter = 1
+	CPUParticles2DParamOrbitVelocity         CPUParticles2DParameter = 2
+	CPUParticles2DParamLinearAccel           CPUParticles2DParameter = 3
+	CPUParticles2DParamRadialAccel           CPUParticles2DParameter = 4
+	CPUParticles2DParamTangentialAccel       CPUParticles2DParameter = 5
+	CPUParticles2DParamDamping               CPUParticles2DParameter = 6
+	CPUParticles2DParamAngle                 CPUParticles2DParameter = 7
+	CPUParticles2DParamScale                 CPUParticles2DParameter = 8
+	CPUParticles2DParamHueVariation          CPUParticles2DParameter = 9
+	CPUParticles2DParamAnimSpeed             CPUParticles2DParameter = 10
+	CPUParticles2DParamAnimOffset            CPUParticles2DParameter = 11
+	CPUParticles2DParamMax                   CPUParticles2DParameter = 12
 )
 
 type CPUParticles2DParticleFlags = classdb.CPUParticles2DParticleFlags
 
 const (
 	CPUParticles2DParticleFlagAlignYToVelocity CPUParticles2DParticleFlags = 0
-	CPUParticles2DParticleFlagRotateY CPUParticles2DParticleFlags = 1
-	CPUParticles2DParticleFlagDisableZ CPUParticles2DParticleFlags = 2
-	CPUParticles2DParticleFlagMax CPUParticles2DParticleFlags = 3
+	CPUParticles2DParticleFlagRotateY          CPUParticles2DParticleFlags = 1
+	CPUParticles2DParticleFlagDisableZ         CPUParticles2DParticleFlags = 2
+	CPUParticles2DParticleFlagMax              CPUParticles2DParticleFlags = 3
 )
 
 type CPUParticles2DEmissionShape = classdb.CPUParticles2DEmissionShape
 
 const (
-	CPUParticles2DEmissionShapePoint CPUParticles2DEmissionShape = 0
-	CPUParticles2DEmissionShapeSphere CPUParticles2DEmissionShape = 1
-	CPUParticles2DEmissionShapeSphereSurface CPUParticles2DEmissionShape = 2
-	CPUParticles2DEmissionShapeRectangle CPUParticles2DEmissionShape = 3
-	CPUParticles2DEmissionShapePoints CPUParticles2DEmissionShape = 4
+	CPUParticles2DEmissionShapePoint          CPUParticles2DEmissionShape = 0
+	CPUParticles2DEmissionShapeSphere         CPUParticles2DEmissionShape = 1
+	CPUParticles2DEmissionShapeSphereSurface  CPUParticles2DEmissionShape = 2
+	CPUParticles2DEmissionShapeRectangle      CPUParticles2DEmissionShape = 3
+	CPUParticles2DEmissionShapePoints         CPUParticles2DEmissionShape = 4
 	CPUParticles2DEmissionShapeDirectedPoints CPUParticles2DEmissionShape = 5
-	CPUParticles2DEmissionShapeMax CPUParticles2DEmissionShape = 6
+	CPUParticles2DEmissionShapeMax            CPUParticles2DEmissionShape = 6
 )
 
 type CPUParticles3DDrawOrder = classdb.CPUParticles3DDrawOrder
 
 const (
-	CPUParticles3DDrawOrderIndex CPUParticles3DDrawOrder = 0
-	CPUParticles3DDrawOrderLifetime CPUParticles3DDrawOrder = 1
+	CPUParticles3DDrawOrderIndex     CPUParticles3DDrawOrder = 0
+	CPUParticles3DDrawOrderLifetime  CPUParticles3DDrawOrder = 1
 	CPUParticles3DDrawOrderViewDepth CPUParticles3DDrawOrder = 2
 )
 
@@ -1277,116 +1276,116 @@ type CPUParticles3DParameter = classdb.CPUParticles3DParameter
 
 const (
 	CPUParticles3DParamInitialLinearVelocity CPUParticles3DParameter = 0
-	CPUParticles3DParamAngularVelocity CPUParticles3DParameter = 1
-	CPUParticles3DParamOrbitVelocity CPUParticles3DParameter = 2
-	CPUParticles3DParamLinearAccel CPUParticles3DParameter = 3
-	CPUParticles3DParamRadialAccel CPUParticles3DParameter = 4
-	CPUParticles3DParamTangentialAccel CPUParticles3DParameter = 5
-	CPUParticles3DParamDamping CPUParticles3DParameter = 6
-	CPUParticles3DParamAngle CPUParticles3DParameter = 7
-	CPUParticles3DParamScale CPUParticles3DParameter = 8
-	CPUParticles3DParamHueVariation CPUParticles3DParameter = 9
-	CPUParticles3DParamAnimSpeed CPUParticles3DParameter = 10
-	CPUParticles3DParamAnimOffset CPUParticles3DParameter = 11
-	CPUParticles3DParamMax CPUParticles3DParameter = 12
+	CPUParticles3DParamAngularVelocity       CPUParticles3DParameter = 1
+	CPUParticles3DParamOrbitVelocity         CPUParticles3DParameter = 2
+	CPUParticles3DParamLinearAccel           CPUParticles3DParameter = 3
+	CPUParticles3DParamRadialAccel           CPUParticles3DParameter = 4
+	CPUParticles3DParamTangentialAccel       CPUParticles3DParameter = 5
+	CPUParticles3DParamDamping               CPUParticles3DParameter = 6
+	CPUParticles3DParamAngle                 CPUParticles3DParameter = 7
+	CPUParticles3DParamScale                 CPUParticles3DParameter = 8
+	CPUParticles3DParamHueVariation          CPUParticles3DParameter = 9
+	CPUParticles3DParamAnimSpeed             CPUParticles3DParameter = 10
+	CPUParticles3DParamAnimOffset            CPUParticles3DParameter = 11
+	CPUParticles3DParamMax                   CPUParticles3DParameter = 12
 )
 
 type CPUParticles3DParticleFlags = classdb.CPUParticles3DParticleFlags
 
 const (
 	CPUParticles3DParticleFlagAlignYToVelocity CPUParticles3DParticleFlags = 0
-	CPUParticles3DParticleFlagRotateY CPUParticles3DParticleFlags = 1
-	CPUParticles3DParticleFlagDisableZ CPUParticles3DParticleFlags = 2
-	CPUParticles3DParticleFlagMax CPUParticles3DParticleFlags = 3
+	CPUParticles3DParticleFlagRotateY          CPUParticles3DParticleFlags = 1
+	CPUParticles3DParticleFlagDisableZ         CPUParticles3DParticleFlags = 2
+	CPUParticles3DParticleFlagMax              CPUParticles3DParticleFlags = 3
 )
 
 type CPUParticles3DEmissionShape = classdb.CPUParticles3DEmissionShape
 
 const (
-	CPUParticles3DEmissionShapePoint CPUParticles3DEmissionShape = 0
-	CPUParticles3DEmissionShapeSphere CPUParticles3DEmissionShape = 1
-	CPUParticles3DEmissionShapeSphereSurface CPUParticles3DEmissionShape = 2
-	CPUParticles3DEmissionShapeBox CPUParticles3DEmissionShape = 3
-	CPUParticles3DEmissionShapePoints CPUParticles3DEmissionShape = 4
+	CPUParticles3DEmissionShapePoint          CPUParticles3DEmissionShape = 0
+	CPUParticles3DEmissionShapeSphere         CPUParticles3DEmissionShape = 1
+	CPUParticles3DEmissionShapeSphereSurface  CPUParticles3DEmissionShape = 2
+	CPUParticles3DEmissionShapeBox            CPUParticles3DEmissionShape = 3
+	CPUParticles3DEmissionShapePoints         CPUParticles3DEmissionShape = 4
 	CPUParticles3DEmissionShapeDirectedPoints CPUParticles3DEmissionShape = 5
-	CPUParticles3DEmissionShapeRing CPUParticles3DEmissionShape = 6
-	CPUParticles3DEmissionShapeMax CPUParticles3DEmissionShape = 7
+	CPUParticles3DEmissionShapeRing           CPUParticles3DEmissionShape = 6
+	CPUParticles3DEmissionShapeMax            CPUParticles3DEmissionShape = 7
 )
 
 type CSGPolygon3DMode = classdb.CSGPolygon3DMode
 
 const (
 	CSGPolygon3DModeDepth CSGPolygon3DMode = 0
-	CSGPolygon3DModeSpin CSGPolygon3DMode = 1
-	CSGPolygon3DModePath CSGPolygon3DMode = 2
+	CSGPolygon3DModeSpin  CSGPolygon3DMode = 1
+	CSGPolygon3DModePath  CSGPolygon3DMode = 2
 )
 
 type CSGPolygon3DPathRotation = classdb.CSGPolygon3DPathRotation
 
 const (
-	CSGPolygon3DPathRotationPolygon CSGPolygon3DPathRotation = 0
-	CSGPolygon3DPathRotationPath CSGPolygon3DPathRotation = 1
+	CSGPolygon3DPathRotationPolygon    CSGPolygon3DPathRotation = 0
+	CSGPolygon3DPathRotationPath       CSGPolygon3DPathRotation = 1
 	CSGPolygon3DPathRotationPathFollow CSGPolygon3DPathRotation = 2
 )
 
 type CSGPolygon3DPathIntervalType = classdb.CSGPolygon3DPathIntervalType
 
 const (
-	CSGPolygon3DPathIntervalDistance CSGPolygon3DPathIntervalType = 0
+	CSGPolygon3DPathIntervalDistance  CSGPolygon3DPathIntervalType = 0
 	CSGPolygon3DPathIntervalSubdivide CSGPolygon3DPathIntervalType = 1
 )
 
 type CSGShape3DOperation = classdb.CSGShape3DOperation
 
 const (
-	CSGShape3DOperationUnion CSGShape3DOperation = 0
+	CSGShape3DOperationUnion        CSGShape3DOperation = 0
 	CSGShape3DOperationIntersection CSGShape3DOperation = 1
-	CSGShape3DOperationSubtraction CSGShape3DOperation = 2
+	CSGShape3DOperationSubtraction  CSGShape3DOperation = 2
 )
 
 type Camera2DAnchorMode = classdb.Camera2DAnchorMode
 
 const (
 	Camera2DAnchorModeFixedTopLeft Camera2DAnchorMode = 0
-	Camera2DAnchorModeDragCenter Camera2DAnchorMode = 1
+	Camera2DAnchorModeDragCenter   Camera2DAnchorMode = 1
 )
 
 type Camera2DCamera2DProcessCallback = classdb.Camera2DCamera2DProcessCallback
 
 const (
 	Camera2DCamera2dProcessPhysics Camera2DCamera2DProcessCallback = 0
-	Camera2DCamera2dProcessIdle Camera2DCamera2DProcessCallback = 1
+	Camera2DCamera2dProcessIdle    Camera2DCamera2DProcessCallback = 1
 )
 
 type Camera3DProjectionType = classdb.Camera3DProjectionType
 
 const (
 	Camera3DProjectionPerspective Camera3DProjectionType = 0
-	Camera3DProjectionOrthogonal Camera3DProjectionType = 1
-	Camera3DProjectionFrustum Camera3DProjectionType = 2
+	Camera3DProjectionOrthogonal  Camera3DProjectionType = 1
+	Camera3DProjectionFrustum     Camera3DProjectionType = 2
 )
 
 type Camera3DKeepAspect = classdb.Camera3DKeepAspect
 
 const (
-	Camera3DKeepWidth Camera3DKeepAspect = 0
+	Camera3DKeepWidth  Camera3DKeepAspect = 0
 	Camera3DKeepHeight Camera3DKeepAspect = 1
 )
 
 type Camera3DDopplerTracking = classdb.Camera3DDopplerTracking
 
 const (
-	Camera3DDopplerTrackingDisabled Camera3DDopplerTracking = 0
-	Camera3DDopplerTrackingIdleStep Camera3DDopplerTracking = 1
+	Camera3DDopplerTrackingDisabled    Camera3DDopplerTracking = 0
+	Camera3DDopplerTrackingIdleStep    Camera3DDopplerTracking = 1
 	Camera3DDopplerTrackingPhysicsStep Camera3DDopplerTracking = 2
 )
 
 type CameraFeedFeedDataType = classdb.CameraFeedFeedDataType
 
 const (
-	CameraFeedFeedNoimage CameraFeedFeedDataType = 0
-	CameraFeedFeedRgb CameraFeedFeedDataType = 1
-	CameraFeedFeedYcbcr CameraFeedFeedDataType = 2
+	CameraFeedFeedNoimage  CameraFeedFeedDataType = 0
+	CameraFeedFeedRgb      CameraFeedFeedDataType = 1
+	CameraFeedFeedYcbcr    CameraFeedFeedDataType = 2
 	CameraFeedFeedYcbcrSep CameraFeedFeedDataType = 3
 )
 
@@ -1394,66 +1393,66 @@ type CameraFeedFeedPosition = classdb.CameraFeedFeedPosition
 
 const (
 	CameraFeedFeedUnspecified CameraFeedFeedPosition = 0
-	CameraFeedFeedFront CameraFeedFeedPosition = 1
-	CameraFeedFeedBack CameraFeedFeedPosition = 2
+	CameraFeedFeedFront       CameraFeedFeedPosition = 1
+	CameraFeedFeedBack        CameraFeedFeedPosition = 2
 )
 
 type CameraServerFeedImage = classdb.CameraServerFeedImage
 
 const (
-	CameraServerFeedRgbaImage CameraServerFeedImage = 0
+	CameraServerFeedRgbaImage  CameraServerFeedImage = 0
 	CameraServerFeedYcbcrImage CameraServerFeedImage = 0
-	CameraServerFeedYImage CameraServerFeedImage = 0
-	CameraServerFeedCbcrImage CameraServerFeedImage = 1
+	CameraServerFeedYImage     CameraServerFeedImage = 0
+	CameraServerFeedCbcrImage  CameraServerFeedImage = 1
 )
 
 type CanvasItemTextureFilter = classdb.CanvasItemTextureFilter
 
 const (
-	CanvasItemTextureFilterParentNode CanvasItemTextureFilter = 0
-	CanvasItemTextureFilterNearest CanvasItemTextureFilter = 1
-	CanvasItemTextureFilterLinear CanvasItemTextureFilter = 2
-	CanvasItemTextureFilterNearestWithMipmaps CanvasItemTextureFilter = 3
-	CanvasItemTextureFilterLinearWithMipmaps CanvasItemTextureFilter = 4
+	CanvasItemTextureFilterParentNode                    CanvasItemTextureFilter = 0
+	CanvasItemTextureFilterNearest                       CanvasItemTextureFilter = 1
+	CanvasItemTextureFilterLinear                        CanvasItemTextureFilter = 2
+	CanvasItemTextureFilterNearestWithMipmaps            CanvasItemTextureFilter = 3
+	CanvasItemTextureFilterLinearWithMipmaps             CanvasItemTextureFilter = 4
 	CanvasItemTextureFilterNearestWithMipmapsAnisotropic CanvasItemTextureFilter = 5
-	CanvasItemTextureFilterLinearWithMipmapsAnisotropic CanvasItemTextureFilter = 6
-	CanvasItemTextureFilterMax CanvasItemTextureFilter = 7
+	CanvasItemTextureFilterLinearWithMipmapsAnisotropic  CanvasItemTextureFilter = 6
+	CanvasItemTextureFilterMax                           CanvasItemTextureFilter = 7
 )
 
 type CanvasItemTextureRepeat = classdb.CanvasItemTextureRepeat
 
 const (
 	CanvasItemTextureRepeatParentNode CanvasItemTextureRepeat = 0
-	CanvasItemTextureRepeatDisabled CanvasItemTextureRepeat = 1
-	CanvasItemTextureRepeatEnabled CanvasItemTextureRepeat = 2
-	CanvasItemTextureRepeatMirror CanvasItemTextureRepeat = 3
-	CanvasItemTextureRepeatMax CanvasItemTextureRepeat = 4
+	CanvasItemTextureRepeatDisabled   CanvasItemTextureRepeat = 1
+	CanvasItemTextureRepeatEnabled    CanvasItemTextureRepeat = 2
+	CanvasItemTextureRepeatMirror     CanvasItemTextureRepeat = 3
+	CanvasItemTextureRepeatMax        CanvasItemTextureRepeat = 4
 )
 
 type CanvasItemClipChildrenMode = classdb.CanvasItemClipChildrenMode
 
 const (
 	CanvasItemClipChildrenDisabled CanvasItemClipChildrenMode = 0
-	CanvasItemClipChildrenOnly CanvasItemClipChildrenMode = 1
-	CanvasItemClipChildrenAndDraw CanvasItemClipChildrenMode = 2
-	CanvasItemClipChildrenMax CanvasItemClipChildrenMode = 3
+	CanvasItemClipChildrenOnly     CanvasItemClipChildrenMode = 1
+	CanvasItemClipChildrenAndDraw  CanvasItemClipChildrenMode = 2
+	CanvasItemClipChildrenMax      CanvasItemClipChildrenMode = 3
 )
 
 type CanvasItemMaterialBlendMode = classdb.CanvasItemMaterialBlendMode
 
 const (
-	CanvasItemMaterialBlendModeMix CanvasItemMaterialBlendMode = 0
-	CanvasItemMaterialBlendModeAdd CanvasItemMaterialBlendMode = 1
-	CanvasItemMaterialBlendModeSub CanvasItemMaterialBlendMode = 2
-	CanvasItemMaterialBlendModeMul CanvasItemMaterialBlendMode = 3
+	CanvasItemMaterialBlendModeMix          CanvasItemMaterialBlendMode = 0
+	CanvasItemMaterialBlendModeAdd          CanvasItemMaterialBlendMode = 1
+	CanvasItemMaterialBlendModeSub          CanvasItemMaterialBlendMode = 2
+	CanvasItemMaterialBlendModeMul          CanvasItemMaterialBlendMode = 3
 	CanvasItemMaterialBlendModePremultAlpha CanvasItemMaterialBlendMode = 4
 )
 
 type CanvasItemMaterialLightMode = classdb.CanvasItemMaterialLightMode
 
 const (
-	CanvasItemMaterialLightModeNormal CanvasItemMaterialLightMode = 0
-	CanvasItemMaterialLightModeUnshaded CanvasItemMaterialLightMode = 1
+	CanvasItemMaterialLightModeNormal    CanvasItemMaterialLightMode = 0
+	CanvasItemMaterialLightModeUnshaded  CanvasItemMaterialLightMode = 1
 	CanvasItemMaterialLightModeLightOnly CanvasItemMaterialLightMode = 2
 )
 
@@ -1467,9 +1466,9 @@ const (
 type CharacterBody2DPlatformOnLeave = classdb.CharacterBody2DPlatformOnLeave
 
 const (
-	CharacterBody2DPlatformOnLeaveAddVelocity CharacterBody2DPlatformOnLeave = 0
+	CharacterBody2DPlatformOnLeaveAddVelocity       CharacterBody2DPlatformOnLeave = 0
 	CharacterBody2DPlatformOnLeaveAddUpwardVelocity CharacterBody2DPlatformOnLeave = 1
-	CharacterBody2DPlatformOnLeaveDoNothing CharacterBody2DPlatformOnLeave = 2
+	CharacterBody2DPlatformOnLeaveDoNothing         CharacterBody2DPlatformOnLeave = 2
 )
 
 type CharacterBody3DMotionMode = classdb.CharacterBody3DMotionMode
@@ -1482,39 +1481,39 @@ const (
 type CharacterBody3DPlatformOnLeave = classdb.CharacterBody3DPlatformOnLeave
 
 const (
-	CharacterBody3DPlatformOnLeaveAddVelocity CharacterBody3DPlatformOnLeave = 0
+	CharacterBody3DPlatformOnLeaveAddVelocity       CharacterBody3DPlatformOnLeave = 0
 	CharacterBody3DPlatformOnLeaveAddUpwardVelocity CharacterBody3DPlatformOnLeave = 1
-	CharacterBody3DPlatformOnLeaveDoNothing CharacterBody3DPlatformOnLeave = 2
+	CharacterBody3DPlatformOnLeaveDoNothing         CharacterBody3DPlatformOnLeave = 2
 )
 
 type CodeEditCodeCompletionKind = classdb.CodeEditCodeCompletionKind
 
 const (
-	CodeEditKindClass CodeEditCodeCompletionKind = 0
-	CodeEditKindFunction CodeEditCodeCompletionKind = 1
-	CodeEditKindSignal CodeEditCodeCompletionKind = 2
-	CodeEditKindVariable CodeEditCodeCompletionKind = 3
-	CodeEditKindMember CodeEditCodeCompletionKind = 4
-	CodeEditKindEnum CodeEditCodeCompletionKind = 5
-	CodeEditKindConstant CodeEditCodeCompletionKind = 6
-	CodeEditKindNodePath CodeEditCodeCompletionKind = 7
-	CodeEditKindFilePath CodeEditCodeCompletionKind = 8
+	CodeEditKindClass     CodeEditCodeCompletionKind = 0
+	CodeEditKindFunction  CodeEditCodeCompletionKind = 1
+	CodeEditKindSignal    CodeEditCodeCompletionKind = 2
+	CodeEditKindVariable  CodeEditCodeCompletionKind = 3
+	CodeEditKindMember    CodeEditCodeCompletionKind = 4
+	CodeEditKindEnum      CodeEditCodeCompletionKind = 5
+	CodeEditKindConstant  CodeEditCodeCompletionKind = 6
+	CodeEditKindNodePath  CodeEditCodeCompletionKind = 7
+	CodeEditKindFilePath  CodeEditCodeCompletionKind = 8
 	CodeEditKindPlainText CodeEditCodeCompletionKind = 9
 )
 
 type CodeEditCodeCompletionLocation = classdb.CodeEditCodeCompletionLocation
 
 const (
-	CodeEditLocationLocal CodeEditCodeCompletionLocation = 0
-	CodeEditLocationParentMask CodeEditCodeCompletionLocation = 256
+	CodeEditLocationLocal         CodeEditCodeCompletionLocation = 0
+	CodeEditLocationParentMask    CodeEditCodeCompletionLocation = 256
 	CodeEditLocationOtherUserCode CodeEditCodeCompletionLocation = 512
-	CodeEditLocationOther CodeEditCodeCompletionLocation = 1024
+	CodeEditLocationOther         CodeEditCodeCompletionLocation = 1024
 )
 
 type CollisionObject2DDisableMode = classdb.CollisionObject2DDisableMode
 
 const (
-	CollisionObject2DDisableModeRemove CollisionObject2DDisableMode = 0
+	CollisionObject2DDisableModeRemove     CollisionObject2DDisableMode = 0
 	CollisionObject2DDisableModeMakeStatic CollisionObject2DDisableMode = 1
 	CollisionObject2DDisableModeKeepActive CollisionObject2DDisableMode = 2
 )
@@ -1522,7 +1521,7 @@ const (
 type CollisionObject3DDisableMode = classdb.CollisionObject3DDisableMode
 
 const (
-	CollisionObject3DDisableModeRemove CollisionObject3DDisableMode = 0
+	CollisionObject3DDisableModeRemove     CollisionObject3DDisableMode = 0
 	CollisionObject3DDisableModeMakeStatic CollisionObject3DDisableMode = 1
 	CollisionObject3DDisableModeKeepActive CollisionObject3DDisableMode = 2
 )
@@ -1530,16 +1529,16 @@ const (
 type CollisionPolygon2DBuildMode = classdb.CollisionPolygon2DBuildMode
 
 const (
-	CollisionPolygon2DBuildSolids CollisionPolygon2DBuildMode = 0
+	CollisionPolygon2DBuildSolids   CollisionPolygon2DBuildMode = 0
 	CollisionPolygon2DBuildSegments CollisionPolygon2DBuildMode = 1
 )
 
 type ColorPickerColorModeType = classdb.ColorPickerColorModeType
 
 const (
-	ColorPickerModeRgb ColorPickerColorModeType = 0
-	ColorPickerModeHsv ColorPickerColorModeType = 1
-	ColorPickerModeRaw ColorPickerColorModeType = 2
+	ColorPickerModeRgb   ColorPickerColorModeType = 0
+	ColorPickerModeHsv   ColorPickerColorModeType = 1
+	ColorPickerModeRaw   ColorPickerColorModeType = 2
 	ColorPickerModeOkhsl ColorPickerColorModeType = 3
 )
 
@@ -1547,99 +1546,99 @@ type ColorPickerPickerShapeType = classdb.ColorPickerPickerShapeType
 
 const (
 	ColorPickerShapeHsvRectangle ColorPickerPickerShapeType = 0
-	ColorPickerShapeHsvWheel ColorPickerPickerShapeType = 1
-	ColorPickerShapeVhsCircle ColorPickerPickerShapeType = 2
-	ColorPickerShapeOkhslCircle ColorPickerPickerShapeType = 3
-	ColorPickerShapeNone ColorPickerPickerShapeType = 4
+	ColorPickerShapeHsvWheel     ColorPickerPickerShapeType = 1
+	ColorPickerShapeVhsCircle    ColorPickerPickerShapeType = 2
+	ColorPickerShapeOkhslCircle  ColorPickerPickerShapeType = 3
+	ColorPickerShapeNone         ColorPickerPickerShapeType = 4
 )
 
 type ConeTwistJoint3DParam = classdb.ConeTwistJoint3DParam
 
 const (
-	ConeTwistJoint3DParamSwingSpan ConeTwistJoint3DParam = 0
-	ConeTwistJoint3DParamTwistSpan ConeTwistJoint3DParam = 1
-	ConeTwistJoint3DParamBias ConeTwistJoint3DParam = 2
-	ConeTwistJoint3DParamSoftness ConeTwistJoint3DParam = 3
+	ConeTwistJoint3DParamSwingSpan  ConeTwistJoint3DParam = 0
+	ConeTwistJoint3DParamTwistSpan  ConeTwistJoint3DParam = 1
+	ConeTwistJoint3DParamBias       ConeTwistJoint3DParam = 2
+	ConeTwistJoint3DParamSoftness   ConeTwistJoint3DParam = 3
 	ConeTwistJoint3DParamRelaxation ConeTwistJoint3DParam = 4
-	ConeTwistJoint3DParamMax ConeTwistJoint3DParam = 5
+	ConeTwistJoint3DParamMax        ConeTwistJoint3DParam = 5
 )
 
 type ControlFocusMode = classdb.ControlFocusMode
 
 const (
-	ControlFocusNone ControlFocusMode = 0
+	ControlFocusNone  ControlFocusMode = 0
 	ControlFocusClick ControlFocusMode = 1
-	ControlFocusAll ControlFocusMode = 2
+	ControlFocusAll   ControlFocusMode = 2
 )
 
 type ControlCursorShape = classdb.ControlCursorShape
 
 const (
-	ControlCursorArrow ControlCursorShape = 0
-	ControlCursorIbeam ControlCursorShape = 1
+	ControlCursorArrow        ControlCursorShape = 0
+	ControlCursorIbeam        ControlCursorShape = 1
 	ControlCursorPointingHand ControlCursorShape = 2
-	ControlCursorCross ControlCursorShape = 3
-	ControlCursorWait ControlCursorShape = 4
-	ControlCursorBusy ControlCursorShape = 5
-	ControlCursorDrag ControlCursorShape = 6
-	ControlCursorCanDrop ControlCursorShape = 7
-	ControlCursorForbidden ControlCursorShape = 8
-	ControlCursorVsize ControlCursorShape = 9
-	ControlCursorHsize ControlCursorShape = 10
-	ControlCursorBdiagsize ControlCursorShape = 11
-	ControlCursorFdiagsize ControlCursorShape = 12
-	ControlCursorMove ControlCursorShape = 13
-	ControlCursorVsplit ControlCursorShape = 14
-	ControlCursorHsplit ControlCursorShape = 15
-	ControlCursorHelp ControlCursorShape = 16
+	ControlCursorCross        ControlCursorShape = 3
+	ControlCursorWait         ControlCursorShape = 4
+	ControlCursorBusy         ControlCursorShape = 5
+	ControlCursorDrag         ControlCursorShape = 6
+	ControlCursorCanDrop      ControlCursorShape = 7
+	ControlCursorForbidden    ControlCursorShape = 8
+	ControlCursorVsize        ControlCursorShape = 9
+	ControlCursorHsize        ControlCursorShape = 10
+	ControlCursorBdiagsize    ControlCursorShape = 11
+	ControlCursorFdiagsize    ControlCursorShape = 12
+	ControlCursorMove         ControlCursorShape = 13
+	ControlCursorVsplit       ControlCursorShape = 14
+	ControlCursorHsplit       ControlCursorShape = 15
+	ControlCursorHelp         ControlCursorShape = 16
 )
 
 type ControlLayoutPreset = classdb.ControlLayoutPreset
 
 const (
-	ControlPresetTopLeft ControlLayoutPreset = 0
-	ControlPresetTopRight ControlLayoutPreset = 1
-	ControlPresetBottomLeft ControlLayoutPreset = 2
-	ControlPresetBottomRight ControlLayoutPreset = 3
-	ControlPresetCenterLeft ControlLayoutPreset = 4
-	ControlPresetCenterTop ControlLayoutPreset = 5
-	ControlPresetCenterRight ControlLayoutPreset = 6
+	ControlPresetTopLeft      ControlLayoutPreset = 0
+	ControlPresetTopRight     ControlLayoutPreset = 1
+	ControlPresetBottomLeft   ControlLayoutPreset = 2
+	ControlPresetBottomRight  ControlLayoutPreset = 3
+	ControlPresetCenterLeft   ControlLayoutPreset = 4
+	ControlPresetCenterTop    ControlLayoutPreset = 5
+	ControlPresetCenterRight  ControlLayoutPreset = 6
 	ControlPresetCenterBottom ControlLayoutPreset = 7
-	ControlPresetCenter ControlLayoutPreset = 8
-	ControlPresetLeftWide ControlLayoutPreset = 9
-	ControlPresetTopWide ControlLayoutPreset = 10
-	ControlPresetRightWide ControlLayoutPreset = 11
-	ControlPresetBottomWide ControlLayoutPreset = 12
-	ControlPresetVcenterWide ControlLayoutPreset = 13
-	ControlPresetHcenterWide ControlLayoutPreset = 14
-	ControlPresetFullRect ControlLayoutPreset = 15
+	ControlPresetCenter       ControlLayoutPreset = 8
+	ControlPresetLeftWide     ControlLayoutPreset = 9
+	ControlPresetTopWide      ControlLayoutPreset = 10
+	ControlPresetRightWide    ControlLayoutPreset = 11
+	ControlPresetBottomWide   ControlLayoutPreset = 12
+	ControlPresetVcenterWide  ControlLayoutPreset = 13
+	ControlPresetHcenterWide  ControlLayoutPreset = 14
+	ControlPresetFullRect     ControlLayoutPreset = 15
 )
 
 type ControlLayoutPresetMode = classdb.ControlLayoutPresetMode
 
 const (
-	ControlPresetModeMinsize ControlLayoutPresetMode = 0
-	ControlPresetModeKeepWidth ControlLayoutPresetMode = 1
+	ControlPresetModeMinsize    ControlLayoutPresetMode = 0
+	ControlPresetModeKeepWidth  ControlLayoutPresetMode = 1
 	ControlPresetModeKeepHeight ControlLayoutPresetMode = 2
-	ControlPresetModeKeepSize ControlLayoutPresetMode = 3
+	ControlPresetModeKeepSize   ControlLayoutPresetMode = 3
 )
 
 type ControlSizeFlags = classdb.ControlSizeFlags
 
 const (
-	ControlSizeShrinkBegin ControlSizeFlags = 0
-	ControlSizeFill ControlSizeFlags = 1
-	ControlSizeExpand ControlSizeFlags = 2
-	ControlSizeExpandFill ControlSizeFlags = 3
+	ControlSizeShrinkBegin  ControlSizeFlags = 0
+	ControlSizeFill         ControlSizeFlags = 1
+	ControlSizeExpand       ControlSizeFlags = 2
+	ControlSizeExpandFill   ControlSizeFlags = 3
 	ControlSizeShrinkCenter ControlSizeFlags = 4
-	ControlSizeShrinkEnd ControlSizeFlags = 8
+	ControlSizeShrinkEnd    ControlSizeFlags = 8
 )
 
 type ControlMouseFilter = classdb.ControlMouseFilter
 
 const (
-	ControlMouseFilterStop ControlMouseFilter = 0
-	ControlMouseFilterPass ControlMouseFilter = 1
+	ControlMouseFilterStop   ControlMouseFilter = 0
+	ControlMouseFilterPass   ControlMouseFilter = 1
 	ControlMouseFilterIgnore ControlMouseFilter = 2
 )
 
@@ -1647,40 +1646,40 @@ type ControlGrowDirection = classdb.ControlGrowDirection
 
 const (
 	ControlGrowDirectionBegin ControlGrowDirection = 0
-	ControlGrowDirectionEnd ControlGrowDirection = 1
-	ControlGrowDirectionBoth ControlGrowDirection = 2
+	ControlGrowDirectionEnd   ControlGrowDirection = 1
+	ControlGrowDirectionBoth  ControlGrowDirection = 2
 )
 
 type ControlAnchor = classdb.ControlAnchor
 
 const (
 	ControlAnchorBegin ControlAnchor = 0
-	ControlAnchorEnd ControlAnchor = 1
+	ControlAnchorEnd   ControlAnchor = 1
 )
 
 type ControlLayoutDirection = classdb.ControlLayoutDirection
 
 const (
 	ControlLayoutDirectionInherited ControlLayoutDirection = 0
-	ControlLayoutDirectionLocale ControlLayoutDirection = 1
-	ControlLayoutDirectionLtr ControlLayoutDirection = 2
-	ControlLayoutDirectionRtl ControlLayoutDirection = 3
+	ControlLayoutDirectionLocale    ControlLayoutDirection = 1
+	ControlLayoutDirectionLtr       ControlLayoutDirection = 2
+	ControlLayoutDirectionRtl       ControlLayoutDirection = 3
 )
 
 type ControlTextDirection = classdb.ControlTextDirection
 
 const (
 	ControlTextDirectionInherited ControlTextDirection = 3
-	ControlTextDirectionAuto ControlTextDirection = 0
-	ControlTextDirectionLtr ControlTextDirection = 1
-	ControlTextDirectionRtl ControlTextDirection = 2
+	ControlTextDirectionAuto      ControlTextDirection = 0
+	ControlTextDirectionLtr       ControlTextDirection = 1
+	ControlTextDirectionRtl       ControlTextDirection = 2
 )
 
 type CurveTangentMode = classdb.CurveTangentMode
 
 const (
-	CurveTangentFree CurveTangentMode = 0
-	CurveTangentLinear CurveTangentMode = 1
+	CurveTangentFree      CurveTangentMode = 0
+	CurveTangentLinear    CurveTangentMode = 1
 	CurveTangentModeCount CurveTangentMode = 2
 )
 
@@ -1694,17 +1693,17 @@ const (
 type DecalDecalTexture = classdb.DecalDecalTexture
 
 const (
-	DecalTextureAlbedo DecalDecalTexture = 0
-	DecalTextureNormal DecalDecalTexture = 1
-	DecalTextureOrm DecalDecalTexture = 2
+	DecalTextureAlbedo   DecalDecalTexture = 0
+	DecalTextureNormal   DecalDecalTexture = 1
+	DecalTextureOrm      DecalDecalTexture = 2
 	DecalTextureEmission DecalDecalTexture = 3
-	DecalTextureMax DecalDecalTexture = 4
+	DecalTextureMax      DecalDecalTexture = 4
 )
 
 type DirectionalLight3DShadowMode = classdb.DirectionalLight3DShadowMode
 
 const (
-	DirectionalLight3DShadowOrthogonal DirectionalLight3DShadowMode = 0
+	DirectionalLight3DShadowOrthogonal      DirectionalLight3DShadowMode = 0
 	DirectionalLight3DShadowParallel2Splits DirectionalLight3DShadowMode = 1
 	DirectionalLight3DShadowParallel4Splits DirectionalLight3DShadowMode = 2
 )
@@ -1713,138 +1712,138 @@ type DirectionalLight3DSkyMode = classdb.DirectionalLight3DSkyMode
 
 const (
 	DirectionalLight3DSkyModeLightAndSky DirectionalLight3DSkyMode = 0
-	DirectionalLight3DSkyModeLightOnly DirectionalLight3DSkyMode = 1
-	DirectionalLight3DSkyModeSkyOnly DirectionalLight3DSkyMode = 2
+	DirectionalLight3DSkyModeLightOnly   DirectionalLight3DSkyMode = 1
+	DirectionalLight3DSkyModeSkyOnly     DirectionalLight3DSkyMode = 2
 )
 
 type DisplayServerFeature = classdb.DisplayServerFeature
 
 const (
-	DisplayServerFeatureGlobalMenu DisplayServerFeature = 0
-	DisplayServerFeatureSubwindows DisplayServerFeature = 1
-	DisplayServerFeatureTouchscreen DisplayServerFeature = 2
-	DisplayServerFeatureMouse DisplayServerFeature = 3
-	DisplayServerFeatureMouseWarp DisplayServerFeature = 4
-	DisplayServerFeatureClipboard DisplayServerFeature = 5
-	DisplayServerFeatureVirtualKeyboard DisplayServerFeature = 6
-	DisplayServerFeatureCursorShape DisplayServerFeature = 7
-	DisplayServerFeatureCustomCursorShape DisplayServerFeature = 8
-	DisplayServerFeatureNativeDialog DisplayServerFeature = 9
-	DisplayServerFeatureIme DisplayServerFeature = 10
+	DisplayServerFeatureGlobalMenu         DisplayServerFeature = 0
+	DisplayServerFeatureSubwindows         DisplayServerFeature = 1
+	DisplayServerFeatureTouchscreen        DisplayServerFeature = 2
+	DisplayServerFeatureMouse              DisplayServerFeature = 3
+	DisplayServerFeatureMouseWarp          DisplayServerFeature = 4
+	DisplayServerFeatureClipboard          DisplayServerFeature = 5
+	DisplayServerFeatureVirtualKeyboard    DisplayServerFeature = 6
+	DisplayServerFeatureCursorShape        DisplayServerFeature = 7
+	DisplayServerFeatureCustomCursorShape  DisplayServerFeature = 8
+	DisplayServerFeatureNativeDialog       DisplayServerFeature = 9
+	DisplayServerFeatureIme                DisplayServerFeature = 10
 	DisplayServerFeatureWindowTransparency DisplayServerFeature = 11
-	DisplayServerFeatureHidpi DisplayServerFeature = 12
-	DisplayServerFeatureIcon DisplayServerFeature = 13
-	DisplayServerFeatureNativeIcon DisplayServerFeature = 14
-	DisplayServerFeatureOrientation DisplayServerFeature = 15
-	DisplayServerFeatureSwapBuffers DisplayServerFeature = 16
-	DisplayServerFeatureClipboardPrimary DisplayServerFeature = 18
-	DisplayServerFeatureTextToSpeech DisplayServerFeature = 19
-	DisplayServerFeatureExtendToTitle DisplayServerFeature = 20
-	DisplayServerFeatureScreenCapture DisplayServerFeature = 21
+	DisplayServerFeatureHidpi              DisplayServerFeature = 12
+	DisplayServerFeatureIcon               DisplayServerFeature = 13
+	DisplayServerFeatureNativeIcon         DisplayServerFeature = 14
+	DisplayServerFeatureOrientation        DisplayServerFeature = 15
+	DisplayServerFeatureSwapBuffers        DisplayServerFeature = 16
+	DisplayServerFeatureClipboardPrimary   DisplayServerFeature = 18
+	DisplayServerFeatureTextToSpeech       DisplayServerFeature = 19
+	DisplayServerFeatureExtendToTitle      DisplayServerFeature = 20
+	DisplayServerFeatureScreenCapture      DisplayServerFeature = 21
 )
 
 type DisplayServerMouseMode = classdb.DisplayServerMouseMode
 
 const (
-	DisplayServerMouseModeVisible DisplayServerMouseMode = 0
-	DisplayServerMouseModeHidden DisplayServerMouseMode = 1
-	DisplayServerMouseModeCaptured DisplayServerMouseMode = 2
-	DisplayServerMouseModeConfined DisplayServerMouseMode = 3
+	DisplayServerMouseModeVisible        DisplayServerMouseMode = 0
+	DisplayServerMouseModeHidden         DisplayServerMouseMode = 1
+	DisplayServerMouseModeCaptured       DisplayServerMouseMode = 2
+	DisplayServerMouseModeConfined       DisplayServerMouseMode = 3
 	DisplayServerMouseModeConfinedHidden DisplayServerMouseMode = 4
 )
 
 type DisplayServerScreenOrientation = classdb.DisplayServerScreenOrientation
 
 const (
-	DisplayServerScreenLandscape DisplayServerScreenOrientation = 0
-	DisplayServerScreenPortrait DisplayServerScreenOrientation = 1
+	DisplayServerScreenLandscape        DisplayServerScreenOrientation = 0
+	DisplayServerScreenPortrait         DisplayServerScreenOrientation = 1
 	DisplayServerScreenReverseLandscape DisplayServerScreenOrientation = 2
-	DisplayServerScreenReversePortrait DisplayServerScreenOrientation = 3
-	DisplayServerScreenSensorLandscape DisplayServerScreenOrientation = 4
-	DisplayServerScreenSensorPortrait DisplayServerScreenOrientation = 5
-	DisplayServerScreenSensor DisplayServerScreenOrientation = 6
+	DisplayServerScreenReversePortrait  DisplayServerScreenOrientation = 3
+	DisplayServerScreenSensorLandscape  DisplayServerScreenOrientation = 4
+	DisplayServerScreenSensorPortrait   DisplayServerScreenOrientation = 5
+	DisplayServerScreenSensor           DisplayServerScreenOrientation = 6
 )
 
 type DisplayServerVirtualKeyboardType = classdb.DisplayServerVirtualKeyboardType
 
 const (
-	DisplayServerKeyboardTypeDefault DisplayServerVirtualKeyboardType = 0
-	DisplayServerKeyboardTypeMultiline DisplayServerVirtualKeyboardType = 1
-	DisplayServerKeyboardTypeNumber DisplayServerVirtualKeyboardType = 2
+	DisplayServerKeyboardTypeDefault       DisplayServerVirtualKeyboardType = 0
+	DisplayServerKeyboardTypeMultiline     DisplayServerVirtualKeyboardType = 1
+	DisplayServerKeyboardTypeNumber        DisplayServerVirtualKeyboardType = 2
 	DisplayServerKeyboardTypeNumberDecimal DisplayServerVirtualKeyboardType = 3
-	DisplayServerKeyboardTypePhone DisplayServerVirtualKeyboardType = 4
-	DisplayServerKeyboardTypeEmailAddress DisplayServerVirtualKeyboardType = 5
-	DisplayServerKeyboardTypePassword DisplayServerVirtualKeyboardType = 6
-	DisplayServerKeyboardTypeUrl DisplayServerVirtualKeyboardType = 7
+	DisplayServerKeyboardTypePhone         DisplayServerVirtualKeyboardType = 4
+	DisplayServerKeyboardTypeEmailAddress  DisplayServerVirtualKeyboardType = 5
+	DisplayServerKeyboardTypePassword      DisplayServerVirtualKeyboardType = 6
+	DisplayServerKeyboardTypeUrl           DisplayServerVirtualKeyboardType = 7
 )
 
 type DisplayServerCursorShape = classdb.DisplayServerCursorShape
 
 const (
-	DisplayServerCursorArrow DisplayServerCursorShape = 0
-	DisplayServerCursorIbeam DisplayServerCursorShape = 1
+	DisplayServerCursorArrow        DisplayServerCursorShape = 0
+	DisplayServerCursorIbeam        DisplayServerCursorShape = 1
 	DisplayServerCursorPointingHand DisplayServerCursorShape = 2
-	DisplayServerCursorCross DisplayServerCursorShape = 3
-	DisplayServerCursorWait DisplayServerCursorShape = 4
-	DisplayServerCursorBusy DisplayServerCursorShape = 5
-	DisplayServerCursorDrag DisplayServerCursorShape = 6
-	DisplayServerCursorCanDrop DisplayServerCursorShape = 7
-	DisplayServerCursorForbidden DisplayServerCursorShape = 8
-	DisplayServerCursorVsize DisplayServerCursorShape = 9
-	DisplayServerCursorHsize DisplayServerCursorShape = 10
-	DisplayServerCursorBdiagsize DisplayServerCursorShape = 11
-	DisplayServerCursorFdiagsize DisplayServerCursorShape = 12
-	DisplayServerCursorMove DisplayServerCursorShape = 13
-	DisplayServerCursorVsplit DisplayServerCursorShape = 14
-	DisplayServerCursorHsplit DisplayServerCursorShape = 15
-	DisplayServerCursorHelp DisplayServerCursorShape = 16
-	DisplayServerCursorMax DisplayServerCursorShape = 17
+	DisplayServerCursorCross        DisplayServerCursorShape = 3
+	DisplayServerCursorWait         DisplayServerCursorShape = 4
+	DisplayServerCursorBusy         DisplayServerCursorShape = 5
+	DisplayServerCursorDrag         DisplayServerCursorShape = 6
+	DisplayServerCursorCanDrop      DisplayServerCursorShape = 7
+	DisplayServerCursorForbidden    DisplayServerCursorShape = 8
+	DisplayServerCursorVsize        DisplayServerCursorShape = 9
+	DisplayServerCursorHsize        DisplayServerCursorShape = 10
+	DisplayServerCursorBdiagsize    DisplayServerCursorShape = 11
+	DisplayServerCursorFdiagsize    DisplayServerCursorShape = 12
+	DisplayServerCursorMove         DisplayServerCursorShape = 13
+	DisplayServerCursorVsplit       DisplayServerCursorShape = 14
+	DisplayServerCursorHsplit       DisplayServerCursorShape = 15
+	DisplayServerCursorHelp         DisplayServerCursorShape = 16
+	DisplayServerCursorMax          DisplayServerCursorShape = 17
 )
 
 type DisplayServerFileDialogMode = classdb.DisplayServerFileDialogMode
 
 const (
-	DisplayServerFileDialogModeOpenFile DisplayServerFileDialogMode = 0
+	DisplayServerFileDialogModeOpenFile  DisplayServerFileDialogMode = 0
 	DisplayServerFileDialogModeOpenFiles DisplayServerFileDialogMode = 1
-	DisplayServerFileDialogModeOpenDir DisplayServerFileDialogMode = 2
-	DisplayServerFileDialogModeOpenAny DisplayServerFileDialogMode = 3
-	DisplayServerFileDialogModeSaveFile DisplayServerFileDialogMode = 4
+	DisplayServerFileDialogModeOpenDir   DisplayServerFileDialogMode = 2
+	DisplayServerFileDialogModeOpenAny   DisplayServerFileDialogMode = 3
+	DisplayServerFileDialogModeSaveFile  DisplayServerFileDialogMode = 4
 )
 
 type DisplayServerWindowMode = classdb.DisplayServerWindowMode
 
 const (
-	DisplayServerWindowModeWindowed DisplayServerWindowMode = 0
-	DisplayServerWindowModeMinimized DisplayServerWindowMode = 1
-	DisplayServerWindowModeMaximized DisplayServerWindowMode = 2
-	DisplayServerWindowModeFullscreen DisplayServerWindowMode = 3
+	DisplayServerWindowModeWindowed            DisplayServerWindowMode = 0
+	DisplayServerWindowModeMinimized           DisplayServerWindowMode = 1
+	DisplayServerWindowModeMaximized           DisplayServerWindowMode = 2
+	DisplayServerWindowModeFullscreen          DisplayServerWindowMode = 3
 	DisplayServerWindowModeExclusiveFullscreen DisplayServerWindowMode = 4
 )
 
 type DisplayServerWindowFlags = classdb.DisplayServerWindowFlags
 
 const (
-	DisplayServerWindowFlagResizeDisabled DisplayServerWindowFlags = 0
-	DisplayServerWindowFlagBorderless DisplayServerWindowFlags = 1
-	DisplayServerWindowFlagAlwaysOnTop DisplayServerWindowFlags = 2
-	DisplayServerWindowFlagTransparent DisplayServerWindowFlags = 3
-	DisplayServerWindowFlagNoFocus DisplayServerWindowFlags = 4
-	DisplayServerWindowFlagPopup DisplayServerWindowFlags = 5
-	DisplayServerWindowFlagExtendToTitle DisplayServerWindowFlags = 6
+	DisplayServerWindowFlagResizeDisabled   DisplayServerWindowFlags = 0
+	DisplayServerWindowFlagBorderless       DisplayServerWindowFlags = 1
+	DisplayServerWindowFlagAlwaysOnTop      DisplayServerWindowFlags = 2
+	DisplayServerWindowFlagTransparent      DisplayServerWindowFlags = 3
+	DisplayServerWindowFlagNoFocus          DisplayServerWindowFlags = 4
+	DisplayServerWindowFlagPopup            DisplayServerWindowFlags = 5
+	DisplayServerWindowFlagExtendToTitle    DisplayServerWindowFlags = 6
 	DisplayServerWindowFlagMousePassthrough DisplayServerWindowFlags = 7
-	DisplayServerWindowFlagMax DisplayServerWindowFlags = 8
+	DisplayServerWindowFlagMax              DisplayServerWindowFlags = 8
 )
 
 type DisplayServerWindowEvent = classdb.DisplayServerWindowEvent
 
 const (
-	DisplayServerWindowEventMouseEnter DisplayServerWindowEvent = 0
-	DisplayServerWindowEventMouseExit DisplayServerWindowEvent = 1
-	DisplayServerWindowEventFocusIn DisplayServerWindowEvent = 2
-	DisplayServerWindowEventFocusOut DisplayServerWindowEvent = 3
-	DisplayServerWindowEventCloseRequest DisplayServerWindowEvent = 4
-	DisplayServerWindowEventGoBackRequest DisplayServerWindowEvent = 5
-	DisplayServerWindowEventDpiChange DisplayServerWindowEvent = 6
+	DisplayServerWindowEventMouseEnter     DisplayServerWindowEvent = 0
+	DisplayServerWindowEventMouseExit      DisplayServerWindowEvent = 1
+	DisplayServerWindowEventFocusIn        DisplayServerWindowEvent = 2
+	DisplayServerWindowEventFocusOut       DisplayServerWindowEvent = 3
+	DisplayServerWindowEventCloseRequest   DisplayServerWindowEvent = 4
+	DisplayServerWindowEventGoBackRequest  DisplayServerWindowEvent = 5
+	DisplayServerWindowEventDpiChange      DisplayServerWindowEvent = 6
 	DisplayServerWindowEventTitlebarChange DisplayServerWindowEvent = 7
 )
 
@@ -1852,25 +1851,25 @@ type DisplayServerVSyncMode = classdb.DisplayServerVSyncMode
 
 const (
 	DisplayServerVsyncDisabled DisplayServerVSyncMode = 0
-	DisplayServerVsyncEnabled DisplayServerVSyncMode = 1
+	DisplayServerVsyncEnabled  DisplayServerVSyncMode = 1
 	DisplayServerVsyncAdaptive DisplayServerVSyncMode = 2
-	DisplayServerVsyncMailbox DisplayServerVSyncMode = 3
+	DisplayServerVsyncMailbox  DisplayServerVSyncMode = 3
 )
 
 type DisplayServerHandleType = classdb.DisplayServerHandleType
 
 const (
 	DisplayServerDisplayHandle DisplayServerHandleType = 0
-	DisplayServerWindowHandle DisplayServerHandleType = 1
-	DisplayServerWindowView DisplayServerHandleType = 2
+	DisplayServerWindowHandle  DisplayServerHandleType = 1
+	DisplayServerWindowView    DisplayServerHandleType = 2
 	DisplayServerOpenglContext DisplayServerHandleType = 3
 )
 
 type DisplayServerTTSUtteranceEvent = classdb.DisplayServerTTSUtteranceEvent
 
 const (
-	DisplayServerTtsUtteranceStarted DisplayServerTTSUtteranceEvent = 0
-	DisplayServerTtsUtteranceEnded DisplayServerTTSUtteranceEvent = 1
+	DisplayServerTtsUtteranceStarted  DisplayServerTTSUtteranceEvent = 0
+	DisplayServerTtsUtteranceEnded    DisplayServerTTSUtteranceEvent = 1
 	DisplayServerTtsUtteranceCanceled DisplayServerTTSUtteranceEvent = 2
 	DisplayServerTtsUtteranceBoundary DisplayServerTTSUtteranceEvent = 3
 )
@@ -1878,95 +1877,95 @@ const (
 type ENetConnectionCompressionMode = classdb.ENetConnectionCompressionMode
 
 const (
-	ENetConnectionCompressNone ENetConnectionCompressionMode = 0
+	ENetConnectionCompressNone       ENetConnectionCompressionMode = 0
 	ENetConnectionCompressRangeCoder ENetConnectionCompressionMode = 1
-	ENetConnectionCompressFastlz ENetConnectionCompressionMode = 2
-	ENetConnectionCompressZlib ENetConnectionCompressionMode = 3
-	ENetConnectionCompressZstd ENetConnectionCompressionMode = 4
+	ENetConnectionCompressFastlz     ENetConnectionCompressionMode = 2
+	ENetConnectionCompressZlib       ENetConnectionCompressionMode = 3
+	ENetConnectionCompressZstd       ENetConnectionCompressionMode = 4
 )
 
 type ENetConnectionEventType = classdb.ENetConnectionEventType
 
 const (
-	ENetConnectionEventError ENetConnectionEventType = -1
-	ENetConnectionEventNone ENetConnectionEventType = 0
-	ENetConnectionEventConnect ENetConnectionEventType = 1
+	ENetConnectionEventError      ENetConnectionEventType = -1
+	ENetConnectionEventNone       ENetConnectionEventType = 0
+	ENetConnectionEventConnect    ENetConnectionEventType = 1
 	ENetConnectionEventDisconnect ENetConnectionEventType = 2
-	ENetConnectionEventReceive ENetConnectionEventType = 3
+	ENetConnectionEventReceive    ENetConnectionEventType = 3
 )
 
 type ENetConnectionHostStatistic = classdb.ENetConnectionHostStatistic
 
 const (
-	ENetConnectionHostTotalSentData ENetConnectionHostStatistic = 0
-	ENetConnectionHostTotalSentPackets ENetConnectionHostStatistic = 1
-	ENetConnectionHostTotalReceivedData ENetConnectionHostStatistic = 2
+	ENetConnectionHostTotalSentData        ENetConnectionHostStatistic = 0
+	ENetConnectionHostTotalSentPackets     ENetConnectionHostStatistic = 1
+	ENetConnectionHostTotalReceivedData    ENetConnectionHostStatistic = 2
 	ENetConnectionHostTotalReceivedPackets ENetConnectionHostStatistic = 3
 )
 
 type ENetPacketPeerPeerState = classdb.ENetPacketPeerPeerState
 
 const (
-	ENetPacketPeerStateDisconnected ENetPacketPeerPeerState = 0
-	ENetPacketPeerStateConnecting ENetPacketPeerPeerState = 1
-	ENetPacketPeerStateAcknowledgingConnect ENetPacketPeerPeerState = 2
-	ENetPacketPeerStateConnectionPending ENetPacketPeerPeerState = 3
-	ENetPacketPeerStateConnectionSucceeded ENetPacketPeerPeerState = 4
-	ENetPacketPeerStateConnected ENetPacketPeerPeerState = 5
-	ENetPacketPeerStateDisconnectLater ENetPacketPeerPeerState = 6
-	ENetPacketPeerStateDisconnecting ENetPacketPeerPeerState = 7
+	ENetPacketPeerStateDisconnected            ENetPacketPeerPeerState = 0
+	ENetPacketPeerStateConnecting              ENetPacketPeerPeerState = 1
+	ENetPacketPeerStateAcknowledgingConnect    ENetPacketPeerPeerState = 2
+	ENetPacketPeerStateConnectionPending       ENetPacketPeerPeerState = 3
+	ENetPacketPeerStateConnectionSucceeded     ENetPacketPeerPeerState = 4
+	ENetPacketPeerStateConnected               ENetPacketPeerPeerState = 5
+	ENetPacketPeerStateDisconnectLater         ENetPacketPeerPeerState = 6
+	ENetPacketPeerStateDisconnecting           ENetPacketPeerPeerState = 7
 	ENetPacketPeerStateAcknowledgingDisconnect ENetPacketPeerPeerState = 8
-	ENetPacketPeerStateZombie ENetPacketPeerPeerState = 9
+	ENetPacketPeerStateZombie                  ENetPacketPeerPeerState = 9
 )
 
 type ENetPacketPeerPeerStatistic = classdb.ENetPacketPeerPeerStatistic
 
 const (
-	ENetPacketPeerPeerPacketLoss ENetPacketPeerPeerStatistic = 0
-	ENetPacketPeerPeerPacketLossVariance ENetPacketPeerPeerStatistic = 1
-	ENetPacketPeerPeerPacketLossEpoch ENetPacketPeerPeerStatistic = 2
-	ENetPacketPeerPeerRoundTripTime ENetPacketPeerPeerStatistic = 3
-	ENetPacketPeerPeerRoundTripTimeVariance ENetPacketPeerPeerStatistic = 4
-	ENetPacketPeerPeerLastRoundTripTime ENetPacketPeerPeerStatistic = 5
-	ENetPacketPeerPeerLastRoundTripTimeVariance ENetPacketPeerPeerStatistic = 6
-	ENetPacketPeerPeerPacketThrottle ENetPacketPeerPeerStatistic = 7
-	ENetPacketPeerPeerPacketThrottleLimit ENetPacketPeerPeerStatistic = 8
-	ENetPacketPeerPeerPacketThrottleCounter ENetPacketPeerPeerStatistic = 9
-	ENetPacketPeerPeerPacketThrottleEpoch ENetPacketPeerPeerStatistic = 10
+	ENetPacketPeerPeerPacketLoss                 ENetPacketPeerPeerStatistic = 0
+	ENetPacketPeerPeerPacketLossVariance         ENetPacketPeerPeerStatistic = 1
+	ENetPacketPeerPeerPacketLossEpoch            ENetPacketPeerPeerStatistic = 2
+	ENetPacketPeerPeerRoundTripTime              ENetPacketPeerPeerStatistic = 3
+	ENetPacketPeerPeerRoundTripTimeVariance      ENetPacketPeerPeerStatistic = 4
+	ENetPacketPeerPeerLastRoundTripTime          ENetPacketPeerPeerStatistic = 5
+	ENetPacketPeerPeerLastRoundTripTimeVariance  ENetPacketPeerPeerStatistic = 6
+	ENetPacketPeerPeerPacketThrottle             ENetPacketPeerPeerStatistic = 7
+	ENetPacketPeerPeerPacketThrottleLimit        ENetPacketPeerPeerStatistic = 8
+	ENetPacketPeerPeerPacketThrottleCounter      ENetPacketPeerPeerStatistic = 9
+	ENetPacketPeerPeerPacketThrottleEpoch        ENetPacketPeerPeerStatistic = 10
 	ENetPacketPeerPeerPacketThrottleAcceleration ENetPacketPeerPeerStatistic = 11
 	ENetPacketPeerPeerPacketThrottleDeceleration ENetPacketPeerPeerStatistic = 12
-	ENetPacketPeerPeerPacketThrottleInterval ENetPacketPeerPeerStatistic = 13
+	ENetPacketPeerPeerPacketThrottleInterval     ENetPacketPeerPeerStatistic = 13
 )
 
 type EditorFeatureProfileFeature = classdb.EditorFeatureProfileFeature
 
 const (
-	EditorFeatureProfileFeature3d EditorFeatureProfileFeature = 0
-	EditorFeatureProfileFeatureScript EditorFeatureProfileFeature = 1
-	EditorFeatureProfileFeatureAssetLib EditorFeatureProfileFeature = 2
-	EditorFeatureProfileFeatureSceneTree EditorFeatureProfileFeature = 3
-	EditorFeatureProfileFeatureNodeDock EditorFeatureProfileFeature = 4
+	EditorFeatureProfileFeature3d             EditorFeatureProfileFeature = 0
+	EditorFeatureProfileFeatureScript         EditorFeatureProfileFeature = 1
+	EditorFeatureProfileFeatureAssetLib       EditorFeatureProfileFeature = 2
+	EditorFeatureProfileFeatureSceneTree      EditorFeatureProfileFeature = 3
+	EditorFeatureProfileFeatureNodeDock       EditorFeatureProfileFeature = 4
 	EditorFeatureProfileFeatureFilesystemDock EditorFeatureProfileFeature = 5
-	EditorFeatureProfileFeatureImportDock EditorFeatureProfileFeature = 6
-	EditorFeatureProfileFeatureHistoryDock EditorFeatureProfileFeature = 7
-	EditorFeatureProfileFeatureMax EditorFeatureProfileFeature = 8
+	EditorFeatureProfileFeatureImportDock     EditorFeatureProfileFeature = 6
+	EditorFeatureProfileFeatureHistoryDock    EditorFeatureProfileFeature = 7
+	EditorFeatureProfileFeatureMax            EditorFeatureProfileFeature = 8
 )
 
 type EditorFileDialogFileMode = classdb.EditorFileDialogFileMode
 
 const (
-	EditorFileDialogFileModeOpenFile EditorFileDialogFileMode = 0
+	EditorFileDialogFileModeOpenFile  EditorFileDialogFileMode = 0
 	EditorFileDialogFileModeOpenFiles EditorFileDialogFileMode = 1
-	EditorFileDialogFileModeOpenDir EditorFileDialogFileMode = 2
-	EditorFileDialogFileModeOpenAny EditorFileDialogFileMode = 3
-	EditorFileDialogFileModeSaveFile EditorFileDialogFileMode = 4
+	EditorFileDialogFileModeOpenDir   EditorFileDialogFileMode = 2
+	EditorFileDialogFileModeOpenAny   EditorFileDialogFileMode = 3
+	EditorFileDialogFileModeSaveFile  EditorFileDialogFileMode = 4
 )
 
 type EditorFileDialogAccess = classdb.EditorFileDialogAccess
 
 const (
-	EditorFileDialogAccessResources EditorFileDialogAccess = 0
-	EditorFileDialogAccessUserdata EditorFileDialogAccess = 1
+	EditorFileDialogAccessResources  EditorFileDialogAccess = 0
+	EditorFileDialogAccessUserdata   EditorFileDialogAccess = 1
 	EditorFileDialogAccessFilesystem EditorFileDialogAccess = 2
 )
 
@@ -1974,85 +1973,85 @@ type EditorFileDialogDisplayMode = classdb.EditorFileDialogDisplayMode
 
 const (
 	EditorFileDialogDisplayThumbnails EditorFileDialogDisplayMode = 0
-	EditorFileDialogDisplayList EditorFileDialogDisplayMode = 1
+	EditorFileDialogDisplayList       EditorFileDialogDisplayMode = 1
 )
 
 type EditorPluginCustomControlContainer = classdb.EditorPluginCustomControlContainer
 
 const (
-	EditorPluginContainerToolbar EditorPluginCustomControlContainer = 0
-	EditorPluginContainerSpatialEditorMenu EditorPluginCustomControlContainer = 1
-	EditorPluginContainerSpatialEditorSideLeft EditorPluginCustomControlContainer = 2
+	EditorPluginContainerToolbar                EditorPluginCustomControlContainer = 0
+	EditorPluginContainerSpatialEditorMenu      EditorPluginCustomControlContainer = 1
+	EditorPluginContainerSpatialEditorSideLeft  EditorPluginCustomControlContainer = 2
 	EditorPluginContainerSpatialEditorSideRight EditorPluginCustomControlContainer = 3
-	EditorPluginContainerSpatialEditorBottom EditorPluginCustomControlContainer = 4
-	EditorPluginContainerCanvasEditorMenu EditorPluginCustomControlContainer = 5
-	EditorPluginContainerCanvasEditorSideLeft EditorPluginCustomControlContainer = 6
-	EditorPluginContainerCanvasEditorSideRight EditorPluginCustomControlContainer = 7
-	EditorPluginContainerCanvasEditorBottom EditorPluginCustomControlContainer = 8
-	EditorPluginContainerInspectorBottom EditorPluginCustomControlContainer = 9
-	EditorPluginContainerProjectSettingTabLeft EditorPluginCustomControlContainer = 10
+	EditorPluginContainerSpatialEditorBottom    EditorPluginCustomControlContainer = 4
+	EditorPluginContainerCanvasEditorMenu       EditorPluginCustomControlContainer = 5
+	EditorPluginContainerCanvasEditorSideLeft   EditorPluginCustomControlContainer = 6
+	EditorPluginContainerCanvasEditorSideRight  EditorPluginCustomControlContainer = 7
+	EditorPluginContainerCanvasEditorBottom     EditorPluginCustomControlContainer = 8
+	EditorPluginContainerInspectorBottom        EditorPluginCustomControlContainer = 9
+	EditorPluginContainerProjectSettingTabLeft  EditorPluginCustomControlContainer = 10
 	EditorPluginContainerProjectSettingTabRight EditorPluginCustomControlContainer = 11
 )
 
 type EditorPluginDockSlot = classdb.EditorPluginDockSlot
 
 const (
-	EditorPluginDockSlotLeftUl EditorPluginDockSlot = 0
-	EditorPluginDockSlotLeftBl EditorPluginDockSlot = 1
-	EditorPluginDockSlotLeftUr EditorPluginDockSlot = 2
-	EditorPluginDockSlotLeftBr EditorPluginDockSlot = 3
+	EditorPluginDockSlotLeftUl  EditorPluginDockSlot = 0
+	EditorPluginDockSlotLeftBl  EditorPluginDockSlot = 1
+	EditorPluginDockSlotLeftUr  EditorPluginDockSlot = 2
+	EditorPluginDockSlotLeftBr  EditorPluginDockSlot = 3
 	EditorPluginDockSlotRightUl EditorPluginDockSlot = 4
 	EditorPluginDockSlotRightBl EditorPluginDockSlot = 5
 	EditorPluginDockSlotRightUr EditorPluginDockSlot = 6
 	EditorPluginDockSlotRightBr EditorPluginDockSlot = 7
-	EditorPluginDockSlotMax EditorPluginDockSlot = 8
+	EditorPluginDockSlotMax     EditorPluginDockSlot = 8
 )
 
 type EditorPluginAfterGUIInput = classdb.EditorPluginAfterGUIInput
 
 const (
-	EditorPluginAfterGuiInputPass EditorPluginAfterGUIInput = 0
-	EditorPluginAfterGuiInputStop EditorPluginAfterGUIInput = 1
+	EditorPluginAfterGuiInputPass   EditorPluginAfterGUIInput = 0
+	EditorPluginAfterGuiInputStop   EditorPluginAfterGUIInput = 1
 	EditorPluginAfterGuiInputCustom EditorPluginAfterGUIInput = 2
 )
 
 type EditorScenePostImportPluginInternalImportCategory = classdb.EditorScenePostImportPluginInternalImportCategory
 
 const (
-	EditorScenePostImportPluginInternalImportCategoryNode EditorScenePostImportPluginInternalImportCategory = 0
-	EditorScenePostImportPluginInternalImportCategoryMesh3dNode EditorScenePostImportPluginInternalImportCategory = 1
-	EditorScenePostImportPluginInternalImportCategoryMesh EditorScenePostImportPluginInternalImportCategory = 2
-	EditorScenePostImportPluginInternalImportCategoryMaterial EditorScenePostImportPluginInternalImportCategory = 3
-	EditorScenePostImportPluginInternalImportCategoryAnimation EditorScenePostImportPluginInternalImportCategory = 4
-	EditorScenePostImportPluginInternalImportCategoryAnimationNode EditorScenePostImportPluginInternalImportCategory = 5
+	EditorScenePostImportPluginInternalImportCategoryNode           EditorScenePostImportPluginInternalImportCategory = 0
+	EditorScenePostImportPluginInternalImportCategoryMesh3dNode     EditorScenePostImportPluginInternalImportCategory = 1
+	EditorScenePostImportPluginInternalImportCategoryMesh           EditorScenePostImportPluginInternalImportCategory = 2
+	EditorScenePostImportPluginInternalImportCategoryMaterial       EditorScenePostImportPluginInternalImportCategory = 3
+	EditorScenePostImportPluginInternalImportCategoryAnimation      EditorScenePostImportPluginInternalImportCategory = 4
+	EditorScenePostImportPluginInternalImportCategoryAnimationNode  EditorScenePostImportPluginInternalImportCategory = 5
 	EditorScenePostImportPluginInternalImportCategorySkeleton3dNode EditorScenePostImportPluginInternalImportCategory = 6
-	EditorScenePostImportPluginInternalImportCategoryMax EditorScenePostImportPluginInternalImportCategory = 7
+	EditorScenePostImportPluginInternalImportCategoryMax            EditorScenePostImportPluginInternalImportCategory = 7
 )
 
 type EditorUndoRedoManagerSpecialHistory = classdb.EditorUndoRedoManagerSpecialHistory
 
 const (
-	EditorUndoRedoManagerGlobalHistory EditorUndoRedoManagerSpecialHistory = 0
-	EditorUndoRedoManagerRemoteHistory EditorUndoRedoManagerSpecialHistory = -9
+	EditorUndoRedoManagerGlobalHistory  EditorUndoRedoManagerSpecialHistory = 0
+	EditorUndoRedoManagerRemoteHistory  EditorUndoRedoManagerSpecialHistory = -9
 	EditorUndoRedoManagerInvalidHistory EditorUndoRedoManagerSpecialHistory = -99
 )
 
 type EditorVCSInterfaceChangeType = classdb.EditorVCSInterfaceChangeType
 
 const (
-	EditorVCSInterfaceChangeTypeNew EditorVCSInterfaceChangeType = 0
-	EditorVCSInterfaceChangeTypeModified EditorVCSInterfaceChangeType = 1
-	EditorVCSInterfaceChangeTypeRenamed EditorVCSInterfaceChangeType = 2
-	EditorVCSInterfaceChangeTypeDeleted EditorVCSInterfaceChangeType = 3
+	EditorVCSInterfaceChangeTypeNew        EditorVCSInterfaceChangeType = 0
+	EditorVCSInterfaceChangeTypeModified   EditorVCSInterfaceChangeType = 1
+	EditorVCSInterfaceChangeTypeRenamed    EditorVCSInterfaceChangeType = 2
+	EditorVCSInterfaceChangeTypeDeleted    EditorVCSInterfaceChangeType = 3
 	EditorVCSInterfaceChangeTypeTypechange EditorVCSInterfaceChangeType = 4
-	EditorVCSInterfaceChangeTypeUnmerged EditorVCSInterfaceChangeType = 5
+	EditorVCSInterfaceChangeTypeUnmerged   EditorVCSInterfaceChangeType = 5
 )
 
 type EditorVCSInterfaceTreeArea = classdb.EditorVCSInterfaceTreeArea
 
 const (
-	EditorVCSInterfaceTreeAreaCommit EditorVCSInterfaceTreeArea = 0
-	EditorVCSInterfaceTreeAreaStaged EditorVCSInterfaceTreeArea = 1
+	EditorVCSInterfaceTreeAreaCommit   EditorVCSInterfaceTreeArea = 0
+	EditorVCSInterfaceTreeAreaStaged   EditorVCSInterfaceTreeArea = 1
 	EditorVCSInterfaceTreeAreaUnstaged EditorVCSInterfaceTreeArea = 2
 )
 
@@ -2060,93 +2059,93 @@ type EnvironmentBGMode = classdb.EnvironmentBGMode
 
 const (
 	EnvironmentBgClearColor EnvironmentBGMode = 0
-	EnvironmentBgColor EnvironmentBGMode = 1
-	EnvironmentBgSky EnvironmentBGMode = 2
-	EnvironmentBgCanvas EnvironmentBGMode = 3
-	EnvironmentBgKeep EnvironmentBGMode = 4
+	EnvironmentBgColor      EnvironmentBGMode = 1
+	EnvironmentBgSky        EnvironmentBGMode = 2
+	EnvironmentBgCanvas     EnvironmentBGMode = 3
+	EnvironmentBgKeep       EnvironmentBGMode = 4
 	EnvironmentBgCameraFeed EnvironmentBGMode = 5
-	EnvironmentBgMax EnvironmentBGMode = 6
+	EnvironmentBgMax        EnvironmentBGMode = 6
 )
 
 type EnvironmentAmbientSource = classdb.EnvironmentAmbientSource
 
 const (
-	EnvironmentAmbientSourceBg EnvironmentAmbientSource = 0
+	EnvironmentAmbientSourceBg       EnvironmentAmbientSource = 0
 	EnvironmentAmbientSourceDisabled EnvironmentAmbientSource = 1
-	EnvironmentAmbientSourceColor EnvironmentAmbientSource = 2
-	EnvironmentAmbientSourceSky EnvironmentAmbientSource = 3
+	EnvironmentAmbientSourceColor    EnvironmentAmbientSource = 2
+	EnvironmentAmbientSourceSky      EnvironmentAmbientSource = 3
 )
 
 type EnvironmentReflectionSource = classdb.EnvironmentReflectionSource
 
 const (
-	EnvironmentReflectionSourceBg EnvironmentReflectionSource = 0
+	EnvironmentReflectionSourceBg       EnvironmentReflectionSource = 0
 	EnvironmentReflectionSourceDisabled EnvironmentReflectionSource = 1
-	EnvironmentReflectionSourceSky EnvironmentReflectionSource = 2
+	EnvironmentReflectionSourceSky      EnvironmentReflectionSource = 2
 )
 
 type EnvironmentToneMapper = classdb.EnvironmentToneMapper
 
 const (
-	EnvironmentToneMapperLinear EnvironmentToneMapper = 0
+	EnvironmentToneMapperLinear    EnvironmentToneMapper = 0
 	EnvironmentToneMapperReinhardt EnvironmentToneMapper = 1
-	EnvironmentToneMapperFilmic EnvironmentToneMapper = 2
-	EnvironmentToneMapperAces EnvironmentToneMapper = 3
+	EnvironmentToneMapperFilmic    EnvironmentToneMapper = 2
+	EnvironmentToneMapperAces      EnvironmentToneMapper = 3
 )
 
 type EnvironmentGlowBlendMode = classdb.EnvironmentGlowBlendMode
 
 const (
-	EnvironmentGlowBlendModeAdditive EnvironmentGlowBlendMode = 0
-	EnvironmentGlowBlendModeScreen EnvironmentGlowBlendMode = 1
+	EnvironmentGlowBlendModeAdditive  EnvironmentGlowBlendMode = 0
+	EnvironmentGlowBlendModeScreen    EnvironmentGlowBlendMode = 1
 	EnvironmentGlowBlendModeSoftlight EnvironmentGlowBlendMode = 2
-	EnvironmentGlowBlendModeReplace EnvironmentGlowBlendMode = 3
-	EnvironmentGlowBlendModeMix EnvironmentGlowBlendMode = 4
+	EnvironmentGlowBlendModeReplace   EnvironmentGlowBlendMode = 3
+	EnvironmentGlowBlendModeMix       EnvironmentGlowBlendMode = 4
 )
 
 type EnvironmentSDFGIYScale = classdb.EnvironmentSDFGIYScale
 
 const (
-	EnvironmentSdfgiYScale50Percent EnvironmentSDFGIYScale = 0
-	EnvironmentSdfgiYScale75Percent EnvironmentSDFGIYScale = 1
+	EnvironmentSdfgiYScale50Percent  EnvironmentSDFGIYScale = 0
+	EnvironmentSdfgiYScale75Percent  EnvironmentSDFGIYScale = 1
 	EnvironmentSdfgiYScale100Percent EnvironmentSDFGIYScale = 2
 )
 
 type FastNoiseLiteNoiseType = classdb.FastNoiseLiteNoiseType
 
 const (
-	FastNoiseLiteTypeValue FastNoiseLiteNoiseType = 5
-	FastNoiseLiteTypeValueCubic FastNoiseLiteNoiseType = 4
-	FastNoiseLiteTypePerlin FastNoiseLiteNoiseType = 3
-	FastNoiseLiteTypeCellular FastNoiseLiteNoiseType = 2
-	FastNoiseLiteTypeSimplex FastNoiseLiteNoiseType = 0
+	FastNoiseLiteTypeValue         FastNoiseLiteNoiseType = 5
+	FastNoiseLiteTypeValueCubic    FastNoiseLiteNoiseType = 4
+	FastNoiseLiteTypePerlin        FastNoiseLiteNoiseType = 3
+	FastNoiseLiteTypeCellular      FastNoiseLiteNoiseType = 2
+	FastNoiseLiteTypeSimplex       FastNoiseLiteNoiseType = 0
 	FastNoiseLiteTypeSimplexSmooth FastNoiseLiteNoiseType = 1
 )
 
 type FastNoiseLiteFractalType = classdb.FastNoiseLiteFractalType
 
 const (
-	FastNoiseLiteFractalNone FastNoiseLiteFractalType = 0
-	FastNoiseLiteFractalFbm FastNoiseLiteFractalType = 1
-	FastNoiseLiteFractalRidged FastNoiseLiteFractalType = 2
+	FastNoiseLiteFractalNone     FastNoiseLiteFractalType = 0
+	FastNoiseLiteFractalFbm      FastNoiseLiteFractalType = 1
+	FastNoiseLiteFractalRidged   FastNoiseLiteFractalType = 2
 	FastNoiseLiteFractalPingPong FastNoiseLiteFractalType = 3
 )
 
 type FastNoiseLiteCellularDistanceFunction = classdb.FastNoiseLiteCellularDistanceFunction
 
 const (
-	FastNoiseLiteDistanceEuclidean FastNoiseLiteCellularDistanceFunction = 0
+	FastNoiseLiteDistanceEuclidean        FastNoiseLiteCellularDistanceFunction = 0
 	FastNoiseLiteDistanceEuclideanSquared FastNoiseLiteCellularDistanceFunction = 1
-	FastNoiseLiteDistanceManhattan FastNoiseLiteCellularDistanceFunction = 2
-	FastNoiseLiteDistanceHybrid FastNoiseLiteCellularDistanceFunction = 3
+	FastNoiseLiteDistanceManhattan        FastNoiseLiteCellularDistanceFunction = 2
+	FastNoiseLiteDistanceHybrid           FastNoiseLiteCellularDistanceFunction = 3
 )
 
 type FastNoiseLiteCellularReturnType = classdb.FastNoiseLiteCellularReturnType
 
 const (
-	FastNoiseLiteReturnCellValue FastNoiseLiteCellularReturnType = 0
-	FastNoiseLiteReturnDistance FastNoiseLiteCellularReturnType = 1
-	FastNoiseLiteReturnDistance2 FastNoiseLiteCellularReturnType = 2
+	FastNoiseLiteReturnCellValue    FastNoiseLiteCellularReturnType = 0
+	FastNoiseLiteReturnDistance     FastNoiseLiteCellularReturnType = 1
+	FastNoiseLiteReturnDistance2    FastNoiseLiteCellularReturnType = 2
 	FastNoiseLiteReturnDistance2Add FastNoiseLiteCellularReturnType = 3
 	FastNoiseLiteReturnDistance2Sub FastNoiseLiteCellularReturnType = 4
 	FastNoiseLiteReturnDistance2Mul FastNoiseLiteCellularReturnType = 5
@@ -2156,15 +2155,15 @@ const (
 type FastNoiseLiteDomainWarpType = classdb.FastNoiseLiteDomainWarpType
 
 const (
-	FastNoiseLiteDomainWarpSimplex FastNoiseLiteDomainWarpType = 0
+	FastNoiseLiteDomainWarpSimplex        FastNoiseLiteDomainWarpType = 0
 	FastNoiseLiteDomainWarpSimplexReduced FastNoiseLiteDomainWarpType = 1
-	FastNoiseLiteDomainWarpBasicGrid FastNoiseLiteDomainWarpType = 2
+	FastNoiseLiteDomainWarpBasicGrid      FastNoiseLiteDomainWarpType = 2
 )
 
 type FastNoiseLiteDomainWarpFractalType = classdb.FastNoiseLiteDomainWarpFractalType
 
 const (
-	FastNoiseLiteDomainWarpFractalNone FastNoiseLiteDomainWarpFractalType = 0
+	FastNoiseLiteDomainWarpFractalNone        FastNoiseLiteDomainWarpFractalType = 0
 	FastNoiseLiteDomainWarpFractalProgressive FastNoiseLiteDomainWarpFractalType = 1
 	FastNoiseLiteDomainWarpFractalIndependent FastNoiseLiteDomainWarpFractalType = 2
 )
@@ -2172,8 +2171,8 @@ const (
 type FileAccessModeFlags = classdb.FileAccessModeFlags
 
 const (
-	FileAccessRead FileAccessModeFlags = 1
-	FileAccessWrite FileAccessModeFlags = 2
+	FileAccessRead      FileAccessModeFlags = 1
+	FileAccessWrite     FileAccessModeFlags = 2
 	FileAccessReadWrite FileAccessModeFlags = 3
 	FileAccessWriteRead FileAccessModeFlags = 7
 )
@@ -2181,154 +2180,154 @@ const (
 type FileAccessCompressionMode = classdb.FileAccessCompressionMode
 
 const (
-	FileAccessCompressionFastlz FileAccessCompressionMode = 0
+	FileAccessCompressionFastlz  FileAccessCompressionMode = 0
 	FileAccessCompressionDeflate FileAccessCompressionMode = 1
-	FileAccessCompressionZstd FileAccessCompressionMode = 2
-	FileAccessCompressionGzip FileAccessCompressionMode = 3
-	FileAccessCompressionBrotli FileAccessCompressionMode = 4
+	FileAccessCompressionZstd    FileAccessCompressionMode = 2
+	FileAccessCompressionGzip    FileAccessCompressionMode = 3
+	FileAccessCompressionBrotli  FileAccessCompressionMode = 4
 )
 
 type FileAccessUnixPermissionFlags = classdb.FileAccessUnixPermissionFlags
 
 const (
-	FileAccessUnixReadOwner FileAccessUnixPermissionFlags = 256
-	FileAccessUnixWriteOwner FileAccessUnixPermissionFlags = 128
-	FileAccessUnixExecuteOwner FileAccessUnixPermissionFlags = 64
-	FileAccessUnixReadGroup FileAccessUnixPermissionFlags = 32
-	FileAccessUnixWriteGroup FileAccessUnixPermissionFlags = 16
-	FileAccessUnixExecuteGroup FileAccessUnixPermissionFlags = 8
-	FileAccessUnixReadOther FileAccessUnixPermissionFlags = 4
-	FileAccessUnixWriteOther FileAccessUnixPermissionFlags = 2
-	FileAccessUnixExecuteOther FileAccessUnixPermissionFlags = 1
-	FileAccessUnixSetUserId FileAccessUnixPermissionFlags = 2048
-	FileAccessUnixSetGroupId FileAccessUnixPermissionFlags = 1024
+	FileAccessUnixReadOwner        FileAccessUnixPermissionFlags = 256
+	FileAccessUnixWriteOwner       FileAccessUnixPermissionFlags = 128
+	FileAccessUnixExecuteOwner     FileAccessUnixPermissionFlags = 64
+	FileAccessUnixReadGroup        FileAccessUnixPermissionFlags = 32
+	FileAccessUnixWriteGroup       FileAccessUnixPermissionFlags = 16
+	FileAccessUnixExecuteGroup     FileAccessUnixPermissionFlags = 8
+	FileAccessUnixReadOther        FileAccessUnixPermissionFlags = 4
+	FileAccessUnixWriteOther       FileAccessUnixPermissionFlags = 2
+	FileAccessUnixExecuteOther     FileAccessUnixPermissionFlags = 1
+	FileAccessUnixSetUserId        FileAccessUnixPermissionFlags = 2048
+	FileAccessUnixSetGroupId       FileAccessUnixPermissionFlags = 1024
 	FileAccessUnixRestrictedDelete FileAccessUnixPermissionFlags = 512
 )
 
 type FileDialogFileMode = classdb.FileDialogFileMode
 
 const (
-	FileDialogFileModeOpenFile FileDialogFileMode = 0
+	FileDialogFileModeOpenFile  FileDialogFileMode = 0
 	FileDialogFileModeOpenFiles FileDialogFileMode = 1
-	FileDialogFileModeOpenDir FileDialogFileMode = 2
-	FileDialogFileModeOpenAny FileDialogFileMode = 3
-	FileDialogFileModeSaveFile FileDialogFileMode = 4
+	FileDialogFileModeOpenDir   FileDialogFileMode = 2
+	FileDialogFileModeOpenAny   FileDialogFileMode = 3
+	FileDialogFileModeSaveFile  FileDialogFileMode = 4
 )
 
 type FileDialogAccess = classdb.FileDialogAccess
 
 const (
-	FileDialogAccessResources FileDialogAccess = 0
-	FileDialogAccessUserdata FileDialogAccess = 1
+	FileDialogAccessResources  FileDialogAccess = 0
+	FileDialogAccessUserdata   FileDialogAccess = 1
 	FileDialogAccessFilesystem FileDialogAccess = 2
 )
 
 type FlowContainerAlignmentMode = classdb.FlowContainerAlignmentMode
 
 const (
-	FlowContainerAlignmentBegin FlowContainerAlignmentMode = 0
+	FlowContainerAlignmentBegin  FlowContainerAlignmentMode = 0
 	FlowContainerAlignmentCenter FlowContainerAlignmentMode = 1
-	FlowContainerAlignmentEnd FlowContainerAlignmentMode = 2
+	FlowContainerAlignmentEnd    FlowContainerAlignmentMode = 2
 )
 
 type GDExtensionInitializationLevel = classdb.GDExtensionInitializationLevel
 
 const (
-	GDExtensionInitializationLevelCore GDExtensionInitializationLevel = 0
+	GDExtensionInitializationLevelCore    GDExtensionInitializationLevel = 0
 	GDExtensionInitializationLevelServers GDExtensionInitializationLevel = 1
-	GDExtensionInitializationLevelScene GDExtensionInitializationLevel = 2
-	GDExtensionInitializationLevelEditor GDExtensionInitializationLevel = 3
+	GDExtensionInitializationLevelScene   GDExtensionInitializationLevel = 2
+	GDExtensionInitializationLevelEditor  GDExtensionInitializationLevel = 3
 )
 
 type GDExtensionManagerLoadStatus = classdb.GDExtensionManagerLoadStatus
 
 const (
-	GDExtensionManagerLoadStatusOk GDExtensionManagerLoadStatus = 0
-	GDExtensionManagerLoadStatusFailed GDExtensionManagerLoadStatus = 1
+	GDExtensionManagerLoadStatusOk            GDExtensionManagerLoadStatus = 0
+	GDExtensionManagerLoadStatusFailed        GDExtensionManagerLoadStatus = 1
 	GDExtensionManagerLoadStatusAlreadyLoaded GDExtensionManagerLoadStatus = 2
-	GDExtensionManagerLoadStatusNotLoaded GDExtensionManagerLoadStatus = 3
-	GDExtensionManagerLoadStatusNeedsRestart GDExtensionManagerLoadStatus = 4
+	GDExtensionManagerLoadStatusNotLoaded     GDExtensionManagerLoadStatus = 3
+	GDExtensionManagerLoadStatusNeedsRestart  GDExtensionManagerLoadStatus = 4
 )
 
 type GLTFDocumentRootNodeMode = classdb.GLTFDocumentRootNodeMode
 
 const (
 	GLTFDocumentRootNodeModeSingleRoot GLTFDocumentRootNodeMode = 0
-	GLTFDocumentRootNodeModeKeepRoot GLTFDocumentRootNodeMode = 1
-	GLTFDocumentRootNodeModeMultiRoot GLTFDocumentRootNodeMode = 2
+	GLTFDocumentRootNodeModeKeepRoot   GLTFDocumentRootNodeMode = 1
+	GLTFDocumentRootNodeModeMultiRoot  GLTFDocumentRootNodeMode = 2
 )
 
 type GPUParticles2DDrawOrder = classdb.GPUParticles2DDrawOrder
 
 const (
-	GPUParticles2DDrawOrderIndex GPUParticles2DDrawOrder = 0
-	GPUParticles2DDrawOrderLifetime GPUParticles2DDrawOrder = 1
+	GPUParticles2DDrawOrderIndex           GPUParticles2DDrawOrder = 0
+	GPUParticles2DDrawOrderLifetime        GPUParticles2DDrawOrder = 1
 	GPUParticles2DDrawOrderReverseLifetime GPUParticles2DDrawOrder = 2
 )
 
 type GPUParticles2DEmitFlags = classdb.GPUParticles2DEmitFlags
 
 const (
-	GPUParticles2DEmitFlagPosition GPUParticles2DEmitFlags = 1
+	GPUParticles2DEmitFlagPosition      GPUParticles2DEmitFlags = 1
 	GPUParticles2DEmitFlagRotationScale GPUParticles2DEmitFlags = 2
-	GPUParticles2DEmitFlagVelocity GPUParticles2DEmitFlags = 4
-	GPUParticles2DEmitFlagColor GPUParticles2DEmitFlags = 8
-	GPUParticles2DEmitFlagCustom GPUParticles2DEmitFlags = 16
+	GPUParticles2DEmitFlagVelocity      GPUParticles2DEmitFlags = 4
+	GPUParticles2DEmitFlagColor         GPUParticles2DEmitFlags = 8
+	GPUParticles2DEmitFlagCustom        GPUParticles2DEmitFlags = 16
 )
 
 type GPUParticles3DDrawOrder = classdb.GPUParticles3DDrawOrder
 
 const (
-	GPUParticles3DDrawOrderIndex GPUParticles3DDrawOrder = 0
-	GPUParticles3DDrawOrderLifetime GPUParticles3DDrawOrder = 1
+	GPUParticles3DDrawOrderIndex           GPUParticles3DDrawOrder = 0
+	GPUParticles3DDrawOrderLifetime        GPUParticles3DDrawOrder = 1
 	GPUParticles3DDrawOrderReverseLifetime GPUParticles3DDrawOrder = 2
-	GPUParticles3DDrawOrderViewDepth GPUParticles3DDrawOrder = 3
+	GPUParticles3DDrawOrderViewDepth       GPUParticles3DDrawOrder = 3
 )
 
 type GPUParticles3DEmitFlags = classdb.GPUParticles3DEmitFlags
 
 const (
-	GPUParticles3DEmitFlagPosition GPUParticles3DEmitFlags = 1
+	GPUParticles3DEmitFlagPosition      GPUParticles3DEmitFlags = 1
 	GPUParticles3DEmitFlagRotationScale GPUParticles3DEmitFlags = 2
-	GPUParticles3DEmitFlagVelocity GPUParticles3DEmitFlags = 4
-	GPUParticles3DEmitFlagColor GPUParticles3DEmitFlags = 8
-	GPUParticles3DEmitFlagCustom GPUParticles3DEmitFlags = 16
+	GPUParticles3DEmitFlagVelocity      GPUParticles3DEmitFlags = 4
+	GPUParticles3DEmitFlagColor         GPUParticles3DEmitFlags = 8
+	GPUParticles3DEmitFlagCustom        GPUParticles3DEmitFlags = 16
 )
 
 type GPUParticles3DTransformAlign = classdb.GPUParticles3DTransformAlign
 
 const (
-	GPUParticles3DTransformAlignDisabled GPUParticles3DTransformAlign = 0
-	GPUParticles3DTransformAlignZBillboard GPUParticles3DTransformAlign = 1
-	GPUParticles3DTransformAlignYToVelocity GPUParticles3DTransformAlign = 2
+	GPUParticles3DTransformAlignDisabled              GPUParticles3DTransformAlign = 0
+	GPUParticles3DTransformAlignZBillboard            GPUParticles3DTransformAlign = 1
+	GPUParticles3DTransformAlignYToVelocity           GPUParticles3DTransformAlign = 2
 	GPUParticles3DTransformAlignZBillboardYToVelocity GPUParticles3DTransformAlign = 3
 )
 
 type GPUParticlesCollisionHeightField3DResolution = classdb.GPUParticlesCollisionHeightField3DResolution
 
 const (
-	GPUParticlesCollisionHeightField3DResolution256 GPUParticlesCollisionHeightField3DResolution = 0
-	GPUParticlesCollisionHeightField3DResolution512 GPUParticlesCollisionHeightField3DResolution = 1
+	GPUParticlesCollisionHeightField3DResolution256  GPUParticlesCollisionHeightField3DResolution = 0
+	GPUParticlesCollisionHeightField3DResolution512  GPUParticlesCollisionHeightField3DResolution = 1
 	GPUParticlesCollisionHeightField3DResolution1024 GPUParticlesCollisionHeightField3DResolution = 2
 	GPUParticlesCollisionHeightField3DResolution2048 GPUParticlesCollisionHeightField3DResolution = 3
 	GPUParticlesCollisionHeightField3DResolution4096 GPUParticlesCollisionHeightField3DResolution = 4
 	GPUParticlesCollisionHeightField3DResolution8192 GPUParticlesCollisionHeightField3DResolution = 5
-	GPUParticlesCollisionHeightField3DResolutionMax GPUParticlesCollisionHeightField3DResolution = 6
+	GPUParticlesCollisionHeightField3DResolutionMax  GPUParticlesCollisionHeightField3DResolution = 6
 )
 
 type GPUParticlesCollisionHeightField3DUpdateMode = classdb.GPUParticlesCollisionHeightField3DUpdateMode
 
 const (
 	GPUParticlesCollisionHeightField3DUpdateModeWhenMoved GPUParticlesCollisionHeightField3DUpdateMode = 0
-	GPUParticlesCollisionHeightField3DUpdateModeAlways GPUParticlesCollisionHeightField3DUpdateMode = 1
+	GPUParticlesCollisionHeightField3DUpdateModeAlways    GPUParticlesCollisionHeightField3DUpdateMode = 1
 )
 
 type GPUParticlesCollisionSDF3DResolution = classdb.GPUParticlesCollisionSDF3DResolution
 
 const (
-	GPUParticlesCollisionSDF3DResolution16 GPUParticlesCollisionSDF3DResolution = 0
-	GPUParticlesCollisionSDF3DResolution32 GPUParticlesCollisionSDF3DResolution = 1
-	GPUParticlesCollisionSDF3DResolution64 GPUParticlesCollisionSDF3DResolution = 2
+	GPUParticlesCollisionSDF3DResolution16  GPUParticlesCollisionSDF3DResolution = 0
+	GPUParticlesCollisionSDF3DResolution32  GPUParticlesCollisionSDF3DResolution = 1
+	GPUParticlesCollisionSDF3DResolution64  GPUParticlesCollisionSDF3DResolution = 2
 	GPUParticlesCollisionSDF3DResolution128 GPUParticlesCollisionSDF3DResolution = 3
 	GPUParticlesCollisionSDF3DResolution256 GPUParticlesCollisionSDF3DResolution = 4
 	GPUParticlesCollisionSDF3DResolution512 GPUParticlesCollisionSDF3DResolution = 5
@@ -2338,75 +2337,75 @@ const (
 type Generic6DOFJoint3DParam = classdb.Generic6DOFJoint3DParam
 
 const (
-	Generic6DOFJoint3DParamLinearLowerLimit Generic6DOFJoint3DParam = 0
-	Generic6DOFJoint3DParamLinearUpperLimit Generic6DOFJoint3DParam = 1
-	Generic6DOFJoint3DParamLinearLimitSoftness Generic6DOFJoint3DParam = 2
-	Generic6DOFJoint3DParamLinearRestitution Generic6DOFJoint3DParam = 3
-	Generic6DOFJoint3DParamLinearDamping Generic6DOFJoint3DParam = 4
-	Generic6DOFJoint3DParamLinearMotorTargetVelocity Generic6DOFJoint3DParam = 5
-	Generic6DOFJoint3DParamLinearMotorForceLimit Generic6DOFJoint3DParam = 6
-	Generic6DOFJoint3DParamLinearSpringStiffness Generic6DOFJoint3DParam = 7
-	Generic6DOFJoint3DParamLinearSpringDamping Generic6DOFJoint3DParam = 8
-	Generic6DOFJoint3DParamLinearSpringEquilibriumPoint Generic6DOFJoint3DParam = 9
-	Generic6DOFJoint3DParamAngularLowerLimit Generic6DOFJoint3DParam = 10
-	Generic6DOFJoint3DParamAngularUpperLimit Generic6DOFJoint3DParam = 11
-	Generic6DOFJoint3DParamAngularLimitSoftness Generic6DOFJoint3DParam = 12
-	Generic6DOFJoint3DParamAngularDamping Generic6DOFJoint3DParam = 13
-	Generic6DOFJoint3DParamAngularRestitution Generic6DOFJoint3DParam = 14
-	Generic6DOFJoint3DParamAngularForceLimit Generic6DOFJoint3DParam = 15
-	Generic6DOFJoint3DParamAngularErp Generic6DOFJoint3DParam = 16
-	Generic6DOFJoint3DParamAngularMotorTargetVelocity Generic6DOFJoint3DParam = 17
-	Generic6DOFJoint3DParamAngularMotorForceLimit Generic6DOFJoint3DParam = 18
-	Generic6DOFJoint3DParamAngularSpringStiffness Generic6DOFJoint3DParam = 19
-	Generic6DOFJoint3DParamAngularSpringDamping Generic6DOFJoint3DParam = 20
+	Generic6DOFJoint3DParamLinearLowerLimit              Generic6DOFJoint3DParam = 0
+	Generic6DOFJoint3DParamLinearUpperLimit              Generic6DOFJoint3DParam = 1
+	Generic6DOFJoint3DParamLinearLimitSoftness           Generic6DOFJoint3DParam = 2
+	Generic6DOFJoint3DParamLinearRestitution             Generic6DOFJoint3DParam = 3
+	Generic6DOFJoint3DParamLinearDamping                 Generic6DOFJoint3DParam = 4
+	Generic6DOFJoint3DParamLinearMotorTargetVelocity     Generic6DOFJoint3DParam = 5
+	Generic6DOFJoint3DParamLinearMotorForceLimit         Generic6DOFJoint3DParam = 6
+	Generic6DOFJoint3DParamLinearSpringStiffness         Generic6DOFJoint3DParam = 7
+	Generic6DOFJoint3DParamLinearSpringDamping           Generic6DOFJoint3DParam = 8
+	Generic6DOFJoint3DParamLinearSpringEquilibriumPoint  Generic6DOFJoint3DParam = 9
+	Generic6DOFJoint3DParamAngularLowerLimit             Generic6DOFJoint3DParam = 10
+	Generic6DOFJoint3DParamAngularUpperLimit             Generic6DOFJoint3DParam = 11
+	Generic6DOFJoint3DParamAngularLimitSoftness          Generic6DOFJoint3DParam = 12
+	Generic6DOFJoint3DParamAngularDamping                Generic6DOFJoint3DParam = 13
+	Generic6DOFJoint3DParamAngularRestitution            Generic6DOFJoint3DParam = 14
+	Generic6DOFJoint3DParamAngularForceLimit             Generic6DOFJoint3DParam = 15
+	Generic6DOFJoint3DParamAngularErp                    Generic6DOFJoint3DParam = 16
+	Generic6DOFJoint3DParamAngularMotorTargetVelocity    Generic6DOFJoint3DParam = 17
+	Generic6DOFJoint3DParamAngularMotorForceLimit        Generic6DOFJoint3DParam = 18
+	Generic6DOFJoint3DParamAngularSpringStiffness        Generic6DOFJoint3DParam = 19
+	Generic6DOFJoint3DParamAngularSpringDamping          Generic6DOFJoint3DParam = 20
 	Generic6DOFJoint3DParamAngularSpringEquilibriumPoint Generic6DOFJoint3DParam = 21
-	Generic6DOFJoint3DParamMax Generic6DOFJoint3DParam = 22
+	Generic6DOFJoint3DParamMax                           Generic6DOFJoint3DParam = 22
 )
 
 type Generic6DOFJoint3DFlag = classdb.Generic6DOFJoint3DFlag
 
 const (
-	Generic6DOFJoint3DFlagEnableLinearLimit Generic6DOFJoint3DFlag = 0
-	Generic6DOFJoint3DFlagEnableAngularLimit Generic6DOFJoint3DFlag = 1
-	Generic6DOFJoint3DFlagEnableLinearSpring Generic6DOFJoint3DFlag = 3
+	Generic6DOFJoint3DFlagEnableLinearLimit   Generic6DOFJoint3DFlag = 0
+	Generic6DOFJoint3DFlagEnableAngularLimit  Generic6DOFJoint3DFlag = 1
+	Generic6DOFJoint3DFlagEnableLinearSpring  Generic6DOFJoint3DFlag = 3
 	Generic6DOFJoint3DFlagEnableAngularSpring Generic6DOFJoint3DFlag = 2
-	Generic6DOFJoint3DFlagEnableMotor Generic6DOFJoint3DFlag = 4
-	Generic6DOFJoint3DFlagEnableLinearMotor Generic6DOFJoint3DFlag = 5
-	Generic6DOFJoint3DFlagMax Generic6DOFJoint3DFlag = 6
+	Generic6DOFJoint3DFlagEnableMotor         Generic6DOFJoint3DFlag = 4
+	Generic6DOFJoint3DFlagEnableLinearMotor   Generic6DOFJoint3DFlag = 5
+	Generic6DOFJoint3DFlagMax                 Generic6DOFJoint3DFlag = 6
 )
 
 type Geometry2DPolyBooleanOperation = classdb.Geometry2DPolyBooleanOperation
 
 const (
-	Geometry2DOperationUnion Geometry2DPolyBooleanOperation = 0
-	Geometry2DOperationDifference Geometry2DPolyBooleanOperation = 1
+	Geometry2DOperationUnion        Geometry2DPolyBooleanOperation = 0
+	Geometry2DOperationDifference   Geometry2DPolyBooleanOperation = 1
 	Geometry2DOperationIntersection Geometry2DPolyBooleanOperation = 2
-	Geometry2DOperationXor Geometry2DPolyBooleanOperation = 3
+	Geometry2DOperationXor          Geometry2DPolyBooleanOperation = 3
 )
 
 type Geometry2DPolyJoinType = classdb.Geometry2DPolyJoinType
 
 const (
 	Geometry2DJoinSquare Geometry2DPolyJoinType = 0
-	Geometry2DJoinRound Geometry2DPolyJoinType = 1
-	Geometry2DJoinMiter Geometry2DPolyJoinType = 2
+	Geometry2DJoinRound  Geometry2DPolyJoinType = 1
+	Geometry2DJoinMiter  Geometry2DPolyJoinType = 2
 )
 
 type Geometry2DPolyEndType = classdb.Geometry2DPolyEndType
 
 const (
 	Geometry2DEndPolygon Geometry2DPolyEndType = 0
-	Geometry2DEndJoined Geometry2DPolyEndType = 1
-	Geometry2DEndButt Geometry2DPolyEndType = 2
-	Geometry2DEndSquare Geometry2DPolyEndType = 3
-	Geometry2DEndRound Geometry2DPolyEndType = 4
+	Geometry2DEndJoined  Geometry2DPolyEndType = 1
+	Geometry2DEndButt    Geometry2DPolyEndType = 2
+	Geometry2DEndSquare  Geometry2DPolyEndType = 3
+	Geometry2DEndRound   Geometry2DPolyEndType = 4
 )
 
 type GeometryInstance3DShadowCastingSetting = classdb.GeometryInstance3DShadowCastingSetting
 
 const (
-	GeometryInstance3DShadowCastingSettingOff GeometryInstance3DShadowCastingSetting = 0
-	GeometryInstance3DShadowCastingSettingOn GeometryInstance3DShadowCastingSetting = 1
+	GeometryInstance3DShadowCastingSettingOff         GeometryInstance3DShadowCastingSetting = 0
+	GeometryInstance3DShadowCastingSettingOn          GeometryInstance3DShadowCastingSetting = 1
 	GeometryInstance3DShadowCastingSettingDoubleSided GeometryInstance3DShadowCastingSetting = 2
 	GeometryInstance3DShadowCastingSettingShadowsOnly GeometryInstance3DShadowCastingSetting = 3
 )
@@ -2415,42 +2414,42 @@ type GeometryInstance3DGIMode = classdb.GeometryInstance3DGIMode
 
 const (
 	GeometryInstance3DGiModeDisabled GeometryInstance3DGIMode = 0
-	GeometryInstance3DGiModeStatic GeometryInstance3DGIMode = 1
-	GeometryInstance3DGiModeDynamic GeometryInstance3DGIMode = 2
+	GeometryInstance3DGiModeStatic   GeometryInstance3DGIMode = 1
+	GeometryInstance3DGiModeDynamic  GeometryInstance3DGIMode = 2
 )
 
 type GeometryInstance3DLightmapScale = classdb.GeometryInstance3DLightmapScale
 
 const (
-	GeometryInstance3DLightmapScale1x GeometryInstance3DLightmapScale = 0
-	GeometryInstance3DLightmapScale2x GeometryInstance3DLightmapScale = 1
-	GeometryInstance3DLightmapScale4x GeometryInstance3DLightmapScale = 2
-	GeometryInstance3DLightmapScale8x GeometryInstance3DLightmapScale = 3
+	GeometryInstance3DLightmapScale1x  GeometryInstance3DLightmapScale = 0
+	GeometryInstance3DLightmapScale2x  GeometryInstance3DLightmapScale = 1
+	GeometryInstance3DLightmapScale4x  GeometryInstance3DLightmapScale = 2
+	GeometryInstance3DLightmapScale8x  GeometryInstance3DLightmapScale = 3
 	GeometryInstance3DLightmapScaleMax GeometryInstance3DLightmapScale = 4
 )
 
 type GeometryInstance3DVisibilityRangeFadeMode = classdb.GeometryInstance3DVisibilityRangeFadeMode
 
 const (
-	GeometryInstance3DVisibilityRangeFadeDisabled GeometryInstance3DVisibilityRangeFadeMode = 0
-	GeometryInstance3DVisibilityRangeFadeSelf GeometryInstance3DVisibilityRangeFadeMode = 1
+	GeometryInstance3DVisibilityRangeFadeDisabled     GeometryInstance3DVisibilityRangeFadeMode = 0
+	GeometryInstance3DVisibilityRangeFadeSelf         GeometryInstance3DVisibilityRangeFadeMode = 1
 	GeometryInstance3DVisibilityRangeFadeDependencies GeometryInstance3DVisibilityRangeFadeMode = 2
 )
 
 type GradientInterpolationMode = classdb.GradientInterpolationMode
 
 const (
-	GradientGradientInterpolateLinear GradientInterpolationMode = 0
+	GradientGradientInterpolateLinear   GradientInterpolationMode = 0
 	GradientGradientInterpolateConstant GradientInterpolationMode = 1
-	GradientGradientInterpolateCubic GradientInterpolationMode = 2
+	GradientGradientInterpolateCubic    GradientInterpolationMode = 2
 )
 
 type GradientColorSpace = classdb.GradientColorSpace
 
 const (
-	GradientGradientColorSpaceSrgb GradientColorSpace = 0
+	GradientGradientColorSpaceSrgb       GradientColorSpace = 0
 	GradientGradientColorSpaceLinearSrgb GradientColorSpace = 1
-	GradientGradientColorSpaceOklab GradientColorSpace = 2
+	GradientGradientColorSpaceOklab      GradientColorSpace = 2
 )
 
 type GradientTexture2DFill = classdb.GradientTexture2DFill
@@ -2464,170 +2463,170 @@ const (
 type GradientTexture2DRepeat = classdb.GradientTexture2DRepeat
 
 const (
-	GradientTexture2DRepeatNone GradientTexture2DRepeat = 0
+	GradientTexture2DRepeatNone    GradientTexture2DRepeat = 0
 	GradientTexture2DRepeatDefault GradientTexture2DRepeat = 1
-	GradientTexture2DRepeatMirror GradientTexture2DRepeat = 2
+	GradientTexture2DRepeatMirror  GradientTexture2DRepeat = 2
 )
 
 type GraphEditPanningScheme = classdb.GraphEditPanningScheme
 
 const (
 	GraphEditScrollZooms GraphEditPanningScheme = 0
-	GraphEditScrollPans GraphEditPanningScheme = 1
+	GraphEditScrollPans  GraphEditPanningScheme = 1
 )
 
 type HTTPClientMethod = classdb.HTTPClientMethod
 
 const (
-	HTTPClientMethodGet HTTPClientMethod = 0
-	HTTPClientMethodHead HTTPClientMethod = 1
-	HTTPClientMethodPost HTTPClientMethod = 2
-	HTTPClientMethodPut HTTPClientMethod = 3
-	HTTPClientMethodDelete HTTPClientMethod = 4
+	HTTPClientMethodGet     HTTPClientMethod = 0
+	HTTPClientMethodHead    HTTPClientMethod = 1
+	HTTPClientMethodPost    HTTPClientMethod = 2
+	HTTPClientMethodPut     HTTPClientMethod = 3
+	HTTPClientMethodDelete  HTTPClientMethod = 4
 	HTTPClientMethodOptions HTTPClientMethod = 5
-	HTTPClientMethodTrace HTTPClientMethod = 6
+	HTTPClientMethodTrace   HTTPClientMethod = 6
 	HTTPClientMethodConnect HTTPClientMethod = 7
-	HTTPClientMethodPatch HTTPClientMethod = 8
-	HTTPClientMethodMax HTTPClientMethod = 9
+	HTTPClientMethodPatch   HTTPClientMethod = 8
+	HTTPClientMethodMax     HTTPClientMethod = 9
 )
 
 type HTTPClientStatus = classdb.HTTPClientStatus
 
 const (
-	HTTPClientStatusDisconnected HTTPClientStatus = 0
-	HTTPClientStatusResolving HTTPClientStatus = 1
-	HTTPClientStatusCantResolve HTTPClientStatus = 2
-	HTTPClientStatusConnecting HTTPClientStatus = 3
-	HTTPClientStatusCantConnect HTTPClientStatus = 4
-	HTTPClientStatusConnected HTTPClientStatus = 5
-	HTTPClientStatusRequesting HTTPClientStatus = 6
-	HTTPClientStatusBody HTTPClientStatus = 7
-	HTTPClientStatusConnectionError HTTPClientStatus = 8
+	HTTPClientStatusDisconnected      HTTPClientStatus = 0
+	HTTPClientStatusResolving         HTTPClientStatus = 1
+	HTTPClientStatusCantResolve       HTTPClientStatus = 2
+	HTTPClientStatusConnecting        HTTPClientStatus = 3
+	HTTPClientStatusCantConnect       HTTPClientStatus = 4
+	HTTPClientStatusConnected         HTTPClientStatus = 5
+	HTTPClientStatusRequesting        HTTPClientStatus = 6
+	HTTPClientStatusBody              HTTPClientStatus = 7
+	HTTPClientStatusConnectionError   HTTPClientStatus = 8
 	HTTPClientStatusTlsHandshakeError HTTPClientStatus = 9
 )
 
 type HTTPClientResponseCode = classdb.HTTPClientResponseCode
 
 const (
-	HTTPClientResponseContinue HTTPClientResponseCode = 100
-	HTTPClientResponseSwitchingProtocols HTTPClientResponseCode = 101
-	HTTPClientResponseProcessing HTTPClientResponseCode = 102
-	HTTPClientResponseOk HTTPClientResponseCode = 200
-	HTTPClientResponseCreated HTTPClientResponseCode = 201
-	HTTPClientResponseAccepted HTTPClientResponseCode = 202
-	HTTPClientResponseNonAuthoritativeInformation HTTPClientResponseCode = 203
-	HTTPClientResponseNoContent HTTPClientResponseCode = 204
-	HTTPClientResponseResetContent HTTPClientResponseCode = 205
-	HTTPClientResponsePartialContent HTTPClientResponseCode = 206
-	HTTPClientResponseMultiStatus HTTPClientResponseCode = 207
-	HTTPClientResponseAlreadyReported HTTPClientResponseCode = 208
-	HTTPClientResponseImUsed HTTPClientResponseCode = 226
-	HTTPClientResponseMultipleChoices HTTPClientResponseCode = 300
-	HTTPClientResponseMovedPermanently HTTPClientResponseCode = 301
-	HTTPClientResponseFound HTTPClientResponseCode = 302
-	HTTPClientResponseSeeOther HTTPClientResponseCode = 303
-	HTTPClientResponseNotModified HTTPClientResponseCode = 304
-	HTTPClientResponseUseProxy HTTPClientResponseCode = 305
-	HTTPClientResponseSwitchProxy HTTPClientResponseCode = 306
-	HTTPClientResponseTemporaryRedirect HTTPClientResponseCode = 307
-	HTTPClientResponsePermanentRedirect HTTPClientResponseCode = 308
-	HTTPClientResponseBadRequest HTTPClientResponseCode = 400
-	HTTPClientResponseUnauthorized HTTPClientResponseCode = 401
-	HTTPClientResponsePaymentRequired HTTPClientResponseCode = 402
-	HTTPClientResponseForbidden HTTPClientResponseCode = 403
-	HTTPClientResponseNotFound HTTPClientResponseCode = 404
-	HTTPClientResponseMethodNotAllowed HTTPClientResponseCode = 405
-	HTTPClientResponseNotAcceptable HTTPClientResponseCode = 406
-	HTTPClientResponseProxyAuthenticationRequired HTTPClientResponseCode = 407
-	HTTPClientResponseRequestTimeout HTTPClientResponseCode = 408
-	HTTPClientResponseConflict HTTPClientResponseCode = 409
-	HTTPClientResponseGone HTTPClientResponseCode = 410
-	HTTPClientResponseLengthRequired HTTPClientResponseCode = 411
-	HTTPClientResponsePreconditionFailed HTTPClientResponseCode = 412
-	HTTPClientResponseRequestEntityTooLarge HTTPClientResponseCode = 413
-	HTTPClientResponseRequestUriTooLong HTTPClientResponseCode = 414
-	HTTPClientResponseUnsupportedMediaType HTTPClientResponseCode = 415
+	HTTPClientResponseContinue                     HTTPClientResponseCode = 100
+	HTTPClientResponseSwitchingProtocols           HTTPClientResponseCode = 101
+	HTTPClientResponseProcessing                   HTTPClientResponseCode = 102
+	HTTPClientResponseOk                           HTTPClientResponseCode = 200
+	HTTPClientResponseCreated                      HTTPClientResponseCode = 201
+	HTTPClientResponseAccepted                     HTTPClientResponseCode = 202
+	HTTPClientResponseNonAuthoritativeInformation  HTTPClientResponseCode = 203
+	HTTPClientResponseNoContent                    HTTPClientResponseCode = 204
+	HTTPClientResponseResetContent                 HTTPClientResponseCode = 205
+	HTTPClientResponsePartialContent               HTTPClientResponseCode = 206
+	HTTPClientResponseMultiStatus                  HTTPClientResponseCode = 207
+	HTTPClientResponseAlreadyReported              HTTPClientResponseCode = 208
+	HTTPClientResponseImUsed                       HTTPClientResponseCode = 226
+	HTTPClientResponseMultipleChoices              HTTPClientResponseCode = 300
+	HTTPClientResponseMovedPermanently             HTTPClientResponseCode = 301
+	HTTPClientResponseFound                        HTTPClientResponseCode = 302
+	HTTPClientResponseSeeOther                     HTTPClientResponseCode = 303
+	HTTPClientResponseNotModified                  HTTPClientResponseCode = 304
+	HTTPClientResponseUseProxy                     HTTPClientResponseCode = 305
+	HTTPClientResponseSwitchProxy                  HTTPClientResponseCode = 306
+	HTTPClientResponseTemporaryRedirect            HTTPClientResponseCode = 307
+	HTTPClientResponsePermanentRedirect            HTTPClientResponseCode = 308
+	HTTPClientResponseBadRequest                   HTTPClientResponseCode = 400
+	HTTPClientResponseUnauthorized                 HTTPClientResponseCode = 401
+	HTTPClientResponsePaymentRequired              HTTPClientResponseCode = 402
+	HTTPClientResponseForbidden                    HTTPClientResponseCode = 403
+	HTTPClientResponseNotFound                     HTTPClientResponseCode = 404
+	HTTPClientResponseMethodNotAllowed             HTTPClientResponseCode = 405
+	HTTPClientResponseNotAcceptable                HTTPClientResponseCode = 406
+	HTTPClientResponseProxyAuthenticationRequired  HTTPClientResponseCode = 407
+	HTTPClientResponseRequestTimeout               HTTPClientResponseCode = 408
+	HTTPClientResponseConflict                     HTTPClientResponseCode = 409
+	HTTPClientResponseGone                         HTTPClientResponseCode = 410
+	HTTPClientResponseLengthRequired               HTTPClientResponseCode = 411
+	HTTPClientResponsePreconditionFailed           HTTPClientResponseCode = 412
+	HTTPClientResponseRequestEntityTooLarge        HTTPClientResponseCode = 413
+	HTTPClientResponseRequestUriTooLong            HTTPClientResponseCode = 414
+	HTTPClientResponseUnsupportedMediaType         HTTPClientResponseCode = 415
 	HTTPClientResponseRequestedRangeNotSatisfiable HTTPClientResponseCode = 416
-	HTTPClientResponseExpectationFailed HTTPClientResponseCode = 417
-	HTTPClientResponseImATeapot HTTPClientResponseCode = 418
-	HTTPClientResponseMisdirectedRequest HTTPClientResponseCode = 421
-	HTTPClientResponseUnprocessableEntity HTTPClientResponseCode = 422
-	HTTPClientResponseLocked HTTPClientResponseCode = 423
-	HTTPClientResponseFailedDependency HTTPClientResponseCode = 424
-	HTTPClientResponseUpgradeRequired HTTPClientResponseCode = 426
-	HTTPClientResponsePreconditionRequired HTTPClientResponseCode = 428
-	HTTPClientResponseTooManyRequests HTTPClientResponseCode = 429
-	HTTPClientResponseRequestHeaderFieldsTooLarge HTTPClientResponseCode = 431
-	HTTPClientResponseUnavailableForLegalReasons HTTPClientResponseCode = 451
-	HTTPClientResponseInternalServerError HTTPClientResponseCode = 500
-	HTTPClientResponseNotImplemented HTTPClientResponseCode = 501
-	HTTPClientResponseBadGateway HTTPClientResponseCode = 502
-	HTTPClientResponseServiceUnavailable HTTPClientResponseCode = 503
-	HTTPClientResponseGatewayTimeout HTTPClientResponseCode = 504
-	HTTPClientResponseHttpVersionNotSupported HTTPClientResponseCode = 505
-	HTTPClientResponseVariantAlsoNegotiates HTTPClientResponseCode = 506
-	HTTPClientResponseInsufficientStorage HTTPClientResponseCode = 507
-	HTTPClientResponseLoopDetected HTTPClientResponseCode = 508
-	HTTPClientResponseNotExtended HTTPClientResponseCode = 510
-	HTTPClientResponseNetworkAuthRequired HTTPClientResponseCode = 511
+	HTTPClientResponseExpectationFailed            HTTPClientResponseCode = 417
+	HTTPClientResponseImATeapot                    HTTPClientResponseCode = 418
+	HTTPClientResponseMisdirectedRequest           HTTPClientResponseCode = 421
+	HTTPClientResponseUnprocessableEntity          HTTPClientResponseCode = 422
+	HTTPClientResponseLocked                       HTTPClientResponseCode = 423
+	HTTPClientResponseFailedDependency             HTTPClientResponseCode = 424
+	HTTPClientResponseUpgradeRequired              HTTPClientResponseCode = 426
+	HTTPClientResponsePreconditionRequired         HTTPClientResponseCode = 428
+	HTTPClientResponseTooManyRequests              HTTPClientResponseCode = 429
+	HTTPClientResponseRequestHeaderFieldsTooLarge  HTTPClientResponseCode = 431
+	HTTPClientResponseUnavailableForLegalReasons   HTTPClientResponseCode = 451
+	HTTPClientResponseInternalServerError          HTTPClientResponseCode = 500
+	HTTPClientResponseNotImplemented               HTTPClientResponseCode = 501
+	HTTPClientResponseBadGateway                   HTTPClientResponseCode = 502
+	HTTPClientResponseServiceUnavailable           HTTPClientResponseCode = 503
+	HTTPClientResponseGatewayTimeout               HTTPClientResponseCode = 504
+	HTTPClientResponseHttpVersionNotSupported      HTTPClientResponseCode = 505
+	HTTPClientResponseVariantAlsoNegotiates        HTTPClientResponseCode = 506
+	HTTPClientResponseInsufficientStorage          HTTPClientResponseCode = 507
+	HTTPClientResponseLoopDetected                 HTTPClientResponseCode = 508
+	HTTPClientResponseNotExtended                  HTTPClientResponseCode = 510
+	HTTPClientResponseNetworkAuthRequired          HTTPClientResponseCode = 511
 )
 
 type HTTPRequestResult = classdb.HTTPRequestResult
 
 const (
-	HTTPRequestResultSuccess HTTPRequestResult = 0
+	HTTPRequestResultSuccess                 HTTPRequestResult = 0
 	HTTPRequestResultChunkedBodySizeMismatch HTTPRequestResult = 1
-	HTTPRequestResultCantConnect HTTPRequestResult = 2
-	HTTPRequestResultCantResolve HTTPRequestResult = 3
-	HTTPRequestResultConnectionError HTTPRequestResult = 4
-	HTTPRequestResultTlsHandshakeError HTTPRequestResult = 5
-	HTTPRequestResultNoResponse HTTPRequestResult = 6
-	HTTPRequestResultBodySizeLimitExceeded HTTPRequestResult = 7
-	HTTPRequestResultBodyDecompressFailed HTTPRequestResult = 8
-	HTTPRequestResultRequestFailed HTTPRequestResult = 9
-	HTTPRequestResultDownloadFileCantOpen HTTPRequestResult = 10
-	HTTPRequestResultDownloadFileWriteError HTTPRequestResult = 11
-	HTTPRequestResultRedirectLimitReached HTTPRequestResult = 12
-	HTTPRequestResultTimeout HTTPRequestResult = 13
+	HTTPRequestResultCantConnect             HTTPRequestResult = 2
+	HTTPRequestResultCantResolve             HTTPRequestResult = 3
+	HTTPRequestResultConnectionError         HTTPRequestResult = 4
+	HTTPRequestResultTlsHandshakeError       HTTPRequestResult = 5
+	HTTPRequestResultNoResponse              HTTPRequestResult = 6
+	HTTPRequestResultBodySizeLimitExceeded   HTTPRequestResult = 7
+	HTTPRequestResultBodyDecompressFailed    HTTPRequestResult = 8
+	HTTPRequestResultRequestFailed           HTTPRequestResult = 9
+	HTTPRequestResultDownloadFileCantOpen    HTTPRequestResult = 10
+	HTTPRequestResultDownloadFileWriteError  HTTPRequestResult = 11
+	HTTPRequestResultRedirectLimitReached    HTTPRequestResult = 12
+	HTTPRequestResultTimeout                 HTTPRequestResult = 13
 )
 
 type HashingContextHashType = classdb.HashingContextHashType
 
 const (
-	HashingContextHashMd5 HashingContextHashType = 0
-	HashingContextHashSha1 HashingContextHashType = 1
+	HashingContextHashMd5    HashingContextHashType = 0
+	HashingContextHashSha1   HashingContextHashType = 1
 	HashingContextHashSha256 HashingContextHashType = 2
 )
 
 type HingeJoint3DParam = classdb.HingeJoint3DParam
 
 const (
-	HingeJoint3DParamBias HingeJoint3DParam = 0
-	HingeJoint3DParamLimitUpper HingeJoint3DParam = 1
-	HingeJoint3DParamLimitLower HingeJoint3DParam = 2
-	HingeJoint3DParamLimitBias HingeJoint3DParam = 3
-	HingeJoint3DParamLimitSoftness HingeJoint3DParam = 4
-	HingeJoint3DParamLimitRelaxation HingeJoint3DParam = 5
+	HingeJoint3DParamBias                HingeJoint3DParam = 0
+	HingeJoint3DParamLimitUpper          HingeJoint3DParam = 1
+	HingeJoint3DParamLimitLower          HingeJoint3DParam = 2
+	HingeJoint3DParamLimitBias           HingeJoint3DParam = 3
+	HingeJoint3DParamLimitSoftness       HingeJoint3DParam = 4
+	HingeJoint3DParamLimitRelaxation     HingeJoint3DParam = 5
 	HingeJoint3DParamMotorTargetVelocity HingeJoint3DParam = 6
-	HingeJoint3DParamMotorMaxImpulse HingeJoint3DParam = 7
-	HingeJoint3DParamMax HingeJoint3DParam = 8
+	HingeJoint3DParamMotorMaxImpulse     HingeJoint3DParam = 7
+	HingeJoint3DParamMax                 HingeJoint3DParam = 8
 )
 
 type HingeJoint3DFlag = classdb.HingeJoint3DFlag
 
 const (
-	HingeJoint3DFlagUseLimit HingeJoint3DFlag = 0
+	HingeJoint3DFlagUseLimit    HingeJoint3DFlag = 0
 	HingeJoint3DFlagEnableMotor HingeJoint3DFlag = 1
-	HingeJoint3DFlagMax HingeJoint3DFlag = 2
+	HingeJoint3DFlagMax         HingeJoint3DFlag = 2
 )
 
 type IPResolverStatus = classdb.IPResolverStatus
 
 const (
-	IPResolverStatusNone IPResolverStatus = 0
+	IPResolverStatusNone    IPResolverStatus = 0
 	IPResolverStatusWaiting IPResolverStatus = 1
-	IPResolverStatusDone IPResolverStatus = 2
-	IPResolverStatusError IPResolverStatus = 3
+	IPResolverStatusDone    IPResolverStatus = 2
+	IPResolverStatusError   IPResolverStatus = 3
 )
 
 type IPType = classdb.IPType
@@ -2636,69 +2635,69 @@ const (
 	IPTypeNone IPType = 0
 	IPTypeIpv4 IPType = 1
 	IPTypeIpv6 IPType = 2
-	IPTypeAny IPType = 3
+	IPTypeAny  IPType = 3
 )
 
 type ImageFormat = classdb.ImageFormat
 
 const (
-	ImageFormatL8 ImageFormat = 0
-	ImageFormatLa8 ImageFormat = 1
-	ImageFormatR8 ImageFormat = 2
-	ImageFormatRg8 ImageFormat = 3
-	ImageFormatRgb8 ImageFormat = 4
-	ImageFormatRgba8 ImageFormat = 5
-	ImageFormatRgba4444 ImageFormat = 6
-	ImageFormatRgb565 ImageFormat = 7
-	ImageFormatRf ImageFormat = 8
-	ImageFormatRgf ImageFormat = 9
-	ImageFormatRgbf ImageFormat = 10
-	ImageFormatRgbaf ImageFormat = 11
-	ImageFormatRh ImageFormat = 12
-	ImageFormatRgh ImageFormat = 13
-	ImageFormatRgbh ImageFormat = 14
-	ImageFormatRgbah ImageFormat = 15
-	ImageFormatRgbe9995 ImageFormat = 16
-	ImageFormatDxt1 ImageFormat = 17
-	ImageFormatDxt3 ImageFormat = 18
-	ImageFormatDxt5 ImageFormat = 19
-	ImageFormatRgtcR ImageFormat = 20
-	ImageFormatRgtcRg ImageFormat = 21
-	ImageFormatBptcRgba ImageFormat = 22
-	ImageFormatBptcRgbf ImageFormat = 23
-	ImageFormatBptcRgbfu ImageFormat = 24
-	ImageFormatEtc ImageFormat = 25
-	ImageFormatEtc2R11 ImageFormat = 26
-	ImageFormatEtc2R11s ImageFormat = 27
-	ImageFormatEtc2Rg11 ImageFormat = 28
-	ImageFormatEtc2Rg11s ImageFormat = 29
-	ImageFormatEtc2Rgb8 ImageFormat = 30
-	ImageFormatEtc2Rgba8 ImageFormat = 31
+	ImageFormatL8         ImageFormat = 0
+	ImageFormatLa8        ImageFormat = 1
+	ImageFormatR8         ImageFormat = 2
+	ImageFormatRg8        ImageFormat = 3
+	ImageFormatRgb8       ImageFormat = 4
+	ImageFormatRgba8      ImageFormat = 5
+	ImageFormatRgba4444   ImageFormat = 6
+	ImageFormatRgb565     ImageFormat = 7
+	ImageFormatRf         ImageFormat = 8
+	ImageFormatRgf        ImageFormat = 9
+	ImageFormatRgbf       ImageFormat = 10
+	ImageFormatRgbaf      ImageFormat = 11
+	ImageFormatRh         ImageFormat = 12
+	ImageFormatRgh        ImageFormat = 13
+	ImageFormatRgbh       ImageFormat = 14
+	ImageFormatRgbah      ImageFormat = 15
+	ImageFormatRgbe9995   ImageFormat = 16
+	ImageFormatDxt1       ImageFormat = 17
+	ImageFormatDxt3       ImageFormat = 18
+	ImageFormatDxt5       ImageFormat = 19
+	ImageFormatRgtcR      ImageFormat = 20
+	ImageFormatRgtcRg     ImageFormat = 21
+	ImageFormatBptcRgba   ImageFormat = 22
+	ImageFormatBptcRgbf   ImageFormat = 23
+	ImageFormatBptcRgbfu  ImageFormat = 24
+	ImageFormatEtc        ImageFormat = 25
+	ImageFormatEtc2R11    ImageFormat = 26
+	ImageFormatEtc2R11s   ImageFormat = 27
+	ImageFormatEtc2Rg11   ImageFormat = 28
+	ImageFormatEtc2Rg11s  ImageFormat = 29
+	ImageFormatEtc2Rgb8   ImageFormat = 30
+	ImageFormatEtc2Rgba8  ImageFormat = 31
 	ImageFormatEtc2Rgb8a1 ImageFormat = 32
 	ImageFormatEtc2RaAsRg ImageFormat = 33
 	ImageFormatDxt5RaAsRg ImageFormat = 34
-	ImageFormatAstc4x4 ImageFormat = 35
+	ImageFormatAstc4x4    ImageFormat = 35
 	ImageFormatAstc4x4Hdr ImageFormat = 36
-	ImageFormatAstc8x8 ImageFormat = 37
+	ImageFormatAstc8x8    ImageFormat = 37
 	ImageFormatAstc8x8Hdr ImageFormat = 38
-	ImageFormatMax ImageFormat = 39
+	ImageFormatMax        ImageFormat = 39
 )
 
 type ImageInterpolation = classdb.ImageInterpolation
 
 const (
-	ImageInterpolateNearest ImageInterpolation = 0
-	ImageInterpolateBilinear ImageInterpolation = 1
-	ImageInterpolateCubic ImageInterpolation = 2
+	ImageInterpolateNearest   ImageInterpolation = 0
+	ImageInterpolateBilinear  ImageInterpolation = 1
+	ImageInterpolateCubic     ImageInterpolation = 2
 	ImageInterpolateTrilinear ImageInterpolation = 3
-	ImageInterpolateLanczos ImageInterpolation = 4
+	ImageInterpolateLanczos   ImageInterpolation = 4
 )
 
 type ImageAlphaMode = classdb.ImageAlphaMode
 
 const (
-	ImageAlphaNone ImageAlphaMode = 0
-	ImageAlphaBit ImageAlphaMode = 1
+	ImageAlphaNone  ImageAlphaMode = 0
+	ImageAlphaBit   ImageAlphaMode = 1
 	ImageAlphaBlend ImageAlphaMode = 2
 )
 
@@ -2706,21 +2705,21 @@ type ImageCompressMode = classdb.ImageCompressMode
 
 const (
 	ImageCompressS3tc ImageCompressMode = 0
-	ImageCompressEtc ImageCompressMode = 1
+	ImageCompressEtc  ImageCompressMode = 1
 	ImageCompressEtc2 ImageCompressMode = 2
 	ImageCompressBptc ImageCompressMode = 3
 	ImageCompressAstc ImageCompressMode = 4
-	ImageCompressMax ImageCompressMode = 5
+	ImageCompressMax  ImageCompressMode = 5
 )
 
 type ImageUsedChannels = classdb.ImageUsedChannels
 
 const (
-	ImageUsedChannelsL ImageUsedChannels = 0
-	ImageUsedChannelsLa ImageUsedChannels = 1
-	ImageUsedChannelsR ImageUsedChannels = 2
-	ImageUsedChannelsRg ImageUsedChannels = 3
-	ImageUsedChannelsRgb ImageUsedChannels = 4
+	ImageUsedChannelsL    ImageUsedChannels = 0
+	ImageUsedChannelsLa   ImageUsedChannels = 1
+	ImageUsedChannelsR    ImageUsedChannels = 2
+	ImageUsedChannelsRg   ImageUsedChannels = 3
+	ImageUsedChannelsRgb  ImageUsedChannels = 4
 	ImageUsedChannelsRgba ImageUsedChannels = 5
 )
 
@@ -2728,8 +2727,8 @@ type ImageCompressSource = classdb.ImageCompressSource
 
 const (
 	ImageCompressSourceGeneric ImageCompressSource = 0
-	ImageCompressSourceSrgb ImageCompressSource = 1
-	ImageCompressSourceNormal ImageCompressSource = 2
+	ImageCompressSourceSrgb    ImageCompressSource = 1
+	ImageCompressSourceNormal  ImageCompressSource = 2
 )
 
 type ImageASTCFormat = classdb.ImageASTCFormat
@@ -2742,47 +2741,47 @@ const (
 type ImageFormatLoaderLoaderFlags = classdb.ImageFormatLoaderLoaderFlags
 
 const (
-	ImageFormatLoaderFlagNone ImageFormatLoaderLoaderFlags = 0
-	ImageFormatLoaderFlagForceLinear ImageFormatLoaderLoaderFlags = 1
+	ImageFormatLoaderFlagNone          ImageFormatLoaderLoaderFlags = 0
+	ImageFormatLoaderFlagForceLinear   ImageFormatLoaderLoaderFlags = 1
 	ImageFormatLoaderFlagConvertColors ImageFormatLoaderLoaderFlags = 2
 )
 
 type InputMouseMode = classdb.InputMouseMode
 
 const (
-	InputMouseModeVisible InputMouseMode = 0
-	InputMouseModeHidden InputMouseMode = 1
-	InputMouseModeCaptured InputMouseMode = 2
-	InputMouseModeConfined InputMouseMode = 3
+	InputMouseModeVisible        InputMouseMode = 0
+	InputMouseModeHidden         InputMouseMode = 1
+	InputMouseModeCaptured       InputMouseMode = 2
+	InputMouseModeConfined       InputMouseMode = 3
 	InputMouseModeConfinedHidden InputMouseMode = 4
 )
 
 type InputCursorShape = classdb.InputCursorShape
 
 const (
-	InputCursorArrow InputCursorShape = 0
-	InputCursorIbeam InputCursorShape = 1
+	InputCursorArrow        InputCursorShape = 0
+	InputCursorIbeam        InputCursorShape = 1
 	InputCursorPointingHand InputCursorShape = 2
-	InputCursorCross InputCursorShape = 3
-	InputCursorWait InputCursorShape = 4
-	InputCursorBusy InputCursorShape = 5
-	InputCursorDrag InputCursorShape = 6
-	InputCursorCanDrop InputCursorShape = 7
-	InputCursorForbidden InputCursorShape = 8
-	InputCursorVsize InputCursorShape = 9
-	InputCursorHsize InputCursorShape = 10
-	InputCursorBdiagsize InputCursorShape = 11
-	InputCursorFdiagsize InputCursorShape = 12
-	InputCursorMove InputCursorShape = 13
-	InputCursorVsplit InputCursorShape = 14
-	InputCursorHsplit InputCursorShape = 15
-	InputCursorHelp InputCursorShape = 16
+	InputCursorCross        InputCursorShape = 3
+	InputCursorWait         InputCursorShape = 4
+	InputCursorBusy         InputCursorShape = 5
+	InputCursorDrag         InputCursorShape = 6
+	InputCursorCanDrop      InputCursorShape = 7
+	InputCursorForbidden    InputCursorShape = 8
+	InputCursorVsize        InputCursorShape = 9
+	InputCursorHsize        InputCursorShape = 10
+	InputCursorBdiagsize    InputCursorShape = 11
+	InputCursorFdiagsize    InputCursorShape = 12
+	InputCursorMove         InputCursorShape = 13
+	InputCursorVsplit       InputCursorShape = 14
+	InputCursorHsplit       InputCursorShape = 15
+	InputCursorHelp         InputCursorShape = 16
 )
 
 type ItemListIconMode = classdb.ItemListIconMode
 
 const (
-	ItemListIconModeTop ItemListIconMode = 0
+	ItemListIconModeTop  ItemListIconMode = 0
 	ItemListIconModeLeft ItemListIconMode = 1
 )
 
@@ -2790,43 +2789,43 @@ type ItemListSelectMode = classdb.ItemListSelectMode
 
 const (
 	ItemListSelectSingle ItemListSelectMode = 0
-	ItemListSelectMulti ItemListSelectMode = 1
+	ItemListSelectMulti  ItemListSelectMode = 1
 )
 
 type JSONRPCErrorCode = classdb.JSONRPCErrorCode
 
 const (
-	JSONRPCParseError JSONRPCErrorCode = -32700
+	JSONRPCParseError     JSONRPCErrorCode = -32700
 	JSONRPCInvalidRequest JSONRPCErrorCode = -32600
 	JSONRPCMethodNotFound JSONRPCErrorCode = -32601
-	JSONRPCInvalidParams JSONRPCErrorCode = -32602
-	JSONRPCInternalError JSONRPCErrorCode = -32603
+	JSONRPCInvalidParams  JSONRPCErrorCode = -32602
+	JSONRPCInternalError  JSONRPCErrorCode = -32603
 )
 
 type Label3DDrawFlags = classdb.Label3DDrawFlags
 
 const (
-	Label3DFlagShaded Label3DDrawFlags = 0
-	Label3DFlagDoubleSided Label3DDrawFlags = 1
+	Label3DFlagShaded           Label3DDrawFlags = 0
+	Label3DFlagDoubleSided      Label3DDrawFlags = 1
 	Label3DFlagDisableDepthTest Label3DDrawFlags = 2
-	Label3DFlagFixedSize Label3DDrawFlags = 3
-	Label3DFlagMax Label3DDrawFlags = 4
+	Label3DFlagFixedSize        Label3DDrawFlags = 3
+	Label3DFlagMax              Label3DDrawFlags = 4
 )
 
 type Label3DAlphaCutMode = classdb.Label3DAlphaCutMode
 
 const (
-	Label3DAlphaCutDisabled Label3DAlphaCutMode = 0
-	Label3DAlphaCutDiscard Label3DAlphaCutMode = 1
+	Label3DAlphaCutDisabled      Label3DAlphaCutMode = 0
+	Label3DAlphaCutDiscard       Label3DAlphaCutMode = 1
 	Label3DAlphaCutOpaquePrepass Label3DAlphaCutMode = 2
-	Label3DAlphaCutHash Label3DAlphaCutMode = 3
+	Label3DAlphaCutHash          Label3DAlphaCutMode = 3
 )
 
 type Light2DShadowFilter = classdb.Light2DShadowFilter
 
 const (
-	Light2DShadowFilterNone Light2DShadowFilter = 0
-	Light2DShadowFilterPcf5 Light2DShadowFilter = 1
+	Light2DShadowFilterNone  Light2DShadowFilter = 0
+	Light2DShadowFilterPcf5  Light2DShadowFilter = 1
 	Light2DShadowFilterPcf13 Light2DShadowFilter = 2
 )
 
@@ -2841,53 +2840,53 @@ const (
 type Light3DParam = classdb.Light3DParam
 
 const (
-	Light3DParamEnergy Light3DParam = 0
-	Light3DParamIndirectEnergy Light3DParam = 1
+	Light3DParamEnergy              Light3DParam = 0
+	Light3DParamIndirectEnergy      Light3DParam = 1
 	Light3DParamVolumetricFogEnergy Light3DParam = 2
-	Light3DParamSpecular Light3DParam = 3
-	Light3DParamRange Light3DParam = 4
-	Light3DParamSize Light3DParam = 5
-	Light3DParamAttenuation Light3DParam = 6
-	Light3DParamSpotAngle Light3DParam = 7
-	Light3DParamSpotAttenuation Light3DParam = 8
-	Light3DParamShadowMaxDistance Light3DParam = 9
-	Light3DParamShadowSplit1Offset Light3DParam = 10
-	Light3DParamShadowSplit2Offset Light3DParam = 11
-	Light3DParamShadowSplit3Offset Light3DParam = 12
-	Light3DParamShadowFadeStart Light3DParam = 13
-	Light3DParamShadowNormalBias Light3DParam = 14
-	Light3DParamShadowBias Light3DParam = 15
-	Light3DParamShadowPancakeSize Light3DParam = 16
-	Light3DParamShadowOpacity Light3DParam = 17
-	Light3DParamShadowBlur Light3DParam = 18
-	Light3DParamTransmittanceBias Light3DParam = 19
-	Light3DParamIntensity Light3DParam = 20
-	Light3DParamMax Light3DParam = 21
+	Light3DParamSpecular            Light3DParam = 3
+	Light3DParamRange               Light3DParam = 4
+	Light3DParamSize                Light3DParam = 5
+	Light3DParamAttenuation         Light3DParam = 6
+	Light3DParamSpotAngle           Light3DParam = 7
+	Light3DParamSpotAttenuation     Light3DParam = 8
+	Light3DParamShadowMaxDistance   Light3DParam = 9
+	Light3DParamShadowSplit1Offset  Light3DParam = 10
+	Light3DParamShadowSplit2Offset  Light3DParam = 11
+	Light3DParamShadowSplit3Offset  Light3DParam = 12
+	Light3DParamShadowFadeStart     Light3DParam = 13
+	Light3DParamShadowNormalBias    Light3DParam = 14
+	Light3DParamShadowBias          Light3DParam = 15
+	Light3DParamShadowPancakeSize   Light3DParam = 16
+	Light3DParamShadowOpacity       Light3DParam = 17
+	Light3DParamShadowBlur          Light3DParam = 18
+	Light3DParamTransmittanceBias   Light3DParam = 19
+	Light3DParamIntensity           Light3DParam = 20
+	Light3DParamMax                 Light3DParam = 21
 )
 
 type Light3DBakeMode = classdb.Light3DBakeMode
 
 const (
 	Light3DBakeDisabled Light3DBakeMode = 0
-	Light3DBakeStatic Light3DBakeMode = 1
-	Light3DBakeDynamic Light3DBakeMode = 2
+	Light3DBakeStatic   Light3DBakeMode = 1
+	Light3DBakeDynamic  Light3DBakeMode = 2
 )
 
 type LightmapGIBakeQuality = classdb.LightmapGIBakeQuality
 
 const (
-	LightmapGIBakeQualityLow LightmapGIBakeQuality = 0
+	LightmapGIBakeQualityLow    LightmapGIBakeQuality = 0
 	LightmapGIBakeQualityMedium LightmapGIBakeQuality = 1
-	LightmapGIBakeQualityHigh LightmapGIBakeQuality = 2
-	LightmapGIBakeQualityUltra LightmapGIBakeQuality = 3
+	LightmapGIBakeQualityHigh   LightmapGIBakeQuality = 2
+	LightmapGIBakeQualityUltra  LightmapGIBakeQuality = 3
 )
 
 type LightmapGIGenerateProbes = classdb.LightmapGIGenerateProbes
 
 const (
 	LightmapGIGenerateProbesDisabled LightmapGIGenerateProbes = 0
-	LightmapGIGenerateProbesSubdiv4 LightmapGIGenerateProbes = 1
-	LightmapGIGenerateProbesSubdiv8 LightmapGIGenerateProbes = 2
+	LightmapGIGenerateProbesSubdiv4  LightmapGIGenerateProbes = 1
+	LightmapGIGenerateProbesSubdiv8  LightmapGIGenerateProbes = 2
 	LightmapGIGenerateProbesSubdiv16 LightmapGIGenerateProbes = 3
 	LightmapGIGenerateProbesSubdiv32 LightmapGIGenerateProbes = 4
 )
@@ -2895,24 +2894,24 @@ const (
 type LightmapGIBakeError = classdb.LightmapGIBakeError
 
 const (
-	LightmapGIBakeErrorOk LightmapGIBakeError = 0
-	LightmapGIBakeErrorNoSceneRoot LightmapGIBakeError = 1
-	LightmapGIBakeErrorForeignData LightmapGIBakeError = 2
-	LightmapGIBakeErrorNoLightmapper LightmapGIBakeError = 3
-	LightmapGIBakeErrorNoSavePath LightmapGIBakeError = 4
-	LightmapGIBakeErrorNoMeshes LightmapGIBakeError = 5
-	LightmapGIBakeErrorMeshesInvalid LightmapGIBakeError = 6
-	LightmapGIBakeErrorCantCreateImage LightmapGIBakeError = 7
-	LightmapGIBakeErrorUserAborted LightmapGIBakeError = 8
+	LightmapGIBakeErrorOk                  LightmapGIBakeError = 0
+	LightmapGIBakeErrorNoSceneRoot         LightmapGIBakeError = 1
+	LightmapGIBakeErrorForeignData         LightmapGIBakeError = 2
+	LightmapGIBakeErrorNoLightmapper       LightmapGIBakeError = 3
+	LightmapGIBakeErrorNoSavePath          LightmapGIBakeError = 4
+	LightmapGIBakeErrorNoMeshes            LightmapGIBakeError = 5
+	LightmapGIBakeErrorMeshesInvalid       LightmapGIBakeError = 6
+	LightmapGIBakeErrorCantCreateImage     LightmapGIBakeError = 7
+	LightmapGIBakeErrorUserAborted         LightmapGIBakeError = 8
 	LightmapGIBakeErrorTextureSizeTooSmall LightmapGIBakeError = 9
 )
 
 type LightmapGIEnvironmentMode = classdb.LightmapGIEnvironmentMode
 
 const (
-	LightmapGIEnvironmentModeDisabled LightmapGIEnvironmentMode = 0
-	LightmapGIEnvironmentModeScene LightmapGIEnvironmentMode = 1
-	LightmapGIEnvironmentModeCustomSky LightmapGIEnvironmentMode = 2
+	LightmapGIEnvironmentModeDisabled    LightmapGIEnvironmentMode = 0
+	LightmapGIEnvironmentModeScene       LightmapGIEnvironmentMode = 1
+	LightmapGIEnvironmentModeCustomSky   LightmapGIEnvironmentMode = 2
 	LightmapGIEnvironmentModeCustomColor LightmapGIEnvironmentMode = 3
 )
 
@@ -2927,103 +2926,103 @@ const (
 type Line2DLineCapMode = classdb.Line2DLineCapMode
 
 const (
-	Line2DLineCapNone Line2DLineCapMode = 0
-	Line2DLineCapBox Line2DLineCapMode = 1
+	Line2DLineCapNone  Line2DLineCapMode = 0
+	Line2DLineCapBox   Line2DLineCapMode = 1
 	Line2DLineCapRound Line2DLineCapMode = 2
 )
 
 type Line2DLineTextureMode = classdb.Line2DLineTextureMode
 
 const (
-	Line2DLineTextureNone Line2DLineTextureMode = 0
-	Line2DLineTextureTile Line2DLineTextureMode = 1
+	Line2DLineTextureNone    Line2DLineTextureMode = 0
+	Line2DLineTextureTile    Line2DLineTextureMode = 1
 	Line2DLineTextureStretch Line2DLineTextureMode = 2
 )
 
 type LineEditMenuItems = classdb.LineEditMenuItems
 
 const (
-	LineEditMenuCut LineEditMenuItems = 0
-	LineEditMenuCopy LineEditMenuItems = 1
-	LineEditMenuPaste LineEditMenuItems = 2
-	LineEditMenuClear LineEditMenuItems = 3
-	LineEditMenuSelectAll LineEditMenuItems = 4
-	LineEditMenuUndo LineEditMenuItems = 5
-	LineEditMenuRedo LineEditMenuItems = 6
-	LineEditMenuSubmenuTextDir LineEditMenuItems = 7
-	LineEditMenuDirInherited LineEditMenuItems = 8
-	LineEditMenuDirAuto LineEditMenuItems = 9
-	LineEditMenuDirLtr LineEditMenuItems = 10
-	LineEditMenuDirRtl LineEditMenuItems = 11
-	LineEditMenuDisplayUcc LineEditMenuItems = 12
+	LineEditMenuCut              LineEditMenuItems = 0
+	LineEditMenuCopy             LineEditMenuItems = 1
+	LineEditMenuPaste            LineEditMenuItems = 2
+	LineEditMenuClear            LineEditMenuItems = 3
+	LineEditMenuSelectAll        LineEditMenuItems = 4
+	LineEditMenuUndo             LineEditMenuItems = 5
+	LineEditMenuRedo             LineEditMenuItems = 6
+	LineEditMenuSubmenuTextDir   LineEditMenuItems = 7
+	LineEditMenuDirInherited     LineEditMenuItems = 8
+	LineEditMenuDirAuto          LineEditMenuItems = 9
+	LineEditMenuDirLtr           LineEditMenuItems = 10
+	LineEditMenuDirRtl           LineEditMenuItems = 11
+	LineEditMenuDisplayUcc       LineEditMenuItems = 12
 	LineEditMenuSubmenuInsertUcc LineEditMenuItems = 13
-	LineEditMenuInsertLrm LineEditMenuItems = 14
-	LineEditMenuInsertRlm LineEditMenuItems = 15
-	LineEditMenuInsertLre LineEditMenuItems = 16
-	LineEditMenuInsertRle LineEditMenuItems = 17
-	LineEditMenuInsertLro LineEditMenuItems = 18
-	LineEditMenuInsertRlo LineEditMenuItems = 19
-	LineEditMenuInsertPdf LineEditMenuItems = 20
-	LineEditMenuInsertAlm LineEditMenuItems = 21
-	LineEditMenuInsertLri LineEditMenuItems = 22
-	LineEditMenuInsertRli LineEditMenuItems = 23
-	LineEditMenuInsertFsi LineEditMenuItems = 24
-	LineEditMenuInsertPdi LineEditMenuItems = 25
-	LineEditMenuInsertZwj LineEditMenuItems = 26
-	LineEditMenuInsertZwnj LineEditMenuItems = 27
-	LineEditMenuInsertWj LineEditMenuItems = 28
-	LineEditMenuInsertShy LineEditMenuItems = 29
-	LineEditMenuMax LineEditMenuItems = 30
+	LineEditMenuInsertLrm        LineEditMenuItems = 14
+	LineEditMenuInsertRlm        LineEditMenuItems = 15
+	LineEditMenuInsertLre        LineEditMenuItems = 16
+	LineEditMenuInsertRle        LineEditMenuItems = 17
+	LineEditMenuInsertLro        LineEditMenuItems = 18
+	LineEditMenuInsertRlo        LineEditMenuItems = 19
+	LineEditMenuInsertPdf        LineEditMenuItems = 20
+	LineEditMenuInsertAlm        LineEditMenuItems = 21
+	LineEditMenuInsertLri        LineEditMenuItems = 22
+	LineEditMenuInsertRli        LineEditMenuItems = 23
+	LineEditMenuInsertFsi        LineEditMenuItems = 24
+	LineEditMenuInsertPdi        LineEditMenuItems = 25
+	LineEditMenuInsertZwj        LineEditMenuItems = 26
+	LineEditMenuInsertZwnj       LineEditMenuItems = 27
+	LineEditMenuInsertWj         LineEditMenuItems = 28
+	LineEditMenuInsertShy        LineEditMenuItems = 29
+	LineEditMenuMax              LineEditMenuItems = 30
 )
 
 type LineEditVirtualKeyboardType = classdb.LineEditVirtualKeyboardType
 
 const (
-	LineEditKeyboardTypeDefault LineEditVirtualKeyboardType = 0
-	LineEditKeyboardTypeMultiline LineEditVirtualKeyboardType = 1
-	LineEditKeyboardTypeNumber LineEditVirtualKeyboardType = 2
+	LineEditKeyboardTypeDefault       LineEditVirtualKeyboardType = 0
+	LineEditKeyboardTypeMultiline     LineEditVirtualKeyboardType = 1
+	LineEditKeyboardTypeNumber        LineEditVirtualKeyboardType = 2
 	LineEditKeyboardTypeNumberDecimal LineEditVirtualKeyboardType = 3
-	LineEditKeyboardTypePhone LineEditVirtualKeyboardType = 4
-	LineEditKeyboardTypeEmailAddress LineEditVirtualKeyboardType = 5
-	LineEditKeyboardTypePassword LineEditVirtualKeyboardType = 6
-	LineEditKeyboardTypeUrl LineEditVirtualKeyboardType = 7
+	LineEditKeyboardTypePhone         LineEditVirtualKeyboardType = 4
+	LineEditKeyboardTypeEmailAddress  LineEditVirtualKeyboardType = 5
+	LineEditKeyboardTypePassword      LineEditVirtualKeyboardType = 6
+	LineEditKeyboardTypeUrl           LineEditVirtualKeyboardType = 7
 )
 
 type LinkButtonUnderlineMode = classdb.LinkButtonUnderlineMode
 
 const (
-	LinkButtonUnderlineModeAlways LinkButtonUnderlineMode = 0
+	LinkButtonUnderlineModeAlways  LinkButtonUnderlineMode = 0
 	LinkButtonUnderlineModeOnHover LinkButtonUnderlineMode = 1
-	LinkButtonUnderlineModeNever LinkButtonUnderlineMode = 2
+	LinkButtonUnderlineModeNever   LinkButtonUnderlineMode = 2
 )
 
 type MeshPrimitiveType = classdb.MeshPrimitiveType
 
 const (
-	MeshPrimitivePoints MeshPrimitiveType = 0
-	MeshPrimitiveLines MeshPrimitiveType = 1
-	MeshPrimitiveLineStrip MeshPrimitiveType = 2
-	MeshPrimitiveTriangles MeshPrimitiveType = 3
+	MeshPrimitivePoints        MeshPrimitiveType = 0
+	MeshPrimitiveLines         MeshPrimitiveType = 1
+	MeshPrimitiveLineStrip     MeshPrimitiveType = 2
+	MeshPrimitiveTriangles     MeshPrimitiveType = 3
 	MeshPrimitiveTriangleStrip MeshPrimitiveType = 4
 )
 
 type MeshArrayType = classdb.MeshArrayType
 
 const (
-	MeshArrayVertex MeshArrayType = 0
-	MeshArrayNormal MeshArrayType = 1
+	MeshArrayVertex  MeshArrayType = 0
+	MeshArrayNormal  MeshArrayType = 1
 	MeshArrayTangent MeshArrayType = 2
-	MeshArrayColor MeshArrayType = 3
-	MeshArrayTexUv MeshArrayType = 4
-	MeshArrayTexUv2 MeshArrayType = 5
+	MeshArrayColor   MeshArrayType = 3
+	MeshArrayTexUv   MeshArrayType = 4
+	MeshArrayTexUv2  MeshArrayType = 5
 	MeshArrayCustom0 MeshArrayType = 6
 	MeshArrayCustom1 MeshArrayType = 7
 	MeshArrayCustom2 MeshArrayType = 8
 	MeshArrayCustom3 MeshArrayType = 9
-	MeshArrayBones MeshArrayType = 10
+	MeshArrayBones   MeshArrayType = 10
 	MeshArrayWeights MeshArrayType = 11
-	MeshArrayIndex MeshArrayType = 12
-	MeshArrayMax MeshArrayType = 13
+	MeshArrayIndex   MeshArrayType = 12
+	MeshArrayMax     MeshArrayType = 13
 )
 
 type MeshArrayCustomFormat = classdb.MeshArrayCustomFormat
@@ -3031,58 +3030,58 @@ type MeshArrayCustomFormat = classdb.MeshArrayCustomFormat
 const (
 	MeshArrayCustomRgba8Unorm MeshArrayCustomFormat = 0
 	MeshArrayCustomRgba8Snorm MeshArrayCustomFormat = 1
-	MeshArrayCustomRgHalf MeshArrayCustomFormat = 2
-	MeshArrayCustomRgbaHalf MeshArrayCustomFormat = 3
-	MeshArrayCustomRFloat MeshArrayCustomFormat = 4
-	MeshArrayCustomRgFloat MeshArrayCustomFormat = 5
-	MeshArrayCustomRgbFloat MeshArrayCustomFormat = 6
-	MeshArrayCustomRgbaFloat MeshArrayCustomFormat = 7
-	MeshArrayCustomMax MeshArrayCustomFormat = 8
+	MeshArrayCustomRgHalf     MeshArrayCustomFormat = 2
+	MeshArrayCustomRgbaHalf   MeshArrayCustomFormat = 3
+	MeshArrayCustomRFloat     MeshArrayCustomFormat = 4
+	MeshArrayCustomRgFloat    MeshArrayCustomFormat = 5
+	MeshArrayCustomRgbFloat   MeshArrayCustomFormat = 6
+	MeshArrayCustomRgbaFloat  MeshArrayCustomFormat = 7
+	MeshArrayCustomMax        MeshArrayCustomFormat = 8
 )
 
 type MeshArrayFormat = classdb.MeshArrayFormat
 
 const (
-	MeshArrayFormatVertex MeshArrayFormat = 1
-	MeshArrayFormatNormal MeshArrayFormat = 2
-	MeshArrayFormatTangent MeshArrayFormat = 4
-	MeshArrayFormatColor MeshArrayFormat = 8
-	MeshArrayFormatTexUv MeshArrayFormat = 16
-	MeshArrayFormatTexUv2 MeshArrayFormat = 32
-	MeshArrayFormatCustom0 MeshArrayFormat = 64
-	MeshArrayFormatCustom1 MeshArrayFormat = 128
-	MeshArrayFormatCustom2 MeshArrayFormat = 256
-	MeshArrayFormatCustom3 MeshArrayFormat = 512
-	MeshArrayFormatBones MeshArrayFormat = 1024
-	MeshArrayFormatWeights MeshArrayFormat = 2048
-	MeshArrayFormatIndex MeshArrayFormat = 4096
-	MeshArrayFormatBlendShapeMask MeshArrayFormat = 7
-	MeshArrayFormatCustomBase MeshArrayFormat = 13
-	MeshArrayFormatCustomBits MeshArrayFormat = 3
-	MeshArrayFormatCustom0Shift MeshArrayFormat = 13
-	MeshArrayFormatCustom1Shift MeshArrayFormat = 16
-	MeshArrayFormatCustom2Shift MeshArrayFormat = 19
-	MeshArrayFormatCustom3Shift MeshArrayFormat = 22
-	MeshArrayFormatCustomMask MeshArrayFormat = 7
-	MeshArrayCompressFlagsBase MeshArrayFormat = 25
-	MeshArrayFlagUse2dVertices MeshArrayFormat = 33554432
-	MeshArrayFlagUseDynamicUpdate MeshArrayFormat = 67108864
-	MeshArrayFlagUse8BoneWeights MeshArrayFormat = 134217728
+	MeshArrayFormatVertex             MeshArrayFormat = 1
+	MeshArrayFormatNormal             MeshArrayFormat = 2
+	MeshArrayFormatTangent            MeshArrayFormat = 4
+	MeshArrayFormatColor              MeshArrayFormat = 8
+	MeshArrayFormatTexUv              MeshArrayFormat = 16
+	MeshArrayFormatTexUv2             MeshArrayFormat = 32
+	MeshArrayFormatCustom0            MeshArrayFormat = 64
+	MeshArrayFormatCustom1            MeshArrayFormat = 128
+	MeshArrayFormatCustom2            MeshArrayFormat = 256
+	MeshArrayFormatCustom3            MeshArrayFormat = 512
+	MeshArrayFormatBones              MeshArrayFormat = 1024
+	MeshArrayFormatWeights            MeshArrayFormat = 2048
+	MeshArrayFormatIndex              MeshArrayFormat = 4096
+	MeshArrayFormatBlendShapeMask     MeshArrayFormat = 7
+	MeshArrayFormatCustomBase         MeshArrayFormat = 13
+	MeshArrayFormatCustomBits         MeshArrayFormat = 3
+	MeshArrayFormatCustom0Shift       MeshArrayFormat = 13
+	MeshArrayFormatCustom1Shift       MeshArrayFormat = 16
+	MeshArrayFormatCustom2Shift       MeshArrayFormat = 19
+	MeshArrayFormatCustom3Shift       MeshArrayFormat = 22
+	MeshArrayFormatCustomMask         MeshArrayFormat = 7
+	MeshArrayCompressFlagsBase        MeshArrayFormat = 25
+	MeshArrayFlagUse2dVertices        MeshArrayFormat = 33554432
+	MeshArrayFlagUseDynamicUpdate     MeshArrayFormat = 67108864
+	MeshArrayFlagUse8BoneWeights      MeshArrayFormat = 134217728
 	MeshArrayFlagUsesEmptyVertexArray MeshArrayFormat = 268435456
-	MeshArrayFlagCompressAttributes MeshArrayFormat = 536870912
+	MeshArrayFlagCompressAttributes   MeshArrayFormat = 536870912
 )
 
 type MeshBlendShapeMode = classdb.MeshBlendShapeMode
 
 const (
 	MeshBlendShapeModeNormalized MeshBlendShapeMode = 0
-	MeshBlendShapeModeRelative MeshBlendShapeMode = 1
+	MeshBlendShapeModeRelative   MeshBlendShapeMode = 1
 )
 
 type MeshConvexDecompositionSettingsMode = classdb.MeshConvexDecompositionSettingsMode
 
 const (
-	MeshConvexDecompositionSettingsConvexDecompositionModeVoxel MeshConvexDecompositionSettingsMode = 0
+	MeshConvexDecompositionSettingsConvexDecompositionModeVoxel       MeshConvexDecompositionSettingsMode = 0
 	MeshConvexDecompositionSettingsConvexDecompositionModeTetrahedron MeshConvexDecompositionSettingsMode = 1
 )
 
@@ -3096,8 +3095,8 @@ const (
 type MultiplayerAPIRPCMode = classdb.MultiplayerAPIRPCMode
 
 const (
-	MultiplayerAPIRpcModeDisabled MultiplayerAPIRPCMode = 0
-	MultiplayerAPIRpcModeAnyPeer MultiplayerAPIRPCMode = 1
+	MultiplayerAPIRpcModeDisabled  MultiplayerAPIRPCMode = 0
+	MultiplayerAPIRpcModeAnyPeer   MultiplayerAPIRPCMode = 1
 	MultiplayerAPIRpcModeAuthority MultiplayerAPIRPCMode = 2
 )
 
@@ -3105,51 +3104,51 @@ type MultiplayerPeerConnectionStatus = classdb.MultiplayerPeerConnectionStatus
 
 const (
 	MultiplayerPeerConnectionDisconnected MultiplayerPeerConnectionStatus = 0
-	MultiplayerPeerConnectionConnecting MultiplayerPeerConnectionStatus = 1
-	MultiplayerPeerConnectionConnected MultiplayerPeerConnectionStatus = 2
+	MultiplayerPeerConnectionConnecting   MultiplayerPeerConnectionStatus = 1
+	MultiplayerPeerConnectionConnected    MultiplayerPeerConnectionStatus = 2
 )
 
 type MultiplayerPeerTransferMode = classdb.MultiplayerPeerTransferMode
 
 const (
-	MultiplayerPeerTransferModeUnreliable MultiplayerPeerTransferMode = 0
+	MultiplayerPeerTransferModeUnreliable        MultiplayerPeerTransferMode = 0
 	MultiplayerPeerTransferModeUnreliableOrdered MultiplayerPeerTransferMode = 1
-	MultiplayerPeerTransferModeReliable MultiplayerPeerTransferMode = 2
+	MultiplayerPeerTransferModeReliable          MultiplayerPeerTransferMode = 2
 )
 
 type MultiplayerSynchronizerVisibilityUpdateMode = classdb.MultiplayerSynchronizerVisibilityUpdateMode
 
 const (
-	MultiplayerSynchronizerVisibilityProcessIdle MultiplayerSynchronizerVisibilityUpdateMode = 0
+	MultiplayerSynchronizerVisibilityProcessIdle    MultiplayerSynchronizerVisibilityUpdateMode = 0
 	MultiplayerSynchronizerVisibilityProcessPhysics MultiplayerSynchronizerVisibilityUpdateMode = 1
-	MultiplayerSynchronizerVisibilityProcessNone MultiplayerSynchronizerVisibilityUpdateMode = 2
+	MultiplayerSynchronizerVisibilityProcessNone    MultiplayerSynchronizerVisibilityUpdateMode = 2
 )
 
 type NavigationMeshSamplePartitionType = classdb.NavigationMeshSamplePartitionType
 
 const (
 	NavigationMeshSamplePartitionWatershed NavigationMeshSamplePartitionType = 0
-	NavigationMeshSamplePartitionMonotone NavigationMeshSamplePartitionType = 1
-	NavigationMeshSamplePartitionLayers NavigationMeshSamplePartitionType = 2
-	NavigationMeshSamplePartitionMax NavigationMeshSamplePartitionType = 3
+	NavigationMeshSamplePartitionMonotone  NavigationMeshSamplePartitionType = 1
+	NavigationMeshSamplePartitionLayers    NavigationMeshSamplePartitionType = 2
+	NavigationMeshSamplePartitionMax       NavigationMeshSamplePartitionType = 3
 )
 
 type NavigationMeshParsedGeometryType = classdb.NavigationMeshParsedGeometryType
 
 const (
-	NavigationMeshParsedGeometryMeshInstances NavigationMeshParsedGeometryType = 0
+	NavigationMeshParsedGeometryMeshInstances   NavigationMeshParsedGeometryType = 0
 	NavigationMeshParsedGeometryStaticColliders NavigationMeshParsedGeometryType = 1
-	NavigationMeshParsedGeometryBoth NavigationMeshParsedGeometryType = 2
-	NavigationMeshParsedGeometryMax NavigationMeshParsedGeometryType = 3
+	NavigationMeshParsedGeometryBoth            NavigationMeshParsedGeometryType = 2
+	NavigationMeshParsedGeometryMax             NavigationMeshParsedGeometryType = 3
 )
 
 type NavigationMeshSourceGeometryMode = classdb.NavigationMeshSourceGeometryMode
 
 const (
-	NavigationMeshSourceGeometryRootNodeChildren NavigationMeshSourceGeometryMode = 0
+	NavigationMeshSourceGeometryRootNodeChildren   NavigationMeshSourceGeometryMode = 0
 	NavigationMeshSourceGeometryGroupsWithChildren NavigationMeshSourceGeometryMode = 1
-	NavigationMeshSourceGeometryGroupsExplicit NavigationMeshSourceGeometryMode = 2
-	NavigationMeshSourceGeometryMax NavigationMeshSourceGeometryMode = 3
+	NavigationMeshSourceGeometryGroupsExplicit     NavigationMeshSourceGeometryMode = 2
+	NavigationMeshSourceGeometryMax                NavigationMeshSourceGeometryMode = 3
 )
 
 type NavigationPathQueryParameters2DPathfindingAlgorithm = classdb.NavigationPathQueryParameters2DPathfindingAlgorithm
@@ -3162,17 +3161,17 @@ type NavigationPathQueryParameters2DPathPostProcessing = classdb.NavigationPathQ
 
 const (
 	NavigationPathQueryParameters2DPathPostprocessingCorridorfunnel NavigationPathQueryParameters2DPathPostProcessing = 0
-	NavigationPathQueryParameters2DPathPostprocessingEdgecentered NavigationPathQueryParameters2DPathPostProcessing = 1
+	NavigationPathQueryParameters2DPathPostprocessingEdgecentered   NavigationPathQueryParameters2DPathPostProcessing = 1
 )
 
 type NavigationPathQueryParameters2DPathMetadataFlags = classdb.NavigationPathQueryParameters2DPathMetadataFlags
 
 const (
-	NavigationPathQueryParameters2DPathMetadataIncludeNone NavigationPathQueryParameters2DPathMetadataFlags = 0
-	NavigationPathQueryParameters2DPathMetadataIncludeTypes NavigationPathQueryParameters2DPathMetadataFlags = 1
-	NavigationPathQueryParameters2DPathMetadataIncludeRids NavigationPathQueryParameters2DPathMetadataFlags = 2
+	NavigationPathQueryParameters2DPathMetadataIncludeNone   NavigationPathQueryParameters2DPathMetadataFlags = 0
+	NavigationPathQueryParameters2DPathMetadataIncludeTypes  NavigationPathQueryParameters2DPathMetadataFlags = 1
+	NavigationPathQueryParameters2DPathMetadataIncludeRids   NavigationPathQueryParameters2DPathMetadataFlags = 2
 	NavigationPathQueryParameters2DPathMetadataIncludeOwners NavigationPathQueryParameters2DPathMetadataFlags = 4
-	NavigationPathQueryParameters2DPathMetadataIncludeAll NavigationPathQueryParameters2DPathMetadataFlags = 7
+	NavigationPathQueryParameters2DPathMetadataIncludeAll    NavigationPathQueryParameters2DPathMetadataFlags = 7
 )
 
 type NavigationPathQueryParameters3DPathfindingAlgorithm = classdb.NavigationPathQueryParameters3DPathfindingAlgorithm
@@ -3185,105 +3184,105 @@ type NavigationPathQueryParameters3DPathPostProcessing = classdb.NavigationPathQ
 
 const (
 	NavigationPathQueryParameters3DPathPostprocessingCorridorfunnel NavigationPathQueryParameters3DPathPostProcessing = 0
-	NavigationPathQueryParameters3DPathPostprocessingEdgecentered NavigationPathQueryParameters3DPathPostProcessing = 1
+	NavigationPathQueryParameters3DPathPostprocessingEdgecentered   NavigationPathQueryParameters3DPathPostProcessing = 1
 )
 
 type NavigationPathQueryParameters3DPathMetadataFlags = classdb.NavigationPathQueryParameters3DPathMetadataFlags
 
 const (
-	NavigationPathQueryParameters3DPathMetadataIncludeNone NavigationPathQueryParameters3DPathMetadataFlags = 0
-	NavigationPathQueryParameters3DPathMetadataIncludeTypes NavigationPathQueryParameters3DPathMetadataFlags = 1
-	NavigationPathQueryParameters3DPathMetadataIncludeRids NavigationPathQueryParameters3DPathMetadataFlags = 2
+	NavigationPathQueryParameters3DPathMetadataIncludeNone   NavigationPathQueryParameters3DPathMetadataFlags = 0
+	NavigationPathQueryParameters3DPathMetadataIncludeTypes  NavigationPathQueryParameters3DPathMetadataFlags = 1
+	NavigationPathQueryParameters3DPathMetadataIncludeRids   NavigationPathQueryParameters3DPathMetadataFlags = 2
 	NavigationPathQueryParameters3DPathMetadataIncludeOwners NavigationPathQueryParameters3DPathMetadataFlags = 4
-	NavigationPathQueryParameters3DPathMetadataIncludeAll NavigationPathQueryParameters3DPathMetadataFlags = 7
+	NavigationPathQueryParameters3DPathMetadataIncludeAll    NavigationPathQueryParameters3DPathMetadataFlags = 7
 )
 
 type NavigationPathQueryResult2DPathSegmentType = classdb.NavigationPathQueryResult2DPathSegmentType
 
 const (
 	NavigationPathQueryResult2DPathSegmentTypeRegion NavigationPathQueryResult2DPathSegmentType = 0
-	NavigationPathQueryResult2DPathSegmentTypeLink NavigationPathQueryResult2DPathSegmentType = 1
+	NavigationPathQueryResult2DPathSegmentTypeLink   NavigationPathQueryResult2DPathSegmentType = 1
 )
 
 type NavigationPathQueryResult3DPathSegmentType = classdb.NavigationPathQueryResult3DPathSegmentType
 
 const (
 	NavigationPathQueryResult3DPathSegmentTypeRegion NavigationPathQueryResult3DPathSegmentType = 0
-	NavigationPathQueryResult3DPathSegmentTypeLink NavigationPathQueryResult3DPathSegmentType = 1
+	NavigationPathQueryResult3DPathSegmentTypeLink   NavigationPathQueryResult3DPathSegmentType = 1
 )
 
 type NavigationPolygonParsedGeometryType = classdb.NavigationPolygonParsedGeometryType
 
 const (
-	NavigationPolygonParsedGeometryMeshInstances NavigationPolygonParsedGeometryType = 0
+	NavigationPolygonParsedGeometryMeshInstances   NavigationPolygonParsedGeometryType = 0
 	NavigationPolygonParsedGeometryStaticColliders NavigationPolygonParsedGeometryType = 1
-	NavigationPolygonParsedGeometryBoth NavigationPolygonParsedGeometryType = 2
-	NavigationPolygonParsedGeometryMax NavigationPolygonParsedGeometryType = 3
+	NavigationPolygonParsedGeometryBoth            NavigationPolygonParsedGeometryType = 2
+	NavigationPolygonParsedGeometryMax             NavigationPolygonParsedGeometryType = 3
 )
 
 type NavigationPolygonSourceGeometryMode = classdb.NavigationPolygonSourceGeometryMode
 
 const (
-	NavigationPolygonSourceGeometryRootNodeChildren NavigationPolygonSourceGeometryMode = 0
+	NavigationPolygonSourceGeometryRootNodeChildren   NavigationPolygonSourceGeometryMode = 0
 	NavigationPolygonSourceGeometryGroupsWithChildren NavigationPolygonSourceGeometryMode = 1
-	NavigationPolygonSourceGeometryGroupsExplicit NavigationPolygonSourceGeometryMode = 2
-	NavigationPolygonSourceGeometryMax NavigationPolygonSourceGeometryMode = 3
+	NavigationPolygonSourceGeometryGroupsExplicit     NavigationPolygonSourceGeometryMode = 2
+	NavigationPolygonSourceGeometryMax                NavigationPolygonSourceGeometryMode = 3
 )
 
 type NavigationServer3DProcessInfo = classdb.NavigationServer3DProcessInfo
 
 const (
-	NavigationServer3DInfoActiveMaps NavigationServer3DProcessInfo = 0
-	NavigationServer3DInfoRegionCount NavigationServer3DProcessInfo = 1
-	NavigationServer3DInfoAgentCount NavigationServer3DProcessInfo = 2
-	NavigationServer3DInfoLinkCount NavigationServer3DProcessInfo = 3
-	NavigationServer3DInfoPolygonCount NavigationServer3DProcessInfo = 4
-	NavigationServer3DInfoEdgeCount NavigationServer3DProcessInfo = 5
-	NavigationServer3DInfoEdgeMergeCount NavigationServer3DProcessInfo = 6
+	NavigationServer3DInfoActiveMaps          NavigationServer3DProcessInfo = 0
+	NavigationServer3DInfoRegionCount         NavigationServer3DProcessInfo = 1
+	NavigationServer3DInfoAgentCount          NavigationServer3DProcessInfo = 2
+	NavigationServer3DInfoLinkCount           NavigationServer3DProcessInfo = 3
+	NavigationServer3DInfoPolygonCount        NavigationServer3DProcessInfo = 4
+	NavigationServer3DInfoEdgeCount           NavigationServer3DProcessInfo = 5
+	NavigationServer3DInfoEdgeMergeCount      NavigationServer3DProcessInfo = 6
 	NavigationServer3DInfoEdgeConnectionCount NavigationServer3DProcessInfo = 7
-	NavigationServer3DInfoEdgeFreeCount NavigationServer3DProcessInfo = 8
+	NavigationServer3DInfoEdgeFreeCount       NavigationServer3DProcessInfo = 8
 )
 
 type NinePatchRectAxisStretchMode = classdb.NinePatchRectAxisStretchMode
 
 const (
 	NinePatchRectAxisStretchModeStretch NinePatchRectAxisStretchMode = 0
-	NinePatchRectAxisStretchModeTile NinePatchRectAxisStretchMode = 1
+	NinePatchRectAxisStretchModeTile    NinePatchRectAxisStretchMode = 1
 	NinePatchRectAxisStretchModeTileFit NinePatchRectAxisStretchMode = 2
 )
 
 type NodeProcessMode = classdb.NodeProcessMode
 
 const (
-	NodeProcessModeInherit NodeProcessMode = 0
-	NodeProcessModePausable NodeProcessMode = 1
+	NodeProcessModeInherit    NodeProcessMode = 0
+	NodeProcessModePausable   NodeProcessMode = 1
 	NodeProcessModeWhenPaused NodeProcessMode = 2
-	NodeProcessModeAlways NodeProcessMode = 3
-	NodeProcessModeDisabled NodeProcessMode = 4
+	NodeProcessModeAlways     NodeProcessMode = 3
+	NodeProcessModeDisabled   NodeProcessMode = 4
 )
 
 type NodeProcessThreadGroup = classdb.NodeProcessThreadGroup
 
 const (
-	NodeProcessThreadGroupInherit NodeProcessThreadGroup = 0
+	NodeProcessThreadGroupInherit    NodeProcessThreadGroup = 0
 	NodeProcessThreadGroupMainThread NodeProcessThreadGroup = 1
-	NodeProcessThreadGroupSubThread NodeProcessThreadGroup = 2
+	NodeProcessThreadGroupSubThread  NodeProcessThreadGroup = 2
 )
 
 type NodeProcessThreadMessages = classdb.NodeProcessThreadMessages
 
 const (
-	NodeFlagProcessThreadMessages NodeProcessThreadMessages = 1
+	NodeFlagProcessThreadMessages        NodeProcessThreadMessages = 1
 	NodeFlagProcessThreadMessagesPhysics NodeProcessThreadMessages = 2
-	NodeFlagProcessThreadMessagesAll NodeProcessThreadMessages = 3
+	NodeFlagProcessThreadMessagesAll     NodeProcessThreadMessages = 3
 )
 
 type NodeDuplicateFlags = classdb.NodeDuplicateFlags
 
 const (
-	NodeDuplicateSignals NodeDuplicateFlags = 1
-	NodeDuplicateGroups NodeDuplicateFlags = 2
-	NodeDuplicateScripts NodeDuplicateFlags = 4
+	NodeDuplicateSignals          NodeDuplicateFlags = 1
+	NodeDuplicateGroups           NodeDuplicateFlags = 2
+	NodeDuplicateScripts          NodeDuplicateFlags = 4
 	NodeDuplicateUseInstantiation NodeDuplicateFlags = 8
 )
 
@@ -3291,52 +3290,52 @@ type NodeInternalMode = classdb.NodeInternalMode
 
 const (
 	NodeInternalModeDisabled NodeInternalMode = 0
-	NodeInternalModeFront NodeInternalMode = 1
-	NodeInternalModeBack NodeInternalMode = 2
+	NodeInternalModeFront    NodeInternalMode = 1
+	NodeInternalModeBack     NodeInternalMode = 2
 )
 
 type Node3DRotationEditMode = classdb.Node3DRotationEditMode
 
 const (
-	Node3DRotationEditModeEuler Node3DRotationEditMode = 0
+	Node3DRotationEditModeEuler      Node3DRotationEditMode = 0
 	Node3DRotationEditModeQuaternion Node3DRotationEditMode = 1
-	Node3DRotationEditModeBasis Node3DRotationEditMode = 2
+	Node3DRotationEditModeBasis      Node3DRotationEditMode = 2
 )
 
 type OSRenderingDriver = classdb.OSRenderingDriver
 
 const (
-	OSRenderingDriverVulkan OSRenderingDriver = 0
+	OSRenderingDriverVulkan  OSRenderingDriver = 0
 	OSRenderingDriverOpengl3 OSRenderingDriver = 1
 )
 
 type OSSystemDir = classdb.OSSystemDir
 
 const (
-	OSSystemDirDesktop OSSystemDir = 0
-	OSSystemDirDcim OSSystemDir = 1
+	OSSystemDirDesktop   OSSystemDir = 0
+	OSSystemDirDcim      OSSystemDir = 1
 	OSSystemDirDocuments OSSystemDir = 2
 	OSSystemDirDownloads OSSystemDir = 3
-	OSSystemDirMovies OSSystemDir = 4
-	OSSystemDirMusic OSSystemDir = 5
-	OSSystemDirPictures OSSystemDir = 6
+	OSSystemDirMovies    OSSystemDir = 4
+	OSSystemDirMusic     OSSystemDir = 5
+	OSSystemDirPictures  OSSystemDir = 6
 	OSSystemDirRingtones OSSystemDir = 7
 )
 
 type ObjectConnectFlags = gd.ObjectConnectFlags
 
 const (
-	ObjectConnectDeferred ObjectConnectFlags = 1
-	ObjectConnectPersist ObjectConnectFlags = 2
-	ObjectConnectOneShot ObjectConnectFlags = 4
+	ObjectConnectDeferred         ObjectConnectFlags = 1
+	ObjectConnectPersist          ObjectConnectFlags = 2
+	ObjectConnectOneShot          ObjectConnectFlags = 4
 	ObjectConnectReferenceCounted ObjectConnectFlags = 8
 )
 
 type OccluderPolygon2DCullMode = classdb.OccluderPolygon2DCullMode
 
 const (
-	OccluderPolygon2DCullDisabled OccluderPolygon2DCullMode = 0
-	OccluderPolygon2DCullClockwise OccluderPolygon2DCullMode = 1
+	OccluderPolygon2DCullDisabled         OccluderPolygon2DCullMode = 0
+	OccluderPolygon2DCullClockwise        OccluderPolygon2DCullMode = 1
 	OccluderPolygon2DCullCounterClockwise OccluderPolygon2DCullMode = 2
 )
 
@@ -3344,110 +3343,110 @@ type OmniLight3DShadowMode = classdb.OmniLight3DShadowMode
 
 const (
 	OmniLight3DShadowDualParaboloid OmniLight3DShadowMode = 0
-	OmniLight3DShadowCube OmniLight3DShadowMode = 1
+	OmniLight3DShadowCube           OmniLight3DShadowMode = 1
 )
 
 type OpenXRActionActionType = classdb.OpenXRActionActionType
 
 const (
-	OpenXRActionOpenxrActionBool OpenXRActionActionType = 0
-	OpenXRActionOpenxrActionFloat OpenXRActionActionType = 1
+	OpenXRActionOpenxrActionBool    OpenXRActionActionType = 0
+	OpenXRActionOpenxrActionFloat   OpenXRActionActionType = 1
 	OpenXRActionOpenxrActionVector2 OpenXRActionActionType = 2
-	OpenXRActionOpenxrActionPose OpenXRActionActionType = 3
+	OpenXRActionOpenxrActionPose    OpenXRActionActionType = 3
 )
 
 type OpenXRHandHands = classdb.OpenXRHandHands
 
 const (
-	OpenXRHandHandLeft OpenXRHandHands = 0
+	OpenXRHandHandLeft  OpenXRHandHands = 0
 	OpenXRHandHandRight OpenXRHandHands = 1
-	OpenXRHandHandMax OpenXRHandHands = 2
+	OpenXRHandHandMax   OpenXRHandHands = 2
 )
 
 type OpenXRHandMotionRange = classdb.OpenXRHandMotionRange
 
 const (
-	OpenXRHandMotionRangeUnobstructed OpenXRHandMotionRange = 0
+	OpenXRHandMotionRangeUnobstructed        OpenXRHandMotionRange = 0
 	OpenXRHandMotionRangeConformToController OpenXRHandMotionRange = 1
-	OpenXRHandMotionRangeMax OpenXRHandMotionRange = 2
+	OpenXRHandMotionRangeMax                 OpenXRHandMotionRange = 2
 )
 
 type OpenXRInterfaceHand = classdb.OpenXRInterfaceHand
 
 const (
-	OpenXRInterfaceHandLeft OpenXRInterfaceHand = 0
+	OpenXRInterfaceHandLeft  OpenXRInterfaceHand = 0
 	OpenXRInterfaceHandRight OpenXRInterfaceHand = 1
-	OpenXRInterfaceHandMax OpenXRInterfaceHand = 2
+	OpenXRInterfaceHandMax   OpenXRInterfaceHand = 2
 )
 
 type OpenXRInterfaceHandMotionRange = classdb.OpenXRInterfaceHandMotionRange
 
 const (
-	OpenXRInterfaceHandMotionRangeUnobstructed OpenXRInterfaceHandMotionRange = 0
+	OpenXRInterfaceHandMotionRangeUnobstructed        OpenXRInterfaceHandMotionRange = 0
 	OpenXRInterfaceHandMotionRangeConformToController OpenXRInterfaceHandMotionRange = 1
-	OpenXRInterfaceHandMotionRangeMax OpenXRInterfaceHandMotionRange = 2
+	OpenXRInterfaceHandMotionRangeMax                 OpenXRInterfaceHandMotionRange = 2
 )
 
 type OpenXRInterfaceHandJoints = classdb.OpenXRInterfaceHandJoints
 
 const (
-	OpenXRInterfaceHandJointPalm OpenXRInterfaceHandJoints = 0
-	OpenXRInterfaceHandJointWrist OpenXRInterfaceHandJoints = 1
-	OpenXRInterfaceHandJointThumbMetacarpal OpenXRInterfaceHandJoints = 2
-	OpenXRInterfaceHandJointThumbProximal OpenXRInterfaceHandJoints = 3
-	OpenXRInterfaceHandJointThumbDistal OpenXRInterfaceHandJoints = 4
-	OpenXRInterfaceHandJointThumbTip OpenXRInterfaceHandJoints = 5
-	OpenXRInterfaceHandJointIndexMetacarpal OpenXRInterfaceHandJoints = 6
-	OpenXRInterfaceHandJointIndexProximal OpenXRInterfaceHandJoints = 7
-	OpenXRInterfaceHandJointIndexIntermediate OpenXRInterfaceHandJoints = 8
-	OpenXRInterfaceHandJointIndexDistal OpenXRInterfaceHandJoints = 9
-	OpenXRInterfaceHandJointIndexTip OpenXRInterfaceHandJoints = 10
-	OpenXRInterfaceHandJointMiddleMetacarpal OpenXRInterfaceHandJoints = 11
-	OpenXRInterfaceHandJointMiddleProximal OpenXRInterfaceHandJoints = 12
+	OpenXRInterfaceHandJointPalm               OpenXRInterfaceHandJoints = 0
+	OpenXRInterfaceHandJointWrist              OpenXRInterfaceHandJoints = 1
+	OpenXRInterfaceHandJointThumbMetacarpal    OpenXRInterfaceHandJoints = 2
+	OpenXRInterfaceHandJointThumbProximal      OpenXRInterfaceHandJoints = 3
+	OpenXRInterfaceHandJointThumbDistal        OpenXRInterfaceHandJoints = 4
+	OpenXRInterfaceHandJointThumbTip           OpenXRInterfaceHandJoints = 5
+	OpenXRInterfaceHandJointIndexMetacarpal    OpenXRInterfaceHandJoints = 6
+	OpenXRInterfaceHandJointIndexProximal      OpenXRInterfaceHandJoints = 7
+	OpenXRInterfaceHandJointIndexIntermediate  OpenXRInterfaceHandJoints = 8
+	OpenXRInterfaceHandJointIndexDistal        OpenXRInterfaceHandJoints = 9
+	OpenXRInterfaceHandJointIndexTip           OpenXRInterfaceHandJoints = 10
+	OpenXRInterfaceHandJointMiddleMetacarpal   OpenXRInterfaceHandJoints = 11
+	OpenXRInterfaceHandJointMiddleProximal     OpenXRInterfaceHandJoints = 12
 	OpenXRInterfaceHandJointMiddleIntermediate OpenXRInterfaceHandJoints = 13
-	OpenXRInterfaceHandJointMiddleDistal OpenXRInterfaceHandJoints = 14
-	OpenXRInterfaceHandJointMiddleTip OpenXRInterfaceHandJoints = 15
-	OpenXRInterfaceHandJointRingMetacarpal OpenXRInterfaceHandJoints = 16
-	OpenXRInterfaceHandJointRingProximal OpenXRInterfaceHandJoints = 17
-	OpenXRInterfaceHandJointRingIntermediate OpenXRInterfaceHandJoints = 18
-	OpenXRInterfaceHandJointRingDistal OpenXRInterfaceHandJoints = 19
-	OpenXRInterfaceHandJointRingTip OpenXRInterfaceHandJoints = 20
-	OpenXRInterfaceHandJointLittleMetacarpal OpenXRInterfaceHandJoints = 21
-	OpenXRInterfaceHandJointLittleProximal OpenXRInterfaceHandJoints = 22
+	OpenXRInterfaceHandJointMiddleDistal       OpenXRInterfaceHandJoints = 14
+	OpenXRInterfaceHandJointMiddleTip          OpenXRInterfaceHandJoints = 15
+	OpenXRInterfaceHandJointRingMetacarpal     OpenXRInterfaceHandJoints = 16
+	OpenXRInterfaceHandJointRingProximal       OpenXRInterfaceHandJoints = 17
+	OpenXRInterfaceHandJointRingIntermediate   OpenXRInterfaceHandJoints = 18
+	OpenXRInterfaceHandJointRingDistal         OpenXRInterfaceHandJoints = 19
+	OpenXRInterfaceHandJointRingTip            OpenXRInterfaceHandJoints = 20
+	OpenXRInterfaceHandJointLittleMetacarpal   OpenXRInterfaceHandJoints = 21
+	OpenXRInterfaceHandJointLittleProximal     OpenXRInterfaceHandJoints = 22
 	OpenXRInterfaceHandJointLittleIntermediate OpenXRInterfaceHandJoints = 23
-	OpenXRInterfaceHandJointLittleDistal OpenXRInterfaceHandJoints = 24
-	OpenXRInterfaceHandJointLittleTip OpenXRInterfaceHandJoints = 25
-	OpenXRInterfaceHandJointMax OpenXRInterfaceHandJoints = 26
+	OpenXRInterfaceHandJointLittleDistal       OpenXRInterfaceHandJoints = 24
+	OpenXRInterfaceHandJointLittleTip          OpenXRInterfaceHandJoints = 25
+	OpenXRInterfaceHandJointMax                OpenXRInterfaceHandJoints = 26
 )
 
 type OpenXRInterfaceHandJointFlags = classdb.OpenXRInterfaceHandJointFlags
 
 const (
-	OpenXRInterfaceHandJointNone OpenXRInterfaceHandJointFlags = 0
-	OpenXRInterfaceHandJointOrientationValid OpenXRInterfaceHandJointFlags = 1
-	OpenXRInterfaceHandJointOrientationTracked OpenXRInterfaceHandJointFlags = 2
-	OpenXRInterfaceHandJointPositionValid OpenXRInterfaceHandJointFlags = 4
-	OpenXRInterfaceHandJointPositionTracked OpenXRInterfaceHandJointFlags = 8
-	OpenXRInterfaceHandJointLinearVelocityValid OpenXRInterfaceHandJointFlags = 16
+	OpenXRInterfaceHandJointNone                 OpenXRInterfaceHandJointFlags = 0
+	OpenXRInterfaceHandJointOrientationValid     OpenXRInterfaceHandJointFlags = 1
+	OpenXRInterfaceHandJointOrientationTracked   OpenXRInterfaceHandJointFlags = 2
+	OpenXRInterfaceHandJointPositionValid        OpenXRInterfaceHandJointFlags = 4
+	OpenXRInterfaceHandJointPositionTracked      OpenXRInterfaceHandJointFlags = 8
+	OpenXRInterfaceHandJointLinearVelocityValid  OpenXRInterfaceHandJointFlags = 16
 	OpenXRInterfaceHandJointAngularVelocityValid OpenXRInterfaceHandJointFlags = 32
 )
 
 type PackedSceneGenEditState = classdb.PackedSceneGenEditState
 
 const (
-	PackedSceneGenEditStateDisabled PackedSceneGenEditState = 0
-	PackedSceneGenEditStateInstance PackedSceneGenEditState = 1
-	PackedSceneGenEditStateMain PackedSceneGenEditState = 2
+	PackedSceneGenEditStateDisabled      PackedSceneGenEditState = 0
+	PackedSceneGenEditStateInstance      PackedSceneGenEditState = 1
+	PackedSceneGenEditStateMain          PackedSceneGenEditState = 2
 	PackedSceneGenEditStateMainInherited PackedSceneGenEditState = 3
 )
 
 type PacketPeerDTLSStatus = classdb.PacketPeerDTLSStatus
 
 const (
-	PacketPeerDTLSStatusDisconnected PacketPeerDTLSStatus = 0
-	PacketPeerDTLSStatusHandshaking PacketPeerDTLSStatus = 1
-	PacketPeerDTLSStatusConnected PacketPeerDTLSStatus = 2
-	PacketPeerDTLSStatusError PacketPeerDTLSStatus = 3
+	PacketPeerDTLSStatusDisconnected          PacketPeerDTLSStatus = 0
+	PacketPeerDTLSStatusHandshaking           PacketPeerDTLSStatus = 1
+	PacketPeerDTLSStatusConnected             PacketPeerDTLSStatus = 2
+	PacketPeerDTLSStatusError                 PacketPeerDTLSStatus = 3
 	PacketPeerDTLSStatusErrorHostnameMismatch PacketPeerDTLSStatus = 4
 )
 
@@ -3455,115 +3454,115 @@ type ParticleProcessMaterialParameter = classdb.ParticleProcessMaterialParameter
 
 const (
 	ParticleProcessMaterialParamInitialLinearVelocity ParticleProcessMaterialParameter = 0
-	ParticleProcessMaterialParamAngularVelocity ParticleProcessMaterialParameter = 1
-	ParticleProcessMaterialParamOrbitVelocity ParticleProcessMaterialParameter = 2
-	ParticleProcessMaterialParamLinearAccel ParticleProcessMaterialParameter = 3
-	ParticleProcessMaterialParamRadialAccel ParticleProcessMaterialParameter = 4
-	ParticleProcessMaterialParamTangentialAccel ParticleProcessMaterialParameter = 5
-	ParticleProcessMaterialParamDamping ParticleProcessMaterialParameter = 6
-	ParticleProcessMaterialParamAngle ParticleProcessMaterialParameter = 7
-	ParticleProcessMaterialParamScale ParticleProcessMaterialParameter = 8
-	ParticleProcessMaterialParamHueVariation ParticleProcessMaterialParameter = 9
-	ParticleProcessMaterialParamAnimSpeed ParticleProcessMaterialParameter = 10
-	ParticleProcessMaterialParamAnimOffset ParticleProcessMaterialParameter = 11
-	ParticleProcessMaterialParamRadialVelocity ParticleProcessMaterialParameter = 15
-	ParticleProcessMaterialParamDirectionalVelocity ParticleProcessMaterialParameter = 16
-	ParticleProcessMaterialParamScaleOverVelocity ParticleProcessMaterialParameter = 17
-	ParticleProcessMaterialParamMax ParticleProcessMaterialParameter = 18
-	ParticleProcessMaterialParamTurbVelInfluence ParticleProcessMaterialParameter = 13
-	ParticleProcessMaterialParamTurbInitDisplacement ParticleProcessMaterialParameter = 14
+	ParticleProcessMaterialParamAngularVelocity       ParticleProcessMaterialParameter = 1
+	ParticleProcessMaterialParamOrbitVelocity         ParticleProcessMaterialParameter = 2
+	ParticleProcessMaterialParamLinearAccel           ParticleProcessMaterialParameter = 3
+	ParticleProcessMaterialParamRadialAccel           ParticleProcessMaterialParameter = 4
+	ParticleProcessMaterialParamTangentialAccel       ParticleProcessMaterialParameter = 5
+	ParticleProcessMaterialParamDamping               ParticleProcessMaterialParameter = 6
+	ParticleProcessMaterialParamAngle                 ParticleProcessMaterialParameter = 7
+	ParticleProcessMaterialParamScale                 ParticleProcessMaterialParameter = 8
+	ParticleProcessMaterialParamHueVariation          ParticleProcessMaterialParameter = 9
+	ParticleProcessMaterialParamAnimSpeed             ParticleProcessMaterialParameter = 10
+	ParticleProcessMaterialParamAnimOffset            ParticleProcessMaterialParameter = 11
+	ParticleProcessMaterialParamRadialVelocity        ParticleProcessMaterialParameter = 15
+	ParticleProcessMaterialParamDirectionalVelocity   ParticleProcessMaterialParameter = 16
+	ParticleProcessMaterialParamScaleOverVelocity     ParticleProcessMaterialParameter = 17
+	ParticleProcessMaterialParamMax                   ParticleProcessMaterialParameter = 18
+	ParticleProcessMaterialParamTurbVelInfluence      ParticleProcessMaterialParameter = 13
+	ParticleProcessMaterialParamTurbInitDisplacement  ParticleProcessMaterialParameter = 14
 	ParticleProcessMaterialParamTurbInfluenceOverLife ParticleProcessMaterialParameter = 12
 )
 
 type ParticleProcessMaterialParticleFlags = classdb.ParticleProcessMaterialParticleFlags
 
 const (
-	ParticleProcessMaterialParticleFlagAlignYToVelocity ParticleProcessMaterialParticleFlags = 0
-	ParticleProcessMaterialParticleFlagRotateY ParticleProcessMaterialParticleFlags = 1
-	ParticleProcessMaterialParticleFlagDisableZ ParticleProcessMaterialParticleFlags = 2
+	ParticleProcessMaterialParticleFlagAlignYToVelocity  ParticleProcessMaterialParticleFlags = 0
+	ParticleProcessMaterialParticleFlagRotateY           ParticleProcessMaterialParticleFlags = 1
+	ParticleProcessMaterialParticleFlagDisableZ          ParticleProcessMaterialParticleFlags = 2
 	ParticleProcessMaterialParticleFlagDampingAsFriction ParticleProcessMaterialParticleFlags = 3
-	ParticleProcessMaterialParticleFlagMax ParticleProcessMaterialParticleFlags = 4
+	ParticleProcessMaterialParticleFlagMax               ParticleProcessMaterialParticleFlags = 4
 )
 
 type ParticleProcessMaterialEmissionShape = classdb.ParticleProcessMaterialEmissionShape
 
 const (
-	ParticleProcessMaterialEmissionShapePoint ParticleProcessMaterialEmissionShape = 0
-	ParticleProcessMaterialEmissionShapeSphere ParticleProcessMaterialEmissionShape = 1
-	ParticleProcessMaterialEmissionShapeSphereSurface ParticleProcessMaterialEmissionShape = 2
-	ParticleProcessMaterialEmissionShapeBox ParticleProcessMaterialEmissionShape = 3
-	ParticleProcessMaterialEmissionShapePoints ParticleProcessMaterialEmissionShape = 4
+	ParticleProcessMaterialEmissionShapePoint          ParticleProcessMaterialEmissionShape = 0
+	ParticleProcessMaterialEmissionShapeSphere         ParticleProcessMaterialEmissionShape = 1
+	ParticleProcessMaterialEmissionShapeSphereSurface  ParticleProcessMaterialEmissionShape = 2
+	ParticleProcessMaterialEmissionShapeBox            ParticleProcessMaterialEmissionShape = 3
+	ParticleProcessMaterialEmissionShapePoints         ParticleProcessMaterialEmissionShape = 4
 	ParticleProcessMaterialEmissionShapeDirectedPoints ParticleProcessMaterialEmissionShape = 5
-	ParticleProcessMaterialEmissionShapeRing ParticleProcessMaterialEmissionShape = 6
-	ParticleProcessMaterialEmissionShapeMax ParticleProcessMaterialEmissionShape = 7
+	ParticleProcessMaterialEmissionShapeRing           ParticleProcessMaterialEmissionShape = 6
+	ParticleProcessMaterialEmissionShapeMax            ParticleProcessMaterialEmissionShape = 7
 )
 
 type ParticleProcessMaterialSubEmitterMode = classdb.ParticleProcessMaterialSubEmitterMode
 
 const (
-	ParticleProcessMaterialSubEmitterDisabled ParticleProcessMaterialSubEmitterMode = 0
-	ParticleProcessMaterialSubEmitterConstant ParticleProcessMaterialSubEmitterMode = 1
-	ParticleProcessMaterialSubEmitterAtEnd ParticleProcessMaterialSubEmitterMode = 2
+	ParticleProcessMaterialSubEmitterDisabled    ParticleProcessMaterialSubEmitterMode = 0
+	ParticleProcessMaterialSubEmitterConstant    ParticleProcessMaterialSubEmitterMode = 1
+	ParticleProcessMaterialSubEmitterAtEnd       ParticleProcessMaterialSubEmitterMode = 2
 	ParticleProcessMaterialSubEmitterAtCollision ParticleProcessMaterialSubEmitterMode = 3
-	ParticleProcessMaterialSubEmitterMax ParticleProcessMaterialSubEmitterMode = 4
+	ParticleProcessMaterialSubEmitterMax         ParticleProcessMaterialSubEmitterMode = 4
 )
 
 type ParticleProcessMaterialCollisionMode = classdb.ParticleProcessMaterialCollisionMode
 
 const (
-	ParticleProcessMaterialCollisionDisabled ParticleProcessMaterialCollisionMode = 0
-	ParticleProcessMaterialCollisionRigid ParticleProcessMaterialCollisionMode = 1
+	ParticleProcessMaterialCollisionDisabled      ParticleProcessMaterialCollisionMode = 0
+	ParticleProcessMaterialCollisionRigid         ParticleProcessMaterialCollisionMode = 1
 	ParticleProcessMaterialCollisionHideOnContact ParticleProcessMaterialCollisionMode = 2
-	ParticleProcessMaterialCollisionMax ParticleProcessMaterialCollisionMode = 3
+	ParticleProcessMaterialCollisionMax           ParticleProcessMaterialCollisionMode = 3
 )
 
 type PathFollow3DRotationMode = classdb.PathFollow3DRotationMode
 
 const (
-	PathFollow3DRotationNone PathFollow3DRotationMode = 0
-	PathFollow3DRotationY PathFollow3DRotationMode = 1
-	PathFollow3DRotationXy PathFollow3DRotationMode = 2
-	PathFollow3DRotationXyz PathFollow3DRotationMode = 3
+	PathFollow3DRotationNone     PathFollow3DRotationMode = 0
+	PathFollow3DRotationY        PathFollow3DRotationMode = 1
+	PathFollow3DRotationXy       PathFollow3DRotationMode = 2
+	PathFollow3DRotationXyz      PathFollow3DRotationMode = 3
 	PathFollow3DRotationOriented PathFollow3DRotationMode = 4
 )
 
 type PerformanceMonitor = classdb.PerformanceMonitor
 
 const (
-	PerformanceTimeFps PerformanceMonitor = 0
-	PerformanceTimeProcess PerformanceMonitor = 1
-	PerformanceTimePhysicsProcess PerformanceMonitor = 2
-	PerformanceTimeNavigationProcess PerformanceMonitor = 3
-	PerformanceMemoryStatic PerformanceMonitor = 4
-	PerformanceMemoryStaticMax PerformanceMonitor = 5
-	PerformanceMemoryMessageBufferMax PerformanceMonitor = 6
-	PerformanceObjectCount PerformanceMonitor = 7
-	PerformanceObjectResourceCount PerformanceMonitor = 8
-	PerformanceObjectNodeCount PerformanceMonitor = 9
-	PerformanceObjectOrphanNodeCount PerformanceMonitor = 10
-	PerformanceRenderTotalObjectsInFrame PerformanceMonitor = 11
-	PerformanceRenderTotalPrimitivesInFrame PerformanceMonitor = 12
-	PerformanceRenderTotalDrawCallsInFrame PerformanceMonitor = 13
-	PerformanceRenderVideoMemUsed PerformanceMonitor = 14
-	PerformanceRenderTextureMemUsed PerformanceMonitor = 15
-	PerformanceRenderBufferMemUsed PerformanceMonitor = 16
-	PerformancePhysics2dActiveObjects PerformanceMonitor = 17
-	PerformancePhysics2dCollisionPairs PerformanceMonitor = 18
-	PerformancePhysics2dIslandCount PerformanceMonitor = 19
-	PerformancePhysics3dActiveObjects PerformanceMonitor = 20
-	PerformancePhysics3dCollisionPairs PerformanceMonitor = 21
-	PerformancePhysics3dIslandCount PerformanceMonitor = 22
-	PerformanceAudioOutputLatency PerformanceMonitor = 23
-	PerformanceNavigationActiveMaps PerformanceMonitor = 24
-	PerformanceNavigationRegionCount PerformanceMonitor = 25
-	PerformanceNavigationAgentCount PerformanceMonitor = 26
-	PerformanceNavigationLinkCount PerformanceMonitor = 27
-	PerformanceNavigationPolygonCount PerformanceMonitor = 28
-	PerformanceNavigationEdgeCount PerformanceMonitor = 29
-	PerformanceNavigationEdgeMergeCount PerformanceMonitor = 30
+	PerformanceTimeFps                       PerformanceMonitor = 0
+	PerformanceTimeProcess                   PerformanceMonitor = 1
+	PerformanceTimePhysicsProcess            PerformanceMonitor = 2
+	PerformanceTimeNavigationProcess         PerformanceMonitor = 3
+	PerformanceMemoryStatic                  PerformanceMonitor = 4
+	PerformanceMemoryStaticMax               PerformanceMonitor = 5
+	PerformanceMemoryMessageBufferMax        PerformanceMonitor = 6
+	PerformanceObjectCount                   PerformanceMonitor = 7
+	PerformanceObjectResourceCount           PerformanceMonitor = 8
+	PerformanceObjectNodeCount               PerformanceMonitor = 9
+	PerformanceObjectOrphanNodeCount         PerformanceMonitor = 10
+	PerformanceRenderTotalObjectsInFrame     PerformanceMonitor = 11
+	PerformanceRenderTotalPrimitivesInFrame  PerformanceMonitor = 12
+	PerformanceRenderTotalDrawCallsInFrame   PerformanceMonitor = 13
+	PerformanceRenderVideoMemUsed            PerformanceMonitor = 14
+	PerformanceRenderTextureMemUsed          PerformanceMonitor = 15
+	PerformanceRenderBufferMemUsed           PerformanceMonitor = 16
+	PerformancePhysics2dActiveObjects        PerformanceMonitor = 17
+	PerformancePhysics2dCollisionPairs       PerformanceMonitor = 18
+	PerformancePhysics2dIslandCount          PerformanceMonitor = 19
+	PerformancePhysics3dActiveObjects        PerformanceMonitor = 20
+	PerformancePhysics3dCollisionPairs       PerformanceMonitor = 21
+	PerformancePhysics3dIslandCount          PerformanceMonitor = 22
+	PerformanceAudioOutputLatency            PerformanceMonitor = 23
+	PerformanceNavigationActiveMaps          PerformanceMonitor = 24
+	PerformanceNavigationRegionCount         PerformanceMonitor = 25
+	PerformanceNavigationAgentCount          PerformanceMonitor = 26
+	PerformanceNavigationLinkCount           PerformanceMonitor = 27
+	PerformanceNavigationPolygonCount        PerformanceMonitor = 28
+	PerformanceNavigationEdgeCount           PerformanceMonitor = 29
+	PerformanceNavigationEdgeMergeCount      PerformanceMonitor = 30
 	PerformanceNavigationEdgeConnectionCount PerformanceMonitor = 31
-	PerformanceNavigationEdgeFreeCount PerformanceMonitor = 32
-	PerformanceMonitorMax PerformanceMonitor = 33
+	PerformanceNavigationEdgeFreeCount       PerformanceMonitor = 32
+	PerformanceMonitorMax                    PerformanceMonitor = 33
 )
 
 type PhysicalBone3DDampMode = classdb.PhysicalBone3DDampMode
@@ -3576,90 +3575,90 @@ const (
 type PhysicalBone3DJointType = classdb.PhysicalBone3DJointType
 
 const (
-	PhysicalBone3DJointTypeNone PhysicalBone3DJointType = 0
-	PhysicalBone3DJointTypePin PhysicalBone3DJointType = 1
-	PhysicalBone3DJointTypeCone PhysicalBone3DJointType = 2
-	PhysicalBone3DJointTypeHinge PhysicalBone3DJointType = 3
+	PhysicalBone3DJointTypeNone   PhysicalBone3DJointType = 0
+	PhysicalBone3DJointTypePin    PhysicalBone3DJointType = 1
+	PhysicalBone3DJointTypeCone   PhysicalBone3DJointType = 2
+	PhysicalBone3DJointTypeHinge  PhysicalBone3DJointType = 3
 	PhysicalBone3DJointTypeSlider PhysicalBone3DJointType = 4
-	PhysicalBone3DJointType6dof PhysicalBone3DJointType = 5
+	PhysicalBone3DJointType6dof   PhysicalBone3DJointType = 5
 )
 
 type PhysicsServer2DSpaceParameter = classdb.PhysicsServer2DSpaceParameter
 
 const (
-	PhysicsServer2DSpaceParamContactRecycleRadius PhysicsServer2DSpaceParameter = 0
-	PhysicsServer2DSpaceParamContactMaxSeparation PhysicsServer2DSpaceParameter = 1
-	PhysicsServer2DSpaceParamContactMaxAllowedPenetration PhysicsServer2DSpaceParameter = 2
-	PhysicsServer2DSpaceParamContactDefaultBias PhysicsServer2DSpaceParameter = 3
-	PhysicsServer2DSpaceParamBodyLinearVelocitySleepThreshold PhysicsServer2DSpaceParameter = 4
+	PhysicsServer2DSpaceParamContactRecycleRadius              PhysicsServer2DSpaceParameter = 0
+	PhysicsServer2DSpaceParamContactMaxSeparation              PhysicsServer2DSpaceParameter = 1
+	PhysicsServer2DSpaceParamContactMaxAllowedPenetration      PhysicsServer2DSpaceParameter = 2
+	PhysicsServer2DSpaceParamContactDefaultBias                PhysicsServer2DSpaceParameter = 3
+	PhysicsServer2DSpaceParamBodyLinearVelocitySleepThreshold  PhysicsServer2DSpaceParameter = 4
 	PhysicsServer2DSpaceParamBodyAngularVelocitySleepThreshold PhysicsServer2DSpaceParameter = 5
-	PhysicsServer2DSpaceParamBodyTimeToSleep PhysicsServer2DSpaceParameter = 6
-	PhysicsServer2DSpaceParamConstraintDefaultBias PhysicsServer2DSpaceParameter = 7
-	PhysicsServer2DSpaceParamSolverIterations PhysicsServer2DSpaceParameter = 8
+	PhysicsServer2DSpaceParamBodyTimeToSleep                   PhysicsServer2DSpaceParameter = 6
+	PhysicsServer2DSpaceParamConstraintDefaultBias             PhysicsServer2DSpaceParameter = 7
+	PhysicsServer2DSpaceParamSolverIterations                  PhysicsServer2DSpaceParameter = 8
 )
 
 type PhysicsServer2DShapeType = classdb.PhysicsServer2DShapeType
 
 const (
-	PhysicsServer2DShapeWorldBoundary PhysicsServer2DShapeType = 0
-	PhysicsServer2DShapeSeparationRay PhysicsServer2DShapeType = 1
-	PhysicsServer2DShapeSegment PhysicsServer2DShapeType = 2
-	PhysicsServer2DShapeCircle PhysicsServer2DShapeType = 3
-	PhysicsServer2DShapeRectangle PhysicsServer2DShapeType = 4
-	PhysicsServer2DShapeCapsule PhysicsServer2DShapeType = 5
-	PhysicsServer2DShapeConvexPolygon PhysicsServer2DShapeType = 6
+	PhysicsServer2DShapeWorldBoundary  PhysicsServer2DShapeType = 0
+	PhysicsServer2DShapeSeparationRay  PhysicsServer2DShapeType = 1
+	PhysicsServer2DShapeSegment        PhysicsServer2DShapeType = 2
+	PhysicsServer2DShapeCircle         PhysicsServer2DShapeType = 3
+	PhysicsServer2DShapeRectangle      PhysicsServer2DShapeType = 4
+	PhysicsServer2DShapeCapsule        PhysicsServer2DShapeType = 5
+	PhysicsServer2DShapeConvexPolygon  PhysicsServer2DShapeType = 6
 	PhysicsServer2DShapeConcavePolygon PhysicsServer2DShapeType = 7
-	PhysicsServer2DShapeCustom PhysicsServer2DShapeType = 8
+	PhysicsServer2DShapeCustom         PhysicsServer2DShapeType = 8
 )
 
 type PhysicsServer2DAreaParameter = classdb.PhysicsServer2DAreaParameter
 
 const (
-	PhysicsServer2DAreaParamGravityOverrideMode PhysicsServer2DAreaParameter = 0
-	PhysicsServer2DAreaParamGravity PhysicsServer2DAreaParameter = 1
-	PhysicsServer2DAreaParamGravityVector PhysicsServer2DAreaParameter = 2
-	PhysicsServer2DAreaParamGravityIsPoint PhysicsServer2DAreaParameter = 3
+	PhysicsServer2DAreaParamGravityOverrideMode      PhysicsServer2DAreaParameter = 0
+	PhysicsServer2DAreaParamGravity                  PhysicsServer2DAreaParameter = 1
+	PhysicsServer2DAreaParamGravityVector            PhysicsServer2DAreaParameter = 2
+	PhysicsServer2DAreaParamGravityIsPoint           PhysicsServer2DAreaParameter = 3
 	PhysicsServer2DAreaParamGravityPointUnitDistance PhysicsServer2DAreaParameter = 4
-	PhysicsServer2DAreaParamLinearDampOverrideMode PhysicsServer2DAreaParameter = 5
-	PhysicsServer2DAreaParamLinearDamp PhysicsServer2DAreaParameter = 6
-	PhysicsServer2DAreaParamAngularDampOverrideMode PhysicsServer2DAreaParameter = 7
-	PhysicsServer2DAreaParamAngularDamp PhysicsServer2DAreaParameter = 8
-	PhysicsServer2DAreaParamPriority PhysicsServer2DAreaParameter = 9
+	PhysicsServer2DAreaParamLinearDampOverrideMode   PhysicsServer2DAreaParameter = 5
+	PhysicsServer2DAreaParamLinearDamp               PhysicsServer2DAreaParameter = 6
+	PhysicsServer2DAreaParamAngularDampOverrideMode  PhysicsServer2DAreaParameter = 7
+	PhysicsServer2DAreaParamAngularDamp              PhysicsServer2DAreaParameter = 8
+	PhysicsServer2DAreaParamPriority                 PhysicsServer2DAreaParameter = 9
 )
 
 type PhysicsServer2DAreaSpaceOverrideMode = classdb.PhysicsServer2DAreaSpaceOverrideMode
 
 const (
-	PhysicsServer2DAreaSpaceOverrideDisabled PhysicsServer2DAreaSpaceOverrideMode = 0
-	PhysicsServer2DAreaSpaceOverrideCombine PhysicsServer2DAreaSpaceOverrideMode = 1
+	PhysicsServer2DAreaSpaceOverrideDisabled       PhysicsServer2DAreaSpaceOverrideMode = 0
+	PhysicsServer2DAreaSpaceOverrideCombine        PhysicsServer2DAreaSpaceOverrideMode = 1
 	PhysicsServer2DAreaSpaceOverrideCombineReplace PhysicsServer2DAreaSpaceOverrideMode = 2
-	PhysicsServer2DAreaSpaceOverrideReplace PhysicsServer2DAreaSpaceOverrideMode = 3
+	PhysicsServer2DAreaSpaceOverrideReplace        PhysicsServer2DAreaSpaceOverrideMode = 3
 	PhysicsServer2DAreaSpaceOverrideReplaceCombine PhysicsServer2DAreaSpaceOverrideMode = 4
 )
 
 type PhysicsServer2DBodyMode = classdb.PhysicsServer2DBodyMode
 
 const (
-	PhysicsServer2DBodyModeStatic PhysicsServer2DBodyMode = 0
-	PhysicsServer2DBodyModeKinematic PhysicsServer2DBodyMode = 1
-	PhysicsServer2DBodyModeRigid PhysicsServer2DBodyMode = 2
+	PhysicsServer2DBodyModeStatic      PhysicsServer2DBodyMode = 0
+	PhysicsServer2DBodyModeKinematic   PhysicsServer2DBodyMode = 1
+	PhysicsServer2DBodyModeRigid       PhysicsServer2DBodyMode = 2
 	PhysicsServer2DBodyModeRigidLinear PhysicsServer2DBodyMode = 3
 )
 
 type PhysicsServer2DBodyParameter = classdb.PhysicsServer2DBodyParameter
 
 const (
-	PhysicsServer2DBodyParamBounce PhysicsServer2DBodyParameter = 0
-	PhysicsServer2DBodyParamFriction PhysicsServer2DBodyParameter = 1
-	PhysicsServer2DBodyParamMass PhysicsServer2DBodyParameter = 2
-	PhysicsServer2DBodyParamInertia PhysicsServer2DBodyParameter = 3
-	PhysicsServer2DBodyParamCenterOfMass PhysicsServer2DBodyParameter = 4
-	PhysicsServer2DBodyParamGravityScale PhysicsServer2DBodyParameter = 5
-	PhysicsServer2DBodyParamLinearDampMode PhysicsServer2DBodyParameter = 6
+	PhysicsServer2DBodyParamBounce          PhysicsServer2DBodyParameter = 0
+	PhysicsServer2DBodyParamFriction        PhysicsServer2DBodyParameter = 1
+	PhysicsServer2DBodyParamMass            PhysicsServer2DBodyParameter = 2
+	PhysicsServer2DBodyParamInertia         PhysicsServer2DBodyParameter = 3
+	PhysicsServer2DBodyParamCenterOfMass    PhysicsServer2DBodyParameter = 4
+	PhysicsServer2DBodyParamGravityScale    PhysicsServer2DBodyParameter = 5
+	PhysicsServer2DBodyParamLinearDampMode  PhysicsServer2DBodyParameter = 6
 	PhysicsServer2DBodyParamAngularDampMode PhysicsServer2DBodyParameter = 7
-	PhysicsServer2DBodyParamLinearDamp PhysicsServer2DBodyParameter = 8
-	PhysicsServer2DBodyParamAngularDamp PhysicsServer2DBodyParameter = 9
-	PhysicsServer2DBodyParamMax PhysicsServer2DBodyParameter = 10
+	PhysicsServer2DBodyParamLinearDamp      PhysicsServer2DBodyParameter = 8
+	PhysicsServer2DBodyParamAngularDamp     PhysicsServer2DBodyParameter = 9
+	PhysicsServer2DBodyParamMax             PhysicsServer2DBodyParameter = 10
 )
 
 type PhysicsServer2DBodyDampMode = classdb.PhysicsServer2DBodyDampMode
@@ -3672,36 +3671,36 @@ const (
 type PhysicsServer2DBodyState = classdb.PhysicsServer2DBodyState
 
 const (
-	PhysicsServer2DBodyStateTransform PhysicsServer2DBodyState = 0
-	PhysicsServer2DBodyStateLinearVelocity PhysicsServer2DBodyState = 1
+	PhysicsServer2DBodyStateTransform       PhysicsServer2DBodyState = 0
+	PhysicsServer2DBodyStateLinearVelocity  PhysicsServer2DBodyState = 1
 	PhysicsServer2DBodyStateAngularVelocity PhysicsServer2DBodyState = 2
-	PhysicsServer2DBodyStateSleeping PhysicsServer2DBodyState = 3
-	PhysicsServer2DBodyStateCanSleep PhysicsServer2DBodyState = 4
+	PhysicsServer2DBodyStateSleeping        PhysicsServer2DBodyState = 3
+	PhysicsServer2DBodyStateCanSleep        PhysicsServer2DBodyState = 4
 )
 
 type PhysicsServer2DJointType = classdb.PhysicsServer2DJointType
 
 const (
-	PhysicsServer2DJointTypePin PhysicsServer2DJointType = 0
-	PhysicsServer2DJointTypeGroove PhysicsServer2DJointType = 1
+	PhysicsServer2DJointTypePin          PhysicsServer2DJointType = 0
+	PhysicsServer2DJointTypeGroove       PhysicsServer2DJointType = 1
 	PhysicsServer2DJointTypeDampedSpring PhysicsServer2DJointType = 2
-	PhysicsServer2DJointTypeMax PhysicsServer2DJointType = 3
+	PhysicsServer2DJointTypeMax          PhysicsServer2DJointType = 3
 )
 
 type PhysicsServer2DJointParam = classdb.PhysicsServer2DJointParam
 
 const (
-	PhysicsServer2DJointParamBias PhysicsServer2DJointParam = 0
-	PhysicsServer2DJointParamMaxBias PhysicsServer2DJointParam = 1
+	PhysicsServer2DJointParamBias     PhysicsServer2DJointParam = 0
+	PhysicsServer2DJointParamMaxBias  PhysicsServer2DJointParam = 1
 	PhysicsServer2DJointParamMaxForce PhysicsServer2DJointParam = 2
 )
 
 type PhysicsServer2DPinJointParam = classdb.PhysicsServer2DPinJointParam
 
 const (
-	PhysicsServer2DPinJointSoftness PhysicsServer2DPinJointParam = 0
-	PhysicsServer2DPinJointLimitUpper PhysicsServer2DPinJointParam = 1
-	PhysicsServer2DPinJointLimitLower PhysicsServer2DPinJointParam = 2
+	PhysicsServer2DPinJointSoftness            PhysicsServer2DPinJointParam = 0
+	PhysicsServer2DPinJointLimitUpper          PhysicsServer2DPinJointParam = 1
+	PhysicsServer2DPinJointLimitLower          PhysicsServer2DPinJointParam = 2
 	PhysicsServer2DPinJointMotorTargetVelocity PhysicsServer2DPinJointParam = 3
 )
 
@@ -3709,215 +3708,215 @@ type PhysicsServer2DPinJointFlag = classdb.PhysicsServer2DPinJointFlag
 
 const (
 	PhysicsServer2DPinJointFlagAngularLimitEnabled PhysicsServer2DPinJointFlag = 0
-	PhysicsServer2DPinJointFlagMotorEnabled PhysicsServer2DPinJointFlag = 1
+	PhysicsServer2DPinJointFlagMotorEnabled        PhysicsServer2DPinJointFlag = 1
 )
 
 type PhysicsServer2DDampedSpringParam = classdb.PhysicsServer2DDampedSpringParam
 
 const (
 	PhysicsServer2DDampedSpringRestLength PhysicsServer2DDampedSpringParam = 0
-	PhysicsServer2DDampedSpringStiffness PhysicsServer2DDampedSpringParam = 1
-	PhysicsServer2DDampedSpringDamping PhysicsServer2DDampedSpringParam = 2
+	PhysicsServer2DDampedSpringStiffness  PhysicsServer2DDampedSpringParam = 1
+	PhysicsServer2DDampedSpringDamping    PhysicsServer2DDampedSpringParam = 2
 )
 
 type PhysicsServer2DCCDMode = classdb.PhysicsServer2DCCDMode
 
 const (
-	PhysicsServer2DCcdModeDisabled PhysicsServer2DCCDMode = 0
-	PhysicsServer2DCcdModeCastRay PhysicsServer2DCCDMode = 1
+	PhysicsServer2DCcdModeDisabled  PhysicsServer2DCCDMode = 0
+	PhysicsServer2DCcdModeCastRay   PhysicsServer2DCCDMode = 1
 	PhysicsServer2DCcdModeCastShape PhysicsServer2DCCDMode = 2
 )
 
 type PhysicsServer2DAreaBodyStatus = classdb.PhysicsServer2DAreaBodyStatus
 
 const (
-	PhysicsServer2DAreaBodyAdded PhysicsServer2DAreaBodyStatus = 0
+	PhysicsServer2DAreaBodyAdded   PhysicsServer2DAreaBodyStatus = 0
 	PhysicsServer2DAreaBodyRemoved PhysicsServer2DAreaBodyStatus = 1
 )
 
 type PhysicsServer2DProcessInfo = classdb.PhysicsServer2DProcessInfo
 
 const (
-	PhysicsServer2DInfoActiveObjects PhysicsServer2DProcessInfo = 0
+	PhysicsServer2DInfoActiveObjects  PhysicsServer2DProcessInfo = 0
 	PhysicsServer2DInfoCollisionPairs PhysicsServer2DProcessInfo = 1
-	PhysicsServer2DInfoIslandCount PhysicsServer2DProcessInfo = 2
+	PhysicsServer2DInfoIslandCount    PhysicsServer2DProcessInfo = 2
 )
 
 type PhysicsServer3DJointType = classdb.PhysicsServer3DJointType
 
 const (
-	PhysicsServer3DJointTypePin PhysicsServer3DJointType = 0
-	PhysicsServer3DJointTypeHinge PhysicsServer3DJointType = 1
-	PhysicsServer3DJointTypeSlider PhysicsServer3DJointType = 2
+	PhysicsServer3DJointTypePin       PhysicsServer3DJointType = 0
+	PhysicsServer3DJointTypeHinge     PhysicsServer3DJointType = 1
+	PhysicsServer3DJointTypeSlider    PhysicsServer3DJointType = 2
 	PhysicsServer3DJointTypeConeTwist PhysicsServer3DJointType = 3
-	PhysicsServer3DJointType6dof PhysicsServer3DJointType = 4
-	PhysicsServer3DJointTypeMax PhysicsServer3DJointType = 5
+	PhysicsServer3DJointType6dof      PhysicsServer3DJointType = 4
+	PhysicsServer3DJointTypeMax       PhysicsServer3DJointType = 5
 )
 
 type PhysicsServer3DPinJointParam = classdb.PhysicsServer3DPinJointParam
 
 const (
-	PhysicsServer3DPinJointBias PhysicsServer3DPinJointParam = 0
-	PhysicsServer3DPinJointDamping PhysicsServer3DPinJointParam = 1
+	PhysicsServer3DPinJointBias         PhysicsServer3DPinJointParam = 0
+	PhysicsServer3DPinJointDamping      PhysicsServer3DPinJointParam = 1
 	PhysicsServer3DPinJointImpulseClamp PhysicsServer3DPinJointParam = 2
 )
 
 type PhysicsServer3DHingeJointParam = classdb.PhysicsServer3DHingeJointParam
 
 const (
-	PhysicsServer3DHingeJointBias PhysicsServer3DHingeJointParam = 0
-	PhysicsServer3DHingeJointLimitUpper PhysicsServer3DHingeJointParam = 1
-	PhysicsServer3DHingeJointLimitLower PhysicsServer3DHingeJointParam = 2
-	PhysicsServer3DHingeJointLimitBias PhysicsServer3DHingeJointParam = 3
-	PhysicsServer3DHingeJointLimitSoftness PhysicsServer3DHingeJointParam = 4
-	PhysicsServer3DHingeJointLimitRelaxation PhysicsServer3DHingeJointParam = 5
+	PhysicsServer3DHingeJointBias                PhysicsServer3DHingeJointParam = 0
+	PhysicsServer3DHingeJointLimitUpper          PhysicsServer3DHingeJointParam = 1
+	PhysicsServer3DHingeJointLimitLower          PhysicsServer3DHingeJointParam = 2
+	PhysicsServer3DHingeJointLimitBias           PhysicsServer3DHingeJointParam = 3
+	PhysicsServer3DHingeJointLimitSoftness       PhysicsServer3DHingeJointParam = 4
+	PhysicsServer3DHingeJointLimitRelaxation     PhysicsServer3DHingeJointParam = 5
 	PhysicsServer3DHingeJointMotorTargetVelocity PhysicsServer3DHingeJointParam = 6
-	PhysicsServer3DHingeJointMotorMaxImpulse PhysicsServer3DHingeJointParam = 7
+	PhysicsServer3DHingeJointMotorMaxImpulse     PhysicsServer3DHingeJointParam = 7
 )
 
 type PhysicsServer3DHingeJointFlag = classdb.PhysicsServer3DHingeJointFlag
 
 const (
-	PhysicsServer3DHingeJointFlagUseLimit PhysicsServer3DHingeJointFlag = 0
+	PhysicsServer3DHingeJointFlagUseLimit    PhysicsServer3DHingeJointFlag = 0
 	PhysicsServer3DHingeJointFlagEnableMotor PhysicsServer3DHingeJointFlag = 1
 )
 
 type PhysicsServer3DSliderJointParam = classdb.PhysicsServer3DSliderJointParam
 
 const (
-	PhysicsServer3DSliderJointLinearLimitUpper PhysicsServer3DSliderJointParam = 0
-	PhysicsServer3DSliderJointLinearLimitLower PhysicsServer3DSliderJointParam = 1
-	PhysicsServer3DSliderJointLinearLimitSoftness PhysicsServer3DSliderJointParam = 2
-	PhysicsServer3DSliderJointLinearLimitRestitution PhysicsServer3DSliderJointParam = 3
-	PhysicsServer3DSliderJointLinearLimitDamping PhysicsServer3DSliderJointParam = 4
-	PhysicsServer3DSliderJointLinearMotionSoftness PhysicsServer3DSliderJointParam = 5
-	PhysicsServer3DSliderJointLinearMotionRestitution PhysicsServer3DSliderJointParam = 6
-	PhysicsServer3DSliderJointLinearMotionDamping PhysicsServer3DSliderJointParam = 7
-	PhysicsServer3DSliderJointLinearOrthogonalSoftness PhysicsServer3DSliderJointParam = 8
-	PhysicsServer3DSliderJointLinearOrthogonalRestitution PhysicsServer3DSliderJointParam = 9
-	PhysicsServer3DSliderJointLinearOrthogonalDamping PhysicsServer3DSliderJointParam = 10
-	PhysicsServer3DSliderJointAngularLimitUpper PhysicsServer3DSliderJointParam = 11
-	PhysicsServer3DSliderJointAngularLimitLower PhysicsServer3DSliderJointParam = 12
-	PhysicsServer3DSliderJointAngularLimitSoftness PhysicsServer3DSliderJointParam = 13
-	PhysicsServer3DSliderJointAngularLimitRestitution PhysicsServer3DSliderJointParam = 14
-	PhysicsServer3DSliderJointAngularLimitDamping PhysicsServer3DSliderJointParam = 15
-	PhysicsServer3DSliderJointAngularMotionSoftness PhysicsServer3DSliderJointParam = 16
-	PhysicsServer3DSliderJointAngularMotionRestitution PhysicsServer3DSliderJointParam = 17
-	PhysicsServer3DSliderJointAngularMotionDamping PhysicsServer3DSliderJointParam = 18
-	PhysicsServer3DSliderJointAngularOrthogonalSoftness PhysicsServer3DSliderJointParam = 19
+	PhysicsServer3DSliderJointLinearLimitUpper             PhysicsServer3DSliderJointParam = 0
+	PhysicsServer3DSliderJointLinearLimitLower             PhysicsServer3DSliderJointParam = 1
+	PhysicsServer3DSliderJointLinearLimitSoftness          PhysicsServer3DSliderJointParam = 2
+	PhysicsServer3DSliderJointLinearLimitRestitution       PhysicsServer3DSliderJointParam = 3
+	PhysicsServer3DSliderJointLinearLimitDamping           PhysicsServer3DSliderJointParam = 4
+	PhysicsServer3DSliderJointLinearMotionSoftness         PhysicsServer3DSliderJointParam = 5
+	PhysicsServer3DSliderJointLinearMotionRestitution      PhysicsServer3DSliderJointParam = 6
+	PhysicsServer3DSliderJointLinearMotionDamping          PhysicsServer3DSliderJointParam = 7
+	PhysicsServer3DSliderJointLinearOrthogonalSoftness     PhysicsServer3DSliderJointParam = 8
+	PhysicsServer3DSliderJointLinearOrthogonalRestitution  PhysicsServer3DSliderJointParam = 9
+	PhysicsServer3DSliderJointLinearOrthogonalDamping      PhysicsServer3DSliderJointParam = 10
+	PhysicsServer3DSliderJointAngularLimitUpper            PhysicsServer3DSliderJointParam = 11
+	PhysicsServer3DSliderJointAngularLimitLower            PhysicsServer3DSliderJointParam = 12
+	PhysicsServer3DSliderJointAngularLimitSoftness         PhysicsServer3DSliderJointParam = 13
+	PhysicsServer3DSliderJointAngularLimitRestitution      PhysicsServer3DSliderJointParam = 14
+	PhysicsServer3DSliderJointAngularLimitDamping          PhysicsServer3DSliderJointParam = 15
+	PhysicsServer3DSliderJointAngularMotionSoftness        PhysicsServer3DSliderJointParam = 16
+	PhysicsServer3DSliderJointAngularMotionRestitution     PhysicsServer3DSliderJointParam = 17
+	PhysicsServer3DSliderJointAngularMotionDamping         PhysicsServer3DSliderJointParam = 18
+	PhysicsServer3DSliderJointAngularOrthogonalSoftness    PhysicsServer3DSliderJointParam = 19
 	PhysicsServer3DSliderJointAngularOrthogonalRestitution PhysicsServer3DSliderJointParam = 20
-	PhysicsServer3DSliderJointAngularOrthogonalDamping PhysicsServer3DSliderJointParam = 21
-	PhysicsServer3DSliderJointMax PhysicsServer3DSliderJointParam = 22
+	PhysicsServer3DSliderJointAngularOrthogonalDamping     PhysicsServer3DSliderJointParam = 21
+	PhysicsServer3DSliderJointMax                          PhysicsServer3DSliderJointParam = 22
 )
 
 type PhysicsServer3DConeTwistJointParam = classdb.PhysicsServer3DConeTwistJointParam
 
 const (
-	PhysicsServer3DConeTwistJointSwingSpan PhysicsServer3DConeTwistJointParam = 0
-	PhysicsServer3DConeTwistJointTwistSpan PhysicsServer3DConeTwistJointParam = 1
-	PhysicsServer3DConeTwistJointBias PhysicsServer3DConeTwistJointParam = 2
-	PhysicsServer3DConeTwistJointSoftness PhysicsServer3DConeTwistJointParam = 3
+	PhysicsServer3DConeTwistJointSwingSpan  PhysicsServer3DConeTwistJointParam = 0
+	PhysicsServer3DConeTwistJointTwistSpan  PhysicsServer3DConeTwistJointParam = 1
+	PhysicsServer3DConeTwistJointBias       PhysicsServer3DConeTwistJointParam = 2
+	PhysicsServer3DConeTwistJointSoftness   PhysicsServer3DConeTwistJointParam = 3
 	PhysicsServer3DConeTwistJointRelaxation PhysicsServer3DConeTwistJointParam = 4
 )
 
 type PhysicsServer3DG6DOFJointAxisParam = classdb.PhysicsServer3DG6DOFJointAxisParam
 
 const (
-	PhysicsServer3DG6dofJointLinearLowerLimit PhysicsServer3DG6DOFJointAxisParam = 0
-	PhysicsServer3DG6dofJointLinearUpperLimit PhysicsServer3DG6DOFJointAxisParam = 1
-	PhysicsServer3DG6dofJointLinearLimitSoftness PhysicsServer3DG6DOFJointAxisParam = 2
-	PhysicsServer3DG6dofJointLinearRestitution PhysicsServer3DG6DOFJointAxisParam = 3
-	PhysicsServer3DG6dofJointLinearDamping PhysicsServer3DG6DOFJointAxisParam = 4
-	PhysicsServer3DG6dofJointLinearMotorTargetVelocity PhysicsServer3DG6DOFJointAxisParam = 5
-	PhysicsServer3DG6dofJointLinearMotorForceLimit PhysicsServer3DG6DOFJointAxisParam = 6
-	PhysicsServer3DG6dofJointAngularLowerLimit PhysicsServer3DG6DOFJointAxisParam = 10
-	PhysicsServer3DG6dofJointAngularUpperLimit PhysicsServer3DG6DOFJointAxisParam = 11
-	PhysicsServer3DG6dofJointAngularLimitSoftness PhysicsServer3DG6DOFJointAxisParam = 12
-	PhysicsServer3DG6dofJointAngularDamping PhysicsServer3DG6DOFJointAxisParam = 13
-	PhysicsServer3DG6dofJointAngularRestitution PhysicsServer3DG6DOFJointAxisParam = 14
-	PhysicsServer3DG6dofJointAngularForceLimit PhysicsServer3DG6DOFJointAxisParam = 15
-	PhysicsServer3DG6dofJointAngularErp PhysicsServer3DG6DOFJointAxisParam = 16
+	PhysicsServer3DG6dofJointLinearLowerLimit           PhysicsServer3DG6DOFJointAxisParam = 0
+	PhysicsServer3DG6dofJointLinearUpperLimit           PhysicsServer3DG6DOFJointAxisParam = 1
+	PhysicsServer3DG6dofJointLinearLimitSoftness        PhysicsServer3DG6DOFJointAxisParam = 2
+	PhysicsServer3DG6dofJointLinearRestitution          PhysicsServer3DG6DOFJointAxisParam = 3
+	PhysicsServer3DG6dofJointLinearDamping              PhysicsServer3DG6DOFJointAxisParam = 4
+	PhysicsServer3DG6dofJointLinearMotorTargetVelocity  PhysicsServer3DG6DOFJointAxisParam = 5
+	PhysicsServer3DG6dofJointLinearMotorForceLimit      PhysicsServer3DG6DOFJointAxisParam = 6
+	PhysicsServer3DG6dofJointAngularLowerLimit          PhysicsServer3DG6DOFJointAxisParam = 10
+	PhysicsServer3DG6dofJointAngularUpperLimit          PhysicsServer3DG6DOFJointAxisParam = 11
+	PhysicsServer3DG6dofJointAngularLimitSoftness       PhysicsServer3DG6DOFJointAxisParam = 12
+	PhysicsServer3DG6dofJointAngularDamping             PhysicsServer3DG6DOFJointAxisParam = 13
+	PhysicsServer3DG6dofJointAngularRestitution         PhysicsServer3DG6DOFJointAxisParam = 14
+	PhysicsServer3DG6dofJointAngularForceLimit          PhysicsServer3DG6DOFJointAxisParam = 15
+	PhysicsServer3DG6dofJointAngularErp                 PhysicsServer3DG6DOFJointAxisParam = 16
 	PhysicsServer3DG6dofJointAngularMotorTargetVelocity PhysicsServer3DG6DOFJointAxisParam = 17
-	PhysicsServer3DG6dofJointAngularMotorForceLimit PhysicsServer3DG6DOFJointAxisParam = 18
+	PhysicsServer3DG6dofJointAngularMotorForceLimit     PhysicsServer3DG6DOFJointAxisParam = 18
 )
 
 type PhysicsServer3DG6DOFJointAxisFlag = classdb.PhysicsServer3DG6DOFJointAxisFlag
 
 const (
-	PhysicsServer3DG6dofJointFlagEnableLinearLimit PhysicsServer3DG6DOFJointAxisFlag = 0
+	PhysicsServer3DG6dofJointFlagEnableLinearLimit  PhysicsServer3DG6DOFJointAxisFlag = 0
 	PhysicsServer3DG6dofJointFlagEnableAngularLimit PhysicsServer3DG6DOFJointAxisFlag = 1
-	PhysicsServer3DG6dofJointFlagEnableMotor PhysicsServer3DG6DOFJointAxisFlag = 4
-	PhysicsServer3DG6dofJointFlagEnableLinearMotor PhysicsServer3DG6DOFJointAxisFlag = 5
+	PhysicsServer3DG6dofJointFlagEnableMotor        PhysicsServer3DG6DOFJointAxisFlag = 4
+	PhysicsServer3DG6dofJointFlagEnableLinearMotor  PhysicsServer3DG6DOFJointAxisFlag = 5
 )
 
 type PhysicsServer3DShapeType = classdb.PhysicsServer3DShapeType
 
 const (
-	PhysicsServer3DShapeWorldBoundary PhysicsServer3DShapeType = 0
-	PhysicsServer3DShapeSeparationRay PhysicsServer3DShapeType = 1
-	PhysicsServer3DShapeSphere PhysicsServer3DShapeType = 2
-	PhysicsServer3DShapeBox PhysicsServer3DShapeType = 3
-	PhysicsServer3DShapeCapsule PhysicsServer3DShapeType = 4
-	PhysicsServer3DShapeCylinder PhysicsServer3DShapeType = 5
-	PhysicsServer3DShapeConvexPolygon PhysicsServer3DShapeType = 6
+	PhysicsServer3DShapeWorldBoundary  PhysicsServer3DShapeType = 0
+	PhysicsServer3DShapeSeparationRay  PhysicsServer3DShapeType = 1
+	PhysicsServer3DShapeSphere         PhysicsServer3DShapeType = 2
+	PhysicsServer3DShapeBox            PhysicsServer3DShapeType = 3
+	PhysicsServer3DShapeCapsule        PhysicsServer3DShapeType = 4
+	PhysicsServer3DShapeCylinder       PhysicsServer3DShapeType = 5
+	PhysicsServer3DShapeConvexPolygon  PhysicsServer3DShapeType = 6
 	PhysicsServer3DShapeConcavePolygon PhysicsServer3DShapeType = 7
-	PhysicsServer3DShapeHeightmap PhysicsServer3DShapeType = 8
-	PhysicsServer3DShapeSoftBody PhysicsServer3DShapeType = 9
-	PhysicsServer3DShapeCustom PhysicsServer3DShapeType = 10
+	PhysicsServer3DShapeHeightmap      PhysicsServer3DShapeType = 8
+	PhysicsServer3DShapeSoftBody       PhysicsServer3DShapeType = 9
+	PhysicsServer3DShapeCustom         PhysicsServer3DShapeType = 10
 )
 
 type PhysicsServer3DAreaParameter = classdb.PhysicsServer3DAreaParameter
 
 const (
-	PhysicsServer3DAreaParamGravityOverrideMode PhysicsServer3DAreaParameter = 0
-	PhysicsServer3DAreaParamGravity PhysicsServer3DAreaParameter = 1
-	PhysicsServer3DAreaParamGravityVector PhysicsServer3DAreaParameter = 2
-	PhysicsServer3DAreaParamGravityIsPoint PhysicsServer3DAreaParameter = 3
+	PhysicsServer3DAreaParamGravityOverrideMode      PhysicsServer3DAreaParameter = 0
+	PhysicsServer3DAreaParamGravity                  PhysicsServer3DAreaParameter = 1
+	PhysicsServer3DAreaParamGravityVector            PhysicsServer3DAreaParameter = 2
+	PhysicsServer3DAreaParamGravityIsPoint           PhysicsServer3DAreaParameter = 3
 	PhysicsServer3DAreaParamGravityPointUnitDistance PhysicsServer3DAreaParameter = 4
-	PhysicsServer3DAreaParamLinearDampOverrideMode PhysicsServer3DAreaParameter = 5
-	PhysicsServer3DAreaParamLinearDamp PhysicsServer3DAreaParameter = 6
-	PhysicsServer3DAreaParamAngularDampOverrideMode PhysicsServer3DAreaParameter = 7
-	PhysicsServer3DAreaParamAngularDamp PhysicsServer3DAreaParameter = 8
-	PhysicsServer3DAreaParamPriority PhysicsServer3DAreaParameter = 9
-	PhysicsServer3DAreaParamWindForceMagnitude PhysicsServer3DAreaParameter = 10
-	PhysicsServer3DAreaParamWindSource PhysicsServer3DAreaParameter = 11
-	PhysicsServer3DAreaParamWindDirection PhysicsServer3DAreaParameter = 12
-	PhysicsServer3DAreaParamWindAttenuationFactor PhysicsServer3DAreaParameter = 13
+	PhysicsServer3DAreaParamLinearDampOverrideMode   PhysicsServer3DAreaParameter = 5
+	PhysicsServer3DAreaParamLinearDamp               PhysicsServer3DAreaParameter = 6
+	PhysicsServer3DAreaParamAngularDampOverrideMode  PhysicsServer3DAreaParameter = 7
+	PhysicsServer3DAreaParamAngularDamp              PhysicsServer3DAreaParameter = 8
+	PhysicsServer3DAreaParamPriority                 PhysicsServer3DAreaParameter = 9
+	PhysicsServer3DAreaParamWindForceMagnitude       PhysicsServer3DAreaParameter = 10
+	PhysicsServer3DAreaParamWindSource               PhysicsServer3DAreaParameter = 11
+	PhysicsServer3DAreaParamWindDirection            PhysicsServer3DAreaParameter = 12
+	PhysicsServer3DAreaParamWindAttenuationFactor    PhysicsServer3DAreaParameter = 13
 )
 
 type PhysicsServer3DAreaSpaceOverrideMode = classdb.PhysicsServer3DAreaSpaceOverrideMode
 
 const (
-	PhysicsServer3DAreaSpaceOverrideDisabled PhysicsServer3DAreaSpaceOverrideMode = 0
-	PhysicsServer3DAreaSpaceOverrideCombine PhysicsServer3DAreaSpaceOverrideMode = 1
+	PhysicsServer3DAreaSpaceOverrideDisabled       PhysicsServer3DAreaSpaceOverrideMode = 0
+	PhysicsServer3DAreaSpaceOverrideCombine        PhysicsServer3DAreaSpaceOverrideMode = 1
 	PhysicsServer3DAreaSpaceOverrideCombineReplace PhysicsServer3DAreaSpaceOverrideMode = 2
-	PhysicsServer3DAreaSpaceOverrideReplace PhysicsServer3DAreaSpaceOverrideMode = 3
+	PhysicsServer3DAreaSpaceOverrideReplace        PhysicsServer3DAreaSpaceOverrideMode = 3
 	PhysicsServer3DAreaSpaceOverrideReplaceCombine PhysicsServer3DAreaSpaceOverrideMode = 4
 )
 
 type PhysicsServer3DBodyMode = classdb.PhysicsServer3DBodyMode
 
 const (
-	PhysicsServer3DBodyModeStatic PhysicsServer3DBodyMode = 0
-	PhysicsServer3DBodyModeKinematic PhysicsServer3DBodyMode = 1
-	PhysicsServer3DBodyModeRigid PhysicsServer3DBodyMode = 2
+	PhysicsServer3DBodyModeStatic      PhysicsServer3DBodyMode = 0
+	PhysicsServer3DBodyModeKinematic   PhysicsServer3DBodyMode = 1
+	PhysicsServer3DBodyModeRigid       PhysicsServer3DBodyMode = 2
 	PhysicsServer3DBodyModeRigidLinear PhysicsServer3DBodyMode = 3
 )
 
 type PhysicsServer3DBodyParameter = classdb.PhysicsServer3DBodyParameter
 
 const (
-	PhysicsServer3DBodyParamBounce PhysicsServer3DBodyParameter = 0
-	PhysicsServer3DBodyParamFriction PhysicsServer3DBodyParameter = 1
-	PhysicsServer3DBodyParamMass PhysicsServer3DBodyParameter = 2
-	PhysicsServer3DBodyParamInertia PhysicsServer3DBodyParameter = 3
-	PhysicsServer3DBodyParamCenterOfMass PhysicsServer3DBodyParameter = 4
-	PhysicsServer3DBodyParamGravityScale PhysicsServer3DBodyParameter = 5
-	PhysicsServer3DBodyParamLinearDampMode PhysicsServer3DBodyParameter = 6
+	PhysicsServer3DBodyParamBounce          PhysicsServer3DBodyParameter = 0
+	PhysicsServer3DBodyParamFriction        PhysicsServer3DBodyParameter = 1
+	PhysicsServer3DBodyParamMass            PhysicsServer3DBodyParameter = 2
+	PhysicsServer3DBodyParamInertia         PhysicsServer3DBodyParameter = 3
+	PhysicsServer3DBodyParamCenterOfMass    PhysicsServer3DBodyParameter = 4
+	PhysicsServer3DBodyParamGravityScale    PhysicsServer3DBodyParameter = 5
+	PhysicsServer3DBodyParamLinearDampMode  PhysicsServer3DBodyParameter = 6
 	PhysicsServer3DBodyParamAngularDampMode PhysicsServer3DBodyParameter = 7
-	PhysicsServer3DBodyParamLinearDamp PhysicsServer3DBodyParameter = 8
-	PhysicsServer3DBodyParamAngularDamp PhysicsServer3DBodyParameter = 9
-	PhysicsServer3DBodyParamMax PhysicsServer3DBodyParameter = 10
+	PhysicsServer3DBodyParamLinearDamp      PhysicsServer3DBodyParameter = 8
+	PhysicsServer3DBodyParamAngularDamp     PhysicsServer3DBodyParameter = 9
+	PhysicsServer3DBodyParamMax             PhysicsServer3DBodyParameter = 10
 )
 
 type PhysicsServer3DBodyDampMode = classdb.PhysicsServer3DBodyDampMode
@@ -3930,47 +3929,47 @@ const (
 type PhysicsServer3DBodyState = classdb.PhysicsServer3DBodyState
 
 const (
-	PhysicsServer3DBodyStateTransform PhysicsServer3DBodyState = 0
-	PhysicsServer3DBodyStateLinearVelocity PhysicsServer3DBodyState = 1
+	PhysicsServer3DBodyStateTransform       PhysicsServer3DBodyState = 0
+	PhysicsServer3DBodyStateLinearVelocity  PhysicsServer3DBodyState = 1
 	PhysicsServer3DBodyStateAngularVelocity PhysicsServer3DBodyState = 2
-	PhysicsServer3DBodyStateSleeping PhysicsServer3DBodyState = 3
-	PhysicsServer3DBodyStateCanSleep PhysicsServer3DBodyState = 4
+	PhysicsServer3DBodyStateSleeping        PhysicsServer3DBodyState = 3
+	PhysicsServer3DBodyStateCanSleep        PhysicsServer3DBodyState = 4
 )
 
 type PhysicsServer3DAreaBodyStatus = classdb.PhysicsServer3DAreaBodyStatus
 
 const (
-	PhysicsServer3DAreaBodyAdded PhysicsServer3DAreaBodyStatus = 0
+	PhysicsServer3DAreaBodyAdded   PhysicsServer3DAreaBodyStatus = 0
 	PhysicsServer3DAreaBodyRemoved PhysicsServer3DAreaBodyStatus = 1
 )
 
 type PhysicsServer3DProcessInfo = classdb.PhysicsServer3DProcessInfo
 
 const (
-	PhysicsServer3DInfoActiveObjects PhysicsServer3DProcessInfo = 0
+	PhysicsServer3DInfoActiveObjects  PhysicsServer3DProcessInfo = 0
 	PhysicsServer3DInfoCollisionPairs PhysicsServer3DProcessInfo = 1
-	PhysicsServer3DInfoIslandCount PhysicsServer3DProcessInfo = 2
+	PhysicsServer3DInfoIslandCount    PhysicsServer3DProcessInfo = 2
 )
 
 type PhysicsServer3DSpaceParameter = classdb.PhysicsServer3DSpaceParameter
 
 const (
-	PhysicsServer3DSpaceParamContactRecycleRadius PhysicsServer3DSpaceParameter = 0
-	PhysicsServer3DSpaceParamContactMaxSeparation PhysicsServer3DSpaceParameter = 1
-	PhysicsServer3DSpaceParamContactMaxAllowedPenetration PhysicsServer3DSpaceParameter = 2
-	PhysicsServer3DSpaceParamContactDefaultBias PhysicsServer3DSpaceParameter = 3
-	PhysicsServer3DSpaceParamBodyLinearVelocitySleepThreshold PhysicsServer3DSpaceParameter = 4
+	PhysicsServer3DSpaceParamContactRecycleRadius              PhysicsServer3DSpaceParameter = 0
+	PhysicsServer3DSpaceParamContactMaxSeparation              PhysicsServer3DSpaceParameter = 1
+	PhysicsServer3DSpaceParamContactMaxAllowedPenetration      PhysicsServer3DSpaceParameter = 2
+	PhysicsServer3DSpaceParamContactDefaultBias                PhysicsServer3DSpaceParameter = 3
+	PhysicsServer3DSpaceParamBodyLinearVelocitySleepThreshold  PhysicsServer3DSpaceParameter = 4
 	PhysicsServer3DSpaceParamBodyAngularVelocitySleepThreshold PhysicsServer3DSpaceParameter = 5
-	PhysicsServer3DSpaceParamBodyTimeToSleep PhysicsServer3DSpaceParameter = 6
-	PhysicsServer3DSpaceParamSolverIterations PhysicsServer3DSpaceParameter = 7
+	PhysicsServer3DSpaceParamBodyTimeToSleep                   PhysicsServer3DSpaceParameter = 6
+	PhysicsServer3DSpaceParamSolverIterations                  PhysicsServer3DSpaceParameter = 7
 )
 
 type PhysicsServer3DBodyAxis = classdb.PhysicsServer3DBodyAxis
 
 const (
-	PhysicsServer3DBodyAxisLinearX PhysicsServer3DBodyAxis = 1
-	PhysicsServer3DBodyAxisLinearY PhysicsServer3DBodyAxis = 2
-	PhysicsServer3DBodyAxisLinearZ PhysicsServer3DBodyAxis = 4
+	PhysicsServer3DBodyAxisLinearX  PhysicsServer3DBodyAxis = 1
+	PhysicsServer3DBodyAxisLinearY  PhysicsServer3DBodyAxis = 2
+	PhysicsServer3DBodyAxisLinearZ  PhysicsServer3DBodyAxis = 4
 	PhysicsServer3DBodyAxisAngularX PhysicsServer3DBodyAxis = 8
 	PhysicsServer3DBodyAxisAngularY PhysicsServer3DBodyAxis = 16
 	PhysicsServer3DBodyAxisAngularZ PhysicsServer3DBodyAxis = 32
@@ -3979,8 +3978,8 @@ const (
 type PinJoint3DParam = classdb.PinJoint3DParam
 
 const (
-	PinJoint3DParamBias PinJoint3DParam = 0
-	PinJoint3DParamDamping PinJoint3DParam = 1
+	PinJoint3DParamBias         PinJoint3DParam = 0
+	PinJoint3DParamDamping      PinJoint3DParam = 1
 	PinJoint3DParamImpulseClamp PinJoint3DParam = 2
 )
 
@@ -3995,19 +3994,19 @@ const (
 type PortableCompressedTexture2DCompressionMode = classdb.PortableCompressedTexture2DCompressionMode
 
 const (
-	PortableCompressedTexture2DCompressionModeLossless PortableCompressedTexture2DCompressionMode = 0
-	PortableCompressedTexture2DCompressionModeLossy PortableCompressedTexture2DCompressionMode = 1
+	PortableCompressedTexture2DCompressionModeLossless       PortableCompressedTexture2DCompressionMode = 0
+	PortableCompressedTexture2DCompressionModeLossy          PortableCompressedTexture2DCompressionMode = 1
 	PortableCompressedTexture2DCompressionModeBasisUniversal PortableCompressedTexture2DCompressionMode = 2
-	PortableCompressedTexture2DCompressionModeS3tc PortableCompressedTexture2DCompressionMode = 3
-	PortableCompressedTexture2DCompressionModeEtc2 PortableCompressedTexture2DCompressionMode = 4
-	PortableCompressedTexture2DCompressionModeBptc PortableCompressedTexture2DCompressionMode = 5
+	PortableCompressedTexture2DCompressionModeS3tc           PortableCompressedTexture2DCompressionMode = 3
+	PortableCompressedTexture2DCompressionModeEtc2           PortableCompressedTexture2DCompressionMode = 4
+	PortableCompressedTexture2DCompressionModeBptc           PortableCompressedTexture2DCompressionMode = 5
 )
 
 type ProgressBarFillMode = classdb.ProgressBarFillMode
 
 const (
-	ProgressBarFillBeginToEnd ProgressBarFillMode = 0
-	ProgressBarFillEndToBegin ProgressBarFillMode = 1
+	ProgressBarFillBeginToEnd  ProgressBarFillMode = 0
+	ProgressBarFillEndToBegin  ProgressBarFillMode = 1
 	ProgressBarFillTopToBottom ProgressBarFillMode = 2
 	ProgressBarFillBottomToTop ProgressBarFillMode = 3
 )
@@ -4015,379 +4014,379 @@ const (
 type ReflectionProbeUpdateMode = classdb.ReflectionProbeUpdateMode
 
 const (
-	ReflectionProbeUpdateOnce ReflectionProbeUpdateMode = 0
+	ReflectionProbeUpdateOnce   ReflectionProbeUpdateMode = 0
 	ReflectionProbeUpdateAlways ReflectionProbeUpdateMode = 1
 )
 
 type ReflectionProbeAmbientMode = classdb.ReflectionProbeAmbientMode
 
 const (
-	ReflectionProbeAmbientDisabled ReflectionProbeAmbientMode = 0
+	ReflectionProbeAmbientDisabled    ReflectionProbeAmbientMode = 0
 	ReflectionProbeAmbientEnvironment ReflectionProbeAmbientMode = 1
-	ReflectionProbeAmbientColor ReflectionProbeAmbientMode = 2
+	ReflectionProbeAmbientColor       ReflectionProbeAmbientMode = 2
 )
 
 type RenderingDeviceDeviceType = classdb.RenderingDeviceDeviceType
 
 const (
-	RenderingDeviceDeviceTypeOther RenderingDeviceDeviceType = 0
+	RenderingDeviceDeviceTypeOther         RenderingDeviceDeviceType = 0
 	RenderingDeviceDeviceTypeIntegratedGpu RenderingDeviceDeviceType = 1
-	RenderingDeviceDeviceTypeDiscreteGpu RenderingDeviceDeviceType = 2
-	RenderingDeviceDeviceTypeVirtualGpu RenderingDeviceDeviceType = 3
-	RenderingDeviceDeviceTypeCpu RenderingDeviceDeviceType = 4
-	RenderingDeviceDeviceTypeMax RenderingDeviceDeviceType = 5
+	RenderingDeviceDeviceTypeDiscreteGpu   RenderingDeviceDeviceType = 2
+	RenderingDeviceDeviceTypeVirtualGpu    RenderingDeviceDeviceType = 3
+	RenderingDeviceDeviceTypeCpu           RenderingDeviceDeviceType = 4
+	RenderingDeviceDeviceTypeMax           RenderingDeviceDeviceType = 5
 )
 
 type RenderingDeviceDriverResource = classdb.RenderingDeviceDriverResource
 
 const (
-	RenderingDeviceDriverResourceVulkanDevice RenderingDeviceDriverResource = 0
-	RenderingDeviceDriverResourceVulkanPhysicalDevice RenderingDeviceDriverResource = 1
-	RenderingDeviceDriverResourceVulkanInstance RenderingDeviceDriverResource = 2
-	RenderingDeviceDriverResourceVulkanQueue RenderingDeviceDriverResource = 3
-	RenderingDeviceDriverResourceVulkanQueueFamilyIndex RenderingDeviceDriverResource = 4
-	RenderingDeviceDriverResourceVulkanImage RenderingDeviceDriverResource = 5
-	RenderingDeviceDriverResourceVulkanImageView RenderingDeviceDriverResource = 6
+	RenderingDeviceDriverResourceVulkanDevice                   RenderingDeviceDriverResource = 0
+	RenderingDeviceDriverResourceVulkanPhysicalDevice           RenderingDeviceDriverResource = 1
+	RenderingDeviceDriverResourceVulkanInstance                 RenderingDeviceDriverResource = 2
+	RenderingDeviceDriverResourceVulkanQueue                    RenderingDeviceDriverResource = 3
+	RenderingDeviceDriverResourceVulkanQueueFamilyIndex         RenderingDeviceDriverResource = 4
+	RenderingDeviceDriverResourceVulkanImage                    RenderingDeviceDriverResource = 5
+	RenderingDeviceDriverResourceVulkanImageView                RenderingDeviceDriverResource = 6
 	RenderingDeviceDriverResourceVulkanImageNativeTextureFormat RenderingDeviceDriverResource = 7
-	RenderingDeviceDriverResourceVulkanSampler RenderingDeviceDriverResource = 8
-	RenderingDeviceDriverResourceVulkanDescriptorSet RenderingDeviceDriverResource = 9
-	RenderingDeviceDriverResourceVulkanBuffer RenderingDeviceDriverResource = 10
-	RenderingDeviceDriverResourceVulkanComputePipeline RenderingDeviceDriverResource = 11
-	RenderingDeviceDriverResourceVulkanRenderPipeline RenderingDeviceDriverResource = 12
+	RenderingDeviceDriverResourceVulkanSampler                  RenderingDeviceDriverResource = 8
+	RenderingDeviceDriverResourceVulkanDescriptorSet            RenderingDeviceDriverResource = 9
+	RenderingDeviceDriverResourceVulkanBuffer                   RenderingDeviceDriverResource = 10
+	RenderingDeviceDriverResourceVulkanComputePipeline          RenderingDeviceDriverResource = 11
+	RenderingDeviceDriverResourceVulkanRenderPipeline           RenderingDeviceDriverResource = 12
 )
 
 type RenderingDeviceDataFormat = classdb.RenderingDeviceDataFormat
 
 const (
-	RenderingDeviceDataFormatR4g4UnormPack8 RenderingDeviceDataFormat = 0
-	RenderingDeviceDataFormatR4g4b4a4UnormPack16 RenderingDeviceDataFormat = 1
-	RenderingDeviceDataFormatB4g4r4a4UnormPack16 RenderingDeviceDataFormat = 2
-	RenderingDeviceDataFormatR5g6b5UnormPack16 RenderingDeviceDataFormat = 3
-	RenderingDeviceDataFormatB5g6r5UnormPack16 RenderingDeviceDataFormat = 4
-	RenderingDeviceDataFormatR5g5b5a1UnormPack16 RenderingDeviceDataFormat = 5
-	RenderingDeviceDataFormatB5g5r5a1UnormPack16 RenderingDeviceDataFormat = 6
-	RenderingDeviceDataFormatA1r5g5b5UnormPack16 RenderingDeviceDataFormat = 7
-	RenderingDeviceDataFormatR8Unorm RenderingDeviceDataFormat = 8
-	RenderingDeviceDataFormatR8Snorm RenderingDeviceDataFormat = 9
-	RenderingDeviceDataFormatR8Uscaled RenderingDeviceDataFormat = 10
-	RenderingDeviceDataFormatR8Sscaled RenderingDeviceDataFormat = 11
-	RenderingDeviceDataFormatR8Uint RenderingDeviceDataFormat = 12
-	RenderingDeviceDataFormatR8Sint RenderingDeviceDataFormat = 13
-	RenderingDeviceDataFormatR8Srgb RenderingDeviceDataFormat = 14
-	RenderingDeviceDataFormatR8g8Unorm RenderingDeviceDataFormat = 15
-	RenderingDeviceDataFormatR8g8Snorm RenderingDeviceDataFormat = 16
-	RenderingDeviceDataFormatR8g8Uscaled RenderingDeviceDataFormat = 17
-	RenderingDeviceDataFormatR8g8Sscaled RenderingDeviceDataFormat = 18
-	RenderingDeviceDataFormatR8g8Uint RenderingDeviceDataFormat = 19
-	RenderingDeviceDataFormatR8g8Sint RenderingDeviceDataFormat = 20
-	RenderingDeviceDataFormatR8g8Srgb RenderingDeviceDataFormat = 21
-	RenderingDeviceDataFormatR8g8b8Unorm RenderingDeviceDataFormat = 22
-	RenderingDeviceDataFormatR8g8b8Snorm RenderingDeviceDataFormat = 23
-	RenderingDeviceDataFormatR8g8b8Uscaled RenderingDeviceDataFormat = 24
-	RenderingDeviceDataFormatR8g8b8Sscaled RenderingDeviceDataFormat = 25
-	RenderingDeviceDataFormatR8g8b8Uint RenderingDeviceDataFormat = 26
-	RenderingDeviceDataFormatR8g8b8Sint RenderingDeviceDataFormat = 27
-	RenderingDeviceDataFormatR8g8b8Srgb RenderingDeviceDataFormat = 28
-	RenderingDeviceDataFormatB8g8r8Unorm RenderingDeviceDataFormat = 29
-	RenderingDeviceDataFormatB8g8r8Snorm RenderingDeviceDataFormat = 30
-	RenderingDeviceDataFormatB8g8r8Uscaled RenderingDeviceDataFormat = 31
-	RenderingDeviceDataFormatB8g8r8Sscaled RenderingDeviceDataFormat = 32
-	RenderingDeviceDataFormatB8g8r8Uint RenderingDeviceDataFormat = 33
-	RenderingDeviceDataFormatB8g8r8Sint RenderingDeviceDataFormat = 34
-	RenderingDeviceDataFormatB8g8r8Srgb RenderingDeviceDataFormat = 35
-	RenderingDeviceDataFormatR8g8b8a8Unorm RenderingDeviceDataFormat = 36
-	RenderingDeviceDataFormatR8g8b8a8Snorm RenderingDeviceDataFormat = 37
-	RenderingDeviceDataFormatR8g8b8a8Uscaled RenderingDeviceDataFormat = 38
-	RenderingDeviceDataFormatR8g8b8a8Sscaled RenderingDeviceDataFormat = 39
-	RenderingDeviceDataFormatR8g8b8a8Uint RenderingDeviceDataFormat = 40
-	RenderingDeviceDataFormatR8g8b8a8Sint RenderingDeviceDataFormat = 41
-	RenderingDeviceDataFormatR8g8b8a8Srgb RenderingDeviceDataFormat = 42
-	RenderingDeviceDataFormatB8g8r8a8Unorm RenderingDeviceDataFormat = 43
-	RenderingDeviceDataFormatB8g8r8a8Snorm RenderingDeviceDataFormat = 44
-	RenderingDeviceDataFormatB8g8r8a8Uscaled RenderingDeviceDataFormat = 45
-	RenderingDeviceDataFormatB8g8r8a8Sscaled RenderingDeviceDataFormat = 46
-	RenderingDeviceDataFormatB8g8r8a8Uint RenderingDeviceDataFormat = 47
-	RenderingDeviceDataFormatB8g8r8a8Sint RenderingDeviceDataFormat = 48
-	RenderingDeviceDataFormatB8g8r8a8Srgb RenderingDeviceDataFormat = 49
-	RenderingDeviceDataFormatA8b8g8r8UnormPack32 RenderingDeviceDataFormat = 50
-	RenderingDeviceDataFormatA8b8g8r8SnormPack32 RenderingDeviceDataFormat = 51
-	RenderingDeviceDataFormatA8b8g8r8UscaledPack32 RenderingDeviceDataFormat = 52
-	RenderingDeviceDataFormatA8b8g8r8SscaledPack32 RenderingDeviceDataFormat = 53
-	RenderingDeviceDataFormatA8b8g8r8UintPack32 RenderingDeviceDataFormat = 54
-	RenderingDeviceDataFormatA8b8g8r8SintPack32 RenderingDeviceDataFormat = 55
-	RenderingDeviceDataFormatA8b8g8r8SrgbPack32 RenderingDeviceDataFormat = 56
-	RenderingDeviceDataFormatA2r10g10b10UnormPack32 RenderingDeviceDataFormat = 57
-	RenderingDeviceDataFormatA2r10g10b10SnormPack32 RenderingDeviceDataFormat = 58
-	RenderingDeviceDataFormatA2r10g10b10UscaledPack32 RenderingDeviceDataFormat = 59
-	RenderingDeviceDataFormatA2r10g10b10SscaledPack32 RenderingDeviceDataFormat = 60
-	RenderingDeviceDataFormatA2r10g10b10UintPack32 RenderingDeviceDataFormat = 61
-	RenderingDeviceDataFormatA2r10g10b10SintPack32 RenderingDeviceDataFormat = 62
-	RenderingDeviceDataFormatA2b10g10r10UnormPack32 RenderingDeviceDataFormat = 63
-	RenderingDeviceDataFormatA2b10g10r10SnormPack32 RenderingDeviceDataFormat = 64
-	RenderingDeviceDataFormatA2b10g10r10UscaledPack32 RenderingDeviceDataFormat = 65
-	RenderingDeviceDataFormatA2b10g10r10SscaledPack32 RenderingDeviceDataFormat = 66
-	RenderingDeviceDataFormatA2b10g10r10UintPack32 RenderingDeviceDataFormat = 67
-	RenderingDeviceDataFormatA2b10g10r10SintPack32 RenderingDeviceDataFormat = 68
-	RenderingDeviceDataFormatR16Unorm RenderingDeviceDataFormat = 69
-	RenderingDeviceDataFormatR16Snorm RenderingDeviceDataFormat = 70
-	RenderingDeviceDataFormatR16Uscaled RenderingDeviceDataFormat = 71
-	RenderingDeviceDataFormatR16Sscaled RenderingDeviceDataFormat = 72
-	RenderingDeviceDataFormatR16Uint RenderingDeviceDataFormat = 73
-	RenderingDeviceDataFormatR16Sint RenderingDeviceDataFormat = 74
-	RenderingDeviceDataFormatR16Sfloat RenderingDeviceDataFormat = 75
-	RenderingDeviceDataFormatR16g16Unorm RenderingDeviceDataFormat = 76
-	RenderingDeviceDataFormatR16g16Snorm RenderingDeviceDataFormat = 77
-	RenderingDeviceDataFormatR16g16Uscaled RenderingDeviceDataFormat = 78
-	RenderingDeviceDataFormatR16g16Sscaled RenderingDeviceDataFormat = 79
-	RenderingDeviceDataFormatR16g16Uint RenderingDeviceDataFormat = 80
-	RenderingDeviceDataFormatR16g16Sint RenderingDeviceDataFormat = 81
-	RenderingDeviceDataFormatR16g16Sfloat RenderingDeviceDataFormat = 82
-	RenderingDeviceDataFormatR16g16b16Unorm RenderingDeviceDataFormat = 83
-	RenderingDeviceDataFormatR16g16b16Snorm RenderingDeviceDataFormat = 84
-	RenderingDeviceDataFormatR16g16b16Uscaled RenderingDeviceDataFormat = 85
-	RenderingDeviceDataFormatR16g16b16Sscaled RenderingDeviceDataFormat = 86
-	RenderingDeviceDataFormatR16g16b16Uint RenderingDeviceDataFormat = 87
-	RenderingDeviceDataFormatR16g16b16Sint RenderingDeviceDataFormat = 88
-	RenderingDeviceDataFormatR16g16b16Sfloat RenderingDeviceDataFormat = 89
-	RenderingDeviceDataFormatR16g16b16a16Unorm RenderingDeviceDataFormat = 90
-	RenderingDeviceDataFormatR16g16b16a16Snorm RenderingDeviceDataFormat = 91
-	RenderingDeviceDataFormatR16g16b16a16Uscaled RenderingDeviceDataFormat = 92
-	RenderingDeviceDataFormatR16g16b16a16Sscaled RenderingDeviceDataFormat = 93
-	RenderingDeviceDataFormatR16g16b16a16Uint RenderingDeviceDataFormat = 94
-	RenderingDeviceDataFormatR16g16b16a16Sint RenderingDeviceDataFormat = 95
-	RenderingDeviceDataFormatR16g16b16a16Sfloat RenderingDeviceDataFormat = 96
-	RenderingDeviceDataFormatR32Uint RenderingDeviceDataFormat = 97
-	RenderingDeviceDataFormatR32Sint RenderingDeviceDataFormat = 98
-	RenderingDeviceDataFormatR32Sfloat RenderingDeviceDataFormat = 99
-	RenderingDeviceDataFormatR32g32Uint RenderingDeviceDataFormat = 100
-	RenderingDeviceDataFormatR32g32Sint RenderingDeviceDataFormat = 101
-	RenderingDeviceDataFormatR32g32Sfloat RenderingDeviceDataFormat = 102
-	RenderingDeviceDataFormatR32g32b32Uint RenderingDeviceDataFormat = 103
-	RenderingDeviceDataFormatR32g32b32Sint RenderingDeviceDataFormat = 104
-	RenderingDeviceDataFormatR32g32b32Sfloat RenderingDeviceDataFormat = 105
-	RenderingDeviceDataFormatR32g32b32a32Uint RenderingDeviceDataFormat = 106
-	RenderingDeviceDataFormatR32g32b32a32Sint RenderingDeviceDataFormat = 107
-	RenderingDeviceDataFormatR32g32b32a32Sfloat RenderingDeviceDataFormat = 108
-	RenderingDeviceDataFormatR64Uint RenderingDeviceDataFormat = 109
-	RenderingDeviceDataFormatR64Sint RenderingDeviceDataFormat = 110
-	RenderingDeviceDataFormatR64Sfloat RenderingDeviceDataFormat = 111
-	RenderingDeviceDataFormatR64g64Uint RenderingDeviceDataFormat = 112
-	RenderingDeviceDataFormatR64g64Sint RenderingDeviceDataFormat = 113
-	RenderingDeviceDataFormatR64g64Sfloat RenderingDeviceDataFormat = 114
-	RenderingDeviceDataFormatR64g64b64Uint RenderingDeviceDataFormat = 115
-	RenderingDeviceDataFormatR64g64b64Sint RenderingDeviceDataFormat = 116
-	RenderingDeviceDataFormatR64g64b64Sfloat RenderingDeviceDataFormat = 117
-	RenderingDeviceDataFormatR64g64b64a64Uint RenderingDeviceDataFormat = 118
-	RenderingDeviceDataFormatR64g64b64a64Sint RenderingDeviceDataFormat = 119
-	RenderingDeviceDataFormatR64g64b64a64Sfloat RenderingDeviceDataFormat = 120
-	RenderingDeviceDataFormatB10g11r11UfloatPack32 RenderingDeviceDataFormat = 121
-	RenderingDeviceDataFormatE5b9g9r9UfloatPack32 RenderingDeviceDataFormat = 122
-	RenderingDeviceDataFormatD16Unorm RenderingDeviceDataFormat = 123
-	RenderingDeviceDataFormatX8D24UnormPack32 RenderingDeviceDataFormat = 124
-	RenderingDeviceDataFormatD32Sfloat RenderingDeviceDataFormat = 125
-	RenderingDeviceDataFormatS8Uint RenderingDeviceDataFormat = 126
-	RenderingDeviceDataFormatD16UnormS8Uint RenderingDeviceDataFormat = 127
-	RenderingDeviceDataFormatD24UnormS8Uint RenderingDeviceDataFormat = 128
-	RenderingDeviceDataFormatD32SfloatS8Uint RenderingDeviceDataFormat = 129
-	RenderingDeviceDataFormatBc1RgbUnormBlock RenderingDeviceDataFormat = 130
-	RenderingDeviceDataFormatBc1RgbSrgbBlock RenderingDeviceDataFormat = 131
-	RenderingDeviceDataFormatBc1RgbaUnormBlock RenderingDeviceDataFormat = 132
-	RenderingDeviceDataFormatBc1RgbaSrgbBlock RenderingDeviceDataFormat = 133
-	RenderingDeviceDataFormatBc2UnormBlock RenderingDeviceDataFormat = 134
-	RenderingDeviceDataFormatBc2SrgbBlock RenderingDeviceDataFormat = 135
-	RenderingDeviceDataFormatBc3UnormBlock RenderingDeviceDataFormat = 136
-	RenderingDeviceDataFormatBc3SrgbBlock RenderingDeviceDataFormat = 137
-	RenderingDeviceDataFormatBc4UnormBlock RenderingDeviceDataFormat = 138
-	RenderingDeviceDataFormatBc4SnormBlock RenderingDeviceDataFormat = 139
-	RenderingDeviceDataFormatBc5UnormBlock RenderingDeviceDataFormat = 140
-	RenderingDeviceDataFormatBc5SnormBlock RenderingDeviceDataFormat = 141
-	RenderingDeviceDataFormatBc6hUfloatBlock RenderingDeviceDataFormat = 142
-	RenderingDeviceDataFormatBc6hSfloatBlock RenderingDeviceDataFormat = 143
-	RenderingDeviceDataFormatBc7UnormBlock RenderingDeviceDataFormat = 144
-	RenderingDeviceDataFormatBc7SrgbBlock RenderingDeviceDataFormat = 145
-	RenderingDeviceDataFormatEtc2R8g8b8UnormBlock RenderingDeviceDataFormat = 146
-	RenderingDeviceDataFormatEtc2R8g8b8SrgbBlock RenderingDeviceDataFormat = 147
-	RenderingDeviceDataFormatEtc2R8g8b8a1UnormBlock RenderingDeviceDataFormat = 148
-	RenderingDeviceDataFormatEtc2R8g8b8a1SrgbBlock RenderingDeviceDataFormat = 149
-	RenderingDeviceDataFormatEtc2R8g8b8a8UnormBlock RenderingDeviceDataFormat = 150
-	RenderingDeviceDataFormatEtc2R8g8b8a8SrgbBlock RenderingDeviceDataFormat = 151
-	RenderingDeviceDataFormatEacR11UnormBlock RenderingDeviceDataFormat = 152
-	RenderingDeviceDataFormatEacR11SnormBlock RenderingDeviceDataFormat = 153
-	RenderingDeviceDataFormatEacR11g11UnormBlock RenderingDeviceDataFormat = 154
-	RenderingDeviceDataFormatEacR11g11SnormBlock RenderingDeviceDataFormat = 155
-	RenderingDeviceDataFormatAstc4x4UnormBlock RenderingDeviceDataFormat = 156
-	RenderingDeviceDataFormatAstc4x4SrgbBlock RenderingDeviceDataFormat = 157
-	RenderingDeviceDataFormatAstc5x4UnormBlock RenderingDeviceDataFormat = 158
-	RenderingDeviceDataFormatAstc5x4SrgbBlock RenderingDeviceDataFormat = 159
-	RenderingDeviceDataFormatAstc5x5UnormBlock RenderingDeviceDataFormat = 160
-	RenderingDeviceDataFormatAstc5x5SrgbBlock RenderingDeviceDataFormat = 161
-	RenderingDeviceDataFormatAstc6x5UnormBlock RenderingDeviceDataFormat = 162
-	RenderingDeviceDataFormatAstc6x5SrgbBlock RenderingDeviceDataFormat = 163
-	RenderingDeviceDataFormatAstc6x6UnormBlock RenderingDeviceDataFormat = 164
-	RenderingDeviceDataFormatAstc6x6SrgbBlock RenderingDeviceDataFormat = 165
-	RenderingDeviceDataFormatAstc8x5UnormBlock RenderingDeviceDataFormat = 166
-	RenderingDeviceDataFormatAstc8x5SrgbBlock RenderingDeviceDataFormat = 167
-	RenderingDeviceDataFormatAstc8x6UnormBlock RenderingDeviceDataFormat = 168
-	RenderingDeviceDataFormatAstc8x6SrgbBlock RenderingDeviceDataFormat = 169
-	RenderingDeviceDataFormatAstc8x8UnormBlock RenderingDeviceDataFormat = 170
-	RenderingDeviceDataFormatAstc8x8SrgbBlock RenderingDeviceDataFormat = 171
-	RenderingDeviceDataFormatAstc10x5UnormBlock RenderingDeviceDataFormat = 172
-	RenderingDeviceDataFormatAstc10x5SrgbBlock RenderingDeviceDataFormat = 173
-	RenderingDeviceDataFormatAstc10x6UnormBlock RenderingDeviceDataFormat = 174
-	RenderingDeviceDataFormatAstc10x6SrgbBlock RenderingDeviceDataFormat = 175
-	RenderingDeviceDataFormatAstc10x8UnormBlock RenderingDeviceDataFormat = 176
-	RenderingDeviceDataFormatAstc10x8SrgbBlock RenderingDeviceDataFormat = 177
-	RenderingDeviceDataFormatAstc10x10UnormBlock RenderingDeviceDataFormat = 178
-	RenderingDeviceDataFormatAstc10x10SrgbBlock RenderingDeviceDataFormat = 179
-	RenderingDeviceDataFormatAstc12x10UnormBlock RenderingDeviceDataFormat = 180
-	RenderingDeviceDataFormatAstc12x10SrgbBlock RenderingDeviceDataFormat = 181
-	RenderingDeviceDataFormatAstc12x12UnormBlock RenderingDeviceDataFormat = 182
-	RenderingDeviceDataFormatAstc12x12SrgbBlock RenderingDeviceDataFormat = 183
-	RenderingDeviceDataFormatG8b8g8r8422Unorm RenderingDeviceDataFormat = 184
-	RenderingDeviceDataFormatB8g8r8g8422Unorm RenderingDeviceDataFormat = 185
-	RenderingDeviceDataFormatG8B8R83plane420Unorm RenderingDeviceDataFormat = 186
-	RenderingDeviceDataFormatG8B8r82plane420Unorm RenderingDeviceDataFormat = 187
-	RenderingDeviceDataFormatG8B8R83plane422Unorm RenderingDeviceDataFormat = 188
-	RenderingDeviceDataFormatG8B8r82plane422Unorm RenderingDeviceDataFormat = 189
-	RenderingDeviceDataFormatG8B8R83plane444Unorm RenderingDeviceDataFormat = 190
-	RenderingDeviceDataFormatR10x6UnormPack16 RenderingDeviceDataFormat = 191
-	RenderingDeviceDataFormatR10x6g10x6Unorm2pack16 RenderingDeviceDataFormat = 192
-	RenderingDeviceDataFormatR10x6g10x6b10x6a10x6Unorm4pack16 RenderingDeviceDataFormat = 193
-	RenderingDeviceDataFormatG10x6b10x6g10x6r10x6422Unorm4pack16 RenderingDeviceDataFormat = 194
-	RenderingDeviceDataFormatB10x6g10x6r10x6g10x6422Unorm4pack16 RenderingDeviceDataFormat = 195
+	RenderingDeviceDataFormatR4g4UnormPack8                       RenderingDeviceDataFormat = 0
+	RenderingDeviceDataFormatR4g4b4a4UnormPack16                  RenderingDeviceDataFormat = 1
+	RenderingDeviceDataFormatB4g4r4a4UnormPack16                  RenderingDeviceDataFormat = 2
+	RenderingDeviceDataFormatR5g6b5UnormPack16                    RenderingDeviceDataFormat = 3
+	RenderingDeviceDataFormatB5g6r5UnormPack16                    RenderingDeviceDataFormat = 4
+	RenderingDeviceDataFormatR5g5b5a1UnormPack16                  RenderingDeviceDataFormat = 5
+	RenderingDeviceDataFormatB5g5r5a1UnormPack16                  RenderingDeviceDataFormat = 6
+	RenderingDeviceDataFormatA1r5g5b5UnormPack16                  RenderingDeviceDataFormat = 7
+	RenderingDeviceDataFormatR8Unorm                              RenderingDeviceDataFormat = 8
+	RenderingDeviceDataFormatR8Snorm                              RenderingDeviceDataFormat = 9
+	RenderingDeviceDataFormatR8Uscaled                            RenderingDeviceDataFormat = 10
+	RenderingDeviceDataFormatR8Sscaled                            RenderingDeviceDataFormat = 11
+	RenderingDeviceDataFormatR8Uint                               RenderingDeviceDataFormat = 12
+	RenderingDeviceDataFormatR8Sint                               RenderingDeviceDataFormat = 13
+	RenderingDeviceDataFormatR8Srgb                               RenderingDeviceDataFormat = 14
+	RenderingDeviceDataFormatR8g8Unorm                            RenderingDeviceDataFormat = 15
+	RenderingDeviceDataFormatR8g8Snorm                            RenderingDeviceDataFormat = 16
+	RenderingDeviceDataFormatR8g8Uscaled                          RenderingDeviceDataFormat = 17
+	RenderingDeviceDataFormatR8g8Sscaled                          RenderingDeviceDataFormat = 18
+	RenderingDeviceDataFormatR8g8Uint                             RenderingDeviceDataFormat = 19
+	RenderingDeviceDataFormatR8g8Sint                             RenderingDeviceDataFormat = 20
+	RenderingDeviceDataFormatR8g8Srgb                             RenderingDeviceDataFormat = 21
+	RenderingDeviceDataFormatR8g8b8Unorm                          RenderingDeviceDataFormat = 22
+	RenderingDeviceDataFormatR8g8b8Snorm                          RenderingDeviceDataFormat = 23
+	RenderingDeviceDataFormatR8g8b8Uscaled                        RenderingDeviceDataFormat = 24
+	RenderingDeviceDataFormatR8g8b8Sscaled                        RenderingDeviceDataFormat = 25
+	RenderingDeviceDataFormatR8g8b8Uint                           RenderingDeviceDataFormat = 26
+	RenderingDeviceDataFormatR8g8b8Sint                           RenderingDeviceDataFormat = 27
+	RenderingDeviceDataFormatR8g8b8Srgb                           RenderingDeviceDataFormat = 28
+	RenderingDeviceDataFormatB8g8r8Unorm                          RenderingDeviceDataFormat = 29
+	RenderingDeviceDataFormatB8g8r8Snorm                          RenderingDeviceDataFormat = 30
+	RenderingDeviceDataFormatB8g8r8Uscaled                        RenderingDeviceDataFormat = 31
+	RenderingDeviceDataFormatB8g8r8Sscaled                        RenderingDeviceDataFormat = 32
+	RenderingDeviceDataFormatB8g8r8Uint                           RenderingDeviceDataFormat = 33
+	RenderingDeviceDataFormatB8g8r8Sint                           RenderingDeviceDataFormat = 34
+	RenderingDeviceDataFormatB8g8r8Srgb                           RenderingDeviceDataFormat = 35
+	RenderingDeviceDataFormatR8g8b8a8Unorm                        RenderingDeviceDataFormat = 36
+	RenderingDeviceDataFormatR8g8b8a8Snorm                        RenderingDeviceDataFormat = 37
+	RenderingDeviceDataFormatR8g8b8a8Uscaled                      RenderingDeviceDataFormat = 38
+	RenderingDeviceDataFormatR8g8b8a8Sscaled                      RenderingDeviceDataFormat = 39
+	RenderingDeviceDataFormatR8g8b8a8Uint                         RenderingDeviceDataFormat = 40
+	RenderingDeviceDataFormatR8g8b8a8Sint                         RenderingDeviceDataFormat = 41
+	RenderingDeviceDataFormatR8g8b8a8Srgb                         RenderingDeviceDataFormat = 42
+	RenderingDeviceDataFormatB8g8r8a8Unorm                        RenderingDeviceDataFormat = 43
+	RenderingDeviceDataFormatB8g8r8a8Snorm                        RenderingDeviceDataFormat = 44
+	RenderingDeviceDataFormatB8g8r8a8Uscaled                      RenderingDeviceDataFormat = 45
+	RenderingDeviceDataFormatB8g8r8a8Sscaled                      RenderingDeviceDataFormat = 46
+	RenderingDeviceDataFormatB8g8r8a8Uint                         RenderingDeviceDataFormat = 47
+	RenderingDeviceDataFormatB8g8r8a8Sint                         RenderingDeviceDataFormat = 48
+	RenderingDeviceDataFormatB8g8r8a8Srgb                         RenderingDeviceDataFormat = 49
+	RenderingDeviceDataFormatA8b8g8r8UnormPack32                  RenderingDeviceDataFormat = 50
+	RenderingDeviceDataFormatA8b8g8r8SnormPack32                  RenderingDeviceDataFormat = 51
+	RenderingDeviceDataFormatA8b8g8r8UscaledPack32                RenderingDeviceDataFormat = 52
+	RenderingDeviceDataFormatA8b8g8r8SscaledPack32                RenderingDeviceDataFormat = 53
+	RenderingDeviceDataFormatA8b8g8r8UintPack32                   RenderingDeviceDataFormat = 54
+	RenderingDeviceDataFormatA8b8g8r8SintPack32                   RenderingDeviceDataFormat = 55
+	RenderingDeviceDataFormatA8b8g8r8SrgbPack32                   RenderingDeviceDataFormat = 56
+	RenderingDeviceDataFormatA2r10g10b10UnormPack32               RenderingDeviceDataFormat = 57
+	RenderingDeviceDataFormatA2r10g10b10SnormPack32               RenderingDeviceDataFormat = 58
+	RenderingDeviceDataFormatA2r10g10b10UscaledPack32             RenderingDeviceDataFormat = 59
+	RenderingDeviceDataFormatA2r10g10b10SscaledPack32             RenderingDeviceDataFormat = 60
+	RenderingDeviceDataFormatA2r10g10b10UintPack32                RenderingDeviceDataFormat = 61
+	RenderingDeviceDataFormatA2r10g10b10SintPack32                RenderingDeviceDataFormat = 62
+	RenderingDeviceDataFormatA2b10g10r10UnormPack32               RenderingDeviceDataFormat = 63
+	RenderingDeviceDataFormatA2b10g10r10SnormPack32               RenderingDeviceDataFormat = 64
+	RenderingDeviceDataFormatA2b10g10r10UscaledPack32             RenderingDeviceDataFormat = 65
+	RenderingDeviceDataFormatA2b10g10r10SscaledPack32             RenderingDeviceDataFormat = 66
+	RenderingDeviceDataFormatA2b10g10r10UintPack32                RenderingDeviceDataFormat = 67
+	RenderingDeviceDataFormatA2b10g10r10SintPack32                RenderingDeviceDataFormat = 68
+	RenderingDeviceDataFormatR16Unorm                             RenderingDeviceDataFormat = 69
+	RenderingDeviceDataFormatR16Snorm                             RenderingDeviceDataFormat = 70
+	RenderingDeviceDataFormatR16Uscaled                           RenderingDeviceDataFormat = 71
+	RenderingDeviceDataFormatR16Sscaled                           RenderingDeviceDataFormat = 72
+	RenderingDeviceDataFormatR16Uint                              RenderingDeviceDataFormat = 73
+	RenderingDeviceDataFormatR16Sint                              RenderingDeviceDataFormat = 74
+	RenderingDeviceDataFormatR16Sfloat                            RenderingDeviceDataFormat = 75
+	RenderingDeviceDataFormatR16g16Unorm                          RenderingDeviceDataFormat = 76
+	RenderingDeviceDataFormatR16g16Snorm                          RenderingDeviceDataFormat = 77
+	RenderingDeviceDataFormatR16g16Uscaled                        RenderingDeviceDataFormat = 78
+	RenderingDeviceDataFormatR16g16Sscaled                        RenderingDeviceDataFormat = 79
+	RenderingDeviceDataFormatR16g16Uint                           RenderingDeviceDataFormat = 80
+	RenderingDeviceDataFormatR16g16Sint                           RenderingDeviceDataFormat = 81
+	RenderingDeviceDataFormatR16g16Sfloat                         RenderingDeviceDataFormat = 82
+	RenderingDeviceDataFormatR16g16b16Unorm                       RenderingDeviceDataFormat = 83
+	RenderingDeviceDataFormatR16g16b16Snorm                       RenderingDeviceDataFormat = 84
+	RenderingDeviceDataFormatR16g16b16Uscaled                     RenderingDeviceDataFormat = 85
+	RenderingDeviceDataFormatR16g16b16Sscaled                     RenderingDeviceDataFormat = 86
+	RenderingDeviceDataFormatR16g16b16Uint                        RenderingDeviceDataFormat = 87
+	RenderingDeviceDataFormatR16g16b16Sint                        RenderingDeviceDataFormat = 88
+	RenderingDeviceDataFormatR16g16b16Sfloat                      RenderingDeviceDataFormat = 89
+	RenderingDeviceDataFormatR16g16b16a16Unorm                    RenderingDeviceDataFormat = 90
+	RenderingDeviceDataFormatR16g16b16a16Snorm                    RenderingDeviceDataFormat = 91
+	RenderingDeviceDataFormatR16g16b16a16Uscaled                  RenderingDeviceDataFormat = 92
+	RenderingDeviceDataFormatR16g16b16a16Sscaled                  RenderingDeviceDataFormat = 93
+	RenderingDeviceDataFormatR16g16b16a16Uint                     RenderingDeviceDataFormat = 94
+	RenderingDeviceDataFormatR16g16b16a16Sint                     RenderingDeviceDataFormat = 95
+	RenderingDeviceDataFormatR16g16b16a16Sfloat                   RenderingDeviceDataFormat = 96
+	RenderingDeviceDataFormatR32Uint                              RenderingDeviceDataFormat = 97
+	RenderingDeviceDataFormatR32Sint                              RenderingDeviceDataFormat = 98
+	RenderingDeviceDataFormatR32Sfloat                            RenderingDeviceDataFormat = 99
+	RenderingDeviceDataFormatR32g32Uint                           RenderingDeviceDataFormat = 100
+	RenderingDeviceDataFormatR32g32Sint                           RenderingDeviceDataFormat = 101
+	RenderingDeviceDataFormatR32g32Sfloat                         RenderingDeviceDataFormat = 102
+	RenderingDeviceDataFormatR32g32b32Uint                        RenderingDeviceDataFormat = 103
+	RenderingDeviceDataFormatR32g32b32Sint                        RenderingDeviceDataFormat = 104
+	RenderingDeviceDataFormatR32g32b32Sfloat                      RenderingDeviceDataFormat = 105
+	RenderingDeviceDataFormatR32g32b32a32Uint                     RenderingDeviceDataFormat = 106
+	RenderingDeviceDataFormatR32g32b32a32Sint                     RenderingDeviceDataFormat = 107
+	RenderingDeviceDataFormatR32g32b32a32Sfloat                   RenderingDeviceDataFormat = 108
+	RenderingDeviceDataFormatR64Uint                              RenderingDeviceDataFormat = 109
+	RenderingDeviceDataFormatR64Sint                              RenderingDeviceDataFormat = 110
+	RenderingDeviceDataFormatR64Sfloat                            RenderingDeviceDataFormat = 111
+	RenderingDeviceDataFormatR64g64Uint                           RenderingDeviceDataFormat = 112
+	RenderingDeviceDataFormatR64g64Sint                           RenderingDeviceDataFormat = 113
+	RenderingDeviceDataFormatR64g64Sfloat                         RenderingDeviceDataFormat = 114
+	RenderingDeviceDataFormatR64g64b64Uint                        RenderingDeviceDataFormat = 115
+	RenderingDeviceDataFormatR64g64b64Sint                        RenderingDeviceDataFormat = 116
+	RenderingDeviceDataFormatR64g64b64Sfloat                      RenderingDeviceDataFormat = 117
+	RenderingDeviceDataFormatR64g64b64a64Uint                     RenderingDeviceDataFormat = 118
+	RenderingDeviceDataFormatR64g64b64a64Sint                     RenderingDeviceDataFormat = 119
+	RenderingDeviceDataFormatR64g64b64a64Sfloat                   RenderingDeviceDataFormat = 120
+	RenderingDeviceDataFormatB10g11r11UfloatPack32                RenderingDeviceDataFormat = 121
+	RenderingDeviceDataFormatE5b9g9r9UfloatPack32                 RenderingDeviceDataFormat = 122
+	RenderingDeviceDataFormatD16Unorm                             RenderingDeviceDataFormat = 123
+	RenderingDeviceDataFormatX8D24UnormPack32                     RenderingDeviceDataFormat = 124
+	RenderingDeviceDataFormatD32Sfloat                            RenderingDeviceDataFormat = 125
+	RenderingDeviceDataFormatS8Uint                               RenderingDeviceDataFormat = 126
+	RenderingDeviceDataFormatD16UnormS8Uint                       RenderingDeviceDataFormat = 127
+	RenderingDeviceDataFormatD24UnormS8Uint                       RenderingDeviceDataFormat = 128
+	RenderingDeviceDataFormatD32SfloatS8Uint                      RenderingDeviceDataFormat = 129
+	RenderingDeviceDataFormatBc1RgbUnormBlock                     RenderingDeviceDataFormat = 130
+	RenderingDeviceDataFormatBc1RgbSrgbBlock                      RenderingDeviceDataFormat = 131
+	RenderingDeviceDataFormatBc1RgbaUnormBlock                    RenderingDeviceDataFormat = 132
+	RenderingDeviceDataFormatBc1RgbaSrgbBlock                     RenderingDeviceDataFormat = 133
+	RenderingDeviceDataFormatBc2UnormBlock                        RenderingDeviceDataFormat = 134
+	RenderingDeviceDataFormatBc2SrgbBlock                         RenderingDeviceDataFormat = 135
+	RenderingDeviceDataFormatBc3UnormBlock                        RenderingDeviceDataFormat = 136
+	RenderingDeviceDataFormatBc3SrgbBlock                         RenderingDeviceDataFormat = 137
+	RenderingDeviceDataFormatBc4UnormBlock                        RenderingDeviceDataFormat = 138
+	RenderingDeviceDataFormatBc4SnormBlock                        RenderingDeviceDataFormat = 139
+	RenderingDeviceDataFormatBc5UnormBlock                        RenderingDeviceDataFormat = 140
+	RenderingDeviceDataFormatBc5SnormBlock                        RenderingDeviceDataFormat = 141
+	RenderingDeviceDataFormatBc6hUfloatBlock                      RenderingDeviceDataFormat = 142
+	RenderingDeviceDataFormatBc6hSfloatBlock                      RenderingDeviceDataFormat = 143
+	RenderingDeviceDataFormatBc7UnormBlock                        RenderingDeviceDataFormat = 144
+	RenderingDeviceDataFormatBc7SrgbBlock                         RenderingDeviceDataFormat = 145
+	RenderingDeviceDataFormatEtc2R8g8b8UnormBlock                 RenderingDeviceDataFormat = 146
+	RenderingDeviceDataFormatEtc2R8g8b8SrgbBlock                  RenderingDeviceDataFormat = 147
+	RenderingDeviceDataFormatEtc2R8g8b8a1UnormBlock               RenderingDeviceDataFormat = 148
+	RenderingDeviceDataFormatEtc2R8g8b8a1SrgbBlock                RenderingDeviceDataFormat = 149
+	RenderingDeviceDataFormatEtc2R8g8b8a8UnormBlock               RenderingDeviceDataFormat = 150
+	RenderingDeviceDataFormatEtc2R8g8b8a8SrgbBlock                RenderingDeviceDataFormat = 151
+	RenderingDeviceDataFormatEacR11UnormBlock                     RenderingDeviceDataFormat = 152
+	RenderingDeviceDataFormatEacR11SnormBlock                     RenderingDeviceDataFormat = 153
+	RenderingDeviceDataFormatEacR11g11UnormBlock                  RenderingDeviceDataFormat = 154
+	RenderingDeviceDataFormatEacR11g11SnormBlock                  RenderingDeviceDataFormat = 155
+	RenderingDeviceDataFormatAstc4x4UnormBlock                    RenderingDeviceDataFormat = 156
+	RenderingDeviceDataFormatAstc4x4SrgbBlock                     RenderingDeviceDataFormat = 157
+	RenderingDeviceDataFormatAstc5x4UnormBlock                    RenderingDeviceDataFormat = 158
+	RenderingDeviceDataFormatAstc5x4SrgbBlock                     RenderingDeviceDataFormat = 159
+	RenderingDeviceDataFormatAstc5x5UnormBlock                    RenderingDeviceDataFormat = 160
+	RenderingDeviceDataFormatAstc5x5SrgbBlock                     RenderingDeviceDataFormat = 161
+	RenderingDeviceDataFormatAstc6x5UnormBlock                    RenderingDeviceDataFormat = 162
+	RenderingDeviceDataFormatAstc6x5SrgbBlock                     RenderingDeviceDataFormat = 163
+	RenderingDeviceDataFormatAstc6x6UnormBlock                    RenderingDeviceDataFormat = 164
+	RenderingDeviceDataFormatAstc6x6SrgbBlock                     RenderingDeviceDataFormat = 165
+	RenderingDeviceDataFormatAstc8x5UnormBlock                    RenderingDeviceDataFormat = 166
+	RenderingDeviceDataFormatAstc8x5SrgbBlock                     RenderingDeviceDataFormat = 167
+	RenderingDeviceDataFormatAstc8x6UnormBlock                    RenderingDeviceDataFormat = 168
+	RenderingDeviceDataFormatAstc8x6SrgbBlock                     RenderingDeviceDataFormat = 169
+	RenderingDeviceDataFormatAstc8x8UnormBlock                    RenderingDeviceDataFormat = 170
+	RenderingDeviceDataFormatAstc8x8SrgbBlock                     RenderingDeviceDataFormat = 171
+	RenderingDeviceDataFormatAstc10x5UnormBlock                   RenderingDeviceDataFormat = 172
+	RenderingDeviceDataFormatAstc10x5SrgbBlock                    RenderingDeviceDataFormat = 173
+	RenderingDeviceDataFormatAstc10x6UnormBlock                   RenderingDeviceDataFormat = 174
+	RenderingDeviceDataFormatAstc10x6SrgbBlock                    RenderingDeviceDataFormat = 175
+	RenderingDeviceDataFormatAstc10x8UnormBlock                   RenderingDeviceDataFormat = 176
+	RenderingDeviceDataFormatAstc10x8SrgbBlock                    RenderingDeviceDataFormat = 177
+	RenderingDeviceDataFormatAstc10x10UnormBlock                  RenderingDeviceDataFormat = 178
+	RenderingDeviceDataFormatAstc10x10SrgbBlock                   RenderingDeviceDataFormat = 179
+	RenderingDeviceDataFormatAstc12x10UnormBlock                  RenderingDeviceDataFormat = 180
+	RenderingDeviceDataFormatAstc12x10SrgbBlock                   RenderingDeviceDataFormat = 181
+	RenderingDeviceDataFormatAstc12x12UnormBlock                  RenderingDeviceDataFormat = 182
+	RenderingDeviceDataFormatAstc12x12SrgbBlock                   RenderingDeviceDataFormat = 183
+	RenderingDeviceDataFormatG8b8g8r8422Unorm                     RenderingDeviceDataFormat = 184
+	RenderingDeviceDataFormatB8g8r8g8422Unorm                     RenderingDeviceDataFormat = 185
+	RenderingDeviceDataFormatG8B8R83plane420Unorm                 RenderingDeviceDataFormat = 186
+	RenderingDeviceDataFormatG8B8r82plane420Unorm                 RenderingDeviceDataFormat = 187
+	RenderingDeviceDataFormatG8B8R83plane422Unorm                 RenderingDeviceDataFormat = 188
+	RenderingDeviceDataFormatG8B8r82plane422Unorm                 RenderingDeviceDataFormat = 189
+	RenderingDeviceDataFormatG8B8R83plane444Unorm                 RenderingDeviceDataFormat = 190
+	RenderingDeviceDataFormatR10x6UnormPack16                     RenderingDeviceDataFormat = 191
+	RenderingDeviceDataFormatR10x6g10x6Unorm2pack16               RenderingDeviceDataFormat = 192
+	RenderingDeviceDataFormatR10x6g10x6b10x6a10x6Unorm4pack16     RenderingDeviceDataFormat = 193
+	RenderingDeviceDataFormatG10x6b10x6g10x6r10x6422Unorm4pack16  RenderingDeviceDataFormat = 194
+	RenderingDeviceDataFormatB10x6g10x6r10x6g10x6422Unorm4pack16  RenderingDeviceDataFormat = 195
 	RenderingDeviceDataFormatG10x6B10x6R10x63plane420Unorm3pack16 RenderingDeviceDataFormat = 196
 	RenderingDeviceDataFormatG10x6B10x6r10x62plane420Unorm3pack16 RenderingDeviceDataFormat = 197
 	RenderingDeviceDataFormatG10x6B10x6R10x63plane422Unorm3pack16 RenderingDeviceDataFormat = 198
 	RenderingDeviceDataFormatG10x6B10x6r10x62plane422Unorm3pack16 RenderingDeviceDataFormat = 199
 	RenderingDeviceDataFormatG10x6B10x6R10x63plane444Unorm3pack16 RenderingDeviceDataFormat = 200
-	RenderingDeviceDataFormatR12x4UnormPack16 RenderingDeviceDataFormat = 201
-	RenderingDeviceDataFormatR12x4g12x4Unorm2pack16 RenderingDeviceDataFormat = 202
-	RenderingDeviceDataFormatR12x4g12x4b12x4a12x4Unorm4pack16 RenderingDeviceDataFormat = 203
-	RenderingDeviceDataFormatG12x4b12x4g12x4r12x4422Unorm4pack16 RenderingDeviceDataFormat = 204
-	RenderingDeviceDataFormatB12x4g12x4r12x4g12x4422Unorm4pack16 RenderingDeviceDataFormat = 205
+	RenderingDeviceDataFormatR12x4UnormPack16                     RenderingDeviceDataFormat = 201
+	RenderingDeviceDataFormatR12x4g12x4Unorm2pack16               RenderingDeviceDataFormat = 202
+	RenderingDeviceDataFormatR12x4g12x4b12x4a12x4Unorm4pack16     RenderingDeviceDataFormat = 203
+	RenderingDeviceDataFormatG12x4b12x4g12x4r12x4422Unorm4pack16  RenderingDeviceDataFormat = 204
+	RenderingDeviceDataFormatB12x4g12x4r12x4g12x4422Unorm4pack16  RenderingDeviceDataFormat = 205
 	RenderingDeviceDataFormatG12x4B12x4R12x43plane420Unorm3pack16 RenderingDeviceDataFormat = 206
 	RenderingDeviceDataFormatG12x4B12x4r12x42plane420Unorm3pack16 RenderingDeviceDataFormat = 207
 	RenderingDeviceDataFormatG12x4B12x4R12x43plane422Unorm3pack16 RenderingDeviceDataFormat = 208
 	RenderingDeviceDataFormatG12x4B12x4r12x42plane422Unorm3pack16 RenderingDeviceDataFormat = 209
 	RenderingDeviceDataFormatG12x4B12x4R12x43plane444Unorm3pack16 RenderingDeviceDataFormat = 210
-	RenderingDeviceDataFormatG16b16g16r16422Unorm RenderingDeviceDataFormat = 211
-	RenderingDeviceDataFormatB16g16r16g16422Unorm RenderingDeviceDataFormat = 212
-	RenderingDeviceDataFormatG16B16R163plane420Unorm RenderingDeviceDataFormat = 213
-	RenderingDeviceDataFormatG16B16r162plane420Unorm RenderingDeviceDataFormat = 214
-	RenderingDeviceDataFormatG16B16R163plane422Unorm RenderingDeviceDataFormat = 215
-	RenderingDeviceDataFormatG16B16r162plane422Unorm RenderingDeviceDataFormat = 216
-	RenderingDeviceDataFormatG16B16R163plane444Unorm RenderingDeviceDataFormat = 217
-	RenderingDeviceDataFormatMax RenderingDeviceDataFormat = 218
+	RenderingDeviceDataFormatG16b16g16r16422Unorm                 RenderingDeviceDataFormat = 211
+	RenderingDeviceDataFormatB16g16r16g16422Unorm                 RenderingDeviceDataFormat = 212
+	RenderingDeviceDataFormatG16B16R163plane420Unorm              RenderingDeviceDataFormat = 213
+	RenderingDeviceDataFormatG16B16r162plane420Unorm              RenderingDeviceDataFormat = 214
+	RenderingDeviceDataFormatG16B16R163plane422Unorm              RenderingDeviceDataFormat = 215
+	RenderingDeviceDataFormatG16B16r162plane422Unorm              RenderingDeviceDataFormat = 216
+	RenderingDeviceDataFormatG16B16R163plane444Unorm              RenderingDeviceDataFormat = 217
+	RenderingDeviceDataFormatMax                                  RenderingDeviceDataFormat = 218
 )
 
 type RenderingDeviceBarrierMask = classdb.RenderingDeviceBarrierMask
 
 const (
-	RenderingDeviceBarrierMaskVertex RenderingDeviceBarrierMask = 1
-	RenderingDeviceBarrierMaskFragment RenderingDeviceBarrierMask = 8
-	RenderingDeviceBarrierMaskCompute RenderingDeviceBarrierMask = 2
-	RenderingDeviceBarrierMaskTransfer RenderingDeviceBarrierMask = 4
-	RenderingDeviceBarrierMaskRaster RenderingDeviceBarrierMask = 9
+	RenderingDeviceBarrierMaskVertex      RenderingDeviceBarrierMask = 1
+	RenderingDeviceBarrierMaskFragment    RenderingDeviceBarrierMask = 8
+	RenderingDeviceBarrierMaskCompute     RenderingDeviceBarrierMask = 2
+	RenderingDeviceBarrierMaskTransfer    RenderingDeviceBarrierMask = 4
+	RenderingDeviceBarrierMaskRaster      RenderingDeviceBarrierMask = 9
 	RenderingDeviceBarrierMaskAllBarriers RenderingDeviceBarrierMask = 32767
-	RenderingDeviceBarrierMaskNoBarrier RenderingDeviceBarrierMask = 32768
+	RenderingDeviceBarrierMaskNoBarrier   RenderingDeviceBarrierMask = 32768
 )
 
 type RenderingDeviceTextureType = classdb.RenderingDeviceTextureType
 
 const (
-	RenderingDeviceTextureType1d RenderingDeviceTextureType = 0
-	RenderingDeviceTextureType2d RenderingDeviceTextureType = 1
-	RenderingDeviceTextureType3d RenderingDeviceTextureType = 2
-	RenderingDeviceTextureTypeCube RenderingDeviceTextureType = 3
-	RenderingDeviceTextureType1dArray RenderingDeviceTextureType = 4
-	RenderingDeviceTextureType2dArray RenderingDeviceTextureType = 5
+	RenderingDeviceTextureType1d        RenderingDeviceTextureType = 0
+	RenderingDeviceTextureType2d        RenderingDeviceTextureType = 1
+	RenderingDeviceTextureType3d        RenderingDeviceTextureType = 2
+	RenderingDeviceTextureTypeCube      RenderingDeviceTextureType = 3
+	RenderingDeviceTextureType1dArray   RenderingDeviceTextureType = 4
+	RenderingDeviceTextureType2dArray   RenderingDeviceTextureType = 5
 	RenderingDeviceTextureTypeCubeArray RenderingDeviceTextureType = 6
-	RenderingDeviceTextureTypeMax RenderingDeviceTextureType = 7
+	RenderingDeviceTextureTypeMax       RenderingDeviceTextureType = 7
 )
 
 type RenderingDeviceTextureSamples = classdb.RenderingDeviceTextureSamples
 
 const (
-	RenderingDeviceTextureSamples1 RenderingDeviceTextureSamples = 0
-	RenderingDeviceTextureSamples2 RenderingDeviceTextureSamples = 1
-	RenderingDeviceTextureSamples4 RenderingDeviceTextureSamples = 2
-	RenderingDeviceTextureSamples8 RenderingDeviceTextureSamples = 3
-	RenderingDeviceTextureSamples16 RenderingDeviceTextureSamples = 4
-	RenderingDeviceTextureSamples32 RenderingDeviceTextureSamples = 5
-	RenderingDeviceTextureSamples64 RenderingDeviceTextureSamples = 6
+	RenderingDeviceTextureSamples1   RenderingDeviceTextureSamples = 0
+	RenderingDeviceTextureSamples2   RenderingDeviceTextureSamples = 1
+	RenderingDeviceTextureSamples4   RenderingDeviceTextureSamples = 2
+	RenderingDeviceTextureSamples8   RenderingDeviceTextureSamples = 3
+	RenderingDeviceTextureSamples16  RenderingDeviceTextureSamples = 4
+	RenderingDeviceTextureSamples32  RenderingDeviceTextureSamples = 5
+	RenderingDeviceTextureSamples64  RenderingDeviceTextureSamples = 6
 	RenderingDeviceTextureSamplesMax RenderingDeviceTextureSamples = 7
 )
 
 type RenderingDeviceTextureUsageBits = classdb.RenderingDeviceTextureUsageBits
 
 const (
-	RenderingDeviceTextureUsageSamplingBit RenderingDeviceTextureUsageBits = 1
-	RenderingDeviceTextureUsageColorAttachmentBit RenderingDeviceTextureUsageBits = 2
+	RenderingDeviceTextureUsageSamplingBit               RenderingDeviceTextureUsageBits = 1
+	RenderingDeviceTextureUsageColorAttachmentBit        RenderingDeviceTextureUsageBits = 2
 	RenderingDeviceTextureUsageDepthStencilAttachmentBit RenderingDeviceTextureUsageBits = 4
-	RenderingDeviceTextureUsageStorageBit RenderingDeviceTextureUsageBits = 8
-	RenderingDeviceTextureUsageStorageAtomicBit RenderingDeviceTextureUsageBits = 16
-	RenderingDeviceTextureUsageCpuReadBit RenderingDeviceTextureUsageBits = 32
-	RenderingDeviceTextureUsageCanUpdateBit RenderingDeviceTextureUsageBits = 64
-	RenderingDeviceTextureUsageCanCopyFromBit RenderingDeviceTextureUsageBits = 128
-	RenderingDeviceTextureUsageCanCopyToBit RenderingDeviceTextureUsageBits = 256
-	RenderingDeviceTextureUsageInputAttachmentBit RenderingDeviceTextureUsageBits = 512
+	RenderingDeviceTextureUsageStorageBit                RenderingDeviceTextureUsageBits = 8
+	RenderingDeviceTextureUsageStorageAtomicBit          RenderingDeviceTextureUsageBits = 16
+	RenderingDeviceTextureUsageCpuReadBit                RenderingDeviceTextureUsageBits = 32
+	RenderingDeviceTextureUsageCanUpdateBit              RenderingDeviceTextureUsageBits = 64
+	RenderingDeviceTextureUsageCanCopyFromBit            RenderingDeviceTextureUsageBits = 128
+	RenderingDeviceTextureUsageCanCopyToBit              RenderingDeviceTextureUsageBits = 256
+	RenderingDeviceTextureUsageInputAttachmentBit        RenderingDeviceTextureUsageBits = 512
 )
 
 type RenderingDeviceTextureSwizzle = classdb.RenderingDeviceTextureSwizzle
 
 const (
 	RenderingDeviceTextureSwizzleIdentity RenderingDeviceTextureSwizzle = 0
-	RenderingDeviceTextureSwizzleZero RenderingDeviceTextureSwizzle = 1
-	RenderingDeviceTextureSwizzleOne RenderingDeviceTextureSwizzle = 2
-	RenderingDeviceTextureSwizzleR RenderingDeviceTextureSwizzle = 3
-	RenderingDeviceTextureSwizzleG RenderingDeviceTextureSwizzle = 4
-	RenderingDeviceTextureSwizzleB RenderingDeviceTextureSwizzle = 5
-	RenderingDeviceTextureSwizzleA RenderingDeviceTextureSwizzle = 6
-	RenderingDeviceTextureSwizzleMax RenderingDeviceTextureSwizzle = 7
+	RenderingDeviceTextureSwizzleZero     RenderingDeviceTextureSwizzle = 1
+	RenderingDeviceTextureSwizzleOne      RenderingDeviceTextureSwizzle = 2
+	RenderingDeviceTextureSwizzleR        RenderingDeviceTextureSwizzle = 3
+	RenderingDeviceTextureSwizzleG        RenderingDeviceTextureSwizzle = 4
+	RenderingDeviceTextureSwizzleB        RenderingDeviceTextureSwizzle = 5
+	RenderingDeviceTextureSwizzleA        RenderingDeviceTextureSwizzle = 6
+	RenderingDeviceTextureSwizzleMax      RenderingDeviceTextureSwizzle = 7
 )
 
 type RenderingDeviceTextureSliceType = classdb.RenderingDeviceTextureSliceType
 
 const (
-	RenderingDeviceTextureSlice2d RenderingDeviceTextureSliceType = 0
+	RenderingDeviceTextureSlice2d      RenderingDeviceTextureSliceType = 0
 	RenderingDeviceTextureSliceCubemap RenderingDeviceTextureSliceType = 1
-	RenderingDeviceTextureSlice3d RenderingDeviceTextureSliceType = 2
+	RenderingDeviceTextureSlice3d      RenderingDeviceTextureSliceType = 2
 )
 
 type RenderingDeviceSamplerFilter = classdb.RenderingDeviceSamplerFilter
 
 const (
 	RenderingDeviceSamplerFilterNearest RenderingDeviceSamplerFilter = 0
-	RenderingDeviceSamplerFilterLinear RenderingDeviceSamplerFilter = 1
+	RenderingDeviceSamplerFilterLinear  RenderingDeviceSamplerFilter = 1
 )
 
 type RenderingDeviceSamplerRepeatMode = classdb.RenderingDeviceSamplerRepeatMode
 
 const (
-	RenderingDeviceSamplerRepeatModeRepeat RenderingDeviceSamplerRepeatMode = 0
-	RenderingDeviceSamplerRepeatModeMirroredRepeat RenderingDeviceSamplerRepeatMode = 1
-	RenderingDeviceSamplerRepeatModeClampToEdge RenderingDeviceSamplerRepeatMode = 2
-	RenderingDeviceSamplerRepeatModeClampToBorder RenderingDeviceSamplerRepeatMode = 3
+	RenderingDeviceSamplerRepeatModeRepeat            RenderingDeviceSamplerRepeatMode = 0
+	RenderingDeviceSamplerRepeatModeMirroredRepeat    RenderingDeviceSamplerRepeatMode = 1
+	RenderingDeviceSamplerRepeatModeClampToEdge       RenderingDeviceSamplerRepeatMode = 2
+	RenderingDeviceSamplerRepeatModeClampToBorder     RenderingDeviceSamplerRepeatMode = 3
 	RenderingDeviceSamplerRepeatModeMirrorClampToEdge RenderingDeviceSamplerRepeatMode = 4
-	RenderingDeviceSamplerRepeatModeMax RenderingDeviceSamplerRepeatMode = 5
+	RenderingDeviceSamplerRepeatModeMax               RenderingDeviceSamplerRepeatMode = 5
 )
 
 type RenderingDeviceSamplerBorderColor = classdb.RenderingDeviceSamplerBorderColor
 
 const (
 	RenderingDeviceSamplerBorderColorFloatTransparentBlack RenderingDeviceSamplerBorderColor = 0
-	RenderingDeviceSamplerBorderColorIntTransparentBlack RenderingDeviceSamplerBorderColor = 1
-	RenderingDeviceSamplerBorderColorFloatOpaqueBlack RenderingDeviceSamplerBorderColor = 2
-	RenderingDeviceSamplerBorderColorIntOpaqueBlack RenderingDeviceSamplerBorderColor = 3
-	RenderingDeviceSamplerBorderColorFloatOpaqueWhite RenderingDeviceSamplerBorderColor = 4
-	RenderingDeviceSamplerBorderColorIntOpaqueWhite RenderingDeviceSamplerBorderColor = 5
-	RenderingDeviceSamplerBorderColorMax RenderingDeviceSamplerBorderColor = 6
+	RenderingDeviceSamplerBorderColorIntTransparentBlack   RenderingDeviceSamplerBorderColor = 1
+	RenderingDeviceSamplerBorderColorFloatOpaqueBlack      RenderingDeviceSamplerBorderColor = 2
+	RenderingDeviceSamplerBorderColorIntOpaqueBlack        RenderingDeviceSamplerBorderColor = 3
+	RenderingDeviceSamplerBorderColorFloatOpaqueWhite      RenderingDeviceSamplerBorderColor = 4
+	RenderingDeviceSamplerBorderColorIntOpaqueWhite        RenderingDeviceSamplerBorderColor = 5
+	RenderingDeviceSamplerBorderColorMax                   RenderingDeviceSamplerBorderColor = 6
 )
 
 type RenderingDeviceVertexFrequency = classdb.RenderingDeviceVertexFrequency
 
 const (
-	RenderingDeviceVertexFrequencyVertex RenderingDeviceVertexFrequency = 0
+	RenderingDeviceVertexFrequencyVertex   RenderingDeviceVertexFrequency = 0
 	RenderingDeviceVertexFrequencyInstance RenderingDeviceVertexFrequency = 1
 )
 
@@ -4407,184 +4406,184 @@ const (
 type RenderingDeviceUniformType = classdb.RenderingDeviceUniformType
 
 const (
-	RenderingDeviceUniformTypeSampler RenderingDeviceUniformType = 0
-	RenderingDeviceUniformTypeSamplerWithTexture RenderingDeviceUniformType = 1
-	RenderingDeviceUniformTypeTexture RenderingDeviceUniformType = 2
-	RenderingDeviceUniformTypeImage RenderingDeviceUniformType = 3
-	RenderingDeviceUniformTypeTextureBuffer RenderingDeviceUniformType = 4
+	RenderingDeviceUniformTypeSampler                  RenderingDeviceUniformType = 0
+	RenderingDeviceUniformTypeSamplerWithTexture       RenderingDeviceUniformType = 1
+	RenderingDeviceUniformTypeTexture                  RenderingDeviceUniformType = 2
+	RenderingDeviceUniformTypeImage                    RenderingDeviceUniformType = 3
+	RenderingDeviceUniformTypeTextureBuffer            RenderingDeviceUniformType = 4
 	RenderingDeviceUniformTypeSamplerWithTextureBuffer RenderingDeviceUniformType = 5
-	RenderingDeviceUniformTypeImageBuffer RenderingDeviceUniformType = 6
-	RenderingDeviceUniformTypeUniformBuffer RenderingDeviceUniformType = 7
-	RenderingDeviceUniformTypeStorageBuffer RenderingDeviceUniformType = 8
-	RenderingDeviceUniformTypeInputAttachment RenderingDeviceUniformType = 9
-	RenderingDeviceUniformTypeMax RenderingDeviceUniformType = 10
+	RenderingDeviceUniformTypeImageBuffer              RenderingDeviceUniformType = 6
+	RenderingDeviceUniformTypeUniformBuffer            RenderingDeviceUniformType = 7
+	RenderingDeviceUniformTypeStorageBuffer            RenderingDeviceUniformType = 8
+	RenderingDeviceUniformTypeInputAttachment          RenderingDeviceUniformType = 9
+	RenderingDeviceUniformTypeMax                      RenderingDeviceUniformType = 10
 )
 
 type RenderingDeviceRenderPrimitive = classdb.RenderingDeviceRenderPrimitive
 
 const (
-	RenderingDeviceRenderPrimitivePoints RenderingDeviceRenderPrimitive = 0
-	RenderingDeviceRenderPrimitiveLines RenderingDeviceRenderPrimitive = 1
-	RenderingDeviceRenderPrimitiveLinesWithAdjacency RenderingDeviceRenderPrimitive = 2
-	RenderingDeviceRenderPrimitiveLinestrips RenderingDeviceRenderPrimitive = 3
-	RenderingDeviceRenderPrimitiveLinestripsWithAdjacency RenderingDeviceRenderPrimitive = 4
-	RenderingDeviceRenderPrimitiveTriangles RenderingDeviceRenderPrimitive = 5
-	RenderingDeviceRenderPrimitiveTrianglesWithAdjacency RenderingDeviceRenderPrimitive = 6
-	RenderingDeviceRenderPrimitiveTriangleStrips RenderingDeviceRenderPrimitive = 7
-	RenderingDeviceRenderPrimitiveTriangleStripsWithAjacency RenderingDeviceRenderPrimitive = 8
+	RenderingDeviceRenderPrimitivePoints                         RenderingDeviceRenderPrimitive = 0
+	RenderingDeviceRenderPrimitiveLines                          RenderingDeviceRenderPrimitive = 1
+	RenderingDeviceRenderPrimitiveLinesWithAdjacency             RenderingDeviceRenderPrimitive = 2
+	RenderingDeviceRenderPrimitiveLinestrips                     RenderingDeviceRenderPrimitive = 3
+	RenderingDeviceRenderPrimitiveLinestripsWithAdjacency        RenderingDeviceRenderPrimitive = 4
+	RenderingDeviceRenderPrimitiveTriangles                      RenderingDeviceRenderPrimitive = 5
+	RenderingDeviceRenderPrimitiveTrianglesWithAdjacency         RenderingDeviceRenderPrimitive = 6
+	RenderingDeviceRenderPrimitiveTriangleStrips                 RenderingDeviceRenderPrimitive = 7
+	RenderingDeviceRenderPrimitiveTriangleStripsWithAjacency     RenderingDeviceRenderPrimitive = 8
 	RenderingDeviceRenderPrimitiveTriangleStripsWithRestartIndex RenderingDeviceRenderPrimitive = 9
-	RenderingDeviceRenderPrimitiveTesselationPatch RenderingDeviceRenderPrimitive = 10
-	RenderingDeviceRenderPrimitiveMax RenderingDeviceRenderPrimitive = 11
+	RenderingDeviceRenderPrimitiveTesselationPatch               RenderingDeviceRenderPrimitive = 10
+	RenderingDeviceRenderPrimitiveMax                            RenderingDeviceRenderPrimitive = 11
 )
 
 type RenderingDevicePolygonCullMode = classdb.RenderingDevicePolygonCullMode
 
 const (
 	RenderingDevicePolygonCullDisabled RenderingDevicePolygonCullMode = 0
-	RenderingDevicePolygonCullFront RenderingDevicePolygonCullMode = 1
-	RenderingDevicePolygonCullBack RenderingDevicePolygonCullMode = 2
+	RenderingDevicePolygonCullFront    RenderingDevicePolygonCullMode = 1
+	RenderingDevicePolygonCullBack     RenderingDevicePolygonCullMode = 2
 )
 
 type RenderingDevicePolygonFrontFace = classdb.RenderingDevicePolygonFrontFace
 
 const (
-	RenderingDevicePolygonFrontFaceClockwise RenderingDevicePolygonFrontFace = 0
+	RenderingDevicePolygonFrontFaceClockwise        RenderingDevicePolygonFrontFace = 0
 	RenderingDevicePolygonFrontFaceCounterClockwise RenderingDevicePolygonFrontFace = 1
 )
 
 type RenderingDeviceStencilOperation = classdb.RenderingDeviceStencilOperation
 
 const (
-	RenderingDeviceStencilOpKeep RenderingDeviceStencilOperation = 0
-	RenderingDeviceStencilOpZero RenderingDeviceStencilOperation = 1
-	RenderingDeviceStencilOpReplace RenderingDeviceStencilOperation = 2
+	RenderingDeviceStencilOpKeep              RenderingDeviceStencilOperation = 0
+	RenderingDeviceStencilOpZero              RenderingDeviceStencilOperation = 1
+	RenderingDeviceStencilOpReplace           RenderingDeviceStencilOperation = 2
 	RenderingDeviceStencilOpIncrementAndClamp RenderingDeviceStencilOperation = 3
 	RenderingDeviceStencilOpDecrementAndClamp RenderingDeviceStencilOperation = 4
-	RenderingDeviceStencilOpInvert RenderingDeviceStencilOperation = 5
-	RenderingDeviceStencilOpIncrementAndWrap RenderingDeviceStencilOperation = 6
-	RenderingDeviceStencilOpDecrementAndWrap RenderingDeviceStencilOperation = 7
-	RenderingDeviceStencilOpMax RenderingDeviceStencilOperation = 8
+	RenderingDeviceStencilOpInvert            RenderingDeviceStencilOperation = 5
+	RenderingDeviceStencilOpIncrementAndWrap  RenderingDeviceStencilOperation = 6
+	RenderingDeviceStencilOpDecrementAndWrap  RenderingDeviceStencilOperation = 7
+	RenderingDeviceStencilOpMax               RenderingDeviceStencilOperation = 8
 )
 
 type RenderingDeviceCompareOperator = classdb.RenderingDeviceCompareOperator
 
 const (
-	RenderingDeviceCompareOpNever RenderingDeviceCompareOperator = 0
-	RenderingDeviceCompareOpLess RenderingDeviceCompareOperator = 1
-	RenderingDeviceCompareOpEqual RenderingDeviceCompareOperator = 2
-	RenderingDeviceCompareOpLessOrEqual RenderingDeviceCompareOperator = 3
-	RenderingDeviceCompareOpGreater RenderingDeviceCompareOperator = 4
-	RenderingDeviceCompareOpNotEqual RenderingDeviceCompareOperator = 5
+	RenderingDeviceCompareOpNever          RenderingDeviceCompareOperator = 0
+	RenderingDeviceCompareOpLess           RenderingDeviceCompareOperator = 1
+	RenderingDeviceCompareOpEqual          RenderingDeviceCompareOperator = 2
+	RenderingDeviceCompareOpLessOrEqual    RenderingDeviceCompareOperator = 3
+	RenderingDeviceCompareOpGreater        RenderingDeviceCompareOperator = 4
+	RenderingDeviceCompareOpNotEqual       RenderingDeviceCompareOperator = 5
 	RenderingDeviceCompareOpGreaterOrEqual RenderingDeviceCompareOperator = 6
-	RenderingDeviceCompareOpAlways RenderingDeviceCompareOperator = 7
-	RenderingDeviceCompareOpMax RenderingDeviceCompareOperator = 8
+	RenderingDeviceCompareOpAlways         RenderingDeviceCompareOperator = 7
+	RenderingDeviceCompareOpMax            RenderingDeviceCompareOperator = 8
 )
 
 type RenderingDeviceLogicOperation = classdb.RenderingDeviceLogicOperation
 
 const (
-	RenderingDeviceLogicOpClear RenderingDeviceLogicOperation = 0
-	RenderingDeviceLogicOpAnd RenderingDeviceLogicOperation = 1
-	RenderingDeviceLogicOpAndReverse RenderingDeviceLogicOperation = 2
-	RenderingDeviceLogicOpCopy RenderingDeviceLogicOperation = 3
-	RenderingDeviceLogicOpAndInverted RenderingDeviceLogicOperation = 4
-	RenderingDeviceLogicOpNoOp RenderingDeviceLogicOperation = 5
-	RenderingDeviceLogicOpXor RenderingDeviceLogicOperation = 6
-	RenderingDeviceLogicOpOr RenderingDeviceLogicOperation = 7
-	RenderingDeviceLogicOpNor RenderingDeviceLogicOperation = 8
-	RenderingDeviceLogicOpEquivalent RenderingDeviceLogicOperation = 9
-	RenderingDeviceLogicOpInvert RenderingDeviceLogicOperation = 10
-	RenderingDeviceLogicOpOrReverse RenderingDeviceLogicOperation = 11
+	RenderingDeviceLogicOpClear        RenderingDeviceLogicOperation = 0
+	RenderingDeviceLogicOpAnd          RenderingDeviceLogicOperation = 1
+	RenderingDeviceLogicOpAndReverse   RenderingDeviceLogicOperation = 2
+	RenderingDeviceLogicOpCopy         RenderingDeviceLogicOperation = 3
+	RenderingDeviceLogicOpAndInverted  RenderingDeviceLogicOperation = 4
+	RenderingDeviceLogicOpNoOp         RenderingDeviceLogicOperation = 5
+	RenderingDeviceLogicOpXor          RenderingDeviceLogicOperation = 6
+	RenderingDeviceLogicOpOr           RenderingDeviceLogicOperation = 7
+	RenderingDeviceLogicOpNor          RenderingDeviceLogicOperation = 8
+	RenderingDeviceLogicOpEquivalent   RenderingDeviceLogicOperation = 9
+	RenderingDeviceLogicOpInvert       RenderingDeviceLogicOperation = 10
+	RenderingDeviceLogicOpOrReverse    RenderingDeviceLogicOperation = 11
 	RenderingDeviceLogicOpCopyInverted RenderingDeviceLogicOperation = 12
-	RenderingDeviceLogicOpOrInverted RenderingDeviceLogicOperation = 13
-	RenderingDeviceLogicOpNand RenderingDeviceLogicOperation = 14
-	RenderingDeviceLogicOpSet RenderingDeviceLogicOperation = 15
-	RenderingDeviceLogicOpMax RenderingDeviceLogicOperation = 16
+	RenderingDeviceLogicOpOrInverted   RenderingDeviceLogicOperation = 13
+	RenderingDeviceLogicOpNand         RenderingDeviceLogicOperation = 14
+	RenderingDeviceLogicOpSet          RenderingDeviceLogicOperation = 15
+	RenderingDeviceLogicOpMax          RenderingDeviceLogicOperation = 16
 )
 
 type RenderingDeviceBlendFactor = classdb.RenderingDeviceBlendFactor
 
 const (
-	RenderingDeviceBlendFactorZero RenderingDeviceBlendFactor = 0
-	RenderingDeviceBlendFactorOne RenderingDeviceBlendFactor = 1
-	RenderingDeviceBlendFactorSrcColor RenderingDeviceBlendFactor = 2
-	RenderingDeviceBlendFactorOneMinusSrcColor RenderingDeviceBlendFactor = 3
-	RenderingDeviceBlendFactorDstColor RenderingDeviceBlendFactor = 4
-	RenderingDeviceBlendFactorOneMinusDstColor RenderingDeviceBlendFactor = 5
-	RenderingDeviceBlendFactorSrcAlpha RenderingDeviceBlendFactor = 6
-	RenderingDeviceBlendFactorOneMinusSrcAlpha RenderingDeviceBlendFactor = 7
-	RenderingDeviceBlendFactorDstAlpha RenderingDeviceBlendFactor = 8
-	RenderingDeviceBlendFactorOneMinusDstAlpha RenderingDeviceBlendFactor = 9
-	RenderingDeviceBlendFactorConstantColor RenderingDeviceBlendFactor = 10
+	RenderingDeviceBlendFactorZero                  RenderingDeviceBlendFactor = 0
+	RenderingDeviceBlendFactorOne                   RenderingDeviceBlendFactor = 1
+	RenderingDeviceBlendFactorSrcColor              RenderingDeviceBlendFactor = 2
+	RenderingDeviceBlendFactorOneMinusSrcColor      RenderingDeviceBlendFactor = 3
+	RenderingDeviceBlendFactorDstColor              RenderingDeviceBlendFactor = 4
+	RenderingDeviceBlendFactorOneMinusDstColor      RenderingDeviceBlendFactor = 5
+	RenderingDeviceBlendFactorSrcAlpha              RenderingDeviceBlendFactor = 6
+	RenderingDeviceBlendFactorOneMinusSrcAlpha      RenderingDeviceBlendFactor = 7
+	RenderingDeviceBlendFactorDstAlpha              RenderingDeviceBlendFactor = 8
+	RenderingDeviceBlendFactorOneMinusDstAlpha      RenderingDeviceBlendFactor = 9
+	RenderingDeviceBlendFactorConstantColor         RenderingDeviceBlendFactor = 10
 	RenderingDeviceBlendFactorOneMinusConstantColor RenderingDeviceBlendFactor = 11
-	RenderingDeviceBlendFactorConstantAlpha RenderingDeviceBlendFactor = 12
+	RenderingDeviceBlendFactorConstantAlpha         RenderingDeviceBlendFactor = 12
 	RenderingDeviceBlendFactorOneMinusConstantAlpha RenderingDeviceBlendFactor = 13
-	RenderingDeviceBlendFactorSrcAlphaSaturate RenderingDeviceBlendFactor = 14
-	RenderingDeviceBlendFactorSrc1Color RenderingDeviceBlendFactor = 15
-	RenderingDeviceBlendFactorOneMinusSrc1Color RenderingDeviceBlendFactor = 16
-	RenderingDeviceBlendFactorSrc1Alpha RenderingDeviceBlendFactor = 17
-	RenderingDeviceBlendFactorOneMinusSrc1Alpha RenderingDeviceBlendFactor = 18
-	RenderingDeviceBlendFactorMax RenderingDeviceBlendFactor = 19
+	RenderingDeviceBlendFactorSrcAlphaSaturate      RenderingDeviceBlendFactor = 14
+	RenderingDeviceBlendFactorSrc1Color             RenderingDeviceBlendFactor = 15
+	RenderingDeviceBlendFactorOneMinusSrc1Color     RenderingDeviceBlendFactor = 16
+	RenderingDeviceBlendFactorSrc1Alpha             RenderingDeviceBlendFactor = 17
+	RenderingDeviceBlendFactorOneMinusSrc1Alpha     RenderingDeviceBlendFactor = 18
+	RenderingDeviceBlendFactorMax                   RenderingDeviceBlendFactor = 19
 )
 
 type RenderingDeviceBlendOperation = classdb.RenderingDeviceBlendOperation
 
 const (
-	RenderingDeviceBlendOpAdd RenderingDeviceBlendOperation = 0
-	RenderingDeviceBlendOpSubtract RenderingDeviceBlendOperation = 1
+	RenderingDeviceBlendOpAdd             RenderingDeviceBlendOperation = 0
+	RenderingDeviceBlendOpSubtract        RenderingDeviceBlendOperation = 1
 	RenderingDeviceBlendOpReverseSubtract RenderingDeviceBlendOperation = 2
-	RenderingDeviceBlendOpMinimum RenderingDeviceBlendOperation = 3
-	RenderingDeviceBlendOpMaximum RenderingDeviceBlendOperation = 4
-	RenderingDeviceBlendOpMax RenderingDeviceBlendOperation = 5
+	RenderingDeviceBlendOpMinimum         RenderingDeviceBlendOperation = 3
+	RenderingDeviceBlendOpMaximum         RenderingDeviceBlendOperation = 4
+	RenderingDeviceBlendOpMax             RenderingDeviceBlendOperation = 5
 )
 
 type RenderingDevicePipelineDynamicStateFlags = classdb.RenderingDevicePipelineDynamicStateFlags
 
 const (
-	RenderingDeviceDynamicStateLineWidth RenderingDevicePipelineDynamicStateFlags = 1
-	RenderingDeviceDynamicStateDepthBias RenderingDevicePipelineDynamicStateFlags = 2
-	RenderingDeviceDynamicStateBlendConstants RenderingDevicePipelineDynamicStateFlags = 4
-	RenderingDeviceDynamicStateDepthBounds RenderingDevicePipelineDynamicStateFlags = 8
+	RenderingDeviceDynamicStateLineWidth          RenderingDevicePipelineDynamicStateFlags = 1
+	RenderingDeviceDynamicStateDepthBias          RenderingDevicePipelineDynamicStateFlags = 2
+	RenderingDeviceDynamicStateBlendConstants     RenderingDevicePipelineDynamicStateFlags = 4
+	RenderingDeviceDynamicStateDepthBounds        RenderingDevicePipelineDynamicStateFlags = 8
 	RenderingDeviceDynamicStateStencilCompareMask RenderingDevicePipelineDynamicStateFlags = 16
-	RenderingDeviceDynamicStateStencilWriteMask RenderingDevicePipelineDynamicStateFlags = 32
-	RenderingDeviceDynamicStateStencilReference RenderingDevicePipelineDynamicStateFlags = 64
+	RenderingDeviceDynamicStateStencilWriteMask   RenderingDevicePipelineDynamicStateFlags = 32
+	RenderingDeviceDynamicStateStencilReference   RenderingDevicePipelineDynamicStateFlags = 64
 )
 
 type RenderingDeviceInitialAction = classdb.RenderingDeviceInitialAction
 
 const (
-	RenderingDeviceInitialActionClear RenderingDeviceInitialAction = 0
-	RenderingDeviceInitialActionClearRegion RenderingDeviceInitialAction = 1
+	RenderingDeviceInitialActionClear               RenderingDeviceInitialAction = 0
+	RenderingDeviceInitialActionClearRegion         RenderingDeviceInitialAction = 1
 	RenderingDeviceInitialActionClearRegionContinue RenderingDeviceInitialAction = 2
-	RenderingDeviceInitialActionKeep RenderingDeviceInitialAction = 3
-	RenderingDeviceInitialActionDrop RenderingDeviceInitialAction = 4
-	RenderingDeviceInitialActionContinue RenderingDeviceInitialAction = 5
-	RenderingDeviceInitialActionMax RenderingDeviceInitialAction = 6
+	RenderingDeviceInitialActionKeep                RenderingDeviceInitialAction = 3
+	RenderingDeviceInitialActionDrop                RenderingDeviceInitialAction = 4
+	RenderingDeviceInitialActionContinue            RenderingDeviceInitialAction = 5
+	RenderingDeviceInitialActionMax                 RenderingDeviceInitialAction = 6
 )
 
 type RenderingDeviceFinalAction = classdb.RenderingDeviceFinalAction
 
 const (
-	RenderingDeviceFinalActionRead RenderingDeviceFinalAction = 0
-	RenderingDeviceFinalActionDiscard RenderingDeviceFinalAction = 1
+	RenderingDeviceFinalActionRead     RenderingDeviceFinalAction = 0
+	RenderingDeviceFinalActionDiscard  RenderingDeviceFinalAction = 1
 	RenderingDeviceFinalActionContinue RenderingDeviceFinalAction = 2
-	RenderingDeviceFinalActionMax RenderingDeviceFinalAction = 3
+	RenderingDeviceFinalActionMax      RenderingDeviceFinalAction = 3
 )
 
 type RenderingDeviceShaderStage = classdb.RenderingDeviceShaderStage
 
 const (
-	RenderingDeviceShaderStageVertex RenderingDeviceShaderStage = 0
-	RenderingDeviceShaderStageFragment RenderingDeviceShaderStage = 1
-	RenderingDeviceShaderStageTesselationControl RenderingDeviceShaderStage = 2
-	RenderingDeviceShaderStageTesselationEvaluation RenderingDeviceShaderStage = 3
-	RenderingDeviceShaderStageCompute RenderingDeviceShaderStage = 4
-	RenderingDeviceShaderStageMax RenderingDeviceShaderStage = 5
-	RenderingDeviceShaderStageVertexBit RenderingDeviceShaderStage = 1
-	RenderingDeviceShaderStageFragmentBit RenderingDeviceShaderStage = 2
-	RenderingDeviceShaderStageTesselationControlBit RenderingDeviceShaderStage = 4
+	RenderingDeviceShaderStageVertex                   RenderingDeviceShaderStage = 0
+	RenderingDeviceShaderStageFragment                 RenderingDeviceShaderStage = 1
+	RenderingDeviceShaderStageTesselationControl       RenderingDeviceShaderStage = 2
+	RenderingDeviceShaderStageTesselationEvaluation    RenderingDeviceShaderStage = 3
+	RenderingDeviceShaderStageCompute                  RenderingDeviceShaderStage = 4
+	RenderingDeviceShaderStageMax                      RenderingDeviceShaderStage = 5
+	RenderingDeviceShaderStageVertexBit                RenderingDeviceShaderStage = 1
+	RenderingDeviceShaderStageFragmentBit              RenderingDeviceShaderStage = 2
+	RenderingDeviceShaderStageTesselationControlBit    RenderingDeviceShaderStage = 4
 	RenderingDeviceShaderStageTesselationEvaluationBit RenderingDeviceShaderStage = 8
-	RenderingDeviceShaderStageComputeBit RenderingDeviceShaderStage = 16
+	RenderingDeviceShaderStageComputeBit               RenderingDeviceShaderStage = 16
 )
 
 type RenderingDeviceShaderLanguage = classdb.RenderingDeviceShaderLanguage
@@ -4597,108 +4596,108 @@ const (
 type RenderingDevicePipelineSpecializationConstantType = classdb.RenderingDevicePipelineSpecializationConstantType
 
 const (
-	RenderingDevicePipelineSpecializationConstantTypeBool RenderingDevicePipelineSpecializationConstantType = 0
-	RenderingDevicePipelineSpecializationConstantTypeInt RenderingDevicePipelineSpecializationConstantType = 1
+	RenderingDevicePipelineSpecializationConstantTypeBool  RenderingDevicePipelineSpecializationConstantType = 0
+	RenderingDevicePipelineSpecializationConstantTypeInt   RenderingDevicePipelineSpecializationConstantType = 1
 	RenderingDevicePipelineSpecializationConstantTypeFloat RenderingDevicePipelineSpecializationConstantType = 2
 )
 
 type RenderingDeviceLimit = classdb.RenderingDeviceLimit
 
 const (
-	RenderingDeviceLimitMaxBoundUniformSets RenderingDeviceLimit = 0
-	RenderingDeviceLimitMaxFramebufferColorAttachments RenderingDeviceLimit = 1
-	RenderingDeviceLimitMaxTexturesPerUniformSet RenderingDeviceLimit = 2
-	RenderingDeviceLimitMaxSamplersPerUniformSet RenderingDeviceLimit = 3
-	RenderingDeviceLimitMaxStorageBuffersPerUniformSet RenderingDeviceLimit = 4
-	RenderingDeviceLimitMaxStorageImagesPerUniformSet RenderingDeviceLimit = 5
-	RenderingDeviceLimitMaxUniformBuffersPerUniformSet RenderingDeviceLimit = 6
-	RenderingDeviceLimitMaxDrawIndexedIndex RenderingDeviceLimit = 7
-	RenderingDeviceLimitMaxFramebufferHeight RenderingDeviceLimit = 8
-	RenderingDeviceLimitMaxFramebufferWidth RenderingDeviceLimit = 9
-	RenderingDeviceLimitMaxTextureArrayLayers RenderingDeviceLimit = 10
-	RenderingDeviceLimitMaxTextureSize1d RenderingDeviceLimit = 11
-	RenderingDeviceLimitMaxTextureSize2d RenderingDeviceLimit = 12
-	RenderingDeviceLimitMaxTextureSize3d RenderingDeviceLimit = 13
-	RenderingDeviceLimitMaxTextureSizeCube RenderingDeviceLimit = 14
-	RenderingDeviceLimitMaxTexturesPerShaderStage RenderingDeviceLimit = 15
-	RenderingDeviceLimitMaxSamplersPerShaderStage RenderingDeviceLimit = 16
+	RenderingDeviceLimitMaxBoundUniformSets             RenderingDeviceLimit = 0
+	RenderingDeviceLimitMaxFramebufferColorAttachments  RenderingDeviceLimit = 1
+	RenderingDeviceLimitMaxTexturesPerUniformSet        RenderingDeviceLimit = 2
+	RenderingDeviceLimitMaxSamplersPerUniformSet        RenderingDeviceLimit = 3
+	RenderingDeviceLimitMaxStorageBuffersPerUniformSet  RenderingDeviceLimit = 4
+	RenderingDeviceLimitMaxStorageImagesPerUniformSet   RenderingDeviceLimit = 5
+	RenderingDeviceLimitMaxUniformBuffersPerUniformSet  RenderingDeviceLimit = 6
+	RenderingDeviceLimitMaxDrawIndexedIndex             RenderingDeviceLimit = 7
+	RenderingDeviceLimitMaxFramebufferHeight            RenderingDeviceLimit = 8
+	RenderingDeviceLimitMaxFramebufferWidth             RenderingDeviceLimit = 9
+	RenderingDeviceLimitMaxTextureArrayLayers           RenderingDeviceLimit = 10
+	RenderingDeviceLimitMaxTextureSize1d                RenderingDeviceLimit = 11
+	RenderingDeviceLimitMaxTextureSize2d                RenderingDeviceLimit = 12
+	RenderingDeviceLimitMaxTextureSize3d                RenderingDeviceLimit = 13
+	RenderingDeviceLimitMaxTextureSizeCube              RenderingDeviceLimit = 14
+	RenderingDeviceLimitMaxTexturesPerShaderStage       RenderingDeviceLimit = 15
+	RenderingDeviceLimitMaxSamplersPerShaderStage       RenderingDeviceLimit = 16
 	RenderingDeviceLimitMaxStorageBuffersPerShaderStage RenderingDeviceLimit = 17
-	RenderingDeviceLimitMaxStorageImagesPerShaderStage RenderingDeviceLimit = 18
+	RenderingDeviceLimitMaxStorageImagesPerShaderStage  RenderingDeviceLimit = 18
 	RenderingDeviceLimitMaxUniformBuffersPerShaderStage RenderingDeviceLimit = 19
-	RenderingDeviceLimitMaxPushConstantSize RenderingDeviceLimit = 20
-	RenderingDeviceLimitMaxUniformBufferSize RenderingDeviceLimit = 21
-	RenderingDeviceLimitMaxVertexInputAttributeOffset RenderingDeviceLimit = 22
-	RenderingDeviceLimitMaxVertexInputAttributes RenderingDeviceLimit = 23
-	RenderingDeviceLimitMaxVertexInputBindings RenderingDeviceLimit = 24
-	RenderingDeviceLimitMaxVertexInputBindingStride RenderingDeviceLimit = 25
+	RenderingDeviceLimitMaxPushConstantSize             RenderingDeviceLimit = 20
+	RenderingDeviceLimitMaxUniformBufferSize            RenderingDeviceLimit = 21
+	RenderingDeviceLimitMaxVertexInputAttributeOffset   RenderingDeviceLimit = 22
+	RenderingDeviceLimitMaxVertexInputAttributes        RenderingDeviceLimit = 23
+	RenderingDeviceLimitMaxVertexInputBindings          RenderingDeviceLimit = 24
+	RenderingDeviceLimitMaxVertexInputBindingStride     RenderingDeviceLimit = 25
 	RenderingDeviceLimitMinUniformBufferOffsetAlignment RenderingDeviceLimit = 26
-	RenderingDeviceLimitMaxComputeSharedMemorySize RenderingDeviceLimit = 27
-	RenderingDeviceLimitMaxComputeWorkgroupCountX RenderingDeviceLimit = 28
-	RenderingDeviceLimitMaxComputeWorkgroupCountY RenderingDeviceLimit = 29
-	RenderingDeviceLimitMaxComputeWorkgroupCountZ RenderingDeviceLimit = 30
-	RenderingDeviceLimitMaxComputeWorkgroupInvocations RenderingDeviceLimit = 31
-	RenderingDeviceLimitMaxComputeWorkgroupSizeX RenderingDeviceLimit = 32
-	RenderingDeviceLimitMaxComputeWorkgroupSizeY RenderingDeviceLimit = 33
-	RenderingDeviceLimitMaxComputeWorkgroupSizeZ RenderingDeviceLimit = 34
-	RenderingDeviceLimitMaxViewportDimensionsX RenderingDeviceLimit = 35
-	RenderingDeviceLimitMaxViewportDimensionsY RenderingDeviceLimit = 36
+	RenderingDeviceLimitMaxComputeSharedMemorySize      RenderingDeviceLimit = 27
+	RenderingDeviceLimitMaxComputeWorkgroupCountX       RenderingDeviceLimit = 28
+	RenderingDeviceLimitMaxComputeWorkgroupCountY       RenderingDeviceLimit = 29
+	RenderingDeviceLimitMaxComputeWorkgroupCountZ       RenderingDeviceLimit = 30
+	RenderingDeviceLimitMaxComputeWorkgroupInvocations  RenderingDeviceLimit = 31
+	RenderingDeviceLimitMaxComputeWorkgroupSizeX        RenderingDeviceLimit = 32
+	RenderingDeviceLimitMaxComputeWorkgroupSizeY        RenderingDeviceLimit = 33
+	RenderingDeviceLimitMaxComputeWorkgroupSizeZ        RenderingDeviceLimit = 34
+	RenderingDeviceLimitMaxViewportDimensionsX          RenderingDeviceLimit = 35
+	RenderingDeviceLimitMaxViewportDimensionsY          RenderingDeviceLimit = 36
 )
 
 type RenderingDeviceMemoryType = classdb.RenderingDeviceMemoryType
 
 const (
 	RenderingDeviceMemoryTextures RenderingDeviceMemoryType = 0
-	RenderingDeviceMemoryBuffers RenderingDeviceMemoryType = 1
-	RenderingDeviceMemoryTotal RenderingDeviceMemoryType = 2
+	RenderingDeviceMemoryBuffers  RenderingDeviceMemoryType = 1
+	RenderingDeviceMemoryTotal    RenderingDeviceMemoryType = 2
 )
 
 type RenderingServerTextureLayeredType = classdb.RenderingServerTextureLayeredType
 
 const (
-	RenderingServerTextureLayered2dArray RenderingServerTextureLayeredType = 0
-	RenderingServerTextureLayeredCubemap RenderingServerTextureLayeredType = 1
+	RenderingServerTextureLayered2dArray      RenderingServerTextureLayeredType = 0
+	RenderingServerTextureLayeredCubemap      RenderingServerTextureLayeredType = 1
 	RenderingServerTextureLayeredCubemapArray RenderingServerTextureLayeredType = 2
 )
 
 type RenderingServerCubeMapLayer = classdb.RenderingServerCubeMapLayer
 
 const (
-	RenderingServerCubemapLayerLeft RenderingServerCubeMapLayer = 0
-	RenderingServerCubemapLayerRight RenderingServerCubeMapLayer = 1
+	RenderingServerCubemapLayerLeft   RenderingServerCubeMapLayer = 0
+	RenderingServerCubemapLayerRight  RenderingServerCubeMapLayer = 1
 	RenderingServerCubemapLayerBottom RenderingServerCubeMapLayer = 2
-	RenderingServerCubemapLayerTop RenderingServerCubeMapLayer = 3
-	RenderingServerCubemapLayerFront RenderingServerCubeMapLayer = 4
-	RenderingServerCubemapLayerBack RenderingServerCubeMapLayer = 5
+	RenderingServerCubemapLayerTop    RenderingServerCubeMapLayer = 3
+	RenderingServerCubemapLayerFront  RenderingServerCubeMapLayer = 4
+	RenderingServerCubemapLayerBack   RenderingServerCubeMapLayer = 5
 )
 
 type RenderingServerShaderMode = classdb.RenderingServerShaderMode
 
 const (
-	RenderingServerShaderSpatial RenderingServerShaderMode = 0
+	RenderingServerShaderSpatial    RenderingServerShaderMode = 0
 	RenderingServerShaderCanvasItem RenderingServerShaderMode = 1
-	RenderingServerShaderParticles RenderingServerShaderMode = 2
-	RenderingServerShaderSky RenderingServerShaderMode = 3
-	RenderingServerShaderFog RenderingServerShaderMode = 4
-	RenderingServerShaderMax RenderingServerShaderMode = 5
+	RenderingServerShaderParticles  RenderingServerShaderMode = 2
+	RenderingServerShaderSky        RenderingServerShaderMode = 3
+	RenderingServerShaderFog        RenderingServerShaderMode = 4
+	RenderingServerShaderMax        RenderingServerShaderMode = 5
 )
 
 type RenderingServerArrayType = classdb.RenderingServerArrayType
 
 const (
-	RenderingServerArrayVertex RenderingServerArrayType = 0
-	RenderingServerArrayNormal RenderingServerArrayType = 1
+	RenderingServerArrayVertex  RenderingServerArrayType = 0
+	RenderingServerArrayNormal  RenderingServerArrayType = 1
 	RenderingServerArrayTangent RenderingServerArrayType = 2
-	RenderingServerArrayColor RenderingServerArrayType = 3
-	RenderingServerArrayTexUv RenderingServerArrayType = 4
-	RenderingServerArrayTexUv2 RenderingServerArrayType = 5
+	RenderingServerArrayColor   RenderingServerArrayType = 3
+	RenderingServerArrayTexUv   RenderingServerArrayType = 4
+	RenderingServerArrayTexUv2  RenderingServerArrayType = 5
 	RenderingServerArrayCustom0 RenderingServerArrayType = 6
 	RenderingServerArrayCustom1 RenderingServerArrayType = 7
 	RenderingServerArrayCustom2 RenderingServerArrayType = 8
 	RenderingServerArrayCustom3 RenderingServerArrayType = 9
-	RenderingServerArrayBones RenderingServerArrayType = 10
+	RenderingServerArrayBones   RenderingServerArrayType = 10
 	RenderingServerArrayWeights RenderingServerArrayType = 11
-	RenderingServerArrayIndex RenderingServerArrayType = 12
-	RenderingServerArrayMax RenderingServerArrayType = 13
+	RenderingServerArrayIndex   RenderingServerArrayType = 12
+	RenderingServerArrayMax     RenderingServerArrayType = 13
 )
 
 type RenderingServerArrayCustomFormat = classdb.RenderingServerArrayCustomFormat
@@ -4706,69 +4705,69 @@ type RenderingServerArrayCustomFormat = classdb.RenderingServerArrayCustomFormat
 const (
 	RenderingServerArrayCustomRgba8Unorm RenderingServerArrayCustomFormat = 0
 	RenderingServerArrayCustomRgba8Snorm RenderingServerArrayCustomFormat = 1
-	RenderingServerArrayCustomRgHalf RenderingServerArrayCustomFormat = 2
-	RenderingServerArrayCustomRgbaHalf RenderingServerArrayCustomFormat = 3
-	RenderingServerArrayCustomRFloat RenderingServerArrayCustomFormat = 4
-	RenderingServerArrayCustomRgFloat RenderingServerArrayCustomFormat = 5
-	RenderingServerArrayCustomRgbFloat RenderingServerArrayCustomFormat = 6
-	RenderingServerArrayCustomRgbaFloat RenderingServerArrayCustomFormat = 7
-	RenderingServerArrayCustomMax RenderingServerArrayCustomFormat = 8
+	RenderingServerArrayCustomRgHalf     RenderingServerArrayCustomFormat = 2
+	RenderingServerArrayCustomRgbaHalf   RenderingServerArrayCustomFormat = 3
+	RenderingServerArrayCustomRFloat     RenderingServerArrayCustomFormat = 4
+	RenderingServerArrayCustomRgFloat    RenderingServerArrayCustomFormat = 5
+	RenderingServerArrayCustomRgbFloat   RenderingServerArrayCustomFormat = 6
+	RenderingServerArrayCustomRgbaFloat  RenderingServerArrayCustomFormat = 7
+	RenderingServerArrayCustomMax        RenderingServerArrayCustomFormat = 8
 )
 
 type RenderingServerArrayFormat = classdb.RenderingServerArrayFormat
 
 const (
-	RenderingServerArrayFormatVertex RenderingServerArrayFormat = 1
-	RenderingServerArrayFormatNormal RenderingServerArrayFormat = 2
-	RenderingServerArrayFormatTangent RenderingServerArrayFormat = 4
-	RenderingServerArrayFormatColor RenderingServerArrayFormat = 8
-	RenderingServerArrayFormatTexUv RenderingServerArrayFormat = 16
-	RenderingServerArrayFormatTexUv2 RenderingServerArrayFormat = 32
-	RenderingServerArrayFormatCustom0 RenderingServerArrayFormat = 64
-	RenderingServerArrayFormatCustom1 RenderingServerArrayFormat = 128
-	RenderingServerArrayFormatCustom2 RenderingServerArrayFormat = 256
-	RenderingServerArrayFormatCustom3 RenderingServerArrayFormat = 512
-	RenderingServerArrayFormatBones RenderingServerArrayFormat = 1024
-	RenderingServerArrayFormatWeights RenderingServerArrayFormat = 2048
-	RenderingServerArrayFormatIndex RenderingServerArrayFormat = 4096
-	RenderingServerArrayFormatBlendShapeMask RenderingServerArrayFormat = 7
-	RenderingServerArrayFormatCustomBase RenderingServerArrayFormat = 13
-	RenderingServerArrayFormatCustomBits RenderingServerArrayFormat = 3
-	RenderingServerArrayFormatCustom0Shift RenderingServerArrayFormat = 13
-	RenderingServerArrayFormatCustom1Shift RenderingServerArrayFormat = 16
-	RenderingServerArrayFormatCustom2Shift RenderingServerArrayFormat = 19
-	RenderingServerArrayFormatCustom3Shift RenderingServerArrayFormat = 22
-	RenderingServerArrayFormatCustomMask RenderingServerArrayFormat = 7
-	RenderingServerArrayCompressFlagsBase RenderingServerArrayFormat = 25
-	RenderingServerArrayFlagUse2dVertices RenderingServerArrayFormat = 33554432
-	RenderingServerArrayFlagUseDynamicUpdate RenderingServerArrayFormat = 67108864
-	RenderingServerArrayFlagUse8BoneWeights RenderingServerArrayFormat = 134217728
+	RenderingServerArrayFormatVertex             RenderingServerArrayFormat = 1
+	RenderingServerArrayFormatNormal             RenderingServerArrayFormat = 2
+	RenderingServerArrayFormatTangent            RenderingServerArrayFormat = 4
+	RenderingServerArrayFormatColor              RenderingServerArrayFormat = 8
+	RenderingServerArrayFormatTexUv              RenderingServerArrayFormat = 16
+	RenderingServerArrayFormatTexUv2             RenderingServerArrayFormat = 32
+	RenderingServerArrayFormatCustom0            RenderingServerArrayFormat = 64
+	RenderingServerArrayFormatCustom1            RenderingServerArrayFormat = 128
+	RenderingServerArrayFormatCustom2            RenderingServerArrayFormat = 256
+	RenderingServerArrayFormatCustom3            RenderingServerArrayFormat = 512
+	RenderingServerArrayFormatBones              RenderingServerArrayFormat = 1024
+	RenderingServerArrayFormatWeights            RenderingServerArrayFormat = 2048
+	RenderingServerArrayFormatIndex              RenderingServerArrayFormat = 4096
+	RenderingServerArrayFormatBlendShapeMask     RenderingServerArrayFormat = 7
+	RenderingServerArrayFormatCustomBase         RenderingServerArrayFormat = 13
+	RenderingServerArrayFormatCustomBits         RenderingServerArrayFormat = 3
+	RenderingServerArrayFormatCustom0Shift       RenderingServerArrayFormat = 13
+	RenderingServerArrayFormatCustom1Shift       RenderingServerArrayFormat = 16
+	RenderingServerArrayFormatCustom2Shift       RenderingServerArrayFormat = 19
+	RenderingServerArrayFormatCustom3Shift       RenderingServerArrayFormat = 22
+	RenderingServerArrayFormatCustomMask         RenderingServerArrayFormat = 7
+	RenderingServerArrayCompressFlagsBase        RenderingServerArrayFormat = 25
+	RenderingServerArrayFlagUse2dVertices        RenderingServerArrayFormat = 33554432
+	RenderingServerArrayFlagUseDynamicUpdate     RenderingServerArrayFormat = 67108864
+	RenderingServerArrayFlagUse8BoneWeights      RenderingServerArrayFormat = 134217728
 	RenderingServerArrayFlagUsesEmptyVertexArray RenderingServerArrayFormat = 268435456
-	RenderingServerArrayFlagCompressAttributes RenderingServerArrayFormat = 536870912
-	RenderingServerArrayFlagFormatVersionBase RenderingServerArrayFormat = 35
-	RenderingServerArrayFlagFormatVersionShift RenderingServerArrayFormat = 35
-	RenderingServerArrayFlagFormatVersion1 RenderingServerArrayFormat = 0
-	RenderingServerArrayFlagFormatVersion2 RenderingServerArrayFormat = 34359738368
+	RenderingServerArrayFlagCompressAttributes   RenderingServerArrayFormat = 536870912
+	RenderingServerArrayFlagFormatVersionBase    RenderingServerArrayFormat = 35
+	RenderingServerArrayFlagFormatVersionShift   RenderingServerArrayFormat = 35
+	RenderingServerArrayFlagFormatVersion1       RenderingServerArrayFormat = 0
+	RenderingServerArrayFlagFormatVersion2       RenderingServerArrayFormat = 34359738368
 	RenderingServerArrayFlagFormatCurrentVersion RenderingServerArrayFormat = 34359738368
-	RenderingServerArrayFlagFormatVersionMask RenderingServerArrayFormat = 255
+	RenderingServerArrayFlagFormatVersionMask    RenderingServerArrayFormat = 255
 )
 
 type RenderingServerPrimitiveType = classdb.RenderingServerPrimitiveType
 
 const (
-	RenderingServerPrimitivePoints RenderingServerPrimitiveType = 0
-	RenderingServerPrimitiveLines RenderingServerPrimitiveType = 1
-	RenderingServerPrimitiveLineStrip RenderingServerPrimitiveType = 2
-	RenderingServerPrimitiveTriangles RenderingServerPrimitiveType = 3
+	RenderingServerPrimitivePoints        RenderingServerPrimitiveType = 0
+	RenderingServerPrimitiveLines         RenderingServerPrimitiveType = 1
+	RenderingServerPrimitiveLineStrip     RenderingServerPrimitiveType = 2
+	RenderingServerPrimitiveTriangles     RenderingServerPrimitiveType = 3
 	RenderingServerPrimitiveTriangleStrip RenderingServerPrimitiveType = 4
-	RenderingServerPrimitiveMax RenderingServerPrimitiveType = 5
+	RenderingServerPrimitiveMax           RenderingServerPrimitiveType = 5
 )
 
 type RenderingServerBlendShapeMode = classdb.RenderingServerBlendShapeMode
 
 const (
 	RenderingServerBlendShapeModeNormalized RenderingServerBlendShapeMode = 0
-	RenderingServerBlendShapeModeRelative RenderingServerBlendShapeMode = 1
+	RenderingServerBlendShapeModeRelative   RenderingServerBlendShapeMode = 1
 )
 
 type RenderingServerMultimeshTransformFormat = classdb.RenderingServerMultimeshTransformFormat
@@ -4781,68 +4780,68 @@ const (
 type RenderingServerLightProjectorFilter = classdb.RenderingServerLightProjectorFilter
 
 const (
-	RenderingServerLightProjectorFilterNearest RenderingServerLightProjectorFilter = 0
-	RenderingServerLightProjectorFilterLinear RenderingServerLightProjectorFilter = 1
-	RenderingServerLightProjectorFilterNearestMipmaps RenderingServerLightProjectorFilter = 2
-	RenderingServerLightProjectorFilterLinearMipmaps RenderingServerLightProjectorFilter = 3
+	RenderingServerLightProjectorFilterNearest                   RenderingServerLightProjectorFilter = 0
+	RenderingServerLightProjectorFilterLinear                    RenderingServerLightProjectorFilter = 1
+	RenderingServerLightProjectorFilterNearestMipmaps            RenderingServerLightProjectorFilter = 2
+	RenderingServerLightProjectorFilterLinearMipmaps             RenderingServerLightProjectorFilter = 3
 	RenderingServerLightProjectorFilterNearestMipmapsAnisotropic RenderingServerLightProjectorFilter = 4
-	RenderingServerLightProjectorFilterLinearMipmapsAnisotropic RenderingServerLightProjectorFilter = 5
+	RenderingServerLightProjectorFilterLinearMipmapsAnisotropic  RenderingServerLightProjectorFilter = 5
 )
 
 type RenderingServerLightType = classdb.RenderingServerLightType
 
 const (
 	RenderingServerLightDirectional RenderingServerLightType = 0
-	RenderingServerLightOmni RenderingServerLightType = 1
-	RenderingServerLightSpot RenderingServerLightType = 2
+	RenderingServerLightOmni        RenderingServerLightType = 1
+	RenderingServerLightSpot        RenderingServerLightType = 2
 )
 
 type RenderingServerLightParam = classdb.RenderingServerLightParam
 
 const (
-	RenderingServerLightParamEnergy RenderingServerLightParam = 0
-	RenderingServerLightParamIndirectEnergy RenderingServerLightParam = 1
+	RenderingServerLightParamEnergy              RenderingServerLightParam = 0
+	RenderingServerLightParamIndirectEnergy      RenderingServerLightParam = 1
 	RenderingServerLightParamVolumetricFogEnergy RenderingServerLightParam = 2
-	RenderingServerLightParamSpecular RenderingServerLightParam = 3
-	RenderingServerLightParamRange RenderingServerLightParam = 4
-	RenderingServerLightParamSize RenderingServerLightParam = 5
-	RenderingServerLightParamAttenuation RenderingServerLightParam = 6
-	RenderingServerLightParamSpotAngle RenderingServerLightParam = 7
-	RenderingServerLightParamSpotAttenuation RenderingServerLightParam = 8
-	RenderingServerLightParamShadowMaxDistance RenderingServerLightParam = 9
-	RenderingServerLightParamShadowSplit1Offset RenderingServerLightParam = 10
-	RenderingServerLightParamShadowSplit2Offset RenderingServerLightParam = 11
-	RenderingServerLightParamShadowSplit3Offset RenderingServerLightParam = 12
-	RenderingServerLightParamShadowFadeStart RenderingServerLightParam = 13
-	RenderingServerLightParamShadowNormalBias RenderingServerLightParam = 14
-	RenderingServerLightParamShadowBias RenderingServerLightParam = 15
-	RenderingServerLightParamShadowPancakeSize RenderingServerLightParam = 16
-	RenderingServerLightParamShadowOpacity RenderingServerLightParam = 17
-	RenderingServerLightParamShadowBlur RenderingServerLightParam = 18
-	RenderingServerLightParamTransmittanceBias RenderingServerLightParam = 19
-	RenderingServerLightParamIntensity RenderingServerLightParam = 20
-	RenderingServerLightParamMax RenderingServerLightParam = 21
+	RenderingServerLightParamSpecular            RenderingServerLightParam = 3
+	RenderingServerLightParamRange               RenderingServerLightParam = 4
+	RenderingServerLightParamSize                RenderingServerLightParam = 5
+	RenderingServerLightParamAttenuation         RenderingServerLightParam = 6
+	RenderingServerLightParamSpotAngle           RenderingServerLightParam = 7
+	RenderingServerLightParamSpotAttenuation     RenderingServerLightParam = 8
+	RenderingServerLightParamShadowMaxDistance   RenderingServerLightParam = 9
+	RenderingServerLightParamShadowSplit1Offset  RenderingServerLightParam = 10
+	RenderingServerLightParamShadowSplit2Offset  RenderingServerLightParam = 11
+	RenderingServerLightParamShadowSplit3Offset  RenderingServerLightParam = 12
+	RenderingServerLightParamShadowFadeStart     RenderingServerLightParam = 13
+	RenderingServerLightParamShadowNormalBias    RenderingServerLightParam = 14
+	RenderingServerLightParamShadowBias          RenderingServerLightParam = 15
+	RenderingServerLightParamShadowPancakeSize   RenderingServerLightParam = 16
+	RenderingServerLightParamShadowOpacity       RenderingServerLightParam = 17
+	RenderingServerLightParamShadowBlur          RenderingServerLightParam = 18
+	RenderingServerLightParamTransmittanceBias   RenderingServerLightParam = 19
+	RenderingServerLightParamIntensity           RenderingServerLightParam = 20
+	RenderingServerLightParamMax                 RenderingServerLightParam = 21
 )
 
 type RenderingServerLightBakeMode = classdb.RenderingServerLightBakeMode
 
 const (
 	RenderingServerLightBakeDisabled RenderingServerLightBakeMode = 0
-	RenderingServerLightBakeStatic RenderingServerLightBakeMode = 1
-	RenderingServerLightBakeDynamic RenderingServerLightBakeMode = 2
+	RenderingServerLightBakeStatic   RenderingServerLightBakeMode = 1
+	RenderingServerLightBakeDynamic  RenderingServerLightBakeMode = 2
 )
 
 type RenderingServerLightOmniShadowMode = classdb.RenderingServerLightOmniShadowMode
 
 const (
 	RenderingServerLightOmniShadowDualParaboloid RenderingServerLightOmniShadowMode = 0
-	RenderingServerLightOmniShadowCube RenderingServerLightOmniShadowMode = 1
+	RenderingServerLightOmniShadowCube           RenderingServerLightOmniShadowMode = 1
 )
 
 type RenderingServerLightDirectionalShadowMode = classdb.RenderingServerLightDirectionalShadowMode
 
 const (
-	RenderingServerLightDirectionalShadowOrthogonal RenderingServerLightDirectionalShadowMode = 0
+	RenderingServerLightDirectionalShadowOrthogonal      RenderingServerLightDirectionalShadowMode = 0
 	RenderingServerLightDirectionalShadowParallel2Splits RenderingServerLightDirectionalShadowMode = 1
 	RenderingServerLightDirectionalShadowParallel4Splits RenderingServerLightDirectionalShadowMode = 2
 )
@@ -4851,62 +4850,62 @@ type RenderingServerLightDirectionalSkyMode = classdb.RenderingServerLightDirect
 
 const (
 	RenderingServerLightDirectionalSkyModeLightAndSky RenderingServerLightDirectionalSkyMode = 0
-	RenderingServerLightDirectionalSkyModeLightOnly RenderingServerLightDirectionalSkyMode = 1
-	RenderingServerLightDirectionalSkyModeSkyOnly RenderingServerLightDirectionalSkyMode = 2
+	RenderingServerLightDirectionalSkyModeLightOnly   RenderingServerLightDirectionalSkyMode = 1
+	RenderingServerLightDirectionalSkyModeSkyOnly     RenderingServerLightDirectionalSkyMode = 2
 )
 
 type RenderingServerShadowQuality = classdb.RenderingServerShadowQuality
 
 const (
-	RenderingServerShadowQualityHard RenderingServerShadowQuality = 0
+	RenderingServerShadowQualityHard        RenderingServerShadowQuality = 0
 	RenderingServerShadowQualitySoftVeryLow RenderingServerShadowQuality = 1
-	RenderingServerShadowQualitySoftLow RenderingServerShadowQuality = 2
-	RenderingServerShadowQualitySoftMedium RenderingServerShadowQuality = 3
-	RenderingServerShadowQualitySoftHigh RenderingServerShadowQuality = 4
-	RenderingServerShadowQualitySoftUltra RenderingServerShadowQuality = 5
-	RenderingServerShadowQualityMax RenderingServerShadowQuality = 6
+	RenderingServerShadowQualitySoftLow     RenderingServerShadowQuality = 2
+	RenderingServerShadowQualitySoftMedium  RenderingServerShadowQuality = 3
+	RenderingServerShadowQualitySoftHigh    RenderingServerShadowQuality = 4
+	RenderingServerShadowQualitySoftUltra   RenderingServerShadowQuality = 5
+	RenderingServerShadowQualityMax         RenderingServerShadowQuality = 6
 )
 
 type RenderingServerReflectionProbeUpdateMode = classdb.RenderingServerReflectionProbeUpdateMode
 
 const (
-	RenderingServerReflectionProbeUpdateOnce RenderingServerReflectionProbeUpdateMode = 0
+	RenderingServerReflectionProbeUpdateOnce   RenderingServerReflectionProbeUpdateMode = 0
 	RenderingServerReflectionProbeUpdateAlways RenderingServerReflectionProbeUpdateMode = 1
 )
 
 type RenderingServerReflectionProbeAmbientMode = classdb.RenderingServerReflectionProbeAmbientMode
 
 const (
-	RenderingServerReflectionProbeAmbientDisabled RenderingServerReflectionProbeAmbientMode = 0
+	RenderingServerReflectionProbeAmbientDisabled    RenderingServerReflectionProbeAmbientMode = 0
 	RenderingServerReflectionProbeAmbientEnvironment RenderingServerReflectionProbeAmbientMode = 1
-	RenderingServerReflectionProbeAmbientColor RenderingServerReflectionProbeAmbientMode = 2
+	RenderingServerReflectionProbeAmbientColor       RenderingServerReflectionProbeAmbientMode = 2
 )
 
 type RenderingServerDecalTexture = classdb.RenderingServerDecalTexture
 
 const (
-	RenderingServerDecalTextureAlbedo RenderingServerDecalTexture = 0
-	RenderingServerDecalTextureNormal RenderingServerDecalTexture = 1
-	RenderingServerDecalTextureOrm RenderingServerDecalTexture = 2
+	RenderingServerDecalTextureAlbedo   RenderingServerDecalTexture = 0
+	RenderingServerDecalTextureNormal   RenderingServerDecalTexture = 1
+	RenderingServerDecalTextureOrm      RenderingServerDecalTexture = 2
 	RenderingServerDecalTextureEmission RenderingServerDecalTexture = 3
-	RenderingServerDecalTextureMax RenderingServerDecalTexture = 4
+	RenderingServerDecalTextureMax      RenderingServerDecalTexture = 4
 )
 
 type RenderingServerDecalFilter = classdb.RenderingServerDecalFilter
 
 const (
-	RenderingServerDecalFilterNearest RenderingServerDecalFilter = 0
-	RenderingServerDecalFilterLinear RenderingServerDecalFilter = 1
-	RenderingServerDecalFilterNearestMipmaps RenderingServerDecalFilter = 2
-	RenderingServerDecalFilterLinearMipmaps RenderingServerDecalFilter = 3
+	RenderingServerDecalFilterNearest                   RenderingServerDecalFilter = 0
+	RenderingServerDecalFilterLinear                    RenderingServerDecalFilter = 1
+	RenderingServerDecalFilterNearestMipmaps            RenderingServerDecalFilter = 2
+	RenderingServerDecalFilterLinearMipmaps             RenderingServerDecalFilter = 3
 	RenderingServerDecalFilterNearestMipmapsAnisotropic RenderingServerDecalFilter = 4
-	RenderingServerDecalFilterLinearMipmapsAnisotropic RenderingServerDecalFilter = 5
+	RenderingServerDecalFilterLinearMipmapsAnisotropic  RenderingServerDecalFilter = 5
 )
 
 type RenderingServerVoxelGIQuality = classdb.RenderingServerVoxelGIQuality
 
 const (
-	RenderingServerVoxelGiQualityLow RenderingServerVoxelGIQuality = 0
+	RenderingServerVoxelGiQualityLow  RenderingServerVoxelGIQuality = 0
 	RenderingServerVoxelGiQualityHigh RenderingServerVoxelGIQuality = 1
 )
 
@@ -4920,80 +4919,80 @@ const (
 type RenderingServerParticlesTransformAlign = classdb.RenderingServerParticlesTransformAlign
 
 const (
-	RenderingServerParticlesTransformAlignDisabled RenderingServerParticlesTransformAlign = 0
-	RenderingServerParticlesTransformAlignZBillboard RenderingServerParticlesTransformAlign = 1
-	RenderingServerParticlesTransformAlignYToVelocity RenderingServerParticlesTransformAlign = 2
+	RenderingServerParticlesTransformAlignDisabled              RenderingServerParticlesTransformAlign = 0
+	RenderingServerParticlesTransformAlignZBillboard            RenderingServerParticlesTransformAlign = 1
+	RenderingServerParticlesTransformAlignYToVelocity           RenderingServerParticlesTransformAlign = 2
 	RenderingServerParticlesTransformAlignZBillboardYToVelocity RenderingServerParticlesTransformAlign = 3
 )
 
 type RenderingServerParticlesDrawOrder = classdb.RenderingServerParticlesDrawOrder
 
 const (
-	RenderingServerParticlesDrawOrderIndex RenderingServerParticlesDrawOrder = 0
-	RenderingServerParticlesDrawOrderLifetime RenderingServerParticlesDrawOrder = 1
+	RenderingServerParticlesDrawOrderIndex           RenderingServerParticlesDrawOrder = 0
+	RenderingServerParticlesDrawOrderLifetime        RenderingServerParticlesDrawOrder = 1
 	RenderingServerParticlesDrawOrderReverseLifetime RenderingServerParticlesDrawOrder = 2
-	RenderingServerParticlesDrawOrderViewDepth RenderingServerParticlesDrawOrder = 3
+	RenderingServerParticlesDrawOrderViewDepth       RenderingServerParticlesDrawOrder = 3
 )
 
 type RenderingServerParticlesCollisionType = classdb.RenderingServerParticlesCollisionType
 
 const (
-	RenderingServerParticlesCollisionTypeSphereAttract RenderingServerParticlesCollisionType = 0
-	RenderingServerParticlesCollisionTypeBoxAttract RenderingServerParticlesCollisionType = 1
+	RenderingServerParticlesCollisionTypeSphereAttract      RenderingServerParticlesCollisionType = 0
+	RenderingServerParticlesCollisionTypeBoxAttract         RenderingServerParticlesCollisionType = 1
 	RenderingServerParticlesCollisionTypeVectorFieldAttract RenderingServerParticlesCollisionType = 2
-	RenderingServerParticlesCollisionTypeSphereCollide RenderingServerParticlesCollisionType = 3
-	RenderingServerParticlesCollisionTypeBoxCollide RenderingServerParticlesCollisionType = 4
-	RenderingServerParticlesCollisionTypeSdfCollide RenderingServerParticlesCollisionType = 5
+	RenderingServerParticlesCollisionTypeSphereCollide      RenderingServerParticlesCollisionType = 3
+	RenderingServerParticlesCollisionTypeBoxCollide         RenderingServerParticlesCollisionType = 4
+	RenderingServerParticlesCollisionTypeSdfCollide         RenderingServerParticlesCollisionType = 5
 	RenderingServerParticlesCollisionTypeHeightfieldCollide RenderingServerParticlesCollisionType = 6
 )
 
 type RenderingServerParticlesCollisionHeightfieldResolution = classdb.RenderingServerParticlesCollisionHeightfieldResolution
 
 const (
-	RenderingServerParticlesCollisionHeightfieldResolution256 RenderingServerParticlesCollisionHeightfieldResolution = 0
-	RenderingServerParticlesCollisionHeightfieldResolution512 RenderingServerParticlesCollisionHeightfieldResolution = 1
+	RenderingServerParticlesCollisionHeightfieldResolution256  RenderingServerParticlesCollisionHeightfieldResolution = 0
+	RenderingServerParticlesCollisionHeightfieldResolution512  RenderingServerParticlesCollisionHeightfieldResolution = 1
 	RenderingServerParticlesCollisionHeightfieldResolution1024 RenderingServerParticlesCollisionHeightfieldResolution = 2
 	RenderingServerParticlesCollisionHeightfieldResolution2048 RenderingServerParticlesCollisionHeightfieldResolution = 3
 	RenderingServerParticlesCollisionHeightfieldResolution4096 RenderingServerParticlesCollisionHeightfieldResolution = 4
 	RenderingServerParticlesCollisionHeightfieldResolution8192 RenderingServerParticlesCollisionHeightfieldResolution = 5
-	RenderingServerParticlesCollisionHeightfieldResolutionMax RenderingServerParticlesCollisionHeightfieldResolution = 6
+	RenderingServerParticlesCollisionHeightfieldResolutionMax  RenderingServerParticlesCollisionHeightfieldResolution = 6
 )
 
 type RenderingServerFogVolumeShape = classdb.RenderingServerFogVolumeShape
 
 const (
 	RenderingServerFogVolumeShapeEllipsoid RenderingServerFogVolumeShape = 0
-	RenderingServerFogVolumeShapeCone RenderingServerFogVolumeShape = 1
-	RenderingServerFogVolumeShapeCylinder RenderingServerFogVolumeShape = 2
-	RenderingServerFogVolumeShapeBox RenderingServerFogVolumeShape = 3
-	RenderingServerFogVolumeShapeWorld RenderingServerFogVolumeShape = 4
-	RenderingServerFogVolumeShapeMax RenderingServerFogVolumeShape = 5
+	RenderingServerFogVolumeShapeCone      RenderingServerFogVolumeShape = 1
+	RenderingServerFogVolumeShapeCylinder  RenderingServerFogVolumeShape = 2
+	RenderingServerFogVolumeShapeBox       RenderingServerFogVolumeShape = 3
+	RenderingServerFogVolumeShapeWorld     RenderingServerFogVolumeShape = 4
+	RenderingServerFogVolumeShapeMax       RenderingServerFogVolumeShape = 5
 )
 
 type RenderingServerViewportScaling3DMode = classdb.RenderingServerViewportScaling3DMode
 
 const (
 	RenderingServerViewportScaling3dModeBilinear RenderingServerViewportScaling3DMode = 0
-	RenderingServerViewportScaling3dModeFsr RenderingServerViewportScaling3DMode = 1
-	RenderingServerViewportScaling3dModeFsr2 RenderingServerViewportScaling3DMode = 2
-	RenderingServerViewportScaling3dModeMax RenderingServerViewportScaling3DMode = 3
+	RenderingServerViewportScaling3dModeFsr      RenderingServerViewportScaling3DMode = 1
+	RenderingServerViewportScaling3dModeFsr2     RenderingServerViewportScaling3DMode = 2
+	RenderingServerViewportScaling3dModeMax      RenderingServerViewportScaling3DMode = 3
 )
 
 type RenderingServerViewportUpdateMode = classdb.RenderingServerViewportUpdateMode
 
 const (
-	RenderingServerViewportUpdateDisabled RenderingServerViewportUpdateMode = 0
-	RenderingServerViewportUpdateOnce RenderingServerViewportUpdateMode = 1
-	RenderingServerViewportUpdateWhenVisible RenderingServerViewportUpdateMode = 2
+	RenderingServerViewportUpdateDisabled          RenderingServerViewportUpdateMode = 0
+	RenderingServerViewportUpdateOnce              RenderingServerViewportUpdateMode = 1
+	RenderingServerViewportUpdateWhenVisible       RenderingServerViewportUpdateMode = 2
 	RenderingServerViewportUpdateWhenParentVisible RenderingServerViewportUpdateMode = 3
-	RenderingServerViewportUpdateAlways RenderingServerViewportUpdateMode = 4
+	RenderingServerViewportUpdateAlways            RenderingServerViewportUpdateMode = 4
 )
 
 type RenderingServerViewportClearMode = classdb.RenderingServerViewportClearMode
 
 const (
-	RenderingServerViewportClearAlways RenderingServerViewportClearMode = 0
-	RenderingServerViewportClearNever RenderingServerViewportClearMode = 1
+	RenderingServerViewportClearAlways        RenderingServerViewportClearMode = 0
+	RenderingServerViewportClearNever         RenderingServerViewportClearMode = 1
 	RenderingServerViewportClearOnlyNextFrame RenderingServerViewportClearMode = 2
 )
 
@@ -5001,9 +5000,9 @@ type RenderingServerViewportEnvironmentMode = classdb.RenderingServerViewportEnv
 
 const (
 	RenderingServerViewportEnvironmentDisabled RenderingServerViewportEnvironmentMode = 0
-	RenderingServerViewportEnvironmentEnabled RenderingServerViewportEnvironmentMode = 1
-	RenderingServerViewportEnvironmentInherit RenderingServerViewportEnvironmentMode = 2
-	RenderingServerViewportEnvironmentMax RenderingServerViewportEnvironmentMode = 3
+	RenderingServerViewportEnvironmentEnabled  RenderingServerViewportEnvironmentMode = 1
+	RenderingServerViewportEnvironmentInherit  RenderingServerViewportEnvironmentMode = 2
+	RenderingServerViewportEnvironmentMax      RenderingServerViewportEnvironmentMode = 3
 )
 
 type RenderingServerViewportSDFOversize = classdb.RenderingServerViewportSDFOversize
@@ -5013,205 +5012,205 @@ const (
 	RenderingServerViewportSdfOversize120Percent RenderingServerViewportSDFOversize = 1
 	RenderingServerViewportSdfOversize150Percent RenderingServerViewportSDFOversize = 2
 	RenderingServerViewportSdfOversize200Percent RenderingServerViewportSDFOversize = 3
-	RenderingServerViewportSdfOversizeMax RenderingServerViewportSDFOversize = 4
+	RenderingServerViewportSdfOversizeMax        RenderingServerViewportSDFOversize = 4
 )
 
 type RenderingServerViewportSDFScale = classdb.RenderingServerViewportSDFScale
 
 const (
 	RenderingServerViewportSdfScale100Percent RenderingServerViewportSDFScale = 0
-	RenderingServerViewportSdfScale50Percent RenderingServerViewportSDFScale = 1
-	RenderingServerViewportSdfScale25Percent RenderingServerViewportSDFScale = 2
-	RenderingServerViewportSdfScaleMax RenderingServerViewportSDFScale = 3
+	RenderingServerViewportSdfScale50Percent  RenderingServerViewportSDFScale = 1
+	RenderingServerViewportSdfScale25Percent  RenderingServerViewportSDFScale = 2
+	RenderingServerViewportSdfScaleMax        RenderingServerViewportSDFScale = 3
 )
 
 type RenderingServerViewportMSAA = classdb.RenderingServerViewportMSAA
 
 const (
 	RenderingServerViewportMsaaDisabled RenderingServerViewportMSAA = 0
-	RenderingServerViewportMsaa2x RenderingServerViewportMSAA = 1
-	RenderingServerViewportMsaa4x RenderingServerViewportMSAA = 2
-	RenderingServerViewportMsaa8x RenderingServerViewportMSAA = 3
-	RenderingServerViewportMsaaMax RenderingServerViewportMSAA = 4
+	RenderingServerViewportMsaa2x       RenderingServerViewportMSAA = 1
+	RenderingServerViewportMsaa4x       RenderingServerViewportMSAA = 2
+	RenderingServerViewportMsaa8x       RenderingServerViewportMSAA = 3
+	RenderingServerViewportMsaaMax      RenderingServerViewportMSAA = 4
 )
 
 type RenderingServerViewportScreenSpaceAA = classdb.RenderingServerViewportScreenSpaceAA
 
 const (
 	RenderingServerViewportScreenSpaceAaDisabled RenderingServerViewportScreenSpaceAA = 0
-	RenderingServerViewportScreenSpaceAaFxaa RenderingServerViewportScreenSpaceAA = 1
-	RenderingServerViewportScreenSpaceAaMax RenderingServerViewportScreenSpaceAA = 2
+	RenderingServerViewportScreenSpaceAaFxaa     RenderingServerViewportScreenSpaceAA = 1
+	RenderingServerViewportScreenSpaceAaMax      RenderingServerViewportScreenSpaceAA = 2
 )
 
 type RenderingServerViewportOcclusionCullingBuildQuality = classdb.RenderingServerViewportOcclusionCullingBuildQuality
 
 const (
-	RenderingServerViewportOcclusionBuildQualityLow RenderingServerViewportOcclusionCullingBuildQuality = 0
+	RenderingServerViewportOcclusionBuildQualityLow    RenderingServerViewportOcclusionCullingBuildQuality = 0
 	RenderingServerViewportOcclusionBuildQualityMedium RenderingServerViewportOcclusionCullingBuildQuality = 1
-	RenderingServerViewportOcclusionBuildQualityHigh RenderingServerViewportOcclusionCullingBuildQuality = 2
+	RenderingServerViewportOcclusionBuildQualityHigh   RenderingServerViewportOcclusionCullingBuildQuality = 2
 )
 
 type RenderingServerViewportRenderInfo = classdb.RenderingServerViewportRenderInfo
 
 const (
-	RenderingServerViewportRenderInfoObjectsInFrame RenderingServerViewportRenderInfo = 0
+	RenderingServerViewportRenderInfoObjectsInFrame    RenderingServerViewportRenderInfo = 0
 	RenderingServerViewportRenderInfoPrimitivesInFrame RenderingServerViewportRenderInfo = 1
-	RenderingServerViewportRenderInfoDrawCallsInFrame RenderingServerViewportRenderInfo = 2
-	RenderingServerViewportRenderInfoMax RenderingServerViewportRenderInfo = 3
+	RenderingServerViewportRenderInfoDrawCallsInFrame  RenderingServerViewportRenderInfo = 2
+	RenderingServerViewportRenderInfoMax               RenderingServerViewportRenderInfo = 3
 )
 
 type RenderingServerViewportRenderInfoType = classdb.RenderingServerViewportRenderInfoType
 
 const (
 	RenderingServerViewportRenderInfoTypeVisible RenderingServerViewportRenderInfoType = 0
-	RenderingServerViewportRenderInfoTypeShadow RenderingServerViewportRenderInfoType = 1
-	RenderingServerViewportRenderInfoTypeMax RenderingServerViewportRenderInfoType = 2
+	RenderingServerViewportRenderInfoTypeShadow  RenderingServerViewportRenderInfoType = 1
+	RenderingServerViewportRenderInfoTypeMax     RenderingServerViewportRenderInfoType = 2
 )
 
 type RenderingServerViewportDebugDraw = classdb.RenderingServerViewportDebugDraw
 
 const (
-	RenderingServerViewportDebugDrawDisabled RenderingServerViewportDebugDraw = 0
-	RenderingServerViewportDebugDrawUnshaded RenderingServerViewportDebugDraw = 1
-	RenderingServerViewportDebugDrawLighting RenderingServerViewportDebugDraw = 2
-	RenderingServerViewportDebugDrawOverdraw RenderingServerViewportDebugDraw = 3
-	RenderingServerViewportDebugDrawWireframe RenderingServerViewportDebugDraw = 4
-	RenderingServerViewportDebugDrawNormalBuffer RenderingServerViewportDebugDraw = 5
-	RenderingServerViewportDebugDrawVoxelGiAlbedo RenderingServerViewportDebugDraw = 6
-	RenderingServerViewportDebugDrawVoxelGiLighting RenderingServerViewportDebugDraw = 7
-	RenderingServerViewportDebugDrawVoxelGiEmission RenderingServerViewportDebugDraw = 8
-	RenderingServerViewportDebugDrawShadowAtlas RenderingServerViewportDebugDraw = 9
-	RenderingServerViewportDebugDrawDirectionalShadowAtlas RenderingServerViewportDebugDraw = 10
-	RenderingServerViewportDebugDrawSceneLuminance RenderingServerViewportDebugDraw = 11
-	RenderingServerViewportDebugDrawSsao RenderingServerViewportDebugDraw = 12
-	RenderingServerViewportDebugDrawSsil RenderingServerViewportDebugDraw = 13
-	RenderingServerViewportDebugDrawPssmSplits RenderingServerViewportDebugDraw = 14
-	RenderingServerViewportDebugDrawDecalAtlas RenderingServerViewportDebugDraw = 15
-	RenderingServerViewportDebugDrawSdfgi RenderingServerViewportDebugDraw = 16
-	RenderingServerViewportDebugDrawSdfgiProbes RenderingServerViewportDebugDraw = 17
-	RenderingServerViewportDebugDrawGiBuffer RenderingServerViewportDebugDraw = 18
-	RenderingServerViewportDebugDrawDisableLod RenderingServerViewportDebugDraw = 19
-	RenderingServerViewportDebugDrawClusterOmniLights RenderingServerViewportDebugDraw = 20
-	RenderingServerViewportDebugDrawClusterSpotLights RenderingServerViewportDebugDraw = 21
-	RenderingServerViewportDebugDrawClusterDecals RenderingServerViewportDebugDraw = 22
+	RenderingServerViewportDebugDrawDisabled                RenderingServerViewportDebugDraw = 0
+	RenderingServerViewportDebugDrawUnshaded                RenderingServerViewportDebugDraw = 1
+	RenderingServerViewportDebugDrawLighting                RenderingServerViewportDebugDraw = 2
+	RenderingServerViewportDebugDrawOverdraw                RenderingServerViewportDebugDraw = 3
+	RenderingServerViewportDebugDrawWireframe               RenderingServerViewportDebugDraw = 4
+	RenderingServerViewportDebugDrawNormalBuffer            RenderingServerViewportDebugDraw = 5
+	RenderingServerViewportDebugDrawVoxelGiAlbedo           RenderingServerViewportDebugDraw = 6
+	RenderingServerViewportDebugDrawVoxelGiLighting         RenderingServerViewportDebugDraw = 7
+	RenderingServerViewportDebugDrawVoxelGiEmission         RenderingServerViewportDebugDraw = 8
+	RenderingServerViewportDebugDrawShadowAtlas             RenderingServerViewportDebugDraw = 9
+	RenderingServerViewportDebugDrawDirectionalShadowAtlas  RenderingServerViewportDebugDraw = 10
+	RenderingServerViewportDebugDrawSceneLuminance          RenderingServerViewportDebugDraw = 11
+	RenderingServerViewportDebugDrawSsao                    RenderingServerViewportDebugDraw = 12
+	RenderingServerViewportDebugDrawSsil                    RenderingServerViewportDebugDraw = 13
+	RenderingServerViewportDebugDrawPssmSplits              RenderingServerViewportDebugDraw = 14
+	RenderingServerViewportDebugDrawDecalAtlas              RenderingServerViewportDebugDraw = 15
+	RenderingServerViewportDebugDrawSdfgi                   RenderingServerViewportDebugDraw = 16
+	RenderingServerViewportDebugDrawSdfgiProbes             RenderingServerViewportDebugDraw = 17
+	RenderingServerViewportDebugDrawGiBuffer                RenderingServerViewportDebugDraw = 18
+	RenderingServerViewportDebugDrawDisableLod              RenderingServerViewportDebugDraw = 19
+	RenderingServerViewportDebugDrawClusterOmniLights       RenderingServerViewportDebugDraw = 20
+	RenderingServerViewportDebugDrawClusterSpotLights       RenderingServerViewportDebugDraw = 21
+	RenderingServerViewportDebugDrawClusterDecals           RenderingServerViewportDebugDraw = 22
 	RenderingServerViewportDebugDrawClusterReflectionProbes RenderingServerViewportDebugDraw = 23
-	RenderingServerViewportDebugDrawOccluders RenderingServerViewportDebugDraw = 24
-	RenderingServerViewportDebugDrawMotionVectors RenderingServerViewportDebugDraw = 25
-	RenderingServerViewportDebugDrawInternalBuffer RenderingServerViewportDebugDraw = 26
+	RenderingServerViewportDebugDrawOccluders               RenderingServerViewportDebugDraw = 24
+	RenderingServerViewportDebugDrawMotionVectors           RenderingServerViewportDebugDraw = 25
+	RenderingServerViewportDebugDrawInternalBuffer          RenderingServerViewportDebugDraw = 26
 )
 
 type RenderingServerViewportVRSMode = classdb.RenderingServerViewportVRSMode
 
 const (
 	RenderingServerViewportVrsDisabled RenderingServerViewportVRSMode = 0
-	RenderingServerViewportVrsTexture RenderingServerViewportVRSMode = 1
-	RenderingServerViewportVrsXr RenderingServerViewportVRSMode = 2
-	RenderingServerViewportVrsMax RenderingServerViewportVRSMode = 3
+	RenderingServerViewportVrsTexture  RenderingServerViewportVRSMode = 1
+	RenderingServerViewportVrsXr       RenderingServerViewportVRSMode = 2
+	RenderingServerViewportVrsMax      RenderingServerViewportVRSMode = 3
 )
 
 type RenderingServerSkyMode = classdb.RenderingServerSkyMode
 
 const (
-	RenderingServerSkyModeAutomatic RenderingServerSkyMode = 0
-	RenderingServerSkyModeQuality RenderingServerSkyMode = 1
+	RenderingServerSkyModeAutomatic   RenderingServerSkyMode = 0
+	RenderingServerSkyModeQuality     RenderingServerSkyMode = 1
 	RenderingServerSkyModeIncremental RenderingServerSkyMode = 2
-	RenderingServerSkyModeRealtime RenderingServerSkyMode = 3
+	RenderingServerSkyModeRealtime    RenderingServerSkyMode = 3
 )
 
 type RenderingServerEnvironmentBG = classdb.RenderingServerEnvironmentBG
 
 const (
 	RenderingServerEnvBgClearColor RenderingServerEnvironmentBG = 0
-	RenderingServerEnvBgColor RenderingServerEnvironmentBG = 1
-	RenderingServerEnvBgSky RenderingServerEnvironmentBG = 2
-	RenderingServerEnvBgCanvas RenderingServerEnvironmentBG = 3
-	RenderingServerEnvBgKeep RenderingServerEnvironmentBG = 4
+	RenderingServerEnvBgColor      RenderingServerEnvironmentBG = 1
+	RenderingServerEnvBgSky        RenderingServerEnvironmentBG = 2
+	RenderingServerEnvBgCanvas     RenderingServerEnvironmentBG = 3
+	RenderingServerEnvBgKeep       RenderingServerEnvironmentBG = 4
 	RenderingServerEnvBgCameraFeed RenderingServerEnvironmentBG = 5
-	RenderingServerEnvBgMax RenderingServerEnvironmentBG = 6
+	RenderingServerEnvBgMax        RenderingServerEnvironmentBG = 6
 )
 
 type RenderingServerEnvironmentAmbientSource = classdb.RenderingServerEnvironmentAmbientSource
 
 const (
-	RenderingServerEnvAmbientSourceBg RenderingServerEnvironmentAmbientSource = 0
+	RenderingServerEnvAmbientSourceBg       RenderingServerEnvironmentAmbientSource = 0
 	RenderingServerEnvAmbientSourceDisabled RenderingServerEnvironmentAmbientSource = 1
-	RenderingServerEnvAmbientSourceColor RenderingServerEnvironmentAmbientSource = 2
-	RenderingServerEnvAmbientSourceSky RenderingServerEnvironmentAmbientSource = 3
+	RenderingServerEnvAmbientSourceColor    RenderingServerEnvironmentAmbientSource = 2
+	RenderingServerEnvAmbientSourceSky      RenderingServerEnvironmentAmbientSource = 3
 )
 
 type RenderingServerEnvironmentReflectionSource = classdb.RenderingServerEnvironmentReflectionSource
 
 const (
-	RenderingServerEnvReflectionSourceBg RenderingServerEnvironmentReflectionSource = 0
+	RenderingServerEnvReflectionSourceBg       RenderingServerEnvironmentReflectionSource = 0
 	RenderingServerEnvReflectionSourceDisabled RenderingServerEnvironmentReflectionSource = 1
-	RenderingServerEnvReflectionSourceSky RenderingServerEnvironmentReflectionSource = 2
+	RenderingServerEnvReflectionSourceSky      RenderingServerEnvironmentReflectionSource = 2
 )
 
 type RenderingServerEnvironmentGlowBlendMode = classdb.RenderingServerEnvironmentGlowBlendMode
 
 const (
-	RenderingServerEnvGlowBlendModeAdditive RenderingServerEnvironmentGlowBlendMode = 0
-	RenderingServerEnvGlowBlendModeScreen RenderingServerEnvironmentGlowBlendMode = 1
+	RenderingServerEnvGlowBlendModeAdditive  RenderingServerEnvironmentGlowBlendMode = 0
+	RenderingServerEnvGlowBlendModeScreen    RenderingServerEnvironmentGlowBlendMode = 1
 	RenderingServerEnvGlowBlendModeSoftlight RenderingServerEnvironmentGlowBlendMode = 2
-	RenderingServerEnvGlowBlendModeReplace RenderingServerEnvironmentGlowBlendMode = 3
-	RenderingServerEnvGlowBlendModeMix RenderingServerEnvironmentGlowBlendMode = 4
+	RenderingServerEnvGlowBlendModeReplace   RenderingServerEnvironmentGlowBlendMode = 3
+	RenderingServerEnvGlowBlendModeMix       RenderingServerEnvironmentGlowBlendMode = 4
 )
 
 type RenderingServerEnvironmentToneMapper = classdb.RenderingServerEnvironmentToneMapper
 
 const (
-	RenderingServerEnvToneMapperLinear RenderingServerEnvironmentToneMapper = 0
+	RenderingServerEnvToneMapperLinear   RenderingServerEnvironmentToneMapper = 0
 	RenderingServerEnvToneMapperReinhard RenderingServerEnvironmentToneMapper = 1
-	RenderingServerEnvToneMapperFilmic RenderingServerEnvironmentToneMapper = 2
-	RenderingServerEnvToneMapperAces RenderingServerEnvironmentToneMapper = 3
+	RenderingServerEnvToneMapperFilmic   RenderingServerEnvironmentToneMapper = 2
+	RenderingServerEnvToneMapperAces     RenderingServerEnvironmentToneMapper = 3
 )
 
 type RenderingServerEnvironmentSSRRoughnessQuality = classdb.RenderingServerEnvironmentSSRRoughnessQuality
 
 const (
 	RenderingServerEnvSsrRoughnessQualityDisabled RenderingServerEnvironmentSSRRoughnessQuality = 0
-	RenderingServerEnvSsrRoughnessQualityLow RenderingServerEnvironmentSSRRoughnessQuality = 1
-	RenderingServerEnvSsrRoughnessQualityMedium RenderingServerEnvironmentSSRRoughnessQuality = 2
-	RenderingServerEnvSsrRoughnessQualityHigh RenderingServerEnvironmentSSRRoughnessQuality = 3
+	RenderingServerEnvSsrRoughnessQualityLow      RenderingServerEnvironmentSSRRoughnessQuality = 1
+	RenderingServerEnvSsrRoughnessQualityMedium   RenderingServerEnvironmentSSRRoughnessQuality = 2
+	RenderingServerEnvSsrRoughnessQualityHigh     RenderingServerEnvironmentSSRRoughnessQuality = 3
 )
 
 type RenderingServerEnvironmentSSAOQuality = classdb.RenderingServerEnvironmentSSAOQuality
 
 const (
 	RenderingServerEnvSsaoQualityVeryLow RenderingServerEnvironmentSSAOQuality = 0
-	RenderingServerEnvSsaoQualityLow RenderingServerEnvironmentSSAOQuality = 1
-	RenderingServerEnvSsaoQualityMedium RenderingServerEnvironmentSSAOQuality = 2
-	RenderingServerEnvSsaoQualityHigh RenderingServerEnvironmentSSAOQuality = 3
-	RenderingServerEnvSsaoQualityUltra RenderingServerEnvironmentSSAOQuality = 4
+	RenderingServerEnvSsaoQualityLow     RenderingServerEnvironmentSSAOQuality = 1
+	RenderingServerEnvSsaoQualityMedium  RenderingServerEnvironmentSSAOQuality = 2
+	RenderingServerEnvSsaoQualityHigh    RenderingServerEnvironmentSSAOQuality = 3
+	RenderingServerEnvSsaoQualityUltra   RenderingServerEnvironmentSSAOQuality = 4
 )
 
 type RenderingServerEnvironmentSSILQuality = classdb.RenderingServerEnvironmentSSILQuality
 
 const (
 	RenderingServerEnvSsilQualityVeryLow RenderingServerEnvironmentSSILQuality = 0
-	RenderingServerEnvSsilQualityLow RenderingServerEnvironmentSSILQuality = 1
-	RenderingServerEnvSsilQualityMedium RenderingServerEnvironmentSSILQuality = 2
-	RenderingServerEnvSsilQualityHigh RenderingServerEnvironmentSSILQuality = 3
-	RenderingServerEnvSsilQualityUltra RenderingServerEnvironmentSSILQuality = 4
+	RenderingServerEnvSsilQualityLow     RenderingServerEnvironmentSSILQuality = 1
+	RenderingServerEnvSsilQualityMedium  RenderingServerEnvironmentSSILQuality = 2
+	RenderingServerEnvSsilQualityHigh    RenderingServerEnvironmentSSILQuality = 3
+	RenderingServerEnvSsilQualityUltra   RenderingServerEnvironmentSSILQuality = 4
 )
 
 type RenderingServerEnvironmentSDFGIYScale = classdb.RenderingServerEnvironmentSDFGIYScale
 
 const (
-	RenderingServerEnvSdfgiYScale50Percent RenderingServerEnvironmentSDFGIYScale = 0
-	RenderingServerEnvSdfgiYScale75Percent RenderingServerEnvironmentSDFGIYScale = 1
+	RenderingServerEnvSdfgiYScale50Percent  RenderingServerEnvironmentSDFGIYScale = 0
+	RenderingServerEnvSdfgiYScale75Percent  RenderingServerEnvironmentSDFGIYScale = 1
 	RenderingServerEnvSdfgiYScale100Percent RenderingServerEnvironmentSDFGIYScale = 2
 )
 
 type RenderingServerEnvironmentSDFGIRayCount = classdb.RenderingServerEnvironmentSDFGIRayCount
 
 const (
-	RenderingServerEnvSdfgiRayCount4 RenderingServerEnvironmentSDFGIRayCount = 0
-	RenderingServerEnvSdfgiRayCount8 RenderingServerEnvironmentSDFGIRayCount = 1
-	RenderingServerEnvSdfgiRayCount16 RenderingServerEnvironmentSDFGIRayCount = 2
-	RenderingServerEnvSdfgiRayCount32 RenderingServerEnvironmentSDFGIRayCount = 3
-	RenderingServerEnvSdfgiRayCount64 RenderingServerEnvironmentSDFGIRayCount = 4
-	RenderingServerEnvSdfgiRayCount96 RenderingServerEnvironmentSDFGIRayCount = 5
+	RenderingServerEnvSdfgiRayCount4   RenderingServerEnvironmentSDFGIRayCount = 0
+	RenderingServerEnvSdfgiRayCount8   RenderingServerEnvironmentSDFGIRayCount = 1
+	RenderingServerEnvSdfgiRayCount16  RenderingServerEnvironmentSDFGIRayCount = 2
+	RenderingServerEnvSdfgiRayCount32  RenderingServerEnvironmentSDFGIRayCount = 3
+	RenderingServerEnvSdfgiRayCount64  RenderingServerEnvironmentSDFGIRayCount = 4
+	RenderingServerEnvSdfgiRayCount96  RenderingServerEnvironmentSDFGIRayCount = 5
 	RenderingServerEnvSdfgiRayCount128 RenderingServerEnvironmentSDFGIRayCount = 6
 	RenderingServerEnvSdfgiRayCountMax RenderingServerEnvironmentSDFGIRayCount = 7
 )
@@ -5219,87 +5218,87 @@ const (
 type RenderingServerEnvironmentSDFGIFramesToConverge = classdb.RenderingServerEnvironmentSDFGIFramesToConverge
 
 const (
-	RenderingServerEnvSdfgiConvergeIn5Frames RenderingServerEnvironmentSDFGIFramesToConverge = 0
+	RenderingServerEnvSdfgiConvergeIn5Frames  RenderingServerEnvironmentSDFGIFramesToConverge = 0
 	RenderingServerEnvSdfgiConvergeIn10Frames RenderingServerEnvironmentSDFGIFramesToConverge = 1
 	RenderingServerEnvSdfgiConvergeIn15Frames RenderingServerEnvironmentSDFGIFramesToConverge = 2
 	RenderingServerEnvSdfgiConvergeIn20Frames RenderingServerEnvironmentSDFGIFramesToConverge = 3
 	RenderingServerEnvSdfgiConvergeIn25Frames RenderingServerEnvironmentSDFGIFramesToConverge = 4
 	RenderingServerEnvSdfgiConvergeIn30Frames RenderingServerEnvironmentSDFGIFramesToConverge = 5
-	RenderingServerEnvSdfgiConvergeMax RenderingServerEnvironmentSDFGIFramesToConverge = 6
+	RenderingServerEnvSdfgiConvergeMax        RenderingServerEnvironmentSDFGIFramesToConverge = 6
 )
 
 type RenderingServerEnvironmentSDFGIFramesToUpdateLight = classdb.RenderingServerEnvironmentSDFGIFramesToUpdateLight
 
 const (
-	RenderingServerEnvSdfgiUpdateLightIn1Frame RenderingServerEnvironmentSDFGIFramesToUpdateLight = 0
-	RenderingServerEnvSdfgiUpdateLightIn2Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 1
-	RenderingServerEnvSdfgiUpdateLightIn4Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 2
-	RenderingServerEnvSdfgiUpdateLightIn8Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 3
+	RenderingServerEnvSdfgiUpdateLightIn1Frame   RenderingServerEnvironmentSDFGIFramesToUpdateLight = 0
+	RenderingServerEnvSdfgiUpdateLightIn2Frames  RenderingServerEnvironmentSDFGIFramesToUpdateLight = 1
+	RenderingServerEnvSdfgiUpdateLightIn4Frames  RenderingServerEnvironmentSDFGIFramesToUpdateLight = 2
+	RenderingServerEnvSdfgiUpdateLightIn8Frames  RenderingServerEnvironmentSDFGIFramesToUpdateLight = 3
 	RenderingServerEnvSdfgiUpdateLightIn16Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 4
-	RenderingServerEnvSdfgiUpdateLightMax RenderingServerEnvironmentSDFGIFramesToUpdateLight = 5
+	RenderingServerEnvSdfgiUpdateLightMax        RenderingServerEnvironmentSDFGIFramesToUpdateLight = 5
 )
 
 type RenderingServerSubSurfaceScatteringQuality = classdb.RenderingServerSubSurfaceScatteringQuality
 
 const (
 	RenderingServerSubSurfaceScatteringQualityDisabled RenderingServerSubSurfaceScatteringQuality = 0
-	RenderingServerSubSurfaceScatteringQualityLow RenderingServerSubSurfaceScatteringQuality = 1
-	RenderingServerSubSurfaceScatteringQualityMedium RenderingServerSubSurfaceScatteringQuality = 2
-	RenderingServerSubSurfaceScatteringQualityHigh RenderingServerSubSurfaceScatteringQuality = 3
+	RenderingServerSubSurfaceScatteringQualityLow      RenderingServerSubSurfaceScatteringQuality = 1
+	RenderingServerSubSurfaceScatteringQualityMedium   RenderingServerSubSurfaceScatteringQuality = 2
+	RenderingServerSubSurfaceScatteringQualityHigh     RenderingServerSubSurfaceScatteringQuality = 3
 )
 
 type RenderingServerDOFBokehShape = classdb.RenderingServerDOFBokehShape
 
 const (
-	RenderingServerDofBokehBox RenderingServerDOFBokehShape = 0
+	RenderingServerDofBokehBox     RenderingServerDOFBokehShape = 0
 	RenderingServerDofBokehHexagon RenderingServerDOFBokehShape = 1
-	RenderingServerDofBokehCircle RenderingServerDOFBokehShape = 2
+	RenderingServerDofBokehCircle  RenderingServerDOFBokehShape = 2
 )
 
 type RenderingServerDOFBlurQuality = classdb.RenderingServerDOFBlurQuality
 
 const (
 	RenderingServerDofBlurQualityVeryLow RenderingServerDOFBlurQuality = 0
-	RenderingServerDofBlurQualityLow RenderingServerDOFBlurQuality = 1
-	RenderingServerDofBlurQualityMedium RenderingServerDOFBlurQuality = 2
-	RenderingServerDofBlurQualityHigh RenderingServerDOFBlurQuality = 3
+	RenderingServerDofBlurQualityLow     RenderingServerDOFBlurQuality = 1
+	RenderingServerDofBlurQualityMedium  RenderingServerDOFBlurQuality = 2
+	RenderingServerDofBlurQualityHigh    RenderingServerDOFBlurQuality = 3
 )
 
 type RenderingServerInstanceType = classdb.RenderingServerInstanceType
 
 const (
-	RenderingServerInstanceNone RenderingServerInstanceType = 0
-	RenderingServerInstanceMesh RenderingServerInstanceType = 1
-	RenderingServerInstanceMultimesh RenderingServerInstanceType = 2
-	RenderingServerInstanceParticles RenderingServerInstanceType = 3
+	RenderingServerInstanceNone               RenderingServerInstanceType = 0
+	RenderingServerInstanceMesh               RenderingServerInstanceType = 1
+	RenderingServerInstanceMultimesh          RenderingServerInstanceType = 2
+	RenderingServerInstanceParticles          RenderingServerInstanceType = 3
 	RenderingServerInstanceParticlesCollision RenderingServerInstanceType = 4
-	RenderingServerInstanceLight RenderingServerInstanceType = 5
-	RenderingServerInstanceReflectionProbe RenderingServerInstanceType = 6
-	RenderingServerInstanceDecal RenderingServerInstanceType = 7
-	RenderingServerInstanceVoxelGi RenderingServerInstanceType = 8
-	RenderingServerInstanceLightmap RenderingServerInstanceType = 9
-	RenderingServerInstanceOccluder RenderingServerInstanceType = 10
-	RenderingServerInstanceVisiblityNotifier RenderingServerInstanceType = 11
-	RenderingServerInstanceFogVolume RenderingServerInstanceType = 12
-	RenderingServerInstanceMax RenderingServerInstanceType = 13
-	RenderingServerInstanceGeometryMask RenderingServerInstanceType = 14
+	RenderingServerInstanceLight              RenderingServerInstanceType = 5
+	RenderingServerInstanceReflectionProbe    RenderingServerInstanceType = 6
+	RenderingServerInstanceDecal              RenderingServerInstanceType = 7
+	RenderingServerInstanceVoxelGi            RenderingServerInstanceType = 8
+	RenderingServerInstanceLightmap           RenderingServerInstanceType = 9
+	RenderingServerInstanceOccluder           RenderingServerInstanceType = 10
+	RenderingServerInstanceVisiblityNotifier  RenderingServerInstanceType = 11
+	RenderingServerInstanceFogVolume          RenderingServerInstanceType = 12
+	RenderingServerInstanceMax                RenderingServerInstanceType = 13
+	RenderingServerInstanceGeometryMask       RenderingServerInstanceType = 14
 )
 
 type RenderingServerInstanceFlags = classdb.RenderingServerInstanceFlags
 
 const (
-	RenderingServerInstanceFlagUseBakedLight RenderingServerInstanceFlags = 0
-	RenderingServerInstanceFlagUseDynamicGi RenderingServerInstanceFlags = 1
+	RenderingServerInstanceFlagUseBakedLight          RenderingServerInstanceFlags = 0
+	RenderingServerInstanceFlagUseDynamicGi           RenderingServerInstanceFlags = 1
 	RenderingServerInstanceFlagDrawNextFrameIfVisible RenderingServerInstanceFlags = 2
 	RenderingServerInstanceFlagIgnoreOcclusionCulling RenderingServerInstanceFlags = 3
-	RenderingServerInstanceFlagMax RenderingServerInstanceFlags = 4
+	RenderingServerInstanceFlagMax                    RenderingServerInstanceFlags = 4
 )
 
 type RenderingServerShadowCastingSetting = classdb.RenderingServerShadowCastingSetting
 
 const (
-	RenderingServerShadowCastingSettingOff RenderingServerShadowCastingSetting = 0
-	RenderingServerShadowCastingSettingOn RenderingServerShadowCastingSetting = 1
+	RenderingServerShadowCastingSettingOff         RenderingServerShadowCastingSetting = 0
+	RenderingServerShadowCastingSettingOn          RenderingServerShadowCastingSetting = 1
 	RenderingServerShadowCastingSettingDoubleSided RenderingServerShadowCastingSetting = 2
 	RenderingServerShadowCastingSettingShadowsOnly RenderingServerShadowCastingSetting = 3
 )
@@ -5307,8 +5306,8 @@ const (
 type RenderingServerVisibilityRangeFadeMode = classdb.RenderingServerVisibilityRangeFadeMode
 
 const (
-	RenderingServerVisibilityRangeFadeDisabled RenderingServerVisibilityRangeFadeMode = 0
-	RenderingServerVisibilityRangeFadeSelf RenderingServerVisibilityRangeFadeMode = 1
+	RenderingServerVisibilityRangeFadeDisabled     RenderingServerVisibilityRangeFadeMode = 0
+	RenderingServerVisibilityRangeFadeSelf         RenderingServerVisibilityRangeFadeMode = 1
 	RenderingServerVisibilityRangeFadeDependencies RenderingServerVisibilityRangeFadeMode = 2
 )
 
@@ -5316,16 +5315,16 @@ type RenderingServerBakeChannels = classdb.RenderingServerBakeChannels
 
 const (
 	RenderingServerBakeChannelAlbedoAlpha RenderingServerBakeChannels = 0
-	RenderingServerBakeChannelNormal RenderingServerBakeChannels = 1
-	RenderingServerBakeChannelOrm RenderingServerBakeChannels = 2
-	RenderingServerBakeChannelEmission RenderingServerBakeChannels = 3
+	RenderingServerBakeChannelNormal      RenderingServerBakeChannels = 1
+	RenderingServerBakeChannelOrm         RenderingServerBakeChannels = 2
+	RenderingServerBakeChannelEmission    RenderingServerBakeChannels = 3
 )
 
 type RenderingServerCanvasTextureChannel = classdb.RenderingServerCanvasTextureChannel
 
 const (
-	RenderingServerCanvasTextureChannelDiffuse RenderingServerCanvasTextureChannel = 0
-	RenderingServerCanvasTextureChannelNormal RenderingServerCanvasTextureChannel = 1
+	RenderingServerCanvasTextureChannelDiffuse  RenderingServerCanvasTextureChannel = 0
+	RenderingServerCanvasTextureChannelNormal   RenderingServerCanvasTextureChannel = 1
 	RenderingServerCanvasTextureChannelSpecular RenderingServerCanvasTextureChannel = 2
 )
 
@@ -5333,38 +5332,38 @@ type RenderingServerNinePatchAxisMode = classdb.RenderingServerNinePatchAxisMode
 
 const (
 	RenderingServerNinePatchStretch RenderingServerNinePatchAxisMode = 0
-	RenderingServerNinePatchTile RenderingServerNinePatchAxisMode = 1
+	RenderingServerNinePatchTile    RenderingServerNinePatchAxisMode = 1
 	RenderingServerNinePatchTileFit RenderingServerNinePatchAxisMode = 2
 )
 
 type RenderingServerCanvasItemTextureFilter = classdb.RenderingServerCanvasItemTextureFilter
 
 const (
-	RenderingServerCanvasItemTextureFilterDefault RenderingServerCanvasItemTextureFilter = 0
-	RenderingServerCanvasItemTextureFilterNearest RenderingServerCanvasItemTextureFilter = 1
-	RenderingServerCanvasItemTextureFilterLinear RenderingServerCanvasItemTextureFilter = 2
-	RenderingServerCanvasItemTextureFilterNearestWithMipmaps RenderingServerCanvasItemTextureFilter = 3
-	RenderingServerCanvasItemTextureFilterLinearWithMipmaps RenderingServerCanvasItemTextureFilter = 4
+	RenderingServerCanvasItemTextureFilterDefault                       RenderingServerCanvasItemTextureFilter = 0
+	RenderingServerCanvasItemTextureFilterNearest                       RenderingServerCanvasItemTextureFilter = 1
+	RenderingServerCanvasItemTextureFilterLinear                        RenderingServerCanvasItemTextureFilter = 2
+	RenderingServerCanvasItemTextureFilterNearestWithMipmaps            RenderingServerCanvasItemTextureFilter = 3
+	RenderingServerCanvasItemTextureFilterLinearWithMipmaps             RenderingServerCanvasItemTextureFilter = 4
 	RenderingServerCanvasItemTextureFilterNearestWithMipmapsAnisotropic RenderingServerCanvasItemTextureFilter = 5
-	RenderingServerCanvasItemTextureFilterLinearWithMipmapsAnisotropic RenderingServerCanvasItemTextureFilter = 6
-	RenderingServerCanvasItemTextureFilterMax RenderingServerCanvasItemTextureFilter = 7
+	RenderingServerCanvasItemTextureFilterLinearWithMipmapsAnisotropic  RenderingServerCanvasItemTextureFilter = 6
+	RenderingServerCanvasItemTextureFilterMax                           RenderingServerCanvasItemTextureFilter = 7
 )
 
 type RenderingServerCanvasItemTextureRepeat = classdb.RenderingServerCanvasItemTextureRepeat
 
 const (
-	RenderingServerCanvasItemTextureRepeatDefault RenderingServerCanvasItemTextureRepeat = 0
+	RenderingServerCanvasItemTextureRepeatDefault  RenderingServerCanvasItemTextureRepeat = 0
 	RenderingServerCanvasItemTextureRepeatDisabled RenderingServerCanvasItemTextureRepeat = 1
-	RenderingServerCanvasItemTextureRepeatEnabled RenderingServerCanvasItemTextureRepeat = 2
-	RenderingServerCanvasItemTextureRepeatMirror RenderingServerCanvasItemTextureRepeat = 3
-	RenderingServerCanvasItemTextureRepeatMax RenderingServerCanvasItemTextureRepeat = 4
+	RenderingServerCanvasItemTextureRepeatEnabled  RenderingServerCanvasItemTextureRepeat = 2
+	RenderingServerCanvasItemTextureRepeatMirror   RenderingServerCanvasItemTextureRepeat = 3
+	RenderingServerCanvasItemTextureRepeatMax      RenderingServerCanvasItemTextureRepeat = 4
 )
 
 type RenderingServerCanvasGroupMode = classdb.RenderingServerCanvasGroupMode
 
 const (
-	RenderingServerCanvasGroupModeDisabled RenderingServerCanvasGroupMode = 0
-	RenderingServerCanvasGroupModeClipOnly RenderingServerCanvasGroupMode = 1
+	RenderingServerCanvasGroupModeDisabled    RenderingServerCanvasGroupMode = 0
+	RenderingServerCanvasGroupModeClipOnly    RenderingServerCanvasGroupMode = 1
 	RenderingServerCanvasGroupModeClipAndDraw RenderingServerCanvasGroupMode = 2
 	RenderingServerCanvasGroupModeTransparent RenderingServerCanvasGroupMode = 3
 )
@@ -5372,7 +5371,7 @@ const (
 type RenderingServerCanvasLightMode = classdb.RenderingServerCanvasLightMode
 
 const (
-	RenderingServerCanvasLightModePoint RenderingServerCanvasLightMode = 0
+	RenderingServerCanvasLightModePoint       RenderingServerCanvasLightMode = 0
 	RenderingServerCanvasLightModeDirectional RenderingServerCanvasLightMode = 1
 )
 
@@ -5387,77 +5386,77 @@ const (
 type RenderingServerCanvasLightShadowFilter = classdb.RenderingServerCanvasLightShadowFilter
 
 const (
-	RenderingServerCanvasLightFilterNone RenderingServerCanvasLightShadowFilter = 0
-	RenderingServerCanvasLightFilterPcf5 RenderingServerCanvasLightShadowFilter = 1
+	RenderingServerCanvasLightFilterNone  RenderingServerCanvasLightShadowFilter = 0
+	RenderingServerCanvasLightFilterPcf5  RenderingServerCanvasLightShadowFilter = 1
 	RenderingServerCanvasLightFilterPcf13 RenderingServerCanvasLightShadowFilter = 2
-	RenderingServerCanvasLightFilterMax RenderingServerCanvasLightShadowFilter = 3
+	RenderingServerCanvasLightFilterMax   RenderingServerCanvasLightShadowFilter = 3
 )
 
 type RenderingServerCanvasOccluderPolygonCullMode = classdb.RenderingServerCanvasOccluderPolygonCullMode
 
 const (
-	RenderingServerCanvasOccluderPolygonCullDisabled RenderingServerCanvasOccluderPolygonCullMode = 0
-	RenderingServerCanvasOccluderPolygonCullClockwise RenderingServerCanvasOccluderPolygonCullMode = 1
+	RenderingServerCanvasOccluderPolygonCullDisabled         RenderingServerCanvasOccluderPolygonCullMode = 0
+	RenderingServerCanvasOccluderPolygonCullClockwise        RenderingServerCanvasOccluderPolygonCullMode = 1
 	RenderingServerCanvasOccluderPolygonCullCounterClockwise RenderingServerCanvasOccluderPolygonCullMode = 2
 )
 
 type RenderingServerGlobalShaderParameterType = classdb.RenderingServerGlobalShaderParameterType
 
 const (
-	RenderingServerGlobalVarTypeBool RenderingServerGlobalShaderParameterType = 0
-	RenderingServerGlobalVarTypeBvec2 RenderingServerGlobalShaderParameterType = 1
-	RenderingServerGlobalVarTypeBvec3 RenderingServerGlobalShaderParameterType = 2
-	RenderingServerGlobalVarTypeBvec4 RenderingServerGlobalShaderParameterType = 3
-	RenderingServerGlobalVarTypeInt RenderingServerGlobalShaderParameterType = 4
-	RenderingServerGlobalVarTypeIvec2 RenderingServerGlobalShaderParameterType = 5
-	RenderingServerGlobalVarTypeIvec3 RenderingServerGlobalShaderParameterType = 6
-	RenderingServerGlobalVarTypeIvec4 RenderingServerGlobalShaderParameterType = 7
-	RenderingServerGlobalVarTypeRect2i RenderingServerGlobalShaderParameterType = 8
-	RenderingServerGlobalVarTypeUint RenderingServerGlobalShaderParameterType = 9
-	RenderingServerGlobalVarTypeUvec2 RenderingServerGlobalShaderParameterType = 10
-	RenderingServerGlobalVarTypeUvec3 RenderingServerGlobalShaderParameterType = 11
-	RenderingServerGlobalVarTypeUvec4 RenderingServerGlobalShaderParameterType = 12
-	RenderingServerGlobalVarTypeFloat RenderingServerGlobalShaderParameterType = 13
-	RenderingServerGlobalVarTypeVec2 RenderingServerGlobalShaderParameterType = 14
-	RenderingServerGlobalVarTypeVec3 RenderingServerGlobalShaderParameterType = 15
-	RenderingServerGlobalVarTypeVec4 RenderingServerGlobalShaderParameterType = 16
-	RenderingServerGlobalVarTypeColor RenderingServerGlobalShaderParameterType = 17
-	RenderingServerGlobalVarTypeRect2 RenderingServerGlobalShaderParameterType = 18
-	RenderingServerGlobalVarTypeMat2 RenderingServerGlobalShaderParameterType = 19
-	RenderingServerGlobalVarTypeMat3 RenderingServerGlobalShaderParameterType = 20
-	RenderingServerGlobalVarTypeMat4 RenderingServerGlobalShaderParameterType = 21
-	RenderingServerGlobalVarTypeTransform2d RenderingServerGlobalShaderParameterType = 22
-	RenderingServerGlobalVarTypeTransform RenderingServerGlobalShaderParameterType = 23
-	RenderingServerGlobalVarTypeSampler2d RenderingServerGlobalShaderParameterType = 24
+	RenderingServerGlobalVarTypeBool           RenderingServerGlobalShaderParameterType = 0
+	RenderingServerGlobalVarTypeBvec2          RenderingServerGlobalShaderParameterType = 1
+	RenderingServerGlobalVarTypeBvec3          RenderingServerGlobalShaderParameterType = 2
+	RenderingServerGlobalVarTypeBvec4          RenderingServerGlobalShaderParameterType = 3
+	RenderingServerGlobalVarTypeInt            RenderingServerGlobalShaderParameterType = 4
+	RenderingServerGlobalVarTypeIvec2          RenderingServerGlobalShaderParameterType = 5
+	RenderingServerGlobalVarTypeIvec3          RenderingServerGlobalShaderParameterType = 6
+	RenderingServerGlobalVarTypeIvec4          RenderingServerGlobalShaderParameterType = 7
+	RenderingServerGlobalVarTypeRect2i         RenderingServerGlobalShaderParameterType = 8
+	RenderingServerGlobalVarTypeUint           RenderingServerGlobalShaderParameterType = 9
+	RenderingServerGlobalVarTypeUvec2          RenderingServerGlobalShaderParameterType = 10
+	RenderingServerGlobalVarTypeUvec3          RenderingServerGlobalShaderParameterType = 11
+	RenderingServerGlobalVarTypeUvec4          RenderingServerGlobalShaderParameterType = 12
+	RenderingServerGlobalVarTypeFloat          RenderingServerGlobalShaderParameterType = 13
+	RenderingServerGlobalVarTypeVec2           RenderingServerGlobalShaderParameterType = 14
+	RenderingServerGlobalVarTypeVec3           RenderingServerGlobalShaderParameterType = 15
+	RenderingServerGlobalVarTypeVec4           RenderingServerGlobalShaderParameterType = 16
+	RenderingServerGlobalVarTypeColor          RenderingServerGlobalShaderParameterType = 17
+	RenderingServerGlobalVarTypeRect2          RenderingServerGlobalShaderParameterType = 18
+	RenderingServerGlobalVarTypeMat2           RenderingServerGlobalShaderParameterType = 19
+	RenderingServerGlobalVarTypeMat3           RenderingServerGlobalShaderParameterType = 20
+	RenderingServerGlobalVarTypeMat4           RenderingServerGlobalShaderParameterType = 21
+	RenderingServerGlobalVarTypeTransform2d    RenderingServerGlobalShaderParameterType = 22
+	RenderingServerGlobalVarTypeTransform      RenderingServerGlobalShaderParameterType = 23
+	RenderingServerGlobalVarTypeSampler2d      RenderingServerGlobalShaderParameterType = 24
 	RenderingServerGlobalVarTypeSampler2darray RenderingServerGlobalShaderParameterType = 25
-	RenderingServerGlobalVarTypeSampler3d RenderingServerGlobalShaderParameterType = 26
-	RenderingServerGlobalVarTypeSamplercube RenderingServerGlobalShaderParameterType = 27
-	RenderingServerGlobalVarTypeMax RenderingServerGlobalShaderParameterType = 28
+	RenderingServerGlobalVarTypeSampler3d      RenderingServerGlobalShaderParameterType = 26
+	RenderingServerGlobalVarTypeSamplercube    RenderingServerGlobalShaderParameterType = 27
+	RenderingServerGlobalVarTypeMax            RenderingServerGlobalShaderParameterType = 28
 )
 
 type RenderingServerRenderingInfo = classdb.RenderingServerRenderingInfo
 
 const (
-	RenderingServerRenderingInfoTotalObjectsInFrame RenderingServerRenderingInfo = 0
+	RenderingServerRenderingInfoTotalObjectsInFrame    RenderingServerRenderingInfo = 0
 	RenderingServerRenderingInfoTotalPrimitivesInFrame RenderingServerRenderingInfo = 1
-	RenderingServerRenderingInfoTotalDrawCallsInFrame RenderingServerRenderingInfo = 2
-	RenderingServerRenderingInfoTextureMemUsed RenderingServerRenderingInfo = 3
-	RenderingServerRenderingInfoBufferMemUsed RenderingServerRenderingInfo = 4
-	RenderingServerRenderingInfoVideoMemUsed RenderingServerRenderingInfo = 5
+	RenderingServerRenderingInfoTotalDrawCallsInFrame  RenderingServerRenderingInfo = 2
+	RenderingServerRenderingInfoTextureMemUsed         RenderingServerRenderingInfo = 3
+	RenderingServerRenderingInfoBufferMemUsed          RenderingServerRenderingInfo = 4
+	RenderingServerRenderingInfoVideoMemUsed           RenderingServerRenderingInfo = 5
 )
 
 type RenderingServerFeatures = classdb.RenderingServerFeatures
 
 const (
-	RenderingServerFeatureShaders RenderingServerFeatures = 0
+	RenderingServerFeatureShaders       RenderingServerFeatures = 0
 	RenderingServerFeatureMultithreaded RenderingServerFeatures = 1
 )
 
 type ResourceFormatLoaderCacheMode = classdb.ResourceFormatLoaderCacheMode
 
 const (
-	ResourceFormatLoaderCacheModeIgnore ResourceFormatLoaderCacheMode = 0
-	ResourceFormatLoaderCacheModeReuse ResourceFormatLoaderCacheMode = 1
+	ResourceFormatLoaderCacheModeIgnore  ResourceFormatLoaderCacheMode = 0
+	ResourceFormatLoaderCacheModeReuse   ResourceFormatLoaderCacheMode = 1
 	ResourceFormatLoaderCacheModeReplace ResourceFormatLoaderCacheMode = 2
 )
 
@@ -5465,43 +5464,43 @@ type ResourceImporterImportOrder = classdb.ResourceImporterImportOrder
 
 const (
 	ResourceImporterImportOrderDefault ResourceImporterImportOrder = 0
-	ResourceImporterImportOrderScene ResourceImporterImportOrder = 100
+	ResourceImporterImportOrderScene   ResourceImporterImportOrder = 100
 )
 
 type ResourceLoaderThreadLoadStatus = classdb.ResourceLoaderThreadLoadStatus
 
 const (
 	ResourceLoaderThreadLoadInvalidResource ResourceLoaderThreadLoadStatus = 0
-	ResourceLoaderThreadLoadInProgress ResourceLoaderThreadLoadStatus = 1
-	ResourceLoaderThreadLoadFailed ResourceLoaderThreadLoadStatus = 2
-	ResourceLoaderThreadLoadLoaded ResourceLoaderThreadLoadStatus = 3
+	ResourceLoaderThreadLoadInProgress      ResourceLoaderThreadLoadStatus = 1
+	ResourceLoaderThreadLoadFailed          ResourceLoaderThreadLoadStatus = 2
+	ResourceLoaderThreadLoadLoaded          ResourceLoaderThreadLoadStatus = 3
 )
 
 type ResourceLoaderCacheMode = classdb.ResourceLoaderCacheMode
 
 const (
-	ResourceLoaderCacheModeIgnore ResourceLoaderCacheMode = 0
-	ResourceLoaderCacheModeReuse ResourceLoaderCacheMode = 1
+	ResourceLoaderCacheModeIgnore  ResourceLoaderCacheMode = 0
+	ResourceLoaderCacheModeReuse   ResourceLoaderCacheMode = 1
 	ResourceLoaderCacheModeReplace ResourceLoaderCacheMode = 2
 )
 
 type ResourceSaverSaverFlags = classdb.ResourceSaverSaverFlags
 
 const (
-	ResourceSaverFlagNone ResourceSaverSaverFlags = 0
-	ResourceSaverFlagRelativePaths ResourceSaverSaverFlags = 1
-	ResourceSaverFlagBundleResources ResourceSaverSaverFlags = 2
-	ResourceSaverFlagChangePath ResourceSaverSaverFlags = 4
-	ResourceSaverFlagOmitEditorProperties ResourceSaverSaverFlags = 8
-	ResourceSaverFlagSaveBigEndian ResourceSaverSaverFlags = 16
-	ResourceSaverFlagCompress ResourceSaverSaverFlags = 32
+	ResourceSaverFlagNone                    ResourceSaverSaverFlags = 0
+	ResourceSaverFlagRelativePaths           ResourceSaverSaverFlags = 1
+	ResourceSaverFlagBundleResources         ResourceSaverSaverFlags = 2
+	ResourceSaverFlagChangePath              ResourceSaverSaverFlags = 4
+	ResourceSaverFlagOmitEditorProperties    ResourceSaverSaverFlags = 8
+	ResourceSaverFlagSaveBigEndian           ResourceSaverSaverFlags = 16
+	ResourceSaverFlagCompress                ResourceSaverSaverFlags = 32
 	ResourceSaverFlagReplaceSubresourcePaths ResourceSaverSaverFlags = 64
 )
 
 type RibbonTrailMeshShape = classdb.RibbonTrailMeshShape
 
 const (
-	RibbonTrailMeshShapeFlat RibbonTrailMeshShape = 0
+	RibbonTrailMeshShapeFlat  RibbonTrailMeshShape = 0
 	RibbonTrailMeshShapeCross RibbonTrailMeshShape = 1
 )
 
@@ -5510,42 +5509,42 @@ type RichTextLabelListType = classdb.RichTextLabelListType
 const (
 	RichTextLabelListNumbers RichTextLabelListType = 0
 	RichTextLabelListLetters RichTextLabelListType = 1
-	RichTextLabelListRoman RichTextLabelListType = 2
-	RichTextLabelListDots RichTextLabelListType = 3
+	RichTextLabelListRoman   RichTextLabelListType = 2
+	RichTextLabelListDots    RichTextLabelListType = 3
 )
 
 type RichTextLabelMenuItems = classdb.RichTextLabelMenuItems
 
 const (
-	RichTextLabelMenuCopy RichTextLabelMenuItems = 0
+	RichTextLabelMenuCopy      RichTextLabelMenuItems = 0
 	RichTextLabelMenuSelectAll RichTextLabelMenuItems = 1
-	RichTextLabelMenuMax RichTextLabelMenuItems = 2
+	RichTextLabelMenuMax       RichTextLabelMenuItems = 2
 )
 
 type RichTextLabelImageUpdateMask = classdb.RichTextLabelImageUpdateMask
 
 const (
-	RichTextLabelUpdateTexture RichTextLabelImageUpdateMask = 1
-	RichTextLabelUpdateSize RichTextLabelImageUpdateMask = 2
-	RichTextLabelUpdateColor RichTextLabelImageUpdateMask = 4
-	RichTextLabelUpdateAlignment RichTextLabelImageUpdateMask = 8
-	RichTextLabelUpdateRegion RichTextLabelImageUpdateMask = 16
-	RichTextLabelUpdatePad RichTextLabelImageUpdateMask = 32
-	RichTextLabelUpdateTooltip RichTextLabelImageUpdateMask = 64
+	RichTextLabelUpdateTexture        RichTextLabelImageUpdateMask = 1
+	RichTextLabelUpdateSize           RichTextLabelImageUpdateMask = 2
+	RichTextLabelUpdateColor          RichTextLabelImageUpdateMask = 4
+	RichTextLabelUpdateAlignment      RichTextLabelImageUpdateMask = 8
+	RichTextLabelUpdateRegion         RichTextLabelImageUpdateMask = 16
+	RichTextLabelUpdatePad            RichTextLabelImageUpdateMask = 32
+	RichTextLabelUpdateTooltip        RichTextLabelImageUpdateMask = 64
 	RichTextLabelUpdateWidthInPercent RichTextLabelImageUpdateMask = 128
 )
 
 type RigidBody2DFreezeMode = classdb.RigidBody2DFreezeMode
 
 const (
-	RigidBody2DFreezeModeStatic RigidBody2DFreezeMode = 0
+	RigidBody2DFreezeModeStatic    RigidBody2DFreezeMode = 0
 	RigidBody2DFreezeModeKinematic RigidBody2DFreezeMode = 1
 )
 
 type RigidBody2DCenterOfMassMode = classdb.RigidBody2DCenterOfMassMode
 
 const (
-	RigidBody2DCenterOfMassModeAuto RigidBody2DCenterOfMassMode = 0
+	RigidBody2DCenterOfMassModeAuto   RigidBody2DCenterOfMassMode = 0
 	RigidBody2DCenterOfMassModeCustom RigidBody2DCenterOfMassMode = 1
 )
 
@@ -5559,22 +5558,22 @@ const (
 type RigidBody2DCCDMode = classdb.RigidBody2DCCDMode
 
 const (
-	RigidBody2DCcdModeDisabled RigidBody2DCCDMode = 0
-	RigidBody2DCcdModeCastRay RigidBody2DCCDMode = 1
+	RigidBody2DCcdModeDisabled  RigidBody2DCCDMode = 0
+	RigidBody2DCcdModeCastRay   RigidBody2DCCDMode = 1
 	RigidBody2DCcdModeCastShape RigidBody2DCCDMode = 2
 )
 
 type RigidBody3DFreezeMode = classdb.RigidBody3DFreezeMode
 
 const (
-	RigidBody3DFreezeModeStatic RigidBody3DFreezeMode = 0
+	RigidBody3DFreezeModeStatic    RigidBody3DFreezeMode = 0
 	RigidBody3DFreezeModeKinematic RigidBody3DFreezeMode = 1
 )
 
 type RigidBody3DCenterOfMassMode = classdb.RigidBody3DCenterOfMassMode
 
 const (
-	RigidBody3DCenterOfMassModeAuto RigidBody3DCenterOfMassMode = 0
+	RigidBody3DCenterOfMassModeAuto   RigidBody3DCenterOfMassMode = 0
 	RigidBody3DCenterOfMassModeCustom RigidBody3DCenterOfMassMode = 1
 )
 
@@ -5588,197 +5587,197 @@ const (
 type SceneReplicationConfigReplicationMode = classdb.SceneReplicationConfigReplicationMode
 
 const (
-	SceneReplicationConfigReplicationModeNever SceneReplicationConfigReplicationMode = 0
-	SceneReplicationConfigReplicationModeAlways SceneReplicationConfigReplicationMode = 1
+	SceneReplicationConfigReplicationModeNever    SceneReplicationConfigReplicationMode = 0
+	SceneReplicationConfigReplicationModeAlways   SceneReplicationConfigReplicationMode = 1
 	SceneReplicationConfigReplicationModeOnChange SceneReplicationConfigReplicationMode = 2
 )
 
 type SceneStateGenEditState = classdb.SceneStateGenEditState
 
 const (
-	SceneStateGenEditStateDisabled SceneStateGenEditState = 0
-	SceneStateGenEditStateInstance SceneStateGenEditState = 1
-	SceneStateGenEditStateMain SceneStateGenEditState = 2
+	SceneStateGenEditStateDisabled      SceneStateGenEditState = 0
+	SceneStateGenEditStateInstance      SceneStateGenEditState = 1
+	SceneStateGenEditStateMain          SceneStateGenEditState = 2
 	SceneStateGenEditStateMainInherited SceneStateGenEditState = 3
 )
 
 type SceneTreeGroupCallFlags = classdb.SceneTreeGroupCallFlags
 
 const (
-	SceneTreeGroupCallDefault SceneTreeGroupCallFlags = 0
-	SceneTreeGroupCallReverse SceneTreeGroupCallFlags = 1
+	SceneTreeGroupCallDefault  SceneTreeGroupCallFlags = 0
+	SceneTreeGroupCallReverse  SceneTreeGroupCallFlags = 1
 	SceneTreeGroupCallDeferred SceneTreeGroupCallFlags = 2
-	SceneTreeGroupCallUnique SceneTreeGroupCallFlags = 4
+	SceneTreeGroupCallUnique   SceneTreeGroupCallFlags = 4
 )
 
 type ScriptLanguageExtensionLookupResultType = classdb.ScriptLanguageExtensionLookupResultType
 
 const (
-	ScriptLanguageExtensionLookupResultScriptLocation ScriptLanguageExtensionLookupResultType = 0
-	ScriptLanguageExtensionLookupResultClass ScriptLanguageExtensionLookupResultType = 1
-	ScriptLanguageExtensionLookupResultClassConstant ScriptLanguageExtensionLookupResultType = 2
-	ScriptLanguageExtensionLookupResultClassProperty ScriptLanguageExtensionLookupResultType = 3
-	ScriptLanguageExtensionLookupResultClassMethod ScriptLanguageExtensionLookupResultType = 4
-	ScriptLanguageExtensionLookupResultClassSignal ScriptLanguageExtensionLookupResultType = 5
-	ScriptLanguageExtensionLookupResultClassEnum ScriptLanguageExtensionLookupResultType = 6
+	ScriptLanguageExtensionLookupResultScriptLocation      ScriptLanguageExtensionLookupResultType = 0
+	ScriptLanguageExtensionLookupResultClass               ScriptLanguageExtensionLookupResultType = 1
+	ScriptLanguageExtensionLookupResultClassConstant       ScriptLanguageExtensionLookupResultType = 2
+	ScriptLanguageExtensionLookupResultClassProperty       ScriptLanguageExtensionLookupResultType = 3
+	ScriptLanguageExtensionLookupResultClassMethod         ScriptLanguageExtensionLookupResultType = 4
+	ScriptLanguageExtensionLookupResultClassSignal         ScriptLanguageExtensionLookupResultType = 5
+	ScriptLanguageExtensionLookupResultClassEnum           ScriptLanguageExtensionLookupResultType = 6
 	ScriptLanguageExtensionLookupResultClassTbdGlobalscope ScriptLanguageExtensionLookupResultType = 7
-	ScriptLanguageExtensionLookupResultClassAnnotation ScriptLanguageExtensionLookupResultType = 8
-	ScriptLanguageExtensionLookupResultMax ScriptLanguageExtensionLookupResultType = 9
+	ScriptLanguageExtensionLookupResultClassAnnotation     ScriptLanguageExtensionLookupResultType = 8
+	ScriptLanguageExtensionLookupResultMax                 ScriptLanguageExtensionLookupResultType = 9
 )
 
 type ScriptLanguageExtensionCodeCompletionLocation = classdb.ScriptLanguageExtensionCodeCompletionLocation
 
 const (
-	ScriptLanguageExtensionLocationLocal ScriptLanguageExtensionCodeCompletionLocation = 0
-	ScriptLanguageExtensionLocationParentMask ScriptLanguageExtensionCodeCompletionLocation = 256
+	ScriptLanguageExtensionLocationLocal         ScriptLanguageExtensionCodeCompletionLocation = 0
+	ScriptLanguageExtensionLocationParentMask    ScriptLanguageExtensionCodeCompletionLocation = 256
 	ScriptLanguageExtensionLocationOtherUserCode ScriptLanguageExtensionCodeCompletionLocation = 512
-	ScriptLanguageExtensionLocationOther ScriptLanguageExtensionCodeCompletionLocation = 1024
+	ScriptLanguageExtensionLocationOther         ScriptLanguageExtensionCodeCompletionLocation = 1024
 )
 
 type ScriptLanguageExtensionCodeCompletionKind = classdb.ScriptLanguageExtensionCodeCompletionKind
 
 const (
-	ScriptLanguageExtensionCodeCompletionKindClass ScriptLanguageExtensionCodeCompletionKind = 0
-	ScriptLanguageExtensionCodeCompletionKindFunction ScriptLanguageExtensionCodeCompletionKind = 1
-	ScriptLanguageExtensionCodeCompletionKindSignal ScriptLanguageExtensionCodeCompletionKind = 2
-	ScriptLanguageExtensionCodeCompletionKindVariable ScriptLanguageExtensionCodeCompletionKind = 3
-	ScriptLanguageExtensionCodeCompletionKindMember ScriptLanguageExtensionCodeCompletionKind = 4
-	ScriptLanguageExtensionCodeCompletionKindEnum ScriptLanguageExtensionCodeCompletionKind = 5
-	ScriptLanguageExtensionCodeCompletionKindConstant ScriptLanguageExtensionCodeCompletionKind = 6
-	ScriptLanguageExtensionCodeCompletionKindNodePath ScriptLanguageExtensionCodeCompletionKind = 7
-	ScriptLanguageExtensionCodeCompletionKindFilePath ScriptLanguageExtensionCodeCompletionKind = 8
+	ScriptLanguageExtensionCodeCompletionKindClass     ScriptLanguageExtensionCodeCompletionKind = 0
+	ScriptLanguageExtensionCodeCompletionKindFunction  ScriptLanguageExtensionCodeCompletionKind = 1
+	ScriptLanguageExtensionCodeCompletionKindSignal    ScriptLanguageExtensionCodeCompletionKind = 2
+	ScriptLanguageExtensionCodeCompletionKindVariable  ScriptLanguageExtensionCodeCompletionKind = 3
+	ScriptLanguageExtensionCodeCompletionKindMember    ScriptLanguageExtensionCodeCompletionKind = 4
+	ScriptLanguageExtensionCodeCompletionKindEnum      ScriptLanguageExtensionCodeCompletionKind = 5
+	ScriptLanguageExtensionCodeCompletionKindConstant  ScriptLanguageExtensionCodeCompletionKind = 6
+	ScriptLanguageExtensionCodeCompletionKindNodePath  ScriptLanguageExtensionCodeCompletionKind = 7
+	ScriptLanguageExtensionCodeCompletionKindFilePath  ScriptLanguageExtensionCodeCompletionKind = 8
 	ScriptLanguageExtensionCodeCompletionKindPlainText ScriptLanguageExtensionCodeCompletionKind = 9
-	ScriptLanguageExtensionCodeCompletionKindMax ScriptLanguageExtensionCodeCompletionKind = 10
+	ScriptLanguageExtensionCodeCompletionKindMax       ScriptLanguageExtensionCodeCompletionKind = 10
 )
 
 type ScrollContainerScrollMode = classdb.ScrollContainerScrollMode
 
 const (
-	ScrollContainerScrollModeDisabled ScrollContainerScrollMode = 0
-	ScrollContainerScrollModeAuto ScrollContainerScrollMode = 1
+	ScrollContainerScrollModeDisabled   ScrollContainerScrollMode = 0
+	ScrollContainerScrollModeAuto       ScrollContainerScrollMode = 1
 	ScrollContainerScrollModeShowAlways ScrollContainerScrollMode = 2
-	ScrollContainerScrollModeShowNever ScrollContainerScrollMode = 3
+	ScrollContainerScrollModeShowNever  ScrollContainerScrollMode = 3
 )
 
 type ShaderMode = classdb.ShaderMode
 
 const (
-	ShaderModeSpatial ShaderMode = 0
+	ShaderModeSpatial    ShaderMode = 0
 	ShaderModeCanvasItem ShaderMode = 1
-	ShaderModeParticles ShaderMode = 2
-	ShaderModeSky ShaderMode = 3
-	ShaderModeFog ShaderMode = 4
+	ShaderModeParticles  ShaderMode = 2
+	ShaderModeSky        ShaderMode = 3
+	ShaderModeFog        ShaderMode = 4
 )
 
 type SkeletonProfileTailDirection = classdb.SkeletonProfileTailDirection
 
 const (
 	SkeletonProfileTailDirectionAverageChildren SkeletonProfileTailDirection = 0
-	SkeletonProfileTailDirectionSpecificChild SkeletonProfileTailDirection = 1
-	SkeletonProfileTailDirectionEnd SkeletonProfileTailDirection = 2
+	SkeletonProfileTailDirectionSpecificChild   SkeletonProfileTailDirection = 1
+	SkeletonProfileTailDirectionEnd             SkeletonProfileTailDirection = 2
 )
 
 type SkyRadianceSize = classdb.SkyRadianceSize
 
 const (
-	SkyRadianceSize32 SkyRadianceSize = 0
-	SkyRadianceSize64 SkyRadianceSize = 1
-	SkyRadianceSize128 SkyRadianceSize = 2
-	SkyRadianceSize256 SkyRadianceSize = 3
-	SkyRadianceSize512 SkyRadianceSize = 4
+	SkyRadianceSize32   SkyRadianceSize = 0
+	SkyRadianceSize64   SkyRadianceSize = 1
+	SkyRadianceSize128  SkyRadianceSize = 2
+	SkyRadianceSize256  SkyRadianceSize = 3
+	SkyRadianceSize512  SkyRadianceSize = 4
 	SkyRadianceSize1024 SkyRadianceSize = 5
 	SkyRadianceSize2048 SkyRadianceSize = 6
-	SkyRadianceSizeMax SkyRadianceSize = 7
+	SkyRadianceSizeMax  SkyRadianceSize = 7
 )
 
 type SkyProcessMode = classdb.SkyProcessMode
 
 const (
-	SkyProcessModeAutomatic SkyProcessMode = 0
-	SkyProcessModeQuality SkyProcessMode = 1
+	SkyProcessModeAutomatic   SkyProcessMode = 0
+	SkyProcessModeQuality     SkyProcessMode = 1
 	SkyProcessModeIncremental SkyProcessMode = 2
-	SkyProcessModeRealtime SkyProcessMode = 3
+	SkyProcessModeRealtime    SkyProcessMode = 3
 )
 
 type SliderJoint3DParam = classdb.SliderJoint3DParam
 
 const (
-	SliderJoint3DParamLinearLimitUpper SliderJoint3DParam = 0
-	SliderJoint3DParamLinearLimitLower SliderJoint3DParam = 1
-	SliderJoint3DParamLinearLimitSoftness SliderJoint3DParam = 2
-	SliderJoint3DParamLinearLimitRestitution SliderJoint3DParam = 3
-	SliderJoint3DParamLinearLimitDamping SliderJoint3DParam = 4
-	SliderJoint3DParamLinearMotionSoftness SliderJoint3DParam = 5
-	SliderJoint3DParamLinearMotionRestitution SliderJoint3DParam = 6
-	SliderJoint3DParamLinearMotionDamping SliderJoint3DParam = 7
-	SliderJoint3DParamLinearOrthogonalSoftness SliderJoint3DParam = 8
-	SliderJoint3DParamLinearOrthogonalRestitution SliderJoint3DParam = 9
-	SliderJoint3DParamLinearOrthogonalDamping SliderJoint3DParam = 10
-	SliderJoint3DParamAngularLimitUpper SliderJoint3DParam = 11
-	SliderJoint3DParamAngularLimitLower SliderJoint3DParam = 12
-	SliderJoint3DParamAngularLimitSoftness SliderJoint3DParam = 13
-	SliderJoint3DParamAngularLimitRestitution SliderJoint3DParam = 14
-	SliderJoint3DParamAngularLimitDamping SliderJoint3DParam = 15
-	SliderJoint3DParamAngularMotionSoftness SliderJoint3DParam = 16
-	SliderJoint3DParamAngularMotionRestitution SliderJoint3DParam = 17
-	SliderJoint3DParamAngularMotionDamping SliderJoint3DParam = 18
-	SliderJoint3DParamAngularOrthogonalSoftness SliderJoint3DParam = 19
+	SliderJoint3DParamLinearLimitUpper             SliderJoint3DParam = 0
+	SliderJoint3DParamLinearLimitLower             SliderJoint3DParam = 1
+	SliderJoint3DParamLinearLimitSoftness          SliderJoint3DParam = 2
+	SliderJoint3DParamLinearLimitRestitution       SliderJoint3DParam = 3
+	SliderJoint3DParamLinearLimitDamping           SliderJoint3DParam = 4
+	SliderJoint3DParamLinearMotionSoftness         SliderJoint3DParam = 5
+	SliderJoint3DParamLinearMotionRestitution      SliderJoint3DParam = 6
+	SliderJoint3DParamLinearMotionDamping          SliderJoint3DParam = 7
+	SliderJoint3DParamLinearOrthogonalSoftness     SliderJoint3DParam = 8
+	SliderJoint3DParamLinearOrthogonalRestitution  SliderJoint3DParam = 9
+	SliderJoint3DParamLinearOrthogonalDamping      SliderJoint3DParam = 10
+	SliderJoint3DParamAngularLimitUpper            SliderJoint3DParam = 11
+	SliderJoint3DParamAngularLimitLower            SliderJoint3DParam = 12
+	SliderJoint3DParamAngularLimitSoftness         SliderJoint3DParam = 13
+	SliderJoint3DParamAngularLimitRestitution      SliderJoint3DParam = 14
+	SliderJoint3DParamAngularLimitDamping          SliderJoint3DParam = 15
+	SliderJoint3DParamAngularMotionSoftness        SliderJoint3DParam = 16
+	SliderJoint3DParamAngularMotionRestitution     SliderJoint3DParam = 17
+	SliderJoint3DParamAngularMotionDamping         SliderJoint3DParam = 18
+	SliderJoint3DParamAngularOrthogonalSoftness    SliderJoint3DParam = 19
 	SliderJoint3DParamAngularOrthogonalRestitution SliderJoint3DParam = 20
-	SliderJoint3DParamAngularOrthogonalDamping SliderJoint3DParam = 21
-	SliderJoint3DParamMax SliderJoint3DParam = 22
+	SliderJoint3DParamAngularOrthogonalDamping     SliderJoint3DParam = 21
+	SliderJoint3DParamMax                          SliderJoint3DParam = 22
 )
 
 type SoftBody3DDisableMode = classdb.SoftBody3DDisableMode
 
 const (
-	SoftBody3DDisableModeRemove SoftBody3DDisableMode = 0
+	SoftBody3DDisableModeRemove     SoftBody3DDisableMode = 0
 	SoftBody3DDisableModeKeepActive SoftBody3DDisableMode = 1
 )
 
 type SplitContainerDraggerVisibility = classdb.SplitContainerDraggerVisibility
 
 const (
-	SplitContainerDraggerVisible SplitContainerDraggerVisibility = 0
-	SplitContainerDraggerHidden SplitContainerDraggerVisibility = 1
+	SplitContainerDraggerVisible         SplitContainerDraggerVisibility = 0
+	SplitContainerDraggerHidden          SplitContainerDraggerVisibility = 1
 	SplitContainerDraggerHiddenCollapsed SplitContainerDraggerVisibility = 2
 )
 
 type SpriteBase3DDrawFlags = classdb.SpriteBase3DDrawFlags
 
 const (
-	SpriteBase3DFlagTransparent SpriteBase3DDrawFlags = 0
-	SpriteBase3DFlagShaded SpriteBase3DDrawFlags = 1
-	SpriteBase3DFlagDoubleSided SpriteBase3DDrawFlags = 2
+	SpriteBase3DFlagTransparent      SpriteBase3DDrawFlags = 0
+	SpriteBase3DFlagShaded           SpriteBase3DDrawFlags = 1
+	SpriteBase3DFlagDoubleSided      SpriteBase3DDrawFlags = 2
 	SpriteBase3DFlagDisableDepthTest SpriteBase3DDrawFlags = 3
-	SpriteBase3DFlagFixedSize SpriteBase3DDrawFlags = 4
-	SpriteBase3DFlagMax SpriteBase3DDrawFlags = 5
+	SpriteBase3DFlagFixedSize        SpriteBase3DDrawFlags = 4
+	SpriteBase3DFlagMax              SpriteBase3DDrawFlags = 5
 )
 
 type SpriteBase3DAlphaCutMode = classdb.SpriteBase3DAlphaCutMode
 
 const (
-	SpriteBase3DAlphaCutDisabled SpriteBase3DAlphaCutMode = 0
-	SpriteBase3DAlphaCutDiscard SpriteBase3DAlphaCutMode = 1
+	SpriteBase3DAlphaCutDisabled      SpriteBase3DAlphaCutMode = 0
+	SpriteBase3DAlphaCutDiscard       SpriteBase3DAlphaCutMode = 1
 	SpriteBase3DAlphaCutOpaquePrepass SpriteBase3DAlphaCutMode = 2
-	SpriteBase3DAlphaCutHash SpriteBase3DAlphaCutMode = 3
+	SpriteBase3DAlphaCutHash          SpriteBase3DAlphaCutMode = 3
 )
 
 type StreamPeerTCPStatus = classdb.StreamPeerTCPStatus
 
 const (
-	StreamPeerTCPStatusNone StreamPeerTCPStatus = 0
+	StreamPeerTCPStatusNone       StreamPeerTCPStatus = 0
 	StreamPeerTCPStatusConnecting StreamPeerTCPStatus = 1
-	StreamPeerTCPStatusConnected StreamPeerTCPStatus = 2
-	StreamPeerTCPStatusError StreamPeerTCPStatus = 3
+	StreamPeerTCPStatusConnected  StreamPeerTCPStatus = 2
+	StreamPeerTCPStatusError      StreamPeerTCPStatus = 3
 )
 
 type StreamPeerTLSStatus = classdb.StreamPeerTLSStatus
 
 const (
-	StreamPeerTLSStatusDisconnected StreamPeerTLSStatus = 0
-	StreamPeerTLSStatusHandshaking StreamPeerTLSStatus = 1
-	StreamPeerTLSStatusConnected StreamPeerTLSStatus = 2
-	StreamPeerTLSStatusError StreamPeerTLSStatus = 3
+	StreamPeerTLSStatusDisconnected          StreamPeerTLSStatus = 0
+	StreamPeerTLSStatusHandshaking           StreamPeerTLSStatus = 1
+	StreamPeerTLSStatusConnected             StreamPeerTLSStatus = 2
+	StreamPeerTLSStatusError                 StreamPeerTLSStatus = 3
 	StreamPeerTLSStatusErrorHostnameMismatch StreamPeerTLSStatus = 4
 )
 
@@ -5786,7 +5785,7 @@ type StyleBoxTextureAxisStretchMode = classdb.StyleBoxTextureAxisStretchMode
 
 const (
 	StyleBoxTextureAxisStretchModeStretch StyleBoxTextureAxisStretchMode = 0
-	StyleBoxTextureAxisStretchModeTile StyleBoxTextureAxisStretchMode = 1
+	StyleBoxTextureAxisStretchModeTile    StyleBoxTextureAxisStretchMode = 1
 	StyleBoxTextureAxisStretchModeTileFit StyleBoxTextureAxisStretchMode = 2
 )
 
@@ -5794,18 +5793,18 @@ type SubViewportClearMode = classdb.SubViewportClearMode
 
 const (
 	SubViewportClearModeAlways SubViewportClearMode = 0
-	SubViewportClearModeNever SubViewportClearMode = 1
-	SubViewportClearModeOnce SubViewportClearMode = 2
+	SubViewportClearModeNever  SubViewportClearMode = 1
+	SubViewportClearModeOnce   SubViewportClearMode = 2
 )
 
 type SubViewportUpdateMode = classdb.SubViewportUpdateMode
 
 const (
-	SubViewportUpdateDisabled SubViewportUpdateMode = 0
-	SubViewportUpdateOnce SubViewportUpdateMode = 1
-	SubViewportUpdateWhenVisible SubViewportUpdateMode = 2
+	SubViewportUpdateDisabled          SubViewportUpdateMode = 0
+	SubViewportUpdateOnce              SubViewportUpdateMode = 1
+	SubViewportUpdateWhenVisible       SubViewportUpdateMode = 2
 	SubViewportUpdateWhenParentVisible SubViewportUpdateMode = 3
-	SubViewportUpdateAlways SubViewportUpdateMode = 4
+	SubViewportUpdateAlways            SubViewportUpdateMode = 4
 )
 
 type SurfaceToolCustomFormat = classdb.SurfaceToolCustomFormat
@@ -5813,13 +5812,13 @@ type SurfaceToolCustomFormat = classdb.SurfaceToolCustomFormat
 const (
 	SurfaceToolCustomRgba8Unorm SurfaceToolCustomFormat = 0
 	SurfaceToolCustomRgba8Snorm SurfaceToolCustomFormat = 1
-	SurfaceToolCustomRgHalf SurfaceToolCustomFormat = 2
-	SurfaceToolCustomRgbaHalf SurfaceToolCustomFormat = 3
-	SurfaceToolCustomRFloat SurfaceToolCustomFormat = 4
-	SurfaceToolCustomRgFloat SurfaceToolCustomFormat = 5
-	SurfaceToolCustomRgbFloat SurfaceToolCustomFormat = 6
-	SurfaceToolCustomRgbaFloat SurfaceToolCustomFormat = 7
-	SurfaceToolCustomMax SurfaceToolCustomFormat = 8
+	SurfaceToolCustomRgHalf     SurfaceToolCustomFormat = 2
+	SurfaceToolCustomRgbaHalf   SurfaceToolCustomFormat = 3
+	SurfaceToolCustomRFloat     SurfaceToolCustomFormat = 4
+	SurfaceToolCustomRgFloat    SurfaceToolCustomFormat = 5
+	SurfaceToolCustomRgbFloat   SurfaceToolCustomFormat = 6
+	SurfaceToolCustomRgbaFloat  SurfaceToolCustomFormat = 7
+	SurfaceToolCustomMax        SurfaceToolCustomFormat = 8
 )
 
 type SurfaceToolSkinWeightCount = classdb.SurfaceToolSkinWeightCount
@@ -5832,95 +5831,95 @@ const (
 type TabBarAlignmentMode = classdb.TabBarAlignmentMode
 
 const (
-	TabBarAlignmentLeft TabBarAlignmentMode = 0
+	TabBarAlignmentLeft   TabBarAlignmentMode = 0
 	TabBarAlignmentCenter TabBarAlignmentMode = 1
-	TabBarAlignmentRight TabBarAlignmentMode = 2
-	TabBarAlignmentMax TabBarAlignmentMode = 3
+	TabBarAlignmentRight  TabBarAlignmentMode = 2
+	TabBarAlignmentMax    TabBarAlignmentMode = 3
 )
 
 type TabBarCloseButtonDisplayPolicy = classdb.TabBarCloseButtonDisplayPolicy
 
 const (
-	TabBarCloseButtonShowNever TabBarCloseButtonDisplayPolicy = 0
+	TabBarCloseButtonShowNever      TabBarCloseButtonDisplayPolicy = 0
 	TabBarCloseButtonShowActiveOnly TabBarCloseButtonDisplayPolicy = 1
-	TabBarCloseButtonShowAlways TabBarCloseButtonDisplayPolicy = 2
-	TabBarCloseButtonMax TabBarCloseButtonDisplayPolicy = 3
+	TabBarCloseButtonShowAlways     TabBarCloseButtonDisplayPolicy = 2
+	TabBarCloseButtonMax            TabBarCloseButtonDisplayPolicy = 3
 )
 
 type TextEditMenuItems = classdb.TextEditMenuItems
 
 const (
-	TextEditMenuCut TextEditMenuItems = 0
-	TextEditMenuCopy TextEditMenuItems = 1
-	TextEditMenuPaste TextEditMenuItems = 2
-	TextEditMenuClear TextEditMenuItems = 3
-	TextEditMenuSelectAll TextEditMenuItems = 4
-	TextEditMenuUndo TextEditMenuItems = 5
-	TextEditMenuRedo TextEditMenuItems = 6
-	TextEditMenuSubmenuTextDir TextEditMenuItems = 7
-	TextEditMenuDirInherited TextEditMenuItems = 8
-	TextEditMenuDirAuto TextEditMenuItems = 9
-	TextEditMenuDirLtr TextEditMenuItems = 10
-	TextEditMenuDirRtl TextEditMenuItems = 11
-	TextEditMenuDisplayUcc TextEditMenuItems = 12
+	TextEditMenuCut              TextEditMenuItems = 0
+	TextEditMenuCopy             TextEditMenuItems = 1
+	TextEditMenuPaste            TextEditMenuItems = 2
+	TextEditMenuClear            TextEditMenuItems = 3
+	TextEditMenuSelectAll        TextEditMenuItems = 4
+	TextEditMenuUndo             TextEditMenuItems = 5
+	TextEditMenuRedo             TextEditMenuItems = 6
+	TextEditMenuSubmenuTextDir   TextEditMenuItems = 7
+	TextEditMenuDirInherited     TextEditMenuItems = 8
+	TextEditMenuDirAuto          TextEditMenuItems = 9
+	TextEditMenuDirLtr           TextEditMenuItems = 10
+	TextEditMenuDirRtl           TextEditMenuItems = 11
+	TextEditMenuDisplayUcc       TextEditMenuItems = 12
 	TextEditMenuSubmenuInsertUcc TextEditMenuItems = 13
-	TextEditMenuInsertLrm TextEditMenuItems = 14
-	TextEditMenuInsertRlm TextEditMenuItems = 15
-	TextEditMenuInsertLre TextEditMenuItems = 16
-	TextEditMenuInsertRle TextEditMenuItems = 17
-	TextEditMenuInsertLro TextEditMenuItems = 18
-	TextEditMenuInsertRlo TextEditMenuItems = 19
-	TextEditMenuInsertPdf TextEditMenuItems = 20
-	TextEditMenuInsertAlm TextEditMenuItems = 21
-	TextEditMenuInsertLri TextEditMenuItems = 22
-	TextEditMenuInsertRli TextEditMenuItems = 23
-	TextEditMenuInsertFsi TextEditMenuItems = 24
-	TextEditMenuInsertPdi TextEditMenuItems = 25
-	TextEditMenuInsertZwj TextEditMenuItems = 26
-	TextEditMenuInsertZwnj TextEditMenuItems = 27
-	TextEditMenuInsertWj TextEditMenuItems = 28
-	TextEditMenuInsertShy TextEditMenuItems = 29
-	TextEditMenuMax TextEditMenuItems = 30
+	TextEditMenuInsertLrm        TextEditMenuItems = 14
+	TextEditMenuInsertRlm        TextEditMenuItems = 15
+	TextEditMenuInsertLre        TextEditMenuItems = 16
+	TextEditMenuInsertRle        TextEditMenuItems = 17
+	TextEditMenuInsertLro        TextEditMenuItems = 18
+	TextEditMenuInsertRlo        TextEditMenuItems = 19
+	TextEditMenuInsertPdf        TextEditMenuItems = 20
+	TextEditMenuInsertAlm        TextEditMenuItems = 21
+	TextEditMenuInsertLri        TextEditMenuItems = 22
+	TextEditMenuInsertRli        TextEditMenuItems = 23
+	TextEditMenuInsertFsi        TextEditMenuItems = 24
+	TextEditMenuInsertPdi        TextEditMenuItems = 25
+	TextEditMenuInsertZwj        TextEditMenuItems = 26
+	TextEditMenuInsertZwnj       TextEditMenuItems = 27
+	TextEditMenuInsertWj         TextEditMenuItems = 28
+	TextEditMenuInsertShy        TextEditMenuItems = 29
+	TextEditMenuMax              TextEditMenuItems = 30
 )
 
 type TextEditEditAction = classdb.TextEditEditAction
 
 const (
-	TextEditActionNone TextEditEditAction = 0
-	TextEditActionTyping TextEditEditAction = 1
+	TextEditActionNone      TextEditEditAction = 0
+	TextEditActionTyping    TextEditEditAction = 1
 	TextEditActionBackspace TextEditEditAction = 2
-	TextEditActionDelete TextEditEditAction = 3
+	TextEditActionDelete    TextEditEditAction = 3
 )
 
 type TextEditSearchFlags = classdb.TextEditSearchFlags
 
 const (
-	TextEditSearchMatchCase TextEditSearchFlags = 1
+	TextEditSearchMatchCase  TextEditSearchFlags = 1
 	TextEditSearchWholeWords TextEditSearchFlags = 2
-	TextEditSearchBackwards TextEditSearchFlags = 4
+	TextEditSearchBackwards  TextEditSearchFlags = 4
 )
 
 type TextEditCaretType = classdb.TextEditCaretType
 
 const (
-	TextEditCaretTypeLine TextEditCaretType = 0
+	TextEditCaretTypeLine  TextEditCaretType = 0
 	TextEditCaretTypeBlock TextEditCaretType = 1
 )
 
 type TextEditSelectionMode = classdb.TextEditSelectionMode
 
 const (
-	TextEditSelectionModeNone TextEditSelectionMode = 0
-	TextEditSelectionModeShift TextEditSelectionMode = 1
+	TextEditSelectionModeNone    TextEditSelectionMode = 0
+	TextEditSelectionModeShift   TextEditSelectionMode = 1
 	TextEditSelectionModePointer TextEditSelectionMode = 2
-	TextEditSelectionModeWord TextEditSelectionMode = 3
-	TextEditSelectionModeLine TextEditSelectionMode = 4
+	TextEditSelectionModeWord    TextEditSelectionMode = 3
+	TextEditSelectionModeLine    TextEditSelectionMode = 4
 )
 
 type TextEditLineWrappingMode = classdb.TextEditLineWrappingMode
 
 const (
-	TextEditLineWrappingNone TextEditLineWrappingMode = 0
+	TextEditLineWrappingNone     TextEditLineWrappingMode = 0
 	TextEditLineWrappingBoundary TextEditLineWrappingMode = 1
 )
 
@@ -5928,7 +5927,7 @@ type TextEditGutterType = classdb.TextEditGutterType
 
 const (
 	TextEditGutterTypeString TextEditGutterType = 0
-	TextEditGutterTypeIcon TextEditGutterType = 1
+	TextEditGutterTypeIcon   TextEditGutterType = 1
 	TextEditGutterTypeCustom TextEditGutterType = 2
 )
 
@@ -5937,7 +5936,7 @@ type TextServerFontAntialiasing = classdb.TextServerFontAntialiasing
 const (
 	TextServerFontAntialiasingNone TextServerFontAntialiasing = 0
 	TextServerFontAntialiasingGray TextServerFontAntialiasing = 1
-	TextServerFontAntialiasingLcd TextServerFontAntialiasing = 2
+	TextServerFontAntialiasingLcd  TextServerFontAntialiasing = 2
 )
 
 type TextServerFontLCDSubpixelLayout = classdb.TextServerFontLCDSubpixelLayout
@@ -5948,15 +5947,15 @@ const (
 	TextServerFontLcdSubpixelLayoutHbgr TextServerFontLCDSubpixelLayout = 2
 	TextServerFontLcdSubpixelLayoutVrgb TextServerFontLCDSubpixelLayout = 3
 	TextServerFontLcdSubpixelLayoutVbgr TextServerFontLCDSubpixelLayout = 4
-	TextServerFontLcdSubpixelLayoutMax TextServerFontLCDSubpixelLayout = 5
+	TextServerFontLcdSubpixelLayoutMax  TextServerFontLCDSubpixelLayout = 5
 )
 
 type TextServerDirection = classdb.TextServerDirection
 
 const (
-	TextServerDirectionAuto TextServerDirection = 0
-	TextServerDirectionLtr TextServerDirection = 1
-	TextServerDirectionRtl TextServerDirection = 2
+	TextServerDirectionAuto      TextServerDirection = 0
+	TextServerDirectionLtr       TextServerDirection = 1
+	TextServerDirectionRtl       TextServerDirection = 2
 	TextServerDirectionInherited TextServerDirection = 3
 )
 
@@ -5964,40 +5963,40 @@ type TextServerOrientation = classdb.TextServerOrientation
 
 const (
 	TextServerOrientationHorizontal TextServerOrientation = 0
-	TextServerOrientationVertical TextServerOrientation = 1
+	TextServerOrientationVertical   TextServerOrientation = 1
 )
 
 type TextServerJustificationFlag = classdb.TextServerJustificationFlag
 
 const (
-	TextServerJustificationNone TextServerJustificationFlag = 0
-	TextServerJustificationKashida TextServerJustificationFlag = 1
-	TextServerJustificationWordBound TextServerJustificationFlag = 2
-	TextServerJustificationTrimEdgeSpaces TextServerJustificationFlag = 4
-	TextServerJustificationAfterLastTab TextServerJustificationFlag = 8
-	TextServerJustificationConstrainEllipsis TextServerJustificationFlag = 16
-	TextServerJustificationSkipLastLine TextServerJustificationFlag = 32
+	TextServerJustificationNone                         TextServerJustificationFlag = 0
+	TextServerJustificationKashida                      TextServerJustificationFlag = 1
+	TextServerJustificationWordBound                    TextServerJustificationFlag = 2
+	TextServerJustificationTrimEdgeSpaces               TextServerJustificationFlag = 4
+	TextServerJustificationAfterLastTab                 TextServerJustificationFlag = 8
+	TextServerJustificationConstrainEllipsis            TextServerJustificationFlag = 16
+	TextServerJustificationSkipLastLine                 TextServerJustificationFlag = 32
 	TextServerJustificationSkipLastLineWithVisibleChars TextServerJustificationFlag = 64
-	TextServerJustificationDoNotSkipSingleLine TextServerJustificationFlag = 128
+	TextServerJustificationDoNotSkipSingleLine          TextServerJustificationFlag = 128
 )
 
 type TextServerAutowrapMode = classdb.TextServerAutowrapMode
 
 const (
-	TextServerAutowrapOff TextServerAutowrapMode = 0
+	TextServerAutowrapOff       TextServerAutowrapMode = 0
 	TextServerAutowrapArbitrary TextServerAutowrapMode = 1
-	TextServerAutowrapWord TextServerAutowrapMode = 2
+	TextServerAutowrapWord      TextServerAutowrapMode = 2
 	TextServerAutowrapWordSmart TextServerAutowrapMode = 3
 )
 
 type TextServerLineBreakFlag = classdb.TextServerLineBreakFlag
 
 const (
-	TextServerBreakNone TextServerLineBreakFlag = 0
-	TextServerBreakMandatory TextServerLineBreakFlag = 1
-	TextServerBreakWordBound TextServerLineBreakFlag = 2
-	TextServerBreakGraphemeBound TextServerLineBreakFlag = 4
-	TextServerBreakAdaptive TextServerLineBreakFlag = 8
+	TextServerBreakNone           TextServerLineBreakFlag = 0
+	TextServerBreakMandatory      TextServerLineBreakFlag = 1
+	TextServerBreakWordBound      TextServerLineBreakFlag = 2
+	TextServerBreakGraphemeBound  TextServerLineBreakFlag = 4
+	TextServerBreakAdaptive       TextServerLineBreakFlag = 8
 	TextServerBreakTrimEdgeSpaces TextServerLineBreakFlag = 16
 )
 
@@ -6005,94 +6004,94 @@ type TextServerVisibleCharactersBehavior = classdb.TextServerVisibleCharactersBe
 
 const (
 	TextServerVcCharsBeforeShaping TextServerVisibleCharactersBehavior = 0
-	TextServerVcCharsAfterShaping TextServerVisibleCharactersBehavior = 1
-	TextServerVcGlyphsAuto TextServerVisibleCharactersBehavior = 2
-	TextServerVcGlyphsLtr TextServerVisibleCharactersBehavior = 3
-	TextServerVcGlyphsRtl TextServerVisibleCharactersBehavior = 4
+	TextServerVcCharsAfterShaping  TextServerVisibleCharactersBehavior = 1
+	TextServerVcGlyphsAuto         TextServerVisibleCharactersBehavior = 2
+	TextServerVcGlyphsLtr          TextServerVisibleCharactersBehavior = 3
+	TextServerVcGlyphsRtl          TextServerVisibleCharactersBehavior = 4
 )
 
 type TextServerOverrunBehavior = classdb.TextServerOverrunBehavior
 
 const (
-	TextServerOverrunNoTrimming TextServerOverrunBehavior = 0
-	TextServerOverrunTrimChar TextServerOverrunBehavior = 1
-	TextServerOverrunTrimWord TextServerOverrunBehavior = 2
-	TextServerOverrunTrimEllipsis TextServerOverrunBehavior = 3
+	TextServerOverrunNoTrimming       TextServerOverrunBehavior = 0
+	TextServerOverrunTrimChar         TextServerOverrunBehavior = 1
+	TextServerOverrunTrimWord         TextServerOverrunBehavior = 2
+	TextServerOverrunTrimEllipsis     TextServerOverrunBehavior = 3
 	TextServerOverrunTrimWordEllipsis TextServerOverrunBehavior = 4
 )
 
 type TextServerTextOverrunFlag = classdb.TextServerTextOverrunFlag
 
 const (
-	TextServerOverrunNoTrim TextServerTextOverrunFlag = 0
-	TextServerOverrunTrim TextServerTextOverrunFlag = 1
-	TextServerOverrunTrimWordOnly TextServerTextOverrunFlag = 2
-	TextServerOverrunAddEllipsis TextServerTextOverrunFlag = 4
-	TextServerOverrunEnforceEllipsis TextServerTextOverrunFlag = 8
+	TextServerOverrunNoTrim             TextServerTextOverrunFlag = 0
+	TextServerOverrunTrim               TextServerTextOverrunFlag = 1
+	TextServerOverrunTrimWordOnly       TextServerTextOverrunFlag = 2
+	TextServerOverrunAddEllipsis        TextServerTextOverrunFlag = 4
+	TextServerOverrunEnforceEllipsis    TextServerTextOverrunFlag = 8
 	TextServerOverrunJustificationAware TextServerTextOverrunFlag = 16
 )
 
 type TextServerGraphemeFlag = classdb.TextServerGraphemeFlag
 
 const (
-	TextServerGraphemeIsValid TextServerGraphemeFlag = 1
-	TextServerGraphemeIsRtl TextServerGraphemeFlag = 2
-	TextServerGraphemeIsVirtual TextServerGraphemeFlag = 4
-	TextServerGraphemeIsSpace TextServerGraphemeFlag = 8
-	TextServerGraphemeIsBreakHard TextServerGraphemeFlag = 16
-	TextServerGraphemeIsBreakSoft TextServerGraphemeFlag = 32
-	TextServerGraphemeIsTab TextServerGraphemeFlag = 64
-	TextServerGraphemeIsElongation TextServerGraphemeFlag = 128
-	TextServerGraphemeIsPunctuation TextServerGraphemeFlag = 256
-	TextServerGraphemeIsUnderscore TextServerGraphemeFlag = 512
-	TextServerGraphemeIsConnected TextServerGraphemeFlag = 1024
+	TextServerGraphemeIsValid               TextServerGraphemeFlag = 1
+	TextServerGraphemeIsRtl                 TextServerGraphemeFlag = 2
+	TextServerGraphemeIsVirtual             TextServerGraphemeFlag = 4
+	TextServerGraphemeIsSpace               TextServerGraphemeFlag = 8
+	TextServerGraphemeIsBreakHard           TextServerGraphemeFlag = 16
+	TextServerGraphemeIsBreakSoft           TextServerGraphemeFlag = 32
+	TextServerGraphemeIsTab                 TextServerGraphemeFlag = 64
+	TextServerGraphemeIsElongation          TextServerGraphemeFlag = 128
+	TextServerGraphemeIsPunctuation         TextServerGraphemeFlag = 256
+	TextServerGraphemeIsUnderscore          TextServerGraphemeFlag = 512
+	TextServerGraphemeIsConnected           TextServerGraphemeFlag = 1024
 	TextServerGraphemeIsSafeToInsertTatweel TextServerGraphemeFlag = 2048
-	TextServerGraphemeIsEmbeddedObject TextServerGraphemeFlag = 4096
+	TextServerGraphemeIsEmbeddedObject      TextServerGraphemeFlag = 4096
 )
 
 type TextServerHinting = classdb.TextServerHinting
 
 const (
-	TextServerHintingNone TextServerHinting = 0
-	TextServerHintingLight TextServerHinting = 1
+	TextServerHintingNone   TextServerHinting = 0
+	TextServerHintingLight  TextServerHinting = 1
 	TextServerHintingNormal TextServerHinting = 2
 )
 
 type TextServerSubpixelPositioning = classdb.TextServerSubpixelPositioning
 
 const (
-	TextServerSubpixelPositioningDisabled TextServerSubpixelPositioning = 0
-	TextServerSubpixelPositioningAuto TextServerSubpixelPositioning = 1
-	TextServerSubpixelPositioningOneHalf TextServerSubpixelPositioning = 2
-	TextServerSubpixelPositioningOneQuarter TextServerSubpixelPositioning = 3
-	TextServerSubpixelPositioningOneHalfMaxSize TextServerSubpixelPositioning = 20
+	TextServerSubpixelPositioningDisabled          TextServerSubpixelPositioning = 0
+	TextServerSubpixelPositioningAuto              TextServerSubpixelPositioning = 1
+	TextServerSubpixelPositioningOneHalf           TextServerSubpixelPositioning = 2
+	TextServerSubpixelPositioningOneQuarter        TextServerSubpixelPositioning = 3
+	TextServerSubpixelPositioningOneHalfMaxSize    TextServerSubpixelPositioning = 20
 	TextServerSubpixelPositioningOneQuarterMaxSize TextServerSubpixelPositioning = 16
 )
 
 type TextServerFeature = classdb.TextServerFeature
 
 const (
-	TextServerFeatureSimpleLayout TextServerFeature = 1
-	TextServerFeatureBidiLayout TextServerFeature = 2
-	TextServerFeatureVerticalLayout TextServerFeature = 4
-	TextServerFeatureShaping TextServerFeature = 8
-	TextServerFeatureKashidaJustification TextServerFeature = 16
-	TextServerFeatureBreakIterators TextServerFeature = 32
-	TextServerFeatureFontBitmap TextServerFeature = 64
-	TextServerFeatureFontDynamic TextServerFeature = 128
-	TextServerFeatureFontMsdf TextServerFeature = 256
-	TextServerFeatureFontSystem TextServerFeature = 512
-	TextServerFeatureFontVariable TextServerFeature = 1024
+	TextServerFeatureSimpleLayout                   TextServerFeature = 1
+	TextServerFeatureBidiLayout                     TextServerFeature = 2
+	TextServerFeatureVerticalLayout                 TextServerFeature = 4
+	TextServerFeatureShaping                        TextServerFeature = 8
+	TextServerFeatureKashidaJustification           TextServerFeature = 16
+	TextServerFeatureBreakIterators                 TextServerFeature = 32
+	TextServerFeatureFontBitmap                     TextServerFeature = 64
+	TextServerFeatureFontDynamic                    TextServerFeature = 128
+	TextServerFeatureFontMsdf                       TextServerFeature = 256
+	TextServerFeatureFontSystem                     TextServerFeature = 512
+	TextServerFeatureFontVariable                   TextServerFeature = 1024
 	TextServerFeatureContextSensitiveCaseConversion TextServerFeature = 2048
-	TextServerFeatureUseSupportData TextServerFeature = 4096
-	TextServerFeatureUnicodeIdentifiers TextServerFeature = 8192
-	TextServerFeatureUnicodeSecurity TextServerFeature = 16384
+	TextServerFeatureUseSupportData                 TextServerFeature = 4096
+	TextServerFeatureUnicodeIdentifiers             TextServerFeature = 8192
+	TextServerFeatureUnicodeSecurity                TextServerFeature = 16384
 )
 
 type TextServerContourPointTag = classdb.TextServerContourPointTag
 
 const (
-	TextServerContourCurveTagOn TextServerContourPointTag = 1
+	TextServerContourCurveTagOn       TextServerContourPointTag = 1
 	TextServerContourCurveTagOffConic TextServerContourPointTag = 0
 	TextServerContourCurveTagOffCubic TextServerContourPointTag = 2
 )
@@ -6100,122 +6099,122 @@ const (
 type TextServerSpacingType = classdb.TextServerSpacingType
 
 const (
-	TextServerSpacingGlyph TextServerSpacingType = 0
-	TextServerSpacingSpace TextServerSpacingType = 1
-	TextServerSpacingTop TextServerSpacingType = 2
+	TextServerSpacingGlyph  TextServerSpacingType = 0
+	TextServerSpacingSpace  TextServerSpacingType = 1
+	TextServerSpacingTop    TextServerSpacingType = 2
 	TextServerSpacingBottom TextServerSpacingType = 3
-	TextServerSpacingMax TextServerSpacingType = 4
+	TextServerSpacingMax    TextServerSpacingType = 4
 )
 
 type TextServerFontStyle = classdb.TextServerFontStyle
 
 const (
-	TextServerFontBold TextServerFontStyle = 1
-	TextServerFontItalic TextServerFontStyle = 2
+	TextServerFontBold       TextServerFontStyle = 1
+	TextServerFontItalic     TextServerFontStyle = 2
 	TextServerFontFixedWidth TextServerFontStyle = 4
 )
 
 type TextServerStructuredTextParser = classdb.TextServerStructuredTextParser
 
 const (
-	TextServerStructuredTextDefault TextServerStructuredTextParser = 0
-	TextServerStructuredTextUri TextServerStructuredTextParser = 1
-	TextServerStructuredTextFile TextServerStructuredTextParser = 2
-	TextServerStructuredTextEmail TextServerStructuredTextParser = 3
-	TextServerStructuredTextList TextServerStructuredTextParser = 4
+	TextServerStructuredTextDefault  TextServerStructuredTextParser = 0
+	TextServerStructuredTextUri      TextServerStructuredTextParser = 1
+	TextServerStructuredTextFile     TextServerStructuredTextParser = 2
+	TextServerStructuredTextEmail    TextServerStructuredTextParser = 3
+	TextServerStructuredTextList     TextServerStructuredTextParser = 4
 	TextServerStructuredTextGdscript TextServerStructuredTextParser = 5
-	TextServerStructuredTextCustom TextServerStructuredTextParser = 6
+	TextServerStructuredTextCustom   TextServerStructuredTextParser = 6
 )
 
 type TextServerFixedSizeScaleMode = classdb.TextServerFixedSizeScaleMode
 
 const (
-	TextServerFixedSizeScaleDisable TextServerFixedSizeScaleMode = 0
+	TextServerFixedSizeScaleDisable     TextServerFixedSizeScaleMode = 0
 	TextServerFixedSizeScaleIntegerOnly TextServerFixedSizeScaleMode = 1
-	TextServerFixedSizeScaleEnabled TextServerFixedSizeScaleMode = 2
+	TextServerFixedSizeScaleEnabled     TextServerFixedSizeScaleMode = 2
 )
 
 type TextureButtonStretchMode = classdb.TextureButtonStretchMode
 
 const (
-	TextureButtonStretchScale TextureButtonStretchMode = 0
-	TextureButtonStretchTile TextureButtonStretchMode = 1
-	TextureButtonStretchKeep TextureButtonStretchMode = 2
-	TextureButtonStretchKeepCentered TextureButtonStretchMode = 3
-	TextureButtonStretchKeepAspect TextureButtonStretchMode = 4
+	TextureButtonStretchScale              TextureButtonStretchMode = 0
+	TextureButtonStretchTile               TextureButtonStretchMode = 1
+	TextureButtonStretchKeep               TextureButtonStretchMode = 2
+	TextureButtonStretchKeepCentered       TextureButtonStretchMode = 3
+	TextureButtonStretchKeepAspect         TextureButtonStretchMode = 4
 	TextureButtonStretchKeepAspectCentered TextureButtonStretchMode = 5
-	TextureButtonStretchKeepAspectCovered TextureButtonStretchMode = 6
+	TextureButtonStretchKeepAspectCovered  TextureButtonStretchMode = 6
 )
 
 type TextureLayeredLayeredType = classdb.TextureLayeredLayeredType
 
 const (
-	TextureLayeredLayeredType2dArray TextureLayeredLayeredType = 0
-	TextureLayeredLayeredTypeCubemap TextureLayeredLayeredType = 1
+	TextureLayeredLayeredType2dArray      TextureLayeredLayeredType = 0
+	TextureLayeredLayeredTypeCubemap      TextureLayeredLayeredType = 1
 	TextureLayeredLayeredTypeCubemapArray TextureLayeredLayeredType = 2
 )
 
 type TextureProgressBarFillMode = classdb.TextureProgressBarFillMode
 
 const (
-	TextureProgressBarFillLeftToRight TextureProgressBarFillMode = 0
-	TextureProgressBarFillRightToLeft TextureProgressBarFillMode = 1
-	TextureProgressBarFillTopToBottom TextureProgressBarFillMode = 2
-	TextureProgressBarFillBottomToTop TextureProgressBarFillMode = 3
-	TextureProgressBarFillClockwise TextureProgressBarFillMode = 4
-	TextureProgressBarFillCounterClockwise TextureProgressBarFillMode = 5
-	TextureProgressBarFillBilinearLeftAndRight TextureProgressBarFillMode = 6
-	TextureProgressBarFillBilinearTopAndBottom TextureProgressBarFillMode = 7
+	TextureProgressBarFillLeftToRight                  TextureProgressBarFillMode = 0
+	TextureProgressBarFillRightToLeft                  TextureProgressBarFillMode = 1
+	TextureProgressBarFillTopToBottom                  TextureProgressBarFillMode = 2
+	TextureProgressBarFillBottomToTop                  TextureProgressBarFillMode = 3
+	TextureProgressBarFillClockwise                    TextureProgressBarFillMode = 4
+	TextureProgressBarFillCounterClockwise             TextureProgressBarFillMode = 5
+	TextureProgressBarFillBilinearLeftAndRight         TextureProgressBarFillMode = 6
+	TextureProgressBarFillBilinearTopAndBottom         TextureProgressBarFillMode = 7
 	TextureProgressBarFillClockwiseAndCounterClockwise TextureProgressBarFillMode = 8
 )
 
 type TextureRectExpandMode = classdb.TextureRectExpandMode
 
 const (
-	TextureRectExpandKeepSize TextureRectExpandMode = 0
-	TextureRectExpandIgnoreSize TextureRectExpandMode = 1
-	TextureRectExpandFitWidth TextureRectExpandMode = 2
-	TextureRectExpandFitWidthProportional TextureRectExpandMode = 3
-	TextureRectExpandFitHeight TextureRectExpandMode = 4
+	TextureRectExpandKeepSize              TextureRectExpandMode = 0
+	TextureRectExpandIgnoreSize            TextureRectExpandMode = 1
+	TextureRectExpandFitWidth              TextureRectExpandMode = 2
+	TextureRectExpandFitWidthProportional  TextureRectExpandMode = 3
+	TextureRectExpandFitHeight             TextureRectExpandMode = 4
 	TextureRectExpandFitHeightProportional TextureRectExpandMode = 5
 )
 
 type TextureRectStretchMode = classdb.TextureRectStretchMode
 
 const (
-	TextureRectStretchScale TextureRectStretchMode = 0
-	TextureRectStretchTile TextureRectStretchMode = 1
-	TextureRectStretchKeep TextureRectStretchMode = 2
-	TextureRectStretchKeepCentered TextureRectStretchMode = 3
-	TextureRectStretchKeepAspect TextureRectStretchMode = 4
+	TextureRectStretchScale              TextureRectStretchMode = 0
+	TextureRectStretchTile               TextureRectStretchMode = 1
+	TextureRectStretchKeep               TextureRectStretchMode = 2
+	TextureRectStretchKeepCentered       TextureRectStretchMode = 3
+	TextureRectStretchKeepAspect         TextureRectStretchMode = 4
 	TextureRectStretchKeepAspectCentered TextureRectStretchMode = 5
-	TextureRectStretchKeepAspectCovered TextureRectStretchMode = 6
+	TextureRectStretchKeepAspectCovered  TextureRectStretchMode = 6
 )
 
 type ThemeDataType = classdb.ThemeDataType
 
 const (
-	ThemeDataTypeColor ThemeDataType = 0
+	ThemeDataTypeColor    ThemeDataType = 0
 	ThemeDataTypeConstant ThemeDataType = 1
-	ThemeDataTypeFont ThemeDataType = 2
+	ThemeDataTypeFont     ThemeDataType = 2
 	ThemeDataTypeFontSize ThemeDataType = 3
-	ThemeDataTypeIcon ThemeDataType = 4
+	ThemeDataTypeIcon     ThemeDataType = 4
 	ThemeDataTypeStylebox ThemeDataType = 5
-	ThemeDataTypeMax ThemeDataType = 6
+	ThemeDataTypeMax      ThemeDataType = 6
 )
 
 type ThreadPriority = classdb.ThreadPriority
 
 const (
-	ThreadPriorityLow ThreadPriority = 0
+	ThreadPriorityLow    ThreadPriority = 0
 	ThreadPriorityNormal ThreadPriority = 1
-	ThreadPriorityHigh ThreadPriority = 2
+	ThreadPriorityHigh   ThreadPriority = 2
 )
 
 type TileMapVisibilityMode = classdb.TileMapVisibilityMode
 
 const (
-	TileMapVisibilityModeDefault TileMapVisibilityMode = 0
+	TileMapVisibilityModeDefault   TileMapVisibilityMode = 0
 	TileMapVisibilityModeForceHide TileMapVisibilityMode = 2
 	TileMapVisibilityModeForceShow TileMapVisibilityMode = 1
 )
@@ -6223,107 +6222,107 @@ const (
 type TileSetTileShape = classdb.TileSetTileShape
 
 const (
-	TileSetTileShapeSquare TileSetTileShape = 0
-	TileSetTileShapeIsometric TileSetTileShape = 1
+	TileSetTileShapeSquare           TileSetTileShape = 0
+	TileSetTileShapeIsometric        TileSetTileShape = 1
 	TileSetTileShapeHalfOffsetSquare TileSetTileShape = 2
-	TileSetTileShapeHexagon TileSetTileShape = 3
+	TileSetTileShapeHexagon          TileSetTileShape = 3
 )
 
 type TileSetTileLayout = classdb.TileSetTileLayout
 
 const (
-	TileSetTileLayoutStacked TileSetTileLayout = 0
+	TileSetTileLayoutStacked       TileSetTileLayout = 0
 	TileSetTileLayoutStackedOffset TileSetTileLayout = 1
-	TileSetTileLayoutStairsRight TileSetTileLayout = 2
-	TileSetTileLayoutStairsDown TileSetTileLayout = 3
-	TileSetTileLayoutDiamondRight TileSetTileLayout = 4
-	TileSetTileLayoutDiamondDown TileSetTileLayout = 5
+	TileSetTileLayoutStairsRight   TileSetTileLayout = 2
+	TileSetTileLayoutStairsDown    TileSetTileLayout = 3
+	TileSetTileLayoutDiamondRight  TileSetTileLayout = 4
+	TileSetTileLayoutDiamondDown   TileSetTileLayout = 5
 )
 
 type TileSetTileOffsetAxis = classdb.TileSetTileOffsetAxis
 
 const (
 	TileSetTileOffsetAxisHorizontal TileSetTileOffsetAxis = 0
-	TileSetTileOffsetAxisVertical TileSetTileOffsetAxis = 1
+	TileSetTileOffsetAxisVertical   TileSetTileOffsetAxis = 1
 )
 
 type TileSetCellNeighbor = classdb.TileSetCellNeighbor
 
 const (
-	TileSetCellNeighborRightSide TileSetCellNeighbor = 0
-	TileSetCellNeighborRightCorner TileSetCellNeighbor = 1
-	TileSetCellNeighborBottomRightSide TileSetCellNeighbor = 2
+	TileSetCellNeighborRightSide         TileSetCellNeighbor = 0
+	TileSetCellNeighborRightCorner       TileSetCellNeighbor = 1
+	TileSetCellNeighborBottomRightSide   TileSetCellNeighbor = 2
 	TileSetCellNeighborBottomRightCorner TileSetCellNeighbor = 3
-	TileSetCellNeighborBottomSide TileSetCellNeighbor = 4
-	TileSetCellNeighborBottomCorner TileSetCellNeighbor = 5
-	TileSetCellNeighborBottomLeftSide TileSetCellNeighbor = 6
-	TileSetCellNeighborBottomLeftCorner TileSetCellNeighbor = 7
-	TileSetCellNeighborLeftSide TileSetCellNeighbor = 8
-	TileSetCellNeighborLeftCorner TileSetCellNeighbor = 9
-	TileSetCellNeighborTopLeftSide TileSetCellNeighbor = 10
-	TileSetCellNeighborTopLeftCorner TileSetCellNeighbor = 11
-	TileSetCellNeighborTopSide TileSetCellNeighbor = 12
-	TileSetCellNeighborTopCorner TileSetCellNeighbor = 13
-	TileSetCellNeighborTopRightSide TileSetCellNeighbor = 14
-	TileSetCellNeighborTopRightCorner TileSetCellNeighbor = 15
+	TileSetCellNeighborBottomSide        TileSetCellNeighbor = 4
+	TileSetCellNeighborBottomCorner      TileSetCellNeighbor = 5
+	TileSetCellNeighborBottomLeftSide    TileSetCellNeighbor = 6
+	TileSetCellNeighborBottomLeftCorner  TileSetCellNeighbor = 7
+	TileSetCellNeighborLeftSide          TileSetCellNeighbor = 8
+	TileSetCellNeighborLeftCorner        TileSetCellNeighbor = 9
+	TileSetCellNeighborTopLeftSide       TileSetCellNeighbor = 10
+	TileSetCellNeighborTopLeftCorner     TileSetCellNeighbor = 11
+	TileSetCellNeighborTopSide           TileSetCellNeighbor = 12
+	TileSetCellNeighborTopCorner         TileSetCellNeighbor = 13
+	TileSetCellNeighborTopRightSide      TileSetCellNeighbor = 14
+	TileSetCellNeighborTopRightCorner    TileSetCellNeighbor = 15
 )
 
 type TileSetTerrainMode = classdb.TileSetTerrainMode
 
 const (
 	TileSetTerrainModeMatchCornersAndSides TileSetTerrainMode = 0
-	TileSetTerrainModeMatchCorners TileSetTerrainMode = 1
-	TileSetTerrainModeMatchSides TileSetTerrainMode = 2
+	TileSetTerrainModeMatchCorners         TileSetTerrainMode = 1
+	TileSetTerrainModeMatchSides           TileSetTerrainMode = 2
 )
 
 type TileSetAtlasSourceTileAnimationMode = classdb.TileSetAtlasSourceTileAnimationMode
 
 const (
-	TileSetAtlasSourceTileAnimationModeDefault TileSetAtlasSourceTileAnimationMode = 0
+	TileSetAtlasSourceTileAnimationModeDefault          TileSetAtlasSourceTileAnimationMode = 0
 	TileSetAtlasSourceTileAnimationModeRandomStartTimes TileSetAtlasSourceTileAnimationMode = 1
-	TileSetAtlasSourceTileAnimationModeMax TileSetAtlasSourceTileAnimationMode = 2
+	TileSetAtlasSourceTileAnimationModeMax              TileSetAtlasSourceTileAnimationMode = 2
 )
 
 type TimeMonth = classdb.TimeMonth
 
 const (
-	TimeMonthJanuary TimeMonth = 1
-	TimeMonthFebruary TimeMonth = 2
-	TimeMonthMarch TimeMonth = 3
-	TimeMonthApril TimeMonth = 4
-	TimeMonthMay TimeMonth = 5
-	TimeMonthJune TimeMonth = 6
-	TimeMonthJuly TimeMonth = 7
-	TimeMonthAugust TimeMonth = 8
+	TimeMonthJanuary   TimeMonth = 1
+	TimeMonthFebruary  TimeMonth = 2
+	TimeMonthMarch     TimeMonth = 3
+	TimeMonthApril     TimeMonth = 4
+	TimeMonthMay       TimeMonth = 5
+	TimeMonthJune      TimeMonth = 6
+	TimeMonthJuly      TimeMonth = 7
+	TimeMonthAugust    TimeMonth = 8
 	TimeMonthSeptember TimeMonth = 9
-	TimeMonthOctober TimeMonth = 10
-	TimeMonthNovember TimeMonth = 11
-	TimeMonthDecember TimeMonth = 12
+	TimeMonthOctober   TimeMonth = 10
+	TimeMonthNovember  TimeMonth = 11
+	TimeMonthDecember  TimeMonth = 12
 )
 
 type TimeWeekday = classdb.TimeWeekday
 
 const (
-	TimeWeekdaySunday TimeWeekday = 0
-	TimeWeekdayMonday TimeWeekday = 1
-	TimeWeekdayTuesday TimeWeekday = 2
+	TimeWeekdaySunday    TimeWeekday = 0
+	TimeWeekdayMonday    TimeWeekday = 1
+	TimeWeekdayTuesday   TimeWeekday = 2
 	TimeWeekdayWednesday TimeWeekday = 3
-	TimeWeekdayThursday TimeWeekday = 4
-	TimeWeekdayFriday TimeWeekday = 5
-	TimeWeekdaySaturday TimeWeekday = 6
+	TimeWeekdayThursday  TimeWeekday = 4
+	TimeWeekdayFriday    TimeWeekday = 5
+	TimeWeekdaySaturday  TimeWeekday = 6
 )
 
 type TimerTimerProcessCallback = classdb.TimerTimerProcessCallback
 
 const (
 	TimerTimerProcessPhysics TimerTimerProcessCallback = 0
-	TimerTimerProcessIdle TimerTimerProcessCallback = 1
+	TimerTimerProcessIdle    TimerTimerProcessCallback = 1
 )
 
 type TouchScreenButtonVisibilityMode = classdb.TouchScreenButtonVisibilityMode
 
 const (
-	TouchScreenButtonVisibilityAlways TouchScreenButtonVisibilityMode = 0
+	TouchScreenButtonVisibilityAlways          TouchScreenButtonVisibilityMode = 0
 	TouchScreenButtonVisibilityTouchscreenOnly TouchScreenButtonVisibilityMode = 1
 )
 
@@ -6331,15 +6330,15 @@ type TreeSelectMode = classdb.TreeSelectMode
 
 const (
 	TreeSelectSingle TreeSelectMode = 0
-	TreeSelectRow TreeSelectMode = 1
-	TreeSelectMulti TreeSelectMode = 2
+	TreeSelectRow    TreeSelectMode = 1
+	TreeSelectMulti  TreeSelectMode = 2
 )
 
 type TreeDropModeFlags = classdb.TreeDropModeFlags
 
 const (
-	TreeDropModeDisabled TreeDropModeFlags = 0
-	TreeDropModeOnItem TreeDropModeFlags = 1
+	TreeDropModeDisabled  TreeDropModeFlags = 0
+	TreeDropModeOnItem    TreeDropModeFlags = 1
 	TreeDropModeInbetween TreeDropModeFlags = 2
 )
 
@@ -6347,9 +6346,9 @@ type TreeItemTreeCellMode = classdb.TreeItemTreeCellMode
 
 const (
 	TreeItemCellModeString TreeItemTreeCellMode = 0
-	TreeItemCellModeCheck TreeItemTreeCellMode = 1
-	TreeItemCellModeRange TreeItemTreeCellMode = 2
-	TreeItemCellModeIcon TreeItemTreeCellMode = 3
+	TreeItemCellModeCheck  TreeItemTreeCellMode = 1
+	TreeItemCellModeRange  TreeItemTreeCellMode = 2
+	TreeItemCellModeIcon   TreeItemTreeCellMode = 3
 	TreeItemCellModeCustom TreeItemTreeCellMode = 4
 )
 
@@ -6357,39 +6356,39 @@ type TweenTweenProcessMode = classdb.TweenTweenProcessMode
 
 const (
 	TweenTweenProcessPhysics TweenTweenProcessMode = 0
-	TweenTweenProcessIdle TweenTweenProcessMode = 1
+	TweenTweenProcessIdle    TweenTweenProcessMode = 1
 )
 
 type TweenTweenPauseMode = classdb.TweenTweenPauseMode
 
 const (
-	TweenTweenPauseBound TweenTweenPauseMode = 0
-	TweenTweenPauseStop TweenTweenPauseMode = 1
+	TweenTweenPauseBound   TweenTweenPauseMode = 0
+	TweenTweenPauseStop    TweenTweenPauseMode = 1
 	TweenTweenPauseProcess TweenTweenPauseMode = 2
 )
 
 type TweenTransitionType = classdb.TweenTransitionType
 
 const (
-	TweenTransLinear TweenTransitionType = 0
-	TweenTransSine TweenTransitionType = 1
-	TweenTransQuint TweenTransitionType = 2
-	TweenTransQuart TweenTransitionType = 3
-	TweenTransQuad TweenTransitionType = 4
-	TweenTransExpo TweenTransitionType = 5
+	TweenTransLinear  TweenTransitionType = 0
+	TweenTransSine    TweenTransitionType = 1
+	TweenTransQuint   TweenTransitionType = 2
+	TweenTransQuart   TweenTransitionType = 3
+	TweenTransQuad    TweenTransitionType = 4
+	TweenTransExpo    TweenTransitionType = 5
 	TweenTransElastic TweenTransitionType = 6
-	TweenTransCubic TweenTransitionType = 7
-	TweenTransCirc TweenTransitionType = 8
-	TweenTransBounce TweenTransitionType = 9
-	TweenTransBack TweenTransitionType = 10
-	TweenTransSpring TweenTransitionType = 11
+	TweenTransCubic   TweenTransitionType = 7
+	TweenTransCirc    TweenTransitionType = 8
+	TweenTransBounce  TweenTransitionType = 9
+	TweenTransBack    TweenTransitionType = 10
+	TweenTransSpring  TweenTransitionType = 11
 )
 
 type TweenEaseType = classdb.TweenEaseType
 
 const (
-	TweenEaseIn TweenEaseType = 0
-	TweenEaseOut TweenEaseType = 1
+	TweenEaseIn    TweenEaseType = 0
+	TweenEaseOut   TweenEaseType = 1
 	TweenEaseInOut TweenEaseType = 2
 	TweenEaseOutIn TweenEaseType = 3
 )
@@ -6397,166 +6396,166 @@ const (
 type UPNPUPNPResult = classdb.UPNPUPNPResult
 
 const (
-	UPNPUpnpResultSuccess UPNPUPNPResult = 0
-	UPNPUpnpResultNotAuthorized UPNPUPNPResult = 1
-	UPNPUpnpResultPortMappingNotFound UPNPUPNPResult = 2
-	UPNPUpnpResultInconsistentParameters UPNPUPNPResult = 3
-	UPNPUpnpResultNoSuchEntryInArray UPNPUPNPResult = 4
-	UPNPUpnpResultActionFailed UPNPUPNPResult = 5
-	UPNPUpnpResultSrcIpWildcardNotPermitted UPNPUPNPResult = 6
+	UPNPUpnpResultSuccess                     UPNPUPNPResult = 0
+	UPNPUpnpResultNotAuthorized               UPNPUPNPResult = 1
+	UPNPUpnpResultPortMappingNotFound         UPNPUPNPResult = 2
+	UPNPUpnpResultInconsistentParameters      UPNPUPNPResult = 3
+	UPNPUpnpResultNoSuchEntryInArray          UPNPUPNPResult = 4
+	UPNPUpnpResultActionFailed                UPNPUPNPResult = 5
+	UPNPUpnpResultSrcIpWildcardNotPermitted   UPNPUPNPResult = 6
 	UPNPUpnpResultExtPortWildcardNotPermitted UPNPUPNPResult = 7
 	UPNPUpnpResultIntPortWildcardNotPermitted UPNPUPNPResult = 8
-	UPNPUpnpResultRemoteHostMustBeWildcard UPNPUPNPResult = 9
-	UPNPUpnpResultExtPortMustBeWildcard UPNPUPNPResult = 10
-	UPNPUpnpResultNoPortMapsAvailable UPNPUPNPResult = 11
-	UPNPUpnpResultConflictWithOtherMechanism UPNPUPNPResult = 12
-	UPNPUpnpResultConflictWithOtherMapping UPNPUPNPResult = 13
-	UPNPUpnpResultSamePortValuesRequired UPNPUPNPResult = 14
+	UPNPUpnpResultRemoteHostMustBeWildcard    UPNPUPNPResult = 9
+	UPNPUpnpResultExtPortMustBeWildcard       UPNPUPNPResult = 10
+	UPNPUpnpResultNoPortMapsAvailable         UPNPUPNPResult = 11
+	UPNPUpnpResultConflictWithOtherMechanism  UPNPUPNPResult = 12
+	UPNPUpnpResultConflictWithOtherMapping    UPNPUPNPResult = 13
+	UPNPUpnpResultSamePortValuesRequired      UPNPUPNPResult = 14
 	UPNPUpnpResultOnlyPermanentLeaseSupported UPNPUPNPResult = 15
-	UPNPUpnpResultInvalidGateway UPNPUPNPResult = 16
-	UPNPUpnpResultInvalidPort UPNPUPNPResult = 17
-	UPNPUpnpResultInvalidProtocol UPNPUPNPResult = 18
-	UPNPUpnpResultInvalidDuration UPNPUPNPResult = 19
-	UPNPUpnpResultInvalidArgs UPNPUPNPResult = 20
-	UPNPUpnpResultInvalidResponse UPNPUPNPResult = 21
-	UPNPUpnpResultInvalidParam UPNPUPNPResult = 22
-	UPNPUpnpResultHttpError UPNPUPNPResult = 23
-	UPNPUpnpResultSocketError UPNPUPNPResult = 24
-	UPNPUpnpResultMemAllocError UPNPUPNPResult = 25
-	UPNPUpnpResultNoGateway UPNPUPNPResult = 26
-	UPNPUpnpResultNoDevices UPNPUPNPResult = 27
-	UPNPUpnpResultUnknownError UPNPUPNPResult = 28
+	UPNPUpnpResultInvalidGateway              UPNPUPNPResult = 16
+	UPNPUpnpResultInvalidPort                 UPNPUPNPResult = 17
+	UPNPUpnpResultInvalidProtocol             UPNPUPNPResult = 18
+	UPNPUpnpResultInvalidDuration             UPNPUPNPResult = 19
+	UPNPUpnpResultInvalidArgs                 UPNPUPNPResult = 20
+	UPNPUpnpResultInvalidResponse             UPNPUPNPResult = 21
+	UPNPUpnpResultInvalidParam                UPNPUPNPResult = 22
+	UPNPUpnpResultHttpError                   UPNPUPNPResult = 23
+	UPNPUpnpResultSocketError                 UPNPUPNPResult = 24
+	UPNPUpnpResultMemAllocError               UPNPUPNPResult = 25
+	UPNPUpnpResultNoGateway                   UPNPUPNPResult = 26
+	UPNPUpnpResultNoDevices                   UPNPUPNPResult = 27
+	UPNPUpnpResultUnknownError                UPNPUPNPResult = 28
 )
 
 type UPNPDeviceIGDStatus = classdb.UPNPDeviceIGDStatus
 
 const (
-	UPNPDeviceIgdStatusOk UPNPDeviceIGDStatus = 0
-	UPNPDeviceIgdStatusHttpError UPNPDeviceIGDStatus = 1
-	UPNPDeviceIgdStatusHttpEmpty UPNPDeviceIGDStatus = 2
-	UPNPDeviceIgdStatusNoUrls UPNPDeviceIGDStatus = 3
-	UPNPDeviceIgdStatusNoIgd UPNPDeviceIGDStatus = 4
-	UPNPDeviceIgdStatusDisconnected UPNPDeviceIGDStatus = 5
-	UPNPDeviceIgdStatusUnknownDevice UPNPDeviceIGDStatus = 6
+	UPNPDeviceIgdStatusOk             UPNPDeviceIGDStatus = 0
+	UPNPDeviceIgdStatusHttpError      UPNPDeviceIGDStatus = 1
+	UPNPDeviceIgdStatusHttpEmpty      UPNPDeviceIGDStatus = 2
+	UPNPDeviceIgdStatusNoUrls         UPNPDeviceIGDStatus = 3
+	UPNPDeviceIgdStatusNoIgd          UPNPDeviceIGDStatus = 4
+	UPNPDeviceIgdStatusDisconnected   UPNPDeviceIGDStatus = 5
+	UPNPDeviceIgdStatusUnknownDevice  UPNPDeviceIGDStatus = 6
 	UPNPDeviceIgdStatusInvalidControl UPNPDeviceIGDStatus = 7
-	UPNPDeviceIgdStatusMallocError UPNPDeviceIGDStatus = 8
-	UPNPDeviceIgdStatusUnknownError UPNPDeviceIGDStatus = 9
+	UPNPDeviceIgdStatusMallocError    UPNPDeviceIGDStatus = 8
+	UPNPDeviceIgdStatusUnknownError   UPNPDeviceIGDStatus = 9
 )
 
 type UndoRedoMergeMode = classdb.UndoRedoMergeMode
 
 const (
 	UndoRedoMergeDisable UndoRedoMergeMode = 0
-	UndoRedoMergeEnds UndoRedoMergeMode = 1
-	UndoRedoMergeAll UndoRedoMergeMode = 2
+	UndoRedoMergeEnds    UndoRedoMergeMode = 1
+	UndoRedoMergeAll     UndoRedoMergeMode = 2
 )
 
 type ViewportPositionalShadowAtlasQuadrantSubdiv = classdb.ViewportPositionalShadowAtlasQuadrantSubdiv
 
 const (
 	ViewportShadowAtlasQuadrantSubdivDisabled ViewportPositionalShadowAtlasQuadrantSubdiv = 0
-	ViewportShadowAtlasQuadrantSubdiv1 ViewportPositionalShadowAtlasQuadrantSubdiv = 1
-	ViewportShadowAtlasQuadrantSubdiv4 ViewportPositionalShadowAtlasQuadrantSubdiv = 2
-	ViewportShadowAtlasQuadrantSubdiv16 ViewportPositionalShadowAtlasQuadrantSubdiv = 3
-	ViewportShadowAtlasQuadrantSubdiv64 ViewportPositionalShadowAtlasQuadrantSubdiv = 4
-	ViewportShadowAtlasQuadrantSubdiv256 ViewportPositionalShadowAtlasQuadrantSubdiv = 5
-	ViewportShadowAtlasQuadrantSubdiv1024 ViewportPositionalShadowAtlasQuadrantSubdiv = 6
-	ViewportShadowAtlasQuadrantSubdivMax ViewportPositionalShadowAtlasQuadrantSubdiv = 7
+	ViewportShadowAtlasQuadrantSubdiv1        ViewportPositionalShadowAtlasQuadrantSubdiv = 1
+	ViewportShadowAtlasQuadrantSubdiv4        ViewportPositionalShadowAtlasQuadrantSubdiv = 2
+	ViewportShadowAtlasQuadrantSubdiv16       ViewportPositionalShadowAtlasQuadrantSubdiv = 3
+	ViewportShadowAtlasQuadrantSubdiv64       ViewportPositionalShadowAtlasQuadrantSubdiv = 4
+	ViewportShadowAtlasQuadrantSubdiv256      ViewportPositionalShadowAtlasQuadrantSubdiv = 5
+	ViewportShadowAtlasQuadrantSubdiv1024     ViewportPositionalShadowAtlasQuadrantSubdiv = 6
+	ViewportShadowAtlasQuadrantSubdivMax      ViewportPositionalShadowAtlasQuadrantSubdiv = 7
 )
 
 type ViewportScaling3DMode = classdb.ViewportScaling3DMode
 
 const (
 	ViewportScaling3dModeBilinear ViewportScaling3DMode = 0
-	ViewportScaling3dModeFsr ViewportScaling3DMode = 1
-	ViewportScaling3dModeFsr2 ViewportScaling3DMode = 2
-	ViewportScaling3dModeMax ViewportScaling3DMode = 3
+	ViewportScaling3dModeFsr      ViewportScaling3DMode = 1
+	ViewportScaling3dModeFsr2     ViewportScaling3DMode = 2
+	ViewportScaling3dModeMax      ViewportScaling3DMode = 3
 )
 
 type ViewportMSAA = classdb.ViewportMSAA
 
 const (
 	ViewportMsaaDisabled ViewportMSAA = 0
-	ViewportMsaa2x ViewportMSAA = 1
-	ViewportMsaa4x ViewportMSAA = 2
-	ViewportMsaa8x ViewportMSAA = 3
-	ViewportMsaaMax ViewportMSAA = 4
+	ViewportMsaa2x       ViewportMSAA = 1
+	ViewportMsaa4x       ViewportMSAA = 2
+	ViewportMsaa8x       ViewportMSAA = 3
+	ViewportMsaaMax      ViewportMSAA = 4
 )
 
 type ViewportScreenSpaceAA = classdb.ViewportScreenSpaceAA
 
 const (
 	ViewportScreenSpaceAaDisabled ViewportScreenSpaceAA = 0
-	ViewportScreenSpaceAaFxaa ViewportScreenSpaceAA = 1
-	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 2
+	ViewportScreenSpaceAaFxaa     ViewportScreenSpaceAA = 1
+	ViewportScreenSpaceAaMax      ViewportScreenSpaceAA = 2
 )
 
 type ViewportRenderInfo = classdb.ViewportRenderInfo
 
 const (
-	ViewportRenderInfoObjectsInFrame ViewportRenderInfo = 0
+	ViewportRenderInfoObjectsInFrame    ViewportRenderInfo = 0
 	ViewportRenderInfoPrimitivesInFrame ViewportRenderInfo = 1
-	ViewportRenderInfoDrawCallsInFrame ViewportRenderInfo = 2
-	ViewportRenderInfoMax ViewportRenderInfo = 3
+	ViewportRenderInfoDrawCallsInFrame  ViewportRenderInfo = 2
+	ViewportRenderInfoMax               ViewportRenderInfo = 3
 )
 
 type ViewportRenderInfoType = classdb.ViewportRenderInfoType
 
 const (
 	ViewportRenderInfoTypeVisible ViewportRenderInfoType = 0
-	ViewportRenderInfoTypeShadow ViewportRenderInfoType = 1
-	ViewportRenderInfoTypeMax ViewportRenderInfoType = 2
+	ViewportRenderInfoTypeShadow  ViewportRenderInfoType = 1
+	ViewportRenderInfoTypeMax     ViewportRenderInfoType = 2
 )
 
 type ViewportDebugDraw = classdb.ViewportDebugDraw
 
 const (
-	ViewportDebugDrawDisabled ViewportDebugDraw = 0
-	ViewportDebugDrawUnshaded ViewportDebugDraw = 1
-	ViewportDebugDrawLighting ViewportDebugDraw = 2
-	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
-	ViewportDebugDrawWireframe ViewportDebugDraw = 4
-	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
-	ViewportDebugDrawVoxelGiAlbedo ViewportDebugDraw = 6
-	ViewportDebugDrawVoxelGiLighting ViewportDebugDraw = 7
-	ViewportDebugDrawVoxelGiEmission ViewportDebugDraw = 8
-	ViewportDebugDrawShadowAtlas ViewportDebugDraw = 9
-	ViewportDebugDrawDirectionalShadowAtlas ViewportDebugDraw = 10
-	ViewportDebugDrawSceneLuminance ViewportDebugDraw = 11
-	ViewportDebugDrawSsao ViewportDebugDraw = 12
-	ViewportDebugDrawSsil ViewportDebugDraw = 13
-	ViewportDebugDrawPssmSplits ViewportDebugDraw = 14
-	ViewportDebugDrawDecalAtlas ViewportDebugDraw = 15
-	ViewportDebugDrawSdfgi ViewportDebugDraw = 16
-	ViewportDebugDrawSdfgiProbes ViewportDebugDraw = 17
-	ViewportDebugDrawGiBuffer ViewportDebugDraw = 18
-	ViewportDebugDrawDisableLod ViewportDebugDraw = 19
-	ViewportDebugDrawClusterOmniLights ViewportDebugDraw = 20
-	ViewportDebugDrawClusterSpotLights ViewportDebugDraw = 21
-	ViewportDebugDrawClusterDecals ViewportDebugDraw = 22
+	ViewportDebugDrawDisabled                ViewportDebugDraw = 0
+	ViewportDebugDrawUnshaded                ViewportDebugDraw = 1
+	ViewportDebugDrawLighting                ViewportDebugDraw = 2
+	ViewportDebugDrawOverdraw                ViewportDebugDraw = 3
+	ViewportDebugDrawWireframe               ViewportDebugDraw = 4
+	ViewportDebugDrawNormalBuffer            ViewportDebugDraw = 5
+	ViewportDebugDrawVoxelGiAlbedo           ViewportDebugDraw = 6
+	ViewportDebugDrawVoxelGiLighting         ViewportDebugDraw = 7
+	ViewportDebugDrawVoxelGiEmission         ViewportDebugDraw = 8
+	ViewportDebugDrawShadowAtlas             ViewportDebugDraw = 9
+	ViewportDebugDrawDirectionalShadowAtlas  ViewportDebugDraw = 10
+	ViewportDebugDrawSceneLuminance          ViewportDebugDraw = 11
+	ViewportDebugDrawSsao                    ViewportDebugDraw = 12
+	ViewportDebugDrawSsil                    ViewportDebugDraw = 13
+	ViewportDebugDrawPssmSplits              ViewportDebugDraw = 14
+	ViewportDebugDrawDecalAtlas              ViewportDebugDraw = 15
+	ViewportDebugDrawSdfgi                   ViewportDebugDraw = 16
+	ViewportDebugDrawSdfgiProbes             ViewportDebugDraw = 17
+	ViewportDebugDrawGiBuffer                ViewportDebugDraw = 18
+	ViewportDebugDrawDisableLod              ViewportDebugDraw = 19
+	ViewportDebugDrawClusterOmniLights       ViewportDebugDraw = 20
+	ViewportDebugDrawClusterSpotLights       ViewportDebugDraw = 21
+	ViewportDebugDrawClusterDecals           ViewportDebugDraw = 22
 	ViewportDebugDrawClusterReflectionProbes ViewportDebugDraw = 23
-	ViewportDebugDrawOccluders ViewportDebugDraw = 24
-	ViewportDebugDrawMotionVectors ViewportDebugDraw = 25
-	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
+	ViewportDebugDrawOccluders               ViewportDebugDraw = 24
+	ViewportDebugDrawMotionVectors           ViewportDebugDraw = 25
+	ViewportDebugDrawInternalBuffer          ViewportDebugDraw = 26
 )
 
 type ViewportDefaultCanvasItemTextureFilter = classdb.ViewportDefaultCanvasItemTextureFilter
 
 const (
-	ViewportDefaultCanvasItemTextureFilterNearest ViewportDefaultCanvasItemTextureFilter = 0
-	ViewportDefaultCanvasItemTextureFilterLinear ViewportDefaultCanvasItemTextureFilter = 1
-	ViewportDefaultCanvasItemTextureFilterLinearWithMipmaps ViewportDefaultCanvasItemTextureFilter = 2
+	ViewportDefaultCanvasItemTextureFilterNearest            ViewportDefaultCanvasItemTextureFilter = 0
+	ViewportDefaultCanvasItemTextureFilterLinear             ViewportDefaultCanvasItemTextureFilter = 1
+	ViewportDefaultCanvasItemTextureFilterLinearWithMipmaps  ViewportDefaultCanvasItemTextureFilter = 2
 	ViewportDefaultCanvasItemTextureFilterNearestWithMipmaps ViewportDefaultCanvasItemTextureFilter = 3
-	ViewportDefaultCanvasItemTextureFilterMax ViewportDefaultCanvasItemTextureFilter = 4
+	ViewportDefaultCanvasItemTextureFilterMax                ViewportDefaultCanvasItemTextureFilter = 4
 )
 
 type ViewportDefaultCanvasItemTextureRepeat = classdb.ViewportDefaultCanvasItemTextureRepeat
 
 const (
 	ViewportDefaultCanvasItemTextureRepeatDisabled ViewportDefaultCanvasItemTextureRepeat = 0
-	ViewportDefaultCanvasItemTextureRepeatEnabled ViewportDefaultCanvasItemTextureRepeat = 1
-	ViewportDefaultCanvasItemTextureRepeatMirror ViewportDefaultCanvasItemTextureRepeat = 2
-	ViewportDefaultCanvasItemTextureRepeatMax ViewportDefaultCanvasItemTextureRepeat = 3
+	ViewportDefaultCanvasItemTextureRepeatEnabled  ViewportDefaultCanvasItemTextureRepeat = 1
+	ViewportDefaultCanvasItemTextureRepeatMirror   ViewportDefaultCanvasItemTextureRepeat = 2
+	ViewportDefaultCanvasItemTextureRepeatMax      ViewportDefaultCanvasItemTextureRepeat = 3
 )
 
 type ViewportSDFOversize = classdb.ViewportSDFOversize
@@ -6566,167 +6565,167 @@ const (
 	ViewportSdfOversize120Percent ViewportSDFOversize = 1
 	ViewportSdfOversize150Percent ViewportSDFOversize = 2
 	ViewportSdfOversize200Percent ViewportSDFOversize = 3
-	ViewportSdfOversizeMax ViewportSDFOversize = 4
+	ViewportSdfOversizeMax        ViewportSDFOversize = 4
 )
 
 type ViewportSDFScale = classdb.ViewportSDFScale
 
 const (
 	ViewportSdfScale100Percent ViewportSDFScale = 0
-	ViewportSdfScale50Percent ViewportSDFScale = 1
-	ViewportSdfScale25Percent ViewportSDFScale = 2
-	ViewportSdfScaleMax ViewportSDFScale = 3
+	ViewportSdfScale50Percent  ViewportSDFScale = 1
+	ViewportSdfScale25Percent  ViewportSDFScale = 2
+	ViewportSdfScaleMax        ViewportSDFScale = 3
 )
 
 type ViewportVRSMode = classdb.ViewportVRSMode
 
 const (
 	ViewportVrsDisabled ViewportVRSMode = 0
-	ViewportVrsTexture ViewportVRSMode = 1
-	ViewportVrsXr ViewportVRSMode = 2
-	ViewportVrsMax ViewportVRSMode = 3
+	ViewportVrsTexture  ViewportVRSMode = 1
+	ViewportVrsXr       ViewportVRSMode = 2
+	ViewportVrsMax      ViewportVRSMode = 3
 )
 
 type VisibleOnScreenEnabler2DEnableMode = classdb.VisibleOnScreenEnabler2DEnableMode
 
 const (
-	VisibleOnScreenEnabler2DEnableModeInherit VisibleOnScreenEnabler2DEnableMode = 0
-	VisibleOnScreenEnabler2DEnableModeAlways VisibleOnScreenEnabler2DEnableMode = 1
+	VisibleOnScreenEnabler2DEnableModeInherit    VisibleOnScreenEnabler2DEnableMode = 0
+	VisibleOnScreenEnabler2DEnableModeAlways     VisibleOnScreenEnabler2DEnableMode = 1
 	VisibleOnScreenEnabler2DEnableModeWhenPaused VisibleOnScreenEnabler2DEnableMode = 2
 )
 
 type VisibleOnScreenEnabler3DEnableMode = classdb.VisibleOnScreenEnabler3DEnableMode
 
 const (
-	VisibleOnScreenEnabler3DEnableModeInherit VisibleOnScreenEnabler3DEnableMode = 0
-	VisibleOnScreenEnabler3DEnableModeAlways VisibleOnScreenEnabler3DEnableMode = 1
+	VisibleOnScreenEnabler3DEnableModeInherit    VisibleOnScreenEnabler3DEnableMode = 0
+	VisibleOnScreenEnabler3DEnableModeAlways     VisibleOnScreenEnabler3DEnableMode = 1
 	VisibleOnScreenEnabler3DEnableModeWhenPaused VisibleOnScreenEnabler3DEnableMode = 2
 )
 
 type VisualShaderType = classdb.VisualShaderType
 
 const (
-	VisualShaderTypeVertex VisualShaderType = 0
-	VisualShaderTypeFragment VisualShaderType = 1
-	VisualShaderTypeLight VisualShaderType = 2
-	VisualShaderTypeStart VisualShaderType = 3
-	VisualShaderTypeProcess VisualShaderType = 4
-	VisualShaderTypeCollide VisualShaderType = 5
-	VisualShaderTypeStartCustom VisualShaderType = 6
+	VisualShaderTypeVertex        VisualShaderType = 0
+	VisualShaderTypeFragment      VisualShaderType = 1
+	VisualShaderTypeLight         VisualShaderType = 2
+	VisualShaderTypeStart         VisualShaderType = 3
+	VisualShaderTypeProcess       VisualShaderType = 4
+	VisualShaderTypeCollide       VisualShaderType = 5
+	VisualShaderTypeStartCustom   VisualShaderType = 6
 	VisualShaderTypeProcessCustom VisualShaderType = 7
-	VisualShaderTypeSky VisualShaderType = 8
-	VisualShaderTypeFog VisualShaderType = 9
-	VisualShaderTypeMax VisualShaderType = 10
+	VisualShaderTypeSky           VisualShaderType = 8
+	VisualShaderTypeFog           VisualShaderType = 9
+	VisualShaderTypeMax           VisualShaderType = 10
 )
 
 type VisualShaderVaryingMode = classdb.VisualShaderVaryingMode
 
 const (
 	VisualShaderVaryingModeVertexToFragLight VisualShaderVaryingMode = 0
-	VisualShaderVaryingModeFragToLight VisualShaderVaryingMode = 1
-	VisualShaderVaryingModeMax VisualShaderVaryingMode = 2
+	VisualShaderVaryingModeFragToLight       VisualShaderVaryingMode = 1
+	VisualShaderVaryingModeMax               VisualShaderVaryingMode = 2
 )
 
 type VisualShaderVaryingType = classdb.VisualShaderVaryingType
 
 const (
-	VisualShaderVaryingTypeFloat VisualShaderVaryingType = 0
-	VisualShaderVaryingTypeInt VisualShaderVaryingType = 1
-	VisualShaderVaryingTypeUint VisualShaderVaryingType = 2
-	VisualShaderVaryingTypeVector2d VisualShaderVaryingType = 3
-	VisualShaderVaryingTypeVector3d VisualShaderVaryingType = 4
-	VisualShaderVaryingTypeVector4d VisualShaderVaryingType = 5
-	VisualShaderVaryingTypeBoolean VisualShaderVaryingType = 6
+	VisualShaderVaryingTypeFloat     VisualShaderVaryingType = 0
+	VisualShaderVaryingTypeInt       VisualShaderVaryingType = 1
+	VisualShaderVaryingTypeUint      VisualShaderVaryingType = 2
+	VisualShaderVaryingTypeVector2d  VisualShaderVaryingType = 3
+	VisualShaderVaryingTypeVector3d  VisualShaderVaryingType = 4
+	VisualShaderVaryingTypeVector4d  VisualShaderVaryingType = 5
+	VisualShaderVaryingTypeBoolean   VisualShaderVaryingType = 6
 	VisualShaderVaryingTypeTransform VisualShaderVaryingType = 7
-	VisualShaderVaryingTypeMax VisualShaderVaryingType = 8
+	VisualShaderVaryingTypeMax       VisualShaderVaryingType = 8
 )
 
 type VisualShaderNodePortType = classdb.VisualShaderNodePortType
 
 const (
-	VisualShaderNodePortTypeScalar VisualShaderNodePortType = 0
-	VisualShaderNodePortTypeScalarInt VisualShaderNodePortType = 1
+	VisualShaderNodePortTypeScalar     VisualShaderNodePortType = 0
+	VisualShaderNodePortTypeScalarInt  VisualShaderNodePortType = 1
 	VisualShaderNodePortTypeScalarUint VisualShaderNodePortType = 2
-	VisualShaderNodePortTypeVector2d VisualShaderNodePortType = 3
-	VisualShaderNodePortTypeVector3d VisualShaderNodePortType = 4
-	VisualShaderNodePortTypeVector4d VisualShaderNodePortType = 5
-	VisualShaderNodePortTypeBoolean VisualShaderNodePortType = 6
-	VisualShaderNodePortTypeTransform VisualShaderNodePortType = 7
-	VisualShaderNodePortTypeSampler VisualShaderNodePortType = 8
-	VisualShaderNodePortTypeMax VisualShaderNodePortType = 9
+	VisualShaderNodePortTypeVector2d   VisualShaderNodePortType = 3
+	VisualShaderNodePortTypeVector3d   VisualShaderNodePortType = 4
+	VisualShaderNodePortTypeVector4d   VisualShaderNodePortType = 5
+	VisualShaderNodePortTypeBoolean    VisualShaderNodePortType = 6
+	VisualShaderNodePortTypeTransform  VisualShaderNodePortType = 7
+	VisualShaderNodePortTypeSampler    VisualShaderNodePortType = 8
+	VisualShaderNodePortTypeMax        VisualShaderNodePortType = 9
 )
 
 type VisualShaderNodeBillboardBillboardType = classdb.VisualShaderNodeBillboardBillboardType
 
 const (
-	VisualShaderNodeBillboardBillboardTypeDisabled VisualShaderNodeBillboardBillboardType = 0
-	VisualShaderNodeBillboardBillboardTypeEnabled VisualShaderNodeBillboardBillboardType = 1
-	VisualShaderNodeBillboardBillboardTypeFixedY VisualShaderNodeBillboardBillboardType = 2
+	VisualShaderNodeBillboardBillboardTypeDisabled  VisualShaderNodeBillboardBillboardType = 0
+	VisualShaderNodeBillboardBillboardTypeEnabled   VisualShaderNodeBillboardBillboardType = 1
+	VisualShaderNodeBillboardBillboardTypeFixedY    VisualShaderNodeBillboardBillboardType = 2
 	VisualShaderNodeBillboardBillboardTypeParticles VisualShaderNodeBillboardBillboardType = 3
-	VisualShaderNodeBillboardBillboardTypeMax VisualShaderNodeBillboardBillboardType = 4
+	VisualShaderNodeBillboardBillboardTypeMax       VisualShaderNodeBillboardBillboardType = 4
 )
 
 type VisualShaderNodeClampOpType = classdb.VisualShaderNodeClampOpType
 
 const (
-	VisualShaderNodeClampOpTypeFloat VisualShaderNodeClampOpType = 0
-	VisualShaderNodeClampOpTypeInt VisualShaderNodeClampOpType = 1
-	VisualShaderNodeClampOpTypeUint VisualShaderNodeClampOpType = 2
+	VisualShaderNodeClampOpTypeFloat    VisualShaderNodeClampOpType = 0
+	VisualShaderNodeClampOpTypeInt      VisualShaderNodeClampOpType = 1
+	VisualShaderNodeClampOpTypeUint     VisualShaderNodeClampOpType = 2
 	VisualShaderNodeClampOpTypeVector2d VisualShaderNodeClampOpType = 3
 	VisualShaderNodeClampOpTypeVector3d VisualShaderNodeClampOpType = 4
 	VisualShaderNodeClampOpTypeVector4d VisualShaderNodeClampOpType = 5
-	VisualShaderNodeClampOpTypeMax VisualShaderNodeClampOpType = 6
+	VisualShaderNodeClampOpTypeMax      VisualShaderNodeClampOpType = 6
 )
 
 type VisualShaderNodeColorFuncFunction = classdb.VisualShaderNodeColorFuncFunction
 
 const (
 	VisualShaderNodeColorFuncFuncGrayscale VisualShaderNodeColorFuncFunction = 0
-	VisualShaderNodeColorFuncFuncHsv2rgb VisualShaderNodeColorFuncFunction = 1
-	VisualShaderNodeColorFuncFuncRgb2hsv VisualShaderNodeColorFuncFunction = 2
-	VisualShaderNodeColorFuncFuncSepia VisualShaderNodeColorFuncFunction = 3
-	VisualShaderNodeColorFuncFuncMax VisualShaderNodeColorFuncFunction = 4
+	VisualShaderNodeColorFuncFuncHsv2rgb   VisualShaderNodeColorFuncFunction = 1
+	VisualShaderNodeColorFuncFuncRgb2hsv   VisualShaderNodeColorFuncFunction = 2
+	VisualShaderNodeColorFuncFuncSepia     VisualShaderNodeColorFuncFunction = 3
+	VisualShaderNodeColorFuncFuncMax       VisualShaderNodeColorFuncFunction = 4
 )
 
 type VisualShaderNodeColorOpOperator = classdb.VisualShaderNodeColorOpOperator
 
 const (
-	VisualShaderNodeColorOpOpScreen VisualShaderNodeColorOpOperator = 0
+	VisualShaderNodeColorOpOpScreen     VisualShaderNodeColorOpOperator = 0
 	VisualShaderNodeColorOpOpDifference VisualShaderNodeColorOpOperator = 1
-	VisualShaderNodeColorOpOpDarken VisualShaderNodeColorOpOperator = 2
-	VisualShaderNodeColorOpOpLighten VisualShaderNodeColorOpOperator = 3
-	VisualShaderNodeColorOpOpOverlay VisualShaderNodeColorOpOperator = 4
-	VisualShaderNodeColorOpOpDodge VisualShaderNodeColorOpOperator = 5
-	VisualShaderNodeColorOpOpBurn VisualShaderNodeColorOpOperator = 6
-	VisualShaderNodeColorOpOpSoftLight VisualShaderNodeColorOpOperator = 7
-	VisualShaderNodeColorOpOpHardLight VisualShaderNodeColorOpOperator = 8
-	VisualShaderNodeColorOpOpMax VisualShaderNodeColorOpOperator = 9
+	VisualShaderNodeColorOpOpDarken     VisualShaderNodeColorOpOperator = 2
+	VisualShaderNodeColorOpOpLighten    VisualShaderNodeColorOpOperator = 3
+	VisualShaderNodeColorOpOpOverlay    VisualShaderNodeColorOpOperator = 4
+	VisualShaderNodeColorOpOpDodge      VisualShaderNodeColorOpOperator = 5
+	VisualShaderNodeColorOpOpBurn       VisualShaderNodeColorOpOperator = 6
+	VisualShaderNodeColorOpOpSoftLight  VisualShaderNodeColorOpOperator = 7
+	VisualShaderNodeColorOpOpHardLight  VisualShaderNodeColorOpOperator = 8
+	VisualShaderNodeColorOpOpMax        VisualShaderNodeColorOpOperator = 9
 )
 
 type VisualShaderNodeCompareComparisonType = classdb.VisualShaderNodeCompareComparisonType
 
 const (
-	VisualShaderNodeCompareCtypeScalar VisualShaderNodeCompareComparisonType = 0
-	VisualShaderNodeCompareCtypeScalarInt VisualShaderNodeCompareComparisonType = 1
+	VisualShaderNodeCompareCtypeScalar     VisualShaderNodeCompareComparisonType = 0
+	VisualShaderNodeCompareCtypeScalarInt  VisualShaderNodeCompareComparisonType = 1
 	VisualShaderNodeCompareCtypeScalarUint VisualShaderNodeCompareComparisonType = 2
-	VisualShaderNodeCompareCtypeVector2d VisualShaderNodeCompareComparisonType = 3
-	VisualShaderNodeCompareCtypeVector3d VisualShaderNodeCompareComparisonType = 4
-	VisualShaderNodeCompareCtypeVector4d VisualShaderNodeCompareComparisonType = 5
-	VisualShaderNodeCompareCtypeBoolean VisualShaderNodeCompareComparisonType = 6
-	VisualShaderNodeCompareCtypeTransform VisualShaderNodeCompareComparisonType = 7
-	VisualShaderNodeCompareCtypeMax VisualShaderNodeCompareComparisonType = 8
+	VisualShaderNodeCompareCtypeVector2d   VisualShaderNodeCompareComparisonType = 3
+	VisualShaderNodeCompareCtypeVector3d   VisualShaderNodeCompareComparisonType = 4
+	VisualShaderNodeCompareCtypeVector4d   VisualShaderNodeCompareComparisonType = 5
+	VisualShaderNodeCompareCtypeBoolean    VisualShaderNodeCompareComparisonType = 6
+	VisualShaderNodeCompareCtypeTransform  VisualShaderNodeCompareComparisonType = 7
+	VisualShaderNodeCompareCtypeMax        VisualShaderNodeCompareComparisonType = 8
 )
 
 type VisualShaderNodeCompareFunction = classdb.VisualShaderNodeCompareFunction
 
 const (
-	VisualShaderNodeCompareFuncEqual VisualShaderNodeCompareFunction = 0
-	VisualShaderNodeCompareFuncNotEqual VisualShaderNodeCompareFunction = 1
-	VisualShaderNodeCompareFuncGreaterThan VisualShaderNodeCompareFunction = 2
+	VisualShaderNodeCompareFuncEqual            VisualShaderNodeCompareFunction = 0
+	VisualShaderNodeCompareFuncNotEqual         VisualShaderNodeCompareFunction = 1
+	VisualShaderNodeCompareFuncGreaterThan      VisualShaderNodeCompareFunction = 2
 	VisualShaderNodeCompareFuncGreaterThanEqual VisualShaderNodeCompareFunction = 3
-	VisualShaderNodeCompareFuncLessThan VisualShaderNodeCompareFunction = 4
-	VisualShaderNodeCompareFuncLessThanEqual VisualShaderNodeCompareFunction = 5
-	VisualShaderNodeCompareFuncMax VisualShaderNodeCompareFunction = 6
+	VisualShaderNodeCompareFuncLessThan         VisualShaderNodeCompareFunction = 4
+	VisualShaderNodeCompareFuncLessThanEqual    VisualShaderNodeCompareFunction = 5
+	VisualShaderNodeCompareFuncMax              VisualShaderNodeCompareFunction = 6
 )
 
 type VisualShaderNodeCompareCondition = classdb.VisualShaderNodeCompareCondition
@@ -6741,145 +6740,145 @@ type VisualShaderNodeCubemapSource = classdb.VisualShaderNodeCubemapSource
 
 const (
 	VisualShaderNodeCubemapSourceTexture VisualShaderNodeCubemapSource = 0
-	VisualShaderNodeCubemapSourcePort VisualShaderNodeCubemapSource = 1
-	VisualShaderNodeCubemapSourceMax VisualShaderNodeCubemapSource = 2
+	VisualShaderNodeCubemapSourcePort    VisualShaderNodeCubemapSource = 1
+	VisualShaderNodeCubemapSourceMax     VisualShaderNodeCubemapSource = 2
 )
 
 type VisualShaderNodeCubemapTextureType = classdb.VisualShaderNodeCubemapTextureType
 
 const (
-	VisualShaderNodeCubemapTypeData VisualShaderNodeCubemapTextureType = 0
-	VisualShaderNodeCubemapTypeColor VisualShaderNodeCubemapTextureType = 1
+	VisualShaderNodeCubemapTypeData      VisualShaderNodeCubemapTextureType = 0
+	VisualShaderNodeCubemapTypeColor     VisualShaderNodeCubemapTextureType = 1
 	VisualShaderNodeCubemapTypeNormalMap VisualShaderNodeCubemapTextureType = 2
-	VisualShaderNodeCubemapTypeMax VisualShaderNodeCubemapTextureType = 3
+	VisualShaderNodeCubemapTypeMax       VisualShaderNodeCubemapTextureType = 3
 )
 
 type VisualShaderNodeDerivativeFuncOpType = classdb.VisualShaderNodeDerivativeFuncOpType
 
 const (
-	VisualShaderNodeDerivativeFuncOpTypeScalar VisualShaderNodeDerivativeFuncOpType = 0
+	VisualShaderNodeDerivativeFuncOpTypeScalar   VisualShaderNodeDerivativeFuncOpType = 0
 	VisualShaderNodeDerivativeFuncOpTypeVector2d VisualShaderNodeDerivativeFuncOpType = 1
 	VisualShaderNodeDerivativeFuncOpTypeVector3d VisualShaderNodeDerivativeFuncOpType = 2
 	VisualShaderNodeDerivativeFuncOpTypeVector4d VisualShaderNodeDerivativeFuncOpType = 3
-	VisualShaderNodeDerivativeFuncOpTypeMax VisualShaderNodeDerivativeFuncOpType = 4
+	VisualShaderNodeDerivativeFuncOpTypeMax      VisualShaderNodeDerivativeFuncOpType = 4
 )
 
 type VisualShaderNodeDerivativeFuncFunction = classdb.VisualShaderNodeDerivativeFuncFunction
 
 const (
 	VisualShaderNodeDerivativeFuncFuncSum VisualShaderNodeDerivativeFuncFunction = 0
-	VisualShaderNodeDerivativeFuncFuncX VisualShaderNodeDerivativeFuncFunction = 1
-	VisualShaderNodeDerivativeFuncFuncY VisualShaderNodeDerivativeFuncFunction = 2
+	VisualShaderNodeDerivativeFuncFuncX   VisualShaderNodeDerivativeFuncFunction = 1
+	VisualShaderNodeDerivativeFuncFuncY   VisualShaderNodeDerivativeFuncFunction = 2
 	VisualShaderNodeDerivativeFuncFuncMax VisualShaderNodeDerivativeFuncFunction = 3
 )
 
 type VisualShaderNodeDerivativeFuncPrecision = classdb.VisualShaderNodeDerivativeFuncPrecision
 
 const (
-	VisualShaderNodeDerivativeFuncPrecisionNone VisualShaderNodeDerivativeFuncPrecision = 0
+	VisualShaderNodeDerivativeFuncPrecisionNone   VisualShaderNodeDerivativeFuncPrecision = 0
 	VisualShaderNodeDerivativeFuncPrecisionCoarse VisualShaderNodeDerivativeFuncPrecision = 1
-	VisualShaderNodeDerivativeFuncPrecisionFine VisualShaderNodeDerivativeFuncPrecision = 2
-	VisualShaderNodeDerivativeFuncPrecisionMax VisualShaderNodeDerivativeFuncPrecision = 3
+	VisualShaderNodeDerivativeFuncPrecisionFine   VisualShaderNodeDerivativeFuncPrecision = 2
+	VisualShaderNodeDerivativeFuncPrecisionMax    VisualShaderNodeDerivativeFuncPrecision = 3
 )
 
 type VisualShaderNodeFloatFuncFunction = classdb.VisualShaderNodeFloatFuncFunction
 
 const (
-	VisualShaderNodeFloatFuncFuncSin VisualShaderNodeFloatFuncFunction = 0
-	VisualShaderNodeFloatFuncFuncCos VisualShaderNodeFloatFuncFunction = 1
-	VisualShaderNodeFloatFuncFuncTan VisualShaderNodeFloatFuncFunction = 2
-	VisualShaderNodeFloatFuncFuncAsin VisualShaderNodeFloatFuncFunction = 3
-	VisualShaderNodeFloatFuncFuncAcos VisualShaderNodeFloatFuncFunction = 4
-	VisualShaderNodeFloatFuncFuncAtan VisualShaderNodeFloatFuncFunction = 5
-	VisualShaderNodeFloatFuncFuncSinh VisualShaderNodeFloatFuncFunction = 6
-	VisualShaderNodeFloatFuncFuncCosh VisualShaderNodeFloatFuncFunction = 7
-	VisualShaderNodeFloatFuncFuncTanh VisualShaderNodeFloatFuncFunction = 8
-	VisualShaderNodeFloatFuncFuncLog VisualShaderNodeFloatFuncFunction = 9
-	VisualShaderNodeFloatFuncFuncExp VisualShaderNodeFloatFuncFunction = 10
-	VisualShaderNodeFloatFuncFuncSqrt VisualShaderNodeFloatFuncFunction = 11
-	VisualShaderNodeFloatFuncFuncAbs VisualShaderNodeFloatFuncFunction = 12
-	VisualShaderNodeFloatFuncFuncSign VisualShaderNodeFloatFuncFunction = 13
-	VisualShaderNodeFloatFuncFuncFloor VisualShaderNodeFloatFuncFunction = 14
-	VisualShaderNodeFloatFuncFuncRound VisualShaderNodeFloatFuncFunction = 15
-	VisualShaderNodeFloatFuncFuncCeil VisualShaderNodeFloatFuncFunction = 16
-	VisualShaderNodeFloatFuncFuncFract VisualShaderNodeFloatFuncFunction = 17
-	VisualShaderNodeFloatFuncFuncSaturate VisualShaderNodeFloatFuncFunction = 18
-	VisualShaderNodeFloatFuncFuncNegate VisualShaderNodeFloatFuncFunction = 19
-	VisualShaderNodeFloatFuncFuncAcosh VisualShaderNodeFloatFuncFunction = 20
-	VisualShaderNodeFloatFuncFuncAsinh VisualShaderNodeFloatFuncFunction = 21
-	VisualShaderNodeFloatFuncFuncAtanh VisualShaderNodeFloatFuncFunction = 22
-	VisualShaderNodeFloatFuncFuncDegrees VisualShaderNodeFloatFuncFunction = 23
-	VisualShaderNodeFloatFuncFuncExp2 VisualShaderNodeFloatFuncFunction = 24
+	VisualShaderNodeFloatFuncFuncSin         VisualShaderNodeFloatFuncFunction = 0
+	VisualShaderNodeFloatFuncFuncCos         VisualShaderNodeFloatFuncFunction = 1
+	VisualShaderNodeFloatFuncFuncTan         VisualShaderNodeFloatFuncFunction = 2
+	VisualShaderNodeFloatFuncFuncAsin        VisualShaderNodeFloatFuncFunction = 3
+	VisualShaderNodeFloatFuncFuncAcos        VisualShaderNodeFloatFuncFunction = 4
+	VisualShaderNodeFloatFuncFuncAtan        VisualShaderNodeFloatFuncFunction = 5
+	VisualShaderNodeFloatFuncFuncSinh        VisualShaderNodeFloatFuncFunction = 6
+	VisualShaderNodeFloatFuncFuncCosh        VisualShaderNodeFloatFuncFunction = 7
+	VisualShaderNodeFloatFuncFuncTanh        VisualShaderNodeFloatFuncFunction = 8
+	VisualShaderNodeFloatFuncFuncLog         VisualShaderNodeFloatFuncFunction = 9
+	VisualShaderNodeFloatFuncFuncExp         VisualShaderNodeFloatFuncFunction = 10
+	VisualShaderNodeFloatFuncFuncSqrt        VisualShaderNodeFloatFuncFunction = 11
+	VisualShaderNodeFloatFuncFuncAbs         VisualShaderNodeFloatFuncFunction = 12
+	VisualShaderNodeFloatFuncFuncSign        VisualShaderNodeFloatFuncFunction = 13
+	VisualShaderNodeFloatFuncFuncFloor       VisualShaderNodeFloatFuncFunction = 14
+	VisualShaderNodeFloatFuncFuncRound       VisualShaderNodeFloatFuncFunction = 15
+	VisualShaderNodeFloatFuncFuncCeil        VisualShaderNodeFloatFuncFunction = 16
+	VisualShaderNodeFloatFuncFuncFract       VisualShaderNodeFloatFuncFunction = 17
+	VisualShaderNodeFloatFuncFuncSaturate    VisualShaderNodeFloatFuncFunction = 18
+	VisualShaderNodeFloatFuncFuncNegate      VisualShaderNodeFloatFuncFunction = 19
+	VisualShaderNodeFloatFuncFuncAcosh       VisualShaderNodeFloatFuncFunction = 20
+	VisualShaderNodeFloatFuncFuncAsinh       VisualShaderNodeFloatFuncFunction = 21
+	VisualShaderNodeFloatFuncFuncAtanh       VisualShaderNodeFloatFuncFunction = 22
+	VisualShaderNodeFloatFuncFuncDegrees     VisualShaderNodeFloatFuncFunction = 23
+	VisualShaderNodeFloatFuncFuncExp2        VisualShaderNodeFloatFuncFunction = 24
 	VisualShaderNodeFloatFuncFuncInverseSqrt VisualShaderNodeFloatFuncFunction = 25
-	VisualShaderNodeFloatFuncFuncLog2 VisualShaderNodeFloatFuncFunction = 26
-	VisualShaderNodeFloatFuncFuncRadians VisualShaderNodeFloatFuncFunction = 27
-	VisualShaderNodeFloatFuncFuncReciprocal VisualShaderNodeFloatFuncFunction = 28
-	VisualShaderNodeFloatFuncFuncRoundeven VisualShaderNodeFloatFuncFunction = 29
-	VisualShaderNodeFloatFuncFuncTrunc VisualShaderNodeFloatFuncFunction = 30
-	VisualShaderNodeFloatFuncFuncOneminus VisualShaderNodeFloatFuncFunction = 31
-	VisualShaderNodeFloatFuncFuncMax VisualShaderNodeFloatFuncFunction = 32
+	VisualShaderNodeFloatFuncFuncLog2        VisualShaderNodeFloatFuncFunction = 26
+	VisualShaderNodeFloatFuncFuncRadians     VisualShaderNodeFloatFuncFunction = 27
+	VisualShaderNodeFloatFuncFuncReciprocal  VisualShaderNodeFloatFuncFunction = 28
+	VisualShaderNodeFloatFuncFuncRoundeven   VisualShaderNodeFloatFuncFunction = 29
+	VisualShaderNodeFloatFuncFuncTrunc       VisualShaderNodeFloatFuncFunction = 30
+	VisualShaderNodeFloatFuncFuncOneminus    VisualShaderNodeFloatFuncFunction = 31
+	VisualShaderNodeFloatFuncFuncMax         VisualShaderNodeFloatFuncFunction = 32
 )
 
 type VisualShaderNodeFloatOpOperator = classdb.VisualShaderNodeFloatOpOperator
 
 const (
-	VisualShaderNodeFloatOpOpAdd VisualShaderNodeFloatOpOperator = 0
-	VisualShaderNodeFloatOpOpSub VisualShaderNodeFloatOpOperator = 1
-	VisualShaderNodeFloatOpOpMul VisualShaderNodeFloatOpOperator = 2
-	VisualShaderNodeFloatOpOpDiv VisualShaderNodeFloatOpOperator = 3
-	VisualShaderNodeFloatOpOpMod VisualShaderNodeFloatOpOperator = 4
-	VisualShaderNodeFloatOpOpPow VisualShaderNodeFloatOpOperator = 5
-	VisualShaderNodeFloatOpOpMax VisualShaderNodeFloatOpOperator = 6
-	VisualShaderNodeFloatOpOpMin VisualShaderNodeFloatOpOperator = 7
-	VisualShaderNodeFloatOpOpAtan2 VisualShaderNodeFloatOpOperator = 8
-	VisualShaderNodeFloatOpOpStep VisualShaderNodeFloatOpOperator = 9
+	VisualShaderNodeFloatOpOpAdd      VisualShaderNodeFloatOpOperator = 0
+	VisualShaderNodeFloatOpOpSub      VisualShaderNodeFloatOpOperator = 1
+	VisualShaderNodeFloatOpOpMul      VisualShaderNodeFloatOpOperator = 2
+	VisualShaderNodeFloatOpOpDiv      VisualShaderNodeFloatOpOperator = 3
+	VisualShaderNodeFloatOpOpMod      VisualShaderNodeFloatOpOperator = 4
+	VisualShaderNodeFloatOpOpPow      VisualShaderNodeFloatOpOperator = 5
+	VisualShaderNodeFloatOpOpMax      VisualShaderNodeFloatOpOperator = 6
+	VisualShaderNodeFloatOpOpMin      VisualShaderNodeFloatOpOperator = 7
+	VisualShaderNodeFloatOpOpAtan2    VisualShaderNodeFloatOpOperator = 8
+	VisualShaderNodeFloatOpOpStep     VisualShaderNodeFloatOpOperator = 9
 	VisualShaderNodeFloatOpOpEnumSize VisualShaderNodeFloatOpOperator = 10
 )
 
 type VisualShaderNodeFloatParameterHint = classdb.VisualShaderNodeFloatParameterHint
 
 const (
-	VisualShaderNodeFloatParameterHintNone VisualShaderNodeFloatParameterHint = 0
-	VisualShaderNodeFloatParameterHintRange VisualShaderNodeFloatParameterHint = 1
+	VisualShaderNodeFloatParameterHintNone      VisualShaderNodeFloatParameterHint = 0
+	VisualShaderNodeFloatParameterHintRange     VisualShaderNodeFloatParameterHint = 1
 	VisualShaderNodeFloatParameterHintRangeStep VisualShaderNodeFloatParameterHint = 2
-	VisualShaderNodeFloatParameterHintMax VisualShaderNodeFloatParameterHint = 3
+	VisualShaderNodeFloatParameterHintMax       VisualShaderNodeFloatParameterHint = 3
 )
 
 type VisualShaderNodeIntFuncFunction = classdb.VisualShaderNodeIntFuncFunction
 
 const (
-	VisualShaderNodeIntFuncFuncAbs VisualShaderNodeIntFuncFunction = 0
-	VisualShaderNodeIntFuncFuncNegate VisualShaderNodeIntFuncFunction = 1
-	VisualShaderNodeIntFuncFuncSign VisualShaderNodeIntFuncFunction = 2
+	VisualShaderNodeIntFuncFuncAbs        VisualShaderNodeIntFuncFunction = 0
+	VisualShaderNodeIntFuncFuncNegate     VisualShaderNodeIntFuncFunction = 1
+	VisualShaderNodeIntFuncFuncSign       VisualShaderNodeIntFuncFunction = 2
 	VisualShaderNodeIntFuncFuncBitwiseNot VisualShaderNodeIntFuncFunction = 3
-	VisualShaderNodeIntFuncFuncMax VisualShaderNodeIntFuncFunction = 4
+	VisualShaderNodeIntFuncFuncMax        VisualShaderNodeIntFuncFunction = 4
 )
 
 type VisualShaderNodeIntOpOperator = classdb.VisualShaderNodeIntOpOperator
 
 const (
-	VisualShaderNodeIntOpOpAdd VisualShaderNodeIntOpOperator = 0
-	VisualShaderNodeIntOpOpSub VisualShaderNodeIntOpOperator = 1
-	VisualShaderNodeIntOpOpMul VisualShaderNodeIntOpOperator = 2
-	VisualShaderNodeIntOpOpDiv VisualShaderNodeIntOpOperator = 3
-	VisualShaderNodeIntOpOpMod VisualShaderNodeIntOpOperator = 4
-	VisualShaderNodeIntOpOpMax VisualShaderNodeIntOpOperator = 5
-	VisualShaderNodeIntOpOpMin VisualShaderNodeIntOpOperator = 6
-	VisualShaderNodeIntOpOpBitwiseAnd VisualShaderNodeIntOpOperator = 7
-	VisualShaderNodeIntOpOpBitwiseOr VisualShaderNodeIntOpOperator = 8
-	VisualShaderNodeIntOpOpBitwiseXor VisualShaderNodeIntOpOperator = 9
-	VisualShaderNodeIntOpOpBitwiseLeftShift VisualShaderNodeIntOpOperator = 10
+	VisualShaderNodeIntOpOpAdd               VisualShaderNodeIntOpOperator = 0
+	VisualShaderNodeIntOpOpSub               VisualShaderNodeIntOpOperator = 1
+	VisualShaderNodeIntOpOpMul               VisualShaderNodeIntOpOperator = 2
+	VisualShaderNodeIntOpOpDiv               VisualShaderNodeIntOpOperator = 3
+	VisualShaderNodeIntOpOpMod               VisualShaderNodeIntOpOperator = 4
+	VisualShaderNodeIntOpOpMax               VisualShaderNodeIntOpOperator = 5
+	VisualShaderNodeIntOpOpMin               VisualShaderNodeIntOpOperator = 6
+	VisualShaderNodeIntOpOpBitwiseAnd        VisualShaderNodeIntOpOperator = 7
+	VisualShaderNodeIntOpOpBitwiseOr         VisualShaderNodeIntOpOperator = 8
+	VisualShaderNodeIntOpOpBitwiseXor        VisualShaderNodeIntOpOperator = 9
+	VisualShaderNodeIntOpOpBitwiseLeftShift  VisualShaderNodeIntOpOperator = 10
 	VisualShaderNodeIntOpOpBitwiseRightShift VisualShaderNodeIntOpOperator = 11
-	VisualShaderNodeIntOpOpEnumSize VisualShaderNodeIntOpOperator = 12
+	VisualShaderNodeIntOpOpEnumSize          VisualShaderNodeIntOpOperator = 12
 )
 
 type VisualShaderNodeIntParameterHint = classdb.VisualShaderNodeIntParameterHint
 
 const (
-	VisualShaderNodeIntParameterHintNone VisualShaderNodeIntParameterHint = 0
-	VisualShaderNodeIntParameterHintRange VisualShaderNodeIntParameterHint = 1
+	VisualShaderNodeIntParameterHintNone      VisualShaderNodeIntParameterHint = 0
+	VisualShaderNodeIntParameterHintRange     VisualShaderNodeIntParameterHint = 1
 	VisualShaderNodeIntParameterHintRangeStep VisualShaderNodeIntParameterHint = 2
-	VisualShaderNodeIntParameterHintMax VisualShaderNodeIntParameterHint = 3
+	VisualShaderNodeIntParameterHintMax       VisualShaderNodeIntParameterHint = 3
 )
 
 type VisualShaderNodeIsFunction = classdb.VisualShaderNodeIsFunction
@@ -6887,48 +6886,48 @@ type VisualShaderNodeIsFunction = classdb.VisualShaderNodeIsFunction
 const (
 	VisualShaderNodeIsFuncIsInf VisualShaderNodeIsFunction = 0
 	VisualShaderNodeIsFuncIsNan VisualShaderNodeIsFunction = 1
-	VisualShaderNodeIsFuncMax VisualShaderNodeIsFunction = 2
+	VisualShaderNodeIsFuncMax   VisualShaderNodeIsFunction = 2
 )
 
 type VisualShaderNodeMixOpType = classdb.VisualShaderNodeMixOpType
 
 const (
-	VisualShaderNodeMixOpTypeScalar VisualShaderNodeMixOpType = 0
-	VisualShaderNodeMixOpTypeVector2d VisualShaderNodeMixOpType = 1
+	VisualShaderNodeMixOpTypeScalar         VisualShaderNodeMixOpType = 0
+	VisualShaderNodeMixOpTypeVector2d       VisualShaderNodeMixOpType = 1
 	VisualShaderNodeMixOpTypeVector2dScalar VisualShaderNodeMixOpType = 2
-	VisualShaderNodeMixOpTypeVector3d VisualShaderNodeMixOpType = 3
+	VisualShaderNodeMixOpTypeVector3d       VisualShaderNodeMixOpType = 3
 	VisualShaderNodeMixOpTypeVector3dScalar VisualShaderNodeMixOpType = 4
-	VisualShaderNodeMixOpTypeVector4d VisualShaderNodeMixOpType = 5
+	VisualShaderNodeMixOpTypeVector4d       VisualShaderNodeMixOpType = 5
 	VisualShaderNodeMixOpTypeVector4dScalar VisualShaderNodeMixOpType = 6
-	VisualShaderNodeMixOpTypeMax VisualShaderNodeMixOpType = 7
+	VisualShaderNodeMixOpTypeMax            VisualShaderNodeMixOpType = 7
 )
 
 type VisualShaderNodeMultiplyAddOpType = classdb.VisualShaderNodeMultiplyAddOpType
 
 const (
-	VisualShaderNodeMultiplyAddOpTypeScalar VisualShaderNodeMultiplyAddOpType = 0
+	VisualShaderNodeMultiplyAddOpTypeScalar   VisualShaderNodeMultiplyAddOpType = 0
 	VisualShaderNodeMultiplyAddOpTypeVector2d VisualShaderNodeMultiplyAddOpType = 1
 	VisualShaderNodeMultiplyAddOpTypeVector3d VisualShaderNodeMultiplyAddOpType = 2
 	VisualShaderNodeMultiplyAddOpTypeVector4d VisualShaderNodeMultiplyAddOpType = 3
-	VisualShaderNodeMultiplyAddOpTypeMax VisualShaderNodeMultiplyAddOpType = 4
+	VisualShaderNodeMultiplyAddOpTypeMax      VisualShaderNodeMultiplyAddOpType = 4
 )
 
 type VisualShaderNodeParameterQualifier = classdb.VisualShaderNodeParameterQualifier
 
 const (
-	VisualShaderNodeParameterQualNone VisualShaderNodeParameterQualifier = 0
-	VisualShaderNodeParameterQualGlobal VisualShaderNodeParameterQualifier = 1
+	VisualShaderNodeParameterQualNone     VisualShaderNodeParameterQualifier = 0
+	VisualShaderNodeParameterQualGlobal   VisualShaderNodeParameterQualifier = 1
 	VisualShaderNodeParameterQualInstance VisualShaderNodeParameterQualifier = 2
-	VisualShaderNodeParameterQualMax VisualShaderNodeParameterQualifier = 3
+	VisualShaderNodeParameterQualMax      VisualShaderNodeParameterQualifier = 3
 )
 
 type VisualShaderNodeParticleAcceleratorMode = classdb.VisualShaderNodeParticleAcceleratorMode
 
 const (
-	VisualShaderNodeParticleAcceleratorModeLinear VisualShaderNodeParticleAcceleratorMode = 0
-	VisualShaderNodeParticleAcceleratorModeRadial VisualShaderNodeParticleAcceleratorMode = 1
+	VisualShaderNodeParticleAcceleratorModeLinear     VisualShaderNodeParticleAcceleratorMode = 0
+	VisualShaderNodeParticleAcceleratorModeRadial     VisualShaderNodeParticleAcceleratorMode = 1
 	VisualShaderNodeParticleAcceleratorModeTangential VisualShaderNodeParticleAcceleratorMode = 2
-	VisualShaderNodeParticleAcceleratorModeMax VisualShaderNodeParticleAcceleratorMode = 3
+	VisualShaderNodeParticleAcceleratorModeMax        VisualShaderNodeParticleAcceleratorMode = 3
 )
 
 type VisualShaderNodeParticleEmitEmitFlags = classdb.VisualShaderNodeParticleEmitEmitFlags
@@ -6937,199 +6936,199 @@ const (
 	VisualShaderNodeParticleEmitEmitFlagPosition VisualShaderNodeParticleEmitEmitFlags = 1
 	VisualShaderNodeParticleEmitEmitFlagRotScale VisualShaderNodeParticleEmitEmitFlags = 2
 	VisualShaderNodeParticleEmitEmitFlagVelocity VisualShaderNodeParticleEmitEmitFlags = 4
-	VisualShaderNodeParticleEmitEmitFlagColor VisualShaderNodeParticleEmitEmitFlags = 8
-	VisualShaderNodeParticleEmitEmitFlagCustom VisualShaderNodeParticleEmitEmitFlags = 16
+	VisualShaderNodeParticleEmitEmitFlagColor    VisualShaderNodeParticleEmitEmitFlags = 8
+	VisualShaderNodeParticleEmitEmitFlagCustom   VisualShaderNodeParticleEmitEmitFlags = 16
 )
 
 type VisualShaderNodeParticleRandomnessOpType = classdb.VisualShaderNodeParticleRandomnessOpType
 
 const (
-	VisualShaderNodeParticleRandomnessOpTypeScalar VisualShaderNodeParticleRandomnessOpType = 0
+	VisualShaderNodeParticleRandomnessOpTypeScalar   VisualShaderNodeParticleRandomnessOpType = 0
 	VisualShaderNodeParticleRandomnessOpTypeVector2d VisualShaderNodeParticleRandomnessOpType = 1
 	VisualShaderNodeParticleRandomnessOpTypeVector3d VisualShaderNodeParticleRandomnessOpType = 2
 	VisualShaderNodeParticleRandomnessOpTypeVector4d VisualShaderNodeParticleRandomnessOpType = 3
-	VisualShaderNodeParticleRandomnessOpTypeMax VisualShaderNodeParticleRandomnessOpType = 4
+	VisualShaderNodeParticleRandomnessOpTypeMax      VisualShaderNodeParticleRandomnessOpType = 4
 )
 
 type VisualShaderNodeSample3DSource = classdb.VisualShaderNodeSample3DSource
 
 const (
 	VisualShaderNodeSample3DSourceTexture VisualShaderNodeSample3DSource = 0
-	VisualShaderNodeSample3DSourcePort VisualShaderNodeSample3DSource = 1
-	VisualShaderNodeSample3DSourceMax VisualShaderNodeSample3DSource = 2
+	VisualShaderNodeSample3DSourcePort    VisualShaderNodeSample3DSource = 1
+	VisualShaderNodeSample3DSourceMax     VisualShaderNodeSample3DSource = 2
 )
 
 type VisualShaderNodeSmoothStepOpType = classdb.VisualShaderNodeSmoothStepOpType
 
 const (
-	VisualShaderNodeSmoothStepOpTypeScalar VisualShaderNodeSmoothStepOpType = 0
-	VisualShaderNodeSmoothStepOpTypeVector2d VisualShaderNodeSmoothStepOpType = 1
+	VisualShaderNodeSmoothStepOpTypeScalar         VisualShaderNodeSmoothStepOpType = 0
+	VisualShaderNodeSmoothStepOpTypeVector2d       VisualShaderNodeSmoothStepOpType = 1
 	VisualShaderNodeSmoothStepOpTypeVector2dScalar VisualShaderNodeSmoothStepOpType = 2
-	VisualShaderNodeSmoothStepOpTypeVector3d VisualShaderNodeSmoothStepOpType = 3
+	VisualShaderNodeSmoothStepOpTypeVector3d       VisualShaderNodeSmoothStepOpType = 3
 	VisualShaderNodeSmoothStepOpTypeVector3dScalar VisualShaderNodeSmoothStepOpType = 4
-	VisualShaderNodeSmoothStepOpTypeVector4d VisualShaderNodeSmoothStepOpType = 5
+	VisualShaderNodeSmoothStepOpTypeVector4d       VisualShaderNodeSmoothStepOpType = 5
 	VisualShaderNodeSmoothStepOpTypeVector4dScalar VisualShaderNodeSmoothStepOpType = 6
-	VisualShaderNodeSmoothStepOpTypeMax VisualShaderNodeSmoothStepOpType = 7
+	VisualShaderNodeSmoothStepOpTypeMax            VisualShaderNodeSmoothStepOpType = 7
 )
 
 type VisualShaderNodeStepOpType = classdb.VisualShaderNodeStepOpType
 
 const (
-	VisualShaderNodeStepOpTypeScalar VisualShaderNodeStepOpType = 0
-	VisualShaderNodeStepOpTypeVector2d VisualShaderNodeStepOpType = 1
+	VisualShaderNodeStepOpTypeScalar         VisualShaderNodeStepOpType = 0
+	VisualShaderNodeStepOpTypeVector2d       VisualShaderNodeStepOpType = 1
 	VisualShaderNodeStepOpTypeVector2dScalar VisualShaderNodeStepOpType = 2
-	VisualShaderNodeStepOpTypeVector3d VisualShaderNodeStepOpType = 3
+	VisualShaderNodeStepOpTypeVector3d       VisualShaderNodeStepOpType = 3
 	VisualShaderNodeStepOpTypeVector3dScalar VisualShaderNodeStepOpType = 4
-	VisualShaderNodeStepOpTypeVector4d VisualShaderNodeStepOpType = 5
+	VisualShaderNodeStepOpTypeVector4d       VisualShaderNodeStepOpType = 5
 	VisualShaderNodeStepOpTypeVector4dScalar VisualShaderNodeStepOpType = 6
-	VisualShaderNodeStepOpTypeMax VisualShaderNodeStepOpType = 7
+	VisualShaderNodeStepOpTypeMax            VisualShaderNodeStepOpType = 7
 )
 
 type VisualShaderNodeSwitchOpType = classdb.VisualShaderNodeSwitchOpType
 
 const (
-	VisualShaderNodeSwitchOpTypeFloat VisualShaderNodeSwitchOpType = 0
-	VisualShaderNodeSwitchOpTypeInt VisualShaderNodeSwitchOpType = 1
-	VisualShaderNodeSwitchOpTypeUint VisualShaderNodeSwitchOpType = 2
-	VisualShaderNodeSwitchOpTypeVector2d VisualShaderNodeSwitchOpType = 3
-	VisualShaderNodeSwitchOpTypeVector3d VisualShaderNodeSwitchOpType = 4
-	VisualShaderNodeSwitchOpTypeVector4d VisualShaderNodeSwitchOpType = 5
-	VisualShaderNodeSwitchOpTypeBoolean VisualShaderNodeSwitchOpType = 6
+	VisualShaderNodeSwitchOpTypeFloat     VisualShaderNodeSwitchOpType = 0
+	VisualShaderNodeSwitchOpTypeInt       VisualShaderNodeSwitchOpType = 1
+	VisualShaderNodeSwitchOpTypeUint      VisualShaderNodeSwitchOpType = 2
+	VisualShaderNodeSwitchOpTypeVector2d  VisualShaderNodeSwitchOpType = 3
+	VisualShaderNodeSwitchOpTypeVector3d  VisualShaderNodeSwitchOpType = 4
+	VisualShaderNodeSwitchOpTypeVector4d  VisualShaderNodeSwitchOpType = 5
+	VisualShaderNodeSwitchOpTypeBoolean   VisualShaderNodeSwitchOpType = 6
 	VisualShaderNodeSwitchOpTypeTransform VisualShaderNodeSwitchOpType = 7
-	VisualShaderNodeSwitchOpTypeMax VisualShaderNodeSwitchOpType = 8
+	VisualShaderNodeSwitchOpTypeMax       VisualShaderNodeSwitchOpType = 8
 )
 
 type VisualShaderNodeTextureSource = classdb.VisualShaderNodeTextureSource
 
 const (
-	VisualShaderNodeTextureSourceTexture VisualShaderNodeTextureSource = 0
-	VisualShaderNodeTextureSourceScreen VisualShaderNodeTextureSource = 1
+	VisualShaderNodeTextureSourceTexture   VisualShaderNodeTextureSource = 0
+	VisualShaderNodeTextureSourceScreen    VisualShaderNodeTextureSource = 1
 	VisualShaderNodeTextureSource2dTexture VisualShaderNodeTextureSource = 2
-	VisualShaderNodeTextureSource2dNormal VisualShaderNodeTextureSource = 3
-	VisualShaderNodeTextureSourceDepth VisualShaderNodeTextureSource = 4
-	VisualShaderNodeTextureSourcePort VisualShaderNodeTextureSource = 5
-	VisualShaderNodeTextureSource3dNormal VisualShaderNodeTextureSource = 6
+	VisualShaderNodeTextureSource2dNormal  VisualShaderNodeTextureSource = 3
+	VisualShaderNodeTextureSourceDepth     VisualShaderNodeTextureSource = 4
+	VisualShaderNodeTextureSourcePort      VisualShaderNodeTextureSource = 5
+	VisualShaderNodeTextureSource3dNormal  VisualShaderNodeTextureSource = 6
 	VisualShaderNodeTextureSourceRoughness VisualShaderNodeTextureSource = 7
-	VisualShaderNodeTextureSourceMax VisualShaderNodeTextureSource = 8
+	VisualShaderNodeTextureSourceMax       VisualShaderNodeTextureSource = 8
 )
 
 type VisualShaderNodeTextureTextureType = classdb.VisualShaderNodeTextureTextureType
 
 const (
-	VisualShaderNodeTextureTypeData VisualShaderNodeTextureTextureType = 0
-	VisualShaderNodeTextureTypeColor VisualShaderNodeTextureTextureType = 1
+	VisualShaderNodeTextureTypeData      VisualShaderNodeTextureTextureType = 0
+	VisualShaderNodeTextureTypeColor     VisualShaderNodeTextureTextureType = 1
 	VisualShaderNodeTextureTypeNormalMap VisualShaderNodeTextureTextureType = 2
-	VisualShaderNodeTextureTypeMax VisualShaderNodeTextureTextureType = 3
+	VisualShaderNodeTextureTypeMax       VisualShaderNodeTextureTextureType = 3
 )
 
 type VisualShaderNodeTextureParameterTextureType = classdb.VisualShaderNodeTextureParameterTextureType
 
 const (
-	VisualShaderNodeTextureParameterTypeData VisualShaderNodeTextureParameterTextureType = 0
-	VisualShaderNodeTextureParameterTypeColor VisualShaderNodeTextureParameterTextureType = 1
-	VisualShaderNodeTextureParameterTypeNormalMap VisualShaderNodeTextureParameterTextureType = 2
+	VisualShaderNodeTextureParameterTypeData       VisualShaderNodeTextureParameterTextureType = 0
+	VisualShaderNodeTextureParameterTypeColor      VisualShaderNodeTextureParameterTextureType = 1
+	VisualShaderNodeTextureParameterTypeNormalMap  VisualShaderNodeTextureParameterTextureType = 2
 	VisualShaderNodeTextureParameterTypeAnisotropy VisualShaderNodeTextureParameterTextureType = 3
-	VisualShaderNodeTextureParameterTypeMax VisualShaderNodeTextureParameterTextureType = 4
+	VisualShaderNodeTextureParameterTypeMax        VisualShaderNodeTextureParameterTextureType = 4
 )
 
 type VisualShaderNodeTextureParameterColorDefault = classdb.VisualShaderNodeTextureParameterColorDefault
 
 const (
-	VisualShaderNodeTextureParameterColorDefaultWhite VisualShaderNodeTextureParameterColorDefault = 0
-	VisualShaderNodeTextureParameterColorDefaultBlack VisualShaderNodeTextureParameterColorDefault = 1
+	VisualShaderNodeTextureParameterColorDefaultWhite       VisualShaderNodeTextureParameterColorDefault = 0
+	VisualShaderNodeTextureParameterColorDefaultBlack       VisualShaderNodeTextureParameterColorDefault = 1
 	VisualShaderNodeTextureParameterColorDefaultTransparent VisualShaderNodeTextureParameterColorDefault = 2
-	VisualShaderNodeTextureParameterColorDefaultMax VisualShaderNodeTextureParameterColorDefault = 3
+	VisualShaderNodeTextureParameterColorDefaultMax         VisualShaderNodeTextureParameterColorDefault = 3
 )
 
 type VisualShaderNodeTextureParameterTextureFilter = classdb.VisualShaderNodeTextureParameterTextureFilter
 
 const (
-	VisualShaderNodeTextureParameterFilterDefault VisualShaderNodeTextureParameterTextureFilter = 0
-	VisualShaderNodeTextureParameterFilterNearest VisualShaderNodeTextureParameterTextureFilter = 1
-	VisualShaderNodeTextureParameterFilterLinear VisualShaderNodeTextureParameterTextureFilter = 2
-	VisualShaderNodeTextureParameterFilterNearestMipmap VisualShaderNodeTextureParameterTextureFilter = 3
-	VisualShaderNodeTextureParameterFilterLinearMipmap VisualShaderNodeTextureParameterTextureFilter = 4
+	VisualShaderNodeTextureParameterFilterDefault                  VisualShaderNodeTextureParameterTextureFilter = 0
+	VisualShaderNodeTextureParameterFilterNearest                  VisualShaderNodeTextureParameterTextureFilter = 1
+	VisualShaderNodeTextureParameterFilterLinear                   VisualShaderNodeTextureParameterTextureFilter = 2
+	VisualShaderNodeTextureParameterFilterNearestMipmap            VisualShaderNodeTextureParameterTextureFilter = 3
+	VisualShaderNodeTextureParameterFilterLinearMipmap             VisualShaderNodeTextureParameterTextureFilter = 4
 	VisualShaderNodeTextureParameterFilterNearestMipmapAnisotropic VisualShaderNodeTextureParameterTextureFilter = 5
-	VisualShaderNodeTextureParameterFilterLinearMipmapAnisotropic VisualShaderNodeTextureParameterTextureFilter = 6
-	VisualShaderNodeTextureParameterFilterMax VisualShaderNodeTextureParameterTextureFilter = 7
+	VisualShaderNodeTextureParameterFilterLinearMipmapAnisotropic  VisualShaderNodeTextureParameterTextureFilter = 6
+	VisualShaderNodeTextureParameterFilterMax                      VisualShaderNodeTextureParameterTextureFilter = 7
 )
 
 type VisualShaderNodeTextureParameterTextureRepeat = classdb.VisualShaderNodeTextureParameterTextureRepeat
 
 const (
-	VisualShaderNodeTextureParameterRepeatDefault VisualShaderNodeTextureParameterTextureRepeat = 0
-	VisualShaderNodeTextureParameterRepeatEnabled VisualShaderNodeTextureParameterTextureRepeat = 1
+	VisualShaderNodeTextureParameterRepeatDefault  VisualShaderNodeTextureParameterTextureRepeat = 0
+	VisualShaderNodeTextureParameterRepeatEnabled  VisualShaderNodeTextureParameterTextureRepeat = 1
 	VisualShaderNodeTextureParameterRepeatDisabled VisualShaderNodeTextureParameterTextureRepeat = 2
-	VisualShaderNodeTextureParameterRepeatMax VisualShaderNodeTextureParameterTextureRepeat = 3
+	VisualShaderNodeTextureParameterRepeatMax      VisualShaderNodeTextureParameterTextureRepeat = 3
 )
 
 type VisualShaderNodeTextureParameterTextureSource = classdb.VisualShaderNodeTextureParameterTextureSource
 
 const (
-	VisualShaderNodeTextureParameterSourceNone VisualShaderNodeTextureParameterTextureSource = 0
-	VisualShaderNodeTextureParameterSourceScreen VisualShaderNodeTextureParameterTextureSource = 1
-	VisualShaderNodeTextureParameterSourceDepth VisualShaderNodeTextureParameterTextureSource = 2
+	VisualShaderNodeTextureParameterSourceNone            VisualShaderNodeTextureParameterTextureSource = 0
+	VisualShaderNodeTextureParameterSourceScreen          VisualShaderNodeTextureParameterTextureSource = 1
+	VisualShaderNodeTextureParameterSourceDepth           VisualShaderNodeTextureParameterTextureSource = 2
 	VisualShaderNodeTextureParameterSourceNormalRoughness VisualShaderNodeTextureParameterTextureSource = 3
-	VisualShaderNodeTextureParameterSourceMax VisualShaderNodeTextureParameterTextureSource = 4
+	VisualShaderNodeTextureParameterSourceMax             VisualShaderNodeTextureParameterTextureSource = 4
 )
 
 type VisualShaderNodeTransformFuncFunction = classdb.VisualShaderNodeTransformFuncFunction
 
 const (
-	VisualShaderNodeTransformFuncFuncInverse VisualShaderNodeTransformFuncFunction = 0
+	VisualShaderNodeTransformFuncFuncInverse   VisualShaderNodeTransformFuncFunction = 0
 	VisualShaderNodeTransformFuncFuncTranspose VisualShaderNodeTransformFuncFunction = 1
-	VisualShaderNodeTransformFuncFuncMax VisualShaderNodeTransformFuncFunction = 2
+	VisualShaderNodeTransformFuncFuncMax       VisualShaderNodeTransformFuncFunction = 2
 )
 
 type VisualShaderNodeTransformOpOperator = classdb.VisualShaderNodeTransformOpOperator
 
 const (
-	VisualShaderNodeTransformOpOpAxb VisualShaderNodeTransformOpOperator = 0
-	VisualShaderNodeTransformOpOpBxa VisualShaderNodeTransformOpOperator = 1
+	VisualShaderNodeTransformOpOpAxb     VisualShaderNodeTransformOpOperator = 0
+	VisualShaderNodeTransformOpOpBxa     VisualShaderNodeTransformOpOperator = 1
 	VisualShaderNodeTransformOpOpAxbComp VisualShaderNodeTransformOpOperator = 2
 	VisualShaderNodeTransformOpOpBxaComp VisualShaderNodeTransformOpOperator = 3
-	VisualShaderNodeTransformOpOpAdd VisualShaderNodeTransformOpOperator = 4
+	VisualShaderNodeTransformOpOpAdd     VisualShaderNodeTransformOpOperator = 4
 	VisualShaderNodeTransformOpOpAMinusB VisualShaderNodeTransformOpOperator = 5
 	VisualShaderNodeTransformOpOpBMinusA VisualShaderNodeTransformOpOperator = 6
-	VisualShaderNodeTransformOpOpADivB VisualShaderNodeTransformOpOperator = 7
-	VisualShaderNodeTransformOpOpBDivA VisualShaderNodeTransformOpOperator = 8
-	VisualShaderNodeTransformOpOpMax VisualShaderNodeTransformOpOperator = 9
+	VisualShaderNodeTransformOpOpADivB   VisualShaderNodeTransformOpOperator = 7
+	VisualShaderNodeTransformOpOpBDivA   VisualShaderNodeTransformOpOperator = 8
+	VisualShaderNodeTransformOpOpMax     VisualShaderNodeTransformOpOperator = 9
 )
 
 type VisualShaderNodeTransformVecMultOperator = classdb.VisualShaderNodeTransformVecMultOperator
 
 const (
-	VisualShaderNodeTransformVecMultOpAxb VisualShaderNodeTransformVecMultOperator = 0
-	VisualShaderNodeTransformVecMultOpBxa VisualShaderNodeTransformVecMultOperator = 1
+	VisualShaderNodeTransformVecMultOpAxb    VisualShaderNodeTransformVecMultOperator = 0
+	VisualShaderNodeTransformVecMultOpBxa    VisualShaderNodeTransformVecMultOperator = 1
 	VisualShaderNodeTransformVecMultOp3x3Axb VisualShaderNodeTransformVecMultOperator = 2
 	VisualShaderNodeTransformVecMultOp3x3Bxa VisualShaderNodeTransformVecMultOperator = 3
-	VisualShaderNodeTransformVecMultOpMax VisualShaderNodeTransformVecMultOperator = 4
+	VisualShaderNodeTransformVecMultOpMax    VisualShaderNodeTransformVecMultOperator = 4
 )
 
 type VisualShaderNodeUIntFuncFunction = classdb.VisualShaderNodeUIntFuncFunction
 
 const (
-	VisualShaderNodeUIntFuncFuncNegate VisualShaderNodeUIntFuncFunction = 0
+	VisualShaderNodeUIntFuncFuncNegate     VisualShaderNodeUIntFuncFunction = 0
 	VisualShaderNodeUIntFuncFuncBitwiseNot VisualShaderNodeUIntFuncFunction = 1
-	VisualShaderNodeUIntFuncFuncMax VisualShaderNodeUIntFuncFunction = 2
+	VisualShaderNodeUIntFuncFuncMax        VisualShaderNodeUIntFuncFunction = 2
 )
 
 type VisualShaderNodeUIntOpOperator = classdb.VisualShaderNodeUIntOpOperator
 
 const (
-	VisualShaderNodeUIntOpOpAdd VisualShaderNodeUIntOpOperator = 0
-	VisualShaderNodeUIntOpOpSub VisualShaderNodeUIntOpOperator = 1
-	VisualShaderNodeUIntOpOpMul VisualShaderNodeUIntOpOperator = 2
-	VisualShaderNodeUIntOpOpDiv VisualShaderNodeUIntOpOperator = 3
-	VisualShaderNodeUIntOpOpMod VisualShaderNodeUIntOpOperator = 4
-	VisualShaderNodeUIntOpOpMax VisualShaderNodeUIntOpOperator = 5
-	VisualShaderNodeUIntOpOpMin VisualShaderNodeUIntOpOperator = 6
-	VisualShaderNodeUIntOpOpBitwiseAnd VisualShaderNodeUIntOpOperator = 7
-	VisualShaderNodeUIntOpOpBitwiseOr VisualShaderNodeUIntOpOperator = 8
-	VisualShaderNodeUIntOpOpBitwiseXor VisualShaderNodeUIntOpOperator = 9
-	VisualShaderNodeUIntOpOpBitwiseLeftShift VisualShaderNodeUIntOpOperator = 10
+	VisualShaderNodeUIntOpOpAdd               VisualShaderNodeUIntOpOperator = 0
+	VisualShaderNodeUIntOpOpSub               VisualShaderNodeUIntOpOperator = 1
+	VisualShaderNodeUIntOpOpMul               VisualShaderNodeUIntOpOperator = 2
+	VisualShaderNodeUIntOpOpDiv               VisualShaderNodeUIntOpOperator = 3
+	VisualShaderNodeUIntOpOpMod               VisualShaderNodeUIntOpOperator = 4
+	VisualShaderNodeUIntOpOpMax               VisualShaderNodeUIntOpOperator = 5
+	VisualShaderNodeUIntOpOpMin               VisualShaderNodeUIntOpOperator = 6
+	VisualShaderNodeUIntOpOpBitwiseAnd        VisualShaderNodeUIntOpOperator = 7
+	VisualShaderNodeUIntOpOpBitwiseOr         VisualShaderNodeUIntOpOperator = 8
+	VisualShaderNodeUIntOpOpBitwiseXor        VisualShaderNodeUIntOpOperator = 9
+	VisualShaderNodeUIntOpOpBitwiseLeftShift  VisualShaderNodeUIntOpOperator = 10
 	VisualShaderNodeUIntOpOpBitwiseRightShift VisualShaderNodeUIntOpOperator = 11
-	VisualShaderNodeUIntOpOpEnumSize VisualShaderNodeUIntOpOperator = 12
+	VisualShaderNodeUIntOpOpEnumSize          VisualShaderNodeUIntOpOperator = 12
 )
 
 type VisualShaderNodeUVFuncFunction = classdb.VisualShaderNodeUVFuncFunction
@@ -7137,7 +7136,7 @@ type VisualShaderNodeUVFuncFunction = classdb.VisualShaderNodeUVFuncFunction
 const (
 	VisualShaderNodeUVFuncFuncPanning VisualShaderNodeUVFuncFunction = 0
 	VisualShaderNodeUVFuncFuncScaling VisualShaderNodeUVFuncFunction = 1
-	VisualShaderNodeUVFuncFuncMax VisualShaderNodeUVFuncFunction = 2
+	VisualShaderNodeUVFuncFuncMax     VisualShaderNodeUVFuncFunction = 2
 )
 
 type VisualShaderNodeVectorBaseOpType = classdb.VisualShaderNodeVectorBaseOpType
@@ -7146,70 +7145,70 @@ const (
 	VisualShaderNodeVectorBaseOpTypeVector2d VisualShaderNodeVectorBaseOpType = 0
 	VisualShaderNodeVectorBaseOpTypeVector3d VisualShaderNodeVectorBaseOpType = 1
 	VisualShaderNodeVectorBaseOpTypeVector4d VisualShaderNodeVectorBaseOpType = 2
-	VisualShaderNodeVectorBaseOpTypeMax VisualShaderNodeVectorBaseOpType = 3
+	VisualShaderNodeVectorBaseOpTypeMax      VisualShaderNodeVectorBaseOpType = 3
 )
 
 type VisualShaderNodeVectorFuncFunction = classdb.VisualShaderNodeVectorFuncFunction
 
 const (
-	VisualShaderNodeVectorFuncFuncNormalize VisualShaderNodeVectorFuncFunction = 0
-	VisualShaderNodeVectorFuncFuncSaturate VisualShaderNodeVectorFuncFunction = 1
-	VisualShaderNodeVectorFuncFuncNegate VisualShaderNodeVectorFuncFunction = 2
-	VisualShaderNodeVectorFuncFuncReciprocal VisualShaderNodeVectorFuncFunction = 3
-	VisualShaderNodeVectorFuncFuncAbs VisualShaderNodeVectorFuncFunction = 4
-	VisualShaderNodeVectorFuncFuncAcos VisualShaderNodeVectorFuncFunction = 5
-	VisualShaderNodeVectorFuncFuncAcosh VisualShaderNodeVectorFuncFunction = 6
-	VisualShaderNodeVectorFuncFuncAsin VisualShaderNodeVectorFuncFunction = 7
-	VisualShaderNodeVectorFuncFuncAsinh VisualShaderNodeVectorFuncFunction = 8
-	VisualShaderNodeVectorFuncFuncAtan VisualShaderNodeVectorFuncFunction = 9
-	VisualShaderNodeVectorFuncFuncAtanh VisualShaderNodeVectorFuncFunction = 10
-	VisualShaderNodeVectorFuncFuncCeil VisualShaderNodeVectorFuncFunction = 11
-	VisualShaderNodeVectorFuncFuncCos VisualShaderNodeVectorFuncFunction = 12
-	VisualShaderNodeVectorFuncFuncCosh VisualShaderNodeVectorFuncFunction = 13
-	VisualShaderNodeVectorFuncFuncDegrees VisualShaderNodeVectorFuncFunction = 14
-	VisualShaderNodeVectorFuncFuncExp VisualShaderNodeVectorFuncFunction = 15
-	VisualShaderNodeVectorFuncFuncExp2 VisualShaderNodeVectorFuncFunction = 16
-	VisualShaderNodeVectorFuncFuncFloor VisualShaderNodeVectorFuncFunction = 17
-	VisualShaderNodeVectorFuncFuncFract VisualShaderNodeVectorFuncFunction = 18
+	VisualShaderNodeVectorFuncFuncNormalize   VisualShaderNodeVectorFuncFunction = 0
+	VisualShaderNodeVectorFuncFuncSaturate    VisualShaderNodeVectorFuncFunction = 1
+	VisualShaderNodeVectorFuncFuncNegate      VisualShaderNodeVectorFuncFunction = 2
+	VisualShaderNodeVectorFuncFuncReciprocal  VisualShaderNodeVectorFuncFunction = 3
+	VisualShaderNodeVectorFuncFuncAbs         VisualShaderNodeVectorFuncFunction = 4
+	VisualShaderNodeVectorFuncFuncAcos        VisualShaderNodeVectorFuncFunction = 5
+	VisualShaderNodeVectorFuncFuncAcosh       VisualShaderNodeVectorFuncFunction = 6
+	VisualShaderNodeVectorFuncFuncAsin        VisualShaderNodeVectorFuncFunction = 7
+	VisualShaderNodeVectorFuncFuncAsinh       VisualShaderNodeVectorFuncFunction = 8
+	VisualShaderNodeVectorFuncFuncAtan        VisualShaderNodeVectorFuncFunction = 9
+	VisualShaderNodeVectorFuncFuncAtanh       VisualShaderNodeVectorFuncFunction = 10
+	VisualShaderNodeVectorFuncFuncCeil        VisualShaderNodeVectorFuncFunction = 11
+	VisualShaderNodeVectorFuncFuncCos         VisualShaderNodeVectorFuncFunction = 12
+	VisualShaderNodeVectorFuncFuncCosh        VisualShaderNodeVectorFuncFunction = 13
+	VisualShaderNodeVectorFuncFuncDegrees     VisualShaderNodeVectorFuncFunction = 14
+	VisualShaderNodeVectorFuncFuncExp         VisualShaderNodeVectorFuncFunction = 15
+	VisualShaderNodeVectorFuncFuncExp2        VisualShaderNodeVectorFuncFunction = 16
+	VisualShaderNodeVectorFuncFuncFloor       VisualShaderNodeVectorFuncFunction = 17
+	VisualShaderNodeVectorFuncFuncFract       VisualShaderNodeVectorFuncFunction = 18
 	VisualShaderNodeVectorFuncFuncInverseSqrt VisualShaderNodeVectorFuncFunction = 19
-	VisualShaderNodeVectorFuncFuncLog VisualShaderNodeVectorFuncFunction = 20
-	VisualShaderNodeVectorFuncFuncLog2 VisualShaderNodeVectorFuncFunction = 21
-	VisualShaderNodeVectorFuncFuncRadians VisualShaderNodeVectorFuncFunction = 22
-	VisualShaderNodeVectorFuncFuncRound VisualShaderNodeVectorFuncFunction = 23
-	VisualShaderNodeVectorFuncFuncRoundeven VisualShaderNodeVectorFuncFunction = 24
-	VisualShaderNodeVectorFuncFuncSign VisualShaderNodeVectorFuncFunction = 25
-	VisualShaderNodeVectorFuncFuncSin VisualShaderNodeVectorFuncFunction = 26
-	VisualShaderNodeVectorFuncFuncSinh VisualShaderNodeVectorFuncFunction = 27
-	VisualShaderNodeVectorFuncFuncSqrt VisualShaderNodeVectorFuncFunction = 28
-	VisualShaderNodeVectorFuncFuncTan VisualShaderNodeVectorFuncFunction = 29
-	VisualShaderNodeVectorFuncFuncTanh VisualShaderNodeVectorFuncFunction = 30
-	VisualShaderNodeVectorFuncFuncTrunc VisualShaderNodeVectorFuncFunction = 31
-	VisualShaderNodeVectorFuncFuncOneminus VisualShaderNodeVectorFuncFunction = 32
-	VisualShaderNodeVectorFuncFuncMax VisualShaderNodeVectorFuncFunction = 33
+	VisualShaderNodeVectorFuncFuncLog         VisualShaderNodeVectorFuncFunction = 20
+	VisualShaderNodeVectorFuncFuncLog2        VisualShaderNodeVectorFuncFunction = 21
+	VisualShaderNodeVectorFuncFuncRadians     VisualShaderNodeVectorFuncFunction = 22
+	VisualShaderNodeVectorFuncFuncRound       VisualShaderNodeVectorFuncFunction = 23
+	VisualShaderNodeVectorFuncFuncRoundeven   VisualShaderNodeVectorFuncFunction = 24
+	VisualShaderNodeVectorFuncFuncSign        VisualShaderNodeVectorFuncFunction = 25
+	VisualShaderNodeVectorFuncFuncSin         VisualShaderNodeVectorFuncFunction = 26
+	VisualShaderNodeVectorFuncFuncSinh        VisualShaderNodeVectorFuncFunction = 27
+	VisualShaderNodeVectorFuncFuncSqrt        VisualShaderNodeVectorFuncFunction = 28
+	VisualShaderNodeVectorFuncFuncTan         VisualShaderNodeVectorFuncFunction = 29
+	VisualShaderNodeVectorFuncFuncTanh        VisualShaderNodeVectorFuncFunction = 30
+	VisualShaderNodeVectorFuncFuncTrunc       VisualShaderNodeVectorFuncFunction = 31
+	VisualShaderNodeVectorFuncFuncOneminus    VisualShaderNodeVectorFuncFunction = 32
+	VisualShaderNodeVectorFuncFuncMax         VisualShaderNodeVectorFuncFunction = 33
 )
 
 type VisualShaderNodeVectorOpOperator = classdb.VisualShaderNodeVectorOpOperator
 
 const (
-	VisualShaderNodeVectorOpOpAdd VisualShaderNodeVectorOpOperator = 0
-	VisualShaderNodeVectorOpOpSub VisualShaderNodeVectorOpOperator = 1
-	VisualShaderNodeVectorOpOpMul VisualShaderNodeVectorOpOperator = 2
-	VisualShaderNodeVectorOpOpDiv VisualShaderNodeVectorOpOperator = 3
-	VisualShaderNodeVectorOpOpMod VisualShaderNodeVectorOpOperator = 4
-	VisualShaderNodeVectorOpOpPow VisualShaderNodeVectorOpOperator = 5
-	VisualShaderNodeVectorOpOpMax VisualShaderNodeVectorOpOperator = 6
-	VisualShaderNodeVectorOpOpMin VisualShaderNodeVectorOpOperator = 7
-	VisualShaderNodeVectorOpOpCross VisualShaderNodeVectorOpOperator = 8
-	VisualShaderNodeVectorOpOpAtan2 VisualShaderNodeVectorOpOperator = 9
-	VisualShaderNodeVectorOpOpReflect VisualShaderNodeVectorOpOperator = 10
-	VisualShaderNodeVectorOpOpStep VisualShaderNodeVectorOpOperator = 11
+	VisualShaderNodeVectorOpOpAdd      VisualShaderNodeVectorOpOperator = 0
+	VisualShaderNodeVectorOpOpSub      VisualShaderNodeVectorOpOperator = 1
+	VisualShaderNodeVectorOpOpMul      VisualShaderNodeVectorOpOperator = 2
+	VisualShaderNodeVectorOpOpDiv      VisualShaderNodeVectorOpOperator = 3
+	VisualShaderNodeVectorOpOpMod      VisualShaderNodeVectorOpOperator = 4
+	VisualShaderNodeVectorOpOpPow      VisualShaderNodeVectorOpOperator = 5
+	VisualShaderNodeVectorOpOpMax      VisualShaderNodeVectorOpOperator = 6
+	VisualShaderNodeVectorOpOpMin      VisualShaderNodeVectorOpOperator = 7
+	VisualShaderNodeVectorOpOpCross    VisualShaderNodeVectorOpOperator = 8
+	VisualShaderNodeVectorOpOpAtan2    VisualShaderNodeVectorOpOperator = 9
+	VisualShaderNodeVectorOpOpReflect  VisualShaderNodeVectorOpOperator = 10
+	VisualShaderNodeVectorOpOpStep     VisualShaderNodeVectorOpOperator = 11
 	VisualShaderNodeVectorOpOpEnumSize VisualShaderNodeVectorOpOperator = 12
 )
 
 type VoxelGISubdiv = classdb.VoxelGISubdiv
 
 const (
-	VoxelGISubdiv64 VoxelGISubdiv = 0
+	VoxelGISubdiv64  VoxelGISubdiv = 0
 	VoxelGISubdiv128 VoxelGISubdiv = 1
 	VoxelGISubdiv256 VoxelGISubdiv = 2
 	VoxelGISubdiv512 VoxelGISubdiv = 3
@@ -7219,7 +7218,7 @@ const (
 type WebRTCDataChannelWriteMode = classdb.WebRTCDataChannelWriteMode
 
 const (
-	WebRTCDataChannelWriteModeText WebRTCDataChannelWriteMode = 0
+	WebRTCDataChannelWriteModeText   WebRTCDataChannelWriteMode = 0
 	WebRTCDataChannelWriteModeBinary WebRTCDataChannelWriteMode = 1
 )
 
@@ -7227,45 +7226,45 @@ type WebRTCDataChannelChannelState = classdb.WebRTCDataChannelChannelState
 
 const (
 	WebRTCDataChannelStateConnecting WebRTCDataChannelChannelState = 0
-	WebRTCDataChannelStateOpen WebRTCDataChannelChannelState = 1
-	WebRTCDataChannelStateClosing WebRTCDataChannelChannelState = 2
-	WebRTCDataChannelStateClosed WebRTCDataChannelChannelState = 3
+	WebRTCDataChannelStateOpen       WebRTCDataChannelChannelState = 1
+	WebRTCDataChannelStateClosing    WebRTCDataChannelChannelState = 2
+	WebRTCDataChannelStateClosed     WebRTCDataChannelChannelState = 3
 )
 
 type WebRTCPeerConnectionConnectionState = classdb.WebRTCPeerConnectionConnectionState
 
 const (
-	WebRTCPeerConnectionStateNew WebRTCPeerConnectionConnectionState = 0
-	WebRTCPeerConnectionStateConnecting WebRTCPeerConnectionConnectionState = 1
-	WebRTCPeerConnectionStateConnected WebRTCPeerConnectionConnectionState = 2
+	WebRTCPeerConnectionStateNew          WebRTCPeerConnectionConnectionState = 0
+	WebRTCPeerConnectionStateConnecting   WebRTCPeerConnectionConnectionState = 1
+	WebRTCPeerConnectionStateConnected    WebRTCPeerConnectionConnectionState = 2
 	WebRTCPeerConnectionStateDisconnected WebRTCPeerConnectionConnectionState = 3
-	WebRTCPeerConnectionStateFailed WebRTCPeerConnectionConnectionState = 4
-	WebRTCPeerConnectionStateClosed WebRTCPeerConnectionConnectionState = 5
+	WebRTCPeerConnectionStateFailed       WebRTCPeerConnectionConnectionState = 4
+	WebRTCPeerConnectionStateClosed       WebRTCPeerConnectionConnectionState = 5
 )
 
 type WebRTCPeerConnectionGatheringState = classdb.WebRTCPeerConnectionGatheringState
 
 const (
-	WebRTCPeerConnectionGatheringStateNew WebRTCPeerConnectionGatheringState = 0
+	WebRTCPeerConnectionGatheringStateNew       WebRTCPeerConnectionGatheringState = 0
 	WebRTCPeerConnectionGatheringStateGathering WebRTCPeerConnectionGatheringState = 1
-	WebRTCPeerConnectionGatheringStateComplete WebRTCPeerConnectionGatheringState = 2
+	WebRTCPeerConnectionGatheringStateComplete  WebRTCPeerConnectionGatheringState = 2
 )
 
 type WebRTCPeerConnectionSignalingState = classdb.WebRTCPeerConnectionSignalingState
 
 const (
-	WebRTCPeerConnectionSignalingStateStable WebRTCPeerConnectionSignalingState = 0
-	WebRTCPeerConnectionSignalingStateHaveLocalOffer WebRTCPeerConnectionSignalingState = 1
-	WebRTCPeerConnectionSignalingStateHaveRemoteOffer WebRTCPeerConnectionSignalingState = 2
-	WebRTCPeerConnectionSignalingStateHaveLocalPranswer WebRTCPeerConnectionSignalingState = 3
+	WebRTCPeerConnectionSignalingStateStable             WebRTCPeerConnectionSignalingState = 0
+	WebRTCPeerConnectionSignalingStateHaveLocalOffer     WebRTCPeerConnectionSignalingState = 1
+	WebRTCPeerConnectionSignalingStateHaveRemoteOffer    WebRTCPeerConnectionSignalingState = 2
+	WebRTCPeerConnectionSignalingStateHaveLocalPranswer  WebRTCPeerConnectionSignalingState = 3
 	WebRTCPeerConnectionSignalingStateHaveRemotePranswer WebRTCPeerConnectionSignalingState = 4
-	WebRTCPeerConnectionSignalingStateClosed WebRTCPeerConnectionSignalingState = 5
+	WebRTCPeerConnectionSignalingStateClosed             WebRTCPeerConnectionSignalingState = 5
 )
 
 type WebSocketPeerWriteMode = classdb.WebSocketPeerWriteMode
 
 const (
-	WebSocketPeerWriteModeText WebSocketPeerWriteMode = 0
+	WebSocketPeerWriteModeText   WebSocketPeerWriteMode = 0
 	WebSocketPeerWriteModeBinary WebSocketPeerWriteMode = 1
 )
 
@@ -7273,138 +7272,138 @@ type WebSocketPeerState = classdb.WebSocketPeerState
 
 const (
 	WebSocketPeerStateConnecting WebSocketPeerState = 0
-	WebSocketPeerStateOpen WebSocketPeerState = 1
-	WebSocketPeerStateClosing WebSocketPeerState = 2
-	WebSocketPeerStateClosed WebSocketPeerState = 3
+	WebSocketPeerStateOpen       WebSocketPeerState = 1
+	WebSocketPeerStateClosing    WebSocketPeerState = 2
+	WebSocketPeerStateClosed     WebSocketPeerState = 3
 )
 
 type WebXRInterfaceTargetRayMode = classdb.WebXRInterfaceTargetRayMode
 
 const (
-	WebXRInterfaceTargetRayModeUnknown WebXRInterfaceTargetRayMode = 0
-	WebXRInterfaceTargetRayModeGaze WebXRInterfaceTargetRayMode = 1
+	WebXRInterfaceTargetRayModeUnknown        WebXRInterfaceTargetRayMode = 0
+	WebXRInterfaceTargetRayModeGaze           WebXRInterfaceTargetRayMode = 1
 	WebXRInterfaceTargetRayModeTrackedPointer WebXRInterfaceTargetRayMode = 2
-	WebXRInterfaceTargetRayModeScreen WebXRInterfaceTargetRayMode = 3
+	WebXRInterfaceTargetRayModeScreen         WebXRInterfaceTargetRayMode = 3
 )
 
 type WindowMode = classdb.WindowMode
 
 const (
-	WindowModeWindowed WindowMode = 0
-	WindowModeMinimized WindowMode = 1
-	WindowModeMaximized WindowMode = 2
-	WindowModeFullscreen WindowMode = 3
+	WindowModeWindowed            WindowMode = 0
+	WindowModeMinimized           WindowMode = 1
+	WindowModeMaximized           WindowMode = 2
+	WindowModeFullscreen          WindowMode = 3
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
 type WindowFlags = classdb.WindowFlags
 
 const (
-	WindowFlagResizeDisabled WindowFlags = 0
-	WindowFlagBorderless WindowFlags = 1
-	WindowFlagAlwaysOnTop WindowFlags = 2
-	WindowFlagTransparent WindowFlags = 3
-	WindowFlagNoFocus WindowFlags = 4
-	WindowFlagPopup WindowFlags = 5
-	WindowFlagExtendToTitle WindowFlags = 6
+	WindowFlagResizeDisabled   WindowFlags = 0
+	WindowFlagBorderless       WindowFlags = 1
+	WindowFlagAlwaysOnTop      WindowFlags = 2
+	WindowFlagTransparent      WindowFlags = 3
+	WindowFlagNoFocus          WindowFlags = 4
+	WindowFlagPopup            WindowFlags = 5
+	WindowFlagExtendToTitle    WindowFlags = 6
 	WindowFlagMousePassthrough WindowFlags = 7
-	WindowFlagMax WindowFlags = 8
+	WindowFlagMax              WindowFlags = 8
 )
 
 type WindowContentScaleMode = classdb.WindowContentScaleMode
 
 const (
-	WindowContentScaleModeDisabled WindowContentScaleMode = 0
+	WindowContentScaleModeDisabled    WindowContentScaleMode = 0
 	WindowContentScaleModeCanvasItems WindowContentScaleMode = 1
-	WindowContentScaleModeViewport WindowContentScaleMode = 2
+	WindowContentScaleModeViewport    WindowContentScaleMode = 2
 )
 
 type WindowContentScaleAspect = classdb.WindowContentScaleAspect
 
 const (
-	WindowContentScaleAspectIgnore WindowContentScaleAspect = 0
-	WindowContentScaleAspectKeep WindowContentScaleAspect = 1
-	WindowContentScaleAspectKeepWidth WindowContentScaleAspect = 2
+	WindowContentScaleAspectIgnore     WindowContentScaleAspect = 0
+	WindowContentScaleAspectKeep       WindowContentScaleAspect = 1
+	WindowContentScaleAspectKeepWidth  WindowContentScaleAspect = 2
 	WindowContentScaleAspectKeepHeight WindowContentScaleAspect = 3
-	WindowContentScaleAspectExpand WindowContentScaleAspect = 4
+	WindowContentScaleAspectExpand     WindowContentScaleAspect = 4
 )
 
 type WindowContentScaleStretch = classdb.WindowContentScaleStretch
 
 const (
 	WindowContentScaleStretchFractional WindowContentScaleStretch = 0
-	WindowContentScaleStretchInteger WindowContentScaleStretch = 1
+	WindowContentScaleStretchInteger    WindowContentScaleStretch = 1
 )
 
 type WindowLayoutDirection = classdb.WindowLayoutDirection
 
 const (
 	WindowLayoutDirectionInherited WindowLayoutDirection = 0
-	WindowLayoutDirectionLocale WindowLayoutDirection = 1
-	WindowLayoutDirectionLtr WindowLayoutDirection = 2
-	WindowLayoutDirectionRtl WindowLayoutDirection = 3
+	WindowLayoutDirectionLocale    WindowLayoutDirection = 1
+	WindowLayoutDirectionLtr       WindowLayoutDirection = 2
+	WindowLayoutDirectionRtl       WindowLayoutDirection = 3
 )
 
 type WindowWindowInitialPosition = classdb.WindowWindowInitialPosition
 
 const (
-	WindowWindowInitialPositionAbsolute WindowWindowInitialPosition = 0
-	WindowWindowInitialPositionCenterPrimaryScreen WindowWindowInitialPosition = 1
-	WindowWindowInitialPositionCenterMainWindowScreen WindowWindowInitialPosition = 2
-	WindowWindowInitialPositionCenterOtherScreen WindowWindowInitialPosition = 3
-	WindowWindowInitialPositionCenterScreenWithMouseFocus WindowWindowInitialPosition = 4
+	WindowWindowInitialPositionAbsolute                      WindowWindowInitialPosition = 0
+	WindowWindowInitialPositionCenterPrimaryScreen           WindowWindowInitialPosition = 1
+	WindowWindowInitialPositionCenterMainWindowScreen        WindowWindowInitialPosition = 2
+	WindowWindowInitialPositionCenterOtherScreen             WindowWindowInitialPosition = 3
+	WindowWindowInitialPositionCenterScreenWithMouseFocus    WindowWindowInitialPosition = 4
 	WindowWindowInitialPositionCenterScreenWithKeyboardFocus WindowWindowInitialPosition = 5
 )
 
 type XMLParserNodeType = classdb.XMLParserNodeType
 
 const (
-	XMLParserNodeNone XMLParserNodeType = 0
-	XMLParserNodeElement XMLParserNodeType = 1
+	XMLParserNodeNone       XMLParserNodeType = 0
+	XMLParserNodeElement    XMLParserNodeType = 1
 	XMLParserNodeElementEnd XMLParserNodeType = 2
-	XMLParserNodeText XMLParserNodeType = 3
-	XMLParserNodeComment XMLParserNodeType = 4
-	XMLParserNodeCdata XMLParserNodeType = 5
-	XMLParserNodeUnknown XMLParserNodeType = 6
+	XMLParserNodeText       XMLParserNodeType = 3
+	XMLParserNodeComment    XMLParserNodeType = 4
+	XMLParserNodeCdata      XMLParserNodeType = 5
+	XMLParserNodeUnknown    XMLParserNodeType = 6
 )
 
 type XRInterfaceCapabilities = classdb.XRInterfaceCapabilities
 
 const (
-	XRInterfaceXrNone XRInterfaceCapabilities = 0
-	XRInterfaceXrMono XRInterfaceCapabilities = 1
-	XRInterfaceXrStereo XRInterfaceCapabilities = 2
-	XRInterfaceXrQuad XRInterfaceCapabilities = 4
-	XRInterfaceXrVr XRInterfaceCapabilities = 8
-	XRInterfaceXrAr XRInterfaceCapabilities = 16
+	XRInterfaceXrNone     XRInterfaceCapabilities = 0
+	XRInterfaceXrMono     XRInterfaceCapabilities = 1
+	XRInterfaceXrStereo   XRInterfaceCapabilities = 2
+	XRInterfaceXrQuad     XRInterfaceCapabilities = 4
+	XRInterfaceXrVr       XRInterfaceCapabilities = 8
+	XRInterfaceXrAr       XRInterfaceCapabilities = 16
 	XRInterfaceXrExternal XRInterfaceCapabilities = 32
 )
 
 type XRInterfaceTrackingStatus = classdb.XRInterfaceTrackingStatus
 
 const (
-	XRInterfaceXrNormalTracking XRInterfaceTrackingStatus = 0
-	XRInterfaceXrExcessiveMotion XRInterfaceTrackingStatus = 1
+	XRInterfaceXrNormalTracking       XRInterfaceTrackingStatus = 0
+	XRInterfaceXrExcessiveMotion      XRInterfaceTrackingStatus = 1
 	XRInterfaceXrInsufficientFeatures XRInterfaceTrackingStatus = 2
-	XRInterfaceXrUnknownTracking XRInterfaceTrackingStatus = 3
-	XRInterfaceXrNotTracking XRInterfaceTrackingStatus = 4
+	XRInterfaceXrUnknownTracking      XRInterfaceTrackingStatus = 3
+	XRInterfaceXrNotTracking          XRInterfaceTrackingStatus = 4
 )
 
 type XRInterfacePlayAreaMode = classdb.XRInterfacePlayAreaMode
 
 const (
-	XRInterfaceXrPlayAreaUnknown XRInterfacePlayAreaMode = 0
-	XRInterfaceXrPlayArea3dof XRInterfacePlayAreaMode = 1
-	XRInterfaceXrPlayAreaSitting XRInterfacePlayAreaMode = 2
+	XRInterfaceXrPlayAreaUnknown   XRInterfacePlayAreaMode = 0
+	XRInterfaceXrPlayArea3dof      XRInterfacePlayAreaMode = 1
+	XRInterfaceXrPlayAreaSitting   XRInterfacePlayAreaMode = 2
 	XRInterfaceXrPlayAreaRoomscale XRInterfacePlayAreaMode = 3
-	XRInterfaceXrPlayAreaStage XRInterfacePlayAreaMode = 4
+	XRInterfaceXrPlayAreaStage     XRInterfacePlayAreaMode = 4
 )
 
 type XRInterfaceEnvironmentBlendMode = classdb.XRInterfaceEnvironmentBlendMode
 
 const (
-	XRInterfaceXrEnvBlendModeOpaque XRInterfaceEnvironmentBlendMode = 0
-	XRInterfaceXrEnvBlendModeAdditive XRInterfaceEnvironmentBlendMode = 1
+	XRInterfaceXrEnvBlendModeOpaque     XRInterfaceEnvironmentBlendMode = 0
+	XRInterfaceXrEnvBlendModeAdditive   XRInterfaceEnvironmentBlendMode = 1
 	XRInterfaceXrEnvBlendModeAlphaBlend XRInterfaceEnvironmentBlendMode = 2
 )
 
@@ -7412,7 +7411,7 @@ type XRPoseTrackingConfidence = classdb.XRPoseTrackingConfidence
 
 const (
 	XRPoseXrTrackingConfidenceNone XRPoseTrackingConfidence = 0
-	XRPoseXrTrackingConfidenceLow XRPoseTrackingConfidence = 1
+	XRPoseXrTrackingConfidenceLow  XRPoseTrackingConfidence = 1
 	XRPoseXrTrackingConfidenceHigh XRPoseTrackingConfidence = 2
 )
 
@@ -7420,34 +7419,34 @@ type XRPositionalTrackerTrackerHand = classdb.XRPositionalTrackerTrackerHand
 
 const (
 	XRPositionalTrackerTrackerHandUnknown XRPositionalTrackerTrackerHand = 0
-	XRPositionalTrackerTrackerHandLeft XRPositionalTrackerTrackerHand = 1
-	XRPositionalTrackerTrackerHandRight XRPositionalTrackerTrackerHand = 2
+	XRPositionalTrackerTrackerHandLeft    XRPositionalTrackerTrackerHand = 1
+	XRPositionalTrackerTrackerHandRight   XRPositionalTrackerTrackerHand = 2
 )
 
 type XRServerTrackerType = classdb.XRServerTrackerType
 
 const (
-	XRServerTrackerHead XRServerTrackerType = 1
-	XRServerTrackerController XRServerTrackerType = 2
+	XRServerTrackerHead        XRServerTrackerType = 1
+	XRServerTrackerController  XRServerTrackerType = 2
 	XRServerTrackerBasestation XRServerTrackerType = 4
-	XRServerTrackerAnchor XRServerTrackerType = 8
-	XRServerTrackerAnyKnown XRServerTrackerType = 127
-	XRServerTrackerUnknown XRServerTrackerType = 128
-	XRServerTrackerAny XRServerTrackerType = 255
+	XRServerTrackerAnchor      XRServerTrackerType = 8
+	XRServerTrackerAnyKnown    XRServerTrackerType = 127
+	XRServerTrackerUnknown     XRServerTrackerType = 128
+	XRServerTrackerAny         XRServerTrackerType = 255
 )
 
 type XRServerRotationMode = classdb.XRServerRotationMode
 
 const (
 	XRServerResetFullRotation XRServerRotationMode = 0
-	XRServerResetButKeepTilt XRServerRotationMode = 1
+	XRServerResetButKeepTilt  XRServerRotationMode = 1
 	XRServerDontResetRotation XRServerRotationMode = 2
 )
 
 type ZIPPackerZipAppend = classdb.ZIPPackerZipAppend
 
 const (
-	ZIPPackerAppendCreate ZIPPackerZipAppend = 0
+	ZIPPackerAppendCreate      ZIPPackerZipAppend = 0
 	ZIPPackerAppendCreateafter ZIPPackerZipAppend = 1
-	ZIPPackerAppendAddinzip ZIPPackerZipAppend = 2
+	ZIPPackerAppendAddinzip    ZIPPackerZipAppend = 2
 )

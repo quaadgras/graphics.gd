@@ -44,7 +44,7 @@ func newContext(api *API) Context {
 
 func Create[T PointerToClass](ctx Context, ptr T) T {
 	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(strings.TrimPrefix(reflect.TypeOf(ptr).Elem().Name(), "class")))
-	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())]; ok {
+	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
 		return native.(T)
 	}
 	ptr.SetPointer(object.AsPointer())

@@ -64,6 +64,7 @@ func main() {
 			name = parent[name]
 		}
 	}
+	isRefCounted["Object"] = false
 	ClassMethodOwnership := maps.Clone(gdjson.ClassMethodOwnership)
 	for _, class := range spec.Classes {
 		for _, method := range class.Methods {

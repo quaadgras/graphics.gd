@@ -133,6 +133,7 @@ type API struct {
 		GetClassName          func(Context, Object, ExtensionToken) String
 		CastTo                func(Context, Object, ClassTag) Object
 		GetInstanceID         func(Object) ObjectID
+		GetInstanceFromID     func(Context, ObjectID) Object
 	}
 	RefCounted struct {
 		GetObject func(Context, Object) Object

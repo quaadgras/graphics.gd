@@ -7,12 +7,14 @@ around the ownership semantics for non-RefCounted godot objects.
 type OwnershipSemantics int
 
 const (
+	RefCountedManagement OwnershipSemantics = iota
+
 	// OwnershipTransferred means that the receiver of the value is responsible
 	// for freeing the memory associated with the value. After transferring the
 	// ownership of a value this way, no direct references may be kept by the prior
 	// owner, although they may keep copies of the InstanceID and use it to look
 	// up the object in the future.
-	OwnershipTransferred OwnershipSemantics = iota
+	OwnershipTransferred
 
 	// ReversesTheOwnership applies to function arguments and means if (and only
 	// if) the class is known to be the owner of the object, or is known to bind
@@ -32,7 +34,7 @@ const (
 	// freed at any time.
 	MustAssertInstanceID
 
-	// LifetimeBoundToClass applies to function arguments, means that the
+	// LifetimeBoundToClass when applied to function arguments, means that the
 	// receiver may keep a reference to the object and the caller must keep
 	// it alive for as long as the class is alive. For return values, they
 	// are only valid as long as the class they are returned from is alive,

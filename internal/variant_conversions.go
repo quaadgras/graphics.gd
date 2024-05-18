@@ -93,7 +93,7 @@ func (godot Context) Variant(v any) Variant {
 		var arg = callframe.Arg(frame, val)
 		godot.API.variant.FromType[TypeRid](ret, arg.Uintptr())
 	case Object:
-		if mmm.Get(val.AsPointer()) == 0 {
+		if mmm.Get(val.AsPointer()) == ([2]uintptr{}) {
 			return godot.API.Variants.NewNil(godot)
 		}
 		var arg = callframe.Arg(frame, mmm.Get(val.AsPointer()))

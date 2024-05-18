@@ -1,3 +1,5 @@
+//go:generate go run ./internal/tool/generate
+//go:generate go fmt ./...
 package gd
 
 import (

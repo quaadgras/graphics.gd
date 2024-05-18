@@ -134,7 +134,7 @@ func slowCall(godot *gd.API, method reflect.Value, p_args gd.UnsafeArgs, p_ret g
 		case reflect.TypeOf(Object{}):
 			ptr := gd.UnsafeGet[uintptr](p_args, i-1)
 			var obj Object
-			obj.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, ptr))
+			obj.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{ptr}))
 			args[i] = reflect.ValueOf(obj)
 		case reflect.TypeOf(Callable{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-1)
@@ -232,7 +232,7 @@ func slowCall(godot *gd.API, method reflect.Value, p_args gd.UnsafeArgs, p_ret g
 		case RID:
 			gd.UnsafeSet[RID](p_ret, val)
 		case Object:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val.AsPointer()))
+			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val.AsPointer())[0])
 			mmm.End(val.AsPointer())
 		case Callable:
 			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))

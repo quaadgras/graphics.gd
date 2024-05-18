@@ -1319,7 +1319,7 @@ func (ctx Context) InstanceFromId(instance_id Int) Object {
 	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.instance_from_id(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret Object
-	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
+	ret.SetPointer(PointerMustAssertInstanceID(ctx, r_ret.Get()))
 	frame.Free()
 	return ret
 }
@@ -5517,7 +5517,7 @@ func (self Callable) GetObject(ctx Context) Object {
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
-	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
+	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx, r_ret.Get()))
 	frame.Free()
 	return ret
 }
@@ -5755,7 +5755,7 @@ func (self Signal) GetObject(ctx Context) Object {
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(selfPtr).builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
-	ret.SetPointer(mmm.New[Pointer](ctx.Lifetime, ctx.API, r_ret.Get()))
+	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx, r_ret.Get()))
 	frame.Free()
 	return ret
 }
@@ -10661,16 +10661,6 @@ func (self PackedColorArray) Count(value Color) Int {
 }
 
 type ObjectConnectFlags int64
-type Object struct {
-	_   [0]*Object
-	ptr Pointer
-}
-
-//go:nosplit
-func (self Object) AsPointer() Pointer { return self.ptr }
-
-//go:nosplit
-func (self *Object) SetPointer(ptr Pointer) { self.ptr = ptr }
 
 /*
 Returns the object's built-in class name, as a [String]. See also [method is_class].

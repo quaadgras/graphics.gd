@@ -150,7 +150,7 @@ func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd
 	var value = reflect.New(class.Type)
 	value.Interface().(gd.PointerToClass).SetPointer(
 		mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.Get(super.AsPointer())))
-	class.Godot.Instances[mmm.Get(super.AsPointer())] = value.Interface()
+	class.Godot.Instances[mmm.Get(super.AsPointer())[0]] = value.Interface()
 
 	value = value.Elem()
 
@@ -182,7 +182,7 @@ func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd
 		}
 	}
 	return &instanceImplementation{
-		object:  mmm.Get(super.AsPointer()),
+		object:  mmm.Get(super.AsPointer())[0],
 		Context: ctx,
 		Value:   value.Addr().Interface(),
 	}
@@ -327,7 +327,7 @@ func (instance *instanceImplementation) ready() {
 	defer tmp.End()
 
 	var parent Node
-	parent.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, instance.Context.API, instance.object))
+	parent.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, instance.Context.API, [2]uintptr{instance.object}))
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -355,7 +355,7 @@ func (instance *instanceImplementation) ready() {
 		path := tmp.String(field.Name).NodePath(tmp)
 		if !parent.HasNode(path) {
 			child := instance.Context.API.ClassDB.ConstructObject(instance.Context, tmp.StringName(classNameOf(field.Type)))
-			native, ok := instance.Context.API.Instances[mmm.Get(child.AsPointer())]
+			native, ok := instance.Context.API.Instances[mmm.Get(child.AsPointer())[0]]
 			if ok {
 				rvalue.Elem().Set(reflect.ValueOf(native))
 				class = native.(isNode)
@@ -376,7 +376,7 @@ func (instance *instanceImplementation) ready() {
 		if name := node.AsObject().GetClass(tmp).String(); name != classNameOf(field.Type) {
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
-		ref, native := tmp.API.Instances[mmm.Get(node.AsPointer())]
+		ref, native := tmp.API.Instances[mmm.Get(node.AsPointer())[0]]
 		if native {
 			rvalue.Elem().Set(reflect.ValueOf(ref))
 			mmm.End(node.AsPointer())
