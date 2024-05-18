@@ -7,78 +7,770 @@ import "unsafe"
 import gd "grow.graphics/gd/internal"
 import classdb "grow.graphics/gd/internal/classdb"
 
+/*
+This class holds the context information required for encryption and decryption operations with AES (Advanced Encryption Standard). Both AES-ECB and AES-CBC modes are supported.
+[codeblocks]
+[gdscript]
+extends Node
+
+var aes = AESContext.new()
+
+func _ready():
+
+	var key = "My secret key!!!" # Key must be either 16 or 32 bytes.
+	var data = "My secret text!!" # Data size must be multiple of 16 bytes, apply padding if needed.
+	# Encrypt ECB
+	aes.start(AESContext.MODE_ECB_ENCRYPT, key.to_utf8_buffer())
+	var encrypted = aes.update(data.to_utf8_buffer())
+	aes.finish()
+	# Decrypt ECB
+	aes.start(AESContext.MODE_ECB_DECRYPT, key.to_utf8_buffer())
+	var decrypted = aes.update(encrypted)
+	aes.finish()
+	# Check ECB
+	assert(decrypted == data.to_utf8_buffer())
+
+	var iv = "My secret iv!!!!" # IV must be of exactly 16 bytes.
+	# Encrypt CBC
+	aes.start(AESContext.MODE_CBC_ENCRYPT, key.to_utf8_buffer(), iv.to_utf8_buffer())
+	encrypted = aes.update(data.to_utf8_buffer())
+	aes.finish()
+	# Decrypt CBC
+	aes.start(AESContext.MODE_CBC_DECRYPT, key.to_utf8_buffer(), iv.to_utf8_buffer())
+	decrypted = aes.update(encrypted)
+	aes.finish()
+	# Check CBC
+	assert(decrypted == data.to_utf8_buffer())
+
+[/gdscript]
+[csharp]
+using Godot;
+using System.Diagnostics;
+
+public partial class MyNode : Node
+
+	{
+	    private AesContext _aes = new AesContext();
+
+	    public override void _Ready()
+	    {
+	        string key = "My secret key!!!"; // Key must be either 16 or 32 bytes.
+	        string data = "My secret text!!"; // Data size must be multiple of 16 bytes, apply padding if needed.
+	        // Encrypt ECB
+	        _aes.Start(AesContext.Mode.EcbEncrypt, key.ToUtf8Buffer());
+	        byte[] encrypted = _aes.Update(data.ToUtf8Buffer());
+	        _aes.Finish();
+	        // Decrypt ECB
+	        _aes.Start(AesContext.Mode.EcbDecrypt, key.ToUtf8Buffer());
+	        byte[] decrypted = _aes.Update(encrypted);
+	        _aes.Finish();
+	        // Check ECB
+	        Debug.Assert(decrypted == data.ToUtf8Buffer());
+
+	        string iv = "My secret iv!!!!"; // IV must be of exactly 16 bytes.
+	        // Encrypt CBC
+	        _aes.Start(AesContext.Mode.EcbEncrypt, key.ToUtf8Buffer(), iv.ToUtf8Buffer());
+	        encrypted = _aes.Update(data.ToUtf8Buffer());
+	        _aes.Finish();
+	        // Decrypt CBC
+	        _aes.Start(AesContext.Mode.EcbDecrypt, key.ToUtf8Buffer(), iv.ToUtf8Buffer());
+	        decrypted = _aes.Update(encrypted);
+	        _aes.Finish();
+	        // Check CBC
+	        Debug.Assert(decrypted == data.ToUtf8Buffer());
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type AESContext = classdb.AESContext
+
+/*
+An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
+See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D] is a wrapper for [AStar3D] that enforces 2D coordinates.
+*/
 type AStar2D = classdb.AStar2D
+
+/*
+A* (A star) is a computer algorithm used in pathfinding and graph traversal, the process of plotting short paths among vertices (points), passing through a given set of edges (segments). It enjoys widespread use due to its performance and accuracy. Godot's A* implementation uses points in 3D space and Euclidean distances by default.
+You must add points manually with [method add_point] and create segments manually with [method connect_points]. Once done, you can test if there is a path between two points with the [method are_points_connected] function, get a path containing indices by [method get_id_path], or one containing actual coordinates with [method get_point_path].
+It is also possible to use non-Euclidean distances. To do so, create a class that extends [AStar3D] and override methods [method _compute_cost] and [method _estimate_cost]. Both take two indices and return a length, as is shown in the following example.
+[codeblocks]
+[gdscript]
+class MyAStar:
+
+	extends AStar3D
+
+	func _compute_cost(u, v):
+	    return abs(u - v)
+
+	func _estimate_cost(u, v):
+	    return min(0, abs(u - v) - 1)
+
+[/gdscript]
+[csharp]
+public partial class MyAStar : AStar3D
+
+	{
+	    public override float _ComputeCost(long fromId, long toId)
+	    {
+	        return Mathf.Abs((int)(fromId - toId));
+	    }
+
+	    public override float _EstimateCost(long fromId, long toId)
+	    {
+	        return Mathf.Min(0, Mathf.Abs((int)(fromId - toId)) - 1);
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+[method _estimate_cost] should return a lower bound of the distance, i.e. [code]_estimate_cost(u, v) <= _compute_cost(u, v)[/code]. This serves as a hint to the algorithm because the custom [method _compute_cost] might be computation-heavy. If this is not the case, make [method _estimate_cost] return the same value as [method _compute_cost] to provide the algorithm with the most accurate information.
+If the default [method _estimate_cost] and [method _compute_cost] methods are used, or if the supplied [method _estimate_cost] method returns a lower bound of the cost, then the paths returned by A* will be the lowest-cost paths. Here, the cost of a path equals the sum of the [method _compute_cost] results of all segments in the path multiplied by the [code]weight_scale[/code]s of the endpoints of the respective segments. If the default methods are used and the [code]weight_scale[/code]s of all points are set to [code]1.0[/code], then this equals the sum of Euclidean distances of all segments in the path.
+*/
 type AStar3D = classdb.AStar3D
+
+/*
+[AStarGrid2D] is a variant of [AStar2D] that is specialized for partial 2D grids. It is simpler to use because it doesn't require you to manually create points and connect them together. This class also supports multiple types of heuristics, modes for diagonal movement, and a jumping mode to speed up calculations.
+To use [AStarGrid2D], you only need to set the [member region] of the grid, optionally set the [member cell_size], and then call the [method update] method:
+[codeblocks]
+[gdscript]
+var astar_grid = AStarGrid2D.new()
+astar_grid.region = Rect2i(0, 0, 32, 32)
+astar_grid.cell_size = Vector2(16, 16)
+astar_grid.update()
+print(astar_grid.get_id_path(Vector2i(0, 0), Vector2i(3, 4))) # prints (0, 0), (1, 1), (2, 2), (3, 3), (3, 4)
+print(astar_grid.get_point_path(Vector2i(0, 0), Vector2i(3, 4))) # prints (0, 0), (16, 16), (32, 32), (48, 48), (48, 64)
+[/gdscript]
+[csharp]
+AStarGrid2D astarGrid = new AStarGrid2D();
+astarGrid.Region = new Rect2I(0, 0, 32, 32);
+astarGrid.CellSize = new Vector2I(16, 16);
+astarGrid.Update();
+GD.Print(astarGrid.GetIdPath(Vector2I.Zero, new Vector2I(3, 4))); // prints (0, 0), (1, 1), (2, 2), (3, 3), (3, 4)
+GD.Print(astarGrid.GetPointPath(Vector2I.Zero, new Vector2I(3, 4))); // prints (0, 0), (16, 16), (32, 32), (48, 48), (48, 64)
+[/csharp]
+[/codeblocks]
+To remove a point from the pathfinding grid, it must be set as "solid" with [method set_point_solid].
+*/
 type AStarGrid2D = classdb.AStarGrid2D
+
+/*
+The default use of [AcceptDialog] is to allow it to only be accepted or closed, with the same result. However, the [signal confirmed] and [signal canceled] signals allow to make the two actions different, and the [method add_button] method allows to add custom buttons and actions.
+*/
 type AcceptDialog = classdb.AcceptDialog
+
+/*
+An animatable 2D physics body. It can't be moved by external forces or contacts, but can be moved manually by other means such as code, [AnimationMixer]s (with [member AnimationMixer.callback_mode_process] set to [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS]), and [RemoteTransform2D].
+When [AnimatableBody2D] is moved, its linear and angular velocity are estimated and used to affect other physics bodies in its path. This makes it useful for moving platforms, doors, and other moving objects.
+*/
 type AnimatableBody2D = classdb.AnimatableBody2D
+
+/*
+An animatable 3D physics body. It can't be moved by external forces or contacts, but can be moved manually by other means such as code, [AnimationMixer]s (with [member AnimationMixer.callback_mode_process] set to [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS]), and [RemoteTransform3D].
+When [AnimatableBody3D] is moved, its linear and angular velocity are estimated and used to affect other physics bodies in its path. This makes it useful for moving platforms, doors, and other moving objects.
+*/
 type AnimatableBody3D = classdb.AnimatableBody3D
+
+/*
+[AnimatedSprite2D] is similar to the [Sprite2D] node, except it carries multiple textures as animation frames. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
+*/
 type AnimatedSprite2D = classdb.AnimatedSprite2D
+
+/*
+[AnimatedSprite3D] is similar to the [Sprite3D] node, except it carries multiple textures as animation [member sprite_frames]. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
+*/
 type AnimatedSprite3D = classdb.AnimatedSprite3D
+
+/*
+[AnimatedTexture] is a resource format for frame-based animations, where multiple textures can be chained automatically with a predefined delay for each frame. Unlike [AnimationPlayer] or [AnimatedSprite2D], it isn't a [Node], but has the advantage of being usable anywhere a [Texture2D] resource can be used, e.g. in a [TileSet].
+The playback of the animation is controlled by the [member speed_scale] property, as well as each frame's duration (see [method set_frame_duration]). The animation loops, i.e. it will restart at frame 0 automatically after playing the last frame.
+[AnimatedTexture] currently requires all frame textures to have the same size, otherwise the bigger ones will be cropped to match the smallest one.
+[b]Note:[/b] AnimatedTexture doesn't support using [AtlasTexture]s. Each frame needs to be a separate [Texture2D].
+[b]Warning:[/b] The current implementation is not efficient for the modern renderers.
+[i]Deprecated.[/i] This class is deprecated, and might be removed in a future release.
+*/
 type AnimatedTexture = classdb.AnimatedTexture
+
+/*
+This resource holds data that can be used to animate anything in the engine. Animations are divided into tracks and each track must be linked to a node. The state of that node can be changed through time, by adding timed keys (events) to the track.
+[codeblocks]
+[gdscript]
+# This creates an animation that makes the node "Enemy" move to the right by
+# 100 pixels in 2.0 seconds.
+var animation = Animation.new()
+var track_index = animation.add_track(Animation.TYPE_VALUE)
+animation.track_set_path(track_index, "Enemy:position:x")
+animation.track_insert_key(track_index, 0.0, 0)
+animation.track_insert_key(track_index, 2.0, 100)
+animation.length = 2.0
+[/gdscript]
+[csharp]
+// This creates an animation that makes the node "Enemy" move to the right by
+// 100 pixels in 2.0 seconds.
+var animation = new Animation();
+int trackIndex = animation.AddTrack(Animation.TrackType.Value);
+animation.TrackSetPath(trackIndex, "Enemy:position:x");
+animation.TrackInsertKey(trackIndex, 0.0f, 0);
+animation.TrackInsertKey(trackIndex, 2.0f, 100);
+animation.Length = 2.0f;
+[/csharp]
+[/codeblocks]
+Animations are just data containers, and must be added to nodes such as an [AnimationPlayer] to be played back. Animation tracks have different types, each with its own set of dedicated methods. Check [enum TrackType] to see available types.
+[b]Note:[/b] For 3D position/rotation/scale, using the dedicated [constant TYPE_POSITION_3D], [constant TYPE_ROTATION_3D] and [constant TYPE_SCALE_3D] track types instead of [constant TYPE_VALUE] is recommended for performance reasons.
+*/
 type Animation = classdb.Animation
+
+/*
+An animation library stores a set of animations accessible through [StringName] keys, for use with [AnimationPlayer] nodes.
+*/
 type AnimationLibrary = classdb.AnimationLibrary
+
+/*
+Base class for [AnimationPlayer] and [AnimationTree] to manage animation lists. It also has general properties and methods for playback and blending.
+After instantiating the playback information data within the extended class, the blending is processed by the [AnimationMixer].
+*/
 type AnimationMixer = classdb.AnimationMixer
+
+/*
+Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
+Inherit this when creating animation nodes mainly for use in [AnimationNodeBlendTree], otherwise [AnimationRootNode] should be used instead.
+*/
 type AnimationNode = classdb.AnimationNode
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. Blends two animations additively based on the amount value.
+If the amount is greater than [code]1.0[/code], the animation connected to "in" port is blended with the amplified animation connected to "add" port.
+If the amount is less than [code]0.0[/code], the animation connected to "in" port is blended with the inverted animation connected to "add" port.
+*/
 type AnimationNodeAdd2 = classdb.AnimationNodeAdd2
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. Blends two animations out of three additively out of three based on the amount value.
+This animation node has three inputs:
+- The base animation to add to
+- A "-add" animation to blend with when the blend amount is negative
+- A "+add" animation to blend with when the blend amount is positive
+If the absolute value of the amount is greater than [code]1.0[/code], the animation connected to "in" port is blended with the amplified animation connected to "-add"/"+add" port.
+*/
 type AnimationNodeAdd3 = classdb.AnimationNodeAdd3
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. Only has one output port using the [member animation] property. Used as an input for [AnimationNode]s that blend animations together.
+*/
 type AnimationNodeAnimation = classdb.AnimationNodeAnimation
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. Blends two animations linearly based on the amount value.
+In general, the blend value should be in the [code][0.0, 1.0][/code] range. Values outside of this range can blend amplified or inverted animations, however, [AnimationNodeAdd2] works better for this purpose.
+*/
 type AnimationNodeBlend2 = classdb.AnimationNodeBlend2
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. Blends two animations out of three linearly out of three based on the amount value.
+This animation node has three inputs:
+- The base animation to blend with
+- A "-blend" animation to blend with when the blend amount is negative value
+- A "+blend" animation to blend with when the blend amount is positive value
+In general, the blend value should be in the [code][-1.0, 1.0][/code] range. Values outside of this range can blend amplified animations, however, [AnimationNodeAdd3] works better for this purpose.
+*/
 type AnimationNodeBlend3 = classdb.AnimationNodeBlend3
+
+/*
+A resource used by [AnimationNodeBlendTree].
+[AnimationNodeBlendSpace1D] represents a virtual axis on which any type of [AnimationRootNode]s can be added using [method add_blend_point]. Outputs the linear blend of the two [AnimationRootNode]s adjacent to the current value.
+You can set the extents of the axis with [member min_space] and [member max_space].
+*/
 type AnimationNodeBlendSpace1D = classdb.AnimationNodeBlendSpace1D
+
+/*
+A resource used by [AnimationNodeBlendTree].
+[AnimationNodeBlendSpace1D] represents a virtual 2D space on which [AnimationRootNode]s are placed. Outputs the linear blend of the three adjacent animations using a [Vector2] weight. Adjacent in this context means the three [AnimationRootNode]s making up the triangle that contains the current value.
+You can add vertices to the blend space with [method add_blend_point] and automatically triangulate it by setting [member auto_triangles] to [code]true[/code]. Otherwise, use [method add_triangle] and [method remove_triangle] to triangulate the blend space by hand.
+*/
 type AnimationNodeBlendSpace2D = classdb.AnimationNodeBlendSpace2D
+
+/*
+This animation node may contain a sub-tree of any other type animation nodes, such as [AnimationNodeTransition], [AnimationNodeBlend2], [AnimationNodeBlend3], [AnimationNodeOneShot], etc. This is one of the most commonly used animation node roots.
+An [AnimationNodeOutput] node named [code]output[/code] is created by default.
+*/
 type AnimationNodeBlendTree = classdb.AnimationNodeBlendTree
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. This animation node will execute a sub-animation and return once it finishes. Blend times for fading in and out can be customized, as well as filters.
+After setting the request and changing the animation playback, the one-shot node automatically clears the request on the next process frame by setting its [code]request[/code] value to [constant ONE_SHOT_REQUEST_NONE].
+[codeblocks]
+[gdscript]
+# Play child animation connected to "shot" port.
+animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+# Alternative syntax (same result as above).
+animation_tree["parameters/OneShot/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+
+# Abort child animation connected to "shot" port.
+animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+# Alternative syntax (same result as above).
+animation_tree["parameters/OneShot/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT
+
+# Abort child animation with fading out connected to "shot" port.
+animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT)
+# Alternative syntax (same result as above).
+animation_tree["parameters/OneShot/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT
+
+# Get current state (read-only).
+animation_tree.get("parameters/OneShot/active")
+# Alternative syntax (same result as above).
+animation_tree["parameters/OneShot/active"]
+
+# Get current internal state (read-only).
+animation_tree.get("parameters/OneShot/internal_active")
+# Alternative syntax (same result as above).
+animation_tree["parameters/OneShot/internal_active"]
+[/gdscript]
+[csharp]
+// Play child animation connected to "shot" port.
+animationTree.Set("parameters/OneShot/request", (int)AnimationNodeOneShot.OneShotRequest.Fire);
+
+// Abort child animation connected to "shot" port.
+animationTree.Set("parameters/OneShot/request", (int)AnimationNodeOneShot.OneShotRequest.Abort);
+
+// Abort child animation with fading out connected to "shot" port.
+animationTree.Set("parameters/OneShot/request", (int)AnimationNodeOneShot.OneShotRequest.FadeOut);
+
+// Get current state (read-only).
+animationTree.Get("parameters/OneShot/active");
+
+// Get current internal state (read-only).
+animationTree.Get("parameters/OneShot/internal_active");
+[/csharp]
+[/codeblocks]
+*/
 type AnimationNodeOneShot = classdb.AnimationNodeOneShot
+
+/*
+A node created automatically in an [AnimationNodeBlendTree] that outputs the final animation.
+*/
 type AnimationNodeOutput = classdb.AnimationNodeOutput
+
+/*
+Contains multiple [AnimationRootNode]s representing animation states, connected in a graph. State transitions can be configured to happen automatically or via code, using a shortest-path algorithm. Retrieve the [AnimationNodeStateMachinePlayback] object from the [AnimationTree] node to control it programmatically.
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var state_machine = $AnimationTree.get("parameters/playback")
+state_machine.travel("some_state")
+[/gdscript]
+[csharp]
+var stateMachine = GetNode<AnimationTree>("AnimationTree").Get("parameters/playback") as AnimationNodeStateMachinePlayback;
+stateMachine.Travel("some_state");
+[/csharp]
+[/codeblocks]
+*/
 type AnimationNodeStateMachine = classdb.AnimationNodeStateMachine
+
+/*
+Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var state_machine = $AnimationTree.get("parameters/playback")
+state_machine.travel("some_state")
+[/gdscript]
+[csharp]
+var stateMachine = GetNode<AnimationTree>("AnimationTree").Get("parameters/playback").As<AnimationNodeStateMachinePlayback>();
+stateMachine.Travel("some_state");
+[/csharp]
+[/codeblocks]
+*/
 type AnimationNodeStateMachinePlayback = classdb.AnimationNodeStateMachinePlayback
+
+/*
+The path generated when using [method AnimationNodeStateMachinePlayback.travel] is limited to the nodes connected by [AnimationNodeStateMachineTransition].
+You can set the timing and conditions of the transition in detail.
+*/
 type AnimationNodeStateMachineTransition = classdb.AnimationNodeStateMachineTransition
+
+/*
+A resource to add to an [AnimationNodeBlendTree]. Blends two animations subtractively based on the amount value.
+This animation node is usually used for pre-calculation to cancel out any extra poses from the animation for the "add" animation source in [AnimationNodeAdd2] or [AnimationNodeAdd3].
+In general, the blend value should be in the [code][0.0, 1.0][/code] range, but values outside of this range can be used for amplified or inverted animations.
+[b]Note:[/b] This calculation is different from using a negative value in [AnimationNodeAdd2], since the transformation matrices do not satisfy the commutative law. [AnimationNodeSub2] multiplies the transformation matrix of the inverted animation from the left side, while negative [AnimationNodeAdd2] multiplies it from the right side.
+*/
 type AnimationNodeSub2 = classdb.AnimationNodeSub2
+
+/*
+An animation node used to combine, mix, or blend two or more animations together while keeping them synchronized within an [AnimationTree].
+*/
 type AnimationNodeSync = classdb.AnimationNodeSync
+
+/*
+Allows to scale the speed of the animation (or reverse it) in any child [AnimationNode]s. Setting it to [code]0.0[/code] will pause the animation.
+*/
 type AnimationNodeTimeScale = classdb.AnimationNodeTimeScale
+
+/*
+This animation node can be used to cause a seek command to happen to any sub-children of the animation graph. Use to play an [Animation] from the start or a certain playback position inside the [AnimationNodeBlendTree].
+After setting the time and changing the animation playback, the time seek node automatically goes into sleep mode on the next process frame by setting its [code]seek_request[/code] value to [code]-1.0[/code].
+[codeblocks]
+[gdscript]
+# Play child animation from the start.
+animation_tree.set("parameters/TimeSeek/seek_request", 0.0)
+# Alternative syntax (same result as above).
+animation_tree["parameters/TimeSeek/seek_request"] = 0.0
+
+# Play child animation from 12 second timestamp.
+animation_tree.set("parameters/TimeSeek/seek_request", 12.0)
+# Alternative syntax (same result as above).
+animation_tree["parameters/TimeSeek/seek_request"] = 12.0
+[/gdscript]
+[csharp]
+// Play child animation from the start.
+animationTree.Set("parameters/TimeSeek/seek_request", 0.0);
+
+// Play child animation from 12 second timestamp.
+animationTree.Set("parameters/TimeSeek/seek_request", 12.0);
+[/csharp]
+[/codeblocks]
+*/
 type AnimationNodeTimeSeek = classdb.AnimationNodeTimeSeek
+
+/*
+Simple state machine for cases which don't require a more advanced [AnimationNodeStateMachine]. Animations can be connected to the inputs and transition times can be specified.
+After setting the request and changing the animation playback, the transition node automatically clears the request on the next process frame by setting its [code]transition_request[/code] value to empty.
+[b]Note:[/b] When using a cross-fade, [code]current_state[/code] and [code]current_index[/code] change to the next state immediately after the cross-fade begins.
+[codeblocks]
+[gdscript]
+# Play child animation connected to "state_2" port.
+animation_tree.set("parameters/Transition/transition_request", "state_2")
+# Alternative syntax (same result as above).
+animation_tree["parameters/Transition/transition_request"] = "state_2"
+
+# Get current state name (read-only).
+animation_tree.get("parameters/Transition/current_state")
+# Alternative syntax (same result as above).
+animation_tree["parameters/Transition/current_state"]
+
+# Get current state index (read-only).
+animation_tree.get("parameters/Transition/current_index")
+# Alternative syntax (same result as above).
+animation_tree["parameters/Transition/current_index"]
+[/gdscript]
+[csharp]
+// Play child animation connected to "state_2" port.
+animationTree.Set("parameters/Transition/transition_request", "state_2");
+
+// Get current state name (read-only).
+animationTree.Get("parameters/Transition/current_state");
+
+// Get current state index (read-only).
+animationTree.Get("parameters/Transition/current_index");
+[/csharp]
+[/codeblocks]
+*/
 type AnimationNodeTransition = classdb.AnimationNodeTransition
+
+/*
+An animation player is used for general-purpose playback of animations. It contains a dictionary of [AnimationLibrary] resources and custom blend times between animation transitions.
+Some methods and properties use a single key to reference an animation directly. These keys are formatted as the key for the library, followed by a forward slash, then the key for the animation within the library, for example [code]"movement/run"[/code]. If the library's key is an empty string (known as the default library), the forward slash is omitted, being the same key used by the library.
+[AnimationPlayer] is better-suited than [Tween] for more complex animations, for example ones with non-trivial timings. It can also be used over [Tween] if the animation track editor is more convenient than doing it in code.
+Updating the target properties of animations occurs at the process frame.
+*/
 type AnimationPlayer = classdb.AnimationPlayer
+
+/*
+[AnimationRootNode] is a base class for [AnimationNode]s that hold a complete animation. A complete animation refers to the output of an [AnimationNodeOutput] in an [AnimationNodeBlendTree] or the output of another [AnimationRootNode]. Used for [member AnimationTree.tree_root] or in other [AnimationRootNode]s.
+Examples of built-in root nodes include [AnimationNodeBlendTree] (allows blending nodes between each other using various modes), [AnimationNodeStateMachine] (allows to configure blending and transitions between nodes using a state machine pattern), [AnimationNodeBlendSpace2D] (allows linear blending between [b]three[/b] [AnimationNode]s), [AnimationNodeBlendSpace1D] (allows linear blending only between [b]two[/b] [AnimationNode]s).
+*/
 type AnimationRootNode = classdb.AnimationRootNode
+
+/*
+A node used for advanced animation transitions in an [AnimationPlayer].
+[b]Note:[/b] When linked with an [AnimationPlayer], several properties and methods of the corresponding [AnimationPlayer] will not function as expected. Playback and transitions should be handled using only the [AnimationTree] and its constituent [AnimationNode](s). The [AnimationPlayer] node should be used solely for adding, deleting, and editing animations.
+*/
 type AnimationTree = classdb.AnimationTree
+
+/*
+[Area2D] is a region of 2D space defined by one or multiple [CollisionShape2D] or [CollisionPolygon2D] child nodes. It detects when other [CollisionObject2D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
+This node can also locally alter or override physics parameters (gravity, damping) and route audio to custom audio buses.
+*/
 type Area2D = classdb.Area2D
+
+/*
+[Area3D] is a region of 3D space defined by one or multiple [CollisionShape3D] or [CollisionPolygon3D] child nodes. It detects when other [CollisionObject3D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
+This node can also locally alter or override physics parameters (gravity, damping) and route audio to custom audio buses.
+[b]Warning:[/b] Using a [ConcavePolygonShape3D] inside a [CollisionShape3D] child of this node (created e.g. by using the [b]Create Trimesh Collision Sibling[/b] option in the [b]Mesh[/b] menu that appears when selecting a [MeshInstance3D] node) may give unexpected results, since this collision shape is hollow. If this is not desired, it has to be split into multiple [ConvexPolygonShape3D]s or primitive shapes like [BoxShape3D], or in some cases it may be replaceable by a [CollisionPolygon3D].
+*/
 type Area3D = classdb.Area3D
+
+/*
+The [ArrayMesh] is used to construct a [Mesh] by specifying the attributes as arrays.
+The most basic example is the creation of a single triangle:
+[codeblocks]
+[gdscript]
+var vertices = PackedVector3Array()
+vertices.push_back(Vector3(0, 1, 0))
+vertices.push_back(Vector3(1, 0, 0))
+vertices.push_back(Vector3(0, 0, 1))
+
+# Initialize the ArrayMesh.
+var arr_mesh = ArrayMesh.new()
+var arrays = []
+arrays.resize(Mesh.ARRAY_MAX)
+arrays[Mesh.ARRAY_VERTEX] = vertices
+
+# Create the Mesh.
+arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+var m = MeshInstance3D.new()
+m.mesh = arr_mesh
+[/gdscript]
+[csharp]
+var vertices = new Vector3[]
+
+	{
+	    new Vector3(0, 1, 0),
+	    new Vector3(1, 0, 0),
+	    new Vector3(0, 0, 1),
+	};
+
+// Initialize the ArrayMesh.
+var arrMesh = new ArrayMesh();
+var arrays = new Godot.Collections.Array();
+arrays.Resize((int)Mesh.ArrayType.Max);
+arrays[(int)Mesh.ArrayType.Vertex] = vertices;
+
+// Create the Mesh.
+arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
+var m = new MeshInstance3D();
+m.Mesh = arrMesh;
+[/csharp]
+[/codeblocks]
+The [MeshInstance3D] is ready to be added to the [SceneTree] to be shown.
+See also [ImmediateMesh], [MeshDataTool] and [SurfaceTool] for procedural geometry generation.
+[b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
+*/
 type ArrayMesh = classdb.ArrayMesh
+
+/*
+[ArrayOccluder3D] stores an arbitrary 3D polygon shape that can be used by the engine's occlusion culling system. This is analogous to [ArrayMesh], but for occluders.
+See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
+*/
 type ArrayOccluder3D = classdb.ArrayOccluder3D
+
+/*
+A container type that arranges its child controls in a way that preserves their proportions automatically when the container is resized. Useful when a container has a dynamic size and the child nodes must adjust their sizes accordingly without losing their aspect ratios.
+*/
 type AspectRatioContainer = classdb.AspectRatioContainer
+
+/*
+[Texture2D] resource that draws only part of its [member atlas] texture, as defined by the [member region]. An additional [member margin] can also be set, which is useful for small adjustments.
+Multiple [AtlasTexture] resources can be cropped from the same [member atlas]. Packing many smaller textures into a singular large texture helps to optimize video memory costs and render calls.
+[b]Note:[/b] [AtlasTexture] cannot be used in an [AnimatedTexture], and may not tile properly in nodes such as [TextureRect], when inside other [AtlasTexture] resources.
+*/
 type AtlasTexture = classdb.AtlasTexture
+
+/*
+Stores position, muting, solo, bypass, effects, effect position, volume, and the connections between buses. See [AudioServer] for usage.
+*/
 type AudioBusLayout = classdb.AudioBusLayout
+
+/*
+Base resource for audio bus. Applies an audio effect on the bus that the resource is applied on.
+*/
 type AudioEffect = classdb.AudioEffect
+
+/*
+Increases or decreases the volume being routed through the audio bus.
+*/
 type AudioEffectAmplify = classdb.AudioEffectAmplify
+
+/*
+Limits the frequencies in a range around the [member AudioEffectFilter.cutoff_hz] and allows frequencies outside of this range to pass.
+*/
 type AudioEffectBandLimitFilter = classdb.AudioEffectBandLimitFilter
+
+/*
+Attenuates the frequencies inside of a range around the [member AudioEffectFilter.cutoff_hz] and cuts frequencies outside of this band.
+*/
 type AudioEffectBandPassFilter = classdb.AudioEffectBandPassFilter
+
+/*
+AudioEffectCapture is an AudioEffect which copies all audio frames from the attached audio effect bus into its internal ring buffer.
+Application code should consume these audio frames from this ring buffer using [method get_buffer] and process it as needed, for example to capture data from an [AudioStreamMicrophone], implement application-defined effects, or to transmit audio over the network. When capturing audio data from a microphone, the format of the samples will be stereo 32-bit floating point PCM.
+[b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
+*/
 type AudioEffectCapture = classdb.AudioEffectCapture
+
+/*
+Adds a chorus audio effect. The effect applies a filter with voices to duplicate the audio source and manipulate it through the filter.
+*/
 type AudioEffectChorus = classdb.AudioEffectChorus
+
+/*
+Dynamic range compressor reduces the level of the sound when the amplitude goes over a certain threshold in Decibels. One of the main uses of a compressor is to increase the dynamic range by clipping as little as possible (when sound goes over 0dB).
+Compressor has many uses in the mix:
+- In the Master bus to compress the whole output (although an [AudioEffectLimiter] is probably better).
+- In voice channels to ensure they sound as balanced as possible.
+- Sidechained. This can reduce the sound level sidechained with another audio bus for threshold detection. This technique is common in video game mixing to the level of music and SFX while voices are being heard.
+- Accentuates transients by using a wider attack, making effects sound more punchy.
+*/
 type AudioEffectCompressor = classdb.AudioEffectCompressor
+
+/*
+Plays input signal back after a period of time. The delayed signal may be played back multiple times to create the sound of a repeating, decaying echo. Delay effects range from a subtle echo effect to a pronounced blending of previous sounds with new sounds.
+*/
 type AudioEffectDelay = classdb.AudioEffectDelay
+
+/*
+Different types are available: clip, tan, lo-fi (bit crushing), overdrive, or waveshape.
+By distorting the waveform the frequency content changes, which will often make the sound "crunchy" or "abrasive". For games, it can simulate sound coming from some saturated device or speaker very efficiently.
+*/
 type AudioEffectDistortion = classdb.AudioEffectDistortion
+
+/*
+AudioEffectEQ gives you control over frequencies. Use it to compensate for existing deficiencies in audio. AudioEffectEQs are useful on the Master bus to completely master a mix and give it more character. They are also useful when a game is run on a mobile device, to adjust the mix to that kind of speakers (it can be added but disabled when headphones are plugged).
+*/
 type AudioEffectEQ = classdb.AudioEffectEQ
+
+/*
+Frequency bands:
+Band 1: 31 Hz
+Band 2: 62 Hz
+Band 3: 125 Hz
+Band 4: 250 Hz
+Band 5: 500 Hz
+Band 6: 1000 Hz
+Band 7: 2000 Hz
+Band 8: 4000 Hz
+Band 9: 8000 Hz
+Band 10: 16000 Hz
+See also [AudioEffectEQ], [AudioEffectEQ6], [AudioEffectEQ21].
+*/
 type AudioEffectEQ10 = classdb.AudioEffectEQ10
+
+/*
+Frequency bands:
+Band 1: 22 Hz
+Band 2: 32 Hz
+Band 3: 44 Hz
+Band 4: 63 Hz
+Band 5: 90 Hz
+Band 6: 125 Hz
+Band 7: 175 Hz
+Band 8: 250 Hz
+Band 9: 350 Hz
+Band 10: 500 Hz
+Band 11: 700 Hz
+Band 12: 1000 Hz
+Band 13: 1400 Hz
+Band 14: 2000 Hz
+Band 15: 2800 Hz
+Band 16: 4000 Hz
+Band 17: 5600 Hz
+Band 18: 8000 Hz
+Band 19: 11000 Hz
+Band 20: 16000 Hz
+Band 21: 22000 Hz
+See also [AudioEffectEQ], [AudioEffectEQ6], [AudioEffectEQ10].
+*/
 type AudioEffectEQ21 = classdb.AudioEffectEQ21
+
+/*
+Frequency bands:
+Band 1: 32 Hz
+Band 2: 100 Hz
+Band 3: 320 Hz
+Band 4: 1000 Hz
+Band 5: 3200 Hz
+Band 6: 10000 Hz
+See also [AudioEffectEQ], [AudioEffectEQ10], [AudioEffectEQ21].
+*/
 type AudioEffectEQ6 = classdb.AudioEffectEQ6
+
+/*
+Allows frequencies other than the [member cutoff_hz] to pass.
+*/
 type AudioEffectFilter = classdb.AudioEffectFilter
+
+/*
+Cuts frequencies lower than the [member AudioEffectFilter.cutoff_hz] and allows higher frequencies to pass.
+*/
 type AudioEffectHighPassFilter = classdb.AudioEffectHighPassFilter
+
+/*
+Reduces all frequencies above the [member AudioEffectFilter.cutoff_hz].
+*/
 type AudioEffectHighShelfFilter = classdb.AudioEffectHighShelfFilter
 type AudioEffectInstance = classdb.AudioEffectInstance
+
+/*
+A limiter is similar to a compressor, but it's less flexible and designed to disallow sound going over a given dB threshold. Adding one in the Master bus is always recommended to reduce the effects of clipping.
+Soft clipping starts to reduce the peaks a little below the threshold level and progressively increases its effect as the input level increases such that the threshold is never exceeded.
+*/
 type AudioEffectLimiter = classdb.AudioEffectLimiter
+
+/*
+Cuts frequencies higher than the [member AudioEffectFilter.cutoff_hz] and allows lower frequencies to pass.
+*/
 type AudioEffectLowPassFilter = classdb.AudioEffectLowPassFilter
+
+/*
+Reduces all frequencies below the [member AudioEffectFilter.cutoff_hz].
+*/
 type AudioEffectLowShelfFilter = classdb.AudioEffectLowShelfFilter
+
+/*
+Attenuates frequencies in a narrow band around the [member AudioEffectFilter.cutoff_hz] and cuts frequencies outside of this range.
+*/
 type AudioEffectNotchFilter = classdb.AudioEffectNotchFilter
+
+/*
+Determines how much of an audio signal is sent to the left and right buses.
+*/
 type AudioEffectPanner = classdb.AudioEffectPanner
+
+/*
+Combines phase-shifted signals with the original signal. The movement of the phase-shifted signals is controlled using a low-frequency oscillator.
+*/
 type AudioEffectPhaser = classdb.AudioEffectPhaser
+
+/*
+Allows modulation of pitch independently of tempo. All frequencies can be increased/decreased with minimal effect on transients.
+*/
 type AudioEffectPitchShift = classdb.AudioEffectPitchShift
+
+/*
+Allows the user to record the sound from an audio bus. This can include all audio output by Godot when used on the "Master" audio bus.
+Can be used (with an [AudioStreamMicrophone]) to record from a microphone.
+It sets and gets the format in which the audio file will be recorded (8-bit, 16-bit, or compressed). It checks whether or not the recording is active, and if it is, records the sound. It then returns the recorded sample.
+*/
 type AudioEffectRecord = classdb.AudioEffectRecord
+
+/*
+Simulates the sound of acoustic environments such as rooms, concert halls, caverns, or an open spaces.
+*/
 type AudioEffectReverb = classdb.AudioEffectReverb
+
+/*
+This audio effect does not affect sound output, but can be used for real-time audio visualizations.
+See also [AudioStreamGenerator] for procedurally generating sounds.
+*/
 type AudioEffectSpectrumAnalyzer = classdb.AudioEffectSpectrumAnalyzer
 type AudioEffectSpectrumAnalyzerInstance = classdb.AudioEffectSpectrumAnalyzerInstance
+
+/*
+An audio effect that can be used to adjust the intensity of stereo panning.
+*/
 type AudioEffectStereoEnhance = classdb.AudioEffectStereoEnhance
+
+/*
+Once added to the scene tree and enabled using [method make_current], this node will override the location sounds are heard from. Only one [AudioListener2D] can be current. Using [method make_current] will disable the previous [AudioListener2D].
+If there is no active [AudioListener2D] in the current [Viewport], center of the screen will be used as a hearing point for the audio. [AudioListener2D] needs to be inside [SceneTree] to function.
+*/
 type AudioListener2D = classdb.AudioListener2D
+
+/*
+Once added to the scene tree and enabled using [method make_current], this node will override the location sounds are heard from. This can be used to listen from a location different from the [Camera3D].
+*/
 type AudioListener3D = classdb.AudioListener3D
 
 func AudioServer(godot Context) classdb.AudioServer {
@@ -86,52 +778,372 @@ func AudioServer(godot Context) classdb.AudioServer {
 	return *(*classdb.AudioServer)(unsafe.Pointer(&obj))
 }
 
+/*
+Base class for audio streams. Audio streams are used for sound effects and music playback, and support WAV (via [AudioStreamWAV]) and Ogg (via [AudioStreamOggVorbis]) file formats.
+*/
 type AudioStream = classdb.AudioStream
+
+/*
+[AudioStreamGenerator] is a type of audio stream that does not play back sounds on its own; instead, it expects a script to generate audio data for it. See also [AudioStreamGeneratorPlayback].
+Here's a sample on how to use it to generate a sine wave:
+[codeblocks]
+[gdscript]
+var playback # Will hold the AudioStreamGeneratorPlayback.
+@onready var sample_hz = $AudioStreamPlayer.stream.mix_rate
+var pulse_hz = 440.0 # The frequency of the sound wave.
+
+func _ready():
+
+	$AudioStreamPlayer.play()
+	playback = $AudioStreamPlayer.get_stream_playback()
+	fill_buffer()
+
+func fill_buffer():
+
+	var phase = 0.0
+	var increment = pulse_hz / sample_hz
+	var frames_available = playback.get_frames_available()
+
+	for i in range(frames_available):
+	    playback.push_frame(Vector2.ONE * sin(phase * TAU))
+	    phase = fmod(phase + increment, 1.0)
+
+[/gdscript]
+[csharp]
+[Export] public AudioStreamPlayer Player { get; set; }
+
+private AudioStreamGeneratorPlayback _playback; // Will hold the AudioStreamGeneratorPlayback.
+private float _sampleHz;
+private float _pulseHz = 440.0f; // The frequency of the sound wave.
+
+public override void _Ready()
+
+	{
+	    if (Player.Stream is AudioStreamGenerator generator) // Type as a generator to access MixRate.
+	    {
+	        _sampleHz = generator.MixRate;
+	        Player.Play();
+	        _playback = (AudioStreamGeneratorPlayback)Player.GetStreamPlayback();
+	        FillBuffer();
+	    }
+	}
+
+public void FillBuffer()
+
+	{
+	    double phase = 0.0;
+	    float increment = _pulseHz / _sampleHz;
+	    int framesAvailable = _playback.GetFramesAvailable();
+
+	    for (int i = 0; i < framesAvailable; i++)
+	    {
+	        _playback.PushFrame(Vector2.One * (float)Mathf.Sin(phase * Mathf.Tau));
+	        phase = Mathf.PosMod(phase + increment, 1.0);
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+In the example above, the "AudioStreamPlayer" node must use an [AudioStreamGenerator] as its stream. The [code]fill_buffer[/code] function provides audio data for approximating a sine wave.
+See also [AudioEffectSpectrumAnalyzer] for performing real-time audio spectrum analysis.
+[b]Note:[/b] Due to performance constraints, this class is best used from C# or from a compiled language via GDExtension. If you still want to use this class from GDScript, consider using a lower [member mix_rate] such as 11,025 Hz or 22,050 Hz.
+*/
 type AudioStreamGenerator = classdb.AudioStreamGenerator
+
+/*
+This class is meant to be used with [AudioStreamGenerator] to play back the generated audio in real-time.
+*/
 type AudioStreamGeneratorPlayback = classdb.AudioStreamGeneratorPlayback
+
+/*
+MP3 audio stream driver. See [member data] if you want to load an MP3 file at run-time.
+*/
 type AudioStreamMP3 = classdb.AudioStreamMP3
+
+/*
+When used directly in an [AudioStreamPlayer] node, [AudioStreamMicrophone] plays back microphone input in real-time. This can be used in conjunction with [AudioEffectCapture] to process the data or save it.
+[b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
+*/
 type AudioStreamMicrophone = classdb.AudioStreamMicrophone
+
+/*
+The AudioStreamOggVorbis class is a specialized [AudioStream] for handling Ogg Vorbis file formats. It offers functionality for loading and playing back Ogg Vorbis files, as well as managing looping and other playback properties. This class is part of the audio stream system, which also supports WAV files through the [AudioStreamWAV] class.
+*/
 type AudioStreamOggVorbis = classdb.AudioStreamOggVorbis
+
+/*
+Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStreamOggVorbis] for usage.
+*/
 type AudioStreamPlayback = classdb.AudioStreamPlayback
 type AudioStreamPlaybackOggVorbis = classdb.AudioStreamPlaybackOggVorbis
+
+/*
+Playback instance for [AudioStreamPolyphonic]. After setting the [code]stream[/code] property of [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D], the playback instance can be obtained by calling [method AudioStreamPlayer.get_stream_playback], [method AudioStreamPlayer2D.get_stream_playback] or [method AudioStreamPlayer3D.get_stream_playback] methods.
+*/
 type AudioStreamPlaybackPolyphonic = classdb.AudioStreamPlaybackPolyphonic
 type AudioStreamPlaybackResampled = classdb.AudioStreamPlaybackResampled
+
+/*
+Plays an audio stream non-positionally.
+To play audio positionally, use [AudioStreamPlayer2D] or [AudioStreamPlayer3D] instead of [AudioStreamPlayer].
+*/
 type AudioStreamPlayer = classdb.AudioStreamPlayer
+
+/*
+Plays audio that is attenuated with distance to the listener.
+By default, audio is heard from the screen center. This can be changed by adding an [AudioListener2D] node to the scene and enabling it by calling [method AudioListener2D.make_current] on it.
+See also [AudioStreamPlayer] to play a sound non-positionally.
+[b]Note:[/b] Hiding an [AudioStreamPlayer2D] node does not disable its audio output. To temporarily disable an [AudioStreamPlayer2D]'s audio output, set [member volume_db] to a very low value like [code]-100[/code] (which isn't audible to human hearing).
+*/
 type AudioStreamPlayer2D = classdb.AudioStreamPlayer2D
+
+/*
+Plays audio with positional sound effects, based on the relative position of the audio listener. Positional effects include distance attenuation, directionality, and the Doppler effect. For greater realism, a low-pass filter is applied to distant sounds. This can be disabled by setting [member attenuation_filter_cutoff_hz] to [code]20500[/code].
+By default, audio is heard from the camera position. This can be changed by adding an [AudioListener3D] node to the scene and enabling it by calling [method AudioListener3D.make_current] on it.
+See also [AudioStreamPlayer] to play a sound non-positionally.
+[b]Note:[/b] Hiding an [AudioStreamPlayer3D] node does not disable its audio output. To temporarily disable an [AudioStreamPlayer3D]'s audio output, set [member volume_db] to a very low value like [code]-100[/code] (which isn't audible to human hearing).
+*/
 type AudioStreamPlayer3D = classdb.AudioStreamPlayer3D
+
+/*
+AudioStream that lets the user play custom streams at any time from code, simultaneously using a single player.
+Playback control is done via the [AudioStreamPlaybackPolyphonic] instance set inside the player, which can be obtained via [method AudioStreamPlayer.get_stream_playback], [method AudioStreamPlayer2D.get_stream_playback] or [method AudioStreamPlayer3D.get_stream_playback] methods. Obtaining the playback instance is only valid after the [code]stream[/code] property is set as an [AudioStreamPolyphonic] in those players.
+*/
 type AudioStreamPolyphonic = classdb.AudioStreamPolyphonic
+
+/*
+Picks a random AudioStream from the pool, depending on the playback mode, and applies random pitch shifting and volume shifting during playback.
+*/
 type AudioStreamRandomizer = classdb.AudioStreamRandomizer
+
+/*
+AudioStreamWAV stores sound samples loaded from WAV files. To play the stored sound, use an [AudioStreamPlayer] (for non-positional audio) or [AudioStreamPlayer2D]/[AudioStreamPlayer3D] (for positional audio). The sound can be looped.
+This class can also be used to store dynamically-generated PCM audio data. See also [AudioStreamGenerator] for procedural audio generation.
+*/
 type AudioStreamWAV = classdb.AudioStreamWAV
+
+/*
+Node for back-buffering the currently-displayed screen. The region defined in the [BackBufferCopy] node is buffered with the content of the screen it covers, or the entire screen according to the [member copy_mode]. It can be accessed in shader scripts using the screen texture (i.e. a uniform sampler with [code]hint_screen_texture[/code]).
+[b]Note:[/b] Since this node inherits from [Node2D] (and not [Control]), anchors and margins won't apply to child [Control]-derived nodes. This can be problematic when resizing the window. To avoid this, add [Control]-derived nodes as [i]siblings[/i] to the [BackBufferCopy] node instead of adding them as children.
+*/
 type BackBufferCopy = classdb.BackBufferCopy
+
+/*
+[BaseButton] is an abstract base class for GUI buttons. It doesn't display anything by itself.
+*/
 type BaseButton = classdb.BaseButton
+
+/*
+This class serves as a default material with a wide variety of rendering features and properties without the need to write shader code. See the tutorial below for details.
+*/
 type BaseMaterial3D = classdb.BaseMaterial3D
+
+/*
+A two-dimensional array of boolean values, can be used to efficiently store a binary matrix (every matrix element takes only one bit) and query the values using natural cartesian coordinates.
+*/
 type BitMap = classdb.BitMap
+
+/*
+A hierarchy of [Bone2D]s can be bound to a [Skeleton2D] to control and animate other [Node2D] nodes.
+You can use [Bone2D] and [Skeleton2D] nodes to animate 2D meshes created with the [Polygon2D] UV editor.
+Each bone has a [member rest] transform that you can reset to with [method apply_rest]. These rest poses are relative to the bone's parent.
+If in the editor, you can set the rest pose of an entire skeleton using a menu option, from the code, you need to iterate over the bones to set their individual rest poses.
+*/
 type Bone2D = classdb.Bone2D
+
+/*
+This node selects a bone in a [Skeleton3D] and attaches to it. This means that the [BoneAttachment3D] node will either dynamically copy or override the 3D transform of the selected bone.
+*/
 type BoneAttachment3D = classdb.BoneAttachment3D
+
+/*
+This class contains a dictionary that uses a list of bone names in [SkeletonProfile] as key names.
+By assigning the actual [Skeleton3D] bone name as the key value, it maps the [Skeleton3D] to the [SkeletonProfile].
+*/
 type BoneMap = classdb.BoneMap
+
+/*
+A container that arranges its child controls horizontally or vertically, rearranging them automatically when their minimum size changes.
+*/
 type BoxContainer = classdb.BoxContainer
+
+/*
+Generate an axis-aligned box [PrimitiveMesh].
+The box's UV layout is arranged in a 3×2 layout that allows texturing each face individually. To apply the same texture on all faces, change the material's UV property to [code]Vector3(3, 2, 1)[/code]. This is equivalent to adding [code]UV *= vec2(3.0, 2.0)[/code] in a vertex shader.
+[b]Note:[/b] When using a large textured [BoxMesh] (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase [member subdivide_depth], [member subdivide_height] and [member subdivide_width] until you no longer notice UV jittering.
+*/
 type BoxMesh = classdb.BoxMesh
+
+/*
+[BoxOccluder3D] stores a cuboid shape that can be used by the engine's occlusion culling system.
+See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
+*/
 type BoxOccluder3D = classdb.BoxOccluder3D
+
+/*
+A 3D box shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
+[b]Performance:[/b] [BoxShape3D] is fast to check collisions against. It is faster than [CapsuleShape3D] and [CylinderShape3D], but slower than [SphereShape3D].
+*/
 type BoxShape3D = classdb.BoxShape3D
+
+/*
+[Button] is the standard themed button. It can contain text and an icon, and it will display them according to the current [Theme].
+[b]Example of creating a button and assigning an action when pressed by code:[/b]
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var button = Button.new()
+	button.text = "Click me"
+	button.pressed.connect(self._button_pressed)
+	add_child(button)
+
+func _button_pressed():
+
+	print("Hello world!")
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    var button = new Button();
+	    button.Text = "Click me";
+	    button.Pressed += ButtonPressed;
+	    AddChild(button);
+	}
+
+private void ButtonPressed()
+
+	{
+	    GD.Print("Hello world!");
+	}
+
+[/csharp]
+[/codeblocks]
+See also [BaseButton] which contains common properties and methods associated with this node.
+[b]Note:[/b] Buttons do not interpret touch input and therefore don't support multitouch, since mouse emulation can only press one button at a given time. Use [TouchScreenButton] for buttons that trigger gameplay movement or actions.
+*/
 type Button = classdb.Button
+
+/*
+A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are treated like radio buttons: No more than one button can be pressed at a time. Some types of buttons (such as [CheckBox]) may have a special appearance in this state.
+Every member of a [ButtonGroup] should have [member BaseButton.toggle_mode] set to [code]true[/code].
+*/
 type ButtonGroup = classdb.ButtonGroup
+
+/*
+CPU-based 2D particle node used to create a variety of particle systems and effects.
+See also [GPUParticles2D], which provides the same functionality with hardware acceleration, but may not run on older devices.
+*/
 type CPUParticles2D = classdb.CPUParticles2D
+
+/*
+CPU-based 3D particle node used to create a variety of particle systems and effects.
+See also [GPUParticles3D], which provides the same functionality with hardware acceleration, but may not run on older devices.
+*/
 type CPUParticles3D = classdb.CPUParticles3D
+
+/*
+This node allows you to create a box for use with the CSG system.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGBox3D = classdb.CSGBox3D
+
+/*
+For complex arrangements of shapes, it is sometimes needed to add structure to your CSG nodes. The CSGCombiner3D node allows you to create this structure. The node encapsulates the result of the CSG operations of its children. In this way, it is possible to do operations on one set of shapes that are children of one CSGCombiner3D node, and a set of separate operations on a second set of shapes that are children of a second CSGCombiner3D node, and then do an operation that takes the two end results as its input to create the final shape.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGCombiner3D = classdb.CSGCombiner3D
+
+/*
+This node allows you to create a cylinder (or cone) for use with the CSG system.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGCylinder3D = classdb.CSGCylinder3D
+
+/*
+This CSG node allows you to use any mesh resource as a CSG shape, provided it is closed, does not self-intersect, does not contain internal faces and has no edges that connect to more than two faces. See also [CSGPolygon3D] for drawing 2D extruded polygons to be used as CSG nodes.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGMesh3D = classdb.CSGMesh3D
+
+/*
+An array of 2D points is extruded to quickly and easily create a variety of 3D meshes. See also [CSGMesh3D] for using 3D meshes as CSG nodes.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGPolygon3D = classdb.CSGPolygon3D
+
+/*
+Parent class for various CSG primitives. It contains code and functionality that is common between them. It cannot be used directly. Instead use one of the various classes that inherit from it.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGPrimitive3D = classdb.CSGPrimitive3D
+
+/*
+This is the CSG base class that provides CSG operation support to the various CSG nodes in Godot.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGShape3D = classdb.CSGShape3D
+
+/*
+This node allows you to create a sphere for use with the CSG system.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGSphere3D = classdb.CSGSphere3D
+
+/*
+This node allows you to create a torus for use with the CSG system.
+[b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
+*/
 type CSGTorus3D = classdb.CSGTorus3D
+
+/*
+[CallbackTweener] is used to call a method in a tweening sequence. See [method Tween.tween_callback] for more usage information.
+The tweener will finish automatically if the callback's target object is freed.
+[b]Note:[/b] [method Tween.tween_callback] is the only correct way to create [CallbackTweener]. Any [CallbackTweener] created manually will not function correctly.
+*/
 type CallbackTweener = classdb.CallbackTweener
+
+/*
+Camera node for 2D scenes. It forces the screen (current layer) to scroll following this node. This makes it easier (and faster) to program scrollable scenes than manually changing the position of [CanvasItem]-based nodes.
+Cameras register themselves in the nearest [Viewport] node (when ascending the tree). Only one camera can be active per viewport. If no viewport is available ascending the tree, the camera will register in the global viewport.
+This node is intended to be a simple helper to get things going quickly, but more functionality may be desired to change how the camera works. To make your own custom camera node, inherit it from [Node2D] and change the transform of the canvas by setting [member Viewport.canvas_transform] in [Viewport] (you can obtain the current [Viewport] by using [method Node.get_viewport]).
+Note that the [Camera2D] node's [code]position[/code] doesn't represent the actual position of the screen, which may differ due to applied smoothing or limits. You can use [method get_screen_center_position] to get the real position.
+*/
 type Camera2D = classdb.Camera2D
+
+/*
+[Camera3D] is a special node that displays what is visible from its current location. Cameras register themselves in the nearest [Viewport] node (when ascending the tree). Only one camera can be active per viewport. If no viewport is available ascending the tree, the camera will register in the global viewport. In other words, a camera just provides 3D display capabilities to a [Viewport], and, without one, a scene registered in that [Viewport] (or higher viewports) can't be displayed.
+*/
 type Camera3D = classdb.Camera3D
+
+/*
+Controls camera-specific attributes such as depth of field and exposure override.
+When used in a [WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [CameraAttributes], including the editor camera. When used in a [Camera3D] it will override any [CameraAttributes] set in the [WorldEnvironment]. When used in [VoxelGI] or [LightmapGI], only the exposure settings will be used.
+See also [Environment] for general 3D environment settings.
+This is a pure virtual class that is inherited by [CameraAttributesPhysical] and [CameraAttributesPractical].
+*/
 type CameraAttributes = classdb.CameraAttributes
+
+/*
+[CameraAttributesPhysical] is used to set rendering settings based on a physically-based camera's settings. It is responsible for exposure, auto-exposure, and depth of field.
+When used in a [WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [CameraAttributes], including the editor camera. When used in a [Camera3D] it will override any [CameraAttributes] set in the [WorldEnvironment] and will override the [Camera3D]s [member Camera3D.far], [member Camera3D.near], [member Camera3D.fov], and [member Camera3D.keep_aspect] properties. When used in [VoxelGI] or [LightmapGI], only the exposure settings will be used.
+The default settings are intended for use in an outdoor environment, tips for settings for use in an indoor environment can be found in each setting's documentation.
+[b]Note:[/b] Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
+*/
 type CameraAttributesPhysical = classdb.CameraAttributesPhysical
+
+/*
+Controls camera-specific attributes such as auto-exposure, depth of field, and exposure override.
+When used in a [WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [CameraAttributes], including the editor camera. When used in a [Camera3D] it will override any [CameraAttributes] set in the [WorldEnvironment]. When used in [VoxelGI] or [LightmapGI], only the exposure settings will be used.
+*/
 type CameraAttributesPractical = classdb.CameraAttributesPractical
+
+/*
+A camera feed gives you access to a single physical camera attached to your device. When enabled, Godot will start capturing frames from the camera which can then be used. See also [CameraServer].
+[b]Note:[/b] Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
+*/
 type CameraFeed = classdb.CameraFeed
 
 func CameraServer(godot Context) classdb.CameraServer {
@@ -139,22 +1151,124 @@ func CameraServer(godot Context) classdb.CameraServer {
 	return *(*classdb.CameraServer)(unsafe.Pointer(&obj))
 }
 
+/*
+This texture gives access to the camera texture provided by a [CameraFeed].
+[b]Note:[/b] Many cameras supply YCbCr images which need to be converted in a shader.
+*/
 type CameraTexture = classdb.CameraTexture
+
+/*
+Child [CanvasItem] nodes of a [CanvasGroup] are drawn as a single object. It allows to e.g. draw overlapping translucent 2D nodes without blending (set [member CanvasItem.self_modulate] property of [CanvasGroup] to achieve this effect).
+[b]Note:[/b] The [CanvasGroup] uses a custom shader to read from the backbuffer to draw its children. Assigning a [Material] to the [CanvasGroup] overrides the builtin shader. To duplicate the behavior of the builtin shader in a custom [Shader] use the following:
+[codeblock]
+shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+	void fragment() {
+	    vec4 c = textureLod(screen_texture, SCREEN_UV, 0.0);
+
+	    if (c.a > 0.0001) {
+	        c.rgb /= c.a;
+	    }
+
+	    COLOR *= c;
+	}
+
+[/codeblock]
+[b]Note:[/b] Since [CanvasGroup] and [member CanvasItem.clip_children] both utilize the backbuffer, children of a [CanvasGroup] who have their [member CanvasItem.clip_children] set to anything other than [constant CanvasItem.CLIP_CHILDREN_DISABLED] will not function correctly.
+*/
 type CanvasGroup = classdb.CanvasGroup
+
+/*
+Abstract base class for everything in 2D space. Canvas items are laid out in a tree; children inherit and extend their parent's transform. [CanvasItem] is extended by [Control] for GUI-related nodes, and by [Node2D] for 2D game objects.
+Any [CanvasItem] can draw. For this, [method queue_redraw] is called by the engine, then [constant NOTIFICATION_DRAW] will be received on idle time to request a redraw. Because of this, canvas items don't need to be redrawn on every frame, improving the performance significantly. Several functions for drawing on the [CanvasItem] are provided (see [code]draw_*[/code] functions). However, they can only be used inside [method _draw], its corresponding [method Object._notification] or methods connected to the [signal draw] signal.
+Canvas items are drawn in tree order on their canvas layer. By default, children are on top of their parents, so a root [CanvasItem] will be drawn behind everything. This behavior can be changed on a per-item basis.
+A [CanvasItem] can be hidden, which will also hide its children. By adjusting various other properties of a [CanvasItem], you can also modulate its color (via [member modulate] or [member self_modulate]), change its Z-index, blend mode, and more.
+*/
 type CanvasItem = classdb.CanvasItem
+
+/*
+[CanvasItemMaterial]s provide a means of modifying the textures associated with a CanvasItem. They specialize in describing blend and lighting behaviors for textures. Use a [ShaderMaterial] to more fully customize a material's interactions with a [CanvasItem].
+*/
 type CanvasItemMaterial = classdb.CanvasItemMaterial
+
+/*
+[CanvasItem]-derived nodes that are direct or indirect children of a [CanvasLayer] will be drawn in that layer. The layer is a numeric index that defines the draw order. The default 2D scene renders with index [code]0[/code], so a [CanvasLayer] with index [code]-1[/code] will be drawn below, and a [CanvasLayer] with index [code]1[/code] will be drawn above. This order will hold regardless of the [member CanvasItem.z_index] of the nodes within each layer.
+[CanvasLayer]s can be hidden and they can also optionally follow the viewport. This makes them useful for HUDs like health bar overlays (on layers [code]1[/code] and higher) or backgrounds (on layers [code]-1[/code] and lower).
+[b]Note:[/b] Embedded [Window]s are placed on layer [code]1024[/code]. [CanvasItem]s on layers [code]1025[/code] and higher appear in front of embedded windows.
+[b]Note:[/b] Each [CanvasLayer] is drawn on one specific [Viewport] and cannot be shared between multiple [Viewport]s, see [member custom_viewport]. When using multiple [Viewport]s, for example in a split-screen game, you need create an individual [CanvasLayer] for each [Viewport] you want it to be drawn on.
+*/
 type CanvasLayer = classdb.CanvasLayer
+
+/*
+[CanvasModulate] applies a color tint to all nodes on a canvas. Only one can be used to tint a canvas, but [CanvasLayer]s can be used to render things independently.
+*/
 type CanvasModulate = classdb.CanvasModulate
+
+/*
+[CanvasTexture] is an alternative to [ImageTexture] for 2D rendering. It allows using normal maps and specular maps in any node that inherits from [CanvasItem]. [CanvasTexture] also allows overriding the texture's filter and repeat mode independently of the node's properties (or the project settings).
+[b]Note:[/b] [CanvasTexture] cannot be used in 3D. It will not display correctly when applied to any [VisualInstance3D], such as [Sprite3D] or [Decal]. For physically-based materials in 3D, use [BaseMaterial3D] instead.
+*/
 type CanvasTexture = classdb.CanvasTexture
+
+/*
+Class representing a capsule-shaped [PrimitiveMesh].
+*/
 type CapsuleMesh = classdb.CapsuleMesh
+
+/*
+A 2D capsule shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
+[b]Performance:[/b] [CapsuleShape2D] is fast to check collisions against, but it is slower than [RectangleShape2D] and [CircleShape2D].
+*/
 type CapsuleShape2D = classdb.CapsuleShape2D
+
+/*
+A 3D capsule shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
+[b]Performance:[/b] [CapsuleShape3D] is fast to check collisions against. It is faster than [CylinderShape3D], but slower than [SphereShape3D] and [BoxShape3D].
+*/
 type CapsuleShape3D = classdb.CapsuleShape3D
+
+/*
+[CenterContainer] is a container that keeps all of its child controls in its center at their minimum size.
+*/
 type CenterContainer = classdb.CenterContainer
+
+/*
+By setting various properties on this object, you can control how individual characters will be displayed in a [RichTextEffect].
+*/
 type CharFXTransform = classdb.CharFXTransform
+
+/*
+[CharacterBody2D] is a specialized class for physics bodies that are meant to be user-controlled. They are not affected by physics at all, but they affect other physics bodies in their path. They are mainly used to provide high-level API to move objects with wall and slope detection ([method move_and_slide] method) in addition to the general collision detection provided by [method PhysicsBody2D.move_and_collide]. This makes it useful for highly configurable physics bodies that must move in specific ways and collide with the world, as is often the case with user-controlled characters.
+For game objects that don't require complex movement or collision detection, such as moving platforms, [AnimatableBody2D] is simpler to configure.
+*/
 type CharacterBody2D = classdb.CharacterBody2D
+
+/*
+[CharacterBody3D] is a specialized class for physics bodies that are meant to be user-controlled. They are not affected by physics at all, but they affect other physics bodies in their path. They are mainly used to provide high-level API to move objects with wall and slope detection ([method move_and_slide] method) in addition to the general collision detection provided by [method PhysicsBody3D.move_and_collide]. This makes it useful for highly configurable physics bodies that must move in specific ways and collide with the world, as is often the case with user-controlled characters.
+For game objects that don't require complex movement or collision detection, such as moving platforms, [AnimatableBody3D] is simpler to configure.
+*/
 type CharacterBody3D = classdb.CharacterBody3D
+
+/*
+[CheckBox] allows the user to choose one of only two possible options. It's similar to [CheckButton] in functionality, but it has a different appearance. To follow established UX patterns, it's recommended to use [CheckBox] when toggling it has [b]no[/b] immediate effect on something. For example, it could be used when toggling it will only do something once a confirmation button is pressed.
+See also [BaseButton] which contains common properties and methods associated with this node.
+When [member BaseButton.button_group] specifies a [ButtonGroup], [CheckBox] changes its appearance to that of a radio button and uses the various [code]radio_*[/code] theme properties.
+*/
 type CheckBox = classdb.CheckBox
+
+/*
+[CheckButton] is a toggle button displayed as a check field. It's similar to [CheckBox] in functionality, but it has a different appearance. To follow established UX patterns, it's recommended to use [CheckButton] when toggling it has an [b]immediate[/b] effect on something. For example, it can be used when pressing it shows or hides advanced settings, without asking the user to confirm this action.
+See also [BaseButton] which contains common properties and methods associated with this node.
+*/
 type CheckButton = classdb.CheckButton
+
+/*
+A 2D circle shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
+[b]Performance:[/b] [CircleShape2D] is fast to check collisions against. It is faster than [RectangleShape2D] and [CapsuleShape2D].
+*/
 type CircleShape2D = classdb.CircleShape2D
 
 func ClassDB(godot Context) classdb.ClassDB {
@@ -162,48 +1276,681 @@ func ClassDB(godot Context) classdb.ClassDB {
 	return *(*classdb.ClassDB)(unsafe.Pointer(&obj))
 }
 
+/*
+CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
+[b]Note:[/b] Regardless of locale, [CodeEdit] will by default always use left-to-right text direction to correctly display source code.
+*/
 type CodeEdit = classdb.CodeEdit
+
+/*
+By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
+*/
 type CodeHighlighter = classdb.CodeHighlighter
+
+/*
+Abstract base class for 2D physics objects. [CollisionObject2D] can hold any number of [Shape2D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
+[b]Note:[/b] Only collisions between objects within the same canvas ([Viewport] canvas or [CanvasLayer]) are supported. The behavior of collisions between objects in different canvases is undefined.
+*/
 type CollisionObject2D = classdb.CollisionObject2D
+
+/*
+Abstract base class for 3D physics objects. [CollisionObject3D] can hold any number of [Shape3D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
+[b]Warning:[/b] With a non-uniform scale, this node will likely not behave as expected. It is advised to keep its scale the same on all axes and adjust its collision shape(s) instead.
+*/
 type CollisionObject3D = classdb.CollisionObject3D
+
+/*
+A node that provides a thickened polygon shape (a prism) to a [CollisionObject2D] parent and allows to edit it. The polygon can be concave or convex. This can give a detection shape to an [Area2D] or turn [PhysicsBody2D] into a solid object.
+[b]Warning:[/b] A non-uniformly scaled [CollisionShape2D] will likely not behave as expected. Make sure to keep its scale the same on all axes and adjust its shape resource instead.
+*/
 type CollisionPolygon2D = classdb.CollisionPolygon2D
+
+/*
+A node that provides a thickened polygon shape (a prism) to a [CollisionObject3D] parent and allows to edit it. The polygon can be concave or convex. This can give a detection shape to an [Area3D] or turn [PhysicsBody3D] into a solid object.
+[b]Warning:[/b] A non-uniformly scaled [CollisionShape3D] will likely not behave as expected. Make sure to keep its scale the same on all axes and adjust its shape resource instead.
+*/
 type CollisionPolygon3D = classdb.CollisionPolygon3D
+
+/*
+A node that provides a [Shape2D] to a [CollisionObject2D] parent and allows to edit it. This can give a detection shape to an [Area2D] or turn a [PhysicsBody2D] into a solid object.
+*/
 type CollisionShape2D = classdb.CollisionShape2D
+
+/*
+A node that provides a [Shape3D] to a [CollisionObject3D] parent and allows to edit it. This can give a detection shape to an [Area3D] or turn a [PhysicsBody3D] into a solid object.
+[b]Warning:[/b] A non-uniformly scaled [CollisionShape3D] will likely not behave as expected. Make sure to keep its scale the same on all axes and adjust its [member shape] resource instead.
+*/
 type CollisionShape3D = classdb.CollisionShape3D
+
+/*
+A widget that provides an interface for selecting or modifying a color. It can optionally provide functionalities like a color sampler (eyedropper), color modes, and presets.
+[b]Note:[/b] This control is the color picker widget itself. You can use a [ColorPickerButton] instead if you need a button that brings up a [ColorPicker] in a popup.
+*/
 type ColorPicker = classdb.ColorPicker
+
+/*
+Encapsulates a [ColorPicker], making it accessible by pressing a button. Pressing the button will toggle the [ColorPicker]'s visibility.
+See also [BaseButton] which contains common properties and methods associated with this node.
+[b]Note:[/b] By default, the button may not be wide enough for the color preview swatch to be visible. Make sure to set [member Control.custom_minimum_size] to a big enough value to give the button enough space.
+*/
 type ColorPickerButton = classdb.ColorPickerButton
+
+/*
+Displays a rectangle filled with a solid [member color]. If you need to display the border alone, consider using a [Panel] instead.
+*/
 type ColorRect = classdb.ColorRect
+
+/*
+A cubemap that is loaded from a [code].ccube[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedCubemap] can use one of 4 compression methods:
+- Lossless (WebP or PNG, uncompressed on the GPU)
+- Lossy (WebP, uncompressed on the GPU)
+- VRAM Compressed (compressed on the GPU)
+- VRAM Uncompressed (uncompressed on the GPU)
+- Basis Universal (compressed on the GPU. Lower file sizes than VRAM Compressed, but slower to compress and lower quality than VRAM Compressed)
+Only [b]VRAM Compressed[/b] actually reduces the memory usage on the GPU. The [b]Lossless[/b] and [b]Lossy[/b] compression methods will reduce the required storage on disk, but they will not reduce memory usage on the GPU as the texture is sent to the GPU uncompressed.
+Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless or lossy compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
+See [Cubemap] for a general description of cubemaps.
+*/
 type CompressedCubemap = classdb.CompressedCubemap
+
+/*
+A cubemap array that is loaded from a [code].ccubearray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedCubemapArray] can use one of 4 compression methods:
+- Lossless (WebP or PNG, uncompressed on the GPU)
+- Lossy (WebP, uncompressed on the GPU)
+- VRAM Compressed (compressed on the GPU)
+- VRAM Uncompressed (uncompressed on the GPU)
+- Basis Universal (compressed on the GPU. Lower file sizes than VRAM Compressed, but slower to compress and lower quality than VRAM Compressed)
+Only [b]VRAM Compressed[/b] actually reduces the memory usage on the GPU. The [b]Lossless[/b] and [b]Lossy[/b] compression methods will reduce the required storage on disk, but they will not reduce memory usage on the GPU as the texture is sent to the GPU uncompressed.
+Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless or lossy compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
+See [CubemapArray] for a general description of cubemap arrays.
+*/
 type CompressedCubemapArray = classdb.CompressedCubemapArray
+
+/*
+A texture that is loaded from a [code].ctex[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedTexture2D] can use one of 4 compression methods (including a lack of any compression):
+- Lossless (WebP or PNG, uncompressed on the GPU)
+- Lossy (WebP, uncompressed on the GPU)
+- VRAM Compressed (compressed on the GPU)
+- VRAM Uncompressed (uncompressed on the GPU)
+- Basis Universal (compressed on the GPU. Lower file sizes than VRAM Compressed, but slower to compress and lower quality than VRAM Compressed)
+Only [b]VRAM Compressed[/b] actually reduces the memory usage on the GPU. The [b]Lossless[/b] and [b]Lossy[/b] compression methods will reduce the required storage on disk, but they will not reduce memory usage on the GPU as the texture is sent to the GPU uncompressed.
+Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless or lossy compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
+*/
 type CompressedTexture2D = classdb.CompressedTexture2D
+
+/*
+A texture array that is loaded from a [code].ctexarray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedTexture2DArray] can use one of 4 compression methods:
+- Lossless (WebP or PNG, uncompressed on the GPU)
+- Lossy (WebP, uncompressed on the GPU)
+- VRAM Compressed (compressed on the GPU)
+- VRAM Uncompressed (uncompressed on the GPU)
+- Basis Universal (compressed on the GPU. Lower file sizes than VRAM Compressed, but slower to compress and lower quality than VRAM Compressed)
+Only [b]VRAM Compressed[/b] actually reduces the memory usage on the GPU. The [b]Lossless[/b] and [b]Lossy[/b] compression methods will reduce the required storage on disk, but they will not reduce memory usage on the GPU as the texture is sent to the GPU uncompressed.
+Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless or lossy compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
+See [Texture2DArray] for a general description of texture arrays.
+*/
 type CompressedTexture2DArray = classdb.CompressedTexture2DArray
+
+/*
+[CompressedTexture3D] is the VRAM-compressed counterpart of [ImageTexture3D]. The file extension for [CompressedTexture3D] files is [code].ctex3d[/code]. This file format is internal to Godot; it is created by importing other image formats with the import system.
+[CompressedTexture3D] uses VRAM compression, which allows to reduce memory usage on the GPU when rendering the texture. This also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
+See [Texture3D] for a general description of 3D textures.
+*/
 type CompressedTexture3D = classdb.CompressedTexture3D
+
+/*
+Base class for [CompressedTexture2DArray] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [TextureLayered].
+*/
 type CompressedTextureLayered = classdb.CompressedTextureLayered
+
+/*
+A 2D polyline shape, intended for use in physics. Used internally in [CollisionPolygon2D] when it's in [constant CollisionPolygon2D.BUILD_SEGMENTS] mode.
+Being just a collection of interconnected line segments, [ConcavePolygonShape2D] is the most freely configurable single 2D shape. It can be used to form polygons of any nature, or even shapes that don't enclose an area. However, [ConcavePolygonShape2D] is [i]hollow[/i] even if the interconnected line segments do enclose an area, which often makes it unsuitable for physics or detection.
+[b]Note:[/b] When used for collision, [ConcavePolygonShape2D] is intended to work with static [CollisionShape2D] nodes like [StaticBody2D] and will likely not behave well for [CharacterBody2D]s or [RigidBody2D]s in a mode other than Static.
+[b]Warning:[/b] Physics bodies that are small have a chance to clip through this shape when moving fast. This happens because on one frame, the physics body may be on the "outside" of the shape, and on the next frame it may be "inside" it. [ConcavePolygonShape2D] is hollow, so it won't detect a collision.
+[b]Performance:[/b] Due to its complexity, [ConcavePolygonShape2D] is the slowest 2D collision shape to check collisions against. Its use should generally be limited to level geometry. If the polyline is closed, [CollisionPolygon2D]'s [constant CollisionPolygon2D.BUILD_SOLIDS] mode can be used, which decomposes the polygon into convex ones; see [ConvexPolygonShape2D]'s documentation for instructions.
+*/
 type ConcavePolygonShape2D = classdb.ConcavePolygonShape2D
+
+/*
+A 3D trimesh shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
+Being just a collection of interconnected triangles, [ConcavePolygonShape3D] is the most freely configurable single 3D shape. It can be used to form polyhedra of any nature, or even shapes that don't enclose a volume. However, [ConcavePolygonShape3D] is [i]hollow[/i] even if the interconnected triangles do enclose a volume, which often makes it unsuitable for physics or detection.
+[b]Note:[/b] When used for collision, [ConcavePolygonShape3D] is intended to work with static [CollisionShape3D] nodes like [StaticBody3D] and will likely not behave well for [CharacterBody3D]s or [RigidBody3D]s in a mode other than Static.
+[b]Warning:[/b] Physics bodies that are small have a chance to clip through this shape when moving fast. This happens because on one frame, the physics body may be on the "outside" of the shape, and on the next frame it may be "inside" it. [ConcavePolygonShape3D] is hollow, so it won't detect a collision.
+[b]Performance:[/b] Due to its complexity, [ConcavePolygonShape3D] is the slowest 3D collision shape to check collisions against. Its use should generally be limited to level geometry. For convex geometry, [ConvexPolygonShape3D] should be used. For dynamic physics bodies that need concave collision, several [ConvexPolygonShape3D]s can be used to represent its collision by using convex decomposition; see [ConvexPolygonShape3D]'s documentation for instructions.
+*/
 type ConcavePolygonShape3D = classdb.ConcavePolygonShape3D
+
+/*
+A physics joint that connects two 3D physics bodies in a way that simulates a ball-and-socket joint. The twist axis is initiated as the X axis of the [ConeTwistJoint3D]. Once the physics bodies swing, the twist axis is calculated as the middle of the X axes of the joint in the local space of the two physics bodies. Useful for limbs like shoulders and hips, lamps hanging off a ceiling, etc.
+*/
 type ConeTwistJoint3D = classdb.ConeTwistJoint3D
+
+/*
+This helper class can be used to store [Variant] values on the filesystem using INI-style formatting. The stored values are identified by a section and a key:
+[codeblock]
+[section]
+some_key=42
+string_example="Hello World3D!"
+a_vector=Vector3(1, 0, 2)
+[/codeblock]
+The stored data can be saved to or parsed from a file, though ConfigFile objects can also be used directly without accessing the filesystem.
+The following example shows how to create a simple [ConfigFile] and save it on disc:
+[codeblocks]
+[gdscript]
+# Create new ConfigFile object.
+var config = ConfigFile.new()
+
+# Store some values.
+config.set_value("Player1", "player_name", "Steve")
+config.set_value("Player1", "best_score", 10)
+config.set_value("Player2", "player_name", "V3geta")
+config.set_value("Player2", "best_score", 9001)
+
+# Save it to a file (overwrite if already exists).
+config.save("user://scores.cfg")
+[/gdscript]
+[csharp]
+// Create new ConfigFile object.
+var config = new ConfigFile();
+
+// Store some values.
+config.SetValue("Player1", "player_name", "Steve");
+config.SetValue("Player1", "best_score", 10);
+config.SetValue("Player2", "player_name", "V3geta");
+config.SetValue("Player2", "best_score", 9001);
+
+// Save it to a file (overwrite if already exists).
+config.Save("user://scores.cfg");
+[/csharp]
+[/codeblocks]
+This example shows how the above file could be loaded:
+[codeblocks]
+[gdscript]
+var score_data = {}
+var config = ConfigFile.new()
+
+# Load data from a file.
+var err = config.load("user://scores.cfg")
+
+# If the file didn't load, ignore it.
+if err != OK:
+
+	return
+
+# Iterate over all sections.
+for player in config.get_sections():
+
+	# Fetch the data for each section.
+	var player_name = config.get_value(player, "player_name")
+	var player_score = config.get_value(player, "best_score")
+	score_data[player_name] = player_score
+
+[/gdscript]
+[csharp]
+var score_data = new Godot.Collections.Dictionary();
+var config = new ConfigFile();
+
+// Load data from a file.
+Error err = config.Load("user://scores.cfg");
+
+// If the file didn't load, ignore it.
+if (err != Error.Ok)
+
+	{
+	    return;
+	}
+
+// Iterate over all sections.
+foreach (String player in config.GetSections())
+
+	{
+	    // Fetch the data for each section.
+	    var player_name = (String)config.GetValue(player, "player_name");
+	    var player_score = (int)config.GetValue(player, "best_score");
+	    score_data[player_name] = player_score;
+	}
+
+[/csharp]
+[/codeblocks]
+Any operation that mutates the ConfigFile such as [method set_value], [method clear], or [method erase_section], only changes what is loaded in memory. If you want to write the change to a file, you have to save the changes with [method save], [method save_encrypted], or [method save_encrypted_pass].
+Keep in mind that section and property names can't contain spaces. Anything after a space will be ignored on save and on load.
+ConfigFiles can also contain manually written comment lines starting with a semicolon ([code];[/code]). Those lines will be ignored when parsing the file. Note that comments will be lost when saving the ConfigFile. This can still be useful for dedicated server configuration files, which are typically never overwritten without explicit user action.
+[b]Note:[/b] The file extension given to a ConfigFile does not have any impact on its formatting or behavior. By convention, the [code].cfg[/code] extension is used here, but any other extension such as [code].ini[/code] is also valid. Since neither [code].cfg[/code] nor [code].ini[/code] are standardized, Godot's ConfigFile formatting may differ from files written by other programs.
+*/
 type ConfigFile = classdb.ConfigFile
+
+/*
+A dialog used for confirmation of actions. This window is similar to [AcceptDialog], but pressing its Cancel button can have a different outcome from pressing the OK button. The order of the two buttons varies depending on the host OS.
+To get cancel action, you can use:
+[codeblocks]
+[gdscript]
+get_cancel_button().pressed.connect(self.canceled)
+[/gdscript]
+[csharp]
+GetCancelButton().Pressed += Canceled;
+[/csharp]
+[/codeblocks]
+*/
 type ConfirmationDialog = classdb.ConfirmationDialog
+
+/*
+Base class for all GUI containers. A [Container] automatically arranges its child controls in a certain way. This class can be inherited to make custom container types.
+*/
 type Container = classdb.Container
+
+/*
+Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
+For more information on Godot's UI system, anchors, offsets, and containers, see the related tutorials in the manual. To build flexible UIs, you'll need a mix of UI elements that inherit from [Control] and [Container] nodes.
+[b]User Interface nodes and input[/b]
+Godot propagates input events via viewports. Each [Viewport] is responsible for propagating [InputEvent]s to their child nodes. As the [member SceneTree.root] is a [Window], this already happens automatically for all UI elements in your game.
+Input events are propagated through the [SceneTree] from the root node to all child nodes by calling [method Node._input]. For UI elements specifically, it makes more sense to override the virtual method [method _gui_input], which filters out unrelated input events, such as by checking z-order, [member mouse_filter], focus, or if the event was inside of the control's bounding box.
+Call [method accept_event] so no other node receives the event. Once you accept an input, it becomes handled so [method Node._unhandled_input] will not process it.
+Only one [Control] node can be in focus. Only the node in focus will receive events. To get the focus, call [method grab_focus]. [Control] nodes lose focus when another node grabs it, or if you hide the node in focus.
+Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
+[Theme] resources change the Control's appearance. If you change the [Theme] on a [Control] node, it affects all of its children. To override some of the theme's parameters, call one of the [code]add_theme_*_override[/code] methods, like [method add_theme_font_override]. You can override the theme with the Inspector.
+[b]Note:[/b] Theme items are [i]not[/i] [Object] properties. This means you can't access their values using [method Object.get] and [method Object.set]. Instead, use the [code]get_theme_*[/code] and [code]add_theme_*_override[/code] methods provided by this class.
+*/
 type Control = classdb.Control
+
+/*
+A 2D convex polygon shape, intended for use in physics. Used internally in [CollisionPolygon2D] when it's in [constant CollisionPolygon2D.BUILD_SOLIDS] mode.
+[ConvexPolygonShape2D] is [i]solid[/i], which means it detects collisions from objects that are fully inside it, unlike [ConcavePolygonShape2D] which is hollow. This makes it more suitable for both detection and physics.
+[b]Convex decomposition:[/b] A concave polygon can be split up into several convex polygons. This allows dynamic physics bodies to have complex concave collisions (at a performance cost) and can be achieved by using several [ConvexPolygonShape2D] nodes or by using the [CollisionPolygon2D] node in [constant CollisionPolygon2D.BUILD_SOLIDS] mode. To generate a collision polygon from a sprite, select the [Sprite2D] node, go to the [b]Sprite2D[/b] menu that appears above the viewport, and choose [b]Create Polygon2D Sibling[/b].
+[b]Performance:[/b] [ConvexPolygonShape2D] is faster to check collisions against compared to [ConcavePolygonShape2D], but it is slower than primitive collision shapes such as [CircleShape2D] and [RectangleShape2D]. Its use should generally be limited to medium-sized objects that cannot have their collision accurately represented by primitive shapes.
+*/
 type ConvexPolygonShape2D = classdb.ConvexPolygonShape2D
+
+/*
+A 3D convex polyhedron shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
+[ConvexPolygonShape3D] is [i]solid[/i], which means it detects collisions from objects that are fully inside it, unlike [ConcavePolygonShape3D] which is hollow. This makes it more suitable for both detection and physics.
+[b]Convex decomposition:[/b] A concave polyhedron can be split up into several convex polyhedra. This allows dynamic physics bodies to have complex concave collisions (at a performance cost) and can be achieved by using several [ConvexPolygonShape3D] nodes. To generate a convex decomposition from a mesh, select the [MeshInstance3D] node, go to the [b]Mesh[/b] menu that appears above the viewport, and choose [b]Create Multiple Convex Collision Siblings[/b]. Alternatively, [method MeshInstance3D.create_multiple_convex_collisions] can be called in a script to perform this decomposition at run-time.
+[b]Performance:[/b] [ConvexPolygonShape3D] is faster to check collisions against compared to [ConcavePolygonShape3D], but it is slower than primitive collision shapes such as [SphereShape3D] and [BoxShape3D]. Its use should generally be limited to medium-sized objects that cannot have their collision accurately represented by primitive shapes.
+*/
 type ConvexPolygonShape3D = classdb.ConvexPolygonShape3D
+
+/*
+The Crypto class provides access to advanced cryptographic functionalities.
+Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
+[codeblocks]
+[gdscript]
+extends Node
+
+var crypto = Crypto.new()
+var key = CryptoKey.new()
+var cert = X509Certificate.new()
+
+func _ready():
+
+	# Generate new RSA key.
+	key = crypto.generate_rsa(4096)
+	# Generate new self-signed certificate with the given key.
+	cert = crypto.generate_self_signed_certificate(key, "CN=mydomain.com,O=My Game Company,C=IT")
+	# Save key and certificate in the user folder.
+	key.save("user://generated.key")
+	cert.save("user://generated.crt")
+	# Encryption
+	var data = "Some data"
+	var encrypted = crypto.encrypt(key, data.to_utf8_buffer())
+	# Decryption
+	var decrypted = crypto.decrypt(key, encrypted)
+	# Signing
+	var signature = crypto.sign(HashingContext.HASH_SHA256, data.sha256_buffer(), key)
+	# Verifying
+	var verified = crypto.verify(HashingContext.HASH_SHA256, data.sha256_buffer(), signature, key)
+	# Checks
+	assert(verified)
+	assert(data.to_utf8_buffer() == decrypted)
+
+[/gdscript]
+[csharp]
+using Godot;
+using System.Diagnostics;
+
+public partial class MyNode : Node
+
+	{
+	    private Crypto _crypto = new Crypto();
+	    private CryptoKey _key = new CryptoKey();
+	    private X509Certificate _cert = new X509Certificate();
+
+	    public override void _Ready()
+	    {
+	        // Generate new RSA key.
+	        _key = _crypto.GenerateRsa(4096);
+	        // Generate new self-signed certificate with the given key.
+	        _cert = _crypto.GenerateSelfSignedCertificate(_key, "CN=mydomain.com,O=My Game Company,C=IT");
+	        // Save key and certificate in the user folder.
+	        _key.Save("user://generated.key");
+	        _cert.Save("user://generated.crt");
+	        // Encryption
+	        string data = "Some data";
+	        byte[] encrypted = _crypto.Encrypt(_key, data.ToUtf8Buffer());
+	        // Decryption
+	        byte[] decrypted = _crypto.Decrypt(_key, encrypted);
+	        // Signing
+	        byte[] signature = _crypto.Sign(HashingContext.HashType.Sha256, Data.Sha256Buffer(), _key);
+	        // Verifying
+	        bool verified = _crypto.Verify(HashingContext.HashType.Sha256, Data.Sha256Buffer(), signature, _key);
+	        // Checks
+	        Debug.Assert(verified);
+	        Debug.Assert(data.ToUtf8Buffer() == decrypted);
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type Crypto = classdb.Crypto
+
+/*
+The CryptoKey class represents a cryptographic key. Keys can be loaded and saved like any other [Resource].
+They can be used to generate a self-signed [X509Certificate] via [method Crypto.generate_self_signed_certificate] and as private key in [method StreamPeerTLS.accept_stream] along with the appropriate certificate.
+*/
 type CryptoKey = classdb.CryptoKey
+
+/*
+A cubemap is made of 6 textures organized in layers. They are typically used for faking reflections in 3D rendering (see [ReflectionProbe]). It can be used to make an object look as if it's reflecting its surroundings. This usually delivers much better performance than other reflection methods.
+This resource is typically used as a uniform in custom shaders. Few core Godot methods make use of [Cubemap] resources.
+To create such a texture file yourself, reimport your image files using the Godot Editor import presets.
+[b]Note:[/b] Godot doesn't support using cubemaps in a [PanoramaSkyMaterial]. You can use [url=https://danilw.github.io/GLSL-howto/cubemap_to_panorama_js/cubemap_to_panorama.html]this tool[/url] to convert a cubemap to an equirectangular sky map.
+*/
 type Cubemap = classdb.Cubemap
+
+/*
+[CubemapArray]s are made of an array of [Cubemap]s. Like [Cubemap]s, they are made of multiple textures, the amount of which must be divisible by 6 (one for each face of the cube). The primary benefit of [CubemapArray]s is that they can be accessed in shader code using a single texture reference. In other words, you can pass multiple [Cubemap]s into a shader using a single [CubemapArray].
+Moreover, [Cubemap]s are allocated in adjacent cache regions on the GPU. This makes [CubemapArray]s the most efficient way to store multiple [Cubemap]s.
+Internally, Godot uses [CubemapArray]s for many effects, including the [Sky] if you set [member ProjectSettings.rendering/reflections/sky_reflections/texture_array_reflections] to [code]true[/code].
+To create such a texture file yourself, reimport your image files using the import presets of the File System dock.
+[b]Note:[/b] [CubemapArray] is not supported in the OpenGL 3 rendering backend.
+*/
 type CubemapArray = classdb.CubemapArray
+
+/*
+This resource describes a mathematical curve by defining a set of points and tangents at each point. By default, it ranges between [code]0[/code] and [code]1[/code] on the Y axis and positions points relative to the [code]0.5[/code] Y position.
+See also [Gradient] which is designed for color interpolation. See also [Curve2D] and [Curve3D].
+*/
 type Curve = classdb.Curve
+
+/*
+This class describes a Bézier curve in 2D space. It is mainly used to give a shape to a [Path2D], but can be manually sampled for other purposes.
+It keeps a cache of precalculated points along the curve, to speed up further calculations.
+*/
 type Curve2D = classdb.Curve2D
+
+/*
+This class describes a Bézier curve in 3D space. It is mainly used to give a shape to a [Path3D], but can be manually sampled for other purposes.
+It keeps a cache of precalculated points along the curve, to speed up further calculations.
+*/
 type Curve3D = classdb.Curve3D
+
+/*
+A 1D texture where pixel brightness corresponds to points on a [Curve] resource, either in grayscale or in red. This visual representation simplifies the task of saving curves as image files.
+If you need to store up to 3 curves within a single texture, use [CurveXYZTexture] instead. See also [GradientTexture1D] and [GradientTexture2D].
+*/
 type CurveTexture = classdb.CurveTexture
+
+/*
+A 1D texture where the red, green, and blue color channels correspond to points on 3 [Curve] resources. Compared to using separate [CurveTexture]s, this further simplifies the task of saving curves as image files.
+If you only need to store one curve within a single texture, use [CurveTexture] instead. See also [GradientTexture1D] and [GradientTexture2D].
+*/
 type CurveXYZTexture = classdb.CurveXYZTexture
+
+/*
+Class representing a cylindrical [PrimitiveMesh]. This class can be used to create cones by setting either the [member top_radius] or [member bottom_radius] properties to [code]0.0[/code].
+*/
 type CylinderMesh = classdb.CylinderMesh
+
+/*
+A 3D cylinder shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
+[b]Note:[/b] There are several known bugs with cylinder collision shapes. Using [CapsuleShape3D] or [BoxShape3D] instead is recommended.
+[b]Performance:[/b] [CylinderShape3D] is fast to check collisions against, but it is slower than [CapsuleShape3D], [BoxShape3D], and [SphereShape3D].
+*/
 type CylinderShape3D = classdb.CylinderShape3D
+
+/*
+This class is used to store the state of a DTLS server. Upon [method setup] it converts connected [PacketPeerUDP] to [PacketPeerDTLS] accepting them via [method take_connection] as DTLS clients. Under the hood, this class is used to store the DTLS state and cookies of the server. The reason of why the state and cookies are needed is outside of the scope of this documentation.
+Below a small example of how to use it:
+[codeblocks]
+[gdscript]
+# server_node.gd
+extends Node
+
+var dtls := DTLSServer.new()
+var server := UDPServer.new()
+var peers = []
+
+func _ready():
+
+	server.listen(4242)
+	var key = load("key.key") # Your private key.
+	var cert = load("cert.crt") # Your X509 certificate.
+	dtls.setup(key, cert)
+
+func _process(delta):
+
+	while server.is_connection_available():
+	    var peer: PacketPeerUDP = server.take_connection()
+	    var dtls_peer: PacketPeerDTLS = dtls.take_connection(peer)
+	    if dtls_peer.get_status() != PacketPeerDTLS.STATUS_HANDSHAKING:
+	        continue # It is normal that 50% of the connections fails due to cookie exchange.
+	    print("Peer connected!")
+	    peers.append(dtls_peer)
+
+	for p in peers:
+	    p.poll() # Must poll to update the state.
+	    if p.get_status() == PacketPeerDTLS.STATUS_CONNECTED:
+	        while p.get_available_packet_count() > 0:
+	            print("Received message from client: %s" % p.get_packet().get_string_from_utf8())
+	            p.put_packet("Hello DTLS client".to_utf8_buffer())
+
+[/gdscript]
+[csharp]
+// ServerNode.cs
+using Godot;
+
+public partial class ServerNode : Node
+
+	{
+	    private DtlsServer _dtls = new DtlsServer();
+	    private UdpServer _server = new UdpServer();
+	    private Godot.Collections.Array<PacketPeerDtls> _peers = new Godot.Collections.Array<PacketPeerDtls>();
+
+	    public override void _Ready()
+	    {
+	        _server.Listen(4242);
+	        var key = GD.Load<CryptoKey>("key.key"); // Your private key.
+	        var cert = GD.Load<X509Certificate>("cert.crt"); // Your X509 certificate.
+	        _dtls.Setup(key, cert);
+	    }
+
+	    public override void _Process(double delta)
+	    {
+	        while (Server.IsConnectionAvailable())
+	        {
+	            PacketPeerUdp peer = _server.TakeConnection();
+	            PacketPeerDtls dtlsPeer = _dtls.TakeConnection(peer);
+	            if (dtlsPeer.GetStatus() != PacketPeerDtls.Status.Handshaking)
+	            {
+	                continue; // It is normal that 50% of the connections fails due to cookie exchange.
+	            }
+	            GD.Print("Peer connected!");
+	            _peers.Add(dtlsPeer);
+	        }
+
+	        foreach (var p in _peers)
+	        {
+	            p.Poll(); // Must poll to update the state.
+	            if (p.GetStatus() == PacketPeerDtls.Status.Connected)
+	            {
+	                while (p.GetAvailablePacketCount() > 0)
+	                {
+	                    GD.Print($"Received Message From Client: {p.GetPacket().GetStringFromUtf8()}");
+	                    p.PutPacket("Hello DTLS Client".ToUtf8Buffer());
+	                }
+	            }
+	        }
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+[codeblocks]
+[gdscript]
+# client_node.gd
+extends Node
+
+var dtls := PacketPeerDTLS.new()
+var udp := PacketPeerUDP.new()
+var connected = false
+
+func _ready():
+
+	udp.connect_to_host("127.0.0.1", 4242)
+	dtls.connect_to_peer(udp, false) # Use true in production for certificate validation!
+
+func _process(delta):
+
+	dtls.poll()
+	if dtls.get_status() == PacketPeerDTLS.STATUS_CONNECTED:
+	    if !connected:
+	        # Try to contact server
+	        dtls.put_packet("The answer is... 42!".to_utf8_buffer())
+	    while dtls.get_available_packet_count() > 0:
+	        print("Connected: %s" % dtls.get_packet().get_string_from_utf8())
+	        connected = true
+
+[/gdscript]
+[csharp]
+// ClientNode.cs
+using Godot;
+using System.Text;
+
+public partial class ClientNode : Node
+
+	{
+	    private PacketPeerDtls _dtls = new PacketPeerDtls();
+	    private PacketPeerUdp _udp = new PacketPeerUdp();
+	    private bool _connected = false;
+
+	    public override void _Ready()
+	    {
+	        _udp.ConnectToHost("127.0.0.1", 4242);
+	        _dtls.ConnectToPeer(_udp, validateCerts: false); // Use true in production for certificate validation!
+	    }
+
+	    public override void _Process(double delta)
+	    {
+	        _dtls.Poll();
+	        if (_dtls.GetStatus() == PacketPeerDtls.Status.Connected)
+	        {
+	            if (!_connected)
+	            {
+	                // Try to contact server
+	                _dtls.PutPacket("The Answer Is..42!".ToUtf8Buffer());
+	            }
+	            while (_dtls.GetAvailablePacketCount() > 0)
+	            {
+	                GD.Print($"Connected: {_dtls.GetPacket().GetStringFromUtf8()}");
+	                _connected = true;
+	            }
+	        }
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type DTLSServer = classdb.DTLSServer
+
+/*
+A physics joint that connects two 2D physics bodies with a spring-like force. This resembles a spring that always wants to stretch to a given length.
+*/
 type DampedSpringJoint2D = classdb.DampedSpringJoint2D
+
+/*
+[Decal]s are used to project a texture onto a [Mesh] in the scene. Use Decals to add detail to a scene without affecting the underlying [Mesh]. They are often used to add weathering to building, add dirt or mud to the ground, or add variety to props. Decals can be moved at any time, making them suitable for things like blob shadows or laser sight dots.
+They are made of an [AABB] and a group of [Texture2D]s specifying [Color], normal, ORM (ambient occlusion, roughness, metallic), and emission. Decals are projected within their [AABB] so altering the orientation of the Decal affects the direction in which they are projected. By default, Decals are projected down (i.e. from positive Y to negative Y).
+The [Texture2D]s associated with the Decal are automatically stored in a texture atlas which is used for drawing the decals so all decals can be drawn at once. Godot uses clustered decals, meaning they are stored in cluster data and drawn when the mesh is drawn, they are not drawn as a post-processing effect after.
+[b]Note:[/b] Decals cannot affect an underlying material's transparency, regardless of its transparency mode (alpha blend, alpha scissor, alpha hash, opaque pre-pass). This means translucent or transparent areas of a material will remain translucent or transparent even if an opaque decal is applied on them.
+[b]Note:[/b] Decals are only supported in the Forward+ and Mobile rendering methods, not Compatibility. When using the Mobile rendering method, only 8 decals can be displayed on each mesh resource. Attempting to display more than 8 decals on a single mesh resource will result in decals flickering in and out as the camera moves.
+[b]Note:[/b] When using the Mobile rendering method, decals will only correctly affect meshes whose visibility AABB intersects with the decal's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [member GeometryInstance3D.extra_cull_margin] must be increased on the mesh. Otherwise, the decal may not be visible on the mesh.
+*/
 type Decal = classdb.Decal
+
+/*
+This class is used to manage directories and their content, even outside of the project folder.
+[DirAccess] can't be instantiated directly. Instead it is created with a static method that takes a path for which it will be opened.
+Most of the methods have a static alternative that can be used without creating a [DirAccess]. Static methods only support absolute paths (including [code]res://[/code] and [code]user://[/code]).
+[codeblock]
+# Standard
+var dir = DirAccess.open("user://levels")
+dir.make_dir("world1")
+# Static
+DirAccess.make_dir_absolute("user://levels/world1")
+[/codeblock]
+[b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. Use [ResourceLoader] to access imported resources.
+Here is an example on how to iterate through the files of a directory:
+[codeblocks]
+[gdscript]
+func dir_contents(path):
+
+	var dir = DirAccess.open(path)
+	if dir:
+	    dir.list_dir_begin()
+	    var file_name = dir.get_next()
+	    while file_name != "":
+	        if dir.current_is_dir():
+	            print("Found directory: " + file_name)
+	        else:
+	            print("Found file: " + file_name)
+	        file_name = dir.get_next()
+	else:
+	    print("An error occurred when trying to access the path.")
+
+[/gdscript]
+[csharp]
+public void DirContents(string path)
+
+	{
+	    using var dir = DirAccess.Open(path);
+	    if (dir != null)
+	    {
+	        dir.ListDirBegin();
+	        string fileName = dir.GetNext();
+	        while (fileName != "")
+	        {
+	            if (dir.CurrentIsDir())
+	            {
+	                GD.Print($"Found directory: {fileName}");
+	            }
+	            else
+	            {
+	                GD.Print($"Found file: {fileName}");
+	            }
+	            fileName = dir.GetNext();
+	        }
+	    }
+	    else
+	    {
+	        GD.Print("An error occurred when trying to access the path.");
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type DirAccess = classdb.DirAccess
+
+/*
+A directional light is a type of [Light2D] node that models an infinite number of parallel rays covering the entire scene. It is used for lights with strong intensity that are located far away from the scene (for example: to model sunlight or moonlight).
+[b]Note:[/b] [DirectionalLight2D] does not support light cull masks (but it supports shadow cull masks). It will always light up 2D nodes, regardless of the 2D node's [member CanvasItem.light_mask].
+*/
 type DirectionalLight2D = classdb.DirectionalLight2D
+
+/*
+A directional light is a type of [Light3D] node that models an infinite number of parallel rays covering the entire scene. It is used for lights with strong intensity that are located far away from the scene to model sunlight or moonlight. The worldspace location of the DirectionalLight3D transform (origin) is ignored. Only the basis is used to determine light direction.
+*/
 type DirectionalLight3D = classdb.DirectionalLight3D
 
 func DisplayServer(godot Context) classdb.DisplayServer {
@@ -211,28 +1958,294 @@ func DisplayServer(godot Context) classdb.DisplayServer {
 	return *(*classdb.DisplayServer)(unsafe.Pointer(&obj))
 }
 
+/*
+ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
+*/
 type ENetConnection = classdb.ENetConnection
+
+/*
+A MultiplayerPeer implementation that should be passed to [member MultiplayerAPI.multiplayer_peer] after being initialized as either a client, server, or mesh. Events can then be handled by connecting to [MultiplayerAPI] signals. See [ENetConnection] for more information on the ENet library wrapper.
+[b]Note:[/b] ENet only uses UDP, not TCP. When forwarding the server port to make your server accessible on the public Internet, you only need to forward the server port in UDP. You can use the [UPNP] class to try to forward the server port automatically when starting the server.
+*/
 type ENetMultiplayerPeer = classdb.ENetMultiplayerPeer
+
+/*
+A PacketPeer implementation representing a peer of an [ENetConnection].
+This class cannot be instantiated directly but can be retrieved during [method ENetConnection.service] or via [method ENetConnection.get_peers].
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type ENetPacketPeer = classdb.ENetPacketPeer
+
+/*
+Object that holds all the available Commands and their shortcuts text. These Commands can be accessed through [b]Editor > Command Palette[/b] menu.
+Command key names use slash delimiters to distinguish sections, for example: [code]"example/command1"[/code] then [code]example[/code] will be the section name.
+[codeblocks]
+[gdscript]
+var command_palette = EditorInterface.get_command_palette()
+# external_command is a function that will be called with the command is executed.
+var command_callable = Callable(self, "external_command").bind(arguments)
+command_palette.add_command("command", "test/command",command_callable)
+[/gdscript]
+[csharp]
+EditorCommandPalette commandPalette = EditorInterface.Singleton.GetCommandPalette();
+// ExternalCommand is a function that will be called with the command is executed.
+Callable commandCallable = new Callable(this, MethodName.ExternalCommand);
+commandPalette.AddCommand("command", "test/command", commandCallable)
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_command_palette].
+*/
 type EditorCommandPalette = classdb.EditorCommandPalette
+
+/*
+[EditorDebuggerPlugin] provides functions related to the editor side of the debugger.
+To interact with the debugger, an instance of this class must be added to the editor via [method EditorPlugin.add_debugger_plugin].
+Once added, the [method _setup_session] callback will be called for every [EditorDebuggerSession] available to the plugin, and when new ones are created (the sessions may be inactive during this stage).
+You can retrieve the available [EditorDebuggerSession]s via [method get_sessions] or get a specific one via [method get_session].
+[codeblocks]
+[gdscript]
+@tool
+extends EditorPlugin
+
+class ExampleEditorDebugger extends EditorDebuggerPlugin:
+
+	func _has_capture(prefix):
+	    # Return true if you wish to handle message with this prefix.
+	    return prefix == "my_plugin"
+
+	func _capture(message, data, session_id):
+	    if message == "my_plugin:ping":
+	        get_session(session_id).send_message("my_plugin:echo", data)
+
+	func _setup_session(session_id):
+	    # Add a new tab in the debugger session UI containing a label.
+	    var label = Label.new()
+	    label.name = "Example plugin"
+	    label.text = "Example plugin"
+	    var session = get_session(session_id)
+	    # Listens to the session started and stopped signals.
+	    session.started.connect(func (): print("Session started"))
+	    session.stopped.connect(func (): print("Session stopped"))
+	    session.add_session_tab(label)
+
+var debugger = ExampleEditorDebugger.new()
+
+func _enter_tree():
+
+	add_debugger_plugin(debugger)
+
+func _exit_tree():
+
+	remove_debugger_plugin(debugger)
+
+[/gdscript]
+[/codeblocks]
+*/
 type EditorDebuggerPlugin = classdb.EditorDebuggerPlugin
+
+/*
+This class cannot be directly instantiated and must be retrieved via a [EditorDebuggerPlugin].
+You can add tabs to the session UI via [method add_session_tab], send messages via [method send_message], and toggle [EngineProfiler]s via [method toggle_profiler].
+*/
 type EditorDebuggerSession = classdb.EditorDebuggerSession
+
+/*
+Base resource that provides the functionality of exporting a release build of a project to a platform, from the editor. Stores platform-specific metadata such as the name and supported features of the platform, and performs the exporting of projects, PCK files, and ZIP files. Uses an export template for the platform provided at the time of project exporting.
+Used in scripting by [EditorExportPlugin] to configure platform-specific customization of scenes and resources. See [method EditorExportPlugin._begin_customize_scenes] and [method EditorExportPlugin._begin_customize_resources] for more details.
+*/
 type EditorExportPlatform = classdb.EditorExportPlatform
 type EditorExportPlatformAndroid = classdb.EditorExportPlatformAndroid
 type EditorExportPlatformIOS = classdb.EditorExportPlatformIOS
 type EditorExportPlatformLinuxBSD = classdb.EditorExportPlatformLinuxBSD
 type EditorExportPlatformMacOS = classdb.EditorExportPlatformMacOS
 type EditorExportPlatformPC = classdb.EditorExportPlatformPC
+
+/*
+The Web exporter customizes how a web build is handled. In the editor's "Export" window, it is created when adding a new "Web" preset.
+[b]Note:[/b] Godot on Web is rendered inside a [code]<canvas>[/code] tag. Normally, the canvas cannot be positioned or resized manually, but otherwise acts as the main [Window] of the application.
+*/
 type EditorExportPlatformWeb = classdb.EditorExportPlatformWeb
 type EditorExportPlatformWindows = classdb.EditorExportPlatformWindows
+
+/*
+[EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
+To use [EditorExportPlugin], register it using the [method EditorPlugin.add_export_plugin] method first.
+*/
 type EditorExportPlugin = classdb.EditorExportPlugin
+
+/*
+An editor feature profile can be used to disable specific features of the Godot editor. When disabled, the features won't appear in the editor, which makes the editor less cluttered. This is useful in education settings to reduce confusion or when working in a team. For example, artists and level designers could use a feature profile that disables the script editor to avoid accidentally making changes to files they aren't supposed to edit.
+To manage editor feature profiles visually, use [b]Editor > Manage Feature Profiles...[/b] at the top of the editor window.
+*/
 type EditorFeatureProfile = classdb.EditorFeatureProfile
+
+/*
+[EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
+*/
 type EditorFileDialog = classdb.EditorFileDialog
+
+/*
+This object holds information of all resources in the filesystem, their types, etc.
+[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_resource_filesystem].
+*/
 type EditorFileSystem = classdb.EditorFileSystem
+
+/*
+A more generalized, low-level variation of the directory concept.
+*/
 type EditorFileSystemDirectory = classdb.EditorFileSystemDirectory
+
+/*
+This class is used to query and configure a certain import format. It is used in conjunction with asset format import plugins.
+*/
 type EditorFileSystemImportFormatSupportQuery = classdb.EditorFileSystemImportFormatSupportQuery
+
+/*
+[EditorImportPlugin]s provide a way to extend the editor's resource import functionality. Use them to import resources from custom files or to provide alternatives to the editor's existing importers.
+EditorImportPlugins work by associating with specific file extensions and a resource type. See [method _get_recognized_extensions] and [method _get_resource_type]. They may optionally specify some import presets that affect the import process. EditorImportPlugins are responsible for creating the resources and saving them in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
+Below is an example EditorImportPlugin that imports a [Mesh] from a file with the extension ".special" or ".spec":
+[codeblocks]
+[gdscript]
+@tool
+extends EditorImportPlugin
+
+func _get_importer_name():
+
+	return "my.special.plugin"
+
+func _get_visible_name():
+
+	return "Special Mesh"
+
+func _get_recognized_extensions():
+
+	return ["special", "spec"]
+
+func _get_save_extension():
+
+	return "mesh"
+
+func _get_resource_type():
+
+	return "Mesh"
+
+func _get_preset_count():
+
+	return 1
+
+func _get_preset_name(preset_index):
+
+	return "Default"
+
+func _get_import_options(path, preset_index):
+
+	return [{"name": "my_option", "default_value": false}]
+
+func _import(source_file, save_path, options, platform_variants, gen_files):
+
+	var file = FileAccess.open(source_file, FileAccess.READ)
+	if file == null:
+	    return FAILED
+	var mesh = ArrayMesh.new()
+	# Fill the Mesh with data read in "file", left as an exercise to the reader.
+
+	var filename = save_path + "." + _get_save_extension()
+	return ResourceSaver.save(mesh, filename)
+
+[/gdscript]
+[csharp]
+using Godot;
+
+public partial class MySpecialPlugin : EditorImportPlugin
+
+	{
+	    public override string _GetImporterName()
+	    {
+	        return "my.special.plugin";
+	    }
+
+	    public override string _GetVisibleName()
+	    {
+	        return "Special Mesh";
+	    }
+
+	    public override string[] _GetRecognizedExtensions()
+	    {
+	        return new string[] { "special", "spec" };
+	    }
+
+	    public override string _GetSaveExtension()
+	    {
+	        return "mesh";
+	    }
+
+	    public override string _GetResourceType()
+	    {
+	        return "Mesh";
+	    }
+
+	    public override int _GetPresetCount()
+	    {
+	        return 1;
+	    }
+
+	    public override string _GetPresetName(int presetIndex)
+	    {
+	        return "Default";
+	    }
+
+	    public override Godot.Collections.Array<Godot.Collections.Dictionary> _GetImportOptions(string path, int presetIndex)
+	    {
+	        return new Godot.Collections.Array<Godot.Collections.Dictionary>
+	        {
+	            new Godot.Collections.Dictionary
+	            {
+	                { "name", "myOption" },
+	                { "default_value", false },
+	            }
+	        };
+	    }
+
+	    public override int _Import(string sourceFile, string savePath, Godot.Collections.Dictionary options, Godot.Collections.Array<string> platformVariants, Godot.Collections.Array<string> genFiles)
+	    {
+	        using var file = FileAccess.Open(sourceFile, FileAccess.ModeFlags.Read);
+	        if (file.GetError() != Error.Ok)
+	        {
+	            return (int)Error.Failed;
+	        }
+
+	        var mesh = new ArrayMesh();
+	        // Fill the Mesh with data read in "file", left as an exercise to the reader.
+	        string filename = $"{savePath}.{_GetSaveExtension()}";
+	        return (int)ResourceSaver.Save(mesh, filename);
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+To use [EditorImportPlugin], register it using the [method EditorPlugin.add_import_plugin] method first.
+*/
 type EditorImportPlugin = classdb.EditorImportPlugin
+
+/*
+This is the control that implements property editing in the editor's Settings dialogs, the Inspector dock, etc. To get the [EditorInspector] used in the editor's Inspector dock, use [method EditorInterface.get_inspector].
+[EditorInspector] will show properties in the same order as the array returned by [method Object.get_property_list].
+If a property's name is path-like (i.e. if it contains forward slashes), [EditorInspector] will create nested sections for "directories" along the path. For example, if a property is named [code]highlighting/gdscript/node_path_color[/code], it will be shown as "Node Path Color" inside the "GDScript" section nested inside the "Highlighting" section.
+If a property has [constant PROPERTY_USAGE_GROUP] usage, it will group subsequent properties whose name starts with the property's hint string. The group ends when a property does not start with that hint string or when a new group starts. An empty group name effectively ends the current group. [EditorInspector] will create a top-level section for each group. For example, if a property with group usage is named [code]Collide With[/code] and its hint string is [code]collide_with_[/code], a subsequent [code]collide_with_area[/code] property will be shown as "Area" inside the "Collide With" section. There is also a special case: when the hint string contains the name of a property, that property is grouped too. This is mainly to help grouping properties like [code]font[/code], [code]font_color[/code] and [code]font_size[/code] (using the hint string [code]font_[/code]).
+If a property has [constant PROPERTY_USAGE_SUBGROUP] usage, a subgroup will be created in the same way as a group, and a second-level section will be created for each subgroup.
+[b]Note:[/b] Unlike sections created from path-like property names, [EditorInspector] won't capitalize the name for sections created from groups. So properties with group usage usually use capitalized names instead of snake_cased names.
+*/
 type EditorInspector = classdb.EditorInspector
+
+/*
+[EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
+When an object is edited, the [method _can_handle] function is called and must return [code]true[/code] if the object type is supported.
+If supported, the function [method _parse_begin] will be called, allowing to place custom controls at the beginning of the class.
+Subsequently, the [method _parse_category] and [method _parse_property] are called for every category and property. They offer the ability to add custom controls to the inspector too.
+Finally, [method _parse_end] will be called.
+On each of these calls, the "add" functions can be called.
+To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_inspector_plugin] method first.
+*/
 type EditorInspectorPlugin = classdb.EditorInspectorPlugin
 
 func EditorInterface(godot Context) classdb.EditorInterface {
@@ -240,31 +2253,383 @@ func EditorInterface(godot Context) classdb.EditorInterface {
 	return *(*classdb.EditorInterface)(unsafe.Pointer(&obj))
 }
 
+/*
+Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
+*/
 type EditorNode3DGizmo = classdb.EditorNode3DGizmo
+
+/*
+[EditorNode3DGizmoPlugin] allows you to define a new type of Gizmo. There are two main ways to do so: extending [EditorNode3DGizmoPlugin] for the simpler gizmos, or creating a new [EditorNode3DGizmo] type. See the tutorial in the documentation for more info.
+To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add_node_3d_gizmo_plugin] method first.
+*/
 type EditorNode3DGizmoPlugin = classdb.EditorNode3DGizmoPlugin
+
+/*
+This editor-only singleton returns OS-specific paths to various data folders and files. It can be used in editor plugins to ensure files are saved in the correct location on each operating system.
+[b]Note:[/b] This singleton is not accessible in exported projects. Attempting to access it in an exported project will result in a script error as the singleton won't be declared. To prevent script errors in exported projects, use [method Engine.has_singleton] to check whether the singleton is available before using it.
+[b]Note:[/b] On the Linux/BSD platform, Godot complies with the [url=https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html]XDG Base Directory Specification[/url]. You can override environment variables following the specification to change the editor and project data paths.
+*/
 type EditorPaths = classdb.EditorPaths
+
+/*
+Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
+[b]Note:[/b] Some names in this class contain "left" or "right" (e.g. [constant DOCK_SLOT_LEFT_UL]). These APIs assume left-to-right layout, and would be backwards when using right-to-left layout. These names are kept for compatibility reasons.
+*/
 type EditorPlugin = classdb.EditorPlugin
+
+/*
+A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
+*/
 type EditorProperty = classdb.EditorProperty
+
+/*
+[EditorResourceConversionPlugin] is invoked when the context menu is brought up for a resource in the editor inspector. Relevant conversion plugins will appear as menu options to convert the given resource to a target type.
+Below shows an example of a basic plugin that will convert an [ImageTexture] to a [PortableCompressedTexture2D].
+[codeblocks]
+[gdscript]
+extends EditorResourceConversionPlugin
+
+func _handles(resource: Resource):
+
+	return resource is ImageTexture
+
+func _converts_to():
+
+	return "PortableCompressedTexture2D"
+
+func _convert(itex: Resource):
+
+	var ptex = PortableCompressedTexture2D.new()
+	ptex.create_from_image(itex.get_image(), PortableCompressedTexture2D.COMPRESSION_MODE_LOSSLESS)
+	return ptex
+
+[/gdscript]
+[/codeblocks]
+To use an [EditorResourceConversionPlugin], register it using the [method EditorPlugin.add_resource_conversion_plugin] method first.
+*/
 type EditorResourceConversionPlugin = classdb.EditorResourceConversionPlugin
+
+/*
+This [Control] node is used in the editor's Inspector dock to allow editing of [Resource] type properties. It provides options for creating, loading, saving and converting resources. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
+[b]Note:[/b] This [Control] does not include any editor for the resource, as editing is controlled by the Inspector dock itself or sub-Inspectors.
+*/
 type EditorResourcePicker = classdb.EditorResourcePicker
+
+/*
+This node is used to generate previews for resources or files.
+[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_resource_previewer].
+*/
 type EditorResourcePreview = classdb.EditorResourcePreview
+
+/*
+Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[/code] in [EditorSettings] to find out the right size to do previews at.
+*/
 type EditorResourcePreviewGenerator = classdb.EditorResourcePreviewGenerator
+
+/*
+Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
+A plugin must be first registered with [method FileSystemDock.add_resource_tooltip_plugin]. When the user hovers a resource in filesystem dock which is handled by the plugin, [method _make_tooltip_for_path] is called to create the tooltip. It works similarly to [method Control._make_custom_tooltip].
+*/
 type EditorResourceTooltipPlugin = classdb.EditorResourceTooltipPlugin
+
+/*
+[EditorSceneFormatImporter] allows to define an importer script for a third-party 3D format.
+To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.add_scene_format_importer_plugin] method first.
+*/
 type EditorSceneFormatImporter = classdb.EditorSceneFormatImporter
+
+/*
+Imports Blender scenes in the [code].blend[/code] file format through the glTF 2.0 3D import pipeline. This importer requires Blender to be installed by the user, so that it can be used to export the scene as glTF 2.0.
+The location of the Blender binary is set via the [code]filesystem/import/blender/blender3_path[/code] editor setting.
+This importer is only used if [member ProjectSettings.filesystem/import/blender/enabled] is enabled, otherwise [code].blend[/code] files present in the project folder are not imported.
+Blend import requires Blender 3.0.
+Internally, the EditorSceneFormatImporterBlend uses the Blender glTF "Use Original" mode to reference external textures.
+*/
 type EditorSceneFormatImporterBlend = classdb.EditorSceneFormatImporterBlend
+
+/*
+Imports Autodesk FBX 3D scenes by way of converting them to glTF 2.0 using the FBX2glTF command line tool.
+The location of the FBX2glTF binary is set via the [code]filesystem/import/fbx/fbx2gltf_path[/code] editor setting.
+This importer is only used if [member ProjectSettings.filesystem/import/fbx/enabled] is enabled, otherwise [code].fbx[/code] files present in the project folder are not imported.
+*/
 type EditorSceneFormatImporterFBX = classdb.EditorSceneFormatImporterFBX
 type EditorSceneFormatImporterGLTF = classdb.EditorSceneFormatImporterGLTF
+
+/*
+Imported scenes can be automatically modified right after import by setting their [b]Custom Script[/b] Import property to a [code]tool[/code] script that inherits from this class.
+The [method _post_import] callback receives the imported scene's root node and returns the modified version of the scene. Usage example:
+[codeblocks]
+[gdscript]
+@tool # Needed so it runs in editor.
+extends EditorScenePostImport
+
+# This sample changes all node names.
+# Called right after the scene is imported and gets the root node.
+func _post_import(scene):
+
+	# Change all node names to "modified_[oldnodename]"
+	iterate(scene)
+	return scene # Remember to return the imported scene
+
+func iterate(node):
+
+	if node != null:
+	    node.name = "modified_" + node.name
+	    for child in node.get_children():
+	        iterate(child)
+
+[/gdscript]
+[csharp]
+using Godot;
+
+// This sample changes all node names.
+// Called right after the scene is imported and gets the root node.
+[Tool]
+public partial class NodeRenamer : EditorScenePostImport
+
+	{
+	    public override GodotObject _PostImport(Node scene)
+	    {
+	        // Change all node names to "modified_[oldnodename]"
+	        Iterate(scene);
+	        return scene; // Remember to return the imported scene
+	    }
+
+	    public void Iterate(Node node)
+	    {
+	        if (node != null)
+	        {
+	            node.Name = $"modified_{node.Name}";
+	            foreach (Node child in node.GetChildren())
+	            {
+	                Iterate(child);
+	            }
+	        }
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type EditorScenePostImport = classdb.EditorScenePostImport
+
+/*
+This plugin type exists to modify the process of importing scenes, allowing to change the content as well as add importer options at every stage of the process.
+*/
 type EditorScenePostImportPlugin = classdb.EditorScenePostImportPlugin
+
+/*
+Scripts extending this class and implementing its [method _run] method can be executed from the Script Editor's [b]File > Run[/b] menu option (or by pressing [kbd]Ctrl + Shift + X[/kbd]) while the editor is running. This is useful for adding custom in-editor functionality to Godot. For more complex additions, consider using [EditorPlugin]s instead.
+[b]Note:[/b] Extending scripts need to have [code]tool[/code] mode enabled.
+[b]Example script:[/b]
+[codeblocks]
+[gdscript]
+@tool
+extends EditorScript
+
+func _run():
+
+	print("Hello from the Godot Editor!")
+
+[/gdscript]
+[csharp]
+using Godot;
+
+[Tool]
+public partial class HelloEditor : EditorScript
+
+	{
+	    public override void _Run()
+	    {
+	        GD.Print("Hello from the Godot Editor!");
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] The script is run in the Editor context, which means the output is visible in the console window started with the Editor (stdout) instead of the usual Godot [b]Output[/b] dock.
+[b]Note:[/b] EditorScript is [RefCounted], meaning it is destroyed when nothing references it. This can cause errors during asynchronous operations if there are no references to the script.
+*/
 type EditorScript = classdb.EditorScript
+
+/*
+Similar to [EditorResourcePicker] this [Control] node is used in the editor's Inspector dock, but only to edit the [code]script[/code] property of a [Node]. Default options for creating new resources of all possible subtypes are replaced with dedicated buttons that open the "Attach Node Script" dialog. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
+[b]Note:[/b] You must set the [member script_owner] for the custom context menu items to work.
+*/
 type EditorScriptPicker = classdb.EditorScriptPicker
+
+/*
+This object manages the SceneTree selection in the editor.
+[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_selection].
+*/
 type EditorSelection = classdb.EditorSelection
+
+/*
+Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
+Property names use slash delimiters to distinguish sections. Setting values can be of any [Variant] type. It's recommended to use [code]snake_case[/code] for editor settings to be consistent with the Godot editor itself.
+Accessing the settings can be done using the following methods, such as:
+[codeblocks]
+[gdscript]
+var settings = EditorInterface.get_editor_settings()
+# `settings.set("some/property", 10)` also works as this class overrides `_set()` internally.
+settings.set_setting("some/property", 10)
+# `settings.get("some/property")` also works as this class overrides `_get()` internally.
+settings.get_setting("some/property")
+var list_of_settings = settings.get_property_list()
+[/gdscript]
+[csharp]
+EditorSettings settings = EditorInterface.Singleton.GetEditorSettings();
+// `settings.set("some/property", value)` also works as this class overrides `_set()` internally.
+settings.SetSetting("some/property", Value);
+// `settings.get("some/property", value)` also works as this class overrides `_get()` internally.
+settings.GetSetting("some/property");
+Godot.Collections.Array<Godot.Collections.Dictionary> listOfSettings = settings.GetPropertyList();
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_editor_settings].
+*/
 type EditorSettings = classdb.EditorSettings
+
+/*
+This [Control] node is used in the editor's Inspector dock to allow editing of numeric values. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
+If the [member Range.step] value is [code]1[/code], the [EditorSpinSlider] will display up/down arrows, similar to [SpinBox]. If the [member Range.step] value is not [code]1[/code], a slider will be displayed instead.
+*/
 type EditorSpinSlider = classdb.EditorSpinSlider
+
+/*
+Base class that all [SyntaxHighlighter]s used by the [ScriptEditor] extend from.
+Add a syntax highlighter to an individual script by calling [method ScriptEditorBase.add_syntax_highlighter]. To apply to all scripts on open, call [method ScriptEditor.register_syntax_highlighter].
+*/
 type EditorSyntaxHighlighter = classdb.EditorSyntaxHighlighter
+
+/*
+[EditorTranslationParserPlugin] is invoked when a file is being parsed to extract strings that require translation. To define the parsing and string extraction logic, override the [method _parse_file] method in script.
+Add the extracted strings to argument [code]msgids[/code] or [code]msgids_context_plural[/code] if context or plural is used.
+When adding to [code]msgids_context_plural[/code], you must add the data using the format [code]["A", "B", "C"][/code], where [code]A[/code] represents the extracted string, [code]B[/code] represents the context, and [code]C[/code] represents the plural version of the extracted string. If you want to add only context but not plural, put [code]""[/code] for the plural slot. The idea is the same if you only want to add plural but not context. See the code below for concrete examples.
+The extracted strings will be written into a POT file selected by user under "POT Generation" in "Localization" tab in "Project Settings" menu.
+Below shows an example of a custom parser that extracts strings from a CSV file to write into a POT.
+[codeblocks]
+[gdscript]
+@tool
+extends EditorTranslationParserPlugin
+
+func _parse_file(path, msgids, msgids_context_plural):
+
+	var file = FileAccess.open(path, FileAccess.READ)
+	var text = file.get_as_text()
+	var split_strs = text.split(",", false)
+	for s in split_strs:
+	    msgids.append(s)
+	    #print("Extracted string: " + s)
+
+func _get_recognized_extensions():
+
+	return ["csv"]
+
+[/gdscript]
+[csharp]
+using Godot;
+
+[Tool]
+public partial class CustomParser : EditorTranslationParserPlugin
+
+	{
+	    public override void _ParseFile(string path, Godot.Collections.Array<string> msgids, Godot.Collections.Array<Godot.Collections.Array> msgidsContextPlural)
+	    {
+	        using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+	        string text = file.GetAsText();
+	        string[] splitStrs = text.Split(",", allowEmpty: false);
+	        foreach (string s in splitStrs)
+	        {
+	            msgids.Add(s);
+	            //GD.Print($"Extracted string: {s}");
+	        }
+	    }
+
+	    public override string[] _GetRecognizedExtensions()
+	    {
+	        return new string[] { "csv" };
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+To add a translatable string associated with context or plural, add it to [code]msgids_context_plural[/code]:
+[codeblocks]
+[gdscript]
+# This will add a message with msgid "Test 1", msgctxt "context", and msgid_plural "test 1 plurals".
+msgids_context_plural.append(["Test 1", "context", "test 1 plurals"])
+# This will add a message with msgid "A test without context" and msgid_plural "plurals".
+msgids_context_plural.append(["A test without context", "", "plurals"])
+# This will add a message with msgid "Only with context" and msgctxt "a friendly context".
+msgids_context_plural.append(["Only with context", "a friendly context", ""])
+[/gdscript]
+[csharp]
+// This will add a message with msgid "Test 1", msgctxt "context", and msgid_plural "test 1 plurals".
+msgidsContextPlural.Add(new Godot.Collections.Array{"Test 1", "context", "test 1 Plurals"});
+// This will add a message with msgid "A test without context" and msgid_plural "plurals".
+msgidsContextPlural.Add(new Godot.Collections.Array{"A test without context", "", "plurals"});
+// This will add a message with msgid "Only with context" and msgctxt "a friendly context".
+msgidsContextPlural.Add(new Godot.Collections.Array{"Only with context", "a friendly context", ""});
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] If you override parsing logic for standard script types (GDScript, C#, etc.), it would be better to load the [code]path[/code] argument using [method ResourceLoader.load]. This is because built-in scripts are loaded as [Resource] type, not [FileAccess] type.
+For example:
+[codeblocks]
+[gdscript]
+func _parse_file(path, msgids, msgids_context_plural):
+
+	var res = ResourceLoader.load(path, "Script")
+	var text = res.source_code
+	# Parsing logic.
+
+func _get_recognized_extensions():
+
+	return ["gd"]
+
+[/gdscript]
+[csharp]
+public override void _ParseFile(string path, Godot.Collections.Array<string> msgids, Godot.Collections.Array<Godot.Collections.Array> msgidsContextPlural)
+
+	{
+	    var res = ResourceLoader.Load<Script>(path, "Script");
+	    string text = res.SourceCode;
+	    // Parsing logic.
+	}
+
+public override string[] _GetRecognizedExtensions()
+
+	{
+	    return new string[] { "gd" };
+	}
+
+[/csharp]
+[/codeblocks]
+To use [EditorTranslationParserPlugin], register it using the [method EditorPlugin.add_translation_parser_plugin] method first.
+*/
 type EditorTranslationParserPlugin = classdb.EditorTranslationParserPlugin
+
+/*
+[EditorUndoRedoManager] is a manager for [UndoRedo] objects associated with edited scenes. Each scene has its own undo history and [EditorUndoRedoManager] ensures that each action performed in the editor gets associated with a proper scene. For actions not related to scenes ([ProjectSettings] edits, external resources, etc.), a separate global history is used.
+The usage is mostly the same as [UndoRedo]. You create and commit actions and the manager automatically decides under-the-hood what scenes it belongs to. The scene is deduced based on the first operation in an action, using the object from the operation. The rules are as follows:
+- If the object is a [Node], use the currently edited scene;
+- If the object is a built-in resource, use the scene from its path;
+- If the object is external resource or anything else, use global history.
+This guessing can sometimes yield false results, so you can provide a custom context object when creating an action.
+[EditorUndoRedoManager] is intended to be used by Godot editor plugins. You can obtain it using [method EditorPlugin.get_undo_redo]. For non-editor uses or plugins that don't need to integrate with the editor's undo history, use [UndoRedo] instead.
+The manager's API is mostly the same as in [UndoRedo], so you can refer to its documentation for more examples. The main difference is that [EditorUndoRedoManager] uses object + method name for actions, instead of [Callable].
+*/
 type EditorUndoRedoManager = classdb.EditorUndoRedoManager
+
+/*
+Defines the API that the editor uses to extract information from the underlying VCS. The implementation of this API is included in VCS plugins, which are GDExtension plugins that inherit [EditorVCSInterface] and are attached (on demand) to the singleton instance of [EditorVCSInterface]. Instead of performing the task themselves, all the virtual functions listed below are calling the internally overridden functions in the VCS plugins to provide a plug-n-play experience. A custom VCS plugin is supposed to inherit from [EditorVCSInterface] and override each of these virtual functions.
+*/
 type EditorVCSInterface = classdb.EditorVCSInterface
+
+/*
+Utility class which holds a reference to the internal identifier of an [Object] instance, as given by [method Object.get_instance_id]. This ID can then be used to retrieve the object instance with [method @GlobalScope.instance_from_id].
+This class is used internally by the editor inspector and script debugger, but can also be used in plugins to pass and display objects as their IDs.
+*/
 type EncodedObjectAsID = classdb.EncodedObjectAsID
 
 func Engine(godot Context) classdb.Engine {
@@ -276,18 +2641,209 @@ func EngineDebugger(godot Context) classdb.EngineDebugger {
 	return *(*classdb.EngineDebugger)(unsafe.Pointer(&obj))
 }
 
+/*
+This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
+See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
+*/
 type EngineProfiler = classdb.EngineProfiler
+
+/*
+Resource for environment nodes (like [WorldEnvironment]) that define multiple environment operations (such as background [Sky] or [Color], ambient light, fog, depth-of-field...). These parameters affect the final render of the scene. The order of these operations is:
+- Depth of Field Blur
+- Glow
+- Tonemap (Auto Exposure)
+- Adjustments
+*/
 type Environment = classdb.Environment
+
+/*
+An expression can be made of any arithmetic operation, built-in math function call, method call of a passed instance, or built-in type construction call.
+An example expression text using the built-in math functions could be [code]sqrt(pow(3, 2) + pow(4, 2))[/code].
+In the following example we use a [LineEdit] node to write our expression and show the result.
+[codeblocks]
+[gdscript]
+var expression = Expression.new()
+
+func _ready():
+
+	$LineEdit.text_submitted.connect(self._on_text_submitted)
+
+func _on_text_submitted(command):
+
+	var error = expression.parse(command)
+	if error != OK:
+	    print(expression.get_error_text())
+	    return
+	var result = expression.execute()
+	if not expression.has_execute_failed():
+	    $LineEdit.text = str(result)
+
+[/gdscript]
+[csharp]
+private Expression _expression = new Expression();
+
+public override void _Ready()
+
+	{
+	    GetNode<LineEdit>("LineEdit").TextSubmitted += OnTextEntered;
+	}
+
+private void OnTextEntered(string command)
+
+	{
+	    Error error = _expression.Parse(command);
+	    if (error != Error.Ok)
+	    {
+	        GD.Print(_expression.GetErrorText());
+	        return;
+	    }
+	    Variant result = _expression.Execute();
+	    if (!_expression.HasExecuteFailed())
+	    {
+	        GetNode<LineEdit>("LineEdit").Text = result.ToString();
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type Expression = classdb.Expression
+
+/*
+This class generates noise using the FastNoiseLite library, which is a collection of several noise algorithms including Cellular, Perlin, Value, and more.
+Most generated noise values are in the range of [code][-1, 1][/code], but not always. Some of the cellular noise algorithms return results above [code]1[/code].
+*/
 type FastNoiseLite = classdb.FastNoiseLite
+
+/*
+This class can be used to permanently store data in the user device's file system and to read from it. This is useful for store game save data or player configuration files.
+Here's a sample on how to write and read from a file:
+[codeblocks]
+[gdscript]
+func save(content):
+
+	var file = FileAccess.open("user://save_game.dat", FileAccess.WRITE)
+	file.store_string(content)
+
+func load():
+
+	var file = FileAccess.open("user://save_game.dat", FileAccess.READ)
+	var content = file.get_as_text()
+	return content
+
+[/gdscript]
+[csharp]
+public void Save(string content)
+
+	{
+	    using var file = FileAccess.Open("user://save_game.dat", FileAccess.ModeFlags.Write);
+	    file.StoreString(content);
+	}
+
+public string Load()
+
+	{
+	    using var file = FileAccess.Open("user://save_game.dat", FileAccess.ModeFlags.Read);
+	    string content = file.GetAsText();
+	    return content;
+	}
+
+[/csharp]
+[/codeblocks]
+In the example above, the file will be saved in the user data folder as specified in the [url=$DOCS_URL/tutorials/io/data_paths.html]Data paths[/url] documentation.
+[FileAccess] will close when it's freed, which happens when it goes out of scope or when it gets assigned with [code]null[/code]. [method close] can be used to close it before then explicitly. In C# the reference must be disposed manually, which can be done with the [code]using[/code] statement or by calling the [code]Dispose[/code] method directly.
+[b]Note:[/b] To access project resources once exported, it is recommended to use [ResourceLoader] instead of [FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package.
+[b]Note:[/b] Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing [b]Alt + F4[/b]). If you stop the project execution by pressing [b]F8[/b] while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [method flush] at regular intervals.
+*/
 type FileAccess = classdb.FileAccess
+
+/*
+[FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
+*/
 type FileDialog = classdb.FileDialog
+
+/*
+This class is available only in [EditorPlugin]s and can't be instantiated. You can access it using [method EditorInterface.get_file_system_dock].
+While [FileSystemDock] doesn't expose any methods for file manipulation, it can listen for various file-related signals.
+*/
 type FileSystemDock = classdb.FileSystemDock
+
+/*
+A container that arranges its child controls horizontally or vertically and wraps them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line.
+*/
 type FlowContainer = classdb.FlowContainer
+
+/*
+A [Material] resource that can be used by [FogVolume]s to draw volumetric effects.
+If you need more advanced effects, use a custom [url=$DOCS_URL/tutorials/shaders/shader_reference/fog_shader.html]fog shader[/url].
+*/
 type FogMaterial = classdb.FogMaterial
+
+/*
+[FogVolume]s are used to add localized fog into the global volumetric fog effect. [FogVolume]s can also remove volumetric fog from specific areas if using a [FogMaterial] with a negative [member FogMaterial.density].
+Performance of [FogVolume]s is directly related to their relative size on the screen and the complexity of their attached [FogMaterial]. It is best to keep [FogVolume]s relatively small and simple where possible.
+[b]Note:[/b] [FogVolume]s only have a visible effect if [member Environment.volumetric_fog_enabled] is [code]true[/code]. If you don't want fog to be globally visible (but only within [FogVolume] nodes), set [member Environment.volumetric_fog_density] to [code]0.0[/code].
+*/
 type FogVolume = classdb.FogVolume
+
+/*
+Abstract base class for different font types. It has methods for drawing text and font character introspection.
+*/
 type Font = classdb.Font
+
+/*
+[FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
+Use [FontVariation] to access specific OpenType variation of the font, create simulated bold / slanted version, and draw lines of text.
+For more complex text processing, use [FontVariation] in conjunction with [TextLine] or [TextParagraph].
+Supported font formats:
+- Dynamic font importer: TrueType (.ttf), TrueType collection (.ttc), OpenType (.otf), OpenType collection (.otc), WOFF (.woff), WOFF2 (.woff2), Type 1 (.pfb, .pfm).
+- Bitmap font importer: AngelCode BMFont (.fnt, .font), text and binary (version 3) format variants.
+- Monospace image font importer: All supported image formats.
+[b]Note:[/b] A character is a symbol that represents an item (letter, digit etc.) in an abstract way.
+[b]Note:[/b] A glyph is a bitmap or a shape used to draw one or more characters in a context-dependent manner. Glyph indices are bound to the specific font data source.
+[b]Note:[/b] If none of the font data sources contain glyphs for a character used in a string, the character in question will be replaced with a box displaying its hexadecimal code.
+[codeblocks]
+[gdscript]
+var f = load("res://BarlowCondensed-Bold.ttf")
+$Label.add_theme_font_override("font", f)
+$Label.add_theme_font_size_override("font_size", 64)
+[/gdscript]
+[csharp]
+var f = ResourceLoader.Load<FontFile>("res://BarlowCondensed-Bold.ttf");
+GetNode("Label").AddThemeFontOverride("font", f);
+GetNode("Label").AddThemeFontSizeOverride("font_size", 64);
+[/csharp]
+[/codeblocks]
+*/
 type FontFile = classdb.FontFile
+
+/*
+Provides OpenType variations, simulated bold / slant, and additional font settings like OpenType features and extra spacing.
+To use simulated bold font variant:
+[codeblocks]
+[gdscript]
+var fv = FontVariation.new()
+fv.set_base_font(load("res://BarlowCondensed-Regular.ttf"))
+fv.set_variation_embolden(1.2)
+$Label.add_theme_font_override("font", fv)
+$Label.add_theme_font_size_override("font_size", 64)
+[/gdscript]
+[csharp]
+var fv = new FontVariation();
+fv.SetBaseFont(ResourceLoader.Load<FontFile>("res://BarlowCondensed-Regular.ttf"));
+fv.SetVariationEmbolden(1.2);
+GetNode("Label").AddThemeFontOverride("font", fv);
+GetNode("Label").AddThemeFontSizeOverride("font_size", 64);
+[/csharp]
+[/codeblocks]
+To set the coordinate of multiple variation axes:
+[codeblock]
+var fv = FontVariation.new();
+var ts = TextServerManager.get_primary_interface()
+fv.base_font = load("res://BarlowCondensed-Regular.ttf")
+fv.variation_opentype = { ts.name_to_tag("wght"): 900, ts.name_to_tag("custom_hght"): 900 }
+[/codeblock]
+*/
 type FontVariation = classdb.FontVariation
 type GDExtension = classdb.GDExtension
 
@@ -296,36 +2852,169 @@ func GDExtensionManager(godot Context) classdb.GDExtensionManager {
 	return *(*classdb.GDExtensionManager)(unsafe.Pointer(&obj))
 }
 
+/*
+A script implemented in the GDScript programming language, saved with the [code].gd[/code] extension. The script extends the functionality of all objects that instantiate it.
+Calling [method new] creates a new instance of the script. [method Object.set_script] extends an existing object, if that object's class matches one of the script's base classes.
+If you are looking for GDScript's built-in functions, see [@GDScript] instead.
+*/
 type GDScript = classdb.GDScript
 type GLTFAccessor = classdb.GLTFAccessor
 type GLTFAnimation = classdb.GLTFAnimation
 type GLTFBufferView = classdb.GLTFBufferView
+
+/*
+Represents a camera as defined by the base GLTF spec.
+*/
 type GLTFCamera = classdb.GLTFCamera
+
+/*
+GLTFDocument supports reading data from a glTF file, buffer, or Godot scene. This data can then be written to the filesystem, buffer, or used to create a Godot scene.
+All of the data in a GLTF scene is stored in the [GLTFState] class. GLTFDocument processes state objects, but does not contain any scene data itself. GLTFDocument has member variables to store export configuration settings such as the image format, but is otherwise stateless. Multiple scenes can be processed with the same settings using the same GLTFDocument object and different [GLTFState] objects.
+GLTFDocument can be extended with arbitrary functionality by extending the [GLTFDocumentExtension] class and registering it with GLTFDocument via [method register_gltf_document_extension]. This allows for custom data to be imported and exported.
+*/
 type GLTFDocument = classdb.GLTFDocument
+
+/*
+Extends the functionality of the [GLTFDocument] class by allowing you to run arbitrary code at various stages of GLTF import or export.
+To use, make a new class extending GLTFDocumentExtension, override any methods you need, make an instance of your class, and register it using [method GLTFDocument.register_gltf_document_extension].
+[b]Note:[/b] Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the [code]set_additional_data[/code] and [code]get_additional_data[/code] methods in [GLTFState] or [GLTFNode].
+*/
 type GLTFDocumentExtension = classdb.GLTFDocumentExtension
 type GLTFDocumentExtensionConvertImporterMesh = classdb.GLTFDocumentExtensionConvertImporterMesh
+
+/*
+Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
+*/
 type GLTFLight = classdb.GLTFLight
 type GLTFMesh = classdb.GLTFMesh
+
+/*
+Represents a GLTF node. GLTF nodes may have names, transforms, children (other GLTF nodes), and more specialized properties (represented by their own classes).
+GLTF nodes generally exist inside of [GLTFState] which represents all data of a GLTF file. Most of GLTFNode's properties are indices of other data in the GLTF file. You can extend a GLTF node with additional properties by using [method get_additional_data] and [method set_additional_data].
+*/
 type GLTFNode = classdb.GLTFNode
+
+/*
+Represents a physics body as defined by the [code]OMI_physics_body[/code] GLTF extension. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
+*/
 type GLTFPhysicsBody = classdb.GLTFPhysicsBody
+
+/*
+Represents a physics shape as defined by the [code]OMI_collider[/code] GLTF extension. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
+*/
 type GLTFPhysicsShape = classdb.GLTFPhysicsShape
 type GLTFSkeleton = classdb.GLTFSkeleton
 type GLTFSkin = classdb.GLTFSkin
+
+/*
+KHR_materials_pbrSpecularGlossiness is an archived GLTF extension. This means that it is deprecated and not recommended for new files. However, it is still supported for loading old files.
+*/
 type GLTFSpecGloss = classdb.GLTFSpecGloss
+
+/*
+Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
+GLTFState can be populated by [GLTFDocument] reading a file or by converting a Godot scene. Then the data can either be used to create a Godot scene or save to a GLTF file. The code that converts to/from a Godot scene can be intercepted at arbitrary points by [GLTFDocumentExtension] classes. This allows for custom data to be stored in the GLTF file or for custom data to be converted to/from Godot nodes.
+*/
 type GLTFState = classdb.GLTFState
 type GLTFTexture = classdb.GLTFTexture
+
+/*
+Represents a texture sampler as defined by the base GLTF spec. Texture samplers in GLTF specify how to sample data from the texture's base image, when rendering the texture on an object.
+*/
 type GLTFTextureSampler = classdb.GLTFTextureSampler
+
+/*
+2D particle node used to create a variety of particle systems and effects. [GPUParticles2D] features an emitter that generates some number of particles at a given rate.
+Use the [member process_material] property to add a [ParticleProcessMaterial] to configure particle appearance and behavior. Alternatively, you can add a [ShaderMaterial] which will be applied to all particles.
+2D particles can optionally collide with [LightOccluder2D], but they don't collide with [PhysicsBody2D] nodes.
+*/
 type GPUParticles2D = classdb.GPUParticles2D
+
+/*
+3D particle node used to create a variety of particle systems and effects. [GPUParticles3D] features an emitter that generates some number of particles at a given rate.
+Use [member process_material] to add a [ParticleProcessMaterial] to configure particle appearance and behavior. Alternatively, you can add a [ShaderMaterial] which will be applied to all particles.
+*/
 type GPUParticles3D = classdb.GPUParticles3D
+
+/*
+Particle attractors can be used to attract particles towards the attractor's origin, or to push them away from the attractor's origin.
+Particle attractors work in real-time and can be moved, rotated and scaled during gameplay. Unlike collision shapes, non-uniform scaling of attractors is also supported.
+Attractors can be temporarily disabled by hiding them, or by setting their [member strength] to [code]0.0[/code].
+[b]Note:[/b] Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesAttractor3D = classdb.GPUParticlesAttractor3D
+
+/*
+A box-shaped attractor that influences particles from [GPUParticles3D] nodes. Can be used to attract particles towards its origin, or to push them away from its origin.
+Particle attractors work in real-time and can be moved, rotated and scaled during gameplay. Unlike collision shapes, non-uniform scaling of attractors is also supported.
+[b]Note:[/b] Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesAttractorBox3D = classdb.GPUParticlesAttractorBox3D
+
+/*
+A spheroid-shaped attractor that influences particles from [GPUParticles3D] nodes. Can be used to attract particles towards its origin, or to push them away from its origin.
+Particle attractors work in real-time and can be moved, rotated and scaled during gameplay. Unlike collision shapes, non-uniform scaling of attractors is also supported.
+[b]Note:[/b] Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesAttractorSphere3D = classdb.GPUParticlesAttractorSphere3D
+
+/*
+A box-shaped attractor with varying directions and strengths defined in it that influences particles from [GPUParticles3D] nodes.
+Unlike [GPUParticlesAttractorBox3D], [GPUParticlesAttractorVectorField3D] uses a [member texture] to affect attraction strength within the box. This can be used to create complex attraction scenarios where particles travel in different directions depending on their location. This can be useful for weather effects such as sandstorms.
+Particle attractors work in real-time and can be moved, rotated and scaled during gameplay. Unlike collision shapes, non-uniform scaling of attractors is also supported.
+[b]Note:[/b] Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesAttractorVectorField3D = classdb.GPUParticlesAttractorVectorField3D
+
+/*
+Particle collision shapes can be used to make particles stop or bounce against them.
+Particle collision shapes work in real-time and can be moved, rotated and scaled during gameplay. Unlike attractors, non-uniform scaling of collision shapes is [i]not[/i] supported.
+Particle collision shapes can be temporarily disabled by hiding them.
+[b]Note:[/b] [member ParticleProcessMaterial.collision_mode] must be [constant ParticleProcessMaterial.COLLISION_RIGID] or [constant ParticleProcessMaterial.COLLISION_HIDE_ON_CONTACT] on the [GPUParticles3D]'s process material for collision to work.
+[b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
+[b]Note:[/b] Particles pushed by a collider that is being moved will not be interpolated, which can result in visible stuttering. This can be alleviated by setting [member GPUParticles3D.fixed_fps] to [code]0[/code] or a value that matches or exceeds the target framerate.
+*/
 type GPUParticlesCollision3D = classdb.GPUParticlesCollision3D
+
+/*
+A box-shaped 3D particle collision shape affecting [GPUParticles3D] nodes.
+Particle collision shapes work in real-time and can be moved, rotated and scaled during gameplay. Unlike attractors, non-uniform scaling of collision shapes is [i]not[/i] supported.
+[b]Note:[/b] [member ParticleProcessMaterial.collision_mode] must be [constant ParticleProcessMaterial.COLLISION_RIGID] or [constant ParticleProcessMaterial.COLLISION_HIDE_ON_CONTACT] on the [GPUParticles3D]'s process material for collision to work.
+[b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesCollisionBox3D = classdb.GPUParticlesCollisionBox3D
+
+/*
+A real-time heightmap-shaped 3D particle collision shape affecting [GPUParticles3D] nodes.
+Heightmap shapes allow for efficiently representing collisions for convex and concave objects with a single "floor" (such as terrain). This is less flexible than [GPUParticlesCollisionSDF3D], but it doesn't require a baking step.
+[GPUParticlesCollisionHeightField3D] can also be regenerated in real-time when it is moved, when the camera moves, or even continuously. This makes [GPUParticlesCollisionHeightField3D] a good choice for weather effects such as rain and snow and games with highly dynamic geometry. However, this class is limited since heightmaps cannot represent overhangs (e.g. indoors or caves).
+[b]Note:[/b] [member ParticleProcessMaterial.collision_mode] must be [code]true[/code] on the [GPUParticles3D]'s process material for collision to work.
+[b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesCollisionHeightField3D = classdb.GPUParticlesCollisionHeightField3D
+
+/*
+A baked signed distance field 3D particle collision shape affecting [GPUParticles3D] nodes.
+Signed distance fields (SDF) allow for efficiently representing approximate collision shapes for convex and concave objects of any shape. This is more flexible than [GPUParticlesCollisionHeightField3D], but it requires a baking step.
+[b]Baking:[/b] The signed distance field texture can be baked by selecting the [GPUParticlesCollisionSDF3D] node in the editor, then clicking [b]Bake SDF[/b] at the top of the 3D viewport. Any [i]visible[/i] [MeshInstance3D]s within the [member size] will be taken into account for baking, regardless of their [member GeometryInstance3D.gi_mode].
+[b]Note:[/b] Baking a [GPUParticlesCollisionSDF3D]'s [member texture] is only possible within the editor, as there is no bake method exposed for use in exported projects. However, it's still possible to load pre-baked [Texture3D]s into its [member texture] property in an exported project.
+[b]Note:[/b] [member ParticleProcessMaterial.collision_mode] must be [constant ParticleProcessMaterial.COLLISION_RIGID] or [constant ParticleProcessMaterial.COLLISION_HIDE_ON_CONTACT] on the [GPUParticles3D]'s process material for collision to work.
+[b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesCollisionSDF3D = classdb.GPUParticlesCollisionSDF3D
+
+/*
+A sphere-shaped 3D particle collision shape affecting [GPUParticles3D] nodes.
+Particle collision shapes work in real-time and can be moved, rotated and scaled during gameplay. Unlike attractors, non-uniform scaling of collision shapes is [i]not[/i] supported.
+[b]Note:[/b] [member ParticleProcessMaterial.collision_mode] must be [constant ParticleProcessMaterial.COLLISION_RIGID] or [constant ParticleProcessMaterial.COLLISION_HIDE_ON_CONTACT] on the [GPUParticles3D]'s process material for collision to work.
+[b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
+*/
 type GPUParticlesCollisionSphere3D = classdb.GPUParticlesCollisionSphere3D
+
+/*
+The [Generic6DOFJoint3D] (6 Degrees Of Freedom) joint allows for implementing custom types of joints by locking the rotation and translation of certain axes.
+The first 3 DOF represent the linear motion of the physics bodies and the last 3 DOF represent the angular motion of the physics bodies. Each axis can be either locked, or limited.
+*/
 type Generic6DOFJoint3D = classdb.Generic6DOFJoint3D
 
 func Geometry2D(godot Context) classdb.Geometry2D {
@@ -337,27 +3026,393 @@ func Geometry3D(godot Context) classdb.Geometry3D {
 	return *(*classdb.Geometry3D)(unsafe.Pointer(&obj))
 }
 
+/*
+Base node for geometry-based visual instances. Shares some common functionality like visibility and custom materials.
+*/
 type GeometryInstance3D = classdb.GeometryInstance3D
+
+/*
+This resource describes a color transition by defining a set of colored points and how to interpolate between them.
+See also [Curve] which supports more complex easing methods, but does not support colors.
+*/
 type Gradient = classdb.Gradient
+
+/*
+A 1D texture that obtains colors from a [Gradient] to fill the texture data. The texture is filled by sampling the gradient for each pixel. Therefore, the texture does not necessarily represent an exact copy of the gradient, as it may miss some colors if there are not enough pixels. See also [GradientTexture2D], [CurveTexture] and [CurveXYZTexture].
+*/
 type GradientTexture1D = classdb.GradientTexture1D
+
+/*
+A 2D texture that obtains colors from a [Gradient] to fill the texture data. This texture is able to transform a color transition into different patterns such as a linear or a radial gradient. The gradient is sampled individually for each pixel so it does not necessarily represent an exact copy of the gradient(see [member width] and [member height]). See also [GradientTexture1D], [CurveTexture] and [CurveXYZTexture].
+*/
 type GradientTexture2D = classdb.GradientTexture2D
+
+/*
+[GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
+[GraphEdit] by itself is only an empty container, representing an infinite grid where [GraphNode]s can be placed. Each [GraphNode] represents a node in the graph, a single unit of data in the connected scheme. [GraphEdit], in turn, helps to control various interactions with nodes and between nodes. When the user attempts to connect, disconnect, or delete a [GraphNode], a signal is emitted in the [GraphEdit], but no action is taken by default. It is the responsibility of the programmer utilizing this control to implement the necessary logic to determine how each request should be handled.
+[b]Performance:[/b] It is greatly advised to enable low-processor usage mode (see [member OS.low_processor_usage_mode]) when using GraphEdits.
+*/
 type GraphEdit = classdb.GraphEdit
+
+/*
+[GraphElement] allows to create custom elements for a [GraphEdit] graph. By default such elements can be selected, resized, and repositioned, but they cannot be connected. For a graph element that allows for connections see [GraphNode].
+*/
 type GraphElement = classdb.GraphElement
+
+/*
+[GraphNode] allows to create nodes for a [GraphEdit] graph with customizable content based on its child controls. [GraphNode] is derived from [Container] and it is responsible for placing its children on screen. This works similar to [VBoxContainer]. Children, in turn, provide [GraphNode] with so-called slots, each of which can have a connection port on either side.
+Each [GraphNode] slot is defined by its index and can provide the node with up to two ports: one on the left, and one on the right. By convention the left port is also referred to as the [b]input port[/b] and the right port is referred to as the [b]output port[/b]. Each port can be enabled and configured individually, using different type and color. The type is an arbitrary value that you can define using your own considerations. The parent [GraphEdit] will receive this information on each connect and disconnect request.
+Slots can be configured in the Inspector dock once you add at least one child [Control]. The properties are grouped by each slot's index in the "Slot" section.
+[b]Note:[/b] While GraphNode is set up using slots and slot indices, connections are made between the ports which are enabled. Because of that [GraphEdit] uses the port's index and not the slot's index. You can use [method get_input_port_slot] and [method get_output_port_slot] to get the slot index from the port index.
+*/
 type GraphNode = classdb.GraphNode
+
+/*
+[GridContainer] arranges its child controls in a grid layout. The number of columns is specified by the [member columns] property, whereas the number of rows depends on how many are needed for the child controls. The number of rows and columns is preserved for every size of the container.
+[b]Note:[/b] [GridContainer] only works with child nodes inheriting from [Control]. It won't rearrange child nodes inheriting from [Node2D].
+*/
 type GridContainer = classdb.GridContainer
+
+/*
+GridMap lets you place meshes on a grid interactively. It works both from the editor and from scripts, which can help you create in-game level editors.
+GridMaps use a [MeshLibrary] which contains a list of tiles. Each tile is a mesh with materials plus optional collision and navigation shapes.
+A GridMap contains a collection of cells. Each grid cell refers to a tile in the [MeshLibrary]. All cells in the map have the same dimensions.
+Internally, a GridMap is split into a sparse collection of octants for efficient rendering and physics processing. Every octant has the same dimensions and can contain several cells.
+[b]Note:[/b] GridMap doesn't extend [VisualInstance3D] and therefore can't be hidden or cull masked based on [member VisualInstance3D.layers]. If you make a light not affect the first layer, the whole GridMap won't be lit by the light in question.
+*/
 type GridMap = classdb.GridMap
+
+/*
+A physics joint that restricts the movement of two 2D physics bodies to a fixed axis. For example, a [StaticBody2D] representing a piston base can be attached to a [RigidBody2D] representing the piston head, moving up and down.
+*/
 type GrooveJoint2D = classdb.GrooveJoint2D
+
+/*
+A variant of [BoxContainer] that can only arrange its child controls horizontally. Child controls are rearranged automatically when their minimum size changes.
+*/
 type HBoxContainer = classdb.HBoxContainer
+
+/*
+A variant of [FlowContainer] that can only arrange its child controls horizontally, wrapping them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line.
+*/
 type HFlowContainer = classdb.HFlowContainer
+
+/*
+The HMACContext class is useful for advanced HMAC use cases, such as streaming the message as it supports creating the message over time rather than providing it all at once.
+[codeblocks]
+[gdscript]
+extends Node
+var ctx = HMACContext.new()
+
+func _ready():
+
+	var key = "supersecret".to_utf8_buffer()
+	var err = ctx.start(HashingContext.HASH_SHA256, key)
+	assert(err == OK)
+	var msg1 = "this is ".to_utf8_buffer()
+	var msg2 = "super duper secret".to_utf8_buffer()
+	err = ctx.update(msg1)
+	assert(err == OK)
+	err = ctx.update(msg2)
+	assert(err == OK)
+	var hmac = ctx.finish()
+	print(hmac.hex_encode())
+
+[/gdscript]
+[csharp]
+using Godot;
+using System.Diagnostics;
+
+public partial class MyNode : Node
+
+	{
+	    private HmacContext _ctx = new HmacContext();
+
+	    public override void _Ready()
+	    {
+	        byte[] key = "supersecret".ToUtf8Buffer();
+	        Error err = _ctx.Start(HashingContext.HashType.Sha256, key);
+	        Debug.Assert(err == Error.Ok);
+	        byte[] msg1 = "this is ".ToUtf8Buffer();
+	        byte[] msg2 = "super duper secret".ToUtf8Buffer();
+	        err = _ctx.Update(msg1);
+	        Debug.Assert(err == Error.Ok);
+	        err = _ctx.Update(msg2);
+	        Debug.Assert(err == Error.Ok);
+	        byte[] hmac = _ctx.Finish();
+	        GD.Print(hmac.HexEncode());
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type HMACContext = classdb.HMACContext
+
+/*
+A horizontal scrollbar, typically used to navigate through content that extends beyond the visible width of a control. It is a [Range]-based control and goes from left (min) to right (max).
+*/
 type HScrollBar = classdb.HScrollBar
+
+/*
+A horizontal separator used for separating other controls that are arranged [b]vertically[/b]. [HSeparator] is purely visual and normally drawn as a [StyleBoxLine].
+*/
 type HSeparator = classdb.HSeparator
+
+/*
+A horizontal slider, used to adjust a value by moving a grabber along a horizontal axis. It is a [Range]-based control and goes from left (min) to right (max).
+*/
 type HSlider = classdb.HSlider
+
+/*
+A container that accepts only two child controls, then arranges them horizontally and creates a divisor between them. The divisor can be dragged around to change the size relation between the child controls.
+*/
 type HSplitContainer = classdb.HSplitContainer
+
+/*
+Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
+See the [HTTPRequest] node for a higher-level alternative.
+[b]Note:[/b] This client only needs to connect to a host once (see [method connect_to_host]) to send multiple requests. Because of this, methods that take URLs usually take just the part after the host instead of the full URL, as the client is already connected to a host. See [method request] for a full example and to get started.
+A [HTTPClient] should be reused between multiple requests or to connect to different hosts instead of creating one client per request. Supports Transport Layer Security (TLS), including server certificate verification. HTTP status codes in the 2xx range indicate success, 3xx redirection (i.e. "try again, but over here"), 4xx something was wrong with the request, and 5xx something went wrong on the server's side.
+For more information on HTTP, see [url=https://developer.mozilla.org/en-US/docs/Web/HTTP]MDN's documentation on HTTP[/url] (or read [url=https://tools.ietf.org/html/rfc2616]RFC 2616[/url] to get it straight from the source).
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+[b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
+[b]Note:[/b] When performing HTTP requests from a project exported to Web, keep in mind the remote server may not allow requests from foreign origins due to [url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS]CORS[/url]. If you host the server in question, you should modify its backend to allow requests from foreign origins by adding the [code]Access-Control-Allow-Origin: *[/code] HTTP header.
+[b]Note:[/b] TLS support is currently limited to TLS 1.0, TLS 1.1, and TLS 1.2. Attempting to connect to a TLS 1.3-only server will return an error.
+[b]Warning:[/b] TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
+*/
 type HTTPClient = classdb.HTTPClient
+
+/*
+A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
+Can be used to make HTTP requests, i.e. download or upload files or web content via HTTP.
+[b]Warning:[/b] See the notes and warnings on [HTTPClient] for limitations, especially regarding TLS security.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+[b]Example of contacting a REST API and printing one of its returned fields:[/b]
+[codeblocks]
+[gdscript]
+func _ready():
+
+	# Create an HTTP request node and connect its completion signal.
+	var http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.request_completed.connect(self._http_request_completed)
+
+	# Perform a GET request. The URL below returns JSON as of writing.
+	var error = http_request.request("https://httpbin.org/get")
+	if error != OK:
+	    push_error("An error occurred in the HTTP request.")
+
+	# Perform a POST request. The URL below returns JSON as of writing.
+	# Note: Don't make simultaneous requests using a single HTTPRequest node.
+	# The snippet below is provided for reference only.
+	var body = JSON.new().stringify({"name": "Godette"})
+	error = http_request.request("https://httpbin.org/post", [], HTTPClient.METHOD_POST, body)
+	if error != OK:
+	    push_error("An error occurred in the HTTP request.")
+
+# Called when the HTTP request is completed.
+func _http_request_completed(result, response_code, headers, body):
+
+	var json = JSON.new()
+	json.parse(body.get_string_from_utf8())
+	var response = json.get_data()
+
+	# Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
+	print(response.headers["User-Agent"])
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    // Create an HTTP request node and connect its completion signal.
+	    var httpRequest = new HttpRequest();
+	    AddChild(httpRequest);
+	    httpRequest.RequestCompleted += HttpRequestCompleted;
+
+	    // Perform a GET request. The URL below returns JSON as of writing.
+	    Error error = httpRequest.Request("https://httpbin.org/get");
+	    if (error != Error.Ok)
+	    {
+	        GD.PushError("An error occurred in the HTTP request.");
+	    }
+
+	    // Perform a POST request. The URL below returns JSON as of writing.
+	    // Note: Don't make simultaneous requests using a single HTTPRequest node.
+	    // The snippet below is provided for reference only.
+	    string body = new Json().Stringify(new Godot.Collections.Dictionary
+	    {
+	        { "name", "Godette" }
+	    });
+	    error = httpRequest.Request("https://httpbin.org/post", null, HttpClient.Method.Post, body);
+	    if (error != Error.Ok)
+	    {
+	        GD.PushError("An error occurred in the HTTP request.");
+	    }
+	}
+
+// Called when the HTTP request is completed.
+private void HttpRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
+
+	{
+	    var json = new Json();
+	    json.Parse(body.GetStringFromUtf8());
+	    var response = json.GetData().AsGodotDictionary();
+
+	    // Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
+	    GD.Print((response["headers"].AsGodotDictionary())["User-Agent"]);
+	}
+
+[/csharp]
+[/codeblocks]
+[b]Example of loading and displaying an image using HTTPRequest:[/b]
+[codeblocks]
+[gdscript]
+func _ready():
+
+	# Create an HTTP request node and connect its completion signal.
+	var http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.request_completed.connect(self._http_request_completed)
+
+	# Perform the HTTP request. The URL below returns a PNG image as of writing.
+	var error = http_request.request("https://via.placeholder.com/512")
+	if error != OK:
+	    push_error("An error occurred in the HTTP request.")
+
+# Called when the HTTP request is completed.
+func _http_request_completed(result, response_code, headers, body):
+
+	if result != HTTPRequest.RESULT_SUCCESS:
+	    push_error("Image couldn't be downloaded. Try a different image.")
+
+	var image = Image.new()
+	var error = image.load_png_from_buffer(body)
+	if error != OK:
+	    push_error("Couldn't load the image.")
+
+	var texture = ImageTexture.create_from_image(image)
+
+	# Display the image in a TextureRect node.
+	var texture_rect = TextureRect.new()
+	add_child(texture_rect)
+	texture_rect.texture = texture
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    // Create an HTTP request node and connect its completion signal.
+	    var httpRequest = new HttpRequest();
+	    AddChild(httpRequest);
+	    httpRequest.RequestCompleted += HttpRequestCompleted;
+
+	    // Perform the HTTP request. The URL below returns a PNG image as of writing.
+	    Error error = httpRequest.Request("https://via.placeholder.com/512");
+	    if (error != Error.Ok)
+	    {
+	        GD.PushError("An error occurred in the HTTP request.");
+	    }
+	}
+
+// Called when the HTTP request is completed.
+private void HttpRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
+
+	{
+	    if (result != (long)HttpRequest.Result.Success)
+	    {
+	        GD.PushError("Image couldn't be downloaded. Try a different image.");
+	    }
+	    var image = new Image();
+	    Error error = image.LoadPngFromBuffer(body);
+	    if (error != Error.Ok)
+	    {
+	        GD.PushError("Couldn't load the image.");
+	    }
+
+	    var texture = ImageTexture.CreateFromImage(image);
+
+	    // Display the image in a TextureRect node.
+	    var textureRect = new TextureRect();
+	    AddChild(textureRect);
+	    textureRect.Texture = texture;
+	}
+
+[/csharp]
+[/codeblocks]
+[b]Gzipped response bodies[/b]: HTTPRequest will automatically handle decompression of response bodies. A [code]Accept-Encoding[/code] header will be automatically added to each of your requests, unless one is already specified. Any response with a [code]Content-Encoding: gzip[/code] header will automatically be decompressed and delivered to you as uncompressed bytes.
+*/
 type HTTPRequest = classdb.HTTPRequest
+
+/*
+The HashingContext class provides an interface for computing cryptographic hashes over multiple iterations. Useful for computing hashes of big files (so you don't have to load them all in memory), network streams, and data streams in general (so you don't have to hold buffers).
+The [enum HashType] enum shows the supported hashing algorithms.
+[codeblocks]
+[gdscript]
+const CHUNK_SIZE = 1024
+
+func hash_file(path):
+
+	# Check that file exists.
+	if not FileAccess.file_exists(path):
+	    return
+	# Start a SHA-256 context.
+	var ctx = HashingContext.new()
+	ctx.start(HashingContext.HASH_SHA256)
+	# Open the file to hash.
+	var file = FileAccess.open(path, FileAccess.READ)
+	# Update the context after reading each chunk.
+	while not file.eof_reached():
+	    ctx.update(file.get_buffer(CHUNK_SIZE))
+	# Get the computed hash.
+	var res = ctx.finish()
+	# Print the result as hex string and array.
+	printt(res.hex_encode(), Array(res))
+
+[/gdscript]
+[csharp]
+public const int ChunkSize = 1024;
+
+public void HashFile(string path)
+
+	{
+	    // Check that file exists.
+	    if (!FileAccess.FileExists(path))
+	    {
+	        return;
+	    }
+	    // Start a SHA-256 context.
+	    var ctx = new HashingContext();
+	    ctx.Start(HashingContext.HashType.Sha256);
+	    // Open the file to hash.
+	    using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+	    // Update the context after reading each chunk.
+	    while (!file.EofReached())
+	    {
+	        ctx.Update(file.GetBuffer(ChunkSize));
+	    }
+	    // Get the computed hash.
+	    byte[] res = ctx.Finish();
+	    // Print the result as hex string and array.
+	    GD.PrintT(res.HexEncode(), (Variant)res);
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type HashingContext = classdb.HashingContext
+
+/*
+A 3D heightmap shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. This is useful for terrain, but it is limited as overhangs (such as caves) cannot be stored. Holes in a [HeightMapShape3D] are created by assigning very low values to points in the desired area.
+[b]Performance:[/b] [HeightMapShape3D] is faster to check collisions against than [ConcavePolygonShape3D], but it is significantly slower than primitive shapes like [BoxShape3D].
+*/
 type HeightMapShape3D = classdb.HeightMapShape3D
+
+/*
+A physics joint that restricts the rotation of a 3D physics body around an axis relative to another physics body. For example, Body A can be a [StaticBody3D] representing a door hinge that a [RigidBody3D] rotates around.
+*/
 type HingeJoint3D = classdb.HingeJoint3D
 
 func IP(godot Context) classdb.IP {
@@ -365,13 +3420,88 @@ func IP(godot Context) classdb.IP {
 	return *(*classdb.IP)(unsafe.Pointer(&obj))
 }
 
+/*
+Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
+An [Image] cannot be assigned to a texture property of an object directly (such as [member Sprite2D.texture]), and has to be converted manually to an [ImageTexture] first.
+[b]Note:[/b] The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images may fail to import.
+*/
 type Image = classdb.Image
+
+/*
+The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending [ImageFormatLoaderExtension].
+*/
 type ImageFormatLoader = classdb.ImageFormatLoader
+
+/*
+The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending this class.
+Be sure to respect the documented return types and values. You should create an instance of it, and call [method add_format_loader] to register that loader during the initialization phase.
+*/
 type ImageFormatLoaderExtension = classdb.ImageFormatLoaderExtension
+
+/*
+A [Texture2D] based on an [Image]. For an image to be displayed, an [ImageTexture] has to be created from it using the [method create_from_image] method:
+[codeblock]
+var image = Image.load_from_file("res://icon.svg")
+var texture = ImageTexture.create_from_image(image)
+$Sprite2D.texture = texture
+[/codeblock]
+This way, textures can be created at run-time by loading images both from within the editor and externally.
+[b]Warning:[/b] Prefer to load imported textures with [method @GDScript.load] over loading them from within the filesystem dynamically with [method Image.load], as it may not work in exported projects:
+[codeblock]
+var texture = load("res://icon.svg")
+$Sprite2D.texture = texture
+[/codeblock]
+This is because images have to be imported as a [CompressedTexture2D] first to be loaded with [method @GDScript.load]. If you'd still like to load an image file just like any other [Resource], import it as an [Image] resource instead, and then load it normally using the [method @GDScript.load] method.
+[b]Note:[/b] The image can be retrieved from an imported texture using the [method Texture2D.get_image] method, which returns a copy of the image:
+[codeblock]
+var texture = load("res://icon.svg")
+var image: Image = texture.get_image()
+[/codeblock]
+An [ImageTexture] is not meant to be operated from within the editor interface directly, and is mostly useful for rendering images on screen dynamically via code. If you need to generate images procedurally from within the editor, consider saving and importing images as custom texture resources implementing a new [EditorImportPlugin].
+[b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations.
+*/
 type ImageTexture = classdb.ImageTexture
+
+/*
+[ImageTexture3D] is a 3-dimensional [ImageTexture] that has a width, height, and depth. See also [ImageTextureLayered].
+3D textures are typically used to store density maps for [FogMaterial], color correction LUTs for [Environment], vector fields for [GPUParticlesAttractorVectorField3D] and collision maps for [GPUParticlesCollisionSDF3D]. 3D textures can also be used in custom shaders.
+*/
 type ImageTexture3D = classdb.ImageTexture3D
+
+/*
+Base class for [Texture2DArray], [Cubemap] and [CubemapArray]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
+*/
 type ImageTextureLayered = classdb.ImageTextureLayered
+
+/*
+A mesh type optimized for creating geometry manually, similar to OpenGL 1.x immediate mode.
+Here's a sample on how to generate a triangular face:
+[codeblocks]
+[gdscript]
+var mesh = ImmediateMesh.new()
+mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+mesh.surface_add_vertex(Vector3.LEFT)
+mesh.surface_add_vertex(Vector3.FORWARD)
+mesh.surface_add_vertex(Vector3.ZERO)
+mesh.surface_end()
+[/gdscript]
+[csharp]
+var mesh = new ImmediateMesh();
+mesh.SurfaceBegin(Mesh.PrimitiveType.Triangles);
+mesh.SurfaceAddVertex(Vector3.Left);
+mesh.SurfaceAddVertex(Vector3.Forward);
+mesh.SurfaceAddVertex(Vector3.Zero);
+mesh.SurfaceEnd();
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
+*/
 type ImmediateMesh = classdb.ImmediateMesh
+
+/*
+ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
+Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as lod and shadow mesh generation, have taken place. Modify surface data by calling [method clear], followed by [method add_surface] for each surface.
+*/
 type ImporterMesh = classdb.ImporterMesh
 type ImporterMeshInstance3D = classdb.ImporterMeshInstance3D
 
@@ -380,22 +3510,156 @@ func Input(godot Context) classdb.Input {
 	return *(*classdb.Input)(unsafe.Pointer(&obj))
 }
 
+/*
+Abstract base class of all types of input events. See [method Node._input].
+*/
 type InputEvent = classdb.InputEvent
+
+/*
+Contains a generic action which can be targeted from several types of inputs. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
+[b]Note:[/b] Unlike the other [InputEvent] subclasses which map to unique physical events, this virtual one is not emitted by the engine. This class is useful to emit actions manually with [method Input.parse_input_event], which are then received in [method Node._input]. To check if a physical event matches an action from the Input Map, use [method InputEvent.is_action] and [method InputEvent.is_action_pressed].
+*/
 type InputEventAction = classdb.InputEventAction
+
+/*
+InputEventFromWindow represents events specifically received by windows. This includes mouse events, keyboard events in focused windows or touch screen actions.
+*/
 type InputEventFromWindow = classdb.InputEventFromWindow
+
+/*
+InputEventGestures are sent when a user performs a supported gesture on a touch screen. Gestures can't be emulated using mouse, because they typically require multi-touch.
+*/
 type InputEventGesture = classdb.InputEventGesture
+
+/*
+Input event type for gamepad buttons. For gamepad analog sticks and joysticks, see [InputEventJoypadMotion].
+*/
 type InputEventJoypadButton = classdb.InputEventJoypadButton
+
+/*
+Stores information about joystick motions. One [InputEventJoypadMotion] represents one axis at a time. For gamepad buttons, see [InputEventJoypadButton].
+*/
 type InputEventJoypadMotion = classdb.InputEventJoypadMotion
+
+/*
+An input event for keys on a keyboard. Supports key presses, key releases and [member echo] events. It can also be received in [method Node._unhandled_key_input].
+[b]Note:[/b] Events received from the keyboard usually have all properties set. Event mappings should have only one of the [member keycode], [member physical_keycode] or [member unicode] set.
+When events are compared, properties are checked in the following priority - [member keycode], [member physical_keycode] and [member unicode]. Events with the first matching value will be considered equal.
+*/
 type InputEventKey = classdb.InputEventKey
+
+/*
+InputEventMIDI stores information about messages from [url=https://en.wikipedia.org/wiki/MIDI]MIDI[/url] (Musical Instrument Digital Interface) devices. These may include musical keyboards, synthesizers, and drum machines.
+MIDI messages can be received over a 5-pin MIDI connector or over USB. If your device supports both be sure to check the settings in the device to see which output it is using.
+By default, Godot does not detect MIDI devices. You need to call [method OS.open_midi_inputs], first. You can check which devices are detected with [method OS.get_connected_midi_inputs], and close the connection with [method OS.close_midi_inputs].
+[codeblocks]
+[gdscript]
+func _ready():
+
+	OS.open_midi_inputs()
+	print(OS.get_connected_midi_inputs())
+
+func _input(input_event):
+
+	if input_event is InputEventMIDI:
+	    _print_midi_info(input_event)
+
+func _print_midi_info(midi_event):
+
+	print(midi_event)
+	print("Channel ", midi_event.channel)
+	print("Message ", midi_event.message)
+	print("Pitch ", midi_event.pitch)
+	print("Velocity ", midi_event.velocity)
+	print("Instrument ", midi_event.instrument)
+	print("Pressure ", midi_event.pressure)
+	print("Controller number: ", midi_event.controller_number)
+	print("Controller value: ", midi_event.controller_value)
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    OS.OpenMidiInputs();
+	    GD.Print(OS.GetConnectedMidiInputs());
+	}
+
+public override void _Input(InputEvent inputEvent)
+
+	{
+	    if (inputEvent is InputEventMidi midiEvent)
+	    {
+	        PrintMIDIInfo(midiEvent);
+	    }
+	}
+
+private void PrintMIDIInfo(InputEventMidi midiEvent)
+
+	{
+	    GD.Print(midiEvent);
+	    GD.Print($"Channel {midiEvent.Channel}");
+	    GD.Print($"Message {midiEvent.Message}");
+	    GD.Print($"Pitch {midiEvent.Pitch}");
+	    GD.Print($"Velocity {midiEvent.Velocity}");
+	    GD.Print($"Instrument {midiEvent.Instrument}");
+	    GD.Print($"Pressure {midiEvent.Pressure}");
+	    GD.Print($"Controller number: {midiEvent.ControllerNumber}");
+	    GD.Print($"Controller value: {midiEvent.ControllerValue}");
+	}
+
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] Godot does not support MIDI output, so there is no way to emit MIDI messages from Godot. Only MIDI input is supported.
+*/
 type InputEventMIDI = classdb.InputEventMIDI
+
+/*
+Stores the factor of a magnifying touch gesture. This is usually performed when the user pinches the touch screen and used for zooming in/out.
+[b]Note:[/b] On Android, this requires the [member ProjectSettings.input_devices/pointing/android/enable_pan_and_scale_gestures] project setting to be enabled.
+*/
 type InputEventMagnifyGesture = classdb.InputEventMagnifyGesture
+
+/*
+Stores general information about mouse events.
+*/
 type InputEventMouse = classdb.InputEventMouse
+
+/*
+Stores information about mouse click events. See [method Node._input].
+*/
 type InputEventMouseButton = classdb.InputEventMouseButton
+
+/*
+Stores information about a mouse or a pen motion. This includes relative position, absolute position, and velocity. See [method Node._input].
+[b]Note:[/b] By default, this event is only emitted once per frame rendered at most. If you need more precise input reporting, set [member Input.use_accumulated_input] to [code]false[/code] to make events emitted as often as possible. If you use InputEventMouseMotion to draw lines, consider implementing [url=https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm]Bresenham's line algorithm[/url] as well to avoid visible gaps in lines if the user is moving the mouse quickly.
+*/
 type InputEventMouseMotion = classdb.InputEventMouseMotion
+
+/*
+Stores information about pan gestures. A pan gesture is performed when the user swipes the touch screen with two fingers. It's typically used for panning/scrolling.
+[b]Note:[/b] On Android, this requires the [member ProjectSettings.input_devices/pointing/android/enable_pan_and_scale_gestures] project setting to be enabled.
+*/
 type InputEventPanGesture = classdb.InputEventPanGesture
+
+/*
+Stores information about screen drag events. See [method Node._input].
+*/
 type InputEventScreenDrag = classdb.InputEventScreenDrag
+
+/*
+Stores information about multi-touch press/release input events. Supports touch press, touch release and [member index] for multi-touch count and order.
+*/
 type InputEventScreenTouch = classdb.InputEventScreenTouch
+
+/*
+InputEventShortcut is a special event that can be received in [method Node._unhandled_key_input]. It is typically sent by the editor's Command Palette to trigger actions, but can also be sent manually using [method Viewport.push_input].
+*/
 type InputEventShortcut = classdb.InputEventShortcut
+
+/*
+Stores information about mouse, keyboard, and touch gesture input events. This includes information about which modifier keys are pressed, such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See [method Node._input].
+*/
 type InputEventWithModifiers = classdb.InputEventWithModifiers
 
 func InputMap(godot Context) classdb.InputMap {
@@ -403,11 +3667,73 @@ func InputMap(godot Context) classdb.InputMap {
 	return *(*classdb.InputMap)(unsafe.Pointer(&obj))
 }
 
+/*
+Turning on the option [b]Load As Placeholder[/b] for an instantiated scene in the editor causes it to be replaced by an [InstancePlaceholder] when running the game, this will not replace the node in the editor. This makes it possible to delay actually loading the scene until calling [method create_instance]. This is useful to avoid loading large scenes all at once by loading parts of it selectively.
+The [InstancePlaceholder] does not have a transform. This causes any child nodes to be positioned relatively to the [Viewport] from point (0,0), rather than their parent as displayed in the editor. Replacing the placeholder with a scene with a transform will transform children relatively to their parent again.
+*/
 type InstancePlaceholder = classdb.InstancePlaceholder
+
+/*
+[IntervalTweener] is used to make delays in a tweening sequence. See [method Tween.tween_interval] for more usage information.
+[b]Note:[/b] [method Tween.tween_interval] is the only correct way to create [IntervalTweener]. Any [IntervalTweener] created manually will not function correctly.
+*/
 type IntervalTweener = classdb.IntervalTweener
+
+/*
+This control provides a vertical list of selectable items that may be in a single or in multiple columns, with each item having options for text and an icon. Tooltips are supported and may be different for every item in the list.
+Selectable items in the list may be selected or deselected and multiple selection may be enabled. Selection with right mouse button may also be enabled to allow use of popup context menus. Items may also be "activated" by double-clicking them or by pressing [kbd]Enter[/kbd].
+Item text only supports single-line strings. Newline characters (e.g. [code]\n[/code]) in the string won't produce a newline. Text wrapping is enabled in [constant ICON_MODE_TOP] mode, but the column's width is adjusted to fully fit its content by default. You need to set [member fixed_column_width] greater than zero to wrap the text.
+All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code] to access the last item, [code]-2[/code] to select the second-to-last item, and so on.
+[b]Incremental search:[/b] Like [PopupMenu] and [Tree], [ItemList] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [member ProjectSettings.gui/timers/incremental_search_max_interval_msec].
+*/
 type ItemList = classdb.ItemList
+
+/*
+The JNISingleton is implemented only in the Android export. It's used to call methods and connect signals from an Android plugin written in Java or Kotlin. Methods and signals can be called and connected to the JNISingleton as if it is a Node. See [url=https://en.wikipedia.org/wiki/Java_Native_Interface]Java Native Interface - Wikipedia[/url] for more information.
+*/
 type JNISingleton = classdb.JNISingleton
+
+/*
+The [JSON] enables all data types to be converted to and from a JSON string. This useful for serializing data to save to a file or send over the network.
+[method stringify] is used to convert any data type into a JSON string.
+[method parse] is used to convert any existing JSON data into a [Variant] that can be used within Godot. If successfully parsed, use [member data] to retrieve the [Variant], and use [code]typeof[/code] to check if the Variant's type is what you expect. JSON Objects are converted into a [Dictionary], but JSON data can be used to store [Array]s, numbers, [String]s and even just a boolean.
+[b]Example[/b]
+[codeblock]
+var data_to_send = ["a", "b", "c"]
+var json_string = JSON.stringify(data_to_send)
+# Save data
+# ...
+# Retrieve data
+var json = JSON.new()
+var error = json.parse(json_string)
+if error == OK:
+
+	var data_received = json.data
+	if typeof(data_received) == TYPE_ARRAY:
+	    print(data_received) # Prints array
+	else:
+	    print("Unexpected data")
+
+else:
+
+	print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+
+[/codeblock]
+Alternatively, you can parse string using the static [method parse_string] method, but it doesn't allow to handle errors.
+[codeblock]
+var data = JSON.parse_string(json_string) # Returns null if parsing failed.
+[/codeblock]
+[b]Note:[/b] Both parse methods do not fully comply with the JSON specification:
+- Trailing commas in arrays or objects are ignored, instead of causing a parser error.
+- New line and tab characters are accepted in string literals, and are treated like their corresponding escape sequences [code]\n[/code] and [code]\t[/code].
+- Numbers are parsed using [method String.to_float] which is generally more lax than the JSON specification.
+- Certain errors, such as invalid Unicode sequences, do not cause a parser error. Instead, the string is cleansed and an error is logged to the console.
+*/
 type JSON = classdb.JSON
+
+/*
+[url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
+*/
 type JSONRPC = classdb.JSONRPC
 type JavaClass = classdb.JavaClass
 
@@ -420,28 +3746,259 @@ func JavaScriptBridge(godot Context) classdb.JavaScriptBridge {
 	return *(*classdb.JavaScriptBridge)(unsafe.Pointer(&obj))
 }
 
+/*
+JavaScriptObject is used to interact with JavaScript objects retrieved or created via [method JavaScriptBridge.get_interface], [method JavaScriptBridge.create_object], or [method JavaScriptBridge.create_callback].
+[b]Example:[/b]
+[codeblock]
+extends Node
+
+var _my_js_callback = JavaScriptBridge.create_callback(myCallback) # This reference must be kept
+var console = JavaScriptBridge.get_interface("console")
+
+func _init():
+
+	var buf = JavaScriptBridge.create_object("ArrayBuffer", 10) # new ArrayBuffer(10)
+	print(buf) # prints [JavaScriptObject:OBJECT_ID]
+	var uint8arr = JavaScriptBridge.create_object("Uint8Array", buf) # new Uint8Array(buf)
+	uint8arr[1] = 255
+	prints(uint8arr[1], uint8arr.byteLength) # prints 255 10
+	console.log(uint8arr) # prints in browser console "Uint8Array(10) [ 0, 255, 0, 0, 0, 0, 0, 0, 0, 0 ]"
+
+	# Equivalent of JavaScriptBridge: Array.from(uint8arr).forEach(myCallback)
+	JavaScriptBridge.get_interface("Array").from(uint8arr).forEach(_my_js_callback)
+
+func myCallback(args):
+
+	# Will be called with the parameters passed to the "forEach" callback
+	# [0, 0, [JavaScriptObject:1173]]
+	# [255, 1, [JavaScriptObject:1173]]
+	# ...
+	# [0, 9, [JavaScriptObject:1180]]
+	print(args)
+
+[/codeblock]
+[b]Note:[/b] Only available in the Web platform.
+*/
 type JavaScriptObject = classdb.JavaScriptObject
+
+/*
+Abstract base class for all joints in 2D physics. 2D joints bind together two physics bodies and apply a constraint.
+*/
 type Joint2D = classdb.Joint2D
+
+/*
+Abstract base class for all joints in 3D physics. 3D joints bind together two physics bodies and apply a constraint.
+*/
 type Joint3D = classdb.Joint3D
+
+/*
+Holds collision data from the movement of a [PhysicsBody2D], usually from [method PhysicsBody2D.move_and_collide]. When a [PhysicsBody2D] is moved, it stops if it detects a collision with another body. If a collision is detected, a [KinematicCollision2D] object is returned.
+The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
+*/
 type KinematicCollision2D = classdb.KinematicCollision2D
+
+/*
+Holds collision data from the movement of a [PhysicsBody3D], usually from [method PhysicsBody3D.move_and_collide]. When a [PhysicsBody3D] is moved, it stops if it detects a collision with another body. If a collision is detected, a [KinematicCollision3D] object is returned.
+The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
+*/
 type KinematicCollision3D = classdb.KinematicCollision3D
+
+/*
+A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
+*/
 type Label = classdb.Label
+
+/*
+A node for displaying plain text in 3D space. By adjusting various properties of this node, you can configure things such as the text's appearance and whether it always faces the camera.
+*/
 type Label3D = classdb.Label3D
+
+/*
+[LabelSettings] is a resource that provides common settings to customize the text in a [Label]. It will take priority over the properties defined in [member Control.theme]. The resource can be shared between multiple labels and changed on the fly, so it's convenient and flexible way to setup text style.
+*/
 type LabelSettings = classdb.LabelSettings
+
+/*
+Casts light in a 2D environment. A light is defined as a color, an energy value, a mode (see constants), and various other parameters (range and shadows-related).
+*/
 type Light2D = classdb.Light2D
+
+/*
+Light3D is the [i]abstract[/i] base class for light nodes. As it can't be instantiated, it shouldn't be used directly. Other types of light nodes inherit from it. Light3D contains the common variables and parameters used for lighting.
+*/
 type Light3D = classdb.Light3D
+
+/*
+Occludes light cast by a Light2D, casting shadows. The LightOccluder2D must be provided with an [OccluderPolygon2D] in order for the shadow to be computed.
+*/
 type LightOccluder2D = classdb.LightOccluder2D
+
+/*
+The [LightmapGI] node is used to compute and store baked lightmaps. Lightmaps are used to provide high-quality indirect lighting with very little light leaking. [LightmapGI] can also provide rough reflections using spherical harmonics if [member directional] is enabled. Dynamic objects can receive indirect lighting thanks to [i]light probes[/i], which can be automatically placed by setting [member generate_probes_subdiv] to a value other than [constant GENERATE_PROBES_DISABLED]. Additional lightmap probes can also be added by creating [LightmapProbe] nodes. The downside is that lightmaps are fully static and cannot be baked in an exported project. Baking a [LightmapGI] node is also slower compared to [VoxelGI].
+[b]Procedural generation:[/b] Lightmap baking functionality is only available in the editor. This means [LightmapGI] is not suited to procedurally generated or user-built levels. For procedurally generated or user-built levels, use [VoxelGI] or SDFGI instead (see [member Environment.sdfgi_enabled]).
+[b]Performance:[/b] [LightmapGI] provides the best possible run-time performance for global illumination. It is suitable for low-end hardware including integrated graphics and mobile devices.
+[b]Note:[/b] Due to how lightmaps work, most properties only have a visible effect once lightmaps are baked again.
+[b]Note:[/b] Lightmap baking on [CSGShape3D]s and [PrimitiveMesh]es is not supported, as these cannot store UV2 data required for baking.
+[b]Note:[/b] If no custom lightmappers are installed, [LightmapGI] can only be baked when using the Vulkan backend (Forward+ or Mobile), not OpenGL. Additionally, [LightmapGI] rendering is not currently supported when using the OpenGL backend (Compatibility).
+*/
 type LightmapGI = classdb.LightmapGI
+
+/*
+[LightmapGIData] contains baked lightmap and dynamic object probe data for [LightmapGI]. It is replaced every time lightmaps are baked in [LightmapGI].
+*/
 type LightmapGIData = classdb.LightmapGIData
+
+/*
+[LightmapProbe] represents the position of a single manually placed probe for dynamic object lighting with [LightmapGI].
+Typically, [LightmapGI] probes are placed automatically by setting [member LightmapGI.generate_probes_subdiv] to a value other than [constant LightmapGI.GENERATE_PROBES_DISABLED]. By creating [LightmapProbe] nodes before baking lightmaps, you can add more probes in specific areas for greater detail, or disable automatic generation and rely only on manually placed probes instead.
+*/
 type LightmapProbe = classdb.LightmapProbe
+
+/*
+This class should be extended by custom lightmapper classes. Lightmappers can then be used with [LightmapGI] to provide fast baked global illumination in 3D.
+Godot contains a built-in GPU-based lightmapper [LightmapperRD] that uses compute shaders, but custom lightmappers can be implemented by C++ modules.
+*/
 type Lightmapper = classdb.Lightmapper
+
+/*
+LightmapperRD ("RD" stands for [RenderingDevice]) is the built-in GPU-based lightmapper for use with [LightmapGI]. On most dedicated GPUs, it can bake lightmaps much faster than most CPU-based lightmappers. LightmapperRD uses compute shaders to bake lightmaps, so it does not require CUDA or OpenCL libraries to be installed to be usable.
+[b]Note:[/b] Only usable when using the Vulkan backend (Forward+ or Mobile), not OpenGL.
+*/
 type LightmapperRD = classdb.LightmapperRD
+
+/*
+This node draws a 2D polyline, i.e. a shape consisting of several points connected by segments. [Line2D] is not a mathematical polyline, i.e. the segments are not infinitely thin. It is intended for rendering and it can be colored and optionally textured.
+[b]Warning:[/b] Certain configurations may be impossible to draw nicely, such as very sharp angles. In these situations, the node uses fallback drawing logic to look decent.
+[b]Note:[/b] [Line2D] is drawn using a 2D mesh.
+*/
 type Line2D = classdb.Line2D
+
+/*
+[LineEdit] provides an input field for editing a single line of text. It features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):
+- [kbd]Ctrl + C[/kbd]: Copy
+- [kbd]Ctrl + X[/kbd]: Cut
+- [kbd]Ctrl + V[/kbd] or [kbd]Ctrl + Y[/kbd]: Paste/"yank"
+- [kbd]Ctrl + Z[/kbd]: Undo
+- [kbd]Ctrl + ~[/kbd]: Swap input direction.
+- [kbd]Ctrl + Shift + Z[/kbd]: Redo
+- [kbd]Ctrl + U[/kbd]: Delete text from the caret position to the beginning of the line
+- [kbd]Ctrl + K[/kbd]: Delete text from the caret position to the end of the line
+- [kbd]Ctrl + A[/kbd]: Select all text
+- [kbd]Up Arrow[/kbd]/[kbd]Down Arrow[/kbd]: Move the caret to the beginning/end of the line
+On macOS, some extra keyboard shortcuts are available:
+- [kbd]Cmd + F[/kbd]: Same as [kbd]Right Arrow[/kbd], move the caret one character right
+- [kbd]Cmd + B[/kbd]: Same as [kbd]Left Arrow[/kbd], move the caret one character left
+- [kbd]Cmd + P[/kbd]: Same as [kbd]Up Arrow[/kbd], move the caret to the previous line
+- [kbd]Cmd + N[/kbd]: Same as [kbd]Down Arrow[/kbd], move the caret to the next line
+- [kbd]Cmd + D[/kbd]: Same as [kbd]Delete[/kbd], delete the character on the right side of caret
+- [kbd]Cmd + H[/kbd]: Same as [kbd]Backspace[/kbd], delete the character on the left side of the caret
+- [kbd]Cmd + A[/kbd]: Same as [kbd]Home[/kbd], move the caret to the beginning of the line
+- [kbd]Cmd + E[/kbd]: Same as [kbd]End[/kbd], move the caret to the end of the line
+- [kbd]Cmd + Left Arrow[/kbd]: Same as [kbd]Home[/kbd], move the caret to the beginning of the line
+- [kbd]Cmd + Right Arrow[/kbd]: Same as [kbd]End[/kbd], move the caret to the end of the line
+*/
 type LineEdit = classdb.LineEdit
+
+/*
+A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
+See also [BaseButton] which contains common properties and methods associated with this node.
+*/
 type LinkButton = classdb.LinkButton
+
+/*
+[MainLoop] is the abstract base class for a Godot project's game loop. It is inherited by [SceneTree], which is the default game loop implementation used in Godot projects, though it is also possible to write and use one's own [MainLoop] subclass instead of the scene tree.
+Upon the application start, a [MainLoop] implementation must be provided to the OS; otherwise, the application will exit. This happens automatically (and a [SceneTree] is created) unless a [MainLoop] [Script] is provided from the command line (with e.g. [code]godot -s my_loop.gd[/code]) or the "Main Loop Type" project setting is overwritten.
+Here is an example script implementing a simple [MainLoop]:
+[codeblocks]
+[gdscript]
+class_name CustomMainLoop
+extends MainLoop
+
+var time_elapsed = 0
+
+func _initialize():
+
+	print("Initialized:")
+	print("  Starting time: %s" % str(time_elapsed))
+
+func _process(delta):
+
+	time_elapsed += delta
+	# Return true to end the main loop.
+	return Input.get_mouse_button_mask() != 0 || Input.is_key_pressed(KEY_ESCAPE)
+
+func _finalize():
+
+	print("Finalized:")
+	print("  End time: %s" % str(time_elapsed))
+
+[/gdscript]
+[csharp]
+using Godot;
+
+[GlobalClass]
+public partial class CustomMainLoop : MainLoop
+
+	{
+	    private double _timeElapsed = 0;
+
+	    public override void _Initialize()
+	    {
+	        GD.Print("Initialized:");
+	        GD.Print($"  Starting Time: {_timeElapsed}");
+	    }
+
+	    public override bool _Process(double delta)
+	    {
+	        _timeElapsed += delta;
+	        // Return true to end the main loop.
+	        return Input.GetMouseButtonMask() != 0 || Input.IsKeyPressed(Key.Escape);
+	    }
+
+	    private void _Finalize()
+	    {
+	        GD.Print("Finalized:");
+	        GD.Print($"  End Time: {_timeElapsed}");
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type MainLoop = classdb.MainLoop
+
+/*
+[MarginContainer] adds an adjustable margin on each side of its child controls. The margins are added around all children, not around each individual one. To control the [MarginContainer]'s margins, use the [code]margin_*[/code] theme properties listed below.
+[b]Note:[/b] The margin sizes are theme overrides, not normal properties. This is an example of how to change them in code:
+[codeblocks]
+[gdscript]
+# This code sample assumes the current script is extending MarginContainer.
+var margin_value = 100
+add_theme_constant_override("margin_top", margin_value)
+add_theme_constant_override("margin_left", margin_value)
+add_theme_constant_override("margin_bottom", margin_value)
+add_theme_constant_override("margin_right", margin_value)
+[/gdscript]
+[csharp]
+// This code sample assumes the current script is extending MarginContainer.
+int marginValue = 100;
+AddThemeConstantOverride("margin_top", marginValue);
+AddThemeConstantOverride("margin_left", marginValue);
+AddThemeConstantOverride("margin_bottom", marginValue);
+AddThemeConstantOverride("margin_right", marginValue);
+[/csharp]
+[/codeblocks]
+*/
 type MarginContainer = classdb.MarginContainer
+
+/*
+Generic 2D position hint for editing. It's just like a plain [Node2D], but it displays as a cross in the 2D editor at all times. You can set the cross' visual size by using the gizmo in the 2D editor while the node is selected.
+*/
 type Marker2D = classdb.Marker2D
+
+/*
+Generic 3D position hint for editing. It's just like a plain [Node3D], but it displays as a cross in the 3D editor at all times.
+*/
 type Marker3D = classdb.Marker3D
 
 func Marshalls(godot Context) classdb.Marshalls {
@@ -449,35 +4006,326 @@ func Marshalls(godot Context) classdb.Marshalls {
 	return *(*classdb.Marshalls)(unsafe.Pointer(&obj))
 }
 
+/*
+[Material] is a base resource used for coloring and shading geometry. All materials inherit from it and almost all [VisualInstance3D] derived nodes carry a [Material]. A few flags and parameters are shared between all material types and are configured here.
+Importantly, you can inherit from [Material] to create your own custom material type in script or in GDExtension.
+*/
 type Material = classdb.Material
+
+/*
+A horizontal menu bar that creates a [MenuButton] for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node.
+*/
 type MenuBar = classdb.MenuBar
+
+/*
+A button that brings up a [PopupMenu] when clicked. To create new items inside this [PopupMenu], use [code]get_popup().add_item("My Item Name")[/code]. You can also create them directly from Godot editor's inspector.
+See also [BaseButton] which contains common properties and methods associated with this node.
+*/
 type MenuButton = classdb.MenuButton
+
+/*
+Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
+*/
 type Mesh = classdb.Mesh
+
+/*
+Parameters to be used with a [Mesh] convex decomposition operation.
+*/
 type MeshConvexDecompositionSettings = classdb.MeshConvexDecompositionSettings
+
+/*
+MeshDataTool provides access to individual vertices in a [Mesh]. It allows users to read and edit vertex data of meshes. It also creates an array of faces and edges.
+To use MeshDataTool, load a mesh with [method create_from_surface]. When you are finished editing the data commit the data to a mesh with [method commit_to_surface].
+Below is an example of how MeshDataTool may be used.
+[codeblocks]
+[gdscript]
+var mesh = ArrayMesh.new()
+mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, BoxMesh.new().get_mesh_arrays())
+var mdt = MeshDataTool.new()
+mdt.create_from_surface(mesh, 0)
+for i in range(mdt.get_vertex_count()):
+
+	var vertex = mdt.get_vertex(i)
+	# In this example we extend the mesh by one unit, which results in separated faces as it is flat shaded.
+	vertex += mdt.get_vertex_normal(i)
+	# Save your change.
+	mdt.set_vertex(i, vertex)
+
+mesh.clear_surfaces()
+mdt.commit_to_surface(mesh)
+var mi = MeshInstance.new()
+mi.mesh = mesh
+add_child(mi)
+[/gdscript]
+[csharp]
+var mesh = new ArrayMesh();
+mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, new BoxMesh().GetMeshArrays());
+var mdt = new MeshDataTool();
+mdt.CreateFromSurface(mesh, 0);
+for (var i = 0; i < mdt.GetVertexCount(); i++)
+
+	{
+	    Vector3 vertex = mdt.GetVertex(i);
+	    // In this example we extend the mesh by one unit, which results in separated faces as it is flat shaded.
+	    vertex += mdt.GetVertexNormal(i);
+	    // Save your change.
+	    mdt.SetVertex(i, vertex);
+	}
+
+mesh.ClearSurfaces();
+mdt.CommitToSurface(mesh);
+var mi = new MeshInstance();
+mi.Mesh = mesh;
+AddChild(mi);
+[/csharp]
+[/codeblocks]
+See also [ArrayMesh], [ImmediateMesh] and [SurfaceTool] for procedural geometry generation.
+[b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
+*/
 type MeshDataTool = classdb.MeshDataTool
+
+/*
+Node used for displaying a [Mesh] in 2D. A [MeshInstance2D] can be automatically created from an existing [Sprite2D] via a tool in the editor toolbar. Select the [Sprite2D] node, then choose [b]Sprite2D > Convert to MeshInstance2D[/b] at the top of the 2D editor viewport.
+*/
 type MeshInstance2D = classdb.MeshInstance2D
+
+/*
+MeshInstance3D is a node that takes a [Mesh] resource and adds it to the current scenario by creating an instance of it. This is the class most often used render 3D geometry and can be used to instance a single [Mesh] in many places. This allows reusing geometry, which can save on resources. When a [Mesh] has to be instantiated more than thousands of times at close proximity, consider using a [MultiMesh] in a [MultiMeshInstance3D] instead.
+*/
 type MeshInstance3D = classdb.MeshInstance3D
+
+/*
+A library of meshes. Contains a list of [Mesh] resources, each with a name and ID. Each item can also include collision and navigation shapes. This resource is used in [GridMap].
+*/
 type MeshLibrary = classdb.MeshLibrary
+
+/*
+Simple texture that uses a mesh to draw itself. It's limited because flags can't be changed and region drawing is not supported.
+*/
 type MeshTexture = classdb.MeshTexture
+
+/*
+[MethodTweener] is similar to a combination of [CallbackTweener] and [PropertyTweener]. It calls a method providing an interpolated value as a parameter. See [method Tween.tween_method] for more usage information.
+The tweener will finish automatically if the callback's target object is freed.
+[b]Note:[/b] [method Tween.tween_method] is the only correct way to create [MethodTweener]. Any [MethodTweener] created manually will not function correctly.
+*/
 type MethodTweener = classdb.MethodTweener
+
+/*
+This is an internal editor class intended for keeping data of nodes of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in the scene. Ignore it if you don't know what it is.
+*/
 type MissingNode = classdb.MissingNode
+
+/*
+This is an internal editor class intended for keeping data of resources of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in the scene. Ignore it if you don't know what it is.
+*/
 type MissingResource = classdb.MissingResource
+
+/*
+This is a generic mobile VR implementation where you need to provide details about the phone and HMD used. It does not rely on any existing framework. This is the most basic interface we have. For the best effect, you need a mobile phone with a gyroscope and accelerometer.
+Note that even though there is no positional tracking, the camera will assume the headset is at a height of 1.85 meters. You can change this by setting [member eye_height].
+You can initialize this interface as follows:
+[codeblock]
+var interface = XRServer.find_interface("Native mobile")
+if interface and interface.initialize():
+
+	get_viewport().xr = true
+
+[/codeblock]
+*/
 type MobileVRInterface = classdb.MobileVRInterface
+
+/*
+Godot can record videos with non-real-time simulation. Like the [code]--fixed-fps[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url], this forces the reported [code]delta[/code] in [method Node._process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
+Godot has 2 built-in [MovieWriter]s:
+- AVI container with MJPEG for video and uncompressed audio ([code].avi[/code] file extension). Lossy compression, medium file sizes, fast encoding. The lossy compression quality can be adjusted by changing [member ProjectSettings.editor/movie_writer/mjpeg_quality]. The resulting file can be viewed in most video players, but it must be converted to another format for viewing on the web or by Godot with [VideoStreamPlayer]. MJPEG does not support transparency. AVI output is currently limited to a file of 4 GB in size at most.
+- PNG image sequence for video and WAV for audio ([code].png[/code] file extension). Lossless compression, large file sizes, slow encoding. Designed to be encoded to a video file with another tool such as [url=https://ffmpeg.org/]FFmpeg[/url] after recording. Transparency is currently not supported, even if the root viewport is set to be transparent.
+If you need to encode to a different format or pipe a stream through third-party software, you can extend the [MovieWriter] class to create your own movie writers. This should typically be done using GDExtension for performance reasons.
+[b]Editor usage:[/b] A default movie file path can be specified in [member ProjectSettings.editor/movie_writer/movie_file]. Alternatively, for running single scenes, a [code]movie_file[/code] metadata can be added to the root node, specifying the path to a movie file that will be used when recording that scene. Once a path is set, click the video reel icon in the top-right corner of the editor to enable Movie Maker mode, then run any scene as usual. The engine will start recording as soon as the splash screen is finished, and it will only stop recording when the engine quits. Click the video reel icon again to disable Movie Maker mode. Note that toggling Movie Maker mode does not affect project instances that are already running.
+[b]Note:[/b] MovieWriter is available for use in both the editor and exported projects, but it is [i]not[/i] designed for use by end users to record videos while playing. Players wishing to record gameplay videos should install tools such as [url=https://obsproject.com/]OBS Studio[/url] or [url=https://www.maartenbaert.be/simplescreenrecorder/]SimpleScreenRecorder[/url] instead.
+*/
 type MovieWriter = classdb.MovieWriter
+
+/*
+MultiMesh provides low-level mesh instancing. Drawing thousands of [MeshInstance3D] nodes can be slow, since each object is submitted to the GPU then drawn individually.
+MultiMesh is much faster as it can draw thousands of instances with a single draw call, resulting in less API overhead.
+As a drawback, if the instances are too far away from each other, performance may be reduced as every single instance will always render (they are spatially indexed as one, for the whole object).
+Since instances may have any behavior, the AABB used for visibility must be provided by the user.
+[b]Note:[/b] A MultiMesh is a single object, therefore the same maximum lights per object restriction applies. This means, that once the maximum lights are consumed by one or more instances, the rest of the MultiMesh instances will [b]not[/b] receive any lighting.
+[b]Note:[/b] Blend Shapes will be ignored if used in a MultiMesh.
+*/
 type MultiMesh = classdb.MultiMesh
+
+/*
+[MultiMeshInstance2D] is a specialized node to instance a [MultiMesh] resource in 2D.
+Usage is the same as [MultiMeshInstance3D].
+*/
 type MultiMeshInstance2D = classdb.MultiMeshInstance2D
+
+/*
+[MultiMeshInstance3D] is a specialized node to instance [GeometryInstance3D]s based on a [MultiMesh] resource.
+This is useful to optimize the rendering of a high number of instances of a given mesh (for example trees in a forest or grass strands).
+*/
 type MultiMeshInstance3D = classdb.MultiMeshInstance3D
+
+/*
+Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
+By default, [SceneTree] has a reference to an implementation of this class and uses it to provide multiplayer capabilities (i.e. RPCs) across the whole scene.
+It is possible to override the MultiplayerAPI instance used by specific tree branches by calling the [method SceneTree.set_multiplayer] method, effectively allowing to run both client and server in the same scene.
+It is also possible to extend or replace the default implementation via scripting or native extensions. See [MultiplayerAPIExtension] for details about extensions, [SceneMultiplayer] for the details about the default implementation.
+*/
 type MultiplayerAPI = classdb.MultiplayerAPI
+
+/*
+This class can be used to augment or replace the default [MultiplayerAPI] implementation via script or extensions.
+The following example augment the default implementation ([SceneMultiplayer]) by logging every RPC being made, and every object being configured for replication.
+[codeblocks]
+[gdscript]
+extends MultiplayerAPIExtension
+class_name LogMultiplayer
+
+# We want to augment the default SceneMultiplayer.
+var base_multiplayer = SceneMultiplayer.new()
+
+func _init():
+
+	# Just passthrough base signals (copied to var to avoid cyclic reference)
+	var cts = connected_to_server
+	var cf = connection_failed
+	var pc = peer_connected
+	var pd = peer_disconnected
+	base_multiplayer.connected_to_server.connect(func(): cts.emit())
+	base_multiplayer.connection_failed.connect(func(): cf.emit())
+	base_multiplayer.peer_connected.connect(func(id): pc.emit(id))
+	base_multiplayer.peer_disconnected.connect(func(id): pd.emit(id))
+
+func _poll():
+
+	return base_multiplayer.poll()
+
+# Log RPC being made and forward it to the default multiplayer.
+func _rpc(peer: int, object: Object, method: StringName, args: Array) -> Error:
+
+	print("Got RPC for %d: %s::%s(%s)" % [peer, object, method, args])
+	return base_multiplayer.rpc(peer, object, method, args)
+
+# Log configuration add. E.g. root path (nullptr, NodePath), replication (Node, Spawner|Synchronizer), custom.
+func _object_configuration_add(object, config: Variant) -> Error:
+
+	if config is MultiplayerSynchronizer:
+	    print("Adding synchronization configuration for %s. Synchronizer: %s" % [object, config])
+	elif config is MultiplayerSpawner:
+	    print("Adding node %s to the spawn list. Spawner: %s" % [object, config])
+	return base_multiplayer.object_configuration_add(object, config)
+
+# Log configuration remove. E.g. root path (nullptr, NodePath), replication (Node, Spawner|Synchronizer), custom.
+func _object_configuration_remove(object, config: Variant) -> Error:
+
+	if config is MultiplayerSynchronizer:
+	    print("Removing synchronization configuration for %s. Synchronizer: %s" % [object, config])
+	elif config is MultiplayerSpawner:
+	    print("Removing node %s from the spawn list. Spawner: %s" % [object, config])
+	return base_multiplayer.object_configuration_remove(object, config)
+
+# These can be optional, but in our case we want to augment SceneMultiplayer, so forward everything.
+func _set_multiplayer_peer(p_peer: MultiplayerPeer):
+
+	base_multiplayer.multiplayer_peer = p_peer
+
+func _get_multiplayer_peer() -> MultiplayerPeer:
+
+	return base_multiplayer.multiplayer_peer
+
+func _get_unique_id() -> int:
+
+	return base_multiplayer.get_unique_id()
+
+func _get_peer_ids() -> PackedInt32Array:
+
+	return base_multiplayer.get_peers()
+
+[/gdscript]
+[/codeblocks]
+Then in your main scene or in an autoload call [method SceneTree.set_multiplayer] to start using your custom [MultiplayerAPI]:
+[codeblocks]
+[gdscript]
+# autoload.gd
+func _enter_tree():
+
+	# Sets our custom multiplayer as the main one in SceneTree.
+
+get_tree().set_multiplayer(LogMultiplayer.new())
+[/gdscript]
+[/codeblocks]
+Native extensions can alternatively use the [method MultiplayerAPI.set_default_interface] method during initialization to configure themselves as the default implementation.
+*/
 type MultiplayerAPIExtension = classdb.MultiplayerAPIExtension
+
+/*
+Manages the connection with one or more remote peers acting as server or client and assigning unique IDs to each of them. See also [MultiplayerAPI].
+[b]Note:[/b] The [MultiplayerAPI] protocol is an implementation detail and isn't meant to be used by non-Godot servers. It may change without notice.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type MultiplayerPeer = classdb.MultiplayerPeer
+
+/*
+This class is designed to be inherited from a GDExtension plugin to implement custom networking layers for the multiplayer API (such as WebRTC). All the methods below [b]must[/b] be implemented to have a working custom multiplayer implementation. See also [MultiplayerAPI].
+*/
 type MultiplayerPeerExtension = classdb.MultiplayerPeerExtension
+
+/*
+Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
+Also supports custom node spawns through [method spawn], calling [member spawn_function] on all peers.
+Internally, [MultiplayerSpawner] uses [method MultiplayerAPI.object_configuration_add] to notify spawns passing the spawned node as the [code]object[/code] and itself as the [code]configuration[/code], and [method MultiplayerAPI.object_configuration_remove] to notify despawns in a similar way.
+*/
 type MultiplayerSpawner = classdb.MultiplayerSpawner
+
+/*
+By default, [MultiplayerSynchronizer] synchronizes configured properties to all peers.
+Visibility can be handled directly with [method set_visibility_for] or as-needed with [method add_visibility_filter] and [method update_visibility].
+[MultiplayerSpawner]s will handle nodes according to visibility of synchronizers as long as the node at [member root_path] was spawned by one.
+Internally, [MultiplayerSynchronizer] uses [method MultiplayerAPI.object_configuration_add] to notify synchronization start passing the [Node] at [member root_path] as the [code]object[/code] and itself as the [code]configuration[/code], and uses [method MultiplayerAPI.object_configuration_remove] to notify synchronization end in a similar way.
+[b]Note:[/b] Synchronization is not supported for [Object] type properties, like [Resource]. Properties that are unique to each peer, like the instance IDs of [Object]s (see [method Object.get_instance_id]) or [RID]s, will also not work in synchronization.
+*/
 type MultiplayerSynchronizer = classdb.MultiplayerSynchronizer
+
+/*
+A synchronization mutex (mutual exclusion). This is used to synchronize multiple [Thread]s, and is equivalent to a binary [Semaphore]. It guarantees that only one thread can access a critical section at a time.
+This is a reentrant mutex, meaning that it can be locked multiple times by one thread, provided it also unlocks it as many times.
+[b]Warning:[/b] Mutexes must be used carefully to avoid deadlocks.
+[b]Warning:[/b] To ensure proper cleanup without crashes or deadlocks, the following conditions must be met:
+- When a [Mutex]'s reference count reaches zero and it is therefore destroyed, no threads (including the one on which the destruction will happen) must have it locked.
+- When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not have any mutex locked.
+*/
 type Mutex = classdb.Mutex
+
+/*
+A 2D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
+Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is computed before physics, so the pathfinding information can be used safely in the physics step.
+[b]Note:[/b] After setting the [member target_position] property, the [method get_next_path_position] method must be used once every physics frame to update the internal path logic of the navigation agent. The vector position it returns should be used as the next movement position for the agent's parent node.
+*/
 type NavigationAgent2D = classdb.NavigationAgent2D
+
+/*
+A 3D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
+Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is computed before physics, so the pathfinding information can be used safely in the physics step.
+[b]Note:[/b] After setting the [member target_position] property, the [method get_next_path_position] method must be used once every physics frame to update the internal path logic of the navigation agent. The vector position it returns should be used as the next movement position for the agent's parent node.
+*/
 type NavigationAgent3D = classdb.NavigationAgent3D
+
+/*
+A link between two positions on [NavigationRegion2D]s that agents can be routed through. These positions can be on the same [NavigationRegion2D] or on two different ones. Links are useful to express navigation methods other than traveling along the surface of the navigation polygon, such as ziplines, teleporters, or gaps that can be jumped across.
+*/
 type NavigationLink2D = classdb.NavigationLink2D
+
+/*
+A link between two positions on [NavigationRegion3D]s that agents can be routed through. These positions can be on the same [NavigationRegion3D] or on two different ones. Links are useful to express navigation methods other than traveling along the surface of the navigation mesh, such as ziplines, teleporters, or gaps that can be jumped across.
+*/
 type NavigationLink3D = classdb.NavigationLink3D
+
+/*
+A navigation mesh is a collection of polygons that define which areas of an environment are traversable to aid agents in pathfinding through complicated spaces.
+*/
 type NavigationMesh = classdb.NavigationMesh
 
 func NavigationMeshGenerator(godot Context) classdb.NavigationMeshGenerator {
@@ -485,16 +4333,113 @@ func NavigationMeshGenerator(godot Context) classdb.NavigationMeshGenerator {
 	return *(*classdb.NavigationMeshGenerator)(unsafe.Pointer(&obj))
 }
 
+/*
+Container for parsed source geometry data used in navigation mesh baking.
+*/
 type NavigationMeshSourceGeometryData2D = classdb.NavigationMeshSourceGeometryData2D
+
+/*
+Container for parsed source geometry data used in navigation mesh baking.
+*/
 type NavigationMeshSourceGeometryData3D = classdb.NavigationMeshSourceGeometryData3D
+
+/*
+2D Obstacle used in navigation to constrain avoidance controlled agents outside or inside an area. The obstacle needs a navigation map and outline vertices defined to work correctly.
+If the obstacle's vertices are winded in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Outlines must not cross or overlap.
+Obstacles are [b]not[/b] a replacement for a (re)baked navigation mesh. Obstacles [b]don't[/b] change the resulting path from the pathfinding, obstacles only affect the navigation avoidance agent movement by altering the suggested velocity of the avoidance agent.
+Obstacles using vertices can warp to a new position but should not moved every frame as each move requires a rebuild of the avoidance map.
+*/
 type NavigationObstacle2D = classdb.NavigationObstacle2D
+
+/*
+3D Obstacle used in navigation to constrain avoidance controlled agents outside or inside an area. The obstacle needs a navigation map and outline vertices defined to work correctly.
+If the obstacle's vertices are winded in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Outlines must not cross or overlap.
+Obstacles are [b]not[/b] a replacement for a (re)baked navigation mesh. Obstacles [b]don't[/b] change the resulting path from the pathfinding, obstacles only affect the navigation avoidance agent movement by altering the suggested velocity of the avoidance agent.
+Obstacles using vertices can warp to a new position but should not moved every frame as each move requires a rebuild of the avoidance map.
+*/
 type NavigationObstacle3D = classdb.NavigationObstacle3D
+
+/*
+By changing various properties of this object, such as the start and target position, you can configure path queries to the [NavigationServer2D].
+*/
 type NavigationPathQueryParameters2D = classdb.NavigationPathQueryParameters2D
+
+/*
+By changing various properties of this object, such as the start and target position, you can configure path queries to the [NavigationServer3D].
+*/
 type NavigationPathQueryParameters3D = classdb.NavigationPathQueryParameters3D
+
+/*
+This class stores the result of a 2D navigation path query from the [NavigationServer2D].
+*/
 type NavigationPathQueryResult2D = classdb.NavigationPathQueryResult2D
+
+/*
+This class stores the result of a 3D navigation path query from the [NavigationServer3D].
+*/
 type NavigationPathQueryResult3D = classdb.NavigationPathQueryResult3D
+
+/*
+A navigation mesh can be created either by baking it with the help of the [NavigationServer2D], or by adding vertices and convex polygon indices arrays manually.
+To bake a navigation mesh at least one outline needs to be added that defines the outer bounds of the baked area.
+[codeblocks]
+[gdscript]
+var new_navigation_mesh = NavigationPolygon.new()
+var bounding_outline = PackedVector2Array([Vector2(0, 0), Vector2(0, 50), Vector2(50, 50), Vector2(50, 0)])
+new_navigation_mesh.add_outline(bounding_outline)
+NavigationServer2D.bake_from_source_geometry_data(new_navigation_mesh, NavigationMeshSourceGeometryData2D.new());
+$NavigationRegion2D.navigation_polygon = new_navigation_mesh
+[/gdscript]
+[csharp]
+var newNavigationMesh = new NavigationPolygon();
+var boundingOutline = new Vector2[] { new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0) };
+newNavigationMesh.AddOutline(boundingOutline);
+NavigationServer2D.BakeFromSourceGeometryData(newNavigationMesh, new NavigationMeshSourceGeometryData2D());
+GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigationMesh;
+[/csharp]
+[/codeblocks]
+Adding vertices and polygon indices manually.
+[codeblocks]
+[gdscript]
+var new_navigation_mesh = NavigationPolygon.new()
+var new_vertices = PackedVector2Array([Vector2(0, 0), Vector2(0, 50), Vector2(50, 50), Vector2(50, 0)])
+new_navigation_mesh.vertices = new_vertices
+var new_polygon_indices = PackedInt32Array([0, 1, 2, 3])
+new_navigation_mesh.add_polygon(new_polygon_indices)
+$NavigationRegion2D.navigation_polygon = new_navigation_mesh
+[/gdscript]
+[csharp]
+var newNavigationMesh = new NavigationPolygon();
+var newVertices = new Vector2[] { new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0) };
+newNavigationMesh.Vertices = newVertices;
+var newPolygonIndices = new int[] { 0, 1, 2, 3 };
+newNavigationMesh.AddPolygon(newPolygonIndices);
+GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigationMesh;
+[/csharp]
+[/codeblocks]
+*/
 type NavigationPolygon = classdb.NavigationPolygon
+
+/*
+A traversable 2D region based on a [NavigationPolygon] that [NavigationAgent2D]s can use for pathfinding.
+Two regions can be connected to each other if they share a similar edge. You can set the minimum distance between two vertices required to connect two edges by using [method NavigationServer2D.map_set_edge_connection_margin].
+[b]Note:[/b] Overlapping two regions' navigation polygons is not enough for connecting two regions. They must share a similar edge.
+The pathfinding cost of entering a region from another region can be controlled with the [member enter_cost] value.
+[b]Note:[/b] This value is not added to the path cost when the start position is already inside this region.
+The pathfinding cost of traveling distances inside this region can be controlled with the [member travel_cost] multiplier.
+[b]Note:[/b] This node caches changes to its properties, so if you make changes to the underlying region [RID] in [NavigationServer2D], they will not be reflected in this node's properties.
+*/
 type NavigationRegion2D = classdb.NavigationRegion2D
+
+/*
+A traversable 3D region based on a [NavigationMesh] that [NavigationAgent3D]s can use for pathfinding.
+Two regions can be connected to each other if they share a similar edge. You can set the minimum distance between two vertices required to connect two edges by using [method NavigationServer3D.map_set_edge_connection_margin].
+[b]Note:[/b] Overlapping two regions' navigation meshes is not enough for connecting two regions. They must share a similar edge.
+The cost of entering this region from another region can be controlled with the [member enter_cost] value.
+[b]Note:[/b] This value is not added to the path cost when the start position is already inside this region.
+The cost of traveling distances inside this region can be controlled with the [member travel_cost] multiplier.
+[b]Note:[/b] This node caches changes to its properties, so if you make changes to the underlying region [RID] in [NavigationServer3D], they will not be reflected in this node's properties.
+*/
 type NavigationRegion3D = classdb.NavigationRegion3D
 
 func NavigationServer2D(godot Context) classdb.NavigationServer2D {
@@ -506,14 +4451,81 @@ func NavigationServer3D(godot Context) classdb.NavigationServer3D {
 	return *(*classdb.NavigationServer3D)(unsafe.Pointer(&obj))
 }
 
+/*
+Also known as 9-slice panels, [NinePatchRect] produces clean panels of any size based on a small texture. To do so, it splits the texture in a 3×3 grid. When you scale the node, it tiles the texture's edges horizontally or vertically, tiles the center on both axes, and leaves the corners unchanged.
+*/
 type NinePatchRect = classdb.NinePatchRect
+
+/*
+Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
+A tree of nodes is called a [i]scene[/i]. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
+[b]Scene tree:[/b] The [SceneTree] contains the active tree of nodes. When a node is added to the scene tree, it receives the [constant NOTIFICATION_ENTER_TREE] notification and its [method _enter_tree] callback is triggered. Child nodes are always added [i]after[/i] their parent node, i.e. the [method _enter_tree] callback of a parent node will be triggered before its child's.
+Once all nodes have been added in the scene tree, they receive the [constant NOTIFICATION_READY] notification and their respective [method _ready] callbacks are triggered. For groups of nodes, the [method _ready] callback is called in reverse order, starting with the children and moving up to the parent nodes.
+This means that when adding a node to the scene tree, the following order will be used for the callbacks: [method _enter_tree] of the parent, [method _enter_tree] of the children, [method _ready] of the children and finally [method _ready] of the parent (recursively for the entire scene tree).
+[b]Processing:[/b] Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback [method _process], toggled with [method set_process]) happens as fast as possible and is dependent on the frame rate, so the processing time [i]delta[/i] (in seconds) is passed as an argument. Physics processing (callback [method _physics_process], toggled with [method set_physics_process]) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
+Nodes can also process input events. When present, the [method _input] function will be called for each input that the program receives. In many cases, this can be overkill (unless used for simple projects), and the [method _unhandled_input] function might be preferred; it is called when the input event was not handled by anyone else (typically, GUI [Control] nodes), ensuring that the node only receives the events that were meant for it.
+To keep track of the scene hierarchy (especially when instantiating scenes into other scenes), an "owner" can be set for the node with the [member owner] property. This keeps track of who instantiated what. This is mostly useful when writing editors and tools, though.
+Finally, when a node is freed with [method Object.free] or [method queue_free], it will also free all its children.
+[b]Groups:[/b] Nodes can be added to as many groups as you want to be easy to manage, you could create groups like "enemies" or "collectables" for example, depending on your game. See [method add_to_group], [method is_in_group] and [method remove_from_group]. You can then retrieve all nodes in these groups, iterate them and even call methods on groups via the methods on [SceneTree].
+[b]Networking with nodes:[/b] After connecting to a server (or making one, see [ENetMultiplayerPeer]), it is possible to use the built-in RPC (remote procedure call) system to communicate over the network. By calling [method rpc] with a method name, it will be called locally and in all connected peers (peers = clients and the server that accepts connections). To identify which node receives the RPC call, Godot will use its [NodePath] (make sure node names are the same on all peers). Also, take a look at the high-level networking tutorial and corresponding demos.
+[b]Note:[/b] The [code]script[/code] property is part of the [Object] class, not [Node]. It isn't exposed like most properties but does have a setter and getter (see [method Object.set_script] and [method Object.get_script]).
+*/
 type Node = classdb.Node
+
+/*
+A 2D game object, with a transform (position, rotation, and scale). All 2D nodes, including physics objects and sprites, inherit from Node2D. Use Node2D as a parent node to move, scale and rotate children in a 2D project. Also gives control of the node's render order.
+*/
 type Node2D = classdb.Node2D
+
+/*
+Most basic 3D game object, with a [Transform3D] and visibility settings. All other 3D game objects inherit from [Node3D]. Use [Node3D] as a parent node to move, scale, rotate and show/hide children in a 3D project.
+Affine operations (rotate, scale, translate) happen in parent's local coordinate system, unless the [Node3D] object is set as top-level. Affine operations in this coordinate system correspond to direct affine operations on the [Node3D]'s transform. The word local below refers to this coordinate system. The coordinate system that is attached to the [Node3D] object itself is referred to as object-local coordinate system.
+[b]Note:[/b] Unless otherwise specified, all methods that have angle parameters must have angles specified as [i]radians[/i]. To convert degrees to radians, use [method @GlobalScope.deg_to_rad].
+[b]Note:[/b] Be aware that "Spatial" nodes are now called "Node3D" starting with Godot 4. Any Godot 3.x references to "Spatial" nodes refer to "Node3D" in Godot 4.
+*/
 type Node3D = classdb.Node3D
+
+/*
+This abstract class helps connect the [Node3D] scene with the editor-specific [EditorNode3DGizmo] class.
+[Node3DGizmo] by itself has no exposed API, refer to [method Node3D.add_gizmo] and pass it an [EditorNode3DGizmo] instance.
+*/
 type Node3DGizmo = classdb.Node3DGizmo
+
+/*
+This class defines the interface for noise generation libraries to inherit from.
+A default [method get_seamless_image] implementation is provided for libraries that do not provide seamless noise. This function requests a larger image from the [method get_image] method, reverses the quadrants of the image, then uses the strips of extra width to blend over the seams.
+Inheriting noise classes can optionally override this function to provide a more optimal algorithm.
+*/
 type Noise = classdb.Noise
+
+/*
+Uses the [FastNoiseLite] library or other noise generators to fill the texture data of your desired size. [NoiseTexture2D] can also generate normal map textures.
+The class uses [Thread]s to generate the texture data internally, so [method Texture2D.get_image] may return [code]null[/code] if the generation process has not completed yet. In that case, you need to wait for the texture to be generated before accessing the image and the generated byte data:
+[codeblock]
+var texture = NoiseTexture2D.new()
+texture.noise = FastNoiseLite.new()
+await texture.changed
+var image = texture.get_image()
+var data = image.get_data()
+[/codeblock]
+*/
 type NoiseTexture2D = classdb.NoiseTexture2D
+
+/*
+Uses the [FastNoiseLite] library or other noise generators to fill the texture data of your desired size.
+The class uses [Thread]s to generate the texture data internally, so [method Texture3D.get_data] may return [code]null[/code] if the generation process has not completed yet. In that case, you need to wait for the texture to be generated before accessing the image:
+[codeblock]
+var texture = NoiseTexture3D.new()
+texture.noise = FastNoiseLite.new()
+await texture.changed
+var data = texture.get_data()
+[/codeblock]
+*/
 type NoiseTexture3D = classdb.NoiseTexture3D
+
+/*
+ORMMaterial3D's properties are inherited from [BaseMaterial3D]. Unlike [StandardMaterial3D], ORMMaterial3D uses a single texture for ambient occlusion, roughness and metallic maps, known as an ORM texture.
+*/
 type ORMMaterial3D = classdb.ORMMaterial3D
 
 func OS(godot Context) classdb.OS {
@@ -521,43 +4533,347 @@ func OS(godot Context) classdb.OS {
 	return *(*classdb.OS)(unsafe.Pointer(&obj))
 }
 
+/*
+[Occluder3D] stores an occluder shape that can be used by the engine's occlusion culling system.
+See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
+*/
 type Occluder3D = classdb.Occluder3D
+
+/*
+Occlusion culling can improve rendering performance in closed/semi-open areas by hiding geometry that is occluded by other objects.
+The occlusion culling system is mostly static. [OccluderInstance3D]s can be moved or hidden at run-time, but doing so will trigger a background recomputation that can take several frames. It is recommended to only move [OccluderInstance3D]s sporadically (e.g. for procedural generation purposes), rather than doing so every frame.
+The occlusion culling system works by rendering the occluders on the CPU in parallel using [url=https://www.embree.org/]Embree[/url], drawing the result to a low-resolution buffer then using this to cull 3D nodes individually. In the 3D editor, you can preview the occlusion culling buffer by choosing [b]Perspective > Debug Advanced... > Occlusion Culling Buffer[/b] in the top-left corner of the 3D viewport. The occlusion culling buffer quality can be adjusted in the Project Settings.
+[b]Baking:[/b] Select an [OccluderInstance3D] node, then use the [b]Bake Occluders[/b] button at the top of the 3D editor. Only opaque materials will be taken into account; transparent materials (alpha-blended or alpha-tested) will be ignored by the occluder generation.
+[b]Note:[/b] Occlusion culling is only effective if [member ProjectSettings.rendering/occlusion_culling/use_occlusion_culling] is [code]true[/code]. Enabling occlusion culling has a cost on the CPU. Only enable occlusion culling if you actually plan to use it. Large open scenes with few or no objects blocking the view will generally not benefit much from occlusion culling. Large open scenes generally benefit more from mesh LOD and visibility ranges ([member GeometryInstance3D.visibility_range_begin] and [member GeometryInstance3D.visibility_range_end]) compared to occlusion culling.
+[b]Note:[/b] Due to memory constraints, occlusion culling is not supported by default in Web export templates. It can be enabled by compiling custom Web export templates with [code]module_raycast_enabled=yes[/code].
+*/
 type OccluderInstance3D = classdb.OccluderInstance3D
+
+/*
+Editor facility that helps you draw a 2D polygon used as resource for [LightOccluder2D].
+*/
 type OccluderPolygon2D = classdb.OccluderPolygon2D
+
+/*
+This is the default [member MultiplayerAPI.multiplayer_peer] for the [member Node.multiplayer]. It mimics the behavior of a server with no peers connected.
+This means that the [SceneTree] will act as the multiplayer authority by default. Calls to [method MultiplayerAPI.is_server] will return [code]true[/code], and calls to [method MultiplayerAPI.get_unique_id] will return [constant MultiplayerPeer.TARGET_PEER_SERVER].
+*/
 type OfflineMultiplayerPeer = classdb.OfflineMultiplayerPeer
+
+/*
+A sequence of Ogg packets.
+*/
 type OggPacketSequence = classdb.OggPacketSequence
 type OggPacketSequencePlayback = classdb.OggPacketSequencePlayback
+
+/*
+An Omnidirectional light is a type of [Light3D] that emits light in all directions. The light is attenuated by distance and this attenuation can be configured by changing its energy, radius, and attenuation parameters.
+[b]Note:[/b] When using the Mobile rendering method, only 8 omni lights can be displayed on each mesh resource. Attempting to display more than 8 omni lights on a single mesh resource will result in omni lights flickering in and out as the camera moves. When using the Compatibility rendering method, only 8 omni lights can be displayed on each mesh resource by default, but this can be increased by adjusting [member ProjectSettings.rendering/limits/opengl/max_lights_per_object].
+[b]Note:[/b] When using the Mobile or Compatibility rendering methods, omni lights will only correctly affect meshes whose visibility AABB intersects with the light's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [member GeometryInstance3D.extra_cull_margin] must be increased on the mesh. Otherwise, the light may not be visible on the mesh.
+*/
 type OmniLight3D = classdb.OmniLight3D
+
+/*
+[OpenXRAPIExtension] makes OpenXR available for GDExtension. It provides the OpenXR API to GDExtension through the [method get_instance_proc_addr] method, and the OpenXR instance through [method get_instance].
+It also provides methods for querying the status of OpenXR initialization, and helper methods for ease of use of the API with GDExtension.
+*/
 type OpenXRAPIExtension = classdb.OpenXRAPIExtension
+
+/*
+This resource defines an OpenXR action. Actions can be used both for inputs (buttons/joystick/trigger/etc) and outputs (haptics).
+OpenXR performs automatic conversion between action type and input type whenever possible. An analog trigger bound to a boolean action will thus return [code]false[/code] if the trigger is depressed and [code]true[/code] if pressed fully.
+Actions are not directly bound to specific devices, instead OpenXR recognizes a limited number of top level paths that identify devices by usage. We can restrict which devices an action can be bound to by these top level paths. For instance an action that should only be used for hand held controllers can have the top level paths "/user/hand/left" and "/user/hand/right" associated with them. See the [url=https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-reserved]reserved path section in the OpenXR specification[/url] for more info on the top level paths.
+Note that the name of the resource is used to register the action with.
+*/
 type OpenXRAction = classdb.OpenXRAction
+
+/*
+OpenXR uses an action system similar to Godots Input map system to bind inputs and outputs on various types of XR controllers to named actions. OpenXR specifies more detail on these inputs and outputs than Godot supports.
+Another important distinction is that OpenXR offers no control over these bindings. The bindings we register are suggestions, it is up to the XR runtime to offer users the ability to change these bindings. This allows the XR runtime to fill in the gaps if new hardware becomes available.
+The action map therefore needs to be loaded at startup and can't be changed afterwards. This resource is a container for the entire action map.
+*/
 type OpenXRActionMap = classdb.OpenXRActionMap
+
+/*
+Action sets in OpenXR define a collection of actions that can be activated in unison. This allows games to easily change between different states that require different inputs or need to reinterpret inputs. For instance we could have an action set that is active when a menu is open, an action set that is active when the player is freely walking around and an action set that is active when the player is controlling a vehicle.
+Action sets can contain the same action with the same name, if such action sets are active at the same time the action set with the highest priority defines which binding is active.
+*/
 type OpenXRActionSet = classdb.OpenXRActionSet
+
+/*
+[OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
+*/
 type OpenXRExtensionWrapperExtension = classdb.OpenXRExtensionWrapperExtension
+
+/*
+This node enables OpenXR's hand tracking functionality. The node should be a child node of an [XROrigin3D] node, tracking will update its position to where the player's actual hand is positioned. This node also updates the skeleton of a properly skinned hand model. The hand mesh should be a child node of this node.
+*/
 type OpenXRHand = classdb.OpenXRHand
+
+/*
+This binding resource binds an [OpenXRAction] to inputs or outputs. As most controllers have left hand and right versions that are handled by the same interaction profile we can specify multiple bindings. For instance an action "Fire" could be bound to both "/user/hand/left/input/trigger" and "/user/hand/right/input/trigger".
+*/
 type OpenXRIPBinding = classdb.OpenXRIPBinding
+
+/*
+This object stores suggested bindings for an interaction profile. Interaction profiles define the metadata for a tracked XR device such as an XR controller.
+For more information see the [url=https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-interaction-profiles]interaction profiles info in the OpenXR specification[/url].
+*/
 type OpenXRInteractionProfile = classdb.OpenXRInteractionProfile
+
+/*
+This class allows OpenXR core and extensions to register metadata relating to supported interaction devices such as controllers, trackers, haptic devices, etc. It is primarily used by the action map editor and to sanitize any action map by removing extension-dependent entries when applicable.
+*/
 type OpenXRInteractionProfileMetadata = classdb.OpenXRInteractionProfileMetadata
+
+/*
+The OpenXR interface allows Godot to interact with OpenXR runtimes and make it possible to create XR experiences and games.
+Due to the needs of OpenXR this interface works slightly different than other plugin based XR interfaces. It needs to be initialized when Godot starts. You need to enable OpenXR, settings for this can be found in your games project settings under the XR heading. You do need to mark a viewport for use with XR in order for Godot to know which render result should be output to the headset.
+*/
 type OpenXRInterface = classdb.OpenXRInterface
+
+/*
+An optimized translation, used by default for CSV Translations. Uses real-time compressed translations, which results in very small dictionaries.
+*/
 type OptimizedTranslation = classdb.OptimizedTranslation
+
+/*
+[OptionButton] is a type of button that brings up a dropdown with selectable items when pressed. The item selected becomes the "current" item and is displayed as the button text.
+See also [BaseButton] which contains common properties and methods associated with this node.
+[b]Note:[/b] The ID values used for items are limited to 32 bits, not full 64 bits of [int]. This has a range of [code]-2^32[/code] to [code]2^32 - 1[/code], i.e. [code]-2147483648[/code] to [code]2147483647[/code].
+[b]Note:[/b] The [member Button.text] and [member Button.icon] properties are set automatically based on the selected item. They shouldn't be changed manually.
+*/
 type OptionButton = classdb.OptionButton
+
+/*
+The [PCKPacker] is used to create packages that can be loaded into a running project using [method ProjectSettings.load_resource_pack].
+[codeblocks]
+[gdscript]
+var packer = PCKPacker.new()
+packer.pck_start("test.pck")
+packer.add_file("res://text.txt", "text.txt")
+packer.flush()
+[/gdscript]
+[csharp]
+var packer = new PckPacker();
+packer.PckStart("test.pck");
+packer.AddFile("res://text.txt", "text.txt");
+packer.Flush();
+[/csharp]
+[/codeblocks]
+The above [PCKPacker] creates package [code]test.pck[/code], then adds a file named [code]text.txt[/code] at the root of the package.
+*/
 type PCKPacker = classdb.PCKPacker
+
+/*
+[PackedDataContainer] can be used to efficiently store data from untyped containers. The data is packed into raw bytes and can be saved to file. Only [Array] and [Dictionary] can be stored this way.
+You can retrieve the data by iterating on the container, which will work as if iterating on the packed data itself. If the packed container is a [Dictionary], the data can be retrieved by key names ([String]/[StringName] only).
+[codeblock]
+var data = { "key": "value", "another_key": 123, "lock": Vector2() }
+var packed = PackedDataContainer.new()
+packed.pack(data)
+ResourceSaver.save(packed, "packed_data.res")
+[/codeblock]
+[codeblock]
+var container = load("packed_data.res")
+for key in container:
+
+	prints(key, container[key])
+
+# Prints:
+# key value
+# lock (0, 0)
+# another_key 123
+[/codeblock]
+Nested containers will be packed recursively. While iterating, they will be returned as [PackedDataContainerRef].
+*/
 type PackedDataContainer = classdb.PackedDataContainer
+
+/*
+When packing nested containers using [PackedDataContainer], they are recursively packed into [PackedDataContainerRef] (only applies to [Array] and [Dictionary]). Their data can be retrieved the same way as from [PackedDataContainer].
+[codeblock]
+var packed = PackedDataContainer.new()
+packed.pack([1, 2, 3, ["abc", "def"], 4, 5, 6])
+
+for element in packed:
+
+	if element is PackedDataContainerRef:
+	    for subelement in element:
+	        print("::", subelement)
+	else:
+	    print(element)
+
+# Prints:
+# 1
+# 2
+# 3
+# ::abc
+# ::def
+# 4
+# 5
+# 6
+[/codeblock]
+*/
 type PackedDataContainerRef = classdb.PackedDataContainerRef
+
+/*
+A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
+Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [member Node.owner] property).
+[b]Note:[/b] The node doesn't need to own itself.
+[b]Example of loading a saved scene:[/b]
+[codeblocks]
+[gdscript]
+# Use load() instead of preload() if the path isn't known at compile-time.
+var scene = preload("res://scene.tscn").instantiate()
+# Add the node as a child of the node the script is attached to.
+add_child(scene)
+[/gdscript]
+[csharp]
+// C# has no preload, so you have to always use ResourceLoader.Load<PackedScene>().
+var scene = ResourceLoader.Load<PackedScene>("res://scene.tscn").Instantiate();
+// Add the node as a child of the node the script is attached to.
+AddChild(scene);
+[/csharp]
+[/codeblocks]
+[b]Example of saving a node with different owners:[/b] The following example creates 3 objects: [Node2D] ([code]node[/code]), [RigidBody2D] ([code]body[/code]) and [CollisionObject2D] ([code]collision[/code]). [code]collision[/code] is a child of [code]body[/code] which is a child of [code]node[/code]. Only [code]body[/code] is owned by [code]node[/code] and [method pack] will therefore only save those two nodes, but not [code]collision[/code].
+[codeblocks]
+[gdscript]
+# Create the objects.
+var node = Node2D.new()
+var body = RigidBody2D.new()
+var collision = CollisionShape2D.new()
+
+# Create the object hierarchy.
+body.add_child(collision)
+node.add_child(body)
+
+# Change owner of `body`, but not of `collision`.
+body.owner = node
+var scene = PackedScene.new()
+
+# Only `node` and `body` are now packed.
+var result = scene.pack(node)
+if result == OK:
+
+	var error = ResourceSaver.save(scene, "res://path/name.tscn")  # Or "user://..."
+	if error != OK:
+	    push_error("An error occurred while saving the scene to disk.")
+
+[/gdscript]
+[csharp]
+// Create the objects.
+var node = new Node2D();
+var body = new RigidBody2D();
+var collision = new CollisionShape2D();
+
+// Create the object hierarchy.
+body.AddChild(collision);
+node.AddChild(body);
+
+// Change owner of `body`, but not of `collision`.
+body.Owner = node;
+var scene = new PackedScene();
+
+// Only `node` and `body` are now packed.
+Error result = scene.Pack(node);
+if (result == Error.Ok)
+
+	{
+	    Error error = ResourceSaver.Save(scene, "res://path/name.tscn"); // Or "user://..."
+	    if (error != Error.Ok)
+	    {
+	        GD.PushError("An error occurred while saving the scene to disk.");
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type PackedScene = classdb.PackedScene
+
+/*
+PacketPeer is an abstraction and base class for packet-based protocols (such as UDP). It provides an API for sending and receiving packets both as raw data or variables. This makes it easy to transfer data over a protocol, without having to encode data as low-level bytes or having to worry about network ordering.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type PacketPeer = classdb.PacketPeer
+
+/*
+This class represents a DTLS peer connection. It can be used to connect to a DTLS server, and is returned by [method DTLSServer.take_connection].
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+[b]Warning:[/b] TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
+*/
 type PacketPeerDTLS = classdb.PacketPeerDTLS
 type PacketPeerExtension = classdb.PacketPeerExtension
+
+/*
+PacketStreamPeer provides a wrapper for working using packets over a stream. This allows for using packet based code with StreamPeers. PacketPeerStream implements a custom protocol over the StreamPeer, so the user should not read or write to the wrapped StreamPeer directly.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type PacketPeerStream = classdb.PacketPeerStream
+
+/*
+UDP packet peer. Can be used to send raw UDP packets as well as [Variant]s.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type PacketPeerUDP = classdb.PacketPeerUDP
+
+/*
+[Panel] is a GUI control that displays a [StyleBox]. See also [PanelContainer].
+*/
 type Panel = classdb.Panel
+
+/*
+A container that keeps its child controls within the area of a [StyleBox]. Useful for giving controls an outline.
+*/
 type PanelContainer = classdb.PanelContainer
+
+/*
+A resource referenced in a [Sky] that is used to draw a background. [PanoramaSkyMaterial] functions similar to skyboxes in other engines, except it uses an equirectangular sky map instead of a [Cubemap].
+Using an HDR panorama is strongly recommended for accurate, high-quality reflections. Godot supports the Radiance HDR ([code].hdr[/code]) and OpenEXR ([code].exr[/code]) image formats for this purpose.
+You can use [url=https://danilw.github.io/GLSL-howto/cubemap_to_panorama_js/cubemap_to_panorama.html]this tool[/url] to convert a cubemap to an equirectangular sky map.
+*/
 type PanoramaSkyMaterial = classdb.PanoramaSkyMaterial
+
+/*
+A ParallaxBackground uses one or more [ParallaxLayer] child nodes to create a parallax effect. Each [ParallaxLayer] can move at a different speed using [member ParallaxLayer.motion_offset]. This creates an illusion of depth in a 2D game. If not used with a [Camera2D], you must manually calculate the [member scroll_offset].
+[b]Note:[/b] Each [ParallaxBackground] is drawn on one specific [Viewport] and cannot be shared between multiple [Viewport]s, see [member CanvasLayer.custom_viewport]. When using multiple [Viewport]s, for example in a split-screen game, you need create an individual [ParallaxBackground] for each [Viewport] you want it to be drawn on.
+*/
 type ParallaxBackground = classdb.ParallaxBackground
+
+/*
+A ParallaxLayer must be the child of a [ParallaxBackground] node. Each ParallaxLayer can be set to move at different speeds relative to the camera movement or the [member ParallaxBackground.scroll_offset] value.
+This node's children will be affected by its scroll offset.
+[b]Note:[/b] Any changes to this node's position and scale made after it enters the scene will be ignored.
+*/
 type ParallaxLayer = classdb.ParallaxLayer
+
+/*
+[ParticleProcessMaterial] defines particle properties and behavior. It is used in the [code]process_material[/code] of the [GPUParticles2D] and [GPUParticles3D] nodes. Some of this material's properties are applied to each particle when emitted, while others can have a [CurveTexture] or a [GradientTexture1D] applied to vary numerical or color values over the lifetime of the particle.
+*/
 type ParticleProcessMaterial = classdb.ParticleProcessMaterial
+
+/*
+Can have [PathFollow2D] child nodes moving along the [Curve2D]. See [PathFollow2D] for more information on usage.
+[b]Note:[/b] The path is considered as relative to the moved nodes (children of [PathFollow2D]). As such, the curve should usually start with a zero vector ([code](0, 0)[/code]).
+*/
 type Path2D = classdb.Path2D
+
+/*
+Can have [PathFollow3D] child nodes moving along the [Curve3D]. See [PathFollow3D] for more information on the usage.
+Note that the path is considered as relative to the moved nodes (children of [PathFollow3D]). As such, the curve should usually start with a zero vector [code](0, 0, 0)[/code].
+*/
 type Path3D = classdb.Path3D
+
+/*
+This node takes its parent [Path2D], and returns the coordinates of a point within it, given a distance from the first vertex.
+It is useful for making other nodes follow a path, without coding the movement pattern. For that, the nodes must be children of this node. The descendant nodes will then move accordingly when setting the [member progress] in this node.
+*/
 type PathFollow2D = classdb.PathFollow2D
+
+/*
+This node takes its parent [Path3D], and returns the coordinates of a point within it, given a distance from the first vertex.
+It is useful for making other nodes follow a path, without coding the movement pattern. For that, the nodes must be children of this node. The descendant nodes will then move accordingly when setting the [member progress] in this node.
+*/
 type PathFollow3D = classdb.PathFollow3D
 
 func Performance(godot Context) classdb.Performance {
@@ -565,23 +4881,103 @@ func Performance(godot Context) classdb.Performance {
 	return *(*classdb.Performance)(unsafe.Pointer(&obj))
 }
 
+/*
+The [PhysicalBone2D] node is a [RigidBody2D]-based node that can be used to make [Bone2D]s in a [Skeleton2D] react to physics.
+[b]Note:[/b] To make the [Bone2D]s visually follow the [PhysicalBone2D] node, use a [SkeletonModification2DPhysicalBones] modification on the [Skeleton2D] parent.
+[b]Note:[/b] The [PhysicalBone2D] node does not automatically create a [Joint2D] node to keep [PhysicalBone2D] nodes together. They must be created manually. For most cases, you want to use a [PinJoint2D] node. The [PhysicalBone2D] node will automatically configure the [Joint2D] node once it's been added as a child node.
+*/
 type PhysicalBone2D = classdb.PhysicalBone2D
+
+/*
+The [PhysicalBone3D] node is a physics body that can be used to make bones in a [Skeleton3D] react to physics.
+*/
 type PhysicalBone3D = classdb.PhysicalBone3D
+
+/*
+The [PhysicalSkyMaterial] uses the Preetham analytic daylight model to draw a sky based on physical properties. This results in a substantially more realistic sky than the [ProceduralSkyMaterial], but it is slightly slower and less flexible.
+The [PhysicalSkyMaterial] only supports one sun. The color, energy, and direction of the sun are taken from the first [DirectionalLight3D] in the scene tree.
+As it is based on a daylight model, the sky fades to black as the sunset ends. If you want a full day/night cycle, you will have to add a night sky by converting this to a [ShaderMaterial] and adding a night sky directly into the resulting shader.
+*/
 type PhysicalSkyMaterial = classdb.PhysicalSkyMaterial
+
+/*
+[PhysicsBody2D] is an abstract base class for 2D game objects affected by physics. All 2D physics bodies inherit from it.
+*/
 type PhysicsBody2D = classdb.PhysicsBody2D
+
+/*
+[PhysicsBody3D] is an abstract base class for 3D game objects affected by physics. All 3D physics bodies inherit from it.
+[b]Warning:[/b] With a non-uniform scale, this node will likely not behave as expected. It is advised to keep its scale the same on all axes and adjust its collision shape(s) instead.
+*/
 type PhysicsBody3D = classdb.PhysicsBody3D
+
+/*
+Provides direct access to a physics body in the [PhysicsServer2D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody2D], and is intended for changing the direct state of that body. See [method RigidBody2D._integrate_forces].
+*/
 type PhysicsDirectBodyState2D = classdb.PhysicsDirectBodyState2D
+
+/*
+This class extends [PhysicsDirectBodyState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
+Intended for use with GDExtension to create custom implementations of [PhysicsDirectBodyState2D].
+*/
 type PhysicsDirectBodyState2DExtension = classdb.PhysicsDirectBodyState2DExtension
+
+/*
+Provides direct access to a physics body in the [PhysicsServer3D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody3D], and is intended for changing the direct state of that body. See [method RigidBody3D._integrate_forces].
+*/
 type PhysicsDirectBodyState3D = classdb.PhysicsDirectBodyState3D
+
+/*
+This class extends [PhysicsDirectBodyState3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
+Intended for use with GDExtension to create custom implementations of [PhysicsDirectBodyState3D].
+*/
 type PhysicsDirectBodyState3DExtension = classdb.PhysicsDirectBodyState3DExtension
+
+/*
+Provides direct access to a physics space in the [PhysicsServer2D]. It's used mainly to do queries against objects and areas residing in a given space.
+*/
 type PhysicsDirectSpaceState2D = classdb.PhysicsDirectSpaceState2D
+
+/*
+This class extends [PhysicsDirectSpaceState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
+Intended for use with GDExtension to create custom implementations of [PhysicsDirectSpaceState2D].
+*/
 type PhysicsDirectSpaceState2DExtension = classdb.PhysicsDirectSpaceState2DExtension
+
+/*
+Provides direct access to a physics space in the [PhysicsServer3D]. It's used mainly to do queries against objects and areas residing in a given space.
+*/
 type PhysicsDirectSpaceState3D = classdb.PhysicsDirectSpaceState3D
+
+/*
+This class extends [PhysicsDirectSpaceState3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
+Intended for use with GDExtension to create custom implementations of [PhysicsDirectSpaceState3D].
+*/
 type PhysicsDirectSpaceState3DExtension = classdb.PhysicsDirectSpaceState3DExtension
+
+/*
+Holds physics-related properties of a surface, namely its roughness and bounciness. This class is used to apply these properties to a physics body.
+*/
 type PhysicsMaterial = classdb.PhysicsMaterial
+
+/*
+By changing various properties of this object, such as the point position, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_point].
+*/
 type PhysicsPointQueryParameters2D = classdb.PhysicsPointQueryParameters2D
+
+/*
+By changing various properties of this object, such as the point position, you can configure the parameters for [method PhysicsDirectSpaceState3D.intersect_point].
+*/
 type PhysicsPointQueryParameters3D = classdb.PhysicsPointQueryParameters3D
+
+/*
+By changing various properties of this object, such as the ray position, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_ray].
+*/
 type PhysicsRayQueryParameters2D = classdb.PhysicsRayQueryParameters2D
+
+/*
+By changing various properties of this object, such as the ray position, you can configure the parameters for [method PhysicsDirectSpaceState3D.intersect_ray].
+*/
 type PhysicsRayQueryParameters3D = classdb.PhysicsRayQueryParameters3D
 
 func PhysicsServer2D(godot Context) classdb.PhysicsServer2D {
@@ -589,6 +4985,10 @@ func PhysicsServer2D(godot Context) classdb.PhysicsServer2D {
 	return *(*classdb.PhysicsServer2D)(unsafe.Pointer(&obj))
 }
 
+/*
+This class extends [PhysicsServer2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
+Intended for use with GDExtension to create custom implementations of [PhysicsServer2D].
+*/
 type PhysicsServer2DExtension = classdb.PhysicsServer2DExtension
 
 func PhysicsServer2DManager(godot Context) classdb.PhysicsServer2DManager {
@@ -600,6 +5000,10 @@ func PhysicsServer3D(godot Context) classdb.PhysicsServer3D {
 	return *(*classdb.PhysicsServer3D)(unsafe.Pointer(&obj))
 }
 
+/*
+This class extends [PhysicsServer3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
+Intended for use with GDExtension to create custom implementations of [PhysicsServer3D].
+*/
 type PhysicsServer3DExtension = classdb.PhysicsServer3DExtension
 
 func PhysicsServer3DManager(godot Context) classdb.PhysicsServer3DManager {
@@ -608,35 +5012,187 @@ func PhysicsServer3DManager(godot Context) classdb.PhysicsServer3DManager {
 }
 
 type PhysicsServer3DRenderingServerHandler = classdb.PhysicsServer3DRenderingServerHandler
+
+/*
+By changing various properties of this object, such as the shape, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_shape].
+*/
 type PhysicsShapeQueryParameters2D = classdb.PhysicsShapeQueryParameters2D
+
+/*
+By changing various properties of this object, such as the shape, you can configure the parameters for [method PhysicsDirectSpaceState3D.intersect_shape].
+*/
 type PhysicsShapeQueryParameters3D = classdb.PhysicsShapeQueryParameters3D
+
+/*
+By changing various properties of this object, such as the motion, you can configure the parameters for [method PhysicsServer2D.body_test_motion].
+*/
 type PhysicsTestMotionParameters2D = classdb.PhysicsTestMotionParameters2D
+
+/*
+By changing various properties of this object, such as the motion, you can configure the parameters for [method PhysicsServer3D.body_test_motion].
+*/
 type PhysicsTestMotionParameters3D = classdb.PhysicsTestMotionParameters3D
+
+/*
+Describes the motion and collision result from [method PhysicsServer2D.body_test_motion].
+*/
 type PhysicsTestMotionResult2D = classdb.PhysicsTestMotionResult2D
+
+/*
+Describes the motion and collision result from [method PhysicsServer3D.body_test_motion].
+*/
 type PhysicsTestMotionResult3D = classdb.PhysicsTestMotionResult3D
+
+/*
+A physics joint that attaches two 2D physics bodies at a single point, allowing them to freely rotate. For example, a [RigidBody2D] can be attached to a [StaticBody2D] to create a pendulum or a seesaw.
+*/
 type PinJoint2D = classdb.PinJoint2D
+
+/*
+A physics joint that attaches two 3D physics bodies at a single point, allowing them to freely rotate. For example, a [RigidBody3D] can be attached to a [StaticBody3D] to create a pendulum or a seesaw.
+*/
 type PinJoint3D = classdb.PinJoint3D
+
+/*
+This class replaces a [Cubemap] or a [Cubemap]-derived class in 2 conditions:
+- In dedicated server mode, where the image data shouldn't affect game logic. This allows reducing the exported PCK's size significantly.
+- When the [Cubemap]-derived class is missing, for example when using a different engine version.
+[b]Note:[/b] This class is not intended for rendering or for use in shaders. Operations like calculating UV are not guaranteed to work.
+*/
 type PlaceholderCubemap = classdb.PlaceholderCubemap
+
+/*
+This class replaces a [CubemapArray] or a [CubemapArray]-derived class in 2 conditions:
+- In dedicated server mode, where the image data shouldn't affect game logic. This allows reducing the exported PCK's size significantly.
+- When the [CubemapArray]-derived class is missing, for example when using a different engine version.
+[b]Note:[/b] This class is not intended for rendering or for use in shaders. Operations like calculating UV are not guaranteed to work.
+*/
 type PlaceholderCubemapArray = classdb.PlaceholderCubemapArray
+
+/*
+This class is used when loading a project that uses a [Material] subclass in 2 conditions:
+- When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
+- When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
+*/
 type PlaceholderMaterial = classdb.PlaceholderMaterial
+
+/*
+This class is used when loading a project that uses a [Mesh] subclass in 2 conditions:
+- When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
+- When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
+*/
 type PlaceholderMesh = classdb.PlaceholderMesh
+
+/*
+This class is used when loading a project that uses a [Texture2D] subclass in 2 conditions:
+- When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
+- When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
+[b]Note:[/b] This is not intended to be used as an actual texture for rendering. It is not guaranteed to work like one in shaders or materials (for example when calculating UV).
+*/
 type PlaceholderTexture2D = classdb.PlaceholderTexture2D
+
+/*
+This class is used when loading a project that uses a [Texture2D] subclass in 2 conditions:
+- When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
+- When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
+[b]Note:[/b] This is not intended to be used as an actual texture for rendering. It is not guaranteed to work like one in shaders or materials (for example when calculating UV).
+*/
 type PlaceholderTexture2DArray = classdb.PlaceholderTexture2DArray
+
+/*
+This class is used when loading a project that uses a [Texture3D] subclass in 2 conditions:
+- When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
+- When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
+[b]Note:[/b] This is not intended to be used as an actual texture for rendering. It is not guaranteed to work like one in shaders or materials (for example when calculating UV).
+*/
 type PlaceholderTexture3D = classdb.PlaceholderTexture3D
+
+/*
+This class is used when loading a project that uses a [TextureLayered] subclass in 2 conditions:
+- When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
+- When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
+[b]Note:[/b] This is not intended to be used as an actual texture for rendering. It is not guaranteed to work like one in shaders or materials (for example when calculating UV).
+*/
 type PlaceholderTextureLayered = classdb.PlaceholderTextureLayered
+
+/*
+Class representing a planar [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Z axes; this default rotation isn't suited for use with billboarded materials. For billboarded materials, change [member orientation] to [constant FACE_Z].
+[b]Note:[/b] When using a large textured [PlaneMesh] (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase [member subdivide_depth] and [member subdivide_width] until you no longer notice UV jittering.
+*/
 type PlaneMesh = classdb.PlaneMesh
+
+/*
+Casts light in a 2D environment. This light's shape is defined by a (usually grayscale) texture.
+*/
 type PointLight2D = classdb.PointLight2D
+
+/*
+The PointMesh is made from a single point. Instead of relying on triangles, points are rendered as a single rectangle on the screen with a constant size. They are intended to be used with Particle systems, but can be used as a cheap way to render constant size billboarded sprites (for example in a point cloud).
+PointMeshes, must be used with a material that has a point size. Point size can be accessed in a shader with [code]POINT_SIZE[/code], or in a [BaseMaterial3D] by setting [member BaseMaterial3D.use_point_size] and the variable [member BaseMaterial3D.point_size].
+When using PointMeshes, properties that normally alter vertices will be ignored, including billboard mode, grow, and cull face.
+*/
 type PointMesh = classdb.PointMesh
+
+/*
+A Polygon2D is defined by a set of points. Each point is connected to the next, with the final point being connected to the first, resulting in a closed polygon. Polygon2Ds can be filled with color (solid or gradient) or filled with a given texture.
+*/
 type Polygon2D = classdb.Polygon2D
+
+/*
+[PolygonOccluder3D] stores a polygon shape that can be used by the engine's occlusion culling system. When an [OccluderInstance3D] with a [PolygonOccluder3D] is selected in the editor, an editor will appear at the top of the 3D viewport so you can add/remove points. All points must be placed on the same 2D plane, which means it is not possible to create arbitrary 3D shapes with a single [PolygonOccluder3D]. To use arbitrary 3D shapes as occluders, use [ArrayOccluder3D] or [OccluderInstance3D]'s baking feature instead.
+See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
+*/
 type PolygonOccluder3D = classdb.PolygonOccluder3D
 type PolygonPathFinder = classdb.PolygonPathFinder
+
+/*
+[Popup] is a base class for contextual windows and panels with fixed position. It's a modal by default (see [member Window.popup_window]) and provides methods for implementing custom popup behavior.
+*/
 type Popup = classdb.Popup
+
+/*
+[PopupMenu] is a modal window used to display a list of options. Useful for toolbars and context menus.
+The size of a [PopupMenu] can be limited by using [member Window.max_size]. If the height of the list of items is larger than the maximum height of the [PopupMenu], a [ScrollContainer] within the popup will allow the user to scroll the contents. If no maximum size is set, or if it is set to [code]0[/code], the [PopupMenu] height will be limited by its parent rect.
+All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code] to access the last item, [code]-2[/code] to select the second-to-last item, and so on.
+[b]Incremental search:[/b] Like [ItemList] and [Tree], [PopupMenu] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [member ProjectSettings.gui/timers/incremental_search_max_interval_msec].
+[b]Note:[/b] The ID values used for items are limited to 32 bits, not full 64 bits of [int]. This has a range of [code]-2^32[/code] to [code]2^32 - 1[/code], i.e. [code]-2147483648[/code] to [code]2147483647[/code].
+*/
 type PopupMenu = classdb.PopupMenu
+
+/*
+A popup with a configurable panel background. Any child controls added to this node will be stretched to fit the panel's size (similar to how [PanelContainer] works). If you are making windows, see [Window].
+*/
 type PopupPanel = classdb.PopupPanel
+
+/*
+This class allows storing compressed textures as self contained (not imported) resources.
+For 2D usage (compressed on disk, uncompressed on VRAM), the lossy and lossless modes are recommended. For 3D usage (compressed on VRAM) it depends on the target platform.
+If you intend to only use desktop, S3TC or BPTC are recommended. For only mobile, ETC2 is recommended.
+For portable, self contained 3D textures that work on both desktop and mobile, Basis Universal is recommended (although it has a small quality cost and longer compression time as a tradeoff).
+This resource is intended to be created from code.
+*/
 type PortableCompressedTexture2D = classdb.PortableCompressedTexture2D
+
+/*
+Base class for all primitive meshes. Handles applying a [Material] to a primitive mesh. Examples include [BoxMesh], [CapsuleMesh], [CylinderMesh], [PlaneMesh], [PrismMesh], and [SphereMesh].
+*/
 type PrimitiveMesh = classdb.PrimitiveMesh
+
+/*
+Class representing a prism-shaped [PrimitiveMesh].
+*/
 type PrismMesh = classdb.PrismMesh
+
+/*
+[ProceduralSkyMaterial] provides a way to create an effective background quickly by defining procedural parameters for the sun, the sky and the ground. The sky and ground are defined by a main color, a color at the horizon, and an easing curve to interpolate between them. Suns are described by a position in the sky, a color, and a max angle from the sun at which the easing curve ends. The max angle therefore defines the size of the sun in the sky.
+[ProceduralSkyMaterial] supports up to 4 suns, using the color, and energy, direction, and angular distance of the first four [DirectionalLight3D] nodes in the scene. This means that the suns are defined individually by the properties of their corresponding [DirectionalLight3D]s and globally by [member sun_angle_max] and [member sun_curve].
+[ProceduralSkyMaterial] uses a lightweight shader to draw the sky and is therefore suited for real-time updates. This makes it a great option for a sky that is simple and computationally cheap, but unrealistic. If you need a more realistic procedural option, use [PhysicalSkyMaterial].
+*/
 type ProceduralSkyMaterial = classdb.ProceduralSkyMaterial
+
+/*
+A control used for visual representation of a percentage. Shows fill percentage from right to left.
+*/
 type ProgressBar = classdb.ProgressBar
 
 func ProjectSettings(godot Context) classdb.ProjectSettings {
@@ -644,41 +5200,330 @@ func ProjectSettings(godot Context) classdb.ProjectSettings {
 	return *(*classdb.ProjectSettings)(unsafe.Pointer(&obj))
 }
 
+/*
+[PropertyTweener] is used to interpolate a property in an object. See [method Tween.tween_property] for more usage information.
+[b]Note:[/b] [method Tween.tween_property] is the only correct way to create [PropertyTweener]. Any [PropertyTweener] created manually will not function correctly.
+*/
 type PropertyTweener = classdb.PropertyTweener
+
+/*
+Class representing a square [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Y axes; this rotation is more suited for use with billboarded materials. A [QuadMesh] is equivalent to a [PlaneMesh] except its default [member PlaneMesh.orientation] is [constant PlaneMesh.FACE_Z].
+*/
 type QuadMesh = classdb.QuadMesh
+
+/*
+[QuadOccluder3D] stores a flat plane shape that can be used by the engine's occlusion culling system. See also [PolygonOccluder3D] if you need to customize the quad's shape.
+See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
+*/
 type QuadOccluder3D = classdb.QuadOccluder3D
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDAttachmentFormat = classdb.RDAttachmentFormat
+
+/*
+This class contains the list of attachment descriptions for a framebuffer pass. Each points with an index to a previously supplied list of texture attachments.
+Multipass framebuffers can optimize some configurations in mobile. On desktop, they provide little to no advantage.
+This object is used by [RenderingDevice].
+*/
 type RDFramebufferPass = classdb.RDFramebufferPass
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDPipelineColorBlendState = classdb.RDPipelineColorBlendState
+
+/*
+Controls how blending between source and destination fragments is performed when using [RenderingDevice].
+For reference, this is how common user-facing blend modes are implemented in Godot's 2D renderer:
+[b]Mix:[/b]
+[codeblock]
+var attachment = RDPipelineColorBlendStateAttachment.new()
+attachment.enable_blend = true
+attachment.color_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.src_color_blend_factor = RenderingDevice.BLEND_FACTOR_SRC_ALPHA
+attachment.dst_color_blend_factor = RenderingDevice.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA
+attachment.alpha_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.src_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+attachment.dst_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA
+[/codeblock]
+[b]Add:[/b]
+[codeblock]
+var attachment = RDPipelineColorBlendStateAttachment.new()
+attachment.enable_blend = true
+attachment.alpha_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.color_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.src_color_blend_factor = RenderingDevice.BLEND_FACTOR_SRC_ALPHA
+attachment.dst_color_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+attachment.src_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_SRC_ALPHA
+attachment.dst_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+[/codeblock]
+[b]Subtract:[/b]
+[codeblock]
+var attachment = RDPipelineColorBlendStateAttachment.new()
+attachment.enable_blend = true
+attachment.alpha_blend_op = RenderingDevice.BLEND_OP_REVERSE_SUBTRACT
+attachment.color_blend_op = RenderingDevice.BLEND_OP_REVERSE_SUBTRACT
+attachment.src_color_blend_factor = RenderingDevice.BLEND_FACTOR_SRC_ALPHA
+attachment.dst_color_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+attachment.src_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_SRC_ALPHA
+attachment.dst_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+[/codeblock]
+[b]Multiply:[/b]
+[codeblock]
+var attachment = RDPipelineColorBlendStateAttachment.new()
+attachment.enable_blend = true
+attachment.alpha_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.color_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.src_color_blend_factor = RenderingDevice.BLEND_FACTOR_DST_COLOR
+attachment.dst_color_blend_factor = RenderingDevice.BLEND_FACTOR_ZERO
+attachment.src_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_DST_ALPHA
+attachment.dst_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ZERO
+[/codeblock]
+[b]Pre-multiplied alpha:[/b]
+[codeblock]
+var attachment = RDPipelineColorBlendStateAttachment.new()
+attachment.enable_blend = true
+attachment.alpha_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.color_blend_op = RenderingDevice.BLEND_OP_ADD
+attachment.src_color_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+attachment.dst_color_blend_factor = RenderingDevice.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA
+attachment.src_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE
+attachment.dst_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA
+[/codeblock]
+*/
 type RDPipelineColorBlendStateAttachment = classdb.RDPipelineColorBlendStateAttachment
+
+/*
+[RDPipelineDepthStencilState] controls the way depth and stencil comparisons are performed when sampling those values using [RenderingDevice].
+*/
 type RDPipelineDepthStencilState = classdb.RDPipelineDepthStencilState
+
+/*
+[RDPipelineMultisampleState] is used to control how multisample or supersample antialiasing is being performed when rendering using [RenderingDevice].
+*/
 type RDPipelineMultisampleState = classdb.RDPipelineMultisampleState
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDPipelineRasterizationState = classdb.RDPipelineRasterizationState
+
+/*
+A [i]specialization constant[/i] is a way to create additional variants of shaders without actually increasing the number of shader versions that are compiled. This allows improving performance by reducing the number of shader versions and reducing [code]if[/code] branching, while still allowing shaders to be flexible for different use cases.
+This object is used by [RenderingDevice].
+*/
 type RDPipelineSpecializationConstant = classdb.RDPipelineSpecializationConstant
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDSamplerState = classdb.RDSamplerState
+
+/*
+Compiled shader file in SPIR-V form.
+See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+*/
 type RDShaderFile = classdb.RDShaderFile
+
+/*
+[RDShaderSPIRV] represents a [RDShaderFile]'s [url=https://www.khronos.org/spir/]SPIR-V[/url] code for various shader stages, as well as possible compilation error messages. SPIR-V is a low-level intermediate shader representation. This intermediate representation is not used directly by GPUs for rendering, but it can be compiled into binary shaders that GPUs can understand. Unlike compiled shaders, SPIR-V is portable across GPU models and driver versions.
+This object is used by [RenderingDevice].
+*/
 type RDShaderSPIRV = classdb.RDShaderSPIRV
+
+/*
+Shader source code in text form.
+See also [RDShaderFile]. [RDShaderSource] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+*/
 type RDShaderSource = classdb.RDShaderSource
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDTextureFormat = classdb.RDTextureFormat
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDTextureView = classdb.RDTextureView
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDUniform = classdb.RDUniform
+
+/*
+This object is used by [RenderingDevice].
+*/
 type RDVertexAttribute = classdb.RDVertexAttribute
+
+/*
+RandomNumberGenerator is a class for generating pseudo-random numbers. It currently uses [url=https://www.pcg-random.org/]PCG32[/url].
+[b]Note:[/b] The underlying algorithm is an implementation detail and should not be depended upon.
+To generate a random float number (within a given range) based on a time-dependent seed:
+[codeblock]
+var rng = RandomNumberGenerator.new()
+func _ready():
+
+	var my_random_number = rng.randf_range(-10.0, 10.0)
+
+[/codeblock]
+*/
 type RandomNumberGenerator = classdb.RandomNumberGenerator
+
+/*
+Range is an abstract base class for controls that represent a number within a range, using a configured [member step] and [member page] size. See e.g. [ScrollBar] and [Slider] for examples of higher-level nodes using Range.
+*/
 type Range = classdb.Range
+
+/*
+A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject2D] along its path, if it intersects any. This is useful for a lot of things, such as
+[RayCast2D] can ignore some objects by adding them to an exception list, by making its detection reporting ignore [Area2D]s ([member collide_with_areas]) or [PhysicsBody2D]s ([member collide_with_bodies]), or by configuring physics layers.
+[RayCast2D] calculates intersection every physics frame, and it holds the result until the next physics frame. For an immediate raycast, or if you want to configure a [RayCast2D] multiple times within the same physics frame, use [method force_raycast_update].
+To sweep over a region of 2D space, you can approximate the region with multiple [RayCast2D]s or use [ShapeCast2D].
+*/
 type RayCast2D = classdb.RayCast2D
+
+/*
+A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject3D] along its path, if it intersects any. This is useful for a lot of things, such as
+[RayCast3D] can ignore some objects by adding them to an exception list, by making its detection reporting ignore [Area3D]s ([member collide_with_areas]) or [PhysicsBody3D]s ([member collide_with_bodies]), or by configuring physics layers.
+[RayCast3D] calculates intersection every physics frame, and it holds the result until the next physics frame. For an immediate raycast, or if you want to configure a [RayCast3D] multiple times within the same physics frame, use [method force_raycast_update].
+To sweep over a region of 3D space, you can approximate the region with multiple [RayCast3D]s or use [ShapeCast3D].
+*/
 type RayCast3D = classdb.RayCast3D
+
+/*
+A 2D rectangle shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
+[b]Performance:[/b] [RectangleShape2D] is fast to check collisions against. It is faster than [CapsuleShape2D], but slower than [CircleShape2D].
+*/
 type RectangleShape2D = classdb.RectangleShape2D
+
+/*
+Base class for any object that keeps a reference count. [Resource] and many other helper objects inherit this class.
+Unlike other [Object] types, [RefCounted]s keep an internal reference counter so that they are automatically released when no longer in use, and only then. [RefCounted]s therefore do not need to be freed manually with [method Object.free].
+[RefCounted] instances caught in a cyclic reference will [b]not[/b] be freed automatically. For example, if a node holds a reference to instance [code]A[/code], which directly or indirectly holds a reference back to [code]A[/code], [code]A[/code]'s reference count will be 2. Destruction of the node will leave [code]A[/code] dangling with a reference count of 1, and there will be a memory leak. To prevent this, one of the references in the cycle can be made weak with [method @GlobalScope.weakref].
+In the vast majority of use cases, instantiating and using [RefCounted]-derived types is all you need to do. The methods provided in this class are only for advanced users, and can cause issues if misused.
+[b]Note:[/b] In C#, reference-counted objects will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free reference-counted objects that are no longer in use. This means that unused ones will linger on for a while before being removed.
+*/
 type RefCounted = gd.RefCounted
+
+/*
+A rectangle box that displays only a colored border around its rectangle. It is used to visualize the extents of a [Control].
+*/
 type ReferenceRect = classdb.ReferenceRect
+
+/*
+Captures its surroundings as a cubemap, and stores versions of it with increasing levels of blur to simulate different material roughnesses.
+The [ReflectionProbe] is used to create high-quality reflections at a low performance cost (when [member update_mode] is [constant UPDATE_ONCE]). [ReflectionProbe]s can be blended together and with the rest of the scene smoothly. [ReflectionProbe]s can also be combined with [VoxelGI], SDFGI ([member Environment.sdfgi_enabled]) and screen-space reflections ([member Environment.ssr_enabled]) to get more accurate reflections in specific areas. [ReflectionProbe]s render all objects within their [member cull_mask], so updating them can be quite expensive. It is best to update them once with the important static objects and then leave them as-is.
+[b]Note:[/b] Unlike [VoxelGI] and SDFGI, [ReflectionProbe]s only source their environment from a [WorldEnvironment] node. If you specify an [Environment] resource within a [Camera3D] node, it will be ignored by the [ReflectionProbe]. This can lead to incorrect lighting within the [ReflectionProbe].
+[b]Note:[/b] Reflection probes are only supported in the Forward+ and Mobile rendering methods, not Compatibility. When using the Mobile rendering method, only 8 reflection probes can be displayed on each mesh resource. Attempting to display more than 8 reflection probes on a single mesh resource will result in reflection probes flickering in and out as the camera moves.
+[b]Note:[/b] When using the Mobile rendering method, reflection probes will only correctly affect meshes whose visibility AABB intersects with the reflection probe's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [member GeometryInstance3D.extra_cull_margin] must be increased on the mesh. Otherwise, the reflection probe may not be visible on the mesh.
+*/
 type ReflectionProbe = classdb.ReflectionProbe
+
+/*
+A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of [code]ab[0-9][/code] would find any string that is [code]ab[/code] followed by any number from [code]0[/code] to [code]9[/code]. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
+To begin, the RegEx object needs to be compiled with the search pattern using [method compile] before it can be used.
+[codeblock]
+var regex = RegEx.new()
+regex.compile("\\w-(\\d+)")
+[/codeblock]
+The search pattern must be escaped first for GDScript before it is escaped for the expression. For example, [code]compile("\\d+")[/code] would be read by RegEx as [code]\d+[/code]. Similarly, [code]compile("\"(?:\\\\.|[^\"])*\"")[/code] would be read as [code]"(?:\\.|[^"])*"[/code]. In GDScript, you can also use raw string literals (r-strings). For example, [code]compile(r'"(?:\\.|[^"])*"')[/code] would be read the same.
+Using [method search], you can find the pattern within the given text. If a pattern is found, [RegExMatch] is returned and you can retrieve details of the results using methods such as [method RegExMatch.get_string] and [method RegExMatch.get_start].
+[codeblock]
+var regex = RegEx.new()
+regex.compile("\\w-(\\d+)")
+var result = regex.search("abc n-0123")
+if result:
+
+	print(result.get_string()) # Would print n-0123
+
+[/codeblock]
+The results of capturing groups [code]()[/code] can be retrieved by passing the group number to the various methods in [RegExMatch]. Group 0 is the default and will always refer to the entire pattern. In the above example, calling [code]result.get_string(1)[/code] would give you [code]0123[/code].
+This version of RegEx also supports named capturing groups, and the names can be used to retrieve the results. If two or more groups have the same name, the name would only refer to the first one with a match.
+[codeblock]
+var regex = RegEx.new()
+regex.compile("d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)")
+var result = regex.search("the number is x2f")
+if result:
+
+	print(result.get_string("digit")) # Would print 2f
+
+[/codeblock]
+If you need to process multiple results, [method search_all] generates a list of all non-overlapping results. This can be combined with a [code]for[/code] loop for convenience.
+[codeblock]
+for result in regex.search_all("d01, d03, d0c, x3f and x42"):
+
+	print(result.get_string("digit"))
+
+# Would print 01 03 0 3f 42
+[/codeblock]
+[b]Example of splitting a string using a RegEx:[/b]
+[codeblock]
+var regex = RegEx.new()
+regex.compile("\\S+") # Negated whitespace character class.
+var results = []
+for result in regex.search_all("One  Two \n\tThree"):
+
+	results.push_back(result.get_string())
+
+# The `results` array now contains "One", "Two", "Three".
+[/codeblock]
+[b]Note:[/b] Godot's regex implementation is based on the [url=https://www.pcre.org/]PCRE2[/url] library. You can view the full pattern reference [url=https://www.pcre.org/current/doc/html/pcre2pattern.html]here[/url].
+[b]Tip:[/b] You can use [url=https://regexr.com/]Regexr[/url] to test regular expressions online.
+*/
 type RegEx = classdb.RegEx
+
+/*
+Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
+*/
 type RegExMatch = classdb.RegExMatch
+
+/*
+RemoteTransform2D pushes its own [Transform2D] to another [Node2D] derived node (called the remote node) in the scene.
+It can be set to update another node's position, rotation and/or scale. It can use either global or local coordinates.
+*/
 type RemoteTransform2D = classdb.RemoteTransform2D
+
+/*
+RemoteTransform3D pushes its own [Transform3D] to another [Node3D] derived Node (called the remote node) in the scene.
+It can be set to update another Node's position, rotation and/or scale. It can use either global or local coordinates.
+*/
 type RemoteTransform3D = classdb.RemoteTransform3D
+
+/*
+Abstract scene buffers object, created for each viewport for which 3D rendering is done. It manages any additional buffers used during rendering and will discard buffers when the viewport is resized.
+[b]Note:[/b] this is an internal rendering server object only exposed for GDExtension plugins.
+*/
 type RenderSceneBuffers = classdb.RenderSceneBuffers
+
+/*
+This configuration object is created and populated by the render engine on a viewport change and used to (re)configure a [RenderSceneBuffers] object.
+*/
 type RenderSceneBuffersConfiguration = classdb.RenderSceneBuffersConfiguration
+
+/*
+This class allows for a RenderSceneBuffer implementation to be made in GDExtension.
+*/
 type RenderSceneBuffersExtension = classdb.RenderSceneBuffersExtension
+
+/*
+This object manages all 3D rendering buffers for the rendering device based renderers. An instance of this object is created for every viewport that has 3D rendering enabled.
+All buffers are organized in [b]contexts[/b]. The default context is called [b]render_buffers[/b] and can contain amongst others the color buffer, depth buffer, velocity buffers, VRS density map and MSAA variants of these buffers.
+Buffers are only guaranteed to exist during rendering of the viewport.
+[b]Note:[/b] this is an internal rendering server object only exposed for GDExtension plugins.
+*/
 type RenderSceneBuffersRD = classdb.RenderSceneBuffersRD
+
+/*
+[RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
+On startup, Godot creates a global [RenderingDevice] which can be retrieved using [method RenderingServer.get_rendering_device]. This global [RenderingDevice] performs drawing to the screen.
+[b]Local RenderingDevices:[/b] Using [method RenderingServer.create_local_rendering_device], you can create "secondary" rendering devices to perform drawing and GPU compute operations on separate threads.
+[b]Note:[/b] [RenderingDevice] assumes intermediate knowledge of modern graphics APIs such as Vulkan, Direct3D 12, Metal or WebGPU. These graphics APIs are lower-level than OpenGL or Direct3D 11, requiring you to perform what was previously done by the graphics driver itself. If you have difficulty understanding the concepts used in this class, follow the [url=https://vulkan-tutorial.com/]Vulkan Tutorial[/url] or [url=https://vkguide.dev/]Vulkan Guide[/url]. It's recommended to have existing modern OpenGL or Direct3D 11 knowledge before attempting to learn a low-level graphics API.
+[b]Note:[/b] [RenderingDevice] is not available when running in headless mode or when using the Compatibility rendering method.
+*/
 type RenderingDevice = classdb.RenderingDevice
 
 func RenderingServer(godot Context) classdb.RenderingServer {
@@ -686,24 +5531,125 @@ func RenderingServer(godot Context) classdb.RenderingServer {
 	return *(*classdb.RenderingServer)(unsafe.Pointer(&obj))
 }
 
+/*
+Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. Once loaded from disk, further attempts to load a resource by [member resource_path] returns the same reference. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
+In GDScript, resources can loaded from disk by their [member resource_path] using [method @GDScript.load] or [method @GDScript.preload].
+[b]Note:[/b] In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will linger on for a while before being removed.
+*/
 type Resource = classdb.Resource
+
+/*
+Godot loads resources in the editor or in exported games using ResourceFormatLoaders. They are queried automatically via the [ResourceLoader] singleton, or when a resource with internal dependencies is loaded. Each file type may load as a different resource type, so multiple ResourceFormatLoaders are registered in the engine.
+Extending this class allows you to define your own loader. Be sure to respect the documented return types and values. You should give it a global class name with [code]class_name[/code] for it to be registered. Like built-in ResourceFormatLoaders, it will be called automatically when loading resources of its handled type(s). You may also implement a [ResourceFormatSaver].
+[b]Note:[/b] You can also extend [EditorImportPlugin] if the resource type you need exists but Godot is unable to load its format. Choosing one way over another depends on if the format is suitable or not for the final exported game. For example, it's better to import [code].png[/code] textures as [code].ctex[/code] ([CompressedTexture2D]) first, so they can be loaded with better efficiency on the graphics card.
+*/
 type ResourceFormatLoader = classdb.ResourceFormatLoader
+
+/*
+The engine can save resources when you do it from the editor, or when you use the [ResourceSaver] singleton. This is accomplished thanks to multiple [ResourceFormatSaver]s, each handling its own format and called automatically by the engine.
+By default, Godot saves resources as [code].tres[/code] (text-based), [code].res[/code] (binary) or another built-in format, but you can choose to create your own format by extending this class. Be sure to respect the documented return types and values. You should give it a global class name with [code]class_name[/code] for it to be registered. Like built-in ResourceFormatSavers, it will be called automatically when saving resources of its recognized type(s). You may also implement a [ResourceFormatLoader].
+*/
 type ResourceFormatSaver = classdb.ResourceFormatSaver
+
+/*
+This is the base class for Godot's resource importers. To implement your own resource importers using editor plugins, see [EditorImportPlugin].
+*/
 type ResourceImporter = classdb.ResourceImporter
+
+/*
+The BMFont format is a format created by the [url=https://www.angelcode.com/products/bmfont/]BMFont[/url] program. Many BMFont-compatible programs also exist, like [url=https://www.bmglyph.com/]BMGlyph[/url].
+Compared to [ResourceImporterImageFont], [ResourceImporterBMFont] supports bitmap fonts with varying glyph widths/heights.
+See also [ResourceImporterDynamicFont].
+*/
 type ResourceImporterBMFont = classdb.ResourceImporterBMFont
+
+/*
+[BitMap] resources are typically used as click masks in [TextureButton] and [TouchScreenButton].
+*/
 type ResourceImporterBitMap = classdb.ResourceImporterBitMap
+
+/*
+Comma-separated values are a plain text table storage format. The format's simplicity makes it easy to edit in any text editor or spreadsheet software. This makes it a common choice for game localization.
+[b]Example CSV file:[/b]
+[codeblock]
+keys,en,es,ja
+GREET,"Hello, friend!","Hola, amigo!",こんにちは
+ASK,How are you?,Cómo está?,元気ですか
+BYE,Goodbye,Adiós,さようなら
+QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」男は言いました
+[/codeblock]
+*/
 type ResourceImporterCSVTranslation = classdb.ResourceImporterCSVTranslation
+
+/*
+Unlike bitmap fonts, dynamic fonts can be resized to any size and still look crisp. Dynamic fonts also optionally support MSDF font rendering, which allows for run-time scale changes with no re-rasterization cost.
+While WOFF and especially WOFF2 tend to result in smaller file sizes, there is no universally "better" font format. In most situations, it's recommended to use the font format that was shipped on the font developer's website.
+See also [ResourceImporterBMFont] and [ResourceImporterImageFont].
+*/
 type ResourceImporterDynamicFont = classdb.ResourceImporterDynamicFont
+
+/*
+This importer imports [Image] resources, as opposed to [CompressedTexture2D]. If you need to render the image in 2D or 3D, use [ResourceImporterTexture] instead.
+*/
 type ResourceImporterImage = classdb.ResourceImporterImage
+
+/*
+This image-based workflow can be easier to use than [ResourceImporterBMFont], but it requires all glyphs to have the same width and height. This makes [ResourceImporterImageFont] most suited to fixed-width fonts.
+See also [ResourceImporterDynamicFont].
+*/
 type ResourceImporterImageFont = classdb.ResourceImporterImageFont
+
+/*
+This imports a 3-dimensional texture, which can then be used in custom shaders, as a [FogMaterial] density map or as a [GPUParticlesAttractorVectorField3D]. See also [ResourceImporterTexture] and [ResourceImporterTextureAtlas].
+*/
 type ResourceImporterLayeredTexture = classdb.ResourceImporterLayeredTexture
+
+/*
+MP3 is a lossy audio format, with worse audio quality compared to [ResourceImporterOggVorbis] at a given bitrate.
+In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using a MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
+MP3 requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
+*/
 type ResourceImporterMP3 = classdb.ResourceImporterMP3
+
+/*
+Unlike [ResourceImporterScene], [ResourceImporterOBJ] will import a single [Mesh] resource by default instead of importing a [PackedScene]. This makes it easier to use the [Mesh] resource in nodes that expect direct [Mesh] resources, such as [GridMap], [GPUParticles3D] or [CPUParticles3D]. Note that it is still possible to save mesh resources from 3D scenes using the [b]Advanced Import Settings[/b] dialog, regardless of the source format.
+See also [ResourceImporterScene], which is used for more advanced 3D formats such as glTF.
+*/
 type ResourceImporterOBJ = classdb.ResourceImporterOBJ
+
+/*
+Ogg Vorbis is a lossy audio format, with better audio quality compared to [ResourceImporterMP3] at a given bitrate.
+In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using a MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
+Ogg Vorbis requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
+*/
 type ResourceImporterOggVorbis = classdb.ResourceImporterOggVorbis
+
+/*
+See also [ResourceImporterOBJ], which is used for OBJ models that can be imported as an independent [Mesh] or a scene.
+Additional options (such as extracting individual meshes or materials to files) are available in the [b]Advanced Import Settings[/b] dialog. This dialog can be accessed by double-clicking a 3D scene in the FileSystem dock or by selecting a 3D scene in the FileSystem dock, going to the Import dock and choosing [b]Advanced[/b].
+[b]Note:[/b] [ResourceImporterScene] is [i]not[/i] used for [PackedScene]s, such as [code].tscn[/code] and [code].scn[/code] files.
+*/
 type ResourceImporterScene = classdb.ResourceImporterScene
+
+/*
+This imports native GLSL shaders as [RDShaderFile] resources, for use with low-level [RenderingDevice] operations. This importer does [i]not[/i] handle [code].gdshader[/code] files.
+*/
 type ResourceImporterShaderFile = classdb.ResourceImporterShaderFile
+
+/*
+This importer imports [CompressedTexture2D] resources. If you need to process the image in scripts in a more convenient way, use [ResourceImporterImage] instead. See also [ResourceImporterLayeredTexture].
+*/
 type ResourceImporterTexture = classdb.ResourceImporterTexture
+
+/*
+This imports a collection of textures from a PNG image into an [AtlasTexture] or 2D [ArrayMesh]. This can be used to save memory when importing 2D animations from spritesheets. Texture atlases are only supported in 2D rendering, not 3D. See also [ResourceImporterTexture] and [ResourceImporterLayeredTexture].
+[b]Note:[/b] [ResourceImporterTextureAtlas] does not handle importing [TileSetAtlasSource], which is created using the [TileSet] editor instead.
+*/
 type ResourceImporterTextureAtlas = classdb.ResourceImporterTextureAtlas
+
+/*
+WAV is an uncompressed format, which can provide higher quality compared to Ogg Vorbis and MP3. It also has the lowest CPU cost to decode. This means high numbers of WAV sounds can be played at the same time, even on low-end deviceS.
+*/
 type ResourceImporterWAV = classdb.ResourceImporterWAV
 
 func ResourceLoader(godot Context) classdb.ResourceLoader {
@@ -711,6 +5657,10 @@ func ResourceLoader(godot Context) classdb.ResourceLoader {
 	return *(*classdb.ResourceLoader)(unsafe.Pointer(&obj))
 }
 
+/*
+This node is used to preload sub-resources inside a scene, so when the scene is loaded, all the resources are ready to use and can be retrieved from the preloader. You can add the resources using the ResourcePreloader tab when the node is selected.
+GDScript has a simplified [method @GDScript.preload] built-in method which can be used in most situations, leaving the use of [ResourcePreloader] for more advanced scenarios.
+*/
 type ResourcePreloader = classdb.ResourcePreloader
 
 func ResourceSaver(godot Context) classdb.ResourceSaver {
@@ -722,101 +5672,703 @@ func ResourceUID(godot Context) classdb.ResourceUID {
 	return *(*classdb.ResourceUID)(unsafe.Pointer(&obj))
 }
 
+/*
+[RibbonTrailMesh] represents a straight ribbon-shaped mesh with variable width. The ribbon is composed of a number of flat or cross-shaped sections, each with the same [member section_length] and number of [member section_segments]. A [member curve] is sampled along the total length of the ribbon, meaning that the curve determines the size of the ribbon along its length.
+This primitive mesh is usually used for particle trails.
+*/
 type RibbonTrailMesh = classdb.RibbonTrailMesh
+
+/*
+A custom effect for a [RichTextLabel], which can be loaded in the [RichTextLabel] inspector or using [method RichTextLabel.install_effect].
+[b]Note:[/b] For a [RichTextEffect] to be usable, a BBCode tag must be defined as a member variable called [code]bbcode[/code] in the script.
+[codeblocks]
+[gdscript skip-lint]
+# The RichTextEffect will be usable like this: `[example]Some text[/example]`
+var bbcode = "example"
+[/gdscript]
+[csharp skip-lint]
+// The RichTextEffect will be usable like this: `[example]Some text[/example]`
+string bbcode = "example";
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] As soon as a [RichTextLabel] contains at least one [RichTextEffect], it will continuously process the effect unless the project is paused. This may impact battery life negatively.
+*/
 type RichTextEffect = classdb.RichTextEffect
+
+/*
+A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
+[b]Note:[/b] Assignments to [member text] clear the tag stack and reconstruct it from the property's contents. Any edits made to [member text] will erase previous edits made from other manual sources such as [method append_text] and the [code]push_*[/code] / [method pop] methods.
+[b]Note:[/b] RichTextLabel doesn't support entangled BBCode tags. For example, instead of using [code skip-lint][b]bold[i]bold italic[/b]italic[/i][/code], use [code skip-lint][b]bold[i]bold italic[/i][/b][i]italic[/i][/code].
+[b]Note:[/b] [code]push_pop_*[/code] functions won't affect BBCode.
+[b]Note:[/b] Unlike [Label], [RichTextLabel] doesn't have a [i]property[/i] to horizontally align text to the center. Instead, enable [member bbcode_enabled] and surround the text in a [code skip-lint][center][/code] tag as follows: [code skip-lint][center]Example[/center][/code]. There is currently no built-in way to vertically align text either, but this can be emulated by relying on anchors/containers and the [member fit_content] property.
+*/
 type RichTextLabel = classdb.RichTextLabel
+
+/*
+[RigidBody2D] implements full 2D physics. It cannot be controlled directly, instead, you must apply forces to it (gravity, impulses, etc.), and the physics simulation will calculate the resulting movement, rotation, react to collisions, and affect other physics bodies in its path.
+The body's behavior can be adjusted via [member lock_rotation], [member freeze], and [member freeze_mode]. By changing various properties of the object, such as [member mass], you can control how the physics simulation acts on it.
+A rigid body will always maintain its shape and size, even when forces are applied to it. It is useful for objects that can be interacted with in an environment, such as a tree that can be knocked over or a stack of crates that can be pushed around.
+If you need to override the default physics behavior, you can write a custom force integration function. See [member custom_integrator].
+[b]Note:[/b] Changing the 2D transform or [member linear_velocity] of a [RigidBody2D] very often may lead to some unpredictable behaviors. If you need to directly affect the body, prefer [method _integrate_forces] as it allows you to directly access the physics state.
+*/
 type RigidBody2D = classdb.RigidBody2D
+
+/*
+[RigidBody3D] implements full 3D physics. It cannot be controlled directly, instead, you must apply forces to it (gravity, impulses, etc.), and the physics simulation will calculate the resulting movement, rotation, react to collisions, and affect other physics bodies in its path.
+The body's behavior can be adjusted via [member lock_rotation], [member freeze], and [member freeze_mode]. By changing various properties of the object, such as [member mass], you can control how the physics simulation acts on it.
+A rigid body will always maintain its shape and size, even when forces are applied to it. It is useful for objects that can be interacted with in an environment, such as a tree that can be knocked over or a stack of crates that can be pushed around.
+If you need to override the default physics behavior, you can write a custom force integration function. See [member custom_integrator].
+[b]Note:[/b] Changing the 3D transform or [member linear_velocity] of a [RigidBody3D] very often may lead to some unpredictable behaviors. If you need to directly affect the body, prefer [method _integrate_forces] as it allows you to directly access the physics state.
+*/
 type RigidBody3D = classdb.RigidBody3D
+
+/*
+[i]Root motion[/i] refers to an animation technique where a mesh's skeleton is used to give impulse to a character. When working with 3D animations, a popular technique is for animators to use the root skeleton bone to give motion to the rest of the skeleton. This allows animating characters in a way where steps actually match the floor below. It also allows precise interaction with objects during cinematics. See also [AnimationMixer].
+[b]Note:[/b] [RootMotionView] is only visible in the editor. It will be hidden automatically in the running project.
+*/
 type RootMotionView = classdb.RootMotionView
+
+/*
+This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
+This implementation supports RPCs via [method Node.rpc] and [method Node.rpc_id] and requires [method MultiplayerAPI.rpc] to be passed a [Node] (it will fail for other object types).
+This implementation additionally provide [SceneTree] replication via the [MultiplayerSpawner] and [MultiplayerSynchronizer] nodes, and the [SceneReplicationConfig] resource.
+[b]Note:[/b] The high-level multiplayer API protocol is an implementation detail and isn't meant to be used by non-Godot servers. It may change without notice.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type SceneMultiplayer = classdb.SceneMultiplayer
 type SceneReplicationConfig = classdb.SceneReplicationConfig
+
+/*
+Maintains a list of resources, nodes, exported and overridden properties, and built-in scripts associated with a scene. They cannot be modified from a [SceneState], only accessed. Useful for peeking into what a [PackedScene] contains without instantiating it.
+This class cannot be instantiated directly, it is retrieved for a given scene as the result of [method PackedScene.get_state].
+*/
 type SceneState = classdb.SceneState
+
+/*
+As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene as well as scenes themselves. Nodes can be added, retrieved and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
+You can also use the [SceneTree] to organize your nodes into groups: every node can be assigned as many groups as you want to create, e.g. an "enemy" group. You can then iterate these groups or even call methods and set properties on all the group's members at once.
+[SceneTree] is the default [MainLoop] implementation used by scenes, and is thus in charge of the game loop.
+*/
 type SceneTree = classdb.SceneTree
+
+/*
+A one-shot timer managed by the scene tree, which emits [signal timeout] on completion. See also [method SceneTree.create_timer].
+As opposed to [Timer], it does not require the instantiation of a node. Commonly used to create a one-shot delay timer as in the following example:
+[codeblocks]
+[gdscript]
+func some_function():
+
+	print("Timer started.")
+	await get_tree().create_timer(1.0).timeout
+	print("Timer ended.")
+
+[/gdscript]
+[csharp]
+public async Task SomeFunction()
+
+	{
+	    GD.Print("Timer started.");
+	    await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+	    GD.Print("Timer ended.");
+	}
+
+[/csharp]
+[/codeblocks]
+The timer will be dereferenced after its time elapses. To preserve the timer, you can keep a reference to it. See [RefCounted].
+[b]Note:[/b] The timer is processed after all of the nodes in the current frame, i.e. node's [method Node._process] method would be called before the timer (or [method Node._physics_process] if [code]process_in_physics[/code] in [method SceneTree.create_timer] has been set to [code]true[/code]).
+*/
 type SceneTreeTimer = classdb.SceneTreeTimer
+
+/*
+A class stored as a resource. A script extends the functionality of all objects that instantiate it.
+This is the base class for all scripts and should not be used directly. Trying to create a new script with this class will result in an error.
+The [code]new[/code] method of a script subclass creates a new instance. [method Object.set_script] extends an existing object, if that object's class matches one of the script's base classes.
+*/
 type Script = classdb.Script
+
+/*
+The [ScriptCreateDialog] creates script files according to a given template for a given scripting language. The standard use is to configure its fields prior to calling one of the [method Window.popup] methods.
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var dialog = ScriptCreateDialog.new();
+	dialog.config("Node", "res://new_node.gd") # For in-engine types.
+	dialog.config("\"res://base_node.gd\"", "res://derived_node.gd") # For script types.
+	dialog.popup_centered()
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    var dialog = new ScriptCreateDialog();
+	    dialog.Config("Node", "res://NewNode.cs"); // For in-engine types.
+	    dialog.Config("\"res://BaseNode.cs\"", "res://DerivedNode.cs"); // For script types.
+	    dialog.PopupCentered();
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type ScriptCreateDialog = classdb.ScriptCreateDialog
+
+/*
+Godot editor's script editor.
+[b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_script_editor].
+*/
 type ScriptEditor = classdb.ScriptEditor
+
+/*
+Base editor for editing scripts in the [ScriptEditor]. This does not include documentation items.
+*/
 type ScriptEditorBase = classdb.ScriptEditorBase
 type ScriptExtension = classdb.ScriptExtension
 type ScriptLanguage = classdb.ScriptLanguage
 type ScriptLanguageExtension = classdb.ScriptLanguageExtension
+
+/*
+Abstract base class for scrollbars, typically used to navigate through content that extends beyond the visible area of a control. Scrollbars are [Range]-based controls.
+*/
 type ScrollBar = classdb.ScrollBar
+
+/*
+A container used to provide a child control with scrollbars when needed. Scrollbars will automatically be drawn at the right (for vertical) or bottom (for horizontal) and will enable dragging to move the viewable Control (and its children) within the ScrollContainer. Scrollbars will also automatically resize the grabber based on the [member Control.custom_minimum_size] of the Control relative to the ScrollContainer.
+*/
 type ScrollContainer = classdb.ScrollContainer
+
+/*
+A 2D line segment shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
+*/
 type SegmentShape2D = classdb.SegmentShape2D
+
+/*
+A synchronization semaphore that can be used to synchronize multiple [Thread]s. Initialized to zero on creation. For a binary version, see [Mutex].
+[b]Warning:[/b] Semaphores must be used carefully to avoid deadlocks.
+[b]Warning:[/b] To guarantee that the operating system is able to perform proper cleanup (no crashes, no deadlocks), these conditions must be met:
+- When a [Semaphore]'s reference count reaches zero and it is therefore destroyed, no threads must be waiting on it.
+- When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not be waiting on any semaphore.
+*/
 type Semaphore = classdb.Semaphore
+
+/*
+A 2D ray shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D]. When a [SeparationRayShape2D] collides with an object, it tries to separate itself from it by moving its endpoint to the collision point. For example, a [SeparationRayShape2D] next to a character can allow it to instantly move up when touching stairs.
+*/
 type SeparationRayShape2D = classdb.SeparationRayShape2D
+
+/*
+A 3D ray shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. When a [SeparationRayShape3D] collides with an object, it tries to separate itself from it by moving its endpoint to the collision point. For example, a [SeparationRayShape3D] next to a character can allow it to instantly move up when touching stairs.
+*/
 type SeparationRayShape3D = classdb.SeparationRayShape3D
+
+/*
+Abstract base class for separators, used for separating other controls. [Separator]s are purely visual and normally drawn as a [StyleBoxLine].
+*/
 type Separator = classdb.Separator
+
+/*
+A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
+This class is used by a [ShaderMaterial] and allows you to write your own custom behavior for rendering visual items or updating particle information. For a detailed explanation and usage, please see the tutorials linked below.
+*/
 type Shader = classdb.Shader
+
+/*
+Similar to how a [WorldEnvironment] node can be used to override the environment while a specific scene is loaded, [ShaderGlobalsOverride] can be used to override global shader parameters temporarily. Once the node is removed, the project-wide values for the global shader parameters are restored. See the [RenderingServer] [code]global_shader_parameter_*[/code] methods for more information.
+[b]Note:[/b] Only one [ShaderGlobalsOverride] can be used per scene. If there is more than one [ShaderGlobalsOverride] node in the scene tree, only the first node (in tree order) will be taken into account.
+[b]Note:[/b] All [ShaderGlobalsOverride] nodes are made part of a [code]"shader_overrides_group"[/code] group when they are added to the scene tree. The currently active [ShaderGlobalsOverride] node also has a [code]"shader_overrides_group_active"[/code] group added to it. You can use this to check which [ShaderGlobalsOverride] node is currently active.
+*/
 type ShaderGlobalsOverride = classdb.ShaderGlobalsOverride
+
+/*
+A shader include file, saved with the [code].gdshaderinc[/code] extension. This class allows you to define a custom shader snippet that can be included in a [Shader] by using the preprocessor directive [code]#include[/code], followed by the file path (e.g. [code]#include "res://shader_lib.gdshaderinc"[/code]). The snippet doesn't have to be a valid shader on its own.
+*/
 type ShaderInclude = classdb.ShaderInclude
+
+/*
+A material that uses a custom [Shader] program to render visual items (canvas items, meshes, skies, fog), or to process particles. Compared to other materials, [ShaderMaterial] gives deeper control over the generated shader code. For more information, see the shaders documentation index below.
+Multiple [ShaderMaterial]s can use the same shader and configure different values for the shader uniforms.
+[b]Note:[/b] For performance reasons, the [signal Resource.changed] signal is only emitted when the [member Resource.resource_name] changes. Only in editor, it is also emitted for [member shader] changes.
+*/
 type ShaderMaterial = classdb.ShaderMaterial
+
+/*
+Abstract base class for all 2D shapes, intended for use in physics.
+[b]Performance:[/b] Primitive shapes, especially [CircleShape2D], are fast to check collisions against. [ConvexPolygonShape2D] is slower, and [ConcavePolygonShape2D] is the slowest.
+*/
 type Shape2D = classdb.Shape2D
+
+/*
+Abstract base class for all 3D shapes, intended for use in physics.
+[b]Performance:[/b] Primitive shapes, especially [SphereShape3D], are fast to check collisions against. [ConvexPolygonShape3D] and [HeightMapShape3D] are slower, and [ConcavePolygonShape3D] is the slowest.
+*/
 type Shape3D = classdb.Shape3D
+
+/*
+Shape casting allows to detect collision objects by sweeping its [member shape] along the cast direction determined by [member target_position]. This is similar to [RayCast2D], but it allows for sweeping a region of space, rather than just a straight line. [ShapeCast2D] can detect multiple collision objects. It is useful for things like wide laser beams or snapping a simple shape to a floor.
+Immediate collision overlaps can be done with the [member target_position] set to [code]Vector2(0, 0)[/code] and by calling [method force_shapecast_update] within the same physics frame. This helps to overcome some limitations of [Area2D] when used as an instantaneous detection area, as collision information isn't immediately available to it.
+[b]Note:[/b] Shape casting is more computationally expensive than ray casting.
+*/
 type ShapeCast2D = classdb.ShapeCast2D
+
+/*
+Shape casting allows to detect collision objects by sweeping its [member shape] along the cast direction determined by [member target_position]. This is similar to [RayCast3D], but it allows for sweeping a region of space, rather than just a straight line. [ShapeCast3D] can detect multiple collision objects. It is useful for things like wide laser beams or snapping a simple shape to a floor.
+Immediate collision overlaps can be done with the [member target_position] set to [code]Vector3(0, 0, 0)[/code] and by calling [method force_shapecast_update] within the same physics frame. This helps to overcome some limitations of [Area3D] when used as an instantaneous detection area, as collision information isn't immediately available to it.
+[b]Note:[/b] Shape casting is more computationally expensive than ray casting.
+*/
 type ShapeCast3D = classdb.ShapeCast3D
+
+/*
+Shortcuts are commonly used for interacting with a [Control] element from an [InputEvent] (also known as hotkeys).
+One shortcut can contain multiple [InputEvent]'s, allowing the possibility of triggering one action with multiple different inputs.
+*/
 type Shortcut = classdb.Shortcut
+
+/*
+[Skeleton2D] parents a hierarchy of [Bone2D] nodes. It holds a reference to each [Bone2D]'s rest pose and acts as a single point of access to its bones.
+To set up different types of inverse kinematics for the given Skeleton2D, a [SkeletonModificationStack2D] should be created. The inverse kinematics be applied by increasing [member SkeletonModificationStack2D.modification_count] and creating the desired number of modifications.
+*/
 type Skeleton2D = classdb.Skeleton2D
+
+/*
+[Skeleton3D] provides an interface for managing a hierarchy of bones, including pose, rest and animation (see [Animation]). It can also use ragdoll physics.
+The overall transform of a bone with respect to the skeleton is determined by bone pose. Bone rest defines the initial transform of the bone pose.
+Note that "global pose" below refers to the overall transform of the bone with respect to skeleton, so it is not the actual global/world transform of the bone.
+*/
 type Skeleton3D = classdb.Skeleton3D
+
+/*
+SkeletonIK3D is used to rotate all bones of a [Skeleton3D] bone chain a way that places the end bone at a desired 3D position. A typical scenario for IK in games is to place a character's feet on the ground or a character's hands on a currently held object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the [Skeleton3D] [code]bones_global_pose_override[/code] property for all affected bones in the chain. If fully applied, this overwrites any bone transform from [Animation]s or bone custom poses set by users. The applied amount can be controlled with the [member interpolation] property.
+[codeblock]
+# Apply IK effect automatically on every new frame (not the current)
+skeleton_ik_node.start()
+
+# Apply IK effect only on the current frame
+skeleton_ik_node.start(true)
+
+# Stop IK effect and reset bones_global_pose_override on Skeleton
+skeleton_ik_node.stop()
+
+# Apply full IK effect
+skeleton_ik_node.set_interpolation(1.0)
+
+# Apply half IK effect
+skeleton_ik_node.set_interpolation(0.5)
+
+# Apply zero IK effect (a value at or below 0.01 also removes bones_global_pose_override on Skeleton)
+skeleton_ik_node.set_interpolation(0.0)
+[/codeblock]
+[i]Deprecated.[/i] This class is deprecated, and might be removed in a future release.
+*/
 type SkeletonIK3D = classdb.SkeletonIK3D
+
+/*
+This resource provides an interface that can be expanded so code that operates on [Bone2D] nodes in a [Skeleton2D] can be mixed and matched together to create complex interactions.
+This is used to provide Godot with a flexible and powerful Inverse Kinematics solution that can be adapted for many different uses.
+*/
 type SkeletonModification2D = classdb.SkeletonModification2D
+
+/*
+This [SkeletonModification2D] uses an algorithm called Cyclic Coordinate Descent Inverse Kinematics, or CCDIK, to manipulate a chain of bones in a [Skeleton2D] so it reaches a defined target.
+CCDIK works by rotating a set of bones, typically called a "bone chain", on a single axis. Each bone is rotated to face the target from the tip (by default), which over a chain of bones allow it to rotate properly to reach the target. Because the bones only rotate on a single axis, CCDIK [i]can[/i] look more robotic than other IK solvers.
+[b]Note:[/b] The CCDIK modifier has [code]ccdik_joints[/code], which are the data objects that hold the data for each joint in the CCDIK chain. This is different from a bone! CCDIK joints hold the data needed for each bone in the bone chain used by CCDIK.
+CCDIK also fully supports angle constraints, allowing for more control over how a solution is met.
+*/
 type SkeletonModification2DCCDIK = classdb.SkeletonModification2DCCDIK
+
+/*
+This [SkeletonModification2D] uses an algorithm called Forward And Backward Reaching Inverse Kinematics, or FABRIK, to rotate a bone chain so that it reaches a target.
+FABRIK works by knowing the positions and lengths of a series of bones, typically called a "bone chain". It first starts by running a forward pass, which places the final bone at the target's position. Then all other bones are moved towards the tip bone, so they stay at the defined bone length away. Then a backwards pass is performed, where the root/first bone in the FABRIK chain is placed back at the origin. Then all other bones are moved so they stay at the defined bone length away. This positions the bone chain so that it reaches the target when possible, but all of the bones stay the correct length away from each other.
+Because of how FABRIK works, it often gives more natural results than those seen in [SkeletonModification2DCCDIK]. FABRIK also supports angle constraints, which are fully taken into account when solving.
+[b]Note:[/b] The FABRIK modifier has [code]fabrik_joints[/code], which are the data objects that hold the data for each joint in the FABRIK chain. This is different from [Bone2D] nodes! FABRIK joints hold the data needed for each [Bone2D] in the bone chain used by FABRIK.
+To help control how the FABRIK joints move, a magnet vector can be passed, which can nudge the bones in a certain direction prior to solving, giving a level of control over the final result.
+*/
 type SkeletonModification2DFABRIK = classdb.SkeletonModification2DFABRIK
+
+/*
+This modification moves a series of bones, typically called a bone chain, towards a target. What makes this modification special is that it calculates the velocity and acceleration for each bone in the bone chain, and runs a very light physics-like calculation using the inputted values. This allows the bones to overshoot the target and "jiggle" around. It can be configured to act more like a spring, or sway around like cloth might.
+This modification is useful for adding additional motion to things like hair, the edges of clothing, and more. It has several settings to that allow control over how the joint moves when the target moves.
+[b]Note:[/b] The Jiggle modifier has [code]jiggle_joints[/code], which are the data objects that hold the data for each joint in the Jiggle chain. This is different from than [Bone2D] nodes! Jiggle joints hold the data needed for each [Bone2D] in the bone chain used by the Jiggle modification.
+*/
 type SkeletonModification2DJiggle = classdb.SkeletonModification2DJiggle
+
+/*
+This [SkeletonModification2D] rotates a bone to look a target. This is extremely helpful for moving character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
+*/
 type SkeletonModification2DLookAt = classdb.SkeletonModification2DLookAt
+
+/*
+This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
+Experimental. Physical bones may be changed in the future to perform the position update of [Bone2D] on their own.
+*/
 type SkeletonModification2DPhysicalBones = classdb.SkeletonModification2DPhysicalBones
+
+/*
+This [SkeletonModification2D] holds a reference to a [SkeletonModificationStack2D], allowing you to use multiple modification stacks on a single [Skeleton2D].
+[b]Note:[/b] The modifications in the held [SkeletonModificationStack2D] will only be executed if their execution mode matches the execution mode of the SkeletonModification2DStackHolder.
+*/
 type SkeletonModification2DStackHolder = classdb.SkeletonModification2DStackHolder
+
+/*
+This [SkeletonModification2D] uses an algorithm typically called TwoBoneIK. This algorithm works by leveraging the law of cosines and the lengths of the bones to figure out what rotation the bones currently have, and what rotation they need to make a complete triangle, where the first bone, the second bone, and the target form the three vertices of the triangle. Because the algorithm works by making a triangle, it can only operate on two bones.
+TwoBoneIK is great for arms, legs, and really any joints that can be represented by just two bones that bend to reach a target. This solver is more lightweight than [SkeletonModification2DFABRIK], but gives similar, natural looking results.
+*/
 type SkeletonModification2DTwoBoneIK = classdb.SkeletonModification2DTwoBoneIK
+
+/*
+This resource is used by the Skeleton and holds a stack of [SkeletonModification2D]s.
+This controls the order of the modifications and how they are applied. Modification order is especially important for full-body IK setups, as you need to execute the modifications in the correct order to get the desired results. For example, you want to execute a modification on the spine [i]before[/i] the arms on a humanoid skeleton.
+This resource also controls how strongly all of the modifications are applied to the [Skeleton2D].
+*/
 type SkeletonModificationStack2D = classdb.SkeletonModificationStack2D
+
+/*
+This resource is used in [EditorScenePostImport]. Some parameters are referring to bones in [Skeleton3D], [Skin], [Animation], and some other nodes are rewritten based on the parameters of [SkeletonProfile].
+[b]Note:[/b] These parameters need to be set only when creating a custom profile. In [SkeletonProfileHumanoid], they are defined internally as read-only values.
+*/
 type SkeletonProfile = classdb.SkeletonProfile
+
+/*
+A [SkeletonProfile] as a preset that is optimized for the human form. This exists for standardization, so all parameters are read-only.
+*/
 type SkeletonProfileHumanoid = classdb.SkeletonProfileHumanoid
 type Skin = classdb.Skin
 type SkinReference = classdb.SkinReference
+
+/*
+The [Sky] class uses a [Material] to render a 3D environment's background and the light it emits by updating the reflection/radiance cubemaps.
+*/
 type Sky = classdb.Sky
+
+/*
+Abstract base class for sliders, used to adjust a value by moving a grabber along a horizontal or vertical axis. Sliders are [Range]-based controls.
+*/
 type Slider = classdb.Slider
+
+/*
+A physics joint that restricts the movement of a 3D physics body along an axis relative to another physics body. For example, Body A could be a [StaticBody3D] representing a piston base, while Body B could be a [RigidBody3D] representing the piston head, moving up and down.
+*/
 type SliderJoint3D = classdb.SliderJoint3D
+
+/*
+A deformable 3D physics mesh. Used to create elastic or deformable objects such as cloth, rubber, or other flexible materials.
+[b]Note:[/b] There are many known bugs in [SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
+*/
 type SoftBody3D = classdb.SoftBody3D
+
+/*
+Class representing a spherical [PrimitiveMesh].
+*/
 type SphereMesh = classdb.SphereMesh
+
+/*
+[SphereOccluder3D] stores a sphere shape that can be used by the engine's occlusion culling system.
+See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
+*/
 type SphereOccluder3D = classdb.SphereOccluder3D
+
+/*
+A 3D sphere shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
+[b]Performance:[/b] [SphereShape3D] is fast to check collisions against. It is faster than [BoxShape3D], [CapsuleShape3D], and [CylinderShape3D].
+*/
 type SphereShape3D = classdb.SphereShape3D
+
+/*
+[SpinBox] is a numerical input text field. It allows entering integers and floating point numbers.
+[b]Example:[/b]
+[codeblocks]
+[gdscript]
+var spin_box = SpinBox.new()
+add_child(spin_box)
+var line_edit = spin_box.get_line_edit()
+line_edit.context_menu_enabled = false
+spin_box.horizontal_alignment = LineEdit.HORIZONTAL_ALIGNMENT_RIGHT
+[/gdscript]
+[csharp]
+var spinBox = new SpinBox();
+AddChild(spinBox);
+var lineEdit = spinBox.GetLineEdit();
+lineEdit.ContextMenuEnabled = false;
+spinBox.AlignHorizontal = LineEdit.HorizontalAlignEnum.Right;
+[/csharp]
+[/codeblocks]
+The above code will create a [SpinBox], disable context menu on it and set the text alignment to right.
+See [Range] class for more options over the [SpinBox].
+[b]Note:[/b] With the [SpinBox]'s context menu disabled, you can right-click the bottom half of the spinbox to set the value to its minimum, while right-clicking the top half sets the value to its maximum.
+[b]Note:[/b] [SpinBox] relies on an underlying [LineEdit] node. To theme a [SpinBox]'s background, add theme items for [LineEdit] and customize them.
+[b]Note:[/b] If you want to implement drag and drop for the underlying [LineEdit], you can use [method Control.set_drag_forwarding] on the node returned by [method get_line_edit].
+*/
 type SpinBox = classdb.SpinBox
+
+/*
+A container that accepts only two child controls, then arranges them horizontally or vertically and creates a divisor between them. The divisor can be dragged around to change the size relation between the child controls.
+*/
 type SplitContainer = classdb.SplitContainer
+
+/*
+A Spotlight is a type of [Light3D] node that emits lights in a specific direction, in the shape of a cone. The light is attenuated through the distance. This attenuation can be configured by changing the energy, radius and attenuation parameters of [Light3D].
+[b]Note:[/b] When using the Mobile rendering method, only 8 spot lights can be displayed on each mesh resource. Attempting to display more than 8 spot lights on a single mesh resource will result in spot lights flickering in and out as the camera moves. When using the Compatibility rendering method, only 8 spot lights can be displayed on each mesh resource by default, but this can be increased by adjusting [member ProjectSettings.rendering/limits/opengl/max_lights_per_object].
+[b]Note:[/b] When using the Mobile or Compatibility rendering methods, spot lights will only correctly affect meshes whose visibility AABB intersects with the light's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [member GeometryInstance3D.extra_cull_margin] must be increased on the mesh. Otherwise, the light may not be visible on the mesh.
+*/
 type SpotLight3D = classdb.SpotLight3D
+
+/*
+[SpringArm3D] casts a ray or a shape along its Z axis and moves all its direct children to the collision point, with an optional margin. This is useful for 3rd person cameras that move closer to the player when inside a tight space (you may need to exclude the player's collider from the [SpringArm3D]'s collision check).
+*/
 type SpringArm3D = classdb.SpringArm3D
+
+/*
+A node that displays a 2D texture. The texture displayed can be a region from a larger atlas texture, or a frame from a sprite sheet animation.
+*/
 type Sprite2D = classdb.Sprite2D
+
+/*
+A node that displays a 2D texture in a 3D environment. The texture displayed can be a region from a larger atlas texture, or a frame from a sprite sheet animation. See also [SpriteBase3D] where properties such as the billboard mode are defined.
+*/
 type Sprite3D = classdb.Sprite3D
+
+/*
+A node that displays 2D texture information in a 3D environment. See also [Sprite3D] where many other properties are defined.
+*/
 type SpriteBase3D = classdb.SpriteBase3D
+
+/*
+Sprite frame library for an [AnimatedSprite2D] or [AnimatedSprite3D] node. Contains frames and animation data for playback.
+*/
 type SpriteFrames = classdb.SpriteFrames
+
+/*
+[StandardMaterial3D]'s properties are inherited from [BaseMaterial3D]. [StandardMaterial3D] uses separate textures for ambient occlusion, roughness and metallic maps. To use a single ORM map for all 3 textures, use an [ORMMaterial3D] instead.
+*/
 type StandardMaterial3D = classdb.StandardMaterial3D
+
+/*
+A static 2D physics body. It can't be moved by external forces or contacts, but can be moved manually by other means such as code, [AnimationMixer]s (with [member AnimationMixer.callback_mode_process] set to [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS]), and [RemoteTransform2D].
+When [StaticBody2D] is moved, it is teleported to its new position without affecting other physics bodies in its path. If this is not desired, use [AnimatableBody2D] instead.
+[StaticBody2D] is useful for completely static objects like floors and walls, as well as moving surfaces like conveyor belts and circular revolving platforms (by using [member constant_linear_velocity] and [member constant_angular_velocity]).
+*/
 type StaticBody2D = classdb.StaticBody2D
+
+/*
+A static 3D physics body. It can't be moved by external forces or contacts, but can be moved manually by other means such as code, [AnimationMixer]s (with [member AnimationMixer.callback_mode_process] set to [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS]), and [RemoteTransform3D].
+When [StaticBody3D] is moved, it is teleported to its new position without affecting other physics bodies in its path. If this is not desired, use [AnimatableBody3D] instead.
+[StaticBody3D] is useful for completely static objects like floors and walls, as well as moving surfaces like conveyor belts and circular revolving platforms (by using [member constant_linear_velocity] and [member constant_angular_velocity]).
+*/
 type StaticBody3D = classdb.StaticBody3D
+
+/*
+StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type StreamPeer = classdb.StreamPeer
+
+/*
+A data buffer stream peer that uses a byte array as the stream. This object can be used to handle binary data from network sessions. To handle binary data stored in files, [FileAccess] can be used directly.
+A [StreamPeerBuffer] object keeps an internal cursor which is the offset in bytes to the start of the buffer. Get and put operations are performed at the cursor position and will move the cursor accordingly.
+*/
 type StreamPeerBuffer = classdb.StreamPeerBuffer
 type StreamPeerExtension = classdb.StreamPeerExtension
+
+/*
+This class allows to compress or decompress data using GZIP/deflate in a streaming fashion. This is particularly useful when compressing or decompressing files that have to be sent through the network without needing to allocate them all in memory.
+After starting the stream via [method start_compression] (or [method start_decompression]), calling [method StreamPeer.put_partial_data] on this stream will compress (or decompress) the data, writing it to the internal buffer. Calling [method StreamPeer.get_available_bytes] will return the pending bytes in the internal buffer, and [method StreamPeer.get_partial_data] will retrieve the compressed (or decompressed) bytes from it. When the stream is over, you must call [method finish] to ensure the internal buffer is properly flushed (make sure to call [method StreamPeer.get_available_bytes] on last time to check if more data needs to be read after that).
+*/
 type StreamPeerGZIP = classdb.StreamPeerGZIP
+
+/*
+A stream peer that handles TCP connections. This object can be used to connect to TCP servers, or also is returned by a TCP server.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type StreamPeerTCP = classdb.StreamPeerTCP
+
+/*
+A stream peer that handles TLS connections. This object can be used to connect to a TLS server or accept a single TLS client connection.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type StreamPeerTLS = classdb.StreamPeerTLS
+
+/*
+[StyleBox] is an abstract base class for drawing stylized boxes for UI elements. It is used for panels, buttons, [LineEdit] backgrounds, [Tree] backgrounds, etc. and also for testing a transparency mask for pointer signals. If mask test fails on a [StyleBox] assigned as mask to a control, clicks and motion signals will go through it to the one below.
+[b]Note:[/b] For control nodes that have [i]Theme Properties[/i], the [code]focus[/code] [StyleBox] is displayed over the [code]normal[/code], [code]hover[/code] or [code]pressed[/code] [StyleBox]. This makes the [code]focus[/code] [StyleBox] more reusable across different nodes.
+*/
 type StyleBox = classdb.StyleBox
+
+/*
+An empty [StyleBox] that can be used to display nothing instead of the default style (e.g. it can "disable" [code]focus[/code] styles).
+*/
 type StyleBoxEmpty = classdb.StyleBoxEmpty
+
+/*
+By configuring various properties of this style box, you can achieve many common looks without the need of a texture. This includes optionally rounded borders, antialiasing, shadows, and skew.
+Setting corner radius to high values is allowed. As soon as corners overlap, the stylebox will switch to a relative system.
+[b]Example:[/b]
+[codeblock]
+height = 30
+corner_radius_top_left = 50
+corner_radius_bottom_left = 100
+[/codeblock]
+The relative system now would take the 1:2 ratio of the two left corners to calculate the actual corner width. Both corners added will [b]never[/b] be more than the height. Result:
+[codeblock]
+corner_radius_top_left: 10
+corner_radius_bottom_left: 20
+[/codeblock]
+*/
 type StyleBoxFlat = classdb.StyleBoxFlat
+
+/*
+A [StyleBox] that displays a single line of a given color and thickness. The line can be either horizontal or vertical. Useful for separators.
+*/
 type StyleBoxLine = classdb.StyleBoxLine
+
+/*
+A texture-based nine-patch [StyleBox], in a way similar to [NinePatchRect]. This stylebox performs a 3×3 scaling of a texture, where only the center cell is fully stretched. This makes it possible to design bordered styles regardless of the stylebox's size.
+*/
 type StyleBoxTexture = classdb.StyleBoxTexture
+
+/*
+[SubViewport] Isolates a rectangular region of a scene to be displayed independently. This can be used, for example, to display UI in 3D space.
+[b]Note:[/b] [SubViewport] is a [Viewport] that isn't a [Window], i.e. it doesn't draw anything by itself. To display anything, [SubViewport] must have a non-zero size and be either put inside a [SubViewportContainer] or assigned to a [ViewportTexture].
+*/
 type SubViewport = classdb.SubViewport
+
+/*
+A container that displays the contents of underlying [SubViewport] child nodes. It uses the combined size of the [SubViewport]s as minimum size, unless [member stretch] is enabled.
+[b]Note:[/b] Changing a [SubViewportContainer]'s [member Control.scale] will cause its contents to appear distorted. To change its visual size without causing distortion, adjust the node's margins instead (if it's not already in a container).
+[b]Note:[/b] The [SubViewportContainer] forwards mouse-enter and mouse-exit notifications to its sub-viewports.
+*/
 type SubViewportContainer = classdb.SubViewportContainer
+
+/*
+The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
+[codeblocks]
+[gdscript]
+var st = SurfaceTool.new()
+st.begin(Mesh.PRIMITIVE_TRIANGLES)
+st.set_color(Color(1, 0, 0))
+st.set_uv(Vector2(0, 0))
+st.add_vertex(Vector3(0, 0, 0))
+[/gdscript]
+[csharp]
+var st = new SurfaceTool();
+st.Begin(Mesh.PrimitiveType.Triangles);
+st.SetColor(new Color(1, 0, 0));
+st.SetUV(new Vector2(0, 0));
+st.AddVertex(new Vector3(0, 0, 0));
+[/csharp]
+[/codeblocks]
+The above [SurfaceTool] now contains one vertex of a triangle which has a UV coordinate and a specified [Color]. If another vertex were added without calling [method set_uv] or [method set_color], then the last values would be used.
+Vertex attributes must be passed [b]before[/b] calling [method add_vertex]. Failure to do so will result in an error when committing the vertex information to a mesh.
+Additionally, the attributes used before the first vertex is added determine the format of the mesh. For example, if you only add UVs to the first vertex, you cannot add color to any of the subsequent vertices.
+See also [ArrayMesh], [ImmediateMesh] and [MeshDataTool] for procedural geometry generation.
+[b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
+*/
 type SurfaceTool = classdb.SurfaceTool
+
+/*
+Base class for syntax highlighters. Provides syntax highlighting data to a [TextEdit]. The associated [TextEdit] will call into the [SyntaxHighlighter] on an as-needed basis.
+[b]Note:[/b] A [SyntaxHighlighter] instance should not be used across multiple [TextEdit] nodes.
+*/
 type SyntaxHighlighter = classdb.SyntaxHighlighter
+
+/*
+[SystemFont] loads a font from a system font with the first matching name from [member font_names].
+It will attempt to match font style, but it's not guaranteed.
+The returned font might be part of a font collection or be a variable font with OpenType "weight", "width" and/or "italic" features set.
+You can create [FontVariation] of the system font for precise control over its features.
+[b]Note:[/b] This class is implemented on iOS, Linux, macOS and Windows, on other platforms it will fallback to default theme font.
+*/
 type SystemFont = classdb.SystemFont
+
+/*
+A TCP server. Listens to connections on a port and returns a [StreamPeerTCP] when it gets an incoming connection.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type TCPServer = classdb.TCPServer
+
+/*
+TLSOptions abstracts the configuration options for the [StreamPeerTLS] and [PacketPeerDTLS] classes.
+Objects of this class cannot be instantiated directly, and one of the static methods [method client], [method client_unsafe], or [method server] should be used instead.
+[codeblocks]
+[gdscript]
+# Create a TLS client configuration which uses our custom trusted CA chain.
+var client_trusted_cas = load("res://my_trusted_cas.crt")
+var client_tls_options = TLSOptions.client(client_trusted_cas)
+
+# Create a TLS server configuration.
+var server_certs = load("res://my_server_cas.crt")
+var server_key = load("res://my_server_key.key")
+var server_tls_options = TLSOptions.server(server_key, server_certs)
+[/gdscript]
+[/codeblocks]
+*/
 type TLSOptions = classdb.TLSOptions
+
+/*
+A control that provides a horizontal bar with tabs. Similar to [TabContainer] but is only in charge of drawing tabs, not interacting with children.
+*/
 type TabBar = classdb.TabBar
+
+/*
+Arranges child controls into a tabbed view, creating a tab for each one. The active tab's corresponding control is made visible, while all other child controls are hidden. Ignores non-control children.
+[b]Note:[/b] The drawing of the clickable tabs is handled by this node; [TabBar] is not needed.
+*/
 type TabContainer = classdb.TabContainer
+
+/*
+A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
+[b]Note:[/b] Most viewport, caret and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets.
+[b]Note:[/b] When holding down [kbd]Alt[/kbd], the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
+*/
 type TextEdit = classdb.TextEdit
+
+/*
+Abstraction over [TextServer] for handling a single line of text.
+*/
 type TextLine = classdb.TextLine
+
+/*
+Generate an [PrimitiveMesh] from the text.
+TextMesh can be generated only when using dynamic fonts with vector glyph contours. Bitmap fonts (including bitmap data in the TrueType/OpenType containers, like color emoji fonts) are not supported.
+The UV layout is arranged in 4 horizontal strips, top to bottom: 40% of the height for the front face, 40% for the back face, 10% for the outer edges and 10% for the inner edges.
+*/
 type TextMesh = classdb.TextMesh
+
+/*
+Abstraction over [TextServer] for handling a single paragraph of text.
+*/
 type TextParagraph = classdb.TextParagraph
+
+/*
+[TextServer] is the API backend for managing fonts and rendering text.
+*/
 type TextServer = classdb.TextServer
+
+/*
+An implementation of [TextServer] that uses HarfBuzz, ICU and SIL Graphite to support BiDi, complex text layouts and contextual OpenType features. This is Godot's default primary [TextServer] interface.
+*/
 type TextServerAdvanced = classdb.TextServerAdvanced
+
+/*
+A dummy [TextServer] interface that doesn't do anything. Useful for freeing up memory when rendering text is not needed, as text servers are resource-intensive. It can also be used for performance comparisons in complex GUIs to check the impact of text rendering.
+A dummy text server is always available at the start of a project. Here's how to access it:
+[codeblock]
+var dummy_text_server = TextServerManager.find_interface("Dummy")
+if dummy_text_server != null:
+
+	TextServerManager.set_primary_interface(dummy_text_server)
+	# If the other text servers are unneeded, they can be removed:
+	for i in TextServerManager.get_interface_count():
+	    var text_server = TextServerManager.get_interface(i)
+	    if text_server != dummy_text_server:
+	        TextServerManager.remove_interface(text_server)
+
+[/codeblock]
+The command line argument [code]--text-driver Dummy[/code] (case-sensitive) can be used to force the "Dummy" [TextServer] on any project.
+*/
 type TextServerDummy = classdb.TextServerDummy
+
+/*
+External [TextServer] implementations should inherit from this class.
+*/
 type TextServerExtension = classdb.TextServerExtension
 
 func TextServerManager(godot Context) classdb.TextServerManager {
@@ -824,20 +6376,94 @@ func TextServerManager(godot Context) classdb.TextServerManager {
 	return *(*classdb.TextServerManager)(unsafe.Pointer(&obj))
 }
 
+/*
+[Texture] is the base class for all texture types. Common texture types are [Texture2D] and [ImageTexture]. See also [Image].
+*/
 type Texture = classdb.Texture
+
+/*
+A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite2D] or GUI [Control].
+Textures are often created by loading them from a file. See [method @GDScript.load].
+[Texture2D] is a base for other resources. It cannot be used directly.
+[b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations. Larger textures may fail to import.
+*/
 type Texture2D = classdb.Texture2D
+
+/*
+A Texture2DArray is different from a Texture3D: The Texture2DArray does not support trilinear interpolation between the [Image]s, i.e. no blending. See also [Cubemap] and [CubemapArray], which are texture arrays with specialized cubemap functions.
+A Texture2DArray is also different from an [AtlasTexture]: In a Texture2DArray, all images are treated separately. In an atlas, the regions (i.e. the single images) can be of different sizes. Furthermore, you usually need to add a padding around the regions, to prevent accidental UV mapping to more than one region. The same goes for mipmapping: Mipmap chains are handled separately for each layer. In an atlas, the slicing has to be done manually in the fragment shader.
+To create such a texture file yourself, reimport your image files using the Godot Editor import presets.
+*/
 type Texture2DArray = classdb.Texture2DArray
+
+/*
+This texture array class allows you to use a 2D array texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
+*/
 type Texture2DArrayRD = classdb.Texture2DArrayRD
+
+/*
+This texture class allows you to use a 2D texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
+*/
 type Texture2DRD = classdb.Texture2DRD
+
+/*
+Base class for [ImageTexture3D] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. [Texture3D] is the base class for all 3-dimensional texture types. See also [TextureLayered].
+All images need to have the same width, height and number of mipmap levels.
+To create such a texture file yourself, reimport your image files using the Godot Editor import presets.
+*/
 type Texture3D = classdb.Texture3D
+
+/*
+This texture class allows you to use a 3D texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
+*/
 type Texture3DRD = classdb.Texture3DRD
+
+/*
+[TextureButton] has the same functionality as [Button], except it uses sprites instead of Godot's [Theme] resource. It is faster to create, but it doesn't support localization like more complex [Control]s.
+The "normal" state must contain a texture ([member texture_normal]); other textures are optional.
+See also [BaseButton] which contains common properties and methods associated with this node.
+*/
 type TextureButton = classdb.TextureButton
+
+/*
+This texture class allows you to use a cubemap array texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
+*/
 type TextureCubemapArrayRD = classdb.TextureCubemapArrayRD
+
+/*
+This texture class allows you to use a cubemap texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
+*/
 type TextureCubemapRD = classdb.TextureCubemapRD
+
+/*
+Base class for [ImageTextureLayered] and [CompressedTextureLayered]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
+Data is set on a per-layer basis. For [Texture2DArray]s, the layer specifies the array layer.
+All images need to have the same width, height and number of mipmap levels.
+A [TextureLayered] can be loaded with [method ResourceLoader.load].
+Internally, Godot maps these files to their respective counterparts in the target rendering driver (Vulkan, OpenGL3).
+*/
 type TextureLayered = classdb.TextureLayered
+
+/*
+Base class for [Texture2DArrayRD], [TextureCubemapRD] and [TextureCubemapArrayRD]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types.
+*/
 type TextureLayeredRD = classdb.TextureLayeredRD
+
+/*
+TextureProgressBar works like [ProgressBar], but uses up to 3 textures instead of Godot's [Theme] resource. It can be used to create horizontal, vertical and radial progress bars.
+*/
 type TextureProgressBar = classdb.TextureProgressBar
+
+/*
+A control that displays a texture, for example an icon inside a GUI. The texture's placement can be controlled with the [member stretch_mode] property. It can scale, tile, or stay centered inside its bounding rectangle.
+*/
 type TextureRect = classdb.TextureRect
+
+/*
+A resource used for styling/skinning [Control] and [Window] nodes. While individual controls can be styled using their local theme overrides (see [method Control.add_theme_color_override]), theme resources allow you to store and apply the same settings across all controls sharing the same type (e.g. style all [Button]s the same). One theme resource can be used for the entire project, but you can also set a separate theme resource to a branch of control nodes. A theme resource assigned to a control applies to the control itself, as well as all of its direct and indirect children (as long as a chain of controls is uninterrupted).
+Use [member ProjectSettings.gui/theme/custom] to set up a project-scope theme that will be available to every control in your project.
+Use [member Control.theme] of any control node to set up a theme that will be available to that control and all of its direct and indirect children.
+*/
 type Theme = classdb.Theme
 
 func ThemeDB(godot Context) classdb.ThemeDB {
@@ -845,13 +6471,66 @@ func ThemeDB(godot Context) classdb.ThemeDB {
 	return *(*classdb.ThemeDB)(unsafe.Pointer(&obj))
 }
 
+/*
+A unit of execution in a process. Can run methods on [Object]s simultaneously. The use of synchronization via [Mutex] or [Semaphore] is advised if working with shared objects.
+[b]Warning:[/b]
+To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s reference count reaches zero and it is therefore destroyed, the following conditions must be met:
+- It must not have any [Mutex] objects locked.
+- It must not be waiting on any [Semaphore] objects.
+- [method wait_to_finish] should have been called on it.
+*/
 type Thread = classdb.Thread
+
+/*
+[TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
+*/
 type TileData = classdb.TileData
+
+/*
+Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
+For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
+To force an update earlier on, call [method update_internals].
+*/
 type TileMap = classdb.TileMap
+
+/*
+This resource holds a set of cells to help bulk manipulations of [TileMap].
+A pattern always start at the [code](0,0)[/code] coordinates and cannot have cells with negative coordinates.
+*/
 type TileMapPattern = classdb.TileMapPattern
+
+/*
+A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
+Tiles can either be from a [TileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [TileSetScenesCollectionSource], which exposes scene-based tiles.
+Tiles are referenced by using three IDs: their source ID, their atlas coordinates ID, and their alternative tile ID.
+A TileSet can be configured so that its tiles expose more or fewer properties. To do so, the TileSet resources use property layers, which you can add or remove depending on your needs.
+For example, adding a physics layer allows giving collision shapes to your tiles. Each layer has dedicated properties (physics layer and mask), so you may add several TileSet physics layers for each type of collision you need.
+See the functions to add new layers for more information.
+*/
 type TileSet = classdb.TileSet
+
+/*
+An atlas is a grid of tiles laid out on a texture. Each tile in the grid must be exposed using [method create_tile]. Those tiles are then indexed using their coordinates in the grid.
+Each tile can also have a size in the grid coordinates, making it more or less cells in the atlas.
+Alternatives version of a tile can be created using [method create_alternative_tile], which are then indexed using an alternative ID. The main tile (the one in the grid), is accessed with an alternative ID equal to 0.
+Each tile alternate has a set of properties that is defined by the source's [TileSet] layers. Those properties are stored in a TileData object that can be accessed and modified using [method get_tile_data].
+As TileData properties are stored directly in the TileSetAtlasSource resource, their properties might also be set using [code]TileSetAtlasSource.set("<coords_x>:<coords_y>/<alternative_id>/<tile_data_property>")[/code].
+*/
 type TileSetAtlasSource = classdb.TileSetAtlasSource
+
+/*
+When placed on a [TileMap], tiles from [TileSetScenesCollectionSource] will automatically instantiate an associated scene at the cell's position in the TileMap.
+Scenes are instantiated as children of the [TileMap] when it enters the tree. If you add/remove a scene tile in the [TileMap] that is already inside the tree, the [TileMap] will automatically instantiate/free the scene accordingly.
+*/
 type TileSetScenesCollectionSource = classdb.TileSetScenesCollectionSource
+
+/*
+Exposes a set of tiles for a [TileSet] resource.
+Tiles in a source are indexed with two IDs, coordinates ID (of type Vector2i) and an alternative ID (of type int), named according to their use in the [TileSetAtlasSource] class.
+Depending on the TileSet source type, those IDs might have restrictions on their values, this is why the base [TileSetSource] class only exposes getters for them.
+You can iterate over all tiles exposed by a TileSetSource by first iterating over coordinates IDs using [method get_tiles_count] and [method get_tile_id], then over alternative IDs using [method get_alternative_tiles_count] and [method get_alternative_tile_id].
+[b]Warning:[/b] [TileSetSource] can only be added to one TileSet at the same time. Calling [method TileSet.add_source] on a second [TileSet] will remove the source from the first one.
+*/
 type TileSetSource = classdb.TileSetSource
 
 func Time(godot Context) classdb.Time {
@@ -859,9 +6538,28 @@ func Time(godot Context) classdb.Time {
 	return *(*classdb.Time)(unsafe.Pointer(&obj))
 }
 
+/*
+Counts down a specified interval and emits a signal on reaching 0. Can be set to repeat or "one-shot" mode.
+[b]Note:[/b] Timers are affected by [member Engine.time_scale], a higher scale means quicker timeouts, and vice versa.
+[b]Note:[/b] To create a one-shot timer without instantiating a node, use [method SceneTree.create_timer].
+*/
 type Timer = classdb.Timer
+
+/*
+Class representing a torus [PrimitiveMesh].
+*/
 type TorusMesh = classdb.TorusMesh
+
+/*
+TouchScreenButton allows you to create on-screen buttons for touch devices. It's intended for gameplay use, such as a unit you have to touch to move. Unlike [Button], TouchScreenButton supports multitouch out of the box. Several TouchScreenButtons can be pressed at the same time with touch input.
+This node inherits from [Node2D]. Unlike with [Control] nodes, you cannot set anchors on it. If you want to create menus or user interfaces, you may want to use [Button] nodes instead. To make button nodes react to touch events, you can enable the Emulate Mouse option in the Project Settings.
+You can configure TouchScreenButton to be visible only on touch devices, helping you develop your game both for desktop and mobile devices.
+*/
 type TouchScreenButton = classdb.TouchScreenButton
+
+/*
+[Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
+*/
 type Translation = classdb.Translation
 
 func TranslationServer(godot Context) classdb.TranslationServer {
@@ -869,156 +6567,1315 @@ func TranslationServer(godot Context) classdb.TranslationServer {
 	return *(*classdb.TranslationServer)(unsafe.Pointer(&obj))
 }
 
+/*
+A control used to show a set of internal [TreeItem]s in a hierarchical structure. The tree items can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like [LineEdit]s, buttons and popups. It can be useful for structured displays and interactions.
+Trees are built via code, using [TreeItem] objects to create the structure. They have a single root, but multiple roots can be simulated with [member hide_root]:
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var tree = Tree.new()
+	var root = tree.create_item()
+	tree.hide_root = true
+	var child1 = tree.create_item(root)
+	var child2 = tree.create_item(root)
+	var subchild1 = tree.create_item(child1)
+	subchild1.set_text(0, "Subchild1")
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    var tree = new Tree();
+	    TreeItem root = tree.CreateItem();
+	    tree.HideRoot = true;
+	    TreeItem child1 = tree.CreateItem(root);
+	    TreeItem child2 = tree.CreateItem(root);
+	    TreeItem subchild1 = tree.CreateItem(child1);
+	    subchild1.SetText(0, "Subchild1");
+	}
+
+[/csharp]
+[/codeblocks]
+To iterate over all the [TreeItem] objects in a [Tree] object, use [method TreeItem.get_next] and [method TreeItem.get_first_child] after getting the root through [method get_root]. You can use [method Object.free] on a [TreeItem] to remove it from the [Tree].
+[b]Incremental search:[/b] Like [ItemList] and [PopupMenu], [Tree] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [member ProjectSettings.gui/timers/incremental_search_max_interval_msec].
+*/
 type Tree = classdb.Tree
+
+/*
+A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
+To create a [TreeItem], use [method Tree.create_item] or [method TreeItem.create_child]. To remove a [TreeItem], use [method Object.free].
+[b]Note:[/b] The ID values used for buttons are 32-bit, unlike [int] which is always 64-bit. They go from [code]-2147483648[/code] to [code]2147483647[/code].
+*/
 type TreeItem = classdb.TreeItem
+
+/*
+Mesh type used internally for collision calculations.
+*/
 type TriangleMesh = classdb.TriangleMesh
+
+/*
+[TubeTrailMesh] represents a straight tube-shaped mesh with variable width. The tube is composed of a number of cylindrical sections, each with the same [member section_length] and number of [member section_rings]. A [member curve] is sampled along the total length of the tube, meaning that the curve determines the radius of the tube along its length.
+This primitive mesh is usually used for particle trails.
+*/
 type TubeTrailMesh = classdb.TubeTrailMesh
+
+/*
+Tweens are mostly useful for animations requiring a numerical property to be interpolated over a range of values. The name [i]tween[/i] comes from [i]in-betweening[/i], an animation technique where you specify [i]keyframes[/i] and the computer interpolates the frames that appear between them. Animating something with a [Tween] is called tweening.
+[Tween] is more suited than [AnimationPlayer] for animations where you don't know the final values in advance. For example, interpolating a dynamically-chosen camera zoom value is best done with a [Tween]; it would be difficult to do the same thing with an [AnimationPlayer] node. Tweens are also more light-weight than [AnimationPlayer], so they are very much suited for simple animations or general tasks that don't require visual tweaking provided by the editor. They can be used in a "fire-and-forget" manner for some logic that normally would be done by code. You can e.g. make something shoot periodically by using a looped [CallbackTweener] with a delay.
+A [Tween] can be created by using either [method SceneTree.create_tween] or [method Node.create_tween]. [Tween]s created manually (i.e. by using [code]Tween.new()[/code]) are invalid and can't be used for tweening values.
+A tween animation is created by adding [Tweener]s to the [Tween] object, using [method tween_property], [method tween_interval], [method tween_callback] or [method tween_method]:
+[codeblocks]
+[gdscript]
+var tween = get_tree().create_tween()
+tween.tween_property($Sprite, "modulate", Color.RED, 1)
+tween.tween_property($Sprite, "scale", Vector2(), 1)
+tween.tween_callback($Sprite.queue_free)
+[/gdscript]
+[csharp]
+Tween tween = GetTree().CreateTween();
+tween.TweenProperty(GetNode("Sprite"), "modulate", Colors.Red, 1.0f);
+tween.TweenProperty(GetNode("Sprite"), "scale", Vector2.Zero, 1.0f);
+tween.TweenCallback(Callable.From(GetNode("Sprite").QueueFree));
+[/csharp]
+[/codeblocks]
+This sequence will make the [code]$Sprite[/code] node turn red, then shrink, before finally calling [method Node.queue_free] to free the sprite. [Tweener]s are executed one after another by default. This behavior can be changed using [method parallel] and [method set_parallel].
+When a [Tweener] is created with one of the [code]tween_*[/code] methods, a chained method call can be used to tweak the properties of this [Tweener]. For example, if you want to set a different transition type in the above example, you can use [method set_trans]:
+[codeblocks]
+[gdscript]
+var tween = get_tree().create_tween()
+tween.tween_property($Sprite, "modulate", Color.RED, 1).set_trans(Tween.TRANS_SINE)
+tween.tween_property($Sprite, "scale", Vector2(), 1).set_trans(Tween.TRANS_BOUNCE)
+tween.tween_callback($Sprite.queue_free)
+[/gdscript]
+[csharp]
+Tween tween = GetTree().CreateTween();
+tween.TweenProperty(GetNode("Sprite"), "modulate", Colors.Red, 1.0f).SetTrans(Tween.TransitionType.Sine);
+tween.TweenProperty(GetNode("Sprite"), "scale", Vector2.Zero, 1.0f).SetTrans(Tween.TransitionType.Bounce);
+tween.TweenCallback(Callable.From(GetNode("Sprite").QueueFree));
+[/csharp]
+[/codeblocks]
+Most of the [Tween] methods can be chained this way too. In the following example the [Tween] is bound to the running script's node and a default transition is set for its [Tweener]s:
+[codeblocks]
+[gdscript]
+var tween = get_tree().create_tween().bind_node(self).set_trans(Tween.TRANS_ELASTIC)
+tween.tween_property($Sprite, "modulate", Color.RED, 1)
+tween.tween_property($Sprite, "scale", Vector2(), 1)
+tween.tween_callback($Sprite.queue_free)
+[/gdscript]
+[csharp]
+var tween = GetTree().CreateTween().BindNode(this).SetTrans(Tween.TransitionType.Elastic);
+tween.TweenProperty(GetNode("Sprite"), "modulate", Colors.Red, 1.0f);
+tween.TweenProperty(GetNode("Sprite"), "scale", Vector2.Zero, 1.0f);
+tween.TweenCallback(Callable.From(GetNode("Sprite").QueueFree));
+[/csharp]
+[/codeblocks]
+Another interesting use for [Tween]s is animating arbitrary sets of objects:
+[codeblocks]
+[gdscript]
+var tween = create_tween()
+for sprite in get_children():
+
+	tween.tween_property(sprite, "position", Vector2(0, 0), 1)
+
+[/gdscript]
+[csharp]
+Tween tween = CreateTween();
+foreach (Node sprite in GetChildren())
+
+	tween.TweenProperty(sprite, "position", Vector2.Zero, 1.0f);
+
+[/csharp]
+[/codeblocks]
+In the example above, all children of a node are moved one after another to position (0, 0).
+You should avoid using more than one [Tween] per object's property. If two or more tweens animate one property at the same time, the last one created will take priority and assign the final value. If you want to interrupt and restart an animation, consider assigning the [Tween] to a variable:
+[codeblocks]
+[gdscript]
+var tween
+func animate():
+
+	if tween:
+	    tween.kill() # Abort the previous animation.
+	tween = create_tween()
+
+[/gdscript]
+[csharp]
+private Tween _tween;
+
+public void Animate()
+
+	{
+	    if (_tween != null)
+	        _tween.Kill(); // Abort the previous animation
+	    _tween = CreateTween();
+	}
+
+[/csharp]
+[/codeblocks]
+Some [Tweener]s use transitions and eases. The first accepts a [enum TransitionType] constant, and refers to the way the timing of the animation is handled (see [url=https://easings.net/]easings.net[/url] for some examples). The second accepts an [enum EaseType] constant, and controls where the [code]trans_type[/code] is applied to the interpolation (in the beginning, the end, or both). If you don't know which transition and easing to pick, you can try different [enum TransitionType] constants with [constant EASE_IN_OUT], and use the one that looks best.
+[url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/tween_cheatsheet.webp]Tween easing and transition types cheatsheet[/url]
+[b]Note:[/b] Tweens are not designed to be re-used and trying to do so results in an undefined behavior. Create a new Tween for each animation and every time you replay an animation from start. Keep in mind that Tweens start immediately, so only create a Tween when you want to start animating.
+[b]Note:[/b] The tween is processed after all of the nodes in the current frame, i.e. node's [method Node._process] method would be called before the tween (or [method Node._physics_process] depending on the value passed to [method set_process_mode]).
+*/
 type Tween = classdb.Tween
+
+/*
+Tweeners are objects that perform a specific animating task, e.g. interpolating a property or calling a method at a given time. A [Tweener] can't be created manually, you need to use a dedicated method from [Tween].
+*/
 type Tweener = classdb.Tweener
+
+/*
+A simple server that opens a UDP socket and returns connected [PacketPeerUDP] upon receiving new packets. See also [method PacketPeerUDP.connect_to_host].
+After starting the server ([method listen]), you will need to [method poll] it at regular intervals (e.g. inside [method Node._process]) for it to process new packets, delivering them to the appropriate [PacketPeerUDP], and taking new connections.
+Below a small example of how it can be used:
+[codeblocks]
+[gdscript]
+# server_node.gd
+class_name ServerNode
+extends Node
+
+var server := UDPServer.new()
+var peers = []
+
+func _ready():
+
+	server.listen(4242)
+
+func _process(delta):
+
+	server.poll() # Important!
+	if server.is_connection_available():
+	    var peer: PacketPeerUDP = server.take_connection()
+	    var packet = peer.get_packet()
+	    print("Accepted peer: %s:%s" % [peer.get_packet_ip(), peer.get_packet_port()])
+	    print("Received data: %s" % [packet.get_string_from_utf8()])
+	    # Reply so it knows we received the message.
+	    peer.put_packet(packet)
+	    # Keep a reference so we can keep contacting the remote peer.
+	    peers.append(peer)
+
+	for i in range(0, peers.size()):
+	    pass # Do something with the connected peers.
+
+[/gdscript]
+[csharp]
+// ServerNode.cs
+using Godot;
+using System.Collections.Generic;
+
+public partial class ServerNode : Node
+
+	{
+	    private UdpServer _server = new UdpServer();
+	    private List<PacketPeerUdp> _peers  = new List<PacketPeerUdp>();
+
+	    public override void _Ready()
+	    {
+	        _server.Listen(4242);
+	    }
+
+	    public override void _Process(double delta)
+	    {
+	        _server.Poll(); // Important!
+	        if (_server.IsConnectionAvailable())
+	        {
+	            PacketPeerUdp peer = _server.TakeConnection();
+	            byte[] packet = peer.GetPacket();
+	            GD.Print($"Accepted Peer: {peer.GetPacketIP()}:{peer.GetPacketPort()}");
+	            GD.Print($"Received Data: {packet.GetStringFromUtf8()}");
+	            // Reply so it knows we received the message.
+	            peer.PutPacket(packet);
+	            // Keep a reference so we can keep contacting the remote peer.
+	            _peers.Add(peer);
+	        }
+	        foreach (var peer in _peers)
+	        {
+	            // Do something with the peers.
+	        }
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+[codeblocks]
+[gdscript]
+# client_node.gd
+class_name ClientNode
+extends Node
+
+var udp := PacketPeerUDP.new()
+var connected = false
+
+func _ready():
+
+	udp.connect_to_host("127.0.0.1", 4242)
+
+func _process(delta):
+
+	if !connected:
+	    # Try to contact server
+	    udp.put_packet("The answer is... 42!".to_utf8_buffer())
+	if udp.get_available_packet_count() > 0:
+	    print("Connected: %s" % udp.get_packet().get_string_from_utf8())
+	    connected = true
+
+[/gdscript]
+[csharp]
+// ClientNode.cs
+using Godot;
+
+public partial class ClientNode : Node
+
+	{
+	    private PacketPeerUdp _udp = new PacketPeerUdp();
+	    private bool _connected = false;
+
+	    public override void _Ready()
+	    {
+	        _udp.ConnectToHost("127.0.0.1", 4242);
+	    }
+
+	    public override void _Process(double delta)
+	    {
+	        if (!_connected)
+	        {
+	            // Try to contact server
+	            _udp.PutPacket("The Answer Is..42!".ToUtf8Buffer());
+	        }
+	        if (_udp.GetAvailablePacketCount() > 0)
+	        {
+	            GD.Print($"Connected: {_udp.GetPacket().GetStringFromUtf8()}");
+	            _connected = true;
+	        }
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type UDPServer = classdb.UDPServer
+
+/*
+This class can be used to discover compatible [UPNPDevice]s on the local network and execute commands on them, like managing port mappings (for port forwarding/NAT traversal) and querying the local and remote network IP address. Note that methods on this class are synchronous and block the calling thread.
+To forward a specific port (here [code]7777[/code], note both [method discover] and [method add_port_mapping] can return errors that should be checked):
+[codeblock]
+var upnp = UPNP.new()
+upnp.discover()
+upnp.add_port_mapping(7777)
+[/codeblock]
+To close a specific port (e.g. after you have finished using it):
+[codeblock]
+upnp.delete_port_mapping(port)
+[/codeblock]
+[b]Note:[/b] UPnP discovery blocks the current thread. To perform discovery without blocking the main thread, use [Thread]s like this:
+[codeblock]
+# Emitted when UPnP port mapping setup is completed (regardless of success or failure).
+signal upnp_completed(error)
+
+# Replace this with your own server port number between 1024 and 65535.
+const SERVER_PORT = 3928
+var thread = null
+
+func _upnp_setup(server_port):
+
+	# UPNP queries take some time.
+	var upnp = UPNP.new()
+	var err = upnp.discover()
+
+	if err != OK:
+	    push_error(str(err))
+	    emit_signal("upnp_completed", err)
+	    return
+
+	if upnp.get_gateway() and upnp.get_gateway().is_valid_gateway():
+	    upnp.add_port_mapping(server_port, server_port, ProjectSettings.get_setting("application/config/name"), "UDP")
+	    upnp.add_port_mapping(server_port, server_port, ProjectSettings.get_setting("application/config/name"), "TCP")
+	    emit_signal("upnp_completed", OK)
+
+func _ready():
+
+	thread = Thread.new()
+	thread.start(_upnp_setup.bind(SERVER_PORT))
+
+func _exit_tree():
+
+	# Wait for thread finish here to handle game exit while the thread is running.
+	thread.wait_to_finish()
+
+[/codeblock]
+[b]Terminology:[/b] In the context of UPnP networking, "gateway" (or "internet gateway device", short IGD) refers to network devices that allow computers in the local network to access the internet ("wide area network", WAN). These gateways are often also called "routers".
+[b]Pitfalls:[/b]
+- As explained above, these calls are blocking and shouldn't be run on the main thread, especially as they can block for multiple seconds at a time. Use threading!
+- Networking is physical and messy. Packets get lost in transit or get filtered, addresses, free ports and assigned mappings change, and devices may leave or join the network at any time. Be mindful of this, be diligent when checking and handling errors, and handle these gracefully if you can: add clear error UI, timeouts and re-try handling.
+- Port mappings may change (and be removed) at any time, and the remote/external IP address of the gateway can change likewise. You should consider re-querying the external IP and try to update/refresh the port mapping periodically (for example, every 5 minutes and on networking failures).
+- Not all devices support UPnP, and some users disable UPnP support. You need to handle this (e.g. documenting and requiring the user to manually forward ports, or adding alternative methods of NAT traversal, like a relay/mirror server, or NAT hole punching, STUN/TURN, etc.).
+- Consider what happens on mapping conflicts. Maybe multiple users on the same network would like to play your game at the same time, or maybe another application uses the same port. Make the port configurable, and optimally choose a port automatically (re-trying with a different port on failure).
+[b]Further reading:[/b] If you want to know more about UPnP (and the Internet Gateway Device (IGD) and Port Control Protocol (PCP) specifically), [url=https://en.wikipedia.org/wiki/Universal_Plug_and_Play]Wikipedia[/url] is a good first stop, the specification can be found at the [url=https://openconnectivity.org/developer/specifications/upnp-resources/upnp/]Open Connectivity Foundation[/url] and Godot's implementation is based on the [url=https://github.com/miniupnp/miniupnp]MiniUPnP client[/url].
+*/
 type UPNP = classdb.UPNP
+
+/*
+Universal Plug and Play (UPnP) device. See [UPNP] for UPnP discovery and utility functions. Provides low-level access to UPNP control commands. Allows to manage port mappings (port forwarding) and to query network information of the device (like local and external IP address and status). Note that methods on this class are synchronous and block the calling thread.
+*/
 type UPNPDevice = classdb.UPNPDevice
+
+/*
+UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
+When an action is committed, all of the [code]do_*[/code] methods will run. If the [method undo] method is used, the [code]undo_*[/code] methods will run. If the [method redo] method is used, once again, all of the [code]do_*[/code] methods will run.
+Here's an example on how to add an action:
+[codeblocks]
+[gdscript]
+var undo_redo = UndoRedo.new()
+
+func do_something():
+
+	pass # Put your code here.
+
+func undo_something():
+
+	pass # Put here the code that reverts what's done by "do_something()".
+
+func _on_my_button_pressed():
+
+	var node = get_node("MyNode2D")
+	undo_redo.create_action("Move the node")
+	undo_redo.add_do_method(do_something)
+	undo_redo.add_undo_method(undo_something)
+	undo_redo.add_do_property(node, "position", Vector2(100,100))
+	undo_redo.add_undo_property(node, "position", node.position)
+	undo_redo.commit_action()
+
+[/gdscript]
+[csharp]
+private UndoRedo _undoRedo;
+
+public override void _Ready()
+
+	{
+	    _undoRedo = new UndoRedo();
+	}
+
+public void DoSomething()
+
+	{
+	    // Put your code here.
+	}
+
+public void UndoSomething()
+
+	{
+	    // Put here the code that reverts what's done by "DoSomething()".
+	}
+
+private void OnMyButtonPressed()
+
+	{
+	    var node = GetNode<Node2D>("MyNode2D");
+	    _undoRedo.CreateAction("Move the node");
+	    _undoRedo.AddDoMethod(new Callable(this, MethodName.DoSomething));
+	    _undoRedo.AddUndoMethod(new Callable(this, MethodName.UndoSomething));
+	    _undoRedo.AddDoProperty(node, "position", new Vector2(100, 100));
+	    _undoRedo.AddUndoProperty(node, "position", node.Position);
+	    _undoRedo.CommitAction();
+	}
+
+[/csharp]
+[/codeblocks]
+Before calling any of the [code]add_(un)do_*[/code] methods, you need to first call [method create_action]. Afterwards you need to call [method commit_action].
+If you don't need to register a method, you can leave [method add_do_method] and [method add_undo_method] out; the same goes for properties. You can also register more than one method/property.
+If you are making an [EditorPlugin] and want to integrate into the editor's undo history, use [EditorUndoRedoManager] instead.
+If you are registering multiple properties/method which depend on one another, be aware that by default undo operation are called in the same order they have been added. Therefore instead of grouping do operation with their undo operations it is better to group do on one side and undo on the other as shown below.
+[codeblocks]
+[gdscript]
+undo_redo.create_action("Add object")
+
+# DO
+undo_redo.add_do_method(_create_object)
+undo_redo.add_do_method(_add_object_to_singleton)
+
+# UNDO
+undo_redo.add_undo_method(_remove_object_from_singleton)
+undo_redo.add_undo_method(_destroy_that_object)
+
+undo_redo.commit_action()
+[/gdscript]
+[csharp]
+_undo_redo.CreateAction("Add object");
+
+// DO
+_undo_redo.AddDoMethod(new Callable(this, MethodName.CreateObject));
+_undo_redo.AddDoMethod(new Callable(this, MethodName.AddObjectToSingleton));
+
+// UNDO
+_undo_redo.AddUndoMethod(new Callable(this, MethodName.RemoveObjectFromSingleton));
+_undo_redo.AddUndoMethod(new Callable(this, MethodName.DestroyThatObject));
+
+_undo_redo.CommitAction();
+[/csharp]
+[/codeblocks]
+*/
 type UndoRedo = classdb.UndoRedo
+
+/*
+A variant of [BoxContainer] that can only arrange its child controls vertically. Child controls are rearranged automatically when their minimum size changes.
+*/
 type VBoxContainer = classdb.VBoxContainer
+
+/*
+A variant of [FlowContainer] that can only arrange its child controls vertically, wrapping them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line, except vertically.
+*/
 type VFlowContainer = classdb.VFlowContainer
+
+/*
+A vertical scrollbar, typically used to navigate through content that extends beyond the visible height of a control. It is a [Range]-based control and goes from top (min) to bottom (max). Note that this direction is the opposite of [VSlider]'s.
+*/
 type VScrollBar = classdb.VScrollBar
+
+/*
+A vertical separator used for separating other controls that are arranged [b]horizontally[/b]. [VSeparator] is purely visual and normally drawn as a [StyleBoxLine].
+*/
 type VSeparator = classdb.VSeparator
+
+/*
+A vertical slider, used to adjust a value by moving a grabber along a vertical axis. It is a [Range]-based control and goes from bottom (min) to top (max). Note that this direction is the opposite of [VScrollBar]'s.
+*/
 type VSlider = classdb.VSlider
+
+/*
+A container that accepts only two child controls, then arranges them vertically and creates a divisor between them. The divisor can be dragged around to change the size relation between the child controls.
+*/
 type VSplitContainer = classdb.VSplitContainer
+
+/*
+This physics body implements all the physics logic needed to simulate a car. It is based on the raycast vehicle system commonly found in physics engines. Aside from a [CollisionShape3D] for the main body of the vehicle, you must also add a [VehicleWheel3D] node for each wheel. You should also add a [MeshInstance3D] to this node for the 3D model of the vehicle, but this model should generally not include meshes for the wheels. You can control the vehicle by using the [member brake], [member engine_force], and [member steering] properties. The position or orientation of this node shouldn't be changed directly.
+[b]Note:[/b] The origin point of your VehicleBody3D will determine the center of gravity of your vehicle. To make the vehicle more grounded, the origin point is usually kept low, moving the [CollisionShape3D] and [MeshInstance3D] upwards.
+[b]Note:[/b] This class has known issues and isn't designed to provide realistic 3D vehicle physics. If you want advanced vehicle physics, you may have to write your own physics integration using [CharacterBody3D] or [RigidBody3D].
+*/
 type VehicleBody3D = classdb.VehicleBody3D
+
+/*
+A node used as a child of a [VehicleBody3D] parent to simulate the behavior of one of its wheels. This node also acts as a collider to detect if the wheel is touching a surface.
+[b]Note:[/b] This class has known issues and isn't designed to provide realistic 3D vehicle physics. If you want advanced vehicle physics, you may need to write your own physics integration using another [PhysicsBody3D] class.
+*/
 type VehicleWheel3D = classdb.VehicleWheel3D
+
+/*
+Base resource type for all video streams. Classes that derive from [VideoStream] can all be used as resource types to play back videos in [VideoStreamPlayer].
+*/
 type VideoStream = classdb.VideoStream
+
+/*
+This class is intended to be overridden by video decoder extensions with custom implementations of [VideoStream].
+*/
 type VideoStreamPlayback = classdb.VideoStreamPlayback
+
+/*
+A control used for playback of [VideoStream] resources.
+Supported video formats are [url=https://www.theora.org/]Ogg Theora[/url] ([code].ogv[/code], [VideoStreamTheora]) and any format exposed via a GDExtension plugin.
+[b]Warning:[/b] On Web, video playback [i]will[/i] perform poorly due to missing architecture-specific assembly optimizations.
+*/
 type VideoStreamPlayer = classdb.VideoStreamPlayer
+
+/*
+[VideoStream] resource handling the [url=https://www.theora.org/]Ogg Theora[/url] video format with [code].ogv[/code] extension. The Theora codec is decoded on the CPU.
+[b]Note:[/b] While Ogg Theora videos can also have an [code].ogg[/code] extension, you will have to rename the extension to [code].ogv[/code] to use those videos within Godot.
+*/
 type VideoStreamTheora = classdb.VideoStreamTheora
+
+/*
+A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
+Optionally, a viewport can have its own 2D or 3D world, so it doesn't share what it draws with other viewports.
+Viewports can also choose to be audio listeners, so they generate positional audio depending on a 2D or 3D camera child of it.
+Also, viewports can be assigned to different screens in case the devices have multiple screens.
+Finally, viewports can also behave as render targets, in which case they will not be visible unless the associated texture is used to draw.
+*/
 type Viewport = classdb.Viewport
+
+/*
+Provides the content of a [Viewport] as a dynamic [Texture2D]. This can be used to mix controls, 2D game objects, and 3D game objects in the same scene.
+To create a [ViewportTexture] in code, use the [method Viewport.get_texture] method on the target viewport.
+[b]Note:[/b] A [ViewportTexture] is always local to its scene (see [member Resource.resource_local_to_scene]). If the scene root is not ready, it may return incorrect data (see [signal Node.ready]).
+*/
 type ViewportTexture = classdb.ViewportTexture
+
+/*
+[VisibleOnScreenEnabler2D] contains a rectangular region of 2D space and a target node. The target node will be automatically enabled (via its [member Node.process_mode] property) when any part of this region becomes visible on the screen, and automatically disabled otherwise. This can for example be used to activate enemies only when the player approaches them.
+See [VisibleOnScreenNotifier2D] if you only want to be notified when the region is visible on screen.
+[b]Note:[/b] [VisibleOnScreenEnabler2D] uses the render culling code to determine whether it's visible on screen, so it won't function unless [member CanvasItem.visible] is set to [code]true[/code].
+*/
 type VisibleOnScreenEnabler2D = classdb.VisibleOnScreenEnabler2D
+
+/*
+[VisibleOnScreenEnabler3D] contains a box-shaped region of 3D space and a target node. The target node will be automatically enabled (via its [member Node.process_mode] property) when any part of this region becomes visible on the screen, and automatically disabled otherwise. This can for example be used to activate enemies only when the player approaches them.
+See [VisibleOnScreenNotifier3D] if you only want to be notified when the region is visible on screen.
+[b]Note:[/b] [VisibleOnScreenEnabler3D] uses an approximate heuristic that doesn't take walls and other occlusion into account, unless occlusion culling is used. It also won't function unless [member Node3D.visible] is set to [code]true[/code].
+*/
 type VisibleOnScreenEnabler3D = classdb.VisibleOnScreenEnabler3D
+
+/*
+[VisibleOnScreenEnabler2D] represents a rectangular region of 2D space. When any part of this region becomes visible on screen or in a viewport, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
+If you want a node to be enabled automatically when this region is visible on screen, use [VisibleOnScreenEnabler2D].
+[b]Note:[/b] [VisibleOnScreenNotifier2D] uses the render culling code to determine whether it's visible on screen, so it won't function unless [member CanvasItem.visible] is set to [code]true[/code].
+*/
 type VisibleOnScreenNotifier2D = classdb.VisibleOnScreenNotifier2D
+
+/*
+[VisibleOnScreenEnabler3D] represents a box-shaped region of 3D space. When any part of this region becomes visible on screen or in a [Camera3D]'s view, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
+If you want a node to be enabled automatically when this region is visible on screen, use [VisibleOnScreenEnabler3D].
+[b]Note:[/b] [VisibleOnScreenNotifier3D] uses an approximate heuristic that doesn't take walls and other occlusion into account, unless occlusion culling is used. It also won't function unless [member Node3D.visible] is set to [code]true[/code].
+*/
 type VisibleOnScreenNotifier3D = classdb.VisibleOnScreenNotifier3D
+
+/*
+The [VisualInstance3D] is used to connect a resource to a visual representation. All visual 3D nodes inherit from the [VisualInstance3D]. In general, you should not access the [VisualInstance3D] properties directly as they are accessed and managed by the nodes that inherit from [VisualInstance3D]. [VisualInstance3D] is the node representation of the [RenderingServer] instance.
+*/
 type VisualInstance3D = classdb.VisualInstance3D
+
+/*
+This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
+*/
 type VisualShader = classdb.VisualShader
+
+/*
+Visual shader graphs consist of various nodes. Each node in the graph is a separate object and they are represented as a rectangular boxes with title and a set of properties. Each node also has connection ports that allow to connect it to another nodes and control the flow of the shader.
+*/
 type VisualShaderNode = classdb.VisualShaderNode
+
+/*
+The output port of this node needs to be connected to [code]Model View Matrix[/code] port of [VisualShaderNodeOutput].
+*/
 type VisualShaderNodeBillboard = classdb.VisualShaderNodeBillboard
+
+/*
+Has only one output port and no inputs.
+Translated to [code skip-lint]bool[/code] in the shader language.
+*/
 type VisualShaderNodeBooleanConstant = classdb.VisualShaderNodeBooleanConstant
+
+/*
+Translated to [code]uniform bool[/code] in the shader language.
+*/
 type VisualShaderNodeBooleanParameter = classdb.VisualShaderNodeBooleanParameter
+
+/*
+Constrains a value to lie between [code]min[/code] and [code]max[/code] values.
+*/
 type VisualShaderNodeClamp = classdb.VisualShaderNodeClamp
+
+/*
+Has two output ports representing RGB and alpha channels of [Color].
+Translated to [code]vec3 rgb[/code] and [code]float alpha[/code] in the shader language.
+*/
 type VisualShaderNodeColorConstant = classdb.VisualShaderNodeColorConstant
+
+/*
+Accept a [Color] to the input port and transform it according to [member function].
+*/
 type VisualShaderNodeColorFunc = classdb.VisualShaderNodeColorFunc
+
+/*
+Applies [member operator] to two color inputs.
+*/
 type VisualShaderNodeColorOp = classdb.VisualShaderNodeColorOp
+
+/*
+Translated to [code]uniform vec4[/code] in the shader language.
+*/
 type VisualShaderNodeColorParameter = classdb.VisualShaderNodeColorParameter
+
+/*
+A resizable rectangular area with changeable [member title] and [member description] used for better organizing of other visual shader nodes.
+*/
 type VisualShaderNodeComment = classdb.VisualShaderNodeComment
+
+/*
+Compares [code]a[/code] and [code]b[/code] of [member type] by [member function]. Returns a boolean scalar. Translates to [code]if[/code] instruction in shader code.
+*/
 type VisualShaderNodeCompare = classdb.VisualShaderNodeCompare
+
+/*
+This is an abstract class. See the derived types for descriptions of the possible values.
+*/
 type VisualShaderNodeConstant = classdb.VisualShaderNodeConstant
+
+/*
+Translated to [code]texture(cubemap, vec3)[/code] in the shader language. Returns a color vector and alpha channel as scalar.
+*/
 type VisualShaderNodeCubemap = classdb.VisualShaderNodeCubemap
+
+/*
+Translated to [code]uniform samplerCube[/code] in the shader language. The output value can be used as port for [VisualShaderNodeCubemap].
+*/
 type VisualShaderNodeCubemapParameter = classdb.VisualShaderNodeCubemapParameter
+
+/*
+Comes with a built-in editor for texture's curves.
+*/
 type VisualShaderNodeCurveTexture = classdb.VisualShaderNodeCurveTexture
+
+/*
+Comes with a built-in editor for texture's curves.
+*/
 type VisualShaderNodeCurveXYZTexture = classdb.VisualShaderNodeCurveXYZTexture
+
+/*
+By inheriting this class you can create a custom [VisualShader] script addon which will be automatically added to the Visual Shader Editor. The [VisualShaderNode]'s behavior is defined by overriding the provided virtual methods.
+In order for the node to be registered as an editor addon, you must use the [code]@tool[/code] annotation and provide a [code]class_name[/code] for your custom script. For example:
+[codeblock]
+@tool
+extends VisualShaderNodeCustom
+class_name VisualShaderNodeNoise
+[/codeblock]
+*/
 type VisualShaderNodeCustom = classdb.VisualShaderNodeCustom
+
+/*
+This node is only available in [code]Fragment[/code] and [code]Light[/code] visual shaders.
+*/
 type VisualShaderNodeDerivativeFunc = classdb.VisualShaderNodeDerivativeFunc
+
+/*
+Translates to [code]determinant(x)[/code] in the shader language.
+*/
 type VisualShaderNodeDeterminant = classdb.VisualShaderNodeDeterminant
+
+/*
+The distance fade effect fades out each pixel based on its distance to another object.
+*/
 type VisualShaderNodeDistanceFade = classdb.VisualShaderNodeDistanceFade
+
+/*
+Translates to [code]dot(a, b)[/code] in the shader language.
+*/
 type VisualShaderNodeDotProduct = classdb.VisualShaderNodeDotProduct
+
+/*
+Custom Godot Shading Language expression, with a custom number of input and output ports.
+The provided code is directly injected into the graph's matching shader function ([code]vertex[/code], [code]fragment[/code], or [code]light[/code]), so it cannot be used to declare functions, varyings, uniforms, or global constants. See [VisualShaderNodeGlobalExpression] for such global definitions.
+*/
 type VisualShaderNodeExpression = classdb.VisualShaderNodeExpression
+
+/*
+Translates to [code]faceforward(N, I, Nref)[/code] in the shader language. The function has three vector parameters: [code]N[/code], the vector to orient, [code]I[/code], the incident vector, and [code]Nref[/code], the reference vector. If the dot product of [code]I[/code] and [code]Nref[/code] is smaller than zero the return value is [code]N[/code]. Otherwise, [code]-N[/code] is returned.
+*/
 type VisualShaderNodeFaceForward = classdb.VisualShaderNodeFaceForward
+
+/*
+Translated to [code skip-lint]float[/code] in the shader language.
+*/
 type VisualShaderNodeFloatConstant = classdb.VisualShaderNodeFloatConstant
+
+/*
+Accept a floating-point scalar ([code]x[/code]) to the input port and transform it according to [member function].
+*/
 type VisualShaderNodeFloatFunc = classdb.VisualShaderNodeFloatFunc
+
+/*
+Applies [member operator] to two floating-point inputs: [code]a[/code] and [code]b[/code].
+*/
 type VisualShaderNodeFloatOp = classdb.VisualShaderNodeFloatOp
+
+/*
+Translated to [code]uniform float[/code] in the shader language.
+*/
 type VisualShaderNodeFloatParameter = classdb.VisualShaderNodeFloatParameter
+
+/*
+Returns falloff based on the dot product of surface normal and view direction of camera (pass associated inputs to it).
+*/
 type VisualShaderNodeFresnel = classdb.VisualShaderNodeFresnel
+
+/*
+Custom Godot Shader Language expression, which is placed on top of the generated shader. You can place various function definitions inside to call later in [VisualShaderNodeExpression]s (which are injected in the main shader functions). You can also declare varyings, uniforms and global constants.
+*/
 type VisualShaderNodeGlobalExpression = classdb.VisualShaderNodeGlobalExpression
+
+/*
+Currently, has no direct usage, use the derived classes instead.
+*/
 type VisualShaderNodeGroupBase = classdb.VisualShaderNodeGroupBase
+
+/*
+This visual shader node has six input ports. Port 1 and 2 provide the two floating point numbers [code]a[/code] and [code]b[/code] that will be compared. Port 3 is the tolerance, which allows similar floating point number to be considered equal. Ports 4 to 6 are the possible outputs, returned if [code]a == b[/code], [code]a > b[/code], or [code]a < b[/code] respectively.
+*/
 type VisualShaderNodeIf = classdb.VisualShaderNodeIf
+
+/*
+Gives access to input variables (built-ins) available for the shader. See the shading reference for the list of available built-ins for each shader type (check [code]Tutorials[/code] section for link).
+*/
 type VisualShaderNodeInput = classdb.VisualShaderNodeInput
+
+/*
+Translated to [code skip-lint]int[/code] in the shader language.
+*/
 type VisualShaderNodeIntConstant = classdb.VisualShaderNodeIntConstant
+
+/*
+Accept an integer scalar ([code]x[/code]) to the input port and transform it according to [member function].
+*/
 type VisualShaderNodeIntFunc = classdb.VisualShaderNodeIntFunc
+
+/*
+Applies [member operator] to two integer inputs: [code]a[/code] and [code]b[/code].
+*/
 type VisualShaderNodeIntOp = classdb.VisualShaderNodeIntOp
+
+/*
+A [VisualShaderNodeParameter] of type [int]. Offers additional customization for range of accepted values.
+*/
 type VisualShaderNodeIntParameter = classdb.VisualShaderNodeIntParameter
+
+/*
+Returns the boolean result of the comparison between [code]INF[/code] or [code]NaN[/code] and a scalar parameter.
+*/
 type VisualShaderNodeIs = classdb.VisualShaderNodeIs
+
+/*
+This node can be used in fragment shaders.
+*/
 type VisualShaderNodeLinearSceneDepth = classdb.VisualShaderNodeLinearSceneDepth
+
+/*
+Translates to [code]mix(a, b, weight)[/code] in the shader language.
+*/
 type VisualShaderNodeMix = classdb.VisualShaderNodeMix
+
+/*
+Uses three operands to compute [code](a * b + c)[/code] expression.
+*/
 type VisualShaderNodeMultiplyAdd = classdb.VisualShaderNodeMultiplyAdd
+
+/*
+[code]OuterProduct[/code] treats the first parameter [code]c[/code] as a column vector (matrix with one column) and the second parameter [code]r[/code] as a row vector (matrix with one row) and does a linear algebraic matrix multiply [code]c * r[/code], yielding a matrix whose number of rows is the number of components in [code]c[/code] and whose number of columns is the number of components in [code]r[/code].
+*/
 type VisualShaderNodeOuterProduct = classdb.VisualShaderNodeOuterProduct
+
+/*
+This visual shader node is present in all shader graphs in form of "Output" block with multiple output value ports.
+*/
 type VisualShaderNodeOutput = classdb.VisualShaderNodeOutput
+
+/*
+A parameter represents a variable in the shader which is set externally, i.e. from the [ShaderMaterial]. Parameters are exposed as properties in the [ShaderMaterial] and can be assigned from the Inspector or from a script.
+*/
 type VisualShaderNodeParameter = classdb.VisualShaderNodeParameter
+
+/*
+Creating a reference to a [VisualShaderNodeParameter] allows you to reuse this parameter in different shaders or shader stages easily.
+*/
 type VisualShaderNodeParameterRef = classdb.VisualShaderNodeParameterRef
+
+/*
+Particle accelerator can be used in "process" step of particle shader. It will accelerate the particles. Connect it to the Velocity output port.
+*/
 type VisualShaderNodeParticleAccelerator = classdb.VisualShaderNodeParticleAccelerator
+
+/*
+[VisualShaderNodeParticleEmitter] that makes the particles emitted in box shape with the specified extents.
+*/
 type VisualShaderNodeParticleBoxEmitter = classdb.VisualShaderNodeParticleBoxEmitter
+
+/*
+This node can be used in "start" step of particle shader. It defines the initial velocity of the particles, making them move in cone shape starting from the center, with a given spread.
+*/
 type VisualShaderNodeParticleConeVelocity = classdb.VisualShaderNodeParticleConeVelocity
+
+/*
+This node internally calls [code]emit_subparticle[/code] shader method. It will emit a particle from the configured sub-emitter and also allows to customize how its emitted. Requires a sub-emitter assigned to the particles node with this shader.
+*/
 type VisualShaderNodeParticleEmit = classdb.VisualShaderNodeParticleEmit
+
+/*
+Particle emitter nodes can be used in "start" step of particle shaders and they define the starting position of the particles. Connect them to the Position output port.
+*/
 type VisualShaderNodeParticleEmitter = classdb.VisualShaderNodeParticleEmitter
+
+/*
+[VisualShaderNodeParticleEmitter] that makes the particles emitted in a shape of the assigned [member mesh]. It will emit from the mesh's surfaces, either all or only the specified one.
+*/
 type VisualShaderNodeParticleMeshEmitter = classdb.VisualShaderNodeParticleMeshEmitter
+
+/*
+This node helps to multiply a position input vector by rotation using specific axis. Intended to work with emitters.
+*/
 type VisualShaderNodeParticleMultiplyByAxisAngle = classdb.VisualShaderNodeParticleMultiplyByAxisAngle
+
+/*
+This node defines how particles are emitted. It allows to customize e.g. position and velocity. Available ports are different depending on which function this node is inside (start, process, collision) and whether custom data is enabled.
+*/
 type VisualShaderNodeParticleOutput = classdb.VisualShaderNodeParticleOutput
+
+/*
+Randomness node will output pseudo-random values of the given type based on the specified minimum and maximum values.
+*/
 type VisualShaderNodeParticleRandomness = classdb.VisualShaderNodeParticleRandomness
+
+/*
+[VisualShaderNodeParticleEmitter] that makes the particles emitted in ring shape with the specified inner and outer radii and height.
+*/
 type VisualShaderNodeParticleRingEmitter = classdb.VisualShaderNodeParticleRingEmitter
+
+/*
+[VisualShaderNodeParticleEmitter] that makes the particles emitted in sphere shape with the specified inner and outer radii.
+*/
 type VisualShaderNodeParticleSphereEmitter = classdb.VisualShaderNodeParticleSphereEmitter
+
+/*
+The proximity fade effect fades out each pixel based on its distance to another object.
+*/
 type VisualShaderNodeProximityFade = classdb.VisualShaderNodeProximityFade
+
+/*
+Random range node will output a pseudo-random scalar value in the specified range, based on the seed. The value is always the same for the given seed and range, so you should provide a changing input, e.g. by using time.
+*/
 type VisualShaderNodeRandomRange = classdb.VisualShaderNodeRandomRange
+
+/*
+Remap will transform the input range into output range, e.g. you can change a [code]0..1[/code] value to [code]-2..2[/code] etc. See [method @GlobalScope.remap] for more details.
+*/
 type VisualShaderNodeRemap = classdb.VisualShaderNodeRemap
+
+/*
+Resizable nodes have a handle that allows the user to adjust their size as needed.
+*/
 type VisualShaderNodeResizableBase = classdb.VisualShaderNodeResizableBase
+
+/*
+RotationByAxis node will transform the vertices of a mesh with specified axis and angle in radians. It can be used to rotate an object in an arbitrary axis.
+*/
 type VisualShaderNodeRotationByAxis = classdb.VisualShaderNodeRotationByAxis
+
+/*
+Casts a ray against the screen SDF (signed-distance field) and returns the distance travelled.
+*/
 type VisualShaderNodeSDFRaymarch = classdb.VisualShaderNodeSDFRaymarch
+
+/*
+Translates to [code]sdf_to_screen_uv(sdf_pos)[/code] in the shader language.
+*/
 type VisualShaderNodeSDFToScreenUV = classdb.VisualShaderNodeSDFToScreenUV
+
+/*
+A virtual class, use the descendants instead.
+*/
 type VisualShaderNodeSample3D = classdb.VisualShaderNodeSample3D
+
+/*
+The ScreenNormalWorldSpace node allows to create outline effects.
+*/
 type VisualShaderNodeScreenNormalWorldSpace = classdb.VisualShaderNodeScreenNormalWorldSpace
+
+/*
+Translates to [code]screen_uv_to_sdf(uv)[/code] in the shader language. If the UV port isn't connected, [code]SCREEN_UV[/code] is used instead.
+*/
 type VisualShaderNodeScreenUVToSDF = classdb.VisualShaderNodeScreenUVToSDF
+
+/*
+Translates to [code]smoothstep(edge0, edge1, x)[/code] in the shader language.
+Returns [code]0.0[/code] if [code]x[/code] is smaller than [code]edge0[/code] and [code]1.0[/code] if [code]x[/code] is larger than [code]edge1[/code]. Otherwise, the return value is interpolated between [code]0.0[/code] and [code]1.0[/code] using Hermite polynomials.
+*/
 type VisualShaderNodeSmoothStep = classdb.VisualShaderNodeSmoothStep
+
+/*
+Translates to [code]step(edge, x)[/code] in the shader language.
+Returns [code]0.0[/code] if [code]x[/code] is smaller than [code]edge[/code] and [code]1.0[/code] otherwise.
+*/
 type VisualShaderNodeStep = classdb.VisualShaderNodeStep
+
+/*
+Returns an associated value of the [member op_type] type if the provided boolean value is [code]true[/code] or [code]false[/code].
+*/
 type VisualShaderNodeSwitch = classdb.VisualShaderNodeSwitch
+
+/*
+Performs a lookup operation on the provided texture, with support for multiple texture sources to choose from.
+*/
 type VisualShaderNodeTexture = classdb.VisualShaderNodeTexture
+
+/*
+Translated to [code]uniform sampler2DArray[/code] in the shader language.
+*/
 type VisualShaderNodeTexture2DArray = classdb.VisualShaderNodeTexture2DArray
+
+/*
+This parameter allows to provide a collection of textures for the shader. You can use [VisualShaderNodeTexture2DArray] to extract the textures from array.
+*/
 type VisualShaderNodeTexture2DArrayParameter = classdb.VisualShaderNodeTexture2DArrayParameter
+
+/*
+Translated to [code]uniform sampler2D[/code] in the shader language.
+*/
 type VisualShaderNodeTexture2DParameter = classdb.VisualShaderNodeTexture2DParameter
+
+/*
+Performs a lookup operation on the provided texture, with support for multiple texture sources to choose from.
+*/
 type VisualShaderNodeTexture3D = classdb.VisualShaderNodeTexture3D
+
+/*
+Translated to [code]uniform sampler3D[/code] in the shader language.
+*/
 type VisualShaderNodeTexture3DParameter = classdb.VisualShaderNodeTexture3DParameter
+
+/*
+Performs a lookup operation on the texture provided as a uniform for the shader.
+*/
 type VisualShaderNodeTextureParameter = classdb.VisualShaderNodeTextureParameter
+
+/*
+Performs a lookup operation on the texture provided as a uniform for the shader, with support for triplanar mapping.
+*/
 type VisualShaderNodeTextureParameterTriplanar = classdb.VisualShaderNodeTextureParameterTriplanar
+
+/*
+Translates to [code]texture_sdf(sdf_pos)[/code] in the shader language.
+*/
 type VisualShaderNodeTextureSDF = classdb.VisualShaderNodeTextureSDF
+
+/*
+Translates to [code]texture_sdf_normal(sdf_pos)[/code] in the shader language.
+*/
 type VisualShaderNodeTextureSDFNormal = classdb.VisualShaderNodeTextureSDFNormal
+
+/*
+Creates a 4x4 transform matrix using four vectors of type [code]vec3[/code]. Each vector is one row in the matrix and the last column is a [code]vec4(0, 0, 0, 1)[/code].
+*/
 type VisualShaderNodeTransformCompose = classdb.VisualShaderNodeTransformCompose
+
+/*
+A constant [Transform3D], which can be used as an input node.
+*/
 type VisualShaderNodeTransformConstant = classdb.VisualShaderNodeTransformConstant
+
+/*
+Takes a 4x4 transform matrix and decomposes it into four [code]vec3[/code] values, one from each row of the matrix.
+*/
 type VisualShaderNodeTransformDecompose = classdb.VisualShaderNodeTransformDecompose
+
+/*
+Computes an inverse or transpose function on the provided [Transform3D].
+*/
 type VisualShaderNodeTransformFunc = classdb.VisualShaderNodeTransformFunc
+
+/*
+Applies [member operator] to two transform (4x4 matrices) inputs.
+*/
 type VisualShaderNodeTransformOp = classdb.VisualShaderNodeTransformOp
+
+/*
+Translated to [code]uniform mat4[/code] in the shader language.
+*/
 type VisualShaderNodeTransformParameter = classdb.VisualShaderNodeTransformParameter
+
+/*
+A multiplication operation on a transform (4x4 matrix) and a vector, with support for different multiplication operators.
+*/
 type VisualShaderNodeTransformVecMult = classdb.VisualShaderNodeTransformVecMult
+
+/*
+Translated to [code]uint[/code] in the shader language.
+*/
 type VisualShaderNodeUIntConstant = classdb.VisualShaderNodeUIntConstant
+
+/*
+Accept an unsigned integer scalar ([code]x[/code]) to the input port and transform it according to [member function].
+*/
 type VisualShaderNodeUIntFunc = classdb.VisualShaderNodeUIntFunc
+
+/*
+Applies [member operator] to two unsigned integer inputs: [code]a[/code] and [code]b[/code].
+*/
 type VisualShaderNodeUIntOp = classdb.VisualShaderNodeUIntOp
+
+/*
+A [VisualShaderNodeParameter] of type unsigned [int]. Offers additional customization for range of accepted values.
+*/
 type VisualShaderNodeUIntParameter = classdb.VisualShaderNodeUIntParameter
+
+/*
+UV functions are similar to [Vector2] functions, but the input port of this node uses the shader's UV value by default.
+*/
 type VisualShaderNodeUVFunc = classdb.VisualShaderNodeUVFunc
+
+/*
+UV polar coord node will transform UV values into polar coordinates, with specified scale, zoom strength and repeat parameters. It can be used to create various swirl distortions.
+*/
 type VisualShaderNodeUVPolarCoord = classdb.VisualShaderNodeUVPolarCoord
+
+/*
+Varying values are shader variables that can be passed between shader functions, e.g. from Vertex shader to Fragment shader.
+*/
 type VisualShaderNodeVarying = classdb.VisualShaderNodeVarying
+
+/*
+Outputs a value of a varying defined in the shader. You need to first create a varying that can be used in the given function, e.g. varying getter in Fragment shader requires a varying with mode set to [constant VisualShader.VARYING_MODE_VERTEX_TO_FRAG_LIGHT].
+*/
 type VisualShaderNodeVaryingGetter = classdb.VisualShaderNodeVaryingGetter
+
+/*
+Inputs a value to a varying defined in the shader. You need to first create a varying that can be used in the given function, e.g. varying setter in Fragment shader requires a varying with mode set to [constant VisualShader.VARYING_MODE_FRAG_TO_LIGHT].
+*/
 type VisualShaderNodeVaryingSetter = classdb.VisualShaderNodeVaryingSetter
+
+/*
+A constant [Vector2], which can be used as an input node.
+*/
 type VisualShaderNodeVec2Constant = classdb.VisualShaderNodeVec2Constant
+
+/*
+Translated to [code]uniform vec2[/code] in the shader language.
+*/
 type VisualShaderNodeVec2Parameter = classdb.VisualShaderNodeVec2Parameter
+
+/*
+A constant [Vector3], which can be used as an input node.
+*/
 type VisualShaderNodeVec3Constant = classdb.VisualShaderNodeVec3Constant
+
+/*
+Translated to [code]uniform vec3[/code] in the shader language.
+*/
 type VisualShaderNodeVec3Parameter = classdb.VisualShaderNodeVec3Parameter
+
+/*
+A constant 4D vector, which can be used as an input node.
+*/
 type VisualShaderNodeVec4Constant = classdb.VisualShaderNodeVec4Constant
+
+/*
+Translated to [code]uniform vec4[/code] in the shader language.
+*/
 type VisualShaderNodeVec4Parameter = classdb.VisualShaderNodeVec4Parameter
+
+/*
+This is an abstract class. See the derived types for descriptions of the possible operations.
+*/
 type VisualShaderNodeVectorBase = classdb.VisualShaderNodeVectorBase
+
+/*
+Creates a [code]vec2[/code], [code]vec3[/code] or [code]vec4[/code] using scalar values that can be provided from separate inputs.
+*/
 type VisualShaderNodeVectorCompose = classdb.VisualShaderNodeVectorCompose
+
+/*
+Takes a [code]vec2[/code], [code]vec3[/code] or [code]vec4[/code] and decomposes it into scalar values that can be used as separate outputs.
+*/
 type VisualShaderNodeVectorDecompose = classdb.VisualShaderNodeVectorDecompose
+
+/*
+Calculates distance from point represented by vector [code]p0[/code] to vector [code]p1[/code].
+Translated to [code]distance(p0, p1)[/code] in the shader language.
+*/
 type VisualShaderNodeVectorDistance = classdb.VisualShaderNodeVectorDistance
+
+/*
+A visual shader node able to perform different functions using vectors.
+*/
 type VisualShaderNodeVectorFunc = classdb.VisualShaderNodeVectorFunc
+
+/*
+Translated to [code]length(p0)[/code] in the shader language.
+*/
 type VisualShaderNodeVectorLen = classdb.VisualShaderNodeVectorLen
+
+/*
+A visual shader node for use of vector operators. Operates on vector [code]a[/code] and vector [code]b[/code].
+*/
 type VisualShaderNodeVectorOp = classdb.VisualShaderNodeVectorOp
+
+/*
+Translated to [code]refract(I, N, eta)[/code] in the shader language, where [code]I[/code] is the incident vector, [code]N[/code] is the normal vector and [code]eta[/code] is the ratio of the indices of the refraction.
+*/
 type VisualShaderNodeVectorRefract = classdb.VisualShaderNodeVectorRefract
+
+/*
+The WorldPositionFromDepth node reconstructs the depth position of the pixel in world space. This can be used to obtain world space UVs for projection mapping like Caustics.
+*/
 type VisualShaderNodeWorldPositionFromDepth = classdb.VisualShaderNodeWorldPositionFromDepth
+
+/*
+[VoxelGI]s are used to provide high-quality real-time indirect light and reflections to scenes. They precompute the effect of objects that emit light and the effect of static geometry to simulate the behavior of complex light in real-time. [VoxelGI]s need to be baked before having a visible effect. However, once baked, dynamic objects will receive light from them. Furthermore, lights can be fully dynamic or baked.
+[b]Note:[/b] [VoxelGI] is only supported in the Forward+ rendering method, not Mobile or Compatibility.
+[b]Procedural generation:[/b] [VoxelGI] can be baked in an exported project, which makes it suitable for procedurally generated or user-built levels as long as all the geometry is generated in advance. For games where geometry is generated at any time during gameplay, SDFGI is more suitable (see [member Environment.sdfgi_enabled]).
+[b]Performance:[/b] [VoxelGI] is relatively demanding on the GPU and is not suited to low-end hardware such as integrated graphics (consider [LightmapGI] instead). To improve performance, adjust [member ProjectSettings.rendering/global_illumination/voxel_gi/quality] and enable [member ProjectSettings.rendering/global_illumination/gi/use_half_resolution] in the Project Settings. To provide a fallback for low-end hardware, consider adding an option to disable [VoxelGI] in your project's options menus. A [VoxelGI] node can be disabled by hiding it.
+[b]Note:[/b] Meshes should have sufficiently thick walls to avoid light leaks (avoid one-sided walls). For interior levels, enclose your level geometry in a sufficiently large box and bridge the loops to close the mesh. To further prevent light leaks, you can also strategically place temporary [MeshInstance3D] nodes with their [member GeometryInstance3D.gi_mode] set to [constant GeometryInstance3D.GI_MODE_STATIC]. These temporary nodes can then be hidden after baking the [VoxelGI] node.
+*/
 type VoxelGI = classdb.VoxelGI
+
+/*
+[VoxelGIData] contains baked voxel global illumination for use in a [VoxelGI] node. [VoxelGIData] also offers several properties to adjust the final appearance of the global illumination. These properties can be adjusted at run-time without having to bake the [VoxelGI] node again.
+[b]Note:[/b] To prevent text-based scene files ([code].tscn[/code]) from growing too much and becoming slow to load and save, always save [VoxelGIData] to an external binary resource file ([code].res[/code]) instead of embedding it within the scene. This can be done by clicking the dropdown arrow next to the [VoxelGIData] resource, choosing [b]Edit[/b], clicking the floppy disk icon at the top of the Inspector then choosing [b]Save As...[/b].
+*/
 type VoxelGIData = classdb.VoxelGIData
+
+/*
+A weakref can hold a [RefCounted] without contributing to the reference counter. A weakref can be created from an [Object] using [method @GlobalScope.weakref]. If this object is not a reference, weakref still works, however, it does not have any effect on the object. Weakrefs are useful in cases where multiple classes have variables that refer to each other. Without weakrefs, using these classes could lead to memory leaks, since both references keep each other from being released. Making part of the variables a weakref can prevent this cyclic dependency, and allows the references to be released.
+*/
 type WeakRef = classdb.WeakRef
 type WebRTCDataChannel = classdb.WebRTCDataChannel
 type WebRTCDataChannelExtension = classdb.WebRTCDataChannelExtension
+
+/*
+This class constructs a full mesh of [WebRTCPeerConnection] (one connection for each peer) that can be used as a [member MultiplayerAPI.multiplayer_peer].
+You can add each [WebRTCPeerConnection] via [method add_peer] or remove them via [method remove_peer]. Peers must be added in [constant WebRTCPeerConnection.STATE_NEW] state to allow it to create the appropriate channels. This class will not create offers nor set descriptions, it will only poll them, and notify connections and disconnections.
+When creating the peer via [method create_client] or [method create_server] the [method MultiplayerPeer.is_server_relay_supported] method will return [code]true[/code] enabling peer exchange and packet relaying when supported by the [MultiplayerAPI] implementation.
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type WebRTCMultiplayerPeer = classdb.WebRTCMultiplayerPeer
+
+/*
+A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
+Setting up a WebRTC connection between two peers may not seem a trivial task, but it can be broken down into 3 main steps:
+- The peer that wants to initiate the connection ([code]A[/code] from now on) creates an offer and send it to the other peer ([code]B[/code] from now on).
+- [code]B[/code] receives the offer, generate and answer, and sends it to [code]A[/code]).
+- [code]A[/code] and [code]B[/code] then generates and exchange ICE candidates with each other.
+After these steps, the connection should become connected. Keep on reading or look into the tutorial for more information.
+*/
 type WebRTCPeerConnection = classdb.WebRTCPeerConnection
 type WebRTCPeerConnectionExtension = classdb.WebRTCPeerConnectionExtension
+
+/*
+Base class for WebSocket server and client, allowing them to be used as multiplayer peer for the [MultiplayerAPI].
+[b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
+*/
 type WebSocketMultiplayerPeer = classdb.WebSocketMultiplayerPeer
+
+/*
+This class represents WebSocket connection, and can be used as a WebSocket client (RFC 6455-compliant) or as a remote peer of a WebSocket server.
+You can send WebSocket binary frames using [method PacketPeer.put_packet], and WebSocket text frames using [method send] (prefer text frames when interacting with text-based API). You can check the frame type of the last packet via [method was_string_packet].
+To start a WebSocket client, first call [method connect_to_url], then regularly call [method poll] (e.g. during [Node] process). You can query the socket state via [method get_ready_state], get the number of pending packets using [method PacketPeer.get_available_packet_count], and retrieve them via [method PacketPeer.get_packet].
+[codeblocks]
+[gdscript]
+extends Node
+
+var socket = WebSocketPeer.new()
+
+func _ready():
+
+	socket.connect_to_url("wss://example.com")
+
+func _process(delta):
+
+	socket.poll()
+	var state = socket.get_ready_state()
+	if state == WebSocketPeer.STATE_OPEN:
+	    while socket.get_available_packet_count():
+	        print("Packet: ", socket.get_packet())
+	elif state == WebSocketPeer.STATE_CLOSING:
+	    # Keep polling to achieve proper close.
+	    pass
+	elif state == WebSocketPeer.STATE_CLOSED:
+	    var code = socket.get_close_code()
+	    var reason = socket.get_close_reason()
+	    print("WebSocket closed with code: %d, reason %s. Clean: %s" % [code, reason, code != -1])
+	    set_process(false) # Stop processing.
+
+[/gdscript]
+[/codeblocks]
+To use the peer as part of a WebSocket server refer to [method accept_stream] and the online tutorial.
+*/
 type WebSocketPeer = classdb.WebSocketPeer
+
+/*
+WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
+As such, this interface is only available when running in Web exports.
+WebXR supports a wide range of devices, from the very capable (like Valve Index, HTC Vive, Oculus Rift and Quest) down to the much less capable (like Google Cardboard, Oculus Go, GearVR, or plain smartphones).
+Since WebXR is based on JavaScript, it makes extensive use of callbacks, which means that [WebXRInterface] is forced to use signals, where other XR interfaces would instead use functions that return a result immediately. This makes [WebXRInterface] quite a bit more complicated to initialize than other XR interfaces.
+Here's the minimum code required to start an immersive VR session:
+[codeblock]
+extends Node3D
+
+var webxr_interface
+var vr_supported = false
+
+func _ready():
+
+	# We assume this node has a button as a child.
+	# This button is for the user to consent to entering immersive VR mode.
+	$Button.pressed.connect(self._on_button_pressed)
+
+	webxr_interface = XRServer.find_interface("WebXR")
+	if webxr_interface:
+	    # WebXR uses a lot of asynchronous callbacks, so we connect to various
+	    # signals in order to receive them.
+	    webxr_interface.session_supported.connect(self._webxr_session_supported)
+	    webxr_interface.session_started.connect(self._webxr_session_started)
+	    webxr_interface.session_ended.connect(self._webxr_session_ended)
+	    webxr_interface.session_failed.connect(self._webxr_session_failed)
+
+	    # This returns immediately - our _webxr_session_supported() method
+	    # (which we connected to the "session_supported" signal above) will
+	    # be called sometime later to let us know if it's supported or not.
+	    webxr_interface.is_session_supported("immersive-vr")
+
+func _webxr_session_supported(session_mode, supported):
+
+	if session_mode == 'immersive-vr':
+	    vr_supported = supported
+
+func _on_button_pressed():
+
+	if not vr_supported:
+	    OS.alert("Your browser doesn't support VR")
+	    return
+
+	# We want an immersive VR session, as opposed to AR ('immersive-ar') or a
+	# simple 3DoF viewer ('viewer').
+	webxr_interface.session_mode = 'immersive-vr'
+	# 'bounded-floor' is room scale, 'local-floor' is a standing or sitting
+	# experience (it puts you 1.6m above the ground if you have 3DoF headset),
+	# whereas as 'local' puts you down at the XROrigin.
+	# This list means it'll first try to request 'bounded-floor', then
+	# fallback on 'local-floor' and ultimately 'local', if nothing else is
+	# supported.
+	webxr_interface.requested_reference_space_types = 'bounded-floor, local-floor, local'
+	# In order to use 'local-floor' or 'bounded-floor' we must also
+	# mark the features as required or optional.
+	webxr_interface.required_features = 'local-floor'
+	webxr_interface.optional_features = 'bounded-floor'
+
+	# This will return false if we're unable to even request the session,
+	# however, it can still fail asynchronously later in the process, so we
+	# only know if it's really succeeded or failed when our
+	# _webxr_session_started() or _webxr_session_failed() methods are called.
+	if not webxr_interface.initialize():
+	    OS.alert("Failed to initialize")
+	    return
+
+func _webxr_session_started():
+
+	$Button.visible = false
+	# This tells Godot to start rendering to the headset.
+	get_viewport().use_xr = true
+	# This will be the reference space type you ultimately got, out of the
+	# types that you requested above. This is useful if you want the game to
+	# work a little differently in 'bounded-floor' versus 'local-floor'.
+	print ("Reference space type: " + webxr_interface.reference_space_type)
+
+func _webxr_session_ended():
+
+	$Button.visible = true
+	# If the user exits immersive mode, then we tell Godot to render to the web
+	# page again.
+	get_viewport().use_xr = false
+
+func _webxr_session_failed(message):
+
+	OS.alert("Failed to initialize: " + message)
+
+[/codeblock]
+There are a couple ways to handle "controller" input:
+- Using [XRController3D] nodes and their [signal XRController3D.button_pressed] and [signal XRController3D.button_released] signals. This is how controllers are typically handled in XR apps in Godot, however, this will only work with advanced VR controllers like the Oculus Touch or Index controllers, for example.
+- Using the [signal select], [signal squeeze] and related signals. This method will work for both advanced VR controllers, and non-traditional input sources like a tap on the screen, a spoken voice command or a button press on the device itself.
+You can use both methods to allow your game or app to support a wider or narrower set of devices and input methods, or to allow more advanced interactions with more advanced devices.
+*/
 type WebXRInterface = classdb.WebXRInterface
+
+/*
+A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
+At runtime, [Window]s will not close automatically when requested. You need to handle it manually using the [signal close_requested] signal (this applies both to pressing the close button and clicking outside of a popup).
+*/
 type Window = classdb.Window
 
 func WorkerThreadPool(godot Context) classdb.WorkerThreadPool {
@@ -1026,21 +7883,136 @@ func WorkerThreadPool(godot Context) classdb.WorkerThreadPool {
 	return *(*classdb.WorkerThreadPool)(unsafe.Pointer(&obj))
 }
 
+/*
+Class that has everything pertaining to a 2D world: A physics space, a canvas, and a sound space. 2D nodes register their resources into the current 2D world.
+*/
 type World2D = classdb.World2D
+
+/*
+Class that has everything pertaining to a world: A physics space, a visual scenario, and a sound space. 3D nodes register their resources into the current 3D world.
+*/
 type World3D = classdb.World3D
+
+/*
+A 2D world boundary shape, intended for use in physics. [WorldBoundaryShape2D] works like an infinite straight line that forces all physics bodies to stay above it. The line's normal determines which direction is considered as "above" and in the editor, the smaller line over it represents this direction. It can for example be used for endless flat floors.
+*/
 type WorldBoundaryShape2D = classdb.WorldBoundaryShape2D
+
+/*
+A 3D world boundary shape, intended for use in physics. [WorldBoundaryShape3D] works like an infinite plane that forces all physics bodies to stay above it. The [member plane]'s normal determines which direction is considered as "above" and in the editor, the line over the plane represents this direction. It can for example be used for endless flat floors.
+*/
 type WorldBoundaryShape3D = classdb.WorldBoundaryShape3D
+
+/*
+The [WorldEnvironment] node is used to configure the default [Environment] for the scene.
+The parameters defined in the [WorldEnvironment] can be overridden by an [Environment] node set on the current [Camera3D]. Additionally, only one [WorldEnvironment] may be instantiated in a given scene at a time.
+The [WorldEnvironment] allows the user to specify default lighting parameters (e.g. ambient lighting), various post-processing effects (e.g. SSAO, DOF, Tonemapping), and how to draw the background (e.g. solid color, skybox). Usually, these are added in order to improve the realism/color balance of the scene.
+*/
 type WorldEnvironment = classdb.WorldEnvironment
+
+/*
+The X509Certificate class represents an X509 certificate. Certificates can be loaded and saved like any other [Resource].
+They can be used as the server certificate in [method StreamPeerTLS.accept_stream] (along with the proper [CryptoKey]), and to specify the only certificate that should be accepted when connecting to a TLS server via [method StreamPeerTLS.connect_to_stream].
+*/
 type X509Certificate = classdb.X509Certificate
+
+/*
+Provides a low-level interface for creating parsers for [url=https://en.wikipedia.org/wiki/XML]XML[/url] files. This class can serve as base to make custom XML parsers.
+To parse XML, you must open a file with the [method open] method or a buffer with the [method open_buffer] method. Then, the [method read] method must be called to parse the next nodes. Most of the methods take into consideration the currently parsed node.
+Here is an example of using [XMLParser] to parse a SVG file (which is based on XML), printing each element and its attributes as a dictionary:
+[codeblocks]
+[gdscript]
+var parser = XMLParser.new()
+parser.open("path/to/file.svg")
+while parser.read() != ERR_FILE_EOF:
+
+	if parser.get_node_type() == XMLParser.NODE_ELEMENT:
+	    var node_name = parser.get_node_name()
+	    var attributes_dict = {}
+	    for idx in range(parser.get_attribute_count()):
+	        attributes_dict[parser.get_attribute_name(idx)] = parser.get_attribute_value(idx)
+	    print("The ", node_name, " element has the following attributes: ", attributes_dict)
+
+[/gdscript]
+[csharp]
+var parser = new XmlParser();
+parser.Open("path/to/file.svg");
+while (parser.Read() != Error.FileEof)
+
+	{
+	    if (parser.GetNodeType() == XmlParser.NodeType.Element)
+	    {
+	        var nodeName = parser.GetNodeName();
+	        var attributesDict = new Godot.Collections.Dictionary();
+	        for (int idx = 0; idx < parser.GetAttributeCount(); idx++)
+	        {
+	            attributesDict[parser.GetAttributeName(idx)] = parser.GetAttributeValue(idx);
+	        }
+	        GD.Print($"The {nodeName} element has the following attributes: {attributesDict}");
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
+*/
 type XMLParser = classdb.XMLParser
+
+/*
+The [XRAnchor3D] point is a spatial node that maps a real world location identified by the AR platform to a position within the game world. For example, as long as plane detection in ARKit is on, ARKit will identify and update the position of planes (tables, floors, etc) and create anchors for them.
+This node is mapped to one of the anchors through its unique ID. When you receive a signal that a new anchor is available, you should add this node to your scene for that anchor. You can predefine nodes and set the ID; the nodes will simply remain on 0,0,0 until a plane is recognized.
+Keep in mind that, as long as plane detection is enabled, the size, placing and orientation of an anchor will be updated as the detection logic learns more about the real world out there especially if only part of the surface is in view.
+*/
 type XRAnchor3D = classdb.XRAnchor3D
+
+/*
+This is a helper spatial node for our camera; note that, if stereoscopic rendering is applicable (VR-HMD), most of the camera properties are ignored, as the HMD information overrides them. The only properties that can be trusted are the near and far planes.
+The position and orientation of this node is automatically updated by the XR Server to represent the location of the HMD if such tracking is available and can thus be used by game logic. Note that, in contrast to the XR Controller, the render thread has access to the most up-to-date tracking data of the HMD and the location of the XRCamera3D can lag a few milliseconds behind what is used for rendering as a result.
+*/
 type XRCamera3D = classdb.XRCamera3D
+
+/*
+This is a helper spatial node that is linked to the tracking of controllers. It also offers several handy passthroughs to the state of buttons and such on the controllers.
+Controllers are linked by their ID. You can create controller nodes before the controllers are available. If your game always uses two controllers (one for each hand), you can predefine the controllers with ID 1 and 2; they will become active as soon as the controllers are identified. If you expect additional controllers to be used, you should react to the signals and add XRController3D nodes to your scene.
+The position of the controller node is automatically updated by the [XRServer]. This makes this node ideal to add child nodes to visualize the controller.
+As many XR runtimes now use a configurable action map all inputs are named.
+*/
 type XRController3D = classdb.XRController3D
+
+/*
+This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
+Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [XRServer].
+*/
 type XRInterface = classdb.XRInterface
+
+/*
+External XR interface plugins should inherit from this class.
+*/
 type XRInterfaceExtension = classdb.XRInterfaceExtension
+
+/*
+This node can be bound to a specific pose of a [XRPositionalTracker] and will automatically have its [member Node3D.transform] updated by the [XRServer]. Nodes of this type must be added as children of the [XROrigin3D] node.
+*/
 type XRNode3D = classdb.XRNode3D
+
+/*
+This is a special node within the AR/VR system that maps the physical location of the center of our tracking space to the virtual location within our game world.
+Multiple origin points can be added to the scene tree, but only one can used at a time. All the [XRCamera3D], [XRController3D], and [XRAnchor3D] nodes should be direct children of this node for spatial tracking to work correctly.
+It is the position of this node that you update when your character needs to move through your game world while we're not moving in the real world. Movement in the real world is always in relation to this origin point.
+For example, if your character is driving a car, the [XROrigin3D] node should be a child node of this car. Or, if you're implementing a teleport system to move your character, you should change the position of this node.
+*/
 type XROrigin3D = classdb.XROrigin3D
+
+/*
+XR runtimes often identify multiple locations on devices such as controllers that are spatially tracked.
+Orientation, location, linear velocity and angular velocity are all provided for each pose by the XR runtime. This object contains this state of a pose.
+*/
 type XRPose = classdb.XRPose
+
+/*
+An instance of this object represents a device that is tracked, such as a controller or anchor point. HMDs aren't represented here as they are handled internally.
+As controllers are turned on and the [XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [XRServer].
+The [XRController3D] and [XRAnchor3D] both consume objects of this type and should be used in your project. The positional trackers are just under-the-hood objects that make this all work. These are mostly exposed so that GDExtension-based interfaces can interact with them.
+*/
 type XRPositionalTracker = classdb.XRPositionalTracker
 
 func XRServer(godot Context) classdb.XRServer {
@@ -1048,5 +8020,39 @@ func XRServer(godot Context) classdb.XRServer {
 	return *(*classdb.XRServer)(unsafe.Pointer(&obj))
 }
 
+/*
+This class implements a writer that allows storing the multiple blobs in a zip archive.
+[codeblock]
+func write_zip_file():
+
+	var writer := ZIPPacker.new()
+	var err := writer.open("user://archive.zip")
+	if err != OK:
+	    return err
+	writer.start_file("hello.txt")
+	writer.write_file("Hello World".to_utf8_buffer())
+	writer.close_file()
+
+	writer.close()
+	return OK
+
+[/codeblock]
+*/
 type ZIPPacker = classdb.ZIPPacker
+
+/*
+This class implements a reader that can extract the content of individual files inside a zip archive.
+[codeblock]
+func read_zip_file():
+
+	var reader := ZIPReader.new()
+	var err := reader.open("user://archive.zip")
+	if err != OK:
+	    return PackedByteArray()
+	var res := reader.read_file("hello.txt")
+	reader.close()
+	return res
+
+[/codeblock]
+*/
 type ZIPReader = classdb.ZIPReader

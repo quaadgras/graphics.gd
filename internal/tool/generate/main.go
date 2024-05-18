@@ -690,15 +690,15 @@ func generate() error {
 			genEnum(pkg, w, enums, class.Name, enum)
 		}
 		if class.Name != "Object" {
-			if class.Description != "" {
-				fmt.Fprintln(w, "/*")
-				fmt.Fprint(w, strings.Replace(class.Description, "*/", "", -1))
-				fmt.Fprintln(w, "\n*/")
-			}
 			if singletons[class.Name] {
 				fmt.Fprintf(classdb, "func %v(godot Context) %[2]v { obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.%[1]v); return *(*%[2]v)(unsafe.Pointer(&obj)) }\n",
 					class.Name, classDB.nameOf("gd", class.Name))
 			} else {
+				if class.Description != "" {
+					fmt.Fprintln(classdb, "/*")
+					fmt.Fprint(classdb, strings.Replace(class.Description, "*/", "", -1))
+					fmt.Fprintln(classdb, "\n*/")
+				}
 				fmt.Fprintf(classdb, "type %v = %v \n", class.Name, classDB.nameOf("gd", class.Name))
 			}
 			fmt.Fprintf(w, "type %[1]v struct {_ [0]*%[1]v; ptr "+prefix+"Pointer}\n", class.Name, classDB.nameOf(pkg, class.Inherits))

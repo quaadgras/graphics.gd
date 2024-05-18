@@ -239,10 +239,6 @@ func (s Variant) Free() {
 	mmm.End(s)
 }
 
-func (self Object) AsObject() Object {
-	return self
-}
-
 type Iterator struct {
 	self Variant
 	iter Variant

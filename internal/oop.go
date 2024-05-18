@@ -42,6 +42,10 @@ func (o Object) AsPointer() Pointer { return o.ptr }
 //go:nosplit
 func (o *Object) SetPointer(ptr Pointer) { o.ptr = ptr }
 
+func (self Object) AsObject() Object {
+	return self
+}
+
 type Class[T, S IsClass] struct {
 	_     [0]*T
 	super S
