@@ -321,7 +321,7 @@ type ClassInterface interface {
 
 	// ReloadInstance is used to reload an existing object instance
 	// when the Go shared library is reloaded from the editor.
-	//ReloadInstance(Object) ObjectInterface
+	ReloadInstance(Object) ObjectInterface
 
 	GetVirtual(StringName) any
 }

@@ -13,6 +13,13 @@ import (
 	"runtime.link/mmm"
 )
 
+type onFree mmm.Pointer[func(), onFree, [0]uintptr]
+
+func (cb onFree) Free() {
+	(*mmm.API(cb))()
+	mmm.End(cb)
+}
+
 /*
 RegisterClass registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must
@@ -66,6 +73,10 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 			Type:  classType,
 			Value: reflect.New(classType).Interface().(gd.IsClass),
 		})
+	unregister := func() {
+		godot.API.ClassDB.UnregisterClass(godot.API.ExtensionToken, className)
+	}
+	mmm.Pin[onFree](godot.Lifetime, &unregister, [0]uintptr{})
 
 	registerSignals(godot, className, classType)
 	registerMethods(godot, className, classType)
@@ -115,14 +126,19 @@ func (class classImplementation) CreateInstance() Object {
 	ctx := gd.NewContext(class.Godot)
 	var super = class.Godot.ClassDB.ConstructObject(ctx, class.Super)
 	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.End(super.AsPointer())))
+	instance := class.reloadInstance(ctx, super)
+	class.Godot.Object.SetInstance(super, class.Name, instance)
+	return super
+}
+
+func (class classImplementation) ReloadInstance(super Object) gd.ObjectInterface {
+	return class.reloadInstance(gd.NewContext(class.Godot), super)
+}
+
+func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd.ObjectInterface {
 	var value = reflect.New(class.Type)
 	value.Interface().(gd.PointerToClass).SetPointer(
 		mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.Get(super.AsPointer())))
-	class.Godot.Object.SetInstance(super, class.Name, &instanceImplementation{
-		object:  mmm.Get(super.AsPointer()),
-		Context: ctx,
-		Value:   value.Interface(),
-	})
 	class.Godot.Instances[mmm.Get(super.AsPointer())] = value.Interface()
 
 	value = value.Elem()
@@ -154,8 +170,11 @@ func (class classImplementation) CreateInstance() Object {
 			}))
 		}
 	}
-
-	return super
+	return &instanceImplementation{
+		object:  mmm.Get(super.AsPointer()),
+		Context: ctx,
+		Value:   value.Addr().Interface(),
+	}
 }
 
 func (class classImplementation) GetVirtual(name StringName) any {

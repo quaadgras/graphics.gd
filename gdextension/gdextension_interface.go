@@ -358,7 +358,7 @@ extern void reference_func(pointer p_instance);
 extern void unreference_func(pointer p_instance);
 extern pointer create_instance_func(pointer p_class);
 extern void free_instance_func(pointer p_class, pointer p_instance);
-//extern *recreate_instance_func;
+extern uintptr_t recreate_instance_func(uintptr_t p_class, uintptr_t p_instance);
 extern pointer get_virtual_call_data_func(pointer p_class, void* name);
 extern void call_virtual_with_data_func(pointer p_instance, void* name, pointer userdata, void* args, void* ret);
 extern uint64_t get_rid_func(pointer p_instance);
@@ -377,7 +377,7 @@ static inline void classdb_register_extension_class2(pointer fn, pointer p_libra
 	p_extension_funcs->unreference_func = (void*)unreference_func;
 	p_extension_funcs->create_instance_func = (void*)create_instance_func;
 	p_extension_funcs->free_instance_func = (void*)free_instance_func;
-	//p_extension_funcs.recreate_instance_func = (void*)recreate_instance_func;
+	p_extension_funcs->recreate_instance_func = (void*)recreate_instance_func;
 	p_extension_funcs->get_virtual_call_data_func = (void*)get_virtual_call_data_func;
 	p_extension_funcs->call_virtual_with_data_func = (void*)call_virtual_with_data_func;
 	p_extension_funcs->get_rid_func = (void*)get_rid_func;
@@ -415,6 +415,9 @@ static inline void editor_add_plugin(pointer fn, pointer p_name) {
 }
 static inline void editor_remove_plugin(pointer fn, pointer p_name) {
 	((GDExtensionInterfaceEditorRemovePlugin)fn)((GDExtensionConstStringNamePtr)p_name);
+}
+static inline void classdb_unregister_extension_class(pointer fn, pointer p_library, pointer p_class_name) {
+	((GDExtensionInterfaceClassdbUnregisterExtensionClass)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name);
 }
 
 */
@@ -2031,10 +2034,10 @@ func linkCGO(API *gd.API) {
 	API.ClassDB.RegisterClassMethod = func(ctx gd.Context, library gd.ExtensionToken, class gd.StringName, info gd.Method) {
 		infoHandle := cgo.NewHandle(&info)
 		releaseHandle := infoHandle.Delete
-		mmm.Let[onFree](ctx.Lifetime, &releaseHandle, [0]uintptr{})
+		mmm.Pin[onFree](ctx.Lifetime, &releaseHandle, [0]uintptr{})
 
 		var pins runtime.Pinner
-		mmm.Let[pinner](ctx.Lifetime, &pins, [0]uintptr{})
+		mmm.Pin[pinner](ctx.Lifetime, &pins, [0]uintptr{})
 
 		var name = mmm.Get(info.Name)
 		pins.Pin(&name)
@@ -2131,6 +2134,17 @@ func linkCGO(API *gd.API) {
 		C.editor_remove_plugin(
 			C.uintptr_t(uintptr(editor_remove_plugin)),
 			C.uintptr_t(p_plugin.Uintptr()),
+		)
+		frame.Free()
+	}
+	classdb_unregister_extension_class := dlsymGD("classdb_unregister_extension_class")
+	API.ClassDB.UnregisterClass = func(library gd.ExtensionToken, name gd.StringName) {
+		var frame = callframe.New()
+		var p_name = callframe.Arg(frame, mmm.Get(name))
+		C.classdb_unregister_extension_class(
+			C.uintptr_t(uintptr(classdb_unregister_extension_class)),
+			C.uintptr_t(uintptr(library)),
+			C.uintptr_t(p_name.Uintptr()),
 		)
 		frame.Free()
 	}
@@ -2318,8 +2332,10 @@ func free_instance_func(_, p_instance uintptr) {
 
 //export recreate_instance_func
 func recreate_instance_func(p_class, p_super uintptr) uintptr {
-	_, _ = p_super, p_class
-	return 0
+	ctx := gd.NewContext(godot)
+	var super gd.Object
+	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, p_super))
+	return uintptr(cgo.NewHandle(cgo.Handle(p_class).Value().(gd.ClassInterface).ReloadInstance(super)))
 }
 
 //export get_virtual_call_data_func

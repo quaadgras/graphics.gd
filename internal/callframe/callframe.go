@@ -8,8 +8,6 @@ import (
 	"unsafe"
 )
 
-var pin runtime.Pinner
-
 var frames sync.Pool
 
 // Frame can be used to reduce the number of allocations required to pass
@@ -42,8 +40,8 @@ func New() *Frame {
 	frame, ok := frames.Get().(*Frame)
 	if !ok {
 		frame = new(Frame)
-		pin.Pin(frame)
 	}
+	frame.pin.Pin(frame)
 	return frame
 }
 

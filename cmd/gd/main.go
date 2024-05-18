@@ -220,12 +220,14 @@ func wrap() error {
 	}
 	var args = make([]string, len(os.Args)-1)
 	switch os.Args[1] {
-	case "run":
+	case "run", "build":
 		copy(args, os.Args[1:])
 		args[0] = "build"
 		args = append(args, "-buildmode=c-shared", "-o", "./graphics/"+libraryName)
 	case "test":
 		args = []string{"test", "-buildmode=c-shared", "-c", "-o", "./graphics/" + libraryName}
+	default:
+		copy(args, os.Args[1:])
 	}
 	golang := exec.Command("go", args...)
 	golang.Env = append(os.Environ(), "CGO_ENABLED=1")
