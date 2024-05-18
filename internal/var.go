@@ -68,24 +68,6 @@ func (d Dictionary) Free() {
 	frame.Free()
 }
 
-type Array mmm.Pointer[API, Array, uintptr]
-
-func (a Array) Index(ctx Context, index Int) Variant {
-	return mmm.API(a).Array.Index(ctx, a, index)
-}
-
-func (a Array) SetIndex(index Int, value Variant) {
-	mmm.API(a).Array.SetIndex(a, index, value)
-}
-
-func (a Array) Free() {
-	var frame = callframe.New()
-	mmm.API(a).typeset.destruct.Array(callframe.Arg(frame, mmm.End(a)).Uintptr())
-	frame.Free()
-}
-
-type ArrayOf[T any] Array
-
 type PackedByteArray mmm.Pointer[API, PackedByteArray, [2]uintptr]
 
 func (p PackedByteArray) Index(idx Int) byte {

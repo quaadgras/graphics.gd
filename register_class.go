@@ -235,11 +235,23 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if !field.IsValid() {
 		return false
 	}
-	converted := value.Interface(instance.Context)
-	if converted == nil {
+	converted := reflect.ValueOf(value.Interface(instance.Context))
+	if !converted.IsValid() {
 		return false
 	}
-	if !reflect.TypeOf(converted).AssignableTo(field.Type()) {
+	if converted.Type().ConvertibleTo(field.Type()) {
+		converted = converted.Convert(field.Type())
+	}
+	if !converted.Type().AssignableTo(field.Type()) {
+		if field.Type().Implements(reflect.TypeOf([0]gd.IsArray{}).Elem()) {
+			method, ok := field.Type().MethodByName("Typed")
+			if ok {
+				array := reflect.New(method.Type.In(0)).Elem()
+				array.Set(converted.Convert(method.Type.In(0)))
+				field.Set(array)
+				return true
+			}
+		}
 		return false
 	}
 	field.Set(reflect.ValueOf(converted))
@@ -266,19 +278,7 @@ func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.Prop
 		if _, ok := field.Type.MethodByName("AsNode"); ok {
 			continue
 		}
-		var name = field.Name
-		tag, ok := field.Tag.Lookup("gd")
-		if ok {
-			name = tag
-		}
-		list = append(list, gd.PropertyInfo{
-			Type:       variantTypeOf(field.Type),
-			Name:       godot.StringName(name),
-			ClassName:  godot.StringName(classNameOf(field.Type)),
-			Hint:       PropertyHintResourceType,
-			HintString: godot.String(classNameOf(field.Type)),
-			Usage:      PropertyUsageStorage | PropertyUsageEditor,
-		})
+		list = append(list, propertyOf(godot, field))
 	}
 	return list
 }

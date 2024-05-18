@@ -3,7 +3,9 @@
 package gd
 
 import (
+	"fmt"
 	"reflect"
+	"strings"
 
 	gd "grow.graphics/gd/internal"
 )
@@ -103,6 +105,35 @@ import (
 	frame.Free()
 }*/
 
+func propertyOf(godot Context, field reflect.StructField) gd.PropertyInfo {
+	var name = field.Name
+	tag, ok := field.Tag.Lookup("gd")
+	if ok {
+		name = tag
+	}
+	var hint = PropertyHintResourceType
+	var hintString = classNameOf(field.Type)
+	vtype := variantTypeOf(field.Type)
+	if vtype == TypeArray {
+		_, generic, ok := strings.Cut(field.Type.String(), "[")
+		if ok {
+			hint |= PropertyHintArrayType
+			split := strings.Split(generic, ".")
+			elem := split[len(split)-1]
+			elem = elem[:len(elem)-1]
+			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, elem)
+		}
+	}
+	return gd.PropertyInfo{
+		Type:       vtype,
+		Name:       godot.StringName(name),
+		ClassName:  godot.StringName(classNameOf(field.Type)),
+		Hint:       hint,
+		HintString: godot.String(hintString),
+		Usage:      PropertyUsageStorage | PropertyUsageEditor,
+	}
+}
+
 func classNameOf(rtype reflect.Type) string {
 	if rtype.Kind() == reflect.Ptr {
 		return classNameOf(rtype.Elem())
@@ -196,9 +227,12 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 	case reflect.TypeOf([0]PackedColorArray{}).Elem():
 		vtype = TypePackedColorArray
 	default:
-		if rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
+		switch {
+		case rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()):
 			vtype = TypeObject
-		} else {
+		case rtype.Implements(reflect.TypeOf([0]gd.IsArray{}).Elem()):
+			vtype = TypeArray
+		default:
 			panic("gdextension.RegisterClass: unsupported property type " + rtype.String())
 		}
 	}

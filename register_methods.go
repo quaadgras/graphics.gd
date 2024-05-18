@@ -21,21 +21,15 @@ func registerMethods(godot Context, class StringName, rtype reflect.Type) {
 		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-2)
 		var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, method.Type.NumIn()-2)
 		for i := 2; i < method.Type.NumIn(); i++ {
-			arguments = append(arguments, gd.PropertyInfo{
-				Type:      variantTypeOf(method.Type.In(i)),
-				Name:      godot.StringName("arg" + fmt.Sprint(i)),
-				ClassName: godot.StringName(classNameOf(method.Type.In(i))),
-			})
+			arguments = append(arguments,
+				propertyOf(godot, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)}))
 			metadatas = append(metadatas, 0)
 		}
 		var returns *gd.PropertyInfo
 		var returnMetadata gd.ClassMethodArgumentMetadata
 		if method.Type.NumOut() > 0 {
-			returns = &gd.PropertyInfo{
-				Type:      variantTypeOf(method.Type.Out(0)),
-				Name:      godot.StringName("result"),
-				ClassName: godot.StringName(classNameOf(method.Type.Out(0))),
-			}
+			property := propertyOf(godot, reflect.StructField{Name: "result", Type: method.Type.Out(0)})
+			returns = &property
 			returnMetadata = 0
 		}
 		godot.API.ClassDB.RegisterClassMethod(godot, godot.API.ExtensionToken, class, gd.Method{

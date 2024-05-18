@@ -176,6 +176,12 @@ func (godot Context) Variant(v any) Variant {
 		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedColorArray](ret, arg.Uintptr())
+	case IsArray:
+		if mmm.Get(val) == 0 {
+			return godot.API.Variants.NewNil(godot)
+		}
+		var arg = callframe.Arg(frame, mmm.Get(val))
+		godot.API.variant.FromType[TypeArray](ret, arg.Uintptr())
 	default:
 		class, ok := v.(IsClass)
 		if ok {

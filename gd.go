@@ -3,8 +3,12 @@
 package gd
 
 import (
+	"reflect"
+
+	gd "grow.graphics/gd/internal"
 	internal "grow.graphics/gd/internal"
 	"grow.graphics/xy"
+	"runtime.link/mmm"
 )
 
 type Axis int
@@ -118,6 +122,7 @@ type (
 
 	Dictionary = internal.Dictionary
 	Array      = internal.Array
+	Variant    = internal.Variant
 
 	PackedByteArray    = internal.PackedByteArray
 	PackedInt32Array   = internal.PackedInt32Array
@@ -136,3 +141,68 @@ type isSignal interface {
 }
 
 func (s *Signal[T]) setSignal(signal internal.Signal) { s.privateSignal = signal }
+
+func NewArrayOf[T any](godot Context) ArrayOf[T] {
+	array := gd.TypedArray[T](godot.Array())
+	rtype := reflect.TypeOf([0]T{}).Elem()
+	tmp := internal.NewContext(godot.API)
+	defer tmp.End()
+	godot.API.Array.SetTyped(Array(array), variantTypeOf(rtype), tmp.StringName(classNameOf(rtype)), Object{})
+	return array
+}
+
+type ArrayOf[T any] interface {
+	gd.IsArray
+	gd.IsArrayType[T]
+	mmm.ManagedPointer[uintptr]
+
+	All(method Callable) bool
+	Any(method Callable) bool
+	Append(value T)
+	AppendArray(array gd.ArrayOf[T])
+	Assign(array gd.ArrayOf[T])
+	Back(ctx Context) T
+	Bsearch(value T, before bool) int64
+	BsearchCustom(value T, fn Callable, before bool) int64
+	Clear()
+	Count(value T) int64
+	Duplicate(ctx Context, deep bool) gd.ArrayOf[T]
+	Erase(value T)
+	Fill(value T)
+	Filter(ctx Context, method Callable) gd.ArrayOf[T]
+	Find(what T, from int64) int64
+	Free()
+	Front(ctx Context) T
+	GetTypedBuiltin() int64
+	GetTypedClassName(ctx Context) StringName
+	GetTypedScript(ctx Context) Variant
+	Has(value T) bool
+	Hash() int64
+	Index(ctx Context, index int64) T
+	Insert(position int64, value T) int64
+	IsEmpty() bool
+	IsReadOnly() bool
+	IsSameTyped(array Array) bool
+	IsTyped() bool
+	MakeReadOnly()
+	Map(ctx Context, method Callable) gd.ArrayOf[T]
+	Max(ctx Context) T
+	Min(ctx Context) T
+	PickRandom(ctx Context) T
+	PopAt(ctx Context, position int64) T
+	PopBack(ctx Context) T
+	PopFront(ctx Context) T
+	PushBack(value T)
+	PushFront(value T)
+	Reduce(ctx Context, method Callable, accum T) T
+	RemoveAt(position int64)
+	Resize(size int64) int64
+	Reverse()
+	Rfind(what T, from int64) int64
+	SetIndex(index int64, value T)
+	Shuffle()
+	Size() int64
+	Slice(ctx Context, begin int64, end int64, step int64, deep bool) gd.ArrayOf[T]
+	Sort()
+	SortCustom(fn Callable)
+}
