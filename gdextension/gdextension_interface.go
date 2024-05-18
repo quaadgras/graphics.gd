@@ -1653,6 +1653,10 @@ func linkCGO(API *gd.API) {
 	}
 	object_method_bind_call := dlsymGD("object_method_bind_call")
 	API.Object.MethodBindCall = func(ctx gd.Context, method gd.MethodBind, obj gd.Object, arg ...gd.Variant) (gd.Variant, error) {
+		var self = mmm.Get(obj.AsPointer())
+		if self == 0 {
+			return gd.Variant{}, errors.New("nil gd.Object dereference")
+		}
 		var frame = callframe.New()
 		for _, a := range arg {
 			callframe.Arg(frame, mmm.Get(a))
@@ -1662,7 +1666,7 @@ func linkCGO(API *gd.API) {
 		C.object_method_bind_call(
 			C.uintptr_t(uintptr(object_method_bind_call)),
 			C.uintptr_t(method),
-			C.uintptr_t(mmm.Get(obj.AsPointer())),
+			C.uintptr_t(self),
 			C.uintptr_t(frame.Array(0).Uintptr()),
 			C.GDExtensionInt(len(arg)),
 			C.uintptr_t(r_ret.Uintptr()),
@@ -1682,6 +1686,10 @@ func linkCGO(API *gd.API) {
 	}
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg callframe.Args, ret uintptr) {
+		var self = mmm.Get(obj.AsPointer())
+		if self == 0 {
+			panic("nil gd.Object dereference")
+		}
 		C.object_method_bind_ptrcall(
 			C.uintptr_t(uintptr(object_method_bind_ptrcall)),
 			C.uintptr_t(method),
