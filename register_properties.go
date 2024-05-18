@@ -121,7 +121,7 @@ func propertyOf(godot Context, field reflect.StructField) gd.PropertyInfo {
 			split := strings.Split(generic, ".")
 			elem := split[len(split)-1]
 			elem = elem[:len(elem)-1]
-			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, elem)
+			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, elem) // MAKE_RESOURCE_TYPE_HINT
 		}
 	}
 	return gd.PropertyInfo{
