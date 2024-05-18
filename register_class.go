@@ -139,6 +139,7 @@ func (class classImplementation) CreateInstance() Object {
 	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.End(super.AsPointer())))
 	instance := class.reloadInstance(ctx, super)
 	class.Godot.Object.SetInstance(super, class.Name, instance)
+	class.Godot.Object.SetInstanceBinding(super, ctx.API.ExtensionToken, nil, nil)
 	return super
 }
 
