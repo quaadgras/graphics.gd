@@ -15,11 +15,11 @@ import (
 )
 
 type HelloWorld struct {
-	gd.Class[HelloWorld, gd.Node2D]
+	gd.Class[HelloWorld, gd.SceneTree]
 }
 
-// Ready implements the Godot Node2D _ready interface (virtual function).
-func (h *HelloWorld) Ready(gd.Context) {
+// Initialize implements the Godot MainLoop _initialize interface (virtual function).
+func (h *HelloWorld) Initialize(godot gd.Context) {
 	fmt.Println("Hello World from Go!")
 }
 
