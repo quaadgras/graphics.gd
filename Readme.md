@@ -151,7 +151,8 @@ To run the go tests for this module `cd internal && gd test`.
 * No support for Godot class functions with varargs.
 * No support for script extensions.
 * 64bit support only.
-* No planned support for Web export or proprietary consoles.
+* No Web Export Yet (we have ideas on how to solve this)
+* No planned support for proprietary consoles.
 
 ## See Also
 
