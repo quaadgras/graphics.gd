@@ -29,7 +29,7 @@ func PointerWithOwnershipTransferredToGodot(godot Context, ptr Pointer) uintptr 
 func PointerMustAssertInstanceID(godot Context, ptr uintptr) Pointer {
 	var obj Object
 	obj.SetPointer(mmm.Let[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, 0}))
-	return mmm.New[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, uintptr(godot.API.Object.GetInstanceID(obj))})
+	return mmm.Let[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, uintptr(godot.API.Object.GetInstanceID(obj))})
 }
 
 func PointerLifetimeBoundTo(godot Context, obj Object, ptr uintptr) Pointer {
