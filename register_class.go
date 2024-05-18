@@ -43,6 +43,9 @@ will be promoted.
 
 If the Struct extends [EditorPlugin] then it will be added to
 the editor as a plugin.
+
+If the Struct extends [MainLoop] or [SceneTree] then it will be
+used as the main loop for the application.
 */
 func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
@@ -80,6 +83,14 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 
 	registerSignals(godot, className, classType)
 	registerMethods(godot, className, classType)
+
+	if superType.Implements(reflect.TypeOf([0]interface {
+		AsMainLoop() MainLoop
+	}{}).Elem()) {
+		main_loop_type := godot.String("application/run/main_loop_type")
+		ProjectSettings(godot).SetInitialValue(main_loop_type, godot.Variant(className))
+		ProjectSettings(godot).SetSetting(main_loop_type, godot.Variant(className))
+	}
 }
 
 func convertName(fnName string) string {
