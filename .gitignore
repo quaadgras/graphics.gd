@@ -15,3 +15,5 @@ example/bin/
 /internal/testbed/testing.lib
 /internal/graphics
 /.vscode/launch.json
+*.wasm
+/gdextension/internal
