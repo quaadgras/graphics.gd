@@ -1,12 +1,15 @@
 package gdextension
 
 import (
+	"errors"
 	"os"
 	"runtime"
 	"unsafe"
 
 	internal "grow.graphics/gd/internal"
 
+	"runtime.link/api"
+	"runtime.link/api/stub"
 	"runtime.link/mmm"
 )
 
@@ -29,21 +32,20 @@ func (p pinner) Free() { mmm.API(p).Unpin(); mmm.End(p) }
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer
 
-var background internal.Context
+var background = internal.NewContext(&godot)
 
 // Link returns a handle to the [API] and the global [ClassDB].
 // The [bool] return value is [true] if the API has been
 // linked with Godot successfully.
 func Link() (internal.Context, bool) {
 	if dlsymGD == nil {
-		//*godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
-		return internal.NewContext(godot), false
+		return background, false
 	}
 	return background, true
 }
 
 var (
-	godot = new(internal.API)
+	godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
 )
 
 //export loadExtension
@@ -53,8 +55,7 @@ func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) ui
 	}
 	classDB = internal.ExtensionToken(classes)
 	godot.ExtensionToken = classDB
-	linkCGO(godot)
-	background = internal.NewContext(godot)
+	linkCGO(&godot)
 	init := (*initialization)(configuration)
 	*init = initialization{}
 	init.minimum_initialization_level = initializationLevel(internal.GDExtensionInitializationLevelScene)
