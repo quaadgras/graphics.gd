@@ -7,6 +7,8 @@ around the ownership semantics for non-RefCounted godot objects.
 type OwnershipSemantics int
 
 const (
+	// RefCountedManagement is the default ownership semantics for objects that
+	// extend the RefCounted class.
 	RefCountedManagement OwnershipSemantics = iota
 
 	// OwnershipTransferred means that the receiver of the value is responsible
