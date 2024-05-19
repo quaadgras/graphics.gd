@@ -53,6 +53,13 @@ Running the command without any arguments will startup the editor.
 **HINT**  On Windows, you'll want to 
 [setup CGO](https://github.com/go101/go101/wiki/CGO-Environment-Setup).
 
+If you don't want to use the `gd` command, you can build a shared library with
+the `go` command directly:
+
+```sh
+go build -o example.so -buildmode=c-shared
+```
+
 ## Design Principles
 
 Godot classes are exported by the `gd` package and can be referred to by 
@@ -117,22 +124,8 @@ We've got some ideas to reduce allocations for GDScript -> Go calls, when
 arguments fit entirely within registers. TBA.
 
 ## Examples
-
-Run `make` in the example/src directory or manually build a C-shared library:
-
-```sh
-cd example/src
-make # go build -o ./bin/example.so -buildmode=c-shared
-```
-
-**NOTE:** the first time you build a project, it will take a little while to compile.
-After this, subsequent builds will be quite a bit faster!
-
-Now open the example project in Godot from a terminal and you will be able to 
-see Go printing things to the console.
-
-There is also a [pong](https://github.com/grow-graphics/eg/blob/master/2d/pong/pong.go)
-example in the [examples](https://github.com/grow-graphics/eg) repo.
+There are a number of examples in the [examples](https://github.com/grow-graphics/eg) 
+repo. All examples are designed to be run with `gd run` without any additional setup.
 
 ## Testing
 To run the go tests for this module `cd internal && gd test`.
