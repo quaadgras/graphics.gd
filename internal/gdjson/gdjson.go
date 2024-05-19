@@ -3,8 +3,9 @@ package gdjson
 type Enum struct {
 	Name   string `json:"name"`
 	Values []struct {
-		Name  string `json:"name"`
-		Value int    `json:"value"`
+		Name        string `json:"name"`
+		Value       int    `json:"value"`
+		Description string `json:"description"`
 	} `json:"values"`
 }
 

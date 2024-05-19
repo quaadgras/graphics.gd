@@ -9,888 +9,1616 @@ import classdb "grow.graphics/gd/internal/classdb"
 type Corner = gd.Corner
 
 const (
-	CornerTopLeft     Corner = 0
-	CornerTopRight    Corner = 1
+	/*Top-left corner.*/
+	CornerTopLeft Corner = 0
+	/*Top-right corner.*/
+	CornerTopRight Corner = 1
+	/*Bottom-right corner.*/
 	CornerBottomRight Corner = 2
-	CornerBottomLeft  Corner = 3
+	/*Bottom-left corner.*/
+	CornerBottomLeft Corner = 3
 )
 
 type Orientation = gd.Orientation
 
 const (
-	Vertical   Orientation = 1
+	/*General vertical alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
+	Vertical Orientation = 1
+	/*General horizontal alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
 	Horizontal Orientation = 0
 )
 
 type ClockDirection = gd.ClockDirection
 
 const (
-	Clockwise        ClockDirection = 0
+	/*Clockwise rotation. Used by some methods (e.g. [method Image.rotate_90]).*/
+	Clockwise ClockDirection = 0
+	/*Counter-clockwise rotation. Used by some methods (e.g. [method Image.rotate_90]).*/
 	Counterclockwise ClockDirection = 1
 )
 
 type HorizontalAlignment = gd.HorizontalAlignment
 
 const (
-	HorizontalAlignmentLeft   HorizontalAlignment = 0
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
 	HorizontalAlignmentCenter HorizontalAlignment = 1
-	HorizontalAlignmentRight  HorizontalAlignment = 2
-	HorizontalAlignmentFill   HorizontalAlignment = 3
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
 )
 
 type VerticalAlignment = gd.VerticalAlignment
 
 const (
-	VerticalAlignmentTop    VerticalAlignment = 0
+	/*Vertical top alignment, usually for text-derived classes.*/
+	VerticalAlignmentTop VerticalAlignment = 0
+	/*Vertical center alignment, usually for text-derived classes.*/
 	VerticalAlignmentCenter VerticalAlignment = 1
+	/*Vertical bottom alignment, usually for text-derived classes.*/
 	VerticalAlignmentBottom VerticalAlignment = 2
-	VerticalAlignmentFill   VerticalAlignment = 3
+	/*Expand rows to fit height, usually for text-derived classes.*/
+	VerticalAlignmentFill VerticalAlignment = 3
 )
 
 type InlineAlignment = gd.InlineAlignment
 
 const (
-	InlineAlignmentTopTo      InlineAlignment = 0
-	InlineAlignmentCenterTo   InlineAlignment = 1
+	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentTopTo InlineAlignment = 0
+	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentCenterTo InlineAlignment = 1
+	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
 	InlineAlignmentBaselineTo InlineAlignment = 3
-	InlineAlignmentBottomTo   InlineAlignment = 2
-	InlineAlignmentToTop      InlineAlignment = 0
-	InlineAlignmentToCenter   InlineAlignment = 4
+	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBottomTo InlineAlignment = 2
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
+	InlineAlignmentToTop InlineAlignment = 0
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
+	InlineAlignmentToCenter InlineAlignment = 4
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
 	InlineAlignmentToBaseline InlineAlignment = 8
-	InlineAlignmentToBottom   InlineAlignment = 12
-	InlineAlignmentTop        InlineAlignment = 0
-	InlineAlignmentCenter     InlineAlignment = 5
-	InlineAlignmentBottom     InlineAlignment = 14
-	InlineAlignmentImageMask  InlineAlignment = 3
-	InlineAlignmentTextMask   InlineAlignment = 12
+	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
+	InlineAlignmentToBottom InlineAlignment = 12
+	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
+	InlineAlignmentTop InlineAlignment = 0
+	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
+	InlineAlignmentCenter InlineAlignment = 5
+	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
+	InlineAlignmentBottom InlineAlignment = 14
+	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
+	InlineAlignmentImageMask InlineAlignment = 3
+	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
+	InlineAlignmentTextMask InlineAlignment = 12
 )
 
 type Key = gd.Key
 
 const (
-	KeyNone          Key = 0
-	KeySpecial       Key = 4194304
-	KeyEscape        Key = 4194305
-	KeyTab           Key = 4194306
-	KeyBacktab       Key = 4194307
-	KeyBackspace     Key = 4194308
-	KeyEnter         Key = 4194309
-	KeyKpEnter       Key = 4194310
-	KeyInsert        Key = 4194311
-	KeyDelete        Key = 4194312
-	KeyPause         Key = 4194313
-	KeyPrint         Key = 4194314
-	KeySysreq        Key = 4194315
-	KeyClear         Key = 4194316
-	KeyHome          Key = 4194317
-	KeyEnd           Key = 4194318
-	KeyLeft          Key = 4194319
-	KeyUp            Key = 4194320
-	KeyRight         Key = 4194321
-	KeyDown          Key = 4194322
-	KeyPageup        Key = 4194323
-	KeyPagedown      Key = 4194324
-	KeyShift         Key = 4194325
-	KeyCtrl          Key = 4194326
-	KeyMeta          Key = 4194327
-	KeyAlt           Key = 4194328
-	KeyCapslock      Key = 4194329
-	KeyNumlock       Key = 4194330
-	KeyScrolllock    Key = 4194331
-	KeyF1            Key = 4194332
-	KeyF2            Key = 4194333
-	KeyF3            Key = 4194334
-	KeyF4            Key = 4194335
-	KeyF5            Key = 4194336
-	KeyF6            Key = 4194337
-	KeyF7            Key = 4194338
-	KeyF8            Key = 4194339
-	KeyF9            Key = 4194340
-	KeyF10           Key = 4194341
-	KeyF11           Key = 4194342
-	KeyF12           Key = 4194343
-	KeyF13           Key = 4194344
-	KeyF14           Key = 4194345
-	KeyF15           Key = 4194346
-	KeyF16           Key = 4194347
-	KeyF17           Key = 4194348
-	KeyF18           Key = 4194349
-	KeyF19           Key = 4194350
-	KeyF20           Key = 4194351
-	KeyF21           Key = 4194352
-	KeyF22           Key = 4194353
-	KeyF23           Key = 4194354
-	KeyF24           Key = 4194355
-	KeyF25           Key = 4194356
-	KeyF26           Key = 4194357
-	KeyF27           Key = 4194358
-	KeyF28           Key = 4194359
-	KeyF29           Key = 4194360
-	KeyF30           Key = 4194361
-	KeyF31           Key = 4194362
-	KeyF32           Key = 4194363
-	KeyF33           Key = 4194364
-	KeyF34           Key = 4194365
-	KeyF35           Key = 4194366
-	KeyKpMultiply    Key = 4194433
-	KeyKpDivide      Key = 4194434
-	KeyKpSubtract    Key = 4194435
-	KeyKpPeriod      Key = 4194436
-	KeyKpAdd         Key = 4194437
-	KeyKp0           Key = 4194438
-	KeyKp1           Key = 4194439
-	KeyKp2           Key = 4194440
-	KeyKp3           Key = 4194441
-	KeyKp4           Key = 4194442
-	KeyKp5           Key = 4194443
-	KeyKp6           Key = 4194444
-	KeyKp7           Key = 4194445
-	KeyKp8           Key = 4194446
-	KeyKp9           Key = 4194447
-	KeyMenu          Key = 4194370
-	KeyHyper         Key = 4194371
-	KeyHelp          Key = 4194373
-	KeyBack          Key = 4194376
-	KeyForward       Key = 4194377
-	KeyStop          Key = 4194378
-	KeyRefresh       Key = 4194379
-	KeyVolumedown    Key = 4194380
-	KeyVolumemute    Key = 4194381
-	KeyVolumeup      Key = 4194382
-	KeyMediaplay     Key = 4194388
-	KeyMediastop     Key = 4194389
+	/*Enum value which doesn't correspond to any key. This is used to initialize [enum Key] properties with a generic state.*/
+	KeyNone Key = 0
+	/*Keycodes with this bit applied are non-printable.*/
+	KeySpecial Key = 4194304
+	/*Escape key.*/
+	KeyEscape Key = 4194305
+	/*Tab key.*/
+	KeyTab Key = 4194306
+	/*Shift + Tab key.*/
+	KeyBacktab Key = 4194307
+	/*Backspace key.*/
+	KeyBackspace Key = 4194308
+	/*Return key (on the main keyboard).*/
+	KeyEnter Key = 4194309
+	/*Enter key on the numeric keypad.*/
+	KeyKpEnter Key = 4194310
+	/*Insert key.*/
+	KeyInsert Key = 4194311
+	/*Delete key.*/
+	KeyDelete Key = 4194312
+	/*Pause key.*/
+	KeyPause Key = 4194313
+	/*Print Screen key.*/
+	KeyPrint Key = 4194314
+	/*System Request key.*/
+	KeySysreq Key = 4194315
+	/*Clear key.*/
+	KeyClear Key = 4194316
+	/*Home key.*/
+	KeyHome Key = 4194317
+	/*End key.*/
+	KeyEnd Key = 4194318
+	/*Left arrow key.*/
+	KeyLeft Key = 4194319
+	/*Up arrow key.*/
+	KeyUp Key = 4194320
+	/*Right arrow key.*/
+	KeyRight Key = 4194321
+	/*Down arrow key.*/
+	KeyDown Key = 4194322
+	/*Page Up key.*/
+	KeyPageup Key = 4194323
+	/*Page Down key.*/
+	KeyPagedown Key = 4194324
+	/*Shift key.*/
+	KeyShift Key = 4194325
+	/*Control key.*/
+	KeyCtrl Key = 4194326
+	/*Meta key.*/
+	KeyMeta Key = 4194327
+	/*Alt key.*/
+	KeyAlt Key = 4194328
+	/*Caps Lock key.*/
+	KeyCapslock Key = 4194329
+	/*Num Lock key.*/
+	KeyNumlock Key = 4194330
+	/*Scroll Lock key.*/
+	KeyScrolllock Key = 4194331
+	/*F1 key.*/
+	KeyF1 Key = 4194332
+	/*F2 key.*/
+	KeyF2 Key = 4194333
+	/*F3 key.*/
+	KeyF3 Key = 4194334
+	/*F4 key.*/
+	KeyF4 Key = 4194335
+	/*F5 key.*/
+	KeyF5 Key = 4194336
+	/*F6 key.*/
+	KeyF6 Key = 4194337
+	/*F7 key.*/
+	KeyF7 Key = 4194338
+	/*F8 key.*/
+	KeyF8 Key = 4194339
+	/*F9 key.*/
+	KeyF9 Key = 4194340
+	/*F10 key.*/
+	KeyF10 Key = 4194341
+	/*F11 key.*/
+	KeyF11 Key = 4194342
+	/*F12 key.*/
+	KeyF12 Key = 4194343
+	/*F13 key.*/
+	KeyF13 Key = 4194344
+	/*F14 key.*/
+	KeyF14 Key = 4194345
+	/*F15 key.*/
+	KeyF15 Key = 4194346
+	/*F16 key.*/
+	KeyF16 Key = 4194347
+	/*F17 key.*/
+	KeyF17 Key = 4194348
+	/*F18 key.*/
+	KeyF18 Key = 4194349
+	/*F19 key.*/
+	KeyF19 Key = 4194350
+	/*F20 key.*/
+	KeyF20 Key = 4194351
+	/*F21 key.*/
+	KeyF21 Key = 4194352
+	/*F22 key.*/
+	KeyF22 Key = 4194353
+	/*F23 key.*/
+	KeyF23 Key = 4194354
+	/*F24 key.*/
+	KeyF24 Key = 4194355
+	/*F25 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF25 Key = 4194356
+	/*F26 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF26 Key = 4194357
+	/*F27 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF27 Key = 4194358
+	/*F28 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF28 Key = 4194359
+	/*F29 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF29 Key = 4194360
+	/*F30 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF30 Key = 4194361
+	/*F31 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF31 Key = 4194362
+	/*F32 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF32 Key = 4194363
+	/*F33 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF33 Key = 4194364
+	/*F34 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF34 Key = 4194365
+	/*F35 key. Only supported on macOS and Linux due to a Windows limitation.*/
+	KeyF35 Key = 4194366
+	/*Multiply (*) key on the numeric keypad.*/
+	KeyKpMultiply Key = 4194433
+	/*Divide (/) key on the numeric keypad.*/
+	KeyKpDivide Key = 4194434
+	/*Subtract (-) key on the numeric keypad.*/
+	KeyKpSubtract Key = 4194435
+	/*Period (.) key on the numeric keypad.*/
+	KeyKpPeriod Key = 4194436
+	/*Add (+) key on the numeric keypad.*/
+	KeyKpAdd Key = 4194437
+	/*Number 0 on the numeric keypad.*/
+	KeyKp0 Key = 4194438
+	/*Number 1 on the numeric keypad.*/
+	KeyKp1 Key = 4194439
+	/*Number 2 on the numeric keypad.*/
+	KeyKp2 Key = 4194440
+	/*Number 3 on the numeric keypad.*/
+	KeyKp3 Key = 4194441
+	/*Number 4 on the numeric keypad.*/
+	KeyKp4 Key = 4194442
+	/*Number 5 on the numeric keypad.*/
+	KeyKp5 Key = 4194443
+	/*Number 6 on the numeric keypad.*/
+	KeyKp6 Key = 4194444
+	/*Number 7 on the numeric keypad.*/
+	KeyKp7 Key = 4194445
+	/*Number 8 on the numeric keypad.*/
+	KeyKp8 Key = 4194446
+	/*Number 9 on the numeric keypad.*/
+	KeyKp9 Key = 4194447
+	/*Context menu key.*/
+	KeyMenu Key = 4194370
+	/*Hyper key. (On Linux/X11 only).*/
+	KeyHyper Key = 4194371
+	/*Help key.*/
+	KeyHelp Key = 4194373
+	/*Media back key. Not to be confused with the Back button on an Android device.*/
+	KeyBack Key = 4194376
+	/*Media forward key.*/
+	KeyForward Key = 4194377
+	/*Media stop key.*/
+	KeyStop Key = 4194378
+	/*Media refresh key.*/
+	KeyRefresh Key = 4194379
+	/*Volume down key.*/
+	KeyVolumedown Key = 4194380
+	/*Mute volume key.*/
+	KeyVolumemute Key = 4194381
+	/*Volume up key.*/
+	KeyVolumeup Key = 4194382
+	/*Media play key.*/
+	KeyMediaplay Key = 4194388
+	/*Media stop key.*/
+	KeyMediastop Key = 4194389
+	/*Previous song key.*/
 	KeyMediaprevious Key = 4194390
-	KeyMedianext     Key = 4194391
-	KeyMediarecord   Key = 4194392
-	KeyHomepage      Key = 4194393
-	KeyFavorites     Key = 4194394
-	KeySearch        Key = 4194395
-	KeyStandby       Key = 4194396
-	KeyOpenurl       Key = 4194397
-	KeyLaunchmail    Key = 4194398
-	KeyLaunchmedia   Key = 4194399
-	KeyLaunch0       Key = 4194400
-	KeyLaunch1       Key = 4194401
-	KeyLaunch2       Key = 4194402
-	KeyLaunch3       Key = 4194403
-	KeyLaunch4       Key = 4194404
-	KeyLaunch5       Key = 4194405
-	KeyLaunch6       Key = 4194406
-	KeyLaunch7       Key = 4194407
-	KeyLaunch8       Key = 4194408
-	KeyLaunch9       Key = 4194409
-	KeyLauncha       Key = 4194410
-	KeyLaunchb       Key = 4194411
-	KeyLaunchc       Key = 4194412
-	KeyLaunchd       Key = 4194413
-	KeyLaunche       Key = 4194414
-	KeyLaunchf       Key = 4194415
-	KeyGlobe         Key = 4194416
-	KeyKeyboard      Key = 4194417
-	KeyJisEisu       Key = 4194418
-	KeyJisKana       Key = 4194419
-	KeyUnknown       Key = 8388607
-	KeySpace         Key = 32
-	KeyExclam        Key = 33
-	KeyQuotedbl      Key = 34
-	KeyNumbersign    Key = 35
-	KeyDollar        Key = 36
-	KeyPercent       Key = 37
-	KeyAmpersand     Key = 38
-	KeyApostrophe    Key = 39
-	KeyParenleft     Key = 40
-	KeyParenright    Key = 41
-	KeyAsterisk      Key = 42
-	KeyPlus          Key = 43
-	KeyComma         Key = 44
-	KeyMinus         Key = 45
-	KeyPeriod        Key = 46
-	KeySlash         Key = 47
-	Key0             Key = 48
-	Key1             Key = 49
-	Key2             Key = 50
-	Key3             Key = 51
-	Key4             Key = 52
-	Key5             Key = 53
-	Key6             Key = 54
-	Key7             Key = 55
-	Key8             Key = 56
-	Key9             Key = 57
-	KeyColon         Key = 58
-	KeySemicolon     Key = 59
-	KeyLess          Key = 60
-	KeyEqual         Key = 61
-	KeyGreater       Key = 62
-	KeyQuestion      Key = 63
-	KeyAt            Key = 64
-	KeyA             Key = 65
-	KeyB             Key = 66
-	KeyC             Key = 67
-	KeyD             Key = 68
-	KeyE             Key = 69
-	KeyF             Key = 70
-	KeyG             Key = 71
-	KeyH             Key = 72
-	KeyI             Key = 73
-	KeyJ             Key = 74
-	KeyK             Key = 75
-	KeyL             Key = 76
-	KeyM             Key = 77
-	KeyN             Key = 78
-	KeyO             Key = 79
-	KeyP             Key = 80
-	KeyQ             Key = 81
-	KeyR             Key = 82
-	KeyS             Key = 83
-	KeyT             Key = 84
-	KeyU             Key = 85
-	KeyV             Key = 86
-	KeyW             Key = 87
-	KeyX             Key = 88
-	KeyY             Key = 89
-	KeyZ             Key = 90
-	KeyBracketleft   Key = 91
-	KeyBackslash     Key = 92
-	KeyBracketright  Key = 93
-	KeyAsciicircum   Key = 94
-	KeyUnderscore    Key = 95
-	KeyQuoteleft     Key = 96
-	KeyBraceleft     Key = 123
-	KeyBar           Key = 124
-	KeyBraceright    Key = 125
-	KeyAsciitilde    Key = 126
-	KeyYen           Key = 165
-	KeySection       Key = 167
+	/*Next song key.*/
+	KeyMedianext Key = 4194391
+	/*Media record key.*/
+	KeyMediarecord Key = 4194392
+	/*Home page key.*/
+	KeyHomepage Key = 4194393
+	/*Favorites key.*/
+	KeyFavorites Key = 4194394
+	/*Search key.*/
+	KeySearch Key = 4194395
+	/*Standby key.*/
+	KeyStandby Key = 4194396
+	/*Open URL / Launch Browser key.*/
+	KeyOpenurl Key = 4194397
+	/*Launch Mail key.*/
+	KeyLaunchmail Key = 4194398
+	/*Launch Media key.*/
+	KeyLaunchmedia Key = 4194399
+	/*Launch Shortcut 0 key.*/
+	KeyLaunch0 Key = 4194400
+	/*Launch Shortcut 1 key.*/
+	KeyLaunch1 Key = 4194401
+	/*Launch Shortcut 2 key.*/
+	KeyLaunch2 Key = 4194402
+	/*Launch Shortcut 3 key.*/
+	KeyLaunch3 Key = 4194403
+	/*Launch Shortcut 4 key.*/
+	KeyLaunch4 Key = 4194404
+	/*Launch Shortcut 5 key.*/
+	KeyLaunch5 Key = 4194405
+	/*Launch Shortcut 6 key.*/
+	KeyLaunch6 Key = 4194406
+	/*Launch Shortcut 7 key.*/
+	KeyLaunch7 Key = 4194407
+	/*Launch Shortcut 8 key.*/
+	KeyLaunch8 Key = 4194408
+	/*Launch Shortcut 9 key.*/
+	KeyLaunch9 Key = 4194409
+	/*Launch Shortcut A key.*/
+	KeyLauncha Key = 4194410
+	/*Launch Shortcut B key.*/
+	KeyLaunchb Key = 4194411
+	/*Launch Shortcut C key.*/
+	KeyLaunchc Key = 4194412
+	/*Launch Shortcut D key.*/
+	KeyLaunchd Key = 4194413
+	/*Launch Shortcut E key.*/
+	KeyLaunche Key = 4194414
+	/*Launch Shortcut F key.*/
+	KeyLaunchf Key = 4194415
+	/*"Globe" key on Mac / iPad keyboard.*/
+	KeyGlobe Key = 4194416
+	/*"On-screen keyboard" key on iPad keyboard.*/
+	KeyKeyboard Key = 4194417
+	/*英数 key on Mac keyboard.*/
+	KeyJisEisu Key = 4194418
+	/*かな key on Mac keyboard.*/
+	KeyJisKana Key = 4194419
+	/*Unknown key.*/
+	KeyUnknown Key = 8388607
+	/*Space key.*/
+	KeySpace Key = 32
+	/*! key.*/
+	KeyExclam Key = 33
+	/*" key.*/
+	KeyQuotedbl Key = 34
+	/*# key.*/
+	KeyNumbersign Key = 35
+	/*$ key.*/
+	KeyDollar Key = 36
+	/*% key.*/
+	KeyPercent Key = 37
+	/*& key.*/
+	KeyAmpersand Key = 38
+	/*' key.*/
+	KeyApostrophe Key = 39
+	/*( key.*/
+	KeyParenleft Key = 40
+	/*) key.*/
+	KeyParenright Key = 41
+	/** key.*/
+	KeyAsterisk Key = 42
+	/*+ key.*/
+	KeyPlus Key = 43
+	/*, key.*/
+	KeyComma Key = 44
+	/*- key.*/
+	KeyMinus Key = 45
+	/*. key.*/
+	KeyPeriod Key = 46
+	/*/ key.*/
+	KeySlash Key = 47
+	/*Number 0 key.*/
+	Key0 Key = 48
+	/*Number 1 key.*/
+	Key1 Key = 49
+	/*Number 2 key.*/
+	Key2 Key = 50
+	/*Number 3 key.*/
+	Key3 Key = 51
+	/*Number 4 key.*/
+	Key4 Key = 52
+	/*Number 5 key.*/
+	Key5 Key = 53
+	/*Number 6 key.*/
+	Key6 Key = 54
+	/*Number 7 key.*/
+	Key7 Key = 55
+	/*Number 8 key.*/
+	Key8 Key = 56
+	/*Number 9 key.*/
+	Key9 Key = 57
+	/*: key.*/
+	KeyColon Key = 58
+	/*; key.*/
+	KeySemicolon Key = 59
+	/*< key.*/
+	KeyLess Key = 60
+	/*= key.*/
+	KeyEqual Key = 61
+	/*> key.*/
+	KeyGreater Key = 62
+	/*? key.*/
+	KeyQuestion Key = 63
+	/*@ key.*/
+	KeyAt Key = 64
+	/*A key.*/
+	KeyA Key = 65
+	/*B key.*/
+	KeyB Key = 66
+	/*C key.*/
+	KeyC Key = 67
+	/*D key.*/
+	KeyD Key = 68
+	/*E key.*/
+	KeyE Key = 69
+	/*F key.*/
+	KeyF Key = 70
+	/*G key.*/
+	KeyG Key = 71
+	/*H key.*/
+	KeyH Key = 72
+	/*I key.*/
+	KeyI Key = 73
+	/*J key.*/
+	KeyJ Key = 74
+	/*K key.*/
+	KeyK Key = 75
+	/*L key.*/
+	KeyL Key = 76
+	/*M key.*/
+	KeyM Key = 77
+	/*N key.*/
+	KeyN Key = 78
+	/*O key.*/
+	KeyO Key = 79
+	/*P key.*/
+	KeyP Key = 80
+	/*Q key.*/
+	KeyQ Key = 81
+	/*R key.*/
+	KeyR Key = 82
+	/*S key.*/
+	KeyS Key = 83
+	/*T key.*/
+	KeyT Key = 84
+	/*U key.*/
+	KeyU Key = 85
+	/*V key.*/
+	KeyV Key = 86
+	/*W key.*/
+	KeyW Key = 87
+	/*X key.*/
+	KeyX Key = 88
+	/*Y key.*/
+	KeyY Key = 89
+	/*Z key.*/
+	KeyZ Key = 90
+	/*[ key.*/
+	KeyBracketleft Key = 91
+	/*\ key.*/
+	KeyBackslash Key = 92
+	/*] key.*/
+	KeyBracketright Key = 93
+	/*^ key.*/
+	KeyAsciicircum Key = 94
+	/*_ key.*/
+	KeyUnderscore Key = 95
+	/*` key.*/
+	KeyQuoteleft Key = 96
+	/*{ key.*/
+	KeyBraceleft Key = 123
+	/*| key.*/
+	KeyBar Key = 124
+	/*} key.*/
+	KeyBraceright Key = 125
+	/*~ key.*/
+	KeyAsciitilde Key = 126
+	/*¥ key.*/
+	KeyYen Key = 165
+	/*§ key.*/
+	KeySection Key = 167
 )
 
 type KeyModifierMask = gd.KeyModifierMask
 
 const (
-	KeyCodeMask            KeyModifierMask = 8388607
+	/*Key Code mask.*/
+	KeyCodeMask KeyModifierMask = 8388607
+	/*Modifier key mask.*/
 	KeyModifierMaskDefault KeyModifierMask = 532676608
-	KeyMaskCmdOrCtrl       KeyModifierMask = 16777216
-	KeyMaskShift           KeyModifierMask = 33554432
-	KeyMaskAlt             KeyModifierMask = 67108864
-	KeyMaskMeta            KeyModifierMask = 134217728
-	KeyMaskCtrl            KeyModifierMask = 268435456
-	KeyMaskKpad            KeyModifierMask = 536870912
-	KeyMaskGroupSwitch     KeyModifierMask = 1073741824
+	/*Automatically remapped to [constant KEY_META] on macOS and [constant KEY_CTRL] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.*/
+	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
+	/*Shift key mask.*/
+	KeyMaskShift KeyModifierMask = 33554432
+	/*Alt or Option (on macOS) key mask.*/
+	KeyMaskAlt KeyModifierMask = 67108864
+	/*Command (on macOS) or Meta/Windows key mask.*/
+	KeyMaskMeta KeyModifierMask = 134217728
+	/*Control key mask.*/
+	KeyMaskCtrl KeyModifierMask = 268435456
+	/*Keypad key mask.*/
+	KeyMaskKpad KeyModifierMask = 536870912
+	/*Group Switch key mask.*/
+	KeyMaskGroupSwitch KeyModifierMask = 1073741824
 )
 
 type MouseButton = gd.MouseButton
 
 const (
-	MouseButtonNone       MouseButton = 0
-	MouseButtonLeft       MouseButton = 1
-	MouseButtonRight      MouseButton = 2
-	MouseButtonMiddle     MouseButton = 3
-	MouseButtonWheelUp    MouseButton = 4
-	MouseButtonWheelDown  MouseButton = 5
-	MouseButtonWheelLeft  MouseButton = 6
+	/*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
+	MouseButtonNone MouseButton = 0
+	/*Primary mouse button, usually assigned to the left button.*/
+	MouseButtonLeft MouseButton = 1
+	/*Secondary mouse button, usually assigned to the right button.*/
+	MouseButtonRight MouseButton = 2
+	/*Middle mouse button.*/
+	MouseButtonMiddle MouseButton = 3
+	/*Mouse wheel scrolling up.*/
+	MouseButtonWheelUp MouseButton = 4
+	/*Mouse wheel scrolling down.*/
+	MouseButtonWheelDown MouseButton = 5
+	/*Mouse wheel left button (only present on some mice).*/
+	MouseButtonWheelLeft MouseButton = 6
+	/*Mouse wheel right button (only present on some mice).*/
 	MouseButtonWheelRight MouseButton = 7
-	MouseButtonXbutton1   MouseButton = 8
-	MouseButtonXbutton2   MouseButton = 9
+	/*Extra mouse button 1. This is sometimes present, usually to the sides of the mouse.*/
+	MouseButtonXbutton1 MouseButton = 8
+	/*Extra mouse button 2. This is sometimes present, usually to the sides of the mouse.*/
+	MouseButtonXbutton2 MouseButton = 9
 )
 
 type MouseButtonMask = gd.MouseButtonMask
 
 const (
-	MouseButtonMaskLeft       MouseButtonMask = 1
-	MouseButtonMaskRight      MouseButtonMask = 2
-	MouseButtonMaskMiddle     MouseButtonMask = 4
+	/*Primary mouse button mask, usually for the left button.*/
+	MouseButtonMaskLeft MouseButtonMask = 1
+	/*Secondary mouse button mask, usually for the right button.*/
+	MouseButtonMaskRight MouseButtonMask = 2
+	/*Middle mouse button mask.*/
+	MouseButtonMaskMiddle MouseButtonMask = 4
+	/*Extra mouse button 1 mask.*/
 	MouseButtonMaskMbXbutton1 MouseButtonMask = 128
+	/*Extra mouse button 2 mask.*/
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
 
 type JoyButton = gd.JoyButton
 
 const (
-	JoyButtonInvalid       JoyButton = -1
-	JoyButtonA             JoyButton = 0
-	JoyButtonB             JoyButton = 1
-	JoyButtonX             JoyButton = 2
-	JoyButtonY             JoyButton = 3
-	JoyButtonBack          JoyButton = 4
-	JoyButtonGuide         JoyButton = 5
-	JoyButtonStart         JoyButton = 6
-	JoyButtonLeftStick     JoyButton = 7
-	JoyButtonRightStick    JoyButton = 8
-	JoyButtonLeftShoulder  JoyButton = 9
+	/*An invalid game controller button.*/
+	JoyButtonInvalid JoyButton = -1
+	/*Game controller SDL button A. Corresponds to the bottom action button: Sony Cross, Xbox A, Nintendo B.*/
+	JoyButtonA JoyButton = 0
+	/*Game controller SDL button B. Corresponds to the right action button: Sony Circle, Xbox B, Nintendo A.*/
+	JoyButtonB JoyButton = 1
+	/*Game controller SDL button X. Corresponds to the left action button: Sony Square, Xbox X, Nintendo Y.*/
+	JoyButtonX JoyButton = 2
+	/*Game controller SDL button Y. Corresponds to the top action button: Sony Triangle, Xbox Y, Nintendo X.*/
+	JoyButtonY JoyButton = 3
+	/*Game controller SDL back button. Corresponds to the Sony Select, Xbox Back, Nintendo - button.*/
+	JoyButtonBack JoyButton = 4
+	/*Game controller SDL guide button. Corresponds to the Sony PS, Xbox Home button.*/
+	JoyButtonGuide JoyButton = 5
+	/*Game controller SDL start button. Corresponds to the Sony Options, Xbox Menu, Nintendo + button.*/
+	JoyButtonStart JoyButton = 6
+	/*Game controller SDL left stick button. Corresponds to the Sony L3, Xbox L/LS button.*/
+	JoyButtonLeftStick JoyButton = 7
+	/*Game controller SDL right stick button. Corresponds to the Sony R3, Xbox R/RS button.*/
+	JoyButtonRightStick JoyButton = 8
+	/*Game controller SDL left shoulder button. Corresponds to the Sony L1, Xbox LB button.*/
+	JoyButtonLeftShoulder JoyButton = 9
+	/*Game controller SDL right shoulder button. Corresponds to the Sony R1, Xbox RB button.*/
 	JoyButtonRightShoulder JoyButton = 10
-	JoyButtonDpadUp        JoyButton = 11
-	JoyButtonDpadDown      JoyButton = 12
-	JoyButtonDpadLeft      JoyButton = 13
-	JoyButtonDpadRight     JoyButton = 14
-	JoyButtonMisc1         JoyButton = 15
-	JoyButtonPaddle1       JoyButton = 16
-	JoyButtonPaddle2       JoyButton = 17
-	JoyButtonPaddle3       JoyButton = 18
-	JoyButtonPaddle4       JoyButton = 19
-	JoyButtonTouchpad      JoyButton = 20
-	JoyButtonSdlMax        JoyButton = 21
-	JoyButtonMax           JoyButton = 128
+	/*Game controller D-pad up button.*/
+	JoyButtonDpadUp JoyButton = 11
+	/*Game controller D-pad down button.*/
+	JoyButtonDpadDown JoyButton = 12
+	/*Game controller D-pad left button.*/
+	JoyButtonDpadLeft JoyButton = 13
+	/*Game controller D-pad right button.*/
+	JoyButtonDpadRight JoyButton = 14
+	/*Game controller SDL miscellaneous button. Corresponds to Xbox share button, PS5 microphone button, Nintendo Switch capture button.*/
+	JoyButtonMisc1 JoyButton = 15
+	/*Game controller SDL paddle 1 button.*/
+	JoyButtonPaddle1 JoyButton = 16
+	/*Game controller SDL paddle 2 button.*/
+	JoyButtonPaddle2 JoyButton = 17
+	/*Game controller SDL paddle 3 button.*/
+	JoyButtonPaddle3 JoyButton = 18
+	/*Game controller SDL paddle 4 button.*/
+	JoyButtonPaddle4 JoyButton = 19
+	/*Game controller SDL touchpad button.*/
+	JoyButtonTouchpad JoyButton = 20
+	/*The number of SDL game controller buttons.*/
+	JoyButtonSdlMax JoyButton = 21
+	/*The maximum number of game controller buttons supported by the engine. The actual limit may be lower on specific platforms:
+	  - [b]Android:[/b] Up to 36 buttons.
+	  - [b]Linux:[/b] Up to 80 buttons.
+	  - [b]Windows[/b] and [b]macOS:[/b] Up to 128 buttons.*/
+	JoyButtonMax JoyButton = 128
 )
 
 type JoyAxis = gd.JoyAxis
 
 const (
-	JoyAxisInvalid      JoyAxis = -1
-	JoyAxisLeftX        JoyAxis = 0
-	JoyAxisLeftY        JoyAxis = 1
-	JoyAxisRightX       JoyAxis = 2
-	JoyAxisRightY       JoyAxis = 3
-	JoyAxisTriggerLeft  JoyAxis = 4
+	/*An invalid game controller axis.*/
+	JoyAxisInvalid JoyAxis = -1
+	/*Game controller left joystick x-axis.*/
+	JoyAxisLeftX JoyAxis = 0
+	/*Game controller left joystick y-axis.*/
+	JoyAxisLeftY JoyAxis = 1
+	/*Game controller right joystick x-axis.*/
+	JoyAxisRightX JoyAxis = 2
+	/*Game controller right joystick y-axis.*/
+	JoyAxisRightY JoyAxis = 3
+	/*Game controller left trigger axis.*/
+	JoyAxisTriggerLeft JoyAxis = 4
+	/*Game controller right trigger axis.*/
 	JoyAxisTriggerRight JoyAxis = 5
-	JoyAxisSdlMax       JoyAxis = 6
-	JoyAxisMax          JoyAxis = 10
+	/*The number of SDL game controller axes.*/
+	JoyAxisSdlMax JoyAxis = 6
+	/*The maximum number of game controller axes: OpenVR supports up to 5 Joysticks making a total of 10 axes.*/
+	JoyAxisMax JoyAxis = 10
 )
 
 type MIDIMessage = gd.MIDIMessage
 
 const (
-	MidiMessageNone                MIDIMessage = 0
-	MidiMessageNoteOff             MIDIMessage = 8
-	MidiMessageNoteOn              MIDIMessage = 9
-	MidiMessageAftertouch          MIDIMessage = 10
-	MidiMessageControlChange       MIDIMessage = 11
-	MidiMessageProgramChange       MIDIMessage = 12
-	MidiMessageChannelPressure     MIDIMessage = 13
-	MidiMessagePitchBend           MIDIMessage = 14
-	MidiMessageSystemExclusive     MIDIMessage = 240
-	MidiMessageQuarterFrame        MIDIMessage = 241
+	/*Does not correspond to any MIDI message. This is the default value of [member InputEventMIDI.message].*/
+	MidiMessageNone MIDIMessage = 0
+	/*MIDI message sent when a note is released.
+	  [b]Note:[/b] Not all MIDI devices send this message; some may send [constant MIDI_MESSAGE_NOTE_ON] with [member InputEventMIDI.velocity] set to [code]0[/code].*/
+	MidiMessageNoteOff MIDIMessage = 8
+	/*MIDI message sent when a note is pressed.*/
+	MidiMessageNoteOn MIDIMessage = 9
+	/*MIDI message sent to indicate a change in pressure while a note is being pressed down, also called aftertouch.*/
+	MidiMessageAftertouch MIDIMessage = 10
+	/*MIDI message sent when a controller value changes. In a MIDI device, a controller is any input that doesn't play notes. These may include sliders for volume, balance, and panning, as well as switches and pedals. See the [url=https://en.wikipedia.org/wiki/General_MIDI#Controller_events]General MIDI specification[/url] for a small list.*/
+	MidiMessageControlChange MIDIMessage = 11
+	/*MIDI message sent when the MIDI device changes its current instrument (also called [i]program[/i] or [i]preset[/i]).*/
+	MidiMessageProgramChange MIDIMessage = 12
+	/*MIDI message sent to indicate a change in pressure for the whole channel. Some MIDI devices may send this instead of [constant MIDI_MESSAGE_AFTERTOUCH].*/
+	MidiMessageChannelPressure MIDIMessage = 13
+	/*MIDI message sent when the value of the pitch bender changes, usually a wheel on the MIDI device.*/
+	MidiMessagePitchBend MIDIMessage = 14
+	/*MIDI system exclusive (SysEx) message. This type of message is not standardized and it's highly dependent on the MIDI device sending it.
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageSystemExclusive MIDIMessage = 240
+	/*MIDI message sent every quarter frame to keep connected MIDI devices synchronized. Related to [constant MIDI_MESSAGE_TIMING_CLOCK].
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageQuarterFrame MIDIMessage = 241
+	/*MIDI message sent to jump onto a new position in the current sequence or song.
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
 	MidiMessageSongPositionPointer MIDIMessage = 242
-	MidiMessageSongSelect          MIDIMessage = 243
-	MidiMessageTuneRequest         MIDIMessage = 246
-	MidiMessageTimingClock         MIDIMessage = 248
-	MidiMessageStart               MIDIMessage = 250
-	MidiMessageContinue            MIDIMessage = 251
-	MidiMessageStop                MIDIMessage = 252
-	MidiMessageActiveSensing       MIDIMessage = 254
-	MidiMessageSystemReset         MIDIMessage = 255
+	/*MIDI message sent to select a sequence or song to play.
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageSongSelect MIDIMessage = 243
+	/*MIDI message sent to request a tuning calibration. Used on analog synthesizers. Most modern MIDI devices do not need this message.*/
+	MidiMessageTuneRequest MIDIMessage = 246
+	/*MIDI message sent 24 times after [constant MIDI_MESSAGE_QUARTER_FRAME], to keep connected MIDI devices synchronized.*/
+	MidiMessageTimingClock MIDIMessage = 248
+	/*MIDI message sent to start the current sequence or song from the beginning.*/
+	MidiMessageStart MIDIMessage = 250
+	/*MIDI message sent to resume from the point the current sequence or song was paused.*/
+	MidiMessageContinue MIDIMessage = 251
+	/*MIDI message sent to pause the current sequence or song.*/
+	MidiMessageStop MIDIMessage = 252
+	/*MIDI message sent repeatedly while the MIDI device is idle, to tell the receiver that the connection is alive. Most MIDI devices do not send this message.*/
+	MidiMessageActiveSensing MIDIMessage = 254
+	/*MIDI message sent to reset a MIDI device to its default state, as if it was just turned on. It should not be sent when the MIDI device is being turned on.*/
+	MidiMessageSystemReset MIDIMessage = 255
 )
 
 type Error = gd.Error
 
 const (
-	Ok                         Error = 0
-	Failed                     Error = 1
-	ErrUnavailable             Error = 2
-	ErrUnconfigured            Error = 3
-	ErrUnauthorized            Error = 4
-	ErrParameterRangeError     Error = 5
-	ErrOutOfMemory             Error = 6
-	ErrFileNotFound            Error = 7
-	ErrFileBadDrive            Error = 8
-	ErrFileBadPath             Error = 9
-	ErrFileNoPermission        Error = 10
-	ErrFileAlreadyInUse        Error = 11
-	ErrFileCantOpen            Error = 12
-	ErrFileCantWrite           Error = 13
-	ErrFileCantRead            Error = 14
-	ErrFileUnrecognized        Error = 15
-	ErrFileCorrupt             Error = 16
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
 	ErrFileMissingDependencies Error = 17
-	ErrFileEof                 Error = 18
-	ErrCantOpen                Error = 19
-	ErrCantCreate              Error = 20
-	ErrQueryFailed             Error = 21
-	ErrAlreadyInUse            Error = 22
-	ErrLocked                  Error = 23
-	ErrTimeout                 Error = 24
-	ErrCantConnect             Error = 25
-	ErrCantResolve             Error = 26
-	ErrConnectionError         Error = 27
-	ErrCantAcquireResource     Error = 28
-	ErrCantFork                Error = 29
-	ErrInvalidData             Error = 30
-	ErrInvalidParameter        Error = 31
-	ErrAlreadyExists           Error = 32
-	ErrDoesNotExist            Error = 33
-	ErrDatabaseCantRead        Error = 34
-	ErrDatabaseCantWrite       Error = 35
-	ErrCompilationFailed       Error = 36
-	ErrMethodNotFound          Error = 37
-	ErrLinkFailed              Error = 38
-	ErrScriptFailed            Error = 39
-	ErrCyclicLink              Error = 40
-	ErrInvalidDeclaration      Error = 41
-	ErrDuplicateSymbol         Error = 42
-	ErrParseError              Error = 43
-	ErrBusy                    Error = 44
-	ErrSkip                    Error = 45
-	ErrHelp                    Error = 46
-	ErrBug                     Error = 47
-	ErrPrinterOnFire           Error = 48
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
 )
 
 type PropertyHint = gd.PropertyHint
 
 const (
-	PropertyHintNone                 PropertyHint = 0
-	PropertyHintRange                PropertyHint = 1
-	PropertyHintEnum                 PropertyHint = 2
-	PropertyHintEnumSuggestion       PropertyHint = 3
-	PropertyHintExpEasing            PropertyHint = 4
-	PropertyHintLink                 PropertyHint = 5
-	PropertyHintFlags                PropertyHint = 6
-	PropertyHintLayers2dRender       PropertyHint = 7
-	PropertyHintLayers2dPhysics      PropertyHint = 8
-	PropertyHintLayers2dNavigation   PropertyHint = 9
-	PropertyHintLayers3dRender       PropertyHint = 10
-	PropertyHintLayers3dPhysics      PropertyHint = 11
-	PropertyHintLayers3dNavigation   PropertyHint = 12
-	PropertyHintLayersAvoidance      PropertyHint = 37
-	PropertyHintFile                 PropertyHint = 13
-	PropertyHintDir                  PropertyHint = 14
-	PropertyHintGlobalFile           PropertyHint = 15
-	PropertyHintGlobalDir            PropertyHint = 16
-	PropertyHintResourceType         PropertyHint = 17
-	PropertyHintMultilineText        PropertyHint = 18
-	PropertyHintExpression           PropertyHint = 19
-	PropertyHintPlaceholderText      PropertyHint = 20
-	PropertyHintColorNoAlpha         PropertyHint = 21
-	PropertyHintObjectId             PropertyHint = 22
-	PropertyHintTypeString           PropertyHint = 23
+	/*The property has no hint for the editor.*/
+	PropertyHintNone PropertyHint = 0
+	/*Hints that an [int] or [float] property should be within a range specified via the hint string [code]"min,max"[/code] or [code]"min,max,step"[/code]. The hint string can optionally include [code]"or_greater"[/code] and/or [code]"or_less"[/code] to allow manual input going respectively above the max or below the min values.
+	  [b]Example:[/b] [code]"-360,360,1,or_greater,or_less"[/code].
+	  Additionally, other keywords can be included: [code]"exp"[/code] for exponential range editing, [code]"radians_as_degrees"[/code] for editing radian angles in degrees (the range values are also in degrees), [code]"degrees"[/code] to hint at an angle and [code]"hide_slider"[/code] to hide the slider.*/
+	PropertyHintRange PropertyHint = 1
+	/*Hints that an [int] or [String] property is an enumerated value to pick in a list specified via a hint string.
+	  The hint string is a comma separated list of names such as [code]"Hello,Something,Else"[/code]. Whitespaces are [b]not[/b] removed from either end of a name. For integer properties, the first name in the list has value 0, the next 1, and so on. Explicit values can also be specified by appending [code]:integer[/code] to the name, e.g. [code]"Zero,One,Three:3,Four,Six:6"[/code].*/
+	PropertyHintEnum PropertyHint = 2
+	/*Hints that a [String] property can be an enumerated value to pick in a list specified via a hint string such as [code]"Hello,Something,Else"[/code].
+	  Unlike [constant PROPERTY_HINT_ENUM], a property with this hint still accepts arbitrary values and can be empty. The list of values serves to suggest possible values.*/
+	PropertyHintEnumSuggestion PropertyHint = 3
+	/*Hints that a [float] property should be edited via an exponential easing function. The hint string can include [code]"attenuation"[/code] to flip the curve horizontally and/or [code]"positive_only"[/code] to exclude in/out easing and limit values to be greater than or equal to zero.*/
+	PropertyHintExpEasing PropertyHint = 4
+	/*Hints that a vector property should allow its components to be linked. For example, this allows [member Vector2.x] and [member Vector2.y] to be edited together.*/
+	PropertyHintLink PropertyHint = 5
+	/*Hints that an [int] property is a bitmask with named bit flags.
+	  The hint string is a comma separated list of names such as [code]"Bit0,Bit1,Bit2,Bit3"[/code]. Whitespaces are [b]not[/b] removed from either end of a name. The first name in the list has value 1, the next 2, then 4, 8, 16 and so on. Explicit values can also be specified by appending [code]:integer[/code] to the name, e.g. [code]"A:4,B:8,C:16"[/code]. You can also combine several flags ([code]"A:4,B:8,AB:12,C:16"[/code]).
+	  [b]Note:[/b] A flag value must be at least [code]1[/code] and at most [code]2 ** 32 - 1[/code].
+	  [b]Note:[/b] Unlike [constant PROPERTY_HINT_ENUM], the previous explicit value is not taken into account. For the hint [code]"A:16,B,C"[/code], A is 16, B is 2, C is 4.*/
+	PropertyHintFlags PropertyHint = 6
+	/*Hints that an [int] property is a bitmask using the optionally named 2D render layers.*/
+	PropertyHintLayers2dRender PropertyHint = 7
+	/*Hints that an [int] property is a bitmask using the optionally named 2D physics layers.*/
+	PropertyHintLayers2dPhysics PropertyHint = 8
+	/*Hints that an [int] property is a bitmask using the optionally named 2D navigation layers.*/
+	PropertyHintLayers2dNavigation PropertyHint = 9
+	/*Hints that an [int] property is a bitmask using the optionally named 3D render layers.*/
+	PropertyHintLayers3dRender PropertyHint = 10
+	/*Hints that an [int] property is a bitmask using the optionally named 3D physics layers.*/
+	PropertyHintLayers3dPhysics PropertyHint = 11
+	/*Hints that an [int] property is a bitmask using the optionally named 3D navigation layers.*/
+	PropertyHintLayers3dNavigation PropertyHint = 12
+	/*Hints that an integer property is a bitmask using the optionally named avoidance layers.*/
+	PropertyHintLayersAvoidance PropertyHint = 37
+	/*Hints that a [String] property is a path to a file. Editing it will show a file dialog for picking the path. The hint string can be a set of filters with wildcards like [code]"*.png,*.jpg"[/code].*/
+	PropertyHintFile PropertyHint = 13
+	/*Hints that a [String] property is a path to a directory. Editing it will show a file dialog for picking the path.*/
+	PropertyHintDir PropertyHint = 14
+	/*Hints that a [String] property is an absolute path to a file outside the project folder. Editing it will show a file dialog for picking the path. The hint string can be a set of filters with wildcards, like [code]"*.png,*.jpg"[/code].*/
+	PropertyHintGlobalFile PropertyHint = 15
+	/*Hints that a [String] property is an absolute path to a directory outside the project folder. Editing it will show a file dialog for picking the path.*/
+	PropertyHintGlobalDir PropertyHint = 16
+	/*Hints that a property is an instance of a [Resource]-derived type, optionally specified via the hint string (e.g. [code]"Texture2D"[/code]). Editing it will show a popup menu of valid resource types to instantiate.*/
+	PropertyHintResourceType PropertyHint = 17
+	/*Hints that a [String] property is text with line breaks. Editing it will show a text input field where line breaks can be typed.*/
+	PropertyHintMultilineText PropertyHint = 18
+	/*Hints that a [String] property is an [Expression].*/
+	PropertyHintExpression PropertyHint = 19
+	/*Hints that a [String] property should show a placeholder text on its input field, if empty. The hint string is the placeholder text to use.*/
+	PropertyHintPlaceholderText PropertyHint = 20
+	/*Hints that a [Color] property should be edited without affecting its transparency ([member Color.a] is not editable).*/
+	PropertyHintColorNoAlpha PropertyHint = 21
+	/*Hints that the property's value is an object encoded as object ID, with its type specified in the hint string. Used by the debugger.*/
+	PropertyHintObjectId PropertyHint = 22
+	/*If a property is [String], hints that the property represents a particular type (class). This allows to select a type from the create dialog. The property will store the selected type as a string.
+	  If a property is [Array], hints the editor how to show elements. The [code]hint_string[/code] must encode nested types using [code]":"[/code] and [code]"/"[/code].
+	  [codeblocks]
+	  [gdscript]
+	  # Array of elem_type.
+	  hint_string = "%d:" % [elem_type]
+	  hint_string = "%d/%d:%s" % [elem_type, elem_hint, elem_hint_string]
+	  # Two-dimensional array of elem_type (array of arrays of elem_type).
+	  hint_string = "%d:%d:" % [TYPE_ARRAY, elem_type]
+	  hint_string = "%d:%d/%d:%s" % [TYPE_ARRAY, elem_type, elem_hint, elem_hint_string]
+	  # Three-dimensional array of elem_type (array of arrays of arrays of elem_type).
+	  hint_string = "%d:%d:%d:" % [TYPE_ARRAY, TYPE_ARRAY, elem_type]
+	  hint_string = "%d:%d:%d/%d:%s" % [TYPE_ARRAY, TYPE_ARRAY, elem_type, elem_hint, elem_hint_string]
+	  [/gdscript]
+	  [csharp]
+	  // Array of elemType.
+	  hintString = $"{elemType:D}:";
+	  hintString = $"{elemType:}/{elemHint:D}:{elemHintString}";
+	  // Two-dimensional array of elemType (array of arrays of elemType).
+	  hintString = $"{Variant.Type.Array:D}:{elemType:D}:";
+	  hintString = $"{Variant.Type.Array:D}:{elemType:D}/{elemHint:D}:{elemHintString}";
+	  // Three-dimensional array of elemType (array of arrays of arrays of elemType).
+	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Array:D}:{elemType:D}:";
+	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Array:D}:{elemType:D}/{elemHint:D}:{elemHintString}";
+	  [/csharp]
+	  [/codeblocks]
+	  Examples:
+	  [codeblocks]
+	  [gdscript]
+	  hint_string = "%d:" % [TYPE_INT] # Array of integers.
+	  hint_string = "%d/%d:1,10,1" % [TYPE_INT, PROPERTY_HINT_RANGE] # Array of integers (in range from 1 to 10).
+	  hint_string = "%d/%d:Zero,One,Two" % [TYPE_INT, PROPERTY_HINT_ENUM] # Array of integers (an enum).
+	  hint_string = "%d/%d:Zero,One,Three:3,Six:6" % [TYPE_INT, PROPERTY_HINT_ENUM] # Array of integers (an enum).
+	  hint_string = "%d/%d:*.png" % [TYPE_STRING, PROPERTY_HINT_FILE] # Array of strings (file paths).
+	  hint_string = "%d/%d:Texture2D" % [TYPE_OBJECT, PROPERTY_HINT_RESOURCE_TYPE] # Array of textures.
+
+	  hint_string = "%d:%d:" % [TYPE_ARRAY, TYPE_FLOAT] # Two-dimensional array of floats.
+	  hint_string = "%d:%d/%d:" % [TYPE_ARRAY, TYPE_STRING, PROPERTY_HINT_MULTILINE_TEXT] # Two-dimensional array of multiline strings.
+	  hint_string = "%d:%d/%d:-1,1,0.1" % [TYPE_ARRAY, TYPE_FLOAT, PROPERTY_HINT_RANGE] # Two-dimensional array of floats (in range from -1 to 1).
+	  hint_string = "%d:%d/%d:Texture2D" % [TYPE_ARRAY, TYPE_OBJECT, PROPERTY_HINT_RESOURCE_TYPE] # Two-dimensional array of textures.
+	  [/gdscript]
+	  [csharp]
+	  hintString = $"{Variant.Type.Int:D}/{PropertyHint.Range:D}:1,10,1"; // Array of integers (in range from 1 to 10).
+	  hintString = $"{Variant.Type.Int:D}/{PropertyHint.Enum:D}:Zero,One,Two"; // Array of integers (an enum).
+	  hintString = $"{Variant.Type.Int:D}/{PropertyHint.Enum:D}:Zero,One,Three:3,Six:6"; // Array of integers (an enum).
+	  hintString = $"{Variant.Type.String:D}/{PropertyHint.File:D}:*.png"; // Array of strings (file paths).
+	  hintString = $"{Variant.Type.Object:D}/{PropertyHint.ResourceType:D}:Texture2D"; // Array of textures.
+
+	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Float:D}:"; // Two-dimensional array of floats.
+	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.String:D}/{PropertyHint.MultilineText:D}:"; // Two-dimensional array of multiline strings.
+	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Float:D}/{PropertyHint.Range:D}:-1,1,0.1"; // Two-dimensional array of floats (in range from -1 to 1).
+	  hintString = $"{Variant.Type.Array:D}:{Variant.Type.Object:D}/{PropertyHint.ResourceType:D}:Texture2D"; // Two-dimensional array of textures.
+	  [/csharp]
+	  [/codeblocks]
+	  [b]Note:[/b] The trailing colon is required for properly detecting built-in types.*/
+	PropertyHintTypeString PropertyHint = 23
+	/*[i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
 	PropertyHintNodePathToEditedNode PropertyHint = 24
-	PropertyHintObjectTooBig         PropertyHint = 25
-	PropertyHintNodePathValidTypes   PropertyHint = 26
-	PropertyHintSaveFile             PropertyHint = 27
-	PropertyHintGlobalSaveFile       PropertyHint = 28
-	PropertyHintIntIsObjectid        PropertyHint = 29
-	PropertyHintIntIsPointer         PropertyHint = 30
-	PropertyHintArrayType            PropertyHint = 31
-	PropertyHintLocaleId             PropertyHint = 32
-	PropertyHintLocalizableString    PropertyHint = 33
-	PropertyHintNodeType             PropertyHint = 34
-	PropertyHintHideQuaternionEdit   PropertyHint = 35
-	PropertyHintPassword             PropertyHint = 36
-	PropertyHintMax                  PropertyHint = 38
+	/*Hints that an object is too big to be sent via the debugger.*/
+	PropertyHintObjectTooBig PropertyHint = 25
+	/*Hints that the hint string specifies valid node types for property of type [NodePath].*/
+	PropertyHintNodePathValidTypes PropertyHint = 26
+	/*Hints that a [String] property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the project's directory. The hint string can be a set of filters with wildcards like [code]"*.png,*.jpg"[/code]. See also [member FileDialog.filters].*/
+	PropertyHintSaveFile PropertyHint = 27
+	/*Hints that a [String] property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the entire filesystem. The hint string can be a set of filters with wildcards like [code]"*.png,*.jpg"[/code]. See also [member FileDialog.filters].*/
+	PropertyHintGlobalSaveFile PropertyHint = 28
+	/*Hints that an [int] property is an object ID.
+	  [i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
+	PropertyHintIntIsObjectid PropertyHint = 29
+	/*Hints that an [int] property is a pointer. Used by GDExtension.*/
+	PropertyHintIntIsPointer PropertyHint = 30
+	/*Hints that a property is an [Array] with the stored type specified in the hint string.*/
+	PropertyHintArrayType PropertyHint = 31
+	/*Hints that a string property is a locale code. Editing it will show a locale dialog for picking language and country.*/
+	PropertyHintLocaleId PropertyHint = 32
+	/*Hints that a dictionary property is string translation map. Dictionary keys are locale codes and, values are translated strings.*/
+	PropertyHintLocalizableString PropertyHint = 33
+	/*Hints that a property is an instance of a [Node]-derived type, optionally specified via the hint string (e.g. [code]"Node2D"[/code]). Editing it will show a dialog for picking a node from the scene.*/
+	PropertyHintNodeType PropertyHint = 34
+	/*Hints that a quaternion property should disable the temporary euler editor.*/
+	PropertyHintHideQuaternionEdit PropertyHint = 35
+	/*Hints that a string property is a password, and every character is replaced with the secret character.*/
+	PropertyHintPassword PropertyHint = 36
+	/*Represents the size of the [enum PropertyHint] enum.*/
+	PropertyHintMax PropertyHint = 38
 )
 
 type PropertyUsageFlags = gd.PropertyUsageFlags
 
 const (
-	PropertyUsageNone                    PropertyUsageFlags = 0
-	PropertyUsageStorage                 PropertyUsageFlags = 2
-	PropertyUsageEditor                  PropertyUsageFlags = 4
-	PropertyUsageInternal                PropertyUsageFlags = 8
-	PropertyUsageCheckable               PropertyUsageFlags = 16
-	PropertyUsageChecked                 PropertyUsageFlags = 32
-	PropertyUsageGroup                   PropertyUsageFlags = 64
-	PropertyUsageCategory                PropertyUsageFlags = 128
-	PropertyUsageSubgroup                PropertyUsageFlags = 256
-	PropertyUsageClassIsBitfield         PropertyUsageFlags = 512
-	PropertyUsageNoInstanceState         PropertyUsageFlags = 1024
-	PropertyUsageRestartIfChanged        PropertyUsageFlags = 2048
-	PropertyUsageScriptVariable          PropertyUsageFlags = 4096
-	PropertyUsageStoreIfNull             PropertyUsageFlags = 8192
-	PropertyUsageUpdateAllIfModified     PropertyUsageFlags = 16384
-	PropertyUsageScriptDefaultValue      PropertyUsageFlags = 32768
-	PropertyUsageClassIsEnum             PropertyUsageFlags = 65536
-	PropertyUsageNilIsVariant            PropertyUsageFlags = 131072
-	PropertyUsageArray                   PropertyUsageFlags = 262144
-	PropertyUsageAlwaysDuplicate         PropertyUsageFlags = 524288
-	PropertyUsageNeverDuplicate          PropertyUsageFlags = 1048576
-	PropertyUsageHighEndGfx              PropertyUsageFlags = 2097152
-	PropertyUsageNodePathFromSceneRoot   PropertyUsageFlags = 4194304
-	PropertyUsageResourceNotPersistent   PropertyUsageFlags = 8388608
-	PropertyUsageKeyingIncrements        PropertyUsageFlags = 16777216
-	PropertyUsageDeferredSetResource     PropertyUsageFlags = 33554432
+	/*The property is not stored, and does not display in the editor. This is the default for non-exported properties.*/
+	PropertyUsageNone PropertyUsageFlags = 0
+	/*The property is serialized and saved in the scene file (default).*/
+	PropertyUsageStorage PropertyUsageFlags = 2
+	/*The property is shown in the [EditorInspector] (default).*/
+	PropertyUsageEditor PropertyUsageFlags = 4
+	/*The property is excluded from the class reference.*/
+	PropertyUsageInternal PropertyUsageFlags = 8
+	/*The property can be checked in the [EditorInspector].*/
+	PropertyUsageCheckable PropertyUsageFlags = 16
+	/*The property is checked in the [EditorInspector].*/
+	PropertyUsageChecked PropertyUsageFlags = 32
+	/*Used to group properties together in the editor. See [EditorInspector].*/
+	PropertyUsageGroup PropertyUsageFlags = 64
+	/*Used to categorize properties together in the editor.*/
+	PropertyUsageCategory PropertyUsageFlags = 128
+	/*Used to group properties together in the editor in a subgroup (under a group). See [EditorInspector].*/
+	PropertyUsageSubgroup PropertyUsageFlags = 256
+	/*The property is a bitfield, i.e. it contains multiple flags represented as bits.*/
+	PropertyUsageClassIsBitfield PropertyUsageFlags = 512
+	/*The property does not save its state in [PackedScene].*/
+	PropertyUsageNoInstanceState PropertyUsageFlags = 1024
+	/*Editing the property prompts the user for restarting the editor.*/
+	PropertyUsageRestartIfChanged PropertyUsageFlags = 2048
+	/*The property is a script variable which should be serialized and saved in the scene file.*/
+	PropertyUsageScriptVariable PropertyUsageFlags = 4096
+	/*The property value of type [Object] will be stored even if its value is [code]null[/code].*/
+	PropertyUsageStoreIfNull PropertyUsageFlags = 8192
+	/*If this property is modified, all inspector fields will be refreshed.*/
+	PropertyUsageUpdateAllIfModified PropertyUsageFlags = 16384
+	/*Signifies a default value from a placeholder script instance.
+	  [i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
+	PropertyUsageScriptDefaultValue PropertyUsageFlags = 32768
+	/*The property is an enum, i.e. it only takes named integer constants from its associated enumeration.*/
+	PropertyUsageClassIsEnum PropertyUsageFlags = 65536
+	/*If property has [code]nil[/code] as default value, its type will be [Variant].*/
+	PropertyUsageNilIsVariant PropertyUsageFlags = 131072
+	/*The property is an array.*/
+	PropertyUsageArray PropertyUsageFlags = 262144
+	/*When duplicating a resource with [method Resource.duplicate], and this flag is set on a property of that resource, the property should always be duplicated, regardless of the [code]subresources[/code] bool parameter.*/
+	PropertyUsageAlwaysDuplicate PropertyUsageFlags = 524288
+	/*When duplicating a resource with [method Resource.duplicate], and this flag is set on a property of that resource, the property should never be duplicated, regardless of the [code]subresources[/code] bool parameter.*/
+	PropertyUsageNeverDuplicate PropertyUsageFlags = 1048576
+	/*The property is only shown in the editor if modern renderers are supported (the Compatibility rendering method is excluded).*/
+	PropertyUsageHighEndGfx PropertyUsageFlags = 2097152
+	/*The [NodePath] property will always be relative to the scene's root. Mostly useful for local resources.*/
+	PropertyUsageNodePathFromSceneRoot PropertyUsageFlags = 4194304
+	/*Use when a resource is created on the fly, i.e. the getter will always return a different instance. [ResourceSaver] needs this information to properly save such resources.*/
+	PropertyUsageResourceNotPersistent PropertyUsageFlags = 8388608
+	/*Inserting an animation key frame of this property will automatically increment the value, allowing to easily keyframe multiple values in a row.*/
+	PropertyUsageKeyingIncrements PropertyUsageFlags = 16777216
+	/*When loading, the resource for this property can be set at the end of loading.
+	  [i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
+	PropertyUsageDeferredSetResource PropertyUsageFlags = 33554432
+	/*When this property is a [Resource] and base object is a [Node], a resource instance will be automatically created whenever the node is created in the editor.*/
 	PropertyUsageEditorInstantiateObject PropertyUsageFlags = 67108864
-	PropertyUsageEditorBasicSetting      PropertyUsageFlags = 134217728
-	PropertyUsageReadOnly                PropertyUsageFlags = 268435456
-	PropertyUsageSecret                  PropertyUsageFlags = 536870912
-	PropertyUsageDefault                 PropertyUsageFlags = 6
-	PropertyUsageNoEditor                PropertyUsageFlags = 2
+	/*The property is considered a basic setting and will appear even when advanced mode is disabled. Used for project settings.*/
+	PropertyUsageEditorBasicSetting PropertyUsageFlags = 134217728
+	/*The property is read-only in the [EditorInspector].*/
+	PropertyUsageReadOnly PropertyUsageFlags = 268435456
+	/*An export preset property with this flag contains confidential information and is stored separately from the rest of the export preset configuration.*/
+	PropertyUsageSecret PropertyUsageFlags = 536870912
+	/*Default usage (storage and editor).*/
+	PropertyUsageDefault PropertyUsageFlags = 6
+	/*Default usage but without showing the property in the editor (storage).*/
+	PropertyUsageNoEditor PropertyUsageFlags = 2
 )
 
 type MethodFlags = gd.MethodFlags
 
 const (
-	MethodFlagNormal     MethodFlags = 1
-	MethodFlagEditor     MethodFlags = 2
-	MethodFlagConst      MethodFlags = 4
-	MethodFlagVirtual    MethodFlags = 8
-	MethodFlagVararg     MethodFlags = 16
-	MethodFlagStatic     MethodFlags = 32
+	/*Flag for a normal method.*/
+	MethodFlagNormal MethodFlags = 1
+	/*Flag for an editor method.*/
+	MethodFlagEditor MethodFlags = 2
+	/*Flag for a constant method.*/
+	MethodFlagConst MethodFlags = 4
+	/*Flag for a virtual method.*/
+	MethodFlagVirtual MethodFlags = 8
+	/*Flag for a method with a variable number of arguments.*/
+	MethodFlagVararg MethodFlags = 16
+	/*Flag for a static method.*/
+	MethodFlagStatic MethodFlags = 32
+	/*Used internally. Allows to not dump core virtual methods (such as [method Object._notification]) to the JSON API.*/
 	MethodFlagObjectCore MethodFlags = 64
-	MethodFlagsDefault   MethodFlags = 1
+	/*Default method flags (normal).*/
+	MethodFlagsDefault MethodFlags = 1
 )
 
 type VariantType = gd.VariantType
 
 const (
-	TypeNil                VariantType = 0
-	TypeBool               VariantType = 1
-	TypeInt                VariantType = 2
-	TypeFloat              VariantType = 3
-	TypeString             VariantType = 4
-	TypeVector2            VariantType = 5
-	TypeVector2i           VariantType = 6
-	TypeRect2              VariantType = 7
-	TypeRect2i             VariantType = 8
-	TypeVector3            VariantType = 9
-	TypeVector3i           VariantType = 10
-	TypeTransform2d        VariantType = 11
-	TypeVector4            VariantType = 12
-	TypeVector4i           VariantType = 13
-	TypePlane              VariantType = 14
-	TypeQuaternion         VariantType = 15
-	TypeAabb               VariantType = 16
-	TypeBasis              VariantType = 17
-	TypeTransform3d        VariantType = 18
-	TypeProjection         VariantType = 19
-	TypeColor              VariantType = 20
-	TypeStringName         VariantType = 21
-	TypeNodePath           VariantType = 22
-	TypeRid                VariantType = 23
-	TypeObject             VariantType = 24
-	TypeCallable           VariantType = 25
-	TypeSignal             VariantType = 26
-	TypeDictionary         VariantType = 27
-	TypeArray              VariantType = 28
-	TypePackedByteArray    VariantType = 29
-	TypePackedInt32Array   VariantType = 30
-	TypePackedInt64Array   VariantType = 31
+	/*Variable is [code]null[/code].*/
+	TypeNil VariantType = 0
+	/*Variable is of type [bool].*/
+	TypeBool VariantType = 1
+	/*Variable is of type [int].*/
+	TypeInt VariantType = 2
+	/*Variable is of type [float].*/
+	TypeFloat VariantType = 3
+	/*Variable is of type [String].*/
+	TypeString VariantType = 4
+	/*Variable is of type [Vector2].*/
+	TypeVector2 VariantType = 5
+	/*Variable is of type [Vector2i].*/
+	TypeVector2i VariantType = 6
+	/*Variable is of type [Rect2].*/
+	TypeRect2 VariantType = 7
+	/*Variable is of type [Rect2i].*/
+	TypeRect2i VariantType = 8
+	/*Variable is of type [Vector3].*/
+	TypeVector3 VariantType = 9
+	/*Variable is of type [Vector3i].*/
+	TypeVector3i VariantType = 10
+	/*Variable is of type [Transform2D].*/
+	TypeTransform2d VariantType = 11
+	/*Variable is of type [Vector4].*/
+	TypeVector4 VariantType = 12
+	/*Variable is of type [Vector4i].*/
+	TypeVector4i VariantType = 13
+	/*Variable is of type [Plane].*/
+	TypePlane VariantType = 14
+	/*Variable is of type [Quaternion].*/
+	TypeQuaternion VariantType = 15
+	/*Variable is of type [AABB].*/
+	TypeAabb VariantType = 16
+	/*Variable is of type [Basis].*/
+	TypeBasis VariantType = 17
+	/*Variable is of type [Transform3D].*/
+	TypeTransform3d VariantType = 18
+	/*Variable is of type [Projection].*/
+	TypeProjection VariantType = 19
+	/*Variable is of type [Color].*/
+	TypeColor VariantType = 20
+	/*Variable is of type [StringName].*/
+	TypeStringName VariantType = 21
+	/*Variable is of type [NodePath].*/
+	TypeNodePath VariantType = 22
+	/*Variable is of type [RID].*/
+	TypeRid VariantType = 23
+	/*Variable is of type [Object].*/
+	TypeObject VariantType = 24
+	/*Variable is of type [Callable].*/
+	TypeCallable VariantType = 25
+	/*Variable is of type [Signal].*/
+	TypeSignal VariantType = 26
+	/*Variable is of type [Dictionary].*/
+	TypeDictionary VariantType = 27
+	/*Variable is of type [Array].*/
+	TypeArray VariantType = 28
+	/*Variable is of type [PackedByteArray].*/
+	TypePackedByteArray VariantType = 29
+	/*Variable is of type [PackedInt32Array].*/
+	TypePackedInt32Array VariantType = 30
+	/*Variable is of type [PackedInt64Array].*/
+	TypePackedInt64Array VariantType = 31
+	/*Variable is of type [PackedFloat32Array].*/
 	TypePackedFloat32Array VariantType = 32
+	/*Variable is of type [PackedFloat64Array].*/
 	TypePackedFloat64Array VariantType = 33
-	TypePackedStringArray  VariantType = 34
+	/*Variable is of type [PackedStringArray].*/
+	TypePackedStringArray VariantType = 34
+	/*Variable is of type [PackedVector2Array].*/
 	TypePackedVector2Array VariantType = 35
+	/*Variable is of type [PackedVector3Array].*/
 	TypePackedVector3Array VariantType = 36
-	TypePackedColorArray   VariantType = 37
-	TypeMax                VariantType = 38
+	/*Variable is of type [PackedColorArray].*/
+	TypePackedColorArray VariantType = 37
+	/*Represents the size of the [enum Variant.Type] enum.*/
+	TypeMax VariantType = 38
 )
 
 type VariantOperator = gd.VariantOperator
 
 const (
-	OpEqual        VariantOperator = 0
-	OpNotEqual     VariantOperator = 1
-	OpLess         VariantOperator = 2
-	OpLessEqual    VariantOperator = 3
-	OpGreater      VariantOperator = 4
+	/*Equality operator ([code]==[/code]).*/
+	OpEqual VariantOperator = 0
+	/*Inequality operator ([code]!=[/code]).*/
+	OpNotEqual VariantOperator = 1
+	/*Less than operator ([code]<[/code]).*/
+	OpLess VariantOperator = 2
+	/*Less than or equal operator ([code]<=[/code]).*/
+	OpLessEqual VariantOperator = 3
+	/*Greater than operator ([code]>[/code]).*/
+	OpGreater VariantOperator = 4
+	/*Greater than or equal operator ([code]>=[/code]).*/
 	OpGreaterEqual VariantOperator = 5
-	OpAdd          VariantOperator = 6
-	OpSubtract     VariantOperator = 7
-	OpMultiply     VariantOperator = 8
-	OpDivide       VariantOperator = 9
-	OpNegate       VariantOperator = 10
-	OpPositive     VariantOperator = 11
-	OpModule       VariantOperator = 12
-	OpPower        VariantOperator = 13
-	OpShiftLeft    VariantOperator = 14
-	OpShiftRight   VariantOperator = 15
-	OpBitAnd       VariantOperator = 16
-	OpBitOr        VariantOperator = 17
-	OpBitXor       VariantOperator = 18
-	OpBitNegate    VariantOperator = 19
-	OpAnd          VariantOperator = 20
-	OpOr           VariantOperator = 21
-	OpXor          VariantOperator = 22
-	OpNot          VariantOperator = 23
-	OpIn           VariantOperator = 24
-	OpMax          VariantOperator = 25
+	/*Addition operator ([code]+[/code]).*/
+	OpAdd VariantOperator = 6
+	/*Subtraction operator ([code]-[/code]).*/
+	OpSubtract VariantOperator = 7
+	/*Multiplication operator ([code]*[/code]).*/
+	OpMultiply VariantOperator = 8
+	/*Division operator ([code]/[/code]).*/
+	OpDivide VariantOperator = 9
+	/*Unary negation operator ([code]-[/code]).*/
+	OpNegate VariantOperator = 10
+	/*Unary plus operator ([code]+[/code]).*/
+	OpPositive VariantOperator = 11
+	/*Remainder/modulo operator ([code]%[/code]).*/
+	OpModule VariantOperator = 12
+	/*Power operator ([code]**[/code]).*/
+	OpPower VariantOperator = 13
+	/*Left shift operator ([code]<<[/code]).*/
+	OpShiftLeft VariantOperator = 14
+	/*Right shift operator ([code]>>[/code]).*/
+	OpShiftRight VariantOperator = 15
+	/*Bitwise AND operator ([code]&[/code]).*/
+	OpBitAnd VariantOperator = 16
+	/*Bitwise OR operator ([code]|[/code]).*/
+	OpBitOr VariantOperator = 17
+	/*Bitwise XOR operator ([code]^[/code]).*/
+	OpBitXor VariantOperator = 18
+	/*Bitwise NOT operator ([code]~[/code]).*/
+	OpBitNegate VariantOperator = 19
+	/*Logical AND operator ([code]and[/code] or [code]&&[/code]).*/
+	OpAnd VariantOperator = 20
+	/*Logical OR operator ([code]or[/code] or [code]||[/code]).*/
+	OpOr VariantOperator = 21
+	/*Logical XOR operator (not implemented in GDScript).*/
+	OpXor VariantOperator = 22
+	/*Logical NOT operator ([code]not[/code] or [code]![/code]).*/
+	OpNot VariantOperator = 23
+	/*Logical IN operator ([code]in[/code]).*/
+	OpIn VariantOperator = 24
+	/*Represents the size of the [enum Variant.Operator] enum.*/
+	OpMax VariantOperator = 25
 )
 
 type Vector2Axis = gd.Vector2Axis
 
 const (
+	/*Enumerated value for the X axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector2AxisX Vector2Axis = 0
+	/*Enumerated value for the Y axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector2AxisY Vector2Axis = 1
 )
 
 type Vector2iAxis = gd.Vector2iAxis
 
 const (
+	/*Enumerated value for the X axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector2iAxisX Vector2iAxis = 0
+	/*Enumerated value for the Y axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector2iAxisY Vector2iAxis = 1
 )
 
 type Vector3Axis = gd.Vector3Axis
 
 const (
+	/*Enumerated value for the X axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector3AxisX Vector3Axis = 0
+	/*Enumerated value for the Y axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector3AxisY Vector3Axis = 1
+	/*Enumerated value for the Z axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector3AxisZ Vector3Axis = 2
 )
 
 type Vector3iAxis = gd.Vector3iAxis
 
 const (
+	/*Enumerated value for the X axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector3iAxisX Vector3iAxis = 0
+	/*Enumerated value for the Y axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector3iAxisY Vector3iAxis = 1
+	/*Enumerated value for the Z axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector3iAxisZ Vector3iAxis = 2
 )
 
 type Vector4Axis = gd.Vector4Axis
 
 const (
+	/*Enumerated value for the X axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4AxisX Vector4Axis = 0
+	/*Enumerated value for the Y axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4AxisY Vector4Axis = 1
+	/*Enumerated value for the Z axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4AxisZ Vector4Axis = 2
+	/*Enumerated value for the W axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4AxisW Vector4Axis = 3
 )
 
 type Vector4iAxis = gd.Vector4iAxis
 
 const (
+	/*Enumerated value for the X axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4iAxisX Vector4iAxis = 0
+	/*Enumerated value for the Y axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4iAxisY Vector4iAxis = 1
+	/*Enumerated value for the Z axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4iAxisZ Vector4iAxis = 2
+	/*Enumerated value for the W axis. Returned by [method max_axis_index] and [method min_axis_index].*/
 	Vector4iAxisW Vector4iAxis = 3
 )
 
 type ProjectionPlanes = gd.ProjectionPlanes
 
 const (
-	ProjectionPlaneNear   ProjectionPlanes = 0
-	ProjectionPlaneFar    ProjectionPlanes = 1
-	ProjectionPlaneLeft   ProjectionPlanes = 2
-	ProjectionPlaneTop    ProjectionPlanes = 3
-	ProjectionPlaneRight  ProjectionPlanes = 4
+	/*The index value of the projection's near clipping plane.*/
+	ProjectionPlaneNear ProjectionPlanes = 0
+	/*The index value of the projection's far clipping plane.*/
+	ProjectionPlaneFar ProjectionPlanes = 1
+	/*The index value of the projection's left clipping plane.*/
+	ProjectionPlaneLeft ProjectionPlanes = 2
+	/*The index value of the projection's top clipping plane.*/
+	ProjectionPlaneTop ProjectionPlanes = 3
+	/*The index value of the projection's right clipping plane.*/
+	ProjectionPlaneRight ProjectionPlanes = 4
+	/*The index value of the projection bottom clipping plane.*/
 	ProjectionPlaneBottom ProjectionPlanes = 5
 )
 
 type AESContextMode = classdb.AESContextMode
 
 const (
+	/*AES electronic codebook encryption mode.*/
 	AESContextModeEcbEncrypt AESContextMode = 0
+	/*AES electronic codebook decryption mode.*/
 	AESContextModeEcbDecrypt AESContextMode = 1
+	/*AES cipher blocker chaining encryption mode.*/
 	AESContextModeCbcEncrypt AESContextMode = 2
+	/*AES cipher blocker chaining decryption mode.*/
 	AESContextModeCbcDecrypt AESContextMode = 3
-	AESContextModeMax        AESContextMode = 4
+	/*Maximum value for the mode enum.*/
+	AESContextModeMax AESContextMode = 4
 )
 
 type AStarGrid2DHeuristic = classdb.AStarGrid2DHeuristic
 
 const (
+	/*The [url=https://en.wikipedia.org/wiki/Euclidean_distance]Euclidean heuristic[/url] to be used for the pathfinding using the following formula:
+	  [codeblock]
+	  dx = abs(to_id.x - from_id.x)
+	  dy = abs(to_id.y - from_id.y)
+	  result = sqrt(dx * dx + dy * dy)
+	  [/codeblock]
+	  [b]Note:[/b] This is also the internal heuristic used in [AStar3D] and [AStar2D] by default (with the inclusion of possible z-axis coordinate).*/
 	AStarGrid2DHeuristicEuclidean AStarGrid2DHeuristic = 0
+	/*The [url=https://en.wikipedia.org/wiki/Taxicab_geometry]Manhattan heuristic[/url] to be used for the pathfinding using the following formula:
+	  [codeblock]
+	  dx = abs(to_id.x - from_id.x)
+	  dy = abs(to_id.y - from_id.y)
+	  result = dx + dy
+	  [/codeblock]
+	  [b]Note:[/b] This heuristic is intended to be used with 4-side orthogonal movements, provided by setting the [member diagonal_mode] to [constant DIAGONAL_MODE_NEVER].*/
 	AStarGrid2DHeuristicManhattan AStarGrid2DHeuristic = 1
-	AStarGrid2DHeuristicOctile    AStarGrid2DHeuristic = 2
+	/*The Octile heuristic to be used for the pathfinding using the following formula:
+	  [codeblock]
+	  dx = abs(to_id.x - from_id.x)
+	  dy = abs(to_id.y - from_id.y)
+	  f = sqrt(2) - 1
+	  result = (dx < dy) ? f * dx + dy : f * dy + dx;
+	  [/codeblock]*/
+	AStarGrid2DHeuristicOctile AStarGrid2DHeuristic = 2
+	/*The [url=https://en.wikipedia.org/wiki/Chebyshev_distance]Chebyshev heuristic[/url] to be used for the pathfinding using the following formula:
+	  [codeblock]
+	  dx = abs(to_id.x - from_id.x)
+	  dy = abs(to_id.y - from_id.y)
+	  result = max(dx, dy)
+	  [/codeblock]*/
 	AStarGrid2DHeuristicChebyshev AStarGrid2DHeuristic = 3
-	AStarGrid2DHeuristicMax       AStarGrid2DHeuristic = 4
+	/*Represents the size of the [enum Heuristic] enum.*/
+	AStarGrid2DHeuristicMax AStarGrid2DHeuristic = 4
 )
 
 type AStarGrid2DDiagonalMode = classdb.AStarGrid2DDiagonalMode
 
 const (
-	AStarGrid2DDiagonalModeAlways             AStarGrid2DDiagonalMode = 0
-	AStarGrid2DDiagonalModeNever              AStarGrid2DDiagonalMode = 1
+	/*The pathfinding algorithm will ignore solid neighbors around the target cell and allow passing using diagonals.*/
+	AStarGrid2DDiagonalModeAlways AStarGrid2DDiagonalMode = 0
+	/*The pathfinding algorithm will ignore all diagonals and the way will be always orthogonal.*/
+	AStarGrid2DDiagonalModeNever AStarGrid2DDiagonalMode = 1
+	/*The pathfinding algorithm will avoid using diagonals if at least two obstacles have been placed around the neighboring cells of the specific path segment.*/
 	AStarGrid2DDiagonalModeAtLeastOneWalkable AStarGrid2DDiagonalMode = 2
-	AStarGrid2DDiagonalModeOnlyIfNoObstacles  AStarGrid2DDiagonalMode = 3
-	AStarGrid2DDiagonalModeMax                AStarGrid2DDiagonalMode = 4
+	/*The pathfinding algorithm will avoid using diagonals if any obstacle has been placed around the neighboring cells of the specific path segment.*/
+	AStarGrid2DDiagonalModeOnlyIfNoObstacles AStarGrid2DDiagonalMode = 3
+	/*Represents the size of the [enum DiagonalMode] enum.*/
+	AStarGrid2DDiagonalModeMax AStarGrid2DDiagonalMode = 4
 )
 
 type AnimationTrackType = classdb.AnimationTrackType
 
 const (
-	AnimationTypeValue      AnimationTrackType = 0
+	/*Value tracks set values in node properties, but only those which can be interpolated. For 3D position/rotation/scale, using the dedicated [constant TYPE_POSITION_3D], [constant TYPE_ROTATION_3D] and [constant TYPE_SCALE_3D] track types instead of [constant TYPE_VALUE] is recommended for performance reasons.*/
+	AnimationTypeValue AnimationTrackType = 0
+	/*3D position track (values are stored in [Vector3]s).*/
 	AnimationTypePosition3d AnimationTrackType = 1
+	/*3D rotation track (values are stored in [Quaternion]s).*/
 	AnimationTypeRotation3d AnimationTrackType = 2
-	AnimationTypeScale3d    AnimationTrackType = 3
+	/*3D scale track (values are stored in [Vector3]s).*/
+	AnimationTypeScale3d AnimationTrackType = 3
+	/*Blend shape track.*/
 	AnimationTypeBlendShape AnimationTrackType = 4
-	AnimationTypeMethod     AnimationTrackType = 5
-	AnimationTypeBezier     AnimationTrackType = 6
-	AnimationTypeAudio      AnimationTrackType = 7
-	AnimationTypeAnimation  AnimationTrackType = 8
+	/*Method tracks call functions with given arguments per key.*/
+	AnimationTypeMethod AnimationTrackType = 5
+	/*Bezier tracks are used to interpolate a value using custom curves. They can also be used to animate sub-properties of vectors and colors (e.g. alpha value of a [Color]).*/
+	AnimationTypeBezier AnimationTrackType = 6
+	/*Audio tracks are used to play an audio stream with either type of [AudioStreamPlayer]. The stream can be trimmed and previewed in the animation.*/
+	AnimationTypeAudio AnimationTrackType = 7
+	/*Animation tracks play animations in other [AnimationPlayer] nodes.*/
+	AnimationTypeAnimation AnimationTrackType = 8
 )
 
 type AnimationInterpolationType = classdb.AnimationInterpolationType
 
 const (
-	AnimationInterpolationNearest     AnimationInterpolationType = 0
-	AnimationInterpolationLinear      AnimationInterpolationType = 1
-	AnimationInterpolationCubic       AnimationInterpolationType = 2
+	/*No interpolation (nearest value).*/
+	AnimationInterpolationNearest AnimationInterpolationType = 0
+	/*Linear interpolation.*/
+	AnimationInterpolationLinear AnimationInterpolationType = 1
+	/*Cubic interpolation. This looks smoother than linear interpolation, but is more expensive to interpolate. Stick to [constant INTERPOLATION_LINEAR] for complex 3D animations imported from external software, even if it requires using a higher animation framerate in return.*/
+	AnimationInterpolationCubic AnimationInterpolationType = 2
+	/*Linear interpolation with shortest path rotation.
+	  [b]Note:[/b] The result value is always normalized and may not match the key value.*/
 	AnimationInterpolationLinearAngle AnimationInterpolationType = 3
-	AnimationInterpolationCubicAngle  AnimationInterpolationType = 4
+	/*Cubic interpolation with shortest path rotation.
+	  [b]Note:[/b] The result value is always normalized and may not match the key value.*/
+	AnimationInterpolationCubicAngle AnimationInterpolationType = 4
 )
 
 type AnimationUpdateMode = classdb.AnimationUpdateMode
 
 const (
+	/*Update between keyframes and hold the value.*/
 	AnimationUpdateContinuous AnimationUpdateMode = 0
-	AnimationUpdateDiscrete   AnimationUpdateMode = 1
-	AnimationUpdateCapture    AnimationUpdateMode = 2
+	/*Update at the keyframes.*/
+	AnimationUpdateDiscrete AnimationUpdateMode = 1
+	/*Same as linear interpolation, but also interpolates from the current value (i.e. dynamically at runtime) if the first key isn't at 0 seconds.*/
+	AnimationUpdateCapture AnimationUpdateMode = 2
 )
 
 type AnimationLoopMode = classdb.AnimationLoopMode
 
 const (
-	AnimationLoopNone     AnimationLoopMode = 0
-	AnimationLoopLinear   AnimationLoopMode = 1
+	/*At both ends of the animation, the animation will stop playing.*/
+	AnimationLoopNone AnimationLoopMode = 0
+	/*At both ends of the animation, the animation will be repeated without changing the playback direction.*/
+	AnimationLoopLinear AnimationLoopMode = 1
+	/*Repeats playback and reverse playback at both ends of the animation.*/
 	AnimationLoopPingpong AnimationLoopMode = 2
 )
 
 type AnimationLoopedFlag = classdb.AnimationLoopedFlag
 
 const (
-	AnimationLoopedFlagNone  AnimationLoopedFlag = 0
-	AnimationLoopedFlagEnd   AnimationLoopedFlag = 1
+	/*This flag indicates that the animation proceeds without any looping.*/
+	AnimationLoopedFlagNone AnimationLoopedFlag = 0
+	/*This flag indicates that the animation has reached the end of the animation and just after loop processed.*/
+	AnimationLoopedFlagEnd AnimationLoopedFlag = 1
+	/*This flag indicates that the animation has reached the start of the animation and just after loop processed.*/
 	AnimationLoopedFlagStart AnimationLoopedFlag = 2
 )
 
 type AnimationFindMode = classdb.AnimationFindMode
 
 const (
+	/*Finds the nearest time key.*/
 	AnimationFindModeNearest AnimationFindMode = 0
-	AnimationFindModeApprox  AnimationFindMode = 1
-	AnimationFindModeExact   AnimationFindMode = 2
+	/*Finds only the key with approximating the time.*/
+	AnimationFindModeApprox AnimationFindMode = 1
+	/*Finds only the key with matching the time.*/
+	AnimationFindModeExact AnimationFindMode = 2
 )
 
 type AnimationMixerAnimationCallbackModeProcess = classdb.AnimationMixerAnimationCallbackModeProcess
 
 const (
+	/*Process animation during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]). This is especially useful when animating physics bodies.*/
 	AnimationMixerAnimationCallbackModeProcessPhysics AnimationMixerAnimationCallbackModeProcess = 0
-	AnimationMixerAnimationCallbackModeProcessIdle    AnimationMixerAnimationCallbackModeProcess = 1
-	AnimationMixerAnimationCallbackModeProcessManual  AnimationMixerAnimationCallbackModeProcess = 2
+	/*Process animation during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	AnimationMixerAnimationCallbackModeProcessIdle AnimationMixerAnimationCallbackModeProcess = 1
+	/*Do not process animation. Use [method advance] to process the animation manually.*/
+	AnimationMixerAnimationCallbackModeProcessManual AnimationMixerAnimationCallbackModeProcess = 2
 )
 
 type AnimationMixerAnimationCallbackModeMethod = classdb.AnimationMixerAnimationCallbackModeMethod
 
 const (
-	AnimationMixerAnimationCallbackModeMethodDeferred  AnimationMixerAnimationCallbackModeMethod = 0
+	/*Batch method calls during the animation process, then do the calls after events are processed. This avoids bugs involving deleting nodes or modifying the AnimationPlayer while playing.*/
+	AnimationMixerAnimationCallbackModeMethodDeferred AnimationMixerAnimationCallbackModeMethod = 0
+	/*Make method calls immediately when reached in the animation.*/
 	AnimationMixerAnimationCallbackModeMethodImmediate AnimationMixerAnimationCallbackModeMethod = 1
 )
 
 type AnimationNodeFilterAction = classdb.AnimationNodeFilterAction
 
 const (
+	/*Do not use filtering.*/
 	AnimationNodeFilterIgnore AnimationNodeFilterAction = 0
-	AnimationNodeFilterPass   AnimationNodeFilterAction = 1
-	AnimationNodeFilterStop   AnimationNodeFilterAction = 2
-	AnimationNodeFilterBlend  AnimationNodeFilterAction = 3
+	/*Paths matching the filter will be allowed to pass.*/
+	AnimationNodeFilterPass AnimationNodeFilterAction = 1
+	/*Paths matching the filter will be discarded.*/
+	AnimationNodeFilterStop AnimationNodeFilterAction = 2
+	/*Paths matching the filter will be blended (by the blend value).*/
+	AnimationNodeFilterBlend AnimationNodeFilterAction = 3
 )
 
 type AnimationNodeAnimationPlayMode = classdb.AnimationNodeAnimationPlayMode
 
 const (
-	AnimationNodeAnimationPlayModeForward  AnimationNodeAnimationPlayMode = 0
+	/*Plays animation in forward direction.*/
+	AnimationNodeAnimationPlayModeForward AnimationNodeAnimationPlayMode = 0
+	/*Plays animation in backward direction.*/
 	AnimationNodeAnimationPlayModeBackward AnimationNodeAnimationPlayMode = 1
 )
 
 type AnimationNodeBlendSpace1DBlendMode = classdb.AnimationNodeBlendSpace1DBlendMode
 
 const (
-	AnimationNodeBlendSpace1DBlendModeInterpolated  AnimationNodeBlendSpace1DBlendMode = 0
-	AnimationNodeBlendSpace1DBlendModeDiscrete      AnimationNodeBlendSpace1DBlendMode = 1
+	/*The interpolation between animations is linear.*/
+	AnimationNodeBlendSpace1DBlendModeInterpolated AnimationNodeBlendSpace1DBlendMode = 0
+	/*The blend space plays the animation of the animation node which blending position is closest to. Useful for frame-by-frame 2D animations.*/
+	AnimationNodeBlendSpace1DBlendModeDiscrete AnimationNodeBlendSpace1DBlendMode = 1
+	/*Similar to [constant BLEND_MODE_DISCRETE], but starts the new animation at the last animation's playback position.*/
 	AnimationNodeBlendSpace1DBlendModeDiscreteCarry AnimationNodeBlendSpace1DBlendMode = 2
 )
 
 type AnimationNodeBlendSpace2DBlendMode = classdb.AnimationNodeBlendSpace2DBlendMode
 
 const (
-	AnimationNodeBlendSpace2DBlendModeInterpolated  AnimationNodeBlendSpace2DBlendMode = 0
-	AnimationNodeBlendSpace2DBlendModeDiscrete      AnimationNodeBlendSpace2DBlendMode = 1
+	/*The interpolation between animations is linear.*/
+	AnimationNodeBlendSpace2DBlendModeInterpolated AnimationNodeBlendSpace2DBlendMode = 0
+	/*The blend space plays the animation of the animation node which blending position is closest to. Useful for frame-by-frame 2D animations.*/
+	AnimationNodeBlendSpace2DBlendModeDiscrete AnimationNodeBlendSpace2DBlendMode = 1
+	/*Similar to [constant BLEND_MODE_DISCRETE], but starts the new animation at the last animation's playback position.*/
 	AnimationNodeBlendSpace2DBlendModeDiscreteCarry AnimationNodeBlendSpace2DBlendMode = 2
 )
 
 type AnimationNodeOneShotOneShotRequest = classdb.AnimationNodeOneShotOneShotRequest
 
 const (
-	AnimationNodeOneShotOneShotRequestNone    AnimationNodeOneShotOneShotRequest = 0
-	AnimationNodeOneShotOneShotRequestFire    AnimationNodeOneShotOneShotRequest = 1
-	AnimationNodeOneShotOneShotRequestAbort   AnimationNodeOneShotOneShotRequest = 2
+	/*The default state of the request. Nothing is done.*/
+	AnimationNodeOneShotOneShotRequestNone AnimationNodeOneShotOneShotRequest = 0
+	/*The request to play the animation connected to "shot" port.*/
+	AnimationNodeOneShotOneShotRequestFire AnimationNodeOneShotOneShotRequest = 1
+	/*The request to stop the animation connected to "shot" port.*/
+	AnimationNodeOneShotOneShotRequestAbort AnimationNodeOneShotOneShotRequest = 2
+	/*The request to fade out the animation connected to "shot" port.*/
 	AnimationNodeOneShotOneShotRequestFadeOut AnimationNodeOneShotOneShotRequest = 3
 )
 
 type AnimationNodeOneShotMixMode = classdb.AnimationNodeOneShotMixMode
 
 const (
+	/*Blends two animations. See also [AnimationNodeBlend2].*/
 	AnimationNodeOneShotMixModeBlend AnimationNodeOneShotMixMode = 0
-	AnimationNodeOneShotMixModeAdd   AnimationNodeOneShotMixMode = 1
+	/*Blends two animations additively. See also [AnimationNodeAdd2].*/
+	AnimationNodeOneShotMixModeAdd AnimationNodeOneShotMixMode = 1
 )
 
 type AnimationNodeStateMachineStateMachineType = classdb.AnimationNodeStateMachineStateMachineType
 
 const (
-	AnimationNodeStateMachineStateMachineTypeRoot    AnimationNodeStateMachineStateMachineType = 0
-	AnimationNodeStateMachineStateMachineTypeNested  AnimationNodeStateMachineStateMachineType = 1
+	/*Seeking to the beginning is treated as playing from the start state. Transition to the end state is treated as exiting the state machine.*/
+	AnimationNodeStateMachineStateMachineTypeRoot AnimationNodeStateMachineStateMachineType = 0
+	/*Seeking to the beginning is treated as seeking to the beginning of the animation in the current state. Transition to the end state, or the absence of transitions in each state, is treated as exiting the state machine.*/
+	AnimationNodeStateMachineStateMachineTypeNested AnimationNodeStateMachineStateMachineType = 1
+	/*This is a grouped state machine that can be controlled from a parent state machine. It does not work independently. There must be a state machine with [member state_machine_type] of [constant STATE_MACHINE_TYPE_ROOT] or [constant STATE_MACHINE_TYPE_NESTED] in the parent or ancestor.*/
 	AnimationNodeStateMachineStateMachineTypeGrouped AnimationNodeStateMachineStateMachineType = 2
 )
 
 type AnimationNodeStateMachineTransitionSwitchMode = classdb.AnimationNodeStateMachineTransitionSwitchMode
 
 const (
+	/*Switch to the next state immediately. The current state will end and blend into the beginning of the new one.*/
 	AnimationNodeStateMachineTransitionSwitchModeImmediate AnimationNodeStateMachineTransitionSwitchMode = 0
-	AnimationNodeStateMachineTransitionSwitchModeSync      AnimationNodeStateMachineTransitionSwitchMode = 1
-	AnimationNodeStateMachineTransitionSwitchModeAtEnd     AnimationNodeStateMachineTransitionSwitchMode = 2
+	/*Switch to the next state immediately, but will seek the new state to the playback position of the old state.*/
+	AnimationNodeStateMachineTransitionSwitchModeSync AnimationNodeStateMachineTransitionSwitchMode = 1
+	/*Wait for the current state playback to end, then switch to the beginning of the next state animation.*/
+	AnimationNodeStateMachineTransitionSwitchModeAtEnd AnimationNodeStateMachineTransitionSwitchMode = 2
 )
 
 type AnimationNodeStateMachineTransitionAdvanceMode = classdb.AnimationNodeStateMachineTransitionAdvanceMode
 
 const (
+	/*Don't use this transition.*/
 	AnimationNodeStateMachineTransitionAdvanceModeDisabled AnimationNodeStateMachineTransitionAdvanceMode = 0
-	AnimationNodeStateMachineTransitionAdvanceModeEnabled  AnimationNodeStateMachineTransitionAdvanceMode = 1
-	AnimationNodeStateMachineTransitionAdvanceModeAuto     AnimationNodeStateMachineTransitionAdvanceMode = 2
+	/*Only use this transition during [method AnimationNodeStateMachinePlayback.travel].*/
+	AnimationNodeStateMachineTransitionAdvanceModeEnabled AnimationNodeStateMachineTransitionAdvanceMode = 1
+	/*Automatically use this transition if the [member advance_condition] and [member advance_expression] checks are true (if assigned).*/
+	AnimationNodeStateMachineTransitionAdvanceModeAuto AnimationNodeStateMachineTransitionAdvanceMode = 2
 )
 
 type AnimationPlayerAnimationProcessCallback = classdb.AnimationPlayerAnimationProcessCallback
 
 const (
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS].*/
 	AnimationPlayerAnimationProcessPhysics AnimationPlayerAnimationProcessCallback = 0
-	AnimationPlayerAnimationProcessIdle    AnimationPlayerAnimationProcessCallback = 1
-	AnimationPlayerAnimationProcessManual  AnimationPlayerAnimationProcessCallback = 2
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE].*/
+	AnimationPlayerAnimationProcessIdle AnimationPlayerAnimationProcessCallback = 1
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL].*/
+	AnimationPlayerAnimationProcessManual AnimationPlayerAnimationProcessCallback = 2
 )
 
 type AnimationPlayerAnimationMethodCallMode = classdb.AnimationPlayerAnimationMethodCallMode
 
 const (
-	AnimationPlayerAnimationMethodCallDeferred  AnimationPlayerAnimationMethodCallMode = 0
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_METHOD_DEFERRED].*/
+	AnimationPlayerAnimationMethodCallDeferred AnimationPlayerAnimationMethodCallMode = 0
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_METHOD_IMMEDIATE].*/
 	AnimationPlayerAnimationMethodCallImmediate AnimationPlayerAnimationMethodCallMode = 1
 )
 
 type AnimationTreeAnimationProcessCallback = classdb.AnimationTreeAnimationProcessCallback
 
 const (
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS].*/
 	AnimationTreeAnimationProcessPhysics AnimationTreeAnimationProcessCallback = 0
-	AnimationTreeAnimationProcessIdle    AnimationTreeAnimationProcessCallback = 1
-	AnimationTreeAnimationProcessManual  AnimationTreeAnimationProcessCallback = 2
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE].*/
+	AnimationTreeAnimationProcessIdle AnimationTreeAnimationProcessCallback = 1
+	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL].*/
+	AnimationTreeAnimationProcessManual AnimationTreeAnimationProcessCallback = 2
 )
 
 type Area2DSpaceOverride = classdb.Area2DSpaceOverride
 
 const (
-	Area2DSpaceOverrideDisabled       Area2DSpaceOverride = 0
-	Area2DSpaceOverrideCombine        Area2DSpaceOverride = 1
+	/*This area does not affect gravity/damping.*/
+	Area2DSpaceOverrideDisabled Area2DSpaceOverride = 0
+	/*This area adds its gravity/damping values to whatever has been calculated so far (in [member priority] order).*/
+	Area2DSpaceOverrideCombine Area2DSpaceOverride = 1
+	/*This area adds its gravity/damping values to whatever has been calculated so far (in [member priority] order), ignoring any lower priority areas.*/
 	Area2DSpaceOverrideCombineReplace Area2DSpaceOverride = 2
-	Area2DSpaceOverrideReplace        Area2DSpaceOverride = 3
+	/*This area replaces any gravity/damping, even the defaults, ignoring any lower priority areas.*/
+	Area2DSpaceOverrideReplace Area2DSpaceOverride = 3
+	/*This area replaces any gravity/damping calculated so far (in [member priority] order), but keeps calculating the rest of the areas.*/
 	Area2DSpaceOverrideReplaceCombine Area2DSpaceOverride = 4
 )
 
 type Area3DSpaceOverride = classdb.Area3DSpaceOverride
 
 const (
-	Area3DSpaceOverrideDisabled       Area3DSpaceOverride = 0
-	Area3DSpaceOverrideCombine        Area3DSpaceOverride = 1
+	/*This area does not affect gravity/damping.*/
+	Area3DSpaceOverrideDisabled Area3DSpaceOverride = 0
+	/*This area adds its gravity/damping values to whatever has been calculated so far (in [member priority] order).*/
+	Area3DSpaceOverrideCombine Area3DSpaceOverride = 1
+	/*This area adds its gravity/damping values to whatever has been calculated so far (in [member priority] order), ignoring any lower priority areas.*/
 	Area3DSpaceOverrideCombineReplace Area3DSpaceOverride = 2
-	Area3DSpaceOverrideReplace        Area3DSpaceOverride = 3
+	/*This area replaces any gravity/damping, even the defaults, ignoring any lower priority areas.*/
+	Area3DSpaceOverrideReplace Area3DSpaceOverride = 3
+	/*This area replaces any gravity/damping calculated so far (in [member priority] order), but keeps calculating the rest of the areas.*/
 	Area3DSpaceOverrideReplaceCombine Area3DSpaceOverride = 4
 )
 
 type AspectRatioContainerStretchMode = classdb.AspectRatioContainerStretchMode
 
 const (
+	/*The height of child controls is automatically adjusted based on the width of the container.*/
 	AspectRatioContainerStretchWidthControlsHeight AspectRatioContainerStretchMode = 0
+	/*The width of child controls is automatically adjusted based on the height of the container.*/
 	AspectRatioContainerStretchHeightControlsWidth AspectRatioContainerStretchMode = 1
-	AspectRatioContainerStretchFit                 AspectRatioContainerStretchMode = 2
-	AspectRatioContainerStretchCover               AspectRatioContainerStretchMode = 3
+	/*The bounding rectangle of child controls is automatically adjusted to fit inside the container while keeping the aspect ratio.*/
+	AspectRatioContainerStretchFit AspectRatioContainerStretchMode = 2
+	/*The width and height of child controls is automatically adjusted to make their bounding rectangle cover the entire area of the container while keeping the aspect ratio.
+	  When the bounding rectangle of child controls exceed the container's size and [member Control.clip_contents] is enabled, this allows to show only the container's area restricted by its own bounding rectangle.*/
+	AspectRatioContainerStretchCover AspectRatioContainerStretchMode = 3
 )
 
 type AspectRatioContainerAlignmentMode = classdb.AspectRatioContainerAlignmentMode
 
 const (
-	AspectRatioContainerAlignmentBegin  AspectRatioContainerAlignmentMode = 0
+	/*Aligns child controls with the beginning (left or top) of the container.*/
+	AspectRatioContainerAlignmentBegin AspectRatioContainerAlignmentMode = 0
+	/*Aligns child controls with the center of the container.*/
 	AspectRatioContainerAlignmentCenter AspectRatioContainerAlignmentMode = 1
-	AspectRatioContainerAlignmentEnd    AspectRatioContainerAlignmentMode = 2
+	/*Aligns child controls with the end (right or bottom) of the container.*/
+	AspectRatioContainerAlignmentEnd AspectRatioContainerAlignmentMode = 2
 )
 
 type AudioEffectDistortionMode = classdb.AudioEffectDistortionMode
 
 const (
-	AudioEffectDistortionModeClip      AudioEffectDistortionMode = 0
-	AudioEffectDistortionModeAtan      AudioEffectDistortionMode = 1
-	AudioEffectDistortionModeLofi      AudioEffectDistortionMode = 2
+	/*Digital distortion effect which cuts off peaks at the top and bottom of the waveform.*/
+	AudioEffectDistortionModeClip AudioEffectDistortionMode = 0
+	AudioEffectDistortionModeAtan AudioEffectDistortionMode = 1
+	/*Low-resolution digital distortion effect (bit depth reduction). You can use it to emulate the sound of early digital audio devices.*/
+	AudioEffectDistortionModeLofi AudioEffectDistortionMode = 2
+	/*Emulates the warm distortion produced by a field effect transistor, which is commonly used in solid-state musical instrument amplifiers. The [member drive] property has no effect in this mode.*/
 	AudioEffectDistortionModeOverdrive AudioEffectDistortionMode = 3
+	/*Waveshaper distortions are used mainly by electronic musicians to achieve an extra-abrasive sound.*/
 	AudioEffectDistortionModeWaveshape AudioEffectDistortionMode = 4
 )
 
@@ -906,1112 +1634,1745 @@ const (
 type AudioEffectPitchShiftFFTSize = classdb.AudioEffectPitchShiftFFTSize
 
 const (
-	AudioEffectPitchShiftFftSize256  AudioEffectPitchShiftFFTSize = 0
-	AudioEffectPitchShiftFftSize512  AudioEffectPitchShiftFFTSize = 1
+	/*Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.*/
+	AudioEffectPitchShiftFftSize256 AudioEffectPitchShiftFFTSize = 0
+	/*Use a buffer of 512 samples for the Fast Fourier transform. Low latency, but less stable over time.*/
+	AudioEffectPitchShiftFftSize512 AudioEffectPitchShiftFFTSize = 1
+	/*Use a buffer of 1024 samples for the Fast Fourier transform. This is a compromise between latency and stability over time.*/
 	AudioEffectPitchShiftFftSize1024 AudioEffectPitchShiftFFTSize = 2
+	/*Use a buffer of 2048 samples for the Fast Fourier transform. High latency, but stable over time.*/
 	AudioEffectPitchShiftFftSize2048 AudioEffectPitchShiftFFTSize = 3
+	/*Use a buffer of 4096 samples for the Fast Fourier transform. Highest latency, but most stable over time.*/
 	AudioEffectPitchShiftFftSize4096 AudioEffectPitchShiftFFTSize = 4
-	AudioEffectPitchShiftFftSizeMax  AudioEffectPitchShiftFFTSize = 5
+	/*Represents the size of the [enum FFTSize] enum.*/
+	AudioEffectPitchShiftFftSizeMax AudioEffectPitchShiftFFTSize = 5
 )
 
 type AudioEffectSpectrumAnalyzerFFTSize = classdb.AudioEffectSpectrumAnalyzerFFTSize
 
 const (
-	AudioEffectSpectrumAnalyzerFftSize256  AudioEffectSpectrumAnalyzerFFTSize = 0
-	AudioEffectSpectrumAnalyzerFftSize512  AudioEffectSpectrumAnalyzerFFTSize = 1
+	/*Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.*/
+	AudioEffectSpectrumAnalyzerFftSize256 AudioEffectSpectrumAnalyzerFFTSize = 0
+	/*Use a buffer of 512 samples for the Fast Fourier transform. Low latency, but less stable over time.*/
+	AudioEffectSpectrumAnalyzerFftSize512 AudioEffectSpectrumAnalyzerFFTSize = 1
+	/*Use a buffer of 1024 samples for the Fast Fourier transform. This is a compromise between latency and stability over time.*/
 	AudioEffectSpectrumAnalyzerFftSize1024 AudioEffectSpectrumAnalyzerFFTSize = 2
+	/*Use a buffer of 2048 samples for the Fast Fourier transform. High latency, but stable over time.*/
 	AudioEffectSpectrumAnalyzerFftSize2048 AudioEffectSpectrumAnalyzerFFTSize = 3
+	/*Use a buffer of 4096 samples for the Fast Fourier transform. Highest latency, but most stable over time.*/
 	AudioEffectSpectrumAnalyzerFftSize4096 AudioEffectSpectrumAnalyzerFFTSize = 4
-	AudioEffectSpectrumAnalyzerFftSizeMax  AudioEffectSpectrumAnalyzerFFTSize = 5
+	/*Represents the size of the [enum FFTSize] enum.*/
+	AudioEffectSpectrumAnalyzerFftSizeMax AudioEffectSpectrumAnalyzerFFTSize = 5
 )
 
 type AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = classdb.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode
 
 const (
+	/*Use the average value as magnitude.*/
 	AudioEffectSpectrumAnalyzerInstanceMagnitudeAverage AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 0
-	AudioEffectSpectrumAnalyzerInstanceMagnitudeMax     AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 1
+	/*Use the maximum value as magnitude.*/
+	AudioEffectSpectrumAnalyzerInstanceMagnitudeMax AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 1
 )
 
 type AudioServerSpeakerMode = classdb.AudioServerSpeakerMode
 
 const (
+	/*Two or fewer speakers were detected.*/
 	AudioServerSpeakerModeStereo AudioServerSpeakerMode = 0
+	/*A 3.1 channel surround setup was detected.*/
 	AudioServerSpeakerSurround31 AudioServerSpeakerMode = 1
+	/*A 5.1 channel surround setup was detected.*/
 	AudioServerSpeakerSurround51 AudioServerSpeakerMode = 2
+	/*A 7.1 channel surround setup was detected.*/
 	AudioServerSpeakerSurround71 AudioServerSpeakerMode = 3
 )
 
 type AudioStreamPlayerMixTarget = classdb.AudioStreamPlayerMixTarget
 
 const (
-	AudioStreamPlayerMixTargetStereo   AudioStreamPlayerMixTarget = 0
+	/*The audio will be played only on the first channel.*/
+	AudioStreamPlayerMixTargetStereo AudioStreamPlayerMixTarget = 0
+	/*The audio will be played on all surround channels.*/
 	AudioStreamPlayerMixTargetSurround AudioStreamPlayerMixTarget = 1
-	AudioStreamPlayerMixTargetCenter   AudioStreamPlayerMixTarget = 2
+	/*The audio will be played on the second channel, which is usually the center.*/
+	AudioStreamPlayerMixTargetCenter AudioStreamPlayerMixTarget = 2
 )
 
 type AudioStreamPlayer3DAttenuationModel = classdb.AudioStreamPlayer3DAttenuationModel
 
 const (
-	AudioStreamPlayer3DAttenuationInverseDistance       AudioStreamPlayer3DAttenuationModel = 0
+	/*Attenuation of loudness according to linear distance.*/
+	AudioStreamPlayer3DAttenuationInverseDistance AudioStreamPlayer3DAttenuationModel = 0
+	/*Attenuation of loudness according to squared distance.*/
 	AudioStreamPlayer3DAttenuationInverseSquareDistance AudioStreamPlayer3DAttenuationModel = 1
-	AudioStreamPlayer3DAttenuationLogarithmic           AudioStreamPlayer3DAttenuationModel = 2
-	AudioStreamPlayer3DAttenuationDisabled              AudioStreamPlayer3DAttenuationModel = 3
+	/*Attenuation of loudness according to logarithmic distance.*/
+	AudioStreamPlayer3DAttenuationLogarithmic AudioStreamPlayer3DAttenuationModel = 2
+	/*No attenuation of loudness according to distance. The sound will still be heard positionally, unlike an [AudioStreamPlayer]. [constant ATTENUATION_DISABLED] can be combined with a [member max_distance] value greater than [code]0.0[/code] to achieve linear attenuation clamped to a sphere of a defined size.*/
+	AudioStreamPlayer3DAttenuationDisabled AudioStreamPlayer3DAttenuationModel = 3
 )
 
 type AudioStreamPlayer3DDopplerTracking = classdb.AudioStreamPlayer3DDopplerTracking
 
 const (
-	AudioStreamPlayer3DDopplerTrackingDisabled    AudioStreamPlayer3DDopplerTracking = 0
-	AudioStreamPlayer3DDopplerTrackingIdleStep    AudioStreamPlayer3DDopplerTracking = 1
+	/*Disables doppler tracking.*/
+	AudioStreamPlayer3DDopplerTrackingDisabled AudioStreamPlayer3DDopplerTracking = 0
+	/*Executes doppler tracking during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	AudioStreamPlayer3DDopplerTrackingIdleStep AudioStreamPlayer3DDopplerTracking = 1
+	/*Executes doppler tracking during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	AudioStreamPlayer3DDopplerTrackingPhysicsStep AudioStreamPlayer3DDopplerTracking = 2
 )
 
 type AudioStreamRandomizerPlaybackMode = classdb.AudioStreamRandomizerPlaybackMode
 
 const (
+	/*Pick a stream at random according to the probability weights chosen for each stream, but avoid playing the same stream twice in a row whenever possible. If only 1 sound is present in the pool, the same sound will always play, effectively allowing repeats to occur.*/
 	AudioStreamRandomizerPlaybackRandomNoRepeats AudioStreamRandomizerPlaybackMode = 0
-	AudioStreamRandomizerPlaybackRandom          AudioStreamRandomizerPlaybackMode = 1
-	AudioStreamRandomizerPlaybackSequential      AudioStreamRandomizerPlaybackMode = 2
+	/*Pick a stream at random according to the probability weights chosen for each stream. If only 1 sound is present in the pool, the same sound will always play.*/
+	AudioStreamRandomizerPlaybackRandom AudioStreamRandomizerPlaybackMode = 1
+	/*Play streams in the order they appear in the stream pool. If only 1 sound is present in the pool, the same sound will always play.*/
+	AudioStreamRandomizerPlaybackSequential AudioStreamRandomizerPlaybackMode = 2
 )
 
 type AudioStreamWAVFormat = classdb.AudioStreamWAVFormat
 
 const (
-	AudioStreamWAVFormat8Bits    AudioStreamWAVFormat = 0
-	AudioStreamWAVFormat16Bits   AudioStreamWAVFormat = 1
+	/*8-bit audio codec.*/
+	AudioStreamWAVFormat8Bits AudioStreamWAVFormat = 0
+	/*16-bit audio codec.*/
+	AudioStreamWAVFormat16Bits AudioStreamWAVFormat = 1
+	/*Audio is compressed using IMA ADPCM.*/
 	AudioStreamWAVFormatImaAdpcm AudioStreamWAVFormat = 2
 )
 
 type AudioStreamWAVLoopMode = classdb.AudioStreamWAVLoopMode
 
 const (
+	/*Audio does not loop.*/
 	AudioStreamWAVLoopDisabled AudioStreamWAVLoopMode = 0
-	AudioStreamWAVLoopForward  AudioStreamWAVLoopMode = 1
+	/*Audio loops the data between [member loop_begin] and [member loop_end], playing forward only.*/
+	AudioStreamWAVLoopForward AudioStreamWAVLoopMode = 1
+	/*Audio loops the data between [member loop_begin] and [member loop_end], playing back and forth.*/
 	AudioStreamWAVLoopPingpong AudioStreamWAVLoopMode = 2
+	/*Audio loops the data between [member loop_begin] and [member loop_end], playing backward only.*/
 	AudioStreamWAVLoopBackward AudioStreamWAVLoopMode = 3
 )
 
 type BackBufferCopyCopyMode = classdb.BackBufferCopyCopyMode
 
 const (
+	/*Disables the buffering mode. This means the [BackBufferCopy] node will directly use the portion of screen it covers.*/
 	BackBufferCopyCopyModeDisabled BackBufferCopyCopyMode = 0
-	BackBufferCopyCopyModeRect     BackBufferCopyCopyMode = 1
+	/*[BackBufferCopy] buffers a rectangular region.*/
+	BackBufferCopyCopyModeRect BackBufferCopyCopyMode = 1
+	/*[BackBufferCopy] buffers the entire screen.*/
 	BackBufferCopyCopyModeViewport BackBufferCopyCopyMode = 2
 )
 
 type BaseButtonDrawMode = classdb.BaseButtonDrawMode
 
 const (
-	BaseButtonDrawNormal       BaseButtonDrawMode = 0
-	BaseButtonDrawPressed      BaseButtonDrawMode = 1
-	BaseButtonDrawHover        BaseButtonDrawMode = 2
-	BaseButtonDrawDisabled     BaseButtonDrawMode = 3
+	/*The normal state (i.e. not pressed, not hovered, not toggled and enabled) of buttons.*/
+	BaseButtonDrawNormal BaseButtonDrawMode = 0
+	/*The state of buttons are pressed.*/
+	BaseButtonDrawPressed BaseButtonDrawMode = 1
+	/*The state of buttons are hovered.*/
+	BaseButtonDrawHover BaseButtonDrawMode = 2
+	/*The state of buttons are disabled.*/
+	BaseButtonDrawDisabled BaseButtonDrawMode = 3
+	/*The state of buttons are both hovered and pressed.*/
 	BaseButtonDrawHoverPressed BaseButtonDrawMode = 4
 )
 
 type BaseButtonActionMode = classdb.BaseButtonActionMode
 
 const (
-	BaseButtonActionModeButtonPress   BaseButtonActionMode = 0
+	/*Require just a press to consider the button clicked.*/
+	BaseButtonActionModeButtonPress BaseButtonActionMode = 0
+	/*Require a press and a subsequent release before considering the button clicked.*/
 	BaseButtonActionModeButtonRelease BaseButtonActionMode = 1
 )
 
 type BaseMaterial3DTextureParam = classdb.BaseMaterial3DTextureParam
 
 const (
-	BaseMaterial3DTextureAlbedo                  BaseMaterial3DTextureParam = 0
-	BaseMaterial3DTextureMetallic                BaseMaterial3DTextureParam = 1
-	BaseMaterial3DTextureRoughness               BaseMaterial3DTextureParam = 2
-	BaseMaterial3DTextureEmission                BaseMaterial3DTextureParam = 3
-	BaseMaterial3DTextureNormal                  BaseMaterial3DTextureParam = 4
-	BaseMaterial3DTextureRim                     BaseMaterial3DTextureParam = 5
-	BaseMaterial3DTextureClearcoat               BaseMaterial3DTextureParam = 6
-	BaseMaterial3DTextureFlowmap                 BaseMaterial3DTextureParam = 7
-	BaseMaterial3DTextureAmbientOcclusion        BaseMaterial3DTextureParam = 8
-	BaseMaterial3DTextureHeightmap               BaseMaterial3DTextureParam = 9
-	BaseMaterial3DTextureSubsurfaceScattering    BaseMaterial3DTextureParam = 10
+	/*Texture specifying per-pixel color.*/
+	BaseMaterial3DTextureAlbedo BaseMaterial3DTextureParam = 0
+	/*Texture specifying per-pixel metallic value.*/
+	BaseMaterial3DTextureMetallic BaseMaterial3DTextureParam = 1
+	/*Texture specifying per-pixel roughness value.*/
+	BaseMaterial3DTextureRoughness BaseMaterial3DTextureParam = 2
+	/*Texture specifying per-pixel emission color.*/
+	BaseMaterial3DTextureEmission BaseMaterial3DTextureParam = 3
+	/*Texture specifying per-pixel normal vector.*/
+	BaseMaterial3DTextureNormal BaseMaterial3DTextureParam = 4
+	/*Texture specifying per-pixel rim value.*/
+	BaseMaterial3DTextureRim BaseMaterial3DTextureParam = 5
+	/*Texture specifying per-pixel clearcoat value.*/
+	BaseMaterial3DTextureClearcoat BaseMaterial3DTextureParam = 6
+	/*Texture specifying per-pixel flowmap direction for use with [member anisotropy].*/
+	BaseMaterial3DTextureFlowmap BaseMaterial3DTextureParam = 7
+	/*Texture specifying per-pixel ambient occlusion value.*/
+	BaseMaterial3DTextureAmbientOcclusion BaseMaterial3DTextureParam = 8
+	/*Texture specifying per-pixel height.*/
+	BaseMaterial3DTextureHeightmap BaseMaterial3DTextureParam = 9
+	/*Texture specifying per-pixel subsurface scattering.*/
+	BaseMaterial3DTextureSubsurfaceScattering BaseMaterial3DTextureParam = 10
+	/*Texture specifying per-pixel transmittance for subsurface scattering.*/
 	BaseMaterial3DTextureSubsurfaceTransmittance BaseMaterial3DTextureParam = 11
-	BaseMaterial3DTextureBacklight               BaseMaterial3DTextureParam = 12
-	BaseMaterial3DTextureRefraction              BaseMaterial3DTextureParam = 13
-	BaseMaterial3DTextureDetailMask              BaseMaterial3DTextureParam = 14
-	BaseMaterial3DTextureDetailAlbedo            BaseMaterial3DTextureParam = 15
-	BaseMaterial3DTextureDetailNormal            BaseMaterial3DTextureParam = 16
-	BaseMaterial3DTextureOrm                     BaseMaterial3DTextureParam = 17
-	BaseMaterial3DTextureMax                     BaseMaterial3DTextureParam = 18
+	/*Texture specifying per-pixel backlight color.*/
+	BaseMaterial3DTextureBacklight BaseMaterial3DTextureParam = 12
+	/*Texture specifying per-pixel refraction strength.*/
+	BaseMaterial3DTextureRefraction BaseMaterial3DTextureParam = 13
+	/*Texture specifying per-pixel detail mask blending value.*/
+	BaseMaterial3DTextureDetailMask BaseMaterial3DTextureParam = 14
+	/*Texture specifying per-pixel detail color.*/
+	BaseMaterial3DTextureDetailAlbedo BaseMaterial3DTextureParam = 15
+	/*Texture specifying per-pixel detail normal.*/
+	BaseMaterial3DTextureDetailNormal BaseMaterial3DTextureParam = 16
+	/*Texture holding ambient occlusion, roughness, and metallic.*/
+	BaseMaterial3DTextureOrm BaseMaterial3DTextureParam = 17
+	/*Represents the size of the [enum TextureParam] enum.*/
+	BaseMaterial3DTextureMax BaseMaterial3DTextureParam = 18
 )
 
 type BaseMaterial3DTextureFilter = classdb.BaseMaterial3DTextureFilter
 
 const (
-	BaseMaterial3DTextureFilterNearest                       BaseMaterial3DTextureFilter = 0
-	BaseMaterial3DTextureFilterLinear                        BaseMaterial3DTextureFilter = 1
-	BaseMaterial3DTextureFilterNearestWithMipmaps            BaseMaterial3DTextureFilter = 2
-	BaseMaterial3DTextureFilterLinearWithMipmaps             BaseMaterial3DTextureFilter = 3
+	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	BaseMaterial3DTextureFilterNearest BaseMaterial3DTextureFilter = 0
+	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	BaseMaterial3DTextureFilterLinear BaseMaterial3DTextureFilter = 1
+	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.*/
+	BaseMaterial3DTextureFilterNearestWithMipmaps BaseMaterial3DTextureFilter = 2
+	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.*/
+	BaseMaterial3DTextureFilterLinearWithMipmaps BaseMaterial3DTextureFilter = 3
+	/*The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
 	BaseMaterial3DTextureFilterNearestWithMipmapsAnisotropic BaseMaterial3DTextureFilter = 4
-	BaseMaterial3DTextureFilterLinearWithMipmapsAnisotropic  BaseMaterial3DTextureFilter = 5
-	BaseMaterial3DTextureFilterMax                           BaseMaterial3DTextureFilter = 6
+	/*The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
+	BaseMaterial3DTextureFilterLinearWithMipmapsAnisotropic BaseMaterial3DTextureFilter = 5
+	/*Represents the size of the [enum TextureFilter] enum.*/
+	BaseMaterial3DTextureFilterMax BaseMaterial3DTextureFilter = 6
 )
 
 type BaseMaterial3DDetailUV = classdb.BaseMaterial3DDetailUV
 
 const (
+	/*Use [code]UV[/code] with the detail texture.*/
 	BaseMaterial3DDetailUv1 BaseMaterial3DDetailUV = 0
+	/*Use [code]UV2[/code] with the detail texture.*/
 	BaseMaterial3DDetailUv2 BaseMaterial3DDetailUV = 1
 )
 
 type BaseMaterial3DTransparency = classdb.BaseMaterial3DTransparency
 
 const (
-	BaseMaterial3DTransparencyDisabled          BaseMaterial3DTransparency = 0
-	BaseMaterial3DTransparencyAlpha             BaseMaterial3DTransparency = 1
-	BaseMaterial3DTransparencyAlphaScissor      BaseMaterial3DTransparency = 2
-	BaseMaterial3DTransparencyAlphaHash         BaseMaterial3DTransparency = 3
+	/*The material will not use transparency. This is the fastest to render.*/
+	BaseMaterial3DTransparencyDisabled BaseMaterial3DTransparency = 0
+	/*The material will use the texture's alpha values for transparency. This is the slowest to render, and disables shadow casting.*/
+	BaseMaterial3DTransparencyAlpha BaseMaterial3DTransparency = 1
+	/*The material will cut off all values below a threshold, the rest will remain opaque. The opaque portions will be rendered in the depth prepass. This is faster to render than alpha blending, but slower than opaque rendering. This also supports casting shadows.*/
+	BaseMaterial3DTransparencyAlphaScissor BaseMaterial3DTransparency = 2
+	/*The material will cut off all values below a spatially-deterministic threshold, the rest will remain opaque. This is faster to render than alpha blending, but slower than opaque rendering. This also supports casting shadows. Alpha hashing is suited for hair rendering.*/
+	BaseMaterial3DTransparencyAlphaHash BaseMaterial3DTransparency = 3
+	/*The material will use the texture's alpha value for transparency, but will discard fragments with an alpha of less than 0.99 during the depth prepass and fragments with an alpha less than 0.1 during the shadow pass. This also supports casting shadows.*/
 	BaseMaterial3DTransparencyAlphaDepthPrePass BaseMaterial3DTransparency = 4
-	BaseMaterial3DTransparencyMax               BaseMaterial3DTransparency = 5
+	/*Represents the size of the [enum Transparency] enum.*/
+	BaseMaterial3DTransparencyMax BaseMaterial3DTransparency = 5
 )
 
 type BaseMaterial3DShadingMode = classdb.BaseMaterial3DShadingMode
 
 const (
-	BaseMaterial3DShadingModeUnshaded  BaseMaterial3DShadingMode = 0
-	BaseMaterial3DShadingModePerPixel  BaseMaterial3DShadingMode = 1
+	/*The object will not receive shadows. This is the fastest to render, but it disables all interactions with lights.*/
+	BaseMaterial3DShadingModeUnshaded BaseMaterial3DShadingMode = 0
+	/*The object will be shaded per pixel. Useful for realistic shading effects.*/
+	BaseMaterial3DShadingModePerPixel BaseMaterial3DShadingMode = 1
+	/*The object will be shaded per vertex. Useful when you want cheaper shaders and do not care about visual quality. Not implemented yet (this mode will act like [constant SHADING_MODE_PER_PIXEL]).*/
 	BaseMaterial3DShadingModePerVertex BaseMaterial3DShadingMode = 2
-	BaseMaterial3DShadingModeMax       BaseMaterial3DShadingMode = 3
+	/*Represents the size of the [enum ShadingMode] enum.*/
+	BaseMaterial3DShadingModeMax BaseMaterial3DShadingMode = 3
 )
 
 type BaseMaterial3DFeature = classdb.BaseMaterial3DFeature
 
 const (
-	BaseMaterial3DFeatureEmission                BaseMaterial3DFeature = 0
-	BaseMaterial3DFeatureNormalMapping           BaseMaterial3DFeature = 1
-	BaseMaterial3DFeatureRim                     BaseMaterial3DFeature = 2
-	BaseMaterial3DFeatureClearcoat               BaseMaterial3DFeature = 3
-	BaseMaterial3DFeatureAnisotropy              BaseMaterial3DFeature = 4
-	BaseMaterial3DFeatureAmbientOcclusion        BaseMaterial3DFeature = 5
-	BaseMaterial3DFeatureHeightMapping           BaseMaterial3DFeature = 6
-	BaseMaterial3DFeatureSubsurfaceScattering    BaseMaterial3DFeature = 7
+	/*Constant for setting [member emission_enabled].*/
+	BaseMaterial3DFeatureEmission BaseMaterial3DFeature = 0
+	/*Constant for setting [member normal_enabled].*/
+	BaseMaterial3DFeatureNormalMapping BaseMaterial3DFeature = 1
+	/*Constant for setting [member rim_enabled].*/
+	BaseMaterial3DFeatureRim BaseMaterial3DFeature = 2
+	/*Constant for setting [member clearcoat_enabled].*/
+	BaseMaterial3DFeatureClearcoat BaseMaterial3DFeature = 3
+	/*Constant for setting [member anisotropy_enabled].*/
+	BaseMaterial3DFeatureAnisotropy BaseMaterial3DFeature = 4
+	/*Constant for setting [member ao_enabled].*/
+	BaseMaterial3DFeatureAmbientOcclusion BaseMaterial3DFeature = 5
+	/*Constant for setting [member heightmap_enabled].*/
+	BaseMaterial3DFeatureHeightMapping BaseMaterial3DFeature = 6
+	/*Constant for setting [member subsurf_scatter_enabled].*/
+	BaseMaterial3DFeatureSubsurfaceScattering BaseMaterial3DFeature = 7
+	/*Constant for setting [member subsurf_scatter_transmittance_enabled].*/
 	BaseMaterial3DFeatureSubsurfaceTransmittance BaseMaterial3DFeature = 8
-	BaseMaterial3DFeatureBacklight               BaseMaterial3DFeature = 9
-	BaseMaterial3DFeatureRefraction              BaseMaterial3DFeature = 10
-	BaseMaterial3DFeatureDetail                  BaseMaterial3DFeature = 11
-	BaseMaterial3DFeatureMax                     BaseMaterial3DFeature = 12
+	/*Constant for setting [member backlight_enabled].*/
+	BaseMaterial3DFeatureBacklight BaseMaterial3DFeature = 9
+	/*Constant for setting [member refraction_enabled].*/
+	BaseMaterial3DFeatureRefraction BaseMaterial3DFeature = 10
+	/*Constant for setting [member detail_enabled].*/
+	BaseMaterial3DFeatureDetail BaseMaterial3DFeature = 11
+	/*Represents the size of the [enum Feature] enum.*/
+	BaseMaterial3DFeatureMax BaseMaterial3DFeature = 12
 )
 
 type BaseMaterial3DBlendMode = classdb.BaseMaterial3DBlendMode
 
 const (
+	/*Default blend mode. The color of the object is blended over the background based on the object's alpha value.*/
 	BaseMaterial3DBlendModeMix BaseMaterial3DBlendMode = 0
+	/*The color of the object is added to the background.*/
 	BaseMaterial3DBlendModeAdd BaseMaterial3DBlendMode = 1
+	/*The color of the object is subtracted from the background.*/
 	BaseMaterial3DBlendModeSub BaseMaterial3DBlendMode = 2
+	/*The color of the object is multiplied by the background.*/
 	BaseMaterial3DBlendModeMul BaseMaterial3DBlendMode = 3
 )
 
 type BaseMaterial3DAlphaAntiAliasing = classdb.BaseMaterial3DAlphaAntiAliasing
 
 const (
-	BaseMaterial3DAlphaAntialiasingOff                     BaseMaterial3DAlphaAntiAliasing = 0
-	BaseMaterial3DAlphaAntialiasingAlphaToCoverage         BaseMaterial3DAlphaAntiAliasing = 1
+	/*Disables Alpha AntiAliasing for the material.*/
+	BaseMaterial3DAlphaAntialiasingOff BaseMaterial3DAlphaAntiAliasing = 0
+	/*Enables AlphaToCoverage. Alpha values in the material are passed to the AntiAliasing sample mask.*/
+	BaseMaterial3DAlphaAntialiasingAlphaToCoverage BaseMaterial3DAlphaAntiAliasing = 1
+	/*Enables AlphaToCoverage and forces all non-zero alpha values to [code]1[/code]. Alpha values in the material are passed to the AntiAliasing sample mask.*/
 	BaseMaterial3DAlphaAntialiasingAlphaToCoverageAndToOne BaseMaterial3DAlphaAntiAliasing = 2
 )
 
 type BaseMaterial3DDepthDrawMode = classdb.BaseMaterial3DDepthDrawMode
 
 const (
+	/*Default depth draw mode. Depth is drawn only for opaque objects during the opaque prepass (if any) and during the opaque pass.*/
 	BaseMaterial3DDepthDrawOpaqueOnly BaseMaterial3DDepthDrawMode = 0
-	BaseMaterial3DDepthDrawAlways     BaseMaterial3DDepthDrawMode = 1
-	BaseMaterial3DDepthDrawDisabled   BaseMaterial3DDepthDrawMode = 2
+	/*Objects will write to depth during the opaque and the transparent passes. Transparent objects that are close to the camera may obscure other transparent objects behind them.
+	  [b]Note:[/b] This does not influence whether transparent objects are included in the depth prepass or not. For that, see [enum Transparency].*/
+	BaseMaterial3DDepthDrawAlways BaseMaterial3DDepthDrawMode = 1
+	/*Objects will not write their depth to the depth buffer, even during the depth prepass (if enabled).*/
+	BaseMaterial3DDepthDrawDisabled BaseMaterial3DDepthDrawMode = 2
 )
 
 type BaseMaterial3DCullMode = classdb.BaseMaterial3DCullMode
 
 const (
-	BaseMaterial3DCullBack     BaseMaterial3DCullMode = 0
-	BaseMaterial3DCullFront    BaseMaterial3DCullMode = 1
+	/*Default cull mode. The back of the object is culled when not visible. Back face triangles will be culled when facing the camera. This results in only the front side of triangles being drawn. For closed-surface meshes, this means that only the exterior of the mesh will be visible.*/
+	BaseMaterial3DCullBack BaseMaterial3DCullMode = 0
+	/*Front face triangles will be culled when facing the camera. This results in only the back side of triangles being drawn. For closed-surface meshes, this means that the interior of the mesh will be drawn instead of the exterior.*/
+	BaseMaterial3DCullFront BaseMaterial3DCullMode = 1
+	/*No face culling is performed; both the front face and back face will be visible.*/
 	BaseMaterial3DCullDisabled BaseMaterial3DCullMode = 2
 )
 
 type BaseMaterial3DFlags = classdb.BaseMaterial3DFlags
 
 const (
-	BaseMaterial3DFlagDisableDepthTest       BaseMaterial3DFlags = 0
-	BaseMaterial3DFlagAlbedoFromVertexColor  BaseMaterial3DFlags = 1
-	BaseMaterial3DFlagSrgbVertexColor        BaseMaterial3DFlags = 2
-	BaseMaterial3DFlagUsePointSize           BaseMaterial3DFlags = 3
-	BaseMaterial3DFlagFixedSize              BaseMaterial3DFlags = 4
-	BaseMaterial3DFlagBillboardKeepScale     BaseMaterial3DFlags = 5
-	BaseMaterial3DFlagUv1UseTriplanar        BaseMaterial3DFlags = 6
-	BaseMaterial3DFlagUv2UseTriplanar        BaseMaterial3DFlags = 7
-	BaseMaterial3DFlagUv1UseWorldTriplanar   BaseMaterial3DFlags = 8
-	BaseMaterial3DFlagUv2UseWorldTriplanar   BaseMaterial3DFlags = 9
-	BaseMaterial3DFlagAoOnUv2                BaseMaterial3DFlags = 10
-	BaseMaterial3DFlagEmissionOnUv2          BaseMaterial3DFlags = 11
+	/*Disables the depth test, so this object is drawn on top of all others drawn before it. This puts the object in the transparent draw pass where it is sorted based on distance to camera. Objects drawn after it in the draw order may cover it. This also disables writing to depth.*/
+	BaseMaterial3DFlagDisableDepthTest BaseMaterial3DFlags = 0
+	/*Set [code]ALBEDO[/code] to the per-vertex color specified in the mesh.*/
+	BaseMaterial3DFlagAlbedoFromVertexColor BaseMaterial3DFlags = 1
+	/*Vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. See also [member vertex_color_is_srgb].
+	  [b]Note:[/b] Only effective when using the Forward+ and Mobile rendering methods.*/
+	BaseMaterial3DFlagSrgbVertexColor BaseMaterial3DFlags = 2
+	/*Uses point size to alter the size of primitive points. Also changes the albedo texture lookup to use [code]POINT_COORD[/code] instead of [code]UV[/code].*/
+	BaseMaterial3DFlagUsePointSize BaseMaterial3DFlags = 3
+	/*Object is scaled by depth so that it always appears the same size on screen.*/
+	BaseMaterial3DFlagFixedSize BaseMaterial3DFlags = 4
+	/*Shader will keep the scale set for the mesh. Otherwise the scale is lost when billboarding. Only applies when [member billboard_mode] is [constant BILLBOARD_ENABLED].*/
+	BaseMaterial3DFlagBillboardKeepScale BaseMaterial3DFlags = 5
+	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV[/code].*/
+	BaseMaterial3DFlagUv1UseTriplanar BaseMaterial3DFlags = 6
+	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV2[/code].*/
+	BaseMaterial3DFlagUv2UseTriplanar BaseMaterial3DFlags = 7
+	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV[/code].*/
+	BaseMaterial3DFlagUv1UseWorldTriplanar BaseMaterial3DFlags = 8
+	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV2[/code].*/
+	BaseMaterial3DFlagUv2UseWorldTriplanar BaseMaterial3DFlags = 9
+	/*Use [code]UV2[/code] coordinates to look up from the [member ao_texture].*/
+	BaseMaterial3DFlagAoOnUv2 BaseMaterial3DFlags = 10
+	/*Use [code]UV2[/code] coordinates to look up from the [member emission_texture].*/
+	BaseMaterial3DFlagEmissionOnUv2 BaseMaterial3DFlags = 11
+	/*Forces the shader to convert albedo from sRGB space to linear space. See also [member albedo_texture_force_srgb].*/
 	BaseMaterial3DFlagAlbedoTextureForceSrgb BaseMaterial3DFlags = 12
-	BaseMaterial3DFlagDontReceiveShadows     BaseMaterial3DFlags = 13
-	BaseMaterial3DFlagDisableAmbientLight    BaseMaterial3DFlags = 14
-	BaseMaterial3DFlagUseShadowToOpacity     BaseMaterial3DFlags = 15
-	BaseMaterial3DFlagUseTextureRepeat       BaseMaterial3DFlags = 16
-	BaseMaterial3DFlagInvertHeightmap        BaseMaterial3DFlags = 17
-	BaseMaterial3DFlagSubsurfaceModeSkin     BaseMaterial3DFlags = 18
-	BaseMaterial3DFlagParticleTrailsMode     BaseMaterial3DFlags = 19
-	BaseMaterial3DFlagAlbedoTextureMsdf      BaseMaterial3DFlags = 20
-	BaseMaterial3DFlagDisableFog             BaseMaterial3DFlags = 21
-	BaseMaterial3DFlagMax                    BaseMaterial3DFlags = 22
+	/*Disables receiving shadows from other objects.*/
+	BaseMaterial3DFlagDontReceiveShadows BaseMaterial3DFlags = 13
+	/*Disables receiving ambient light.*/
+	BaseMaterial3DFlagDisableAmbientLight BaseMaterial3DFlags = 14
+	/*Enables the shadow to opacity feature.*/
+	BaseMaterial3DFlagUseShadowToOpacity BaseMaterial3DFlags = 15
+	/*Enables the texture to repeat when UV coordinates are outside the 0-1 range. If using one of the linear filtering modes, this can result in artifacts at the edges of a texture when the sampler filters across the edges of the texture.*/
+	BaseMaterial3DFlagUseTextureRepeat BaseMaterial3DFlags = 16
+	/*Invert values read from a depth texture to convert them to height values (heightmap).*/
+	BaseMaterial3DFlagInvertHeightmap BaseMaterial3DFlags = 17
+	/*Enables the skin mode for subsurface scattering which is used to improve the look of subsurface scattering when used for human skin.*/
+	BaseMaterial3DFlagSubsurfaceModeSkin BaseMaterial3DFlags = 18
+	/*Enables parts of the shader required for [GPUParticles3D] trails to function. This also requires using a mesh with appropriate skinning, such as [RibbonTrailMesh] or [TubeTrailMesh]. Enabling this feature outside of materials used in [GPUParticles3D] meshes will break material rendering.*/
+	BaseMaterial3DFlagParticleTrailsMode BaseMaterial3DFlags = 19
+	/*Enables multichannel signed distance field rendering shader.*/
+	BaseMaterial3DFlagAlbedoTextureMsdf BaseMaterial3DFlags = 20
+	/*Disables receiving depth-based or volumetric fog.*/
+	BaseMaterial3DFlagDisableFog BaseMaterial3DFlags = 21
+	/*Represents the size of the [enum Flags] enum.*/
+	BaseMaterial3DFlagMax BaseMaterial3DFlags = 22
 )
 
 type BaseMaterial3DDiffuseMode = classdb.BaseMaterial3DDiffuseMode
 
 const (
-	BaseMaterial3DDiffuseBurley      BaseMaterial3DDiffuseMode = 0
-	BaseMaterial3DDiffuseLambert     BaseMaterial3DDiffuseMode = 1
+	/*Default diffuse scattering algorithm.*/
+	BaseMaterial3DDiffuseBurley BaseMaterial3DDiffuseMode = 0
+	/*Diffuse scattering ignores roughness.*/
+	BaseMaterial3DDiffuseLambert BaseMaterial3DDiffuseMode = 1
+	/*Extends Lambert to cover more than 90 degrees when roughness increases.*/
 	BaseMaterial3DDiffuseLambertWrap BaseMaterial3DDiffuseMode = 2
-	BaseMaterial3DDiffuseToon        BaseMaterial3DDiffuseMode = 3
+	/*Uses a hard cut for lighting, with smoothing affected by roughness.*/
+	BaseMaterial3DDiffuseToon BaseMaterial3DDiffuseMode = 3
 )
 
 type BaseMaterial3DSpecularMode = classdb.BaseMaterial3DSpecularMode
 
 const (
+	/*Default specular blob.*/
 	BaseMaterial3DSpecularSchlickGgx BaseMaterial3DSpecularMode = 0
-	BaseMaterial3DSpecularToon       BaseMaterial3DSpecularMode = 1
-	BaseMaterial3DSpecularDisabled   BaseMaterial3DSpecularMode = 2
+	/*Toon blob which changes size based on roughness.*/
+	BaseMaterial3DSpecularToon BaseMaterial3DSpecularMode = 1
+	/*No specular blob. This is slightly faster to render than other specular modes.*/
+	BaseMaterial3DSpecularDisabled BaseMaterial3DSpecularMode = 2
 )
 
 type BaseMaterial3DBillboardMode = classdb.BaseMaterial3DBillboardMode
 
 const (
-	BaseMaterial3DBillboardDisabled  BaseMaterial3DBillboardMode = 0
-	BaseMaterial3DBillboardEnabled   BaseMaterial3DBillboardMode = 1
-	BaseMaterial3DBillboardFixedY    BaseMaterial3DBillboardMode = 2
+	/*Billboard mode is disabled.*/
+	BaseMaterial3DBillboardDisabled BaseMaterial3DBillboardMode = 0
+	/*The object's Z axis will always face the camera.*/
+	BaseMaterial3DBillboardEnabled BaseMaterial3DBillboardMode = 1
+	/*The object's X axis will always face the camera.*/
+	BaseMaterial3DBillboardFixedY BaseMaterial3DBillboardMode = 2
+	/*Used for particle systems when assigned to [GPUParticles3D] and [CPUParticles3D] nodes (flipbook animation). Enables [code]particles_anim_*[/code] properties.
+	  The [member ParticleProcessMaterial.anim_speed_min] or [member CPUParticles3D.anim_speed_min] should also be set to a value bigger than zero for the animation to play.*/
 	BaseMaterial3DBillboardParticles BaseMaterial3DBillboardMode = 3
 )
 
 type BaseMaterial3DTextureChannel = classdb.BaseMaterial3DTextureChannel
 
 const (
-	BaseMaterial3DTextureChannelRed       BaseMaterial3DTextureChannel = 0
-	BaseMaterial3DTextureChannelGreen     BaseMaterial3DTextureChannel = 1
-	BaseMaterial3DTextureChannelBlue      BaseMaterial3DTextureChannel = 2
-	BaseMaterial3DTextureChannelAlpha     BaseMaterial3DTextureChannel = 3
+	/*Used to read from the red channel of a texture.*/
+	BaseMaterial3DTextureChannelRed BaseMaterial3DTextureChannel = 0
+	/*Used to read from the green channel of a texture.*/
+	BaseMaterial3DTextureChannelGreen BaseMaterial3DTextureChannel = 1
+	/*Used to read from the blue channel of a texture.*/
+	BaseMaterial3DTextureChannelBlue BaseMaterial3DTextureChannel = 2
+	/*Used to read from the alpha channel of a texture.*/
+	BaseMaterial3DTextureChannelAlpha BaseMaterial3DTextureChannel = 3
+	/*Used to read from the linear (non-perceptual) average of the red, green and blue channels of a texture.*/
 	BaseMaterial3DTextureChannelGrayscale BaseMaterial3DTextureChannel = 4
 )
 
 type BaseMaterial3DEmissionOperator = classdb.BaseMaterial3DEmissionOperator
 
 const (
-	BaseMaterial3DEmissionOpAdd      BaseMaterial3DEmissionOperator = 0
+	/*Adds the emission color to the color from the emission texture.*/
+	BaseMaterial3DEmissionOpAdd BaseMaterial3DEmissionOperator = 0
+	/*Multiplies the emission color by the color from the emission texture.*/
 	BaseMaterial3DEmissionOpMultiply BaseMaterial3DEmissionOperator = 1
 )
 
 type BaseMaterial3DDistanceFadeMode = classdb.BaseMaterial3DDistanceFadeMode
 
 const (
-	BaseMaterial3DDistanceFadeDisabled     BaseMaterial3DDistanceFadeMode = 0
-	BaseMaterial3DDistanceFadePixelAlpha   BaseMaterial3DDistanceFadeMode = 1
-	BaseMaterial3DDistanceFadePixelDither  BaseMaterial3DDistanceFadeMode = 2
+	/*Do not use distance fade.*/
+	BaseMaterial3DDistanceFadeDisabled BaseMaterial3DDistanceFadeMode = 0
+	/*Smoothly fades the object out based on each pixel's distance from the camera using the alpha channel.*/
+	BaseMaterial3DDistanceFadePixelAlpha BaseMaterial3DDistanceFadeMode = 1
+	/*Smoothly fades the object out based on each pixel's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [constant DISTANCE_FADE_PIXEL_ALPHA].*/
+	BaseMaterial3DDistanceFadePixelDither BaseMaterial3DDistanceFadeMode = 2
+	/*Smoothly fades the object out based on the object's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [constant DISTANCE_FADE_PIXEL_ALPHA] and [constant DISTANCE_FADE_PIXEL_DITHER].*/
 	BaseMaterial3DDistanceFadeObjectDither BaseMaterial3DDistanceFadeMode = 3
 )
 
 type BoxContainerAlignmentMode = classdb.BoxContainerAlignmentMode
 
 const (
-	BoxContainerAlignmentBegin  BoxContainerAlignmentMode = 0
+	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
+	BoxContainerAlignmentBegin BoxContainerAlignmentMode = 0
+	/*The child controls will be centered in the container.*/
 	BoxContainerAlignmentCenter BoxContainerAlignmentMode = 1
-	BoxContainerAlignmentEnd    BoxContainerAlignmentMode = 2
+	/*The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).*/
+	BoxContainerAlignmentEnd BoxContainerAlignmentMode = 2
 )
 
 type CPUParticles2DDrawOrder = classdb.CPUParticles2DDrawOrder
 
 const (
-	CPUParticles2DDrawOrderIndex    CPUParticles2DDrawOrder = 0
+	/*Particles are drawn in the order emitted.*/
+	CPUParticles2DDrawOrderIndex CPUParticles2DDrawOrder = 0
+	/*Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.*/
 	CPUParticles2DDrawOrderLifetime CPUParticles2DDrawOrder = 1
 )
 
 type CPUParticles2DParameter = classdb.CPUParticles2DParameter
 
 const (
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set initial velocity properties.*/
 	CPUParticles2DParamInitialLinearVelocity CPUParticles2DParameter = 0
-	CPUParticles2DParamAngularVelocity       CPUParticles2DParameter = 1
-	CPUParticles2DParamOrbitVelocity         CPUParticles2DParameter = 2
-	CPUParticles2DParamLinearAccel           CPUParticles2DParameter = 3
-	CPUParticles2DParamRadialAccel           CPUParticles2DParameter = 4
-	CPUParticles2DParamTangentialAccel       CPUParticles2DParameter = 5
-	CPUParticles2DParamDamping               CPUParticles2DParameter = 6
-	CPUParticles2DParamAngle                 CPUParticles2DParameter = 7
-	CPUParticles2DParamScale                 CPUParticles2DParameter = 8
-	CPUParticles2DParamHueVariation          CPUParticles2DParameter = 9
-	CPUParticles2DParamAnimSpeed             CPUParticles2DParameter = 10
-	CPUParticles2DParamAnimOffset            CPUParticles2DParameter = 11
-	CPUParticles2DParamMax                   CPUParticles2DParameter = 12
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set angular velocity properties.*/
+	CPUParticles2DParamAngularVelocity CPUParticles2DParameter = 1
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set orbital velocity properties.*/
+	CPUParticles2DParamOrbitVelocity CPUParticles2DParameter = 2
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set linear acceleration properties.*/
+	CPUParticles2DParamLinearAccel CPUParticles2DParameter = 3
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set radial acceleration properties.*/
+	CPUParticles2DParamRadialAccel CPUParticles2DParameter = 4
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set tangential acceleration properties.*/
+	CPUParticles2DParamTangentialAccel CPUParticles2DParameter = 5
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set damping properties.*/
+	CPUParticles2DParamDamping CPUParticles2DParameter = 6
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set angle properties.*/
+	CPUParticles2DParamAngle CPUParticles2DParameter = 7
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set scale properties.*/
+	CPUParticles2DParamScale CPUParticles2DParameter = 8
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set hue variation properties.*/
+	CPUParticles2DParamHueVariation CPUParticles2DParameter = 9
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set animation speed properties.*/
+	CPUParticles2DParamAnimSpeed CPUParticles2DParameter = 10
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set animation offset properties.*/
+	CPUParticles2DParamAnimOffset CPUParticles2DParameter = 11
+	/*Represents the size of the [enum Parameter] enum.*/
+	CPUParticles2DParamMax CPUParticles2DParameter = 12
 )
 
 type CPUParticles2DParticleFlags = classdb.CPUParticles2DParticleFlags
 
 const (
+	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
 	CPUParticles2DParticleFlagAlignYToVelocity CPUParticles2DParticleFlags = 0
-	CPUParticles2DParticleFlagRotateY          CPUParticles2DParticleFlags = 1
-	CPUParticles2DParticleFlagDisableZ         CPUParticles2DParticleFlags = 2
-	CPUParticles2DParticleFlagMax              CPUParticles2DParticleFlags = 3
+	/*Present for consistency with 3D particle nodes, not used in 2D.*/
+	CPUParticles2DParticleFlagRotateY CPUParticles2DParticleFlags = 1
+	/*Present for consistency with 3D particle nodes, not used in 2D.*/
+	CPUParticles2DParticleFlagDisableZ CPUParticles2DParticleFlags = 2
+	/*Represents the size of the [enum ParticleFlags] enum.*/
+	CPUParticles2DParticleFlagMax CPUParticles2DParticleFlags = 3
 )
 
 type CPUParticles2DEmissionShape = classdb.CPUParticles2DEmissionShape
 
 const (
-	CPUParticles2DEmissionShapePoint          CPUParticles2DEmissionShape = 0
-	CPUParticles2DEmissionShapeSphere         CPUParticles2DEmissionShape = 1
-	CPUParticles2DEmissionShapeSphereSurface  CPUParticles2DEmissionShape = 2
-	CPUParticles2DEmissionShapeRectangle      CPUParticles2DEmissionShape = 3
-	CPUParticles2DEmissionShapePoints         CPUParticles2DEmissionShape = 4
+	/*All particles will be emitted from a single point.*/
+	CPUParticles2DEmissionShapePoint CPUParticles2DEmissionShape = 0
+	/*Particles will be emitted in the volume of a sphere flattened to two dimensions.*/
+	CPUParticles2DEmissionShapeSphere CPUParticles2DEmissionShape = 1
+	/*Particles will be emitted on the surface of a sphere flattened to two dimensions.*/
+	CPUParticles2DEmissionShapeSphereSurface CPUParticles2DEmissionShape = 2
+	/*Particles will be emitted in the area of a rectangle.*/
+	CPUParticles2DEmissionShapeRectangle CPUParticles2DEmissionShape = 3
+	/*Particles will be emitted at a position chosen randomly among [member emission_points]. Particle color will be modulated by [member emission_colors].*/
+	CPUParticles2DEmissionShapePoints CPUParticles2DEmissionShape = 4
+	/*Particles will be emitted at a position chosen randomly among [member emission_points]. Particle velocity and rotation will be set based on [member emission_normals]. Particle color will be modulated by [member emission_colors].*/
 	CPUParticles2DEmissionShapeDirectedPoints CPUParticles2DEmissionShape = 5
-	CPUParticles2DEmissionShapeMax            CPUParticles2DEmissionShape = 6
+	/*Represents the size of the [enum EmissionShape] enum.*/
+	CPUParticles2DEmissionShapeMax CPUParticles2DEmissionShape = 6
 )
 
 type CPUParticles3DDrawOrder = classdb.CPUParticles3DDrawOrder
 
 const (
-	CPUParticles3DDrawOrderIndex     CPUParticles3DDrawOrder = 0
-	CPUParticles3DDrawOrderLifetime  CPUParticles3DDrawOrder = 1
+	/*Particles are drawn in the order emitted.*/
+	CPUParticles3DDrawOrderIndex CPUParticles3DDrawOrder = 0
+	/*Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.*/
+	CPUParticles3DDrawOrderLifetime CPUParticles3DDrawOrder = 1
+	/*Particles are drawn in order of depth.*/
 	CPUParticles3DDrawOrderViewDepth CPUParticles3DDrawOrder = 2
 )
 
 type CPUParticles3DParameter = classdb.CPUParticles3DParameter
 
 const (
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set initial velocity properties.*/
 	CPUParticles3DParamInitialLinearVelocity CPUParticles3DParameter = 0
-	CPUParticles3DParamAngularVelocity       CPUParticles3DParameter = 1
-	CPUParticles3DParamOrbitVelocity         CPUParticles3DParameter = 2
-	CPUParticles3DParamLinearAccel           CPUParticles3DParameter = 3
-	CPUParticles3DParamRadialAccel           CPUParticles3DParameter = 4
-	CPUParticles3DParamTangentialAccel       CPUParticles3DParameter = 5
-	CPUParticles3DParamDamping               CPUParticles3DParameter = 6
-	CPUParticles3DParamAngle                 CPUParticles3DParameter = 7
-	CPUParticles3DParamScale                 CPUParticles3DParameter = 8
-	CPUParticles3DParamHueVariation          CPUParticles3DParameter = 9
-	CPUParticles3DParamAnimSpeed             CPUParticles3DParameter = 10
-	CPUParticles3DParamAnimOffset            CPUParticles3DParameter = 11
-	CPUParticles3DParamMax                   CPUParticles3DParameter = 12
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set angular velocity properties.*/
+	CPUParticles3DParamAngularVelocity CPUParticles3DParameter = 1
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set orbital velocity properties.*/
+	CPUParticles3DParamOrbitVelocity CPUParticles3DParameter = 2
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set linear acceleration properties.*/
+	CPUParticles3DParamLinearAccel CPUParticles3DParameter = 3
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set radial acceleration properties.*/
+	CPUParticles3DParamRadialAccel CPUParticles3DParameter = 4
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set tangential acceleration properties.*/
+	CPUParticles3DParamTangentialAccel CPUParticles3DParameter = 5
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set damping properties.*/
+	CPUParticles3DParamDamping CPUParticles3DParameter = 6
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set angle properties.*/
+	CPUParticles3DParamAngle CPUParticles3DParameter = 7
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set scale properties.*/
+	CPUParticles3DParamScale CPUParticles3DParameter = 8
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set hue variation properties.*/
+	CPUParticles3DParamHueVariation CPUParticles3DParameter = 9
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set animation speed properties.*/
+	CPUParticles3DParamAnimSpeed CPUParticles3DParameter = 10
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set animation offset properties.*/
+	CPUParticles3DParamAnimOffset CPUParticles3DParameter = 11
+	/*Represents the size of the [enum Parameter] enum.*/
+	CPUParticles3DParamMax CPUParticles3DParameter = 12
 )
 
 type CPUParticles3DParticleFlags = classdb.CPUParticles3DParticleFlags
 
 const (
+	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
 	CPUParticles3DParticleFlagAlignYToVelocity CPUParticles3DParticleFlags = 0
-	CPUParticles3DParticleFlagRotateY          CPUParticles3DParticleFlags = 1
-	CPUParticles3DParticleFlagDisableZ         CPUParticles3DParticleFlags = 2
-	CPUParticles3DParticleFlagMax              CPUParticles3DParticleFlags = 3
+	/*Use with [method set_particle_flag] to set [member particle_flag_rotate_y].*/
+	CPUParticles3DParticleFlagRotateY CPUParticles3DParticleFlags = 1
+	/*Use with [method set_particle_flag] to set [member particle_flag_disable_z].*/
+	CPUParticles3DParticleFlagDisableZ CPUParticles3DParticleFlags = 2
+	/*Represents the size of the [enum ParticleFlags] enum.*/
+	CPUParticles3DParticleFlagMax CPUParticles3DParticleFlags = 3
 )
 
 type CPUParticles3DEmissionShape = classdb.CPUParticles3DEmissionShape
 
 const (
-	CPUParticles3DEmissionShapePoint          CPUParticles3DEmissionShape = 0
-	CPUParticles3DEmissionShapeSphere         CPUParticles3DEmissionShape = 1
-	CPUParticles3DEmissionShapeSphereSurface  CPUParticles3DEmissionShape = 2
-	CPUParticles3DEmissionShapeBox            CPUParticles3DEmissionShape = 3
-	CPUParticles3DEmissionShapePoints         CPUParticles3DEmissionShape = 4
+	/*All particles will be emitted from a single point.*/
+	CPUParticles3DEmissionShapePoint CPUParticles3DEmissionShape = 0
+	/*Particles will be emitted in the volume of a sphere.*/
+	CPUParticles3DEmissionShapeSphere CPUParticles3DEmissionShape = 1
+	/*Particles will be emitted on the surface of a sphere.*/
+	CPUParticles3DEmissionShapeSphereSurface CPUParticles3DEmissionShape = 2
+	/*Particles will be emitted in the volume of a box.*/
+	CPUParticles3DEmissionShapeBox CPUParticles3DEmissionShape = 3
+	/*Particles will be emitted at a position chosen randomly among [member emission_points]. Particle color will be modulated by [member emission_colors].*/
+	CPUParticles3DEmissionShapePoints CPUParticles3DEmissionShape = 4
+	/*Particles will be emitted at a position chosen randomly among [member emission_points]. Particle velocity and rotation will be set based on [member emission_normals]. Particle color will be modulated by [member emission_colors].*/
 	CPUParticles3DEmissionShapeDirectedPoints CPUParticles3DEmissionShape = 5
-	CPUParticles3DEmissionShapeRing           CPUParticles3DEmissionShape = 6
-	CPUParticles3DEmissionShapeMax            CPUParticles3DEmissionShape = 7
+	/*Particles will be emitted in a ring or cylinder.*/
+	CPUParticles3DEmissionShapeRing CPUParticles3DEmissionShape = 6
+	/*Represents the size of the [enum EmissionShape] enum.*/
+	CPUParticles3DEmissionShapeMax CPUParticles3DEmissionShape = 7
 )
 
 type CSGPolygon3DMode = classdb.CSGPolygon3DMode
 
 const (
+	/*The [member polygon] shape is extruded along the negative Z axis.*/
 	CSGPolygon3DModeDepth CSGPolygon3DMode = 0
-	CSGPolygon3DModeSpin  CSGPolygon3DMode = 1
-	CSGPolygon3DModePath  CSGPolygon3DMode = 2
+	/*The [member polygon] shape is extruded by rotating it around the Y axis.*/
+	CSGPolygon3DModeSpin CSGPolygon3DMode = 1
+	/*The [member polygon] shape is extruded along the [Path3D] specified in [member path_node].*/
+	CSGPolygon3DModePath CSGPolygon3DMode = 2
 )
 
 type CSGPolygon3DPathRotation = classdb.CSGPolygon3DPathRotation
 
 const (
-	CSGPolygon3DPathRotationPolygon    CSGPolygon3DPathRotation = 0
-	CSGPolygon3DPathRotationPath       CSGPolygon3DPathRotation = 1
+	/*The [member polygon] shape is not rotated.
+	  [b]Note:[/b] Requires the path Z coordinates to continually decrease to ensure viable shapes.*/
+	CSGPolygon3DPathRotationPolygon CSGPolygon3DPathRotation = 0
+	/*The [member polygon] shape is rotated along the path, but it is not rotated around the path axis.
+	  [b]Note:[/b] Requires the path Z coordinates to continually decrease to ensure viable shapes.*/
+	CSGPolygon3DPathRotationPath CSGPolygon3DPathRotation = 1
+	/*The [member polygon] shape follows the path and its rotations around the path axis.*/
 	CSGPolygon3DPathRotationPathFollow CSGPolygon3DPathRotation = 2
 )
 
 type CSGPolygon3DPathIntervalType = classdb.CSGPolygon3DPathIntervalType
 
 const (
-	CSGPolygon3DPathIntervalDistance  CSGPolygon3DPathIntervalType = 0
+	/*When [member mode] is set to [constant MODE_PATH], [member path_interval] will determine the distance, in meters, each interval of the path will extrude.*/
+	CSGPolygon3DPathIntervalDistance CSGPolygon3DPathIntervalType = 0
+	/*When [member mode] is set to [constant MODE_PATH], [member path_interval] will subdivide the polygons along the path.*/
 	CSGPolygon3DPathIntervalSubdivide CSGPolygon3DPathIntervalType = 1
 )
 
 type CSGShape3DOperation = classdb.CSGShape3DOperation
 
 const (
-	CSGShape3DOperationUnion        CSGShape3DOperation = 0
+	/*Geometry of both primitives is merged, intersecting geometry is removed.*/
+	CSGShape3DOperationUnion CSGShape3DOperation = 0
+	/*Only intersecting geometry remains, the rest is removed.*/
 	CSGShape3DOperationIntersection CSGShape3DOperation = 1
-	CSGShape3DOperationSubtraction  CSGShape3DOperation = 2
+	/*The second shape is subtracted from the first, leaving a dent with its shape.*/
+	CSGShape3DOperationSubtraction CSGShape3DOperation = 2
 )
 
 type Camera2DAnchorMode = classdb.Camera2DAnchorMode
 
 const (
+	/*The camera's position is fixed so that the top-left corner is always at the origin.*/
 	Camera2DAnchorModeFixedTopLeft Camera2DAnchorMode = 0
-	Camera2DAnchorModeDragCenter   Camera2DAnchorMode = 1
+	/*The camera's position takes into account vertical/horizontal offsets and the screen size.*/
+	Camera2DAnchorModeDragCenter Camera2DAnchorMode = 1
 )
 
 type Camera2DCamera2DProcessCallback = classdb.Camera2DCamera2DProcessCallback
 
 const (
+	/*The camera updates during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	Camera2DCamera2dProcessPhysics Camera2DCamera2DProcessCallback = 0
-	Camera2DCamera2dProcessIdle    Camera2DCamera2DProcessCallback = 1
+	/*The camera updates during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	Camera2DCamera2dProcessIdle Camera2DCamera2DProcessCallback = 1
 )
 
 type Camera3DProjectionType = classdb.Camera3DProjectionType
 
 const (
+	/*Perspective projection. Objects on the screen becomes smaller when they are far away.*/
 	Camera3DProjectionPerspective Camera3DProjectionType = 0
-	Camera3DProjectionOrthogonal  Camera3DProjectionType = 1
-	Camera3DProjectionFrustum     Camera3DProjectionType = 2
+	/*Orthogonal projection, also known as orthographic projection. Objects remain the same size on the screen no matter how far away they are.*/
+	Camera3DProjectionOrthogonal Camera3DProjectionType = 1
+	/*Frustum projection. This mode allows adjusting [member frustum_offset] to create "tilted frustum" effects.*/
+	Camera3DProjectionFrustum Camera3DProjectionType = 2
 )
 
 type Camera3DKeepAspect = classdb.Camera3DKeepAspect
 
 const (
-	Camera3DKeepWidth  Camera3DKeepAspect = 0
+	/*Preserves the horizontal aspect ratio; also known as Vert- scaling. This is usually the best option for projects running in portrait mode, as taller aspect ratios will benefit from a wider vertical FOV.*/
+	Camera3DKeepWidth Camera3DKeepAspect = 0
+	/*Preserves the vertical aspect ratio; also known as Hor+ scaling. This is usually the best option for projects running in landscape mode, as wider aspect ratios will automatically benefit from a wider horizontal FOV.*/
 	Camera3DKeepHeight Camera3DKeepAspect = 1
 )
 
 type Camera3DDopplerTracking = classdb.Camera3DDopplerTracking
 
 const (
-	Camera3DDopplerTrackingDisabled    Camera3DDopplerTracking = 0
-	Camera3DDopplerTrackingIdleStep    Camera3DDopplerTracking = 1
+	/*Disables [url=https://en.wikipedia.org/wiki/Doppler_effect]Doppler effect[/url] simulation (default).*/
+	Camera3DDopplerTrackingDisabled Camera3DDopplerTracking = 0
+	/*Simulate [url=https://en.wikipedia.org/wiki/Doppler_effect]Doppler effect[/url] by tracking positions of objects that are changed in [code]_process[/code]. Changes in the relative velocity of this camera compared to those objects affect how audio is perceived (changing the audio's [member AudioStreamPlayer3D.pitch_scale]).*/
+	Camera3DDopplerTrackingIdleStep Camera3DDopplerTracking = 1
+	/*Simulate [url=https://en.wikipedia.org/wiki/Doppler_effect]Doppler effect[/url] by tracking positions of objects that are changed in [code]_physics_process[/code]. Changes in the relative velocity of this camera compared to those objects affect how audio is perceived (changing the audio's [member AudioStreamPlayer3D.pitch_scale]).*/
 	Camera3DDopplerTrackingPhysicsStep Camera3DDopplerTracking = 2
 )
 
 type CameraFeedFeedDataType = classdb.CameraFeedFeedDataType
 
 const (
-	CameraFeedFeedNoimage  CameraFeedFeedDataType = 0
-	CameraFeedFeedRgb      CameraFeedFeedDataType = 1
-	CameraFeedFeedYcbcr    CameraFeedFeedDataType = 2
+	/*No image set for the feed.*/
+	CameraFeedFeedNoimage CameraFeedFeedDataType = 0
+	/*Feed supplies RGB images.*/
+	CameraFeedFeedRgb CameraFeedFeedDataType = 1
+	/*Feed supplies YCbCr images that need to be converted to RGB.*/
+	CameraFeedFeedYcbcr CameraFeedFeedDataType = 2
+	/*Feed supplies separate Y and CbCr images that need to be combined and converted to RGB.*/
 	CameraFeedFeedYcbcrSep CameraFeedFeedDataType = 3
 )
 
 type CameraFeedFeedPosition = classdb.CameraFeedFeedPosition
 
 const (
+	/*Unspecified position.*/
 	CameraFeedFeedUnspecified CameraFeedFeedPosition = 0
-	CameraFeedFeedFront       CameraFeedFeedPosition = 1
-	CameraFeedFeedBack        CameraFeedFeedPosition = 2
+	/*Camera is mounted at the front of the device.*/
+	CameraFeedFeedFront CameraFeedFeedPosition = 1
+	/*Camera is mounted at the back of the device.*/
+	CameraFeedFeedBack CameraFeedFeedPosition = 2
 )
 
 type CameraServerFeedImage = classdb.CameraServerFeedImage
 
 const (
-	CameraServerFeedRgbaImage  CameraServerFeedImage = 0
+	/*The RGBA camera image.*/
+	CameraServerFeedRgbaImage CameraServerFeedImage = 0
+	/*The [url=https://en.wikipedia.org/wiki/YCbCr]YCbCr[/url] camera image.*/
 	CameraServerFeedYcbcrImage CameraServerFeedImage = 0
-	CameraServerFeedYImage     CameraServerFeedImage = 0
-	CameraServerFeedCbcrImage  CameraServerFeedImage = 1
+	/*The Y component camera image.*/
+	CameraServerFeedYImage CameraServerFeedImage = 0
+	/*The CbCr component camera image.*/
+	CameraServerFeedCbcrImage CameraServerFeedImage = 1
 )
 
 type CanvasItemTextureFilter = classdb.CanvasItemTextureFilter
 
 const (
-	CanvasItemTextureFilterParentNode                    CanvasItemTextureFilter = 0
-	CanvasItemTextureFilterNearest                       CanvasItemTextureFilter = 1
-	CanvasItemTextureFilterLinear                        CanvasItemTextureFilter = 2
-	CanvasItemTextureFilterNearestWithMipmaps            CanvasItemTextureFilter = 3
-	CanvasItemTextureFilterLinearWithMipmaps             CanvasItemTextureFilter = 4
+	/*The [CanvasItem] will inherit the filter from its parent.*/
+	CanvasItemTextureFilterParentNode CanvasItemTextureFilter = 0
+	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	CanvasItemTextureFilterNearest CanvasItemTextureFilter = 1
+	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	CanvasItemTextureFilterLinear CanvasItemTextureFilter = 2
+	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	CanvasItemTextureFilterNearestWithMipmaps CanvasItemTextureFilter = 3
+	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	CanvasItemTextureFilterLinearWithMipmaps CanvasItemTextureFilter = 4
+	/*The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
+	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant TEXTURE_FILTER_NEAREST_WITH_MIPMAPS] is usually more appropriate in this case.*/
 	CanvasItemTextureFilterNearestWithMipmapsAnisotropic CanvasItemTextureFilter = 5
-	CanvasItemTextureFilterLinearWithMipmapsAnisotropic  CanvasItemTextureFilter = 6
-	CanvasItemTextureFilterMax                           CanvasItemTextureFilter = 7
+	/*The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
+	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant TEXTURE_FILTER_LINEAR_WITH_MIPMAPS] is usually more appropriate in this case.*/
+	CanvasItemTextureFilterLinearWithMipmapsAnisotropic CanvasItemTextureFilter = 6
+	/*Represents the size of the [enum TextureFilter] enum.*/
+	CanvasItemTextureFilterMax CanvasItemTextureFilter = 7
 )
 
 type CanvasItemTextureRepeat = classdb.CanvasItemTextureRepeat
 
 const (
+	/*The [CanvasItem] will inherit the filter from its parent.*/
 	CanvasItemTextureRepeatParentNode CanvasItemTextureRepeat = 0
-	CanvasItemTextureRepeatDisabled   CanvasItemTextureRepeat = 1
-	CanvasItemTextureRepeatEnabled    CanvasItemTextureRepeat = 2
-	CanvasItemTextureRepeatMirror     CanvasItemTextureRepeat = 3
-	CanvasItemTextureRepeatMax        CanvasItemTextureRepeat = 4
+	/*Texture will not repeat.*/
+	CanvasItemTextureRepeatDisabled CanvasItemTextureRepeat = 1
+	/*Texture will repeat normally.*/
+	CanvasItemTextureRepeatEnabled CanvasItemTextureRepeat = 2
+	/*Texture will repeat in a 2x2 tiled mode, where elements at even positions are mirrored.*/
+	CanvasItemTextureRepeatMirror CanvasItemTextureRepeat = 3
+	/*Represents the size of the [enum TextureRepeat] enum.*/
+	CanvasItemTextureRepeatMax CanvasItemTextureRepeat = 4
 )
 
 type CanvasItemClipChildrenMode = classdb.CanvasItemClipChildrenMode
 
 const (
+	/*Child draws over parent and is not clipped.*/
 	CanvasItemClipChildrenDisabled CanvasItemClipChildrenMode = 0
-	CanvasItemClipChildrenOnly     CanvasItemClipChildrenMode = 1
-	CanvasItemClipChildrenAndDraw  CanvasItemClipChildrenMode = 2
-	CanvasItemClipChildrenMax      CanvasItemClipChildrenMode = 3
+	/*Parent is used for the purposes of clipping only. Child is clipped to the parent's visible area, parent is not drawn.*/
+	CanvasItemClipChildrenOnly CanvasItemClipChildrenMode = 1
+	/*Parent is used for clipping child, but parent is also drawn underneath child as normal before clipping child to its visible area.*/
+	CanvasItemClipChildrenAndDraw CanvasItemClipChildrenMode = 2
+	/*Represents the size of the [enum ClipChildrenMode] enum.*/
+	CanvasItemClipChildrenMax CanvasItemClipChildrenMode = 3
 )
 
 type CanvasItemMaterialBlendMode = classdb.CanvasItemMaterialBlendMode
 
 const (
-	CanvasItemMaterialBlendModeMix          CanvasItemMaterialBlendMode = 0
-	CanvasItemMaterialBlendModeAdd          CanvasItemMaterialBlendMode = 1
-	CanvasItemMaterialBlendModeSub          CanvasItemMaterialBlendMode = 2
-	CanvasItemMaterialBlendModeMul          CanvasItemMaterialBlendMode = 3
+	/*Mix blending mode. Colors are assumed to be independent of the alpha (opacity) value.*/
+	CanvasItemMaterialBlendModeMix CanvasItemMaterialBlendMode = 0
+	/*Additive blending mode.*/
+	CanvasItemMaterialBlendModeAdd CanvasItemMaterialBlendMode = 1
+	/*Subtractive blending mode.*/
+	CanvasItemMaterialBlendModeSub CanvasItemMaterialBlendMode = 2
+	/*Multiplicative blending mode.*/
+	CanvasItemMaterialBlendModeMul CanvasItemMaterialBlendMode = 3
+	/*Mix blending mode. Colors are assumed to be premultiplied by the alpha (opacity) value.*/
 	CanvasItemMaterialBlendModePremultAlpha CanvasItemMaterialBlendMode = 4
 )
 
 type CanvasItemMaterialLightMode = classdb.CanvasItemMaterialLightMode
 
 const (
-	CanvasItemMaterialLightModeNormal    CanvasItemMaterialLightMode = 0
-	CanvasItemMaterialLightModeUnshaded  CanvasItemMaterialLightMode = 1
+	/*Render the material using both light and non-light sensitive material properties.*/
+	CanvasItemMaterialLightModeNormal CanvasItemMaterialLightMode = 0
+	/*Render the material as if there were no light.*/
+	CanvasItemMaterialLightModeUnshaded CanvasItemMaterialLightMode = 1
+	/*Render the material as if there were only light.*/
 	CanvasItemMaterialLightModeLightOnly CanvasItemMaterialLightMode = 2
 )
 
 type CharacterBody2DMotionMode = classdb.CharacterBody2DMotionMode
 
 const (
+	/*Apply when notions of walls, ceiling and floor are relevant. In this mode the body motion will react to slopes (acceleration/slowdown). This mode is suitable for sided games like platformers.*/
 	CharacterBody2DMotionModeGrounded CharacterBody2DMotionMode = 0
+	/*Apply when there is no notion of floor or ceiling. All collisions will be reported as [code]on_wall[/code]. In this mode, when you slide, the speed will always be constant. This mode is suitable for top-down games.*/
 	CharacterBody2DMotionModeFloating CharacterBody2DMotionMode = 1
 )
 
 type CharacterBody2DPlatformOnLeave = classdb.CharacterBody2DPlatformOnLeave
 
 const (
-	CharacterBody2DPlatformOnLeaveAddVelocity       CharacterBody2DPlatformOnLeave = 0
+	/*Add the last platform velocity to the [member velocity] when you leave a moving platform.*/
+	CharacterBody2DPlatformOnLeaveAddVelocity CharacterBody2DPlatformOnLeave = 0
+	/*Add the last platform velocity to the [member velocity] when you leave a moving platform, but any downward motion is ignored. It's useful to keep full jump height even when the platform is moving down.*/
 	CharacterBody2DPlatformOnLeaveAddUpwardVelocity CharacterBody2DPlatformOnLeave = 1
-	CharacterBody2DPlatformOnLeaveDoNothing         CharacterBody2DPlatformOnLeave = 2
+	/*Do nothing when leaving a platform.*/
+	CharacterBody2DPlatformOnLeaveDoNothing CharacterBody2DPlatformOnLeave = 2
 )
 
 type CharacterBody3DMotionMode = classdb.CharacterBody3DMotionMode
 
 const (
+	/*Apply when notions of walls, ceiling and floor are relevant. In this mode the body motion will react to slopes (acceleration/slowdown). This mode is suitable for grounded games like platformers.*/
 	CharacterBody3DMotionModeGrounded CharacterBody3DMotionMode = 0
+	/*Apply when there is no notion of floor or ceiling. All collisions will be reported as [code]on_wall[/code]. In this mode, when you slide, the speed will always be constant. This mode is suitable for games without ground like space games.*/
 	CharacterBody3DMotionModeFloating CharacterBody3DMotionMode = 1
 )
 
 type CharacterBody3DPlatformOnLeave = classdb.CharacterBody3DPlatformOnLeave
 
 const (
-	CharacterBody3DPlatformOnLeaveAddVelocity       CharacterBody3DPlatformOnLeave = 0
+	/*Add the last platform velocity to the [member velocity] when you leave a moving platform.*/
+	CharacterBody3DPlatformOnLeaveAddVelocity CharacterBody3DPlatformOnLeave = 0
+	/*Add the last platform velocity to the [member velocity] when you leave a moving platform, but any downward motion is ignored. It's useful to keep full jump height even when the platform is moving down.*/
 	CharacterBody3DPlatformOnLeaveAddUpwardVelocity CharacterBody3DPlatformOnLeave = 1
-	CharacterBody3DPlatformOnLeaveDoNothing         CharacterBody3DPlatformOnLeave = 2
+	/*Do nothing when leaving a platform.*/
+	CharacterBody3DPlatformOnLeaveDoNothing CharacterBody3DPlatformOnLeave = 2
 )
 
 type CodeEditCodeCompletionKind = classdb.CodeEditCodeCompletionKind
 
 const (
-	CodeEditKindClass     CodeEditCodeCompletionKind = 0
-	CodeEditKindFunction  CodeEditCodeCompletionKind = 1
-	CodeEditKindSignal    CodeEditCodeCompletionKind = 2
-	CodeEditKindVariable  CodeEditCodeCompletionKind = 3
-	CodeEditKindMember    CodeEditCodeCompletionKind = 4
-	CodeEditKindEnum      CodeEditCodeCompletionKind = 5
-	CodeEditKindConstant  CodeEditCodeCompletionKind = 6
-	CodeEditKindNodePath  CodeEditCodeCompletionKind = 7
-	CodeEditKindFilePath  CodeEditCodeCompletionKind = 8
+	/*Marks the option as a class.*/
+	CodeEditKindClass CodeEditCodeCompletionKind = 0
+	/*Marks the option as a function.*/
+	CodeEditKindFunction CodeEditCodeCompletionKind = 1
+	/*Marks the option as a Godot signal.*/
+	CodeEditKindSignal CodeEditCodeCompletionKind = 2
+	/*Marks the option as a variable.*/
+	CodeEditKindVariable CodeEditCodeCompletionKind = 3
+	/*Marks the option as a member.*/
+	CodeEditKindMember CodeEditCodeCompletionKind = 4
+	/*Marks the option as an enum entry.*/
+	CodeEditKindEnum CodeEditCodeCompletionKind = 5
+	/*Marks the option as a constant.*/
+	CodeEditKindConstant CodeEditCodeCompletionKind = 6
+	/*Marks the option as a Godot node path.*/
+	CodeEditKindNodePath CodeEditCodeCompletionKind = 7
+	/*Marks the option as a file path.*/
+	CodeEditKindFilePath CodeEditCodeCompletionKind = 8
+	/*Marks the option as unclassified or plain text.*/
 	CodeEditKindPlainText CodeEditCodeCompletionKind = 9
 )
 
 type CodeEditCodeCompletionLocation = classdb.CodeEditCodeCompletionLocation
 
 const (
-	CodeEditLocationLocal         CodeEditCodeCompletionLocation = 0
-	CodeEditLocationParentMask    CodeEditCodeCompletionLocation = 256
+	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
+	CodeEditLocationLocal CodeEditCodeCompletionLocation = 0
+	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. 0 for the local class, 1 for the parent, 2 for the grandparent, etc) to store the depth of an option in the class or a parent class.*/
+	CodeEditLocationParentMask CodeEditCodeCompletionLocation = 256
+	/*The option is from user code which is not local and not in a derived class (e.g. Autoload Singletons).*/
 	CodeEditLocationOtherUserCode CodeEditCodeCompletionLocation = 512
-	CodeEditLocationOther         CodeEditCodeCompletionLocation = 1024
+	/*The option is from other engine code, not covered by the other enum constants - e.g. built-in classes.*/
+	CodeEditLocationOther CodeEditCodeCompletionLocation = 1024
 )
 
 type CollisionObject2DDisableMode = classdb.CollisionObject2DDisableMode
 
 const (
-	CollisionObject2DDisableModeRemove     CollisionObject2DDisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [CollisionObject2D].
+	  Automatically re-added to the physics simulation when the [Node] is processed again.*/
+	CollisionObject2DDisableModeRemove CollisionObject2DDisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], make the body static. Doesn't affect [Area2D]. [PhysicsBody2D] can't be affected by forces or other bodies while static.
+	  Automatically set [PhysicsBody2D] back to its original mode when the [Node] is processed again.*/
 	CollisionObject2DDisableModeMakeStatic CollisionObject2DDisableMode = 1
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], do not affect the physics simulation.*/
 	CollisionObject2DDisableModeKeepActive CollisionObject2DDisableMode = 2
 )
 
 type CollisionObject3DDisableMode = classdb.CollisionObject3DDisableMode
 
 const (
-	CollisionObject3DDisableModeRemove     CollisionObject3DDisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [CollisionObject3D].
+	  Automatically re-added to the physics simulation when the [Node] is processed again.*/
+	CollisionObject3DDisableModeRemove CollisionObject3DDisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], make the body static. Doesn't affect [Area3D]. [PhysicsBody3D] can't be affected by forces or other bodies while static.
+	  Automatically set [PhysicsBody3D] back to its original mode when the [Node] is processed again.*/
 	CollisionObject3DDisableModeMakeStatic CollisionObject3DDisableMode = 1
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], do not affect the physics simulation.*/
 	CollisionObject3DDisableModeKeepActive CollisionObject3DDisableMode = 2
 )
 
 type CollisionPolygon2DBuildMode = classdb.CollisionPolygon2DBuildMode
 
 const (
-	CollisionPolygon2DBuildSolids   CollisionPolygon2DBuildMode = 0
+	/*Collisions will include the polygon and its contained area. In this mode the node has the same effect as several [ConvexPolygonShape2D] nodes, one for each convex shape in the convex decomposition of the polygon (but without the overhead of multiple nodes).*/
+	CollisionPolygon2DBuildSolids CollisionPolygon2DBuildMode = 0
+	/*Collisions will only include the polygon edges. In this mode the node has the same effect as a single [ConcavePolygonShape2D] made of segments, with the restriction that each segment (after the first one) starts where the previous one ends, and the last one ends where the first one starts (forming a closed but hollow polygon).*/
 	CollisionPolygon2DBuildSegments CollisionPolygon2DBuildMode = 1
 )
 
 type ColorPickerColorModeType = classdb.ColorPickerColorModeType
 
 const (
-	ColorPickerModeRgb   ColorPickerColorModeType = 0
-	ColorPickerModeHsv   ColorPickerColorModeType = 1
-	ColorPickerModeRaw   ColorPickerColorModeType = 2
+	/*Allows editing the color with Red/Green/Blue sliders.*/
+	ColorPickerModeRgb ColorPickerColorModeType = 0
+	/*Allows editing the color with Hue/Saturation/Value sliders.*/
+	ColorPickerModeHsv ColorPickerColorModeType = 1
+	/*Allows the color R, G, B component values to go beyond 1.0, which can be used for certain special operations that require it (like tinting without darkening or rendering sprites in HDR).*/
+	ColorPickerModeRaw ColorPickerColorModeType = 2
+	/*Allows editing the color with Hue/Saturation/Lightness sliders.
+	  OKHSL is a new color space similar to HSL but that better match perception by leveraging the Oklab color space which is designed to be simple to use, while doing a good job at predicting perceived lightness, chroma and hue.
+	  [url=https://bottosson.github.io/posts/colorpicker/]Okhsv and Okhsl color spaces[/url]*/
 	ColorPickerModeOkhsl ColorPickerColorModeType = 3
 )
 
 type ColorPickerPickerShapeType = classdb.ColorPickerPickerShapeType
 
 const (
+	/*HSV Color Model rectangle color space.*/
 	ColorPickerShapeHsvRectangle ColorPickerPickerShapeType = 0
-	ColorPickerShapeHsvWheel     ColorPickerPickerShapeType = 1
-	ColorPickerShapeVhsCircle    ColorPickerPickerShapeType = 2
-	ColorPickerShapeOkhslCircle  ColorPickerPickerShapeType = 3
-	ColorPickerShapeNone         ColorPickerPickerShapeType = 4
+	/*HSV Color Model rectangle color space with a wheel.*/
+	ColorPickerShapeHsvWheel ColorPickerPickerShapeType = 1
+	/*HSV Color Model circle color space. Use Saturation as a radius.*/
+	ColorPickerShapeVhsCircle ColorPickerPickerShapeType = 2
+	/*HSL OK Color Model circle color space.*/
+	ColorPickerShapeOkhslCircle ColorPickerPickerShapeType = 3
+	/*The color space shape and the shape select button are hidden. Can't be selected from the shapes popup.*/
+	ColorPickerShapeNone ColorPickerPickerShapeType = 4
 )
 
 type ConeTwistJoint3DParam = classdb.ConeTwistJoint3DParam
 
 const (
-	ConeTwistJoint3DParamSwingSpan  ConeTwistJoint3DParam = 0
-	ConeTwistJoint3DParamTwistSpan  ConeTwistJoint3DParam = 1
-	ConeTwistJoint3DParamBias       ConeTwistJoint3DParam = 2
-	ConeTwistJoint3DParamSoftness   ConeTwistJoint3DParam = 3
+	/*Swing is rotation from side to side, around the axis perpendicular to the twist axis.
+	  The swing span defines, how much rotation will not get corrected along the swing axis.
+	  Could be defined as looseness in the [ConeTwistJoint3D].
+	  If below 0.05, this behavior is locked.*/
+	ConeTwistJoint3DParamSwingSpan ConeTwistJoint3DParam = 0
+	/*Twist is the rotation around the twist axis, this value defined how far the joint can twist.
+	  Twist is locked if below 0.05.*/
+	ConeTwistJoint3DParamTwistSpan ConeTwistJoint3DParam = 1
+	/*The speed with which the swing or twist will take place.
+	  The higher, the faster.*/
+	ConeTwistJoint3DParamBias ConeTwistJoint3DParam = 2
+	/*The ease with which the joint starts to twist. If it's too low, it takes more force to start twisting the joint.*/
+	ConeTwistJoint3DParamSoftness ConeTwistJoint3DParam = 3
+	/*Defines, how fast the swing- and twist-speed-difference on both sides gets synced.*/
 	ConeTwistJoint3DParamRelaxation ConeTwistJoint3DParam = 4
-	ConeTwistJoint3DParamMax        ConeTwistJoint3DParam = 5
+	/*Represents the size of the [enum Param] enum.*/
+	ConeTwistJoint3DParamMax ConeTwistJoint3DParam = 5
 )
 
 type ControlFocusMode = classdb.ControlFocusMode
 
 const (
-	ControlFocusNone  ControlFocusMode = 0
+	/*The node cannot grab focus. Use with [member focus_mode].*/
+	ControlFocusNone ControlFocusMode = 0
+	/*The node can only grab focus on mouse clicks. Use with [member focus_mode].*/
 	ControlFocusClick ControlFocusMode = 1
-	ControlFocusAll   ControlFocusMode = 2
+	/*The node can grab focus on mouse click, using the arrows and the Tab keys on the keyboard, or using the D-pad buttons on a gamepad. Use with [member focus_mode].*/
+	ControlFocusAll ControlFocusMode = 2
 )
 
 type ControlCursorShape = classdb.ControlCursorShape
 
 const (
-	ControlCursorArrow        ControlCursorShape = 0
-	ControlCursorIbeam        ControlCursorShape = 1
+	/*Show the system's arrow mouse cursor when the user hovers the node. Use with [member mouse_default_cursor_shape].*/
+	ControlCursorArrow ControlCursorShape = 0
+	/*Show the system's I-beam mouse cursor when the user hovers the node. The I-beam pointer has a shape similar to "I". It tells the user they can highlight or insert text.*/
+	ControlCursorIbeam ControlCursorShape = 1
+	/*Show the system's pointing hand mouse cursor when the user hovers the node.*/
 	ControlCursorPointingHand ControlCursorShape = 2
-	ControlCursorCross        ControlCursorShape = 3
-	ControlCursorWait         ControlCursorShape = 4
-	ControlCursorBusy         ControlCursorShape = 5
-	ControlCursorDrag         ControlCursorShape = 6
-	ControlCursorCanDrop      ControlCursorShape = 7
-	ControlCursorForbidden    ControlCursorShape = 8
-	ControlCursorVsize        ControlCursorShape = 9
-	ControlCursorHsize        ControlCursorShape = 10
-	ControlCursorBdiagsize    ControlCursorShape = 11
-	ControlCursorFdiagsize    ControlCursorShape = 12
-	ControlCursorMove         ControlCursorShape = 13
-	ControlCursorVsplit       ControlCursorShape = 14
-	ControlCursorHsplit       ControlCursorShape = 15
-	ControlCursorHelp         ControlCursorShape = 16
+	/*Show the system's cross mouse cursor when the user hovers the node.*/
+	ControlCursorCross ControlCursorShape = 3
+	/*Show the system's wait mouse cursor when the user hovers the node. Often an hourglass.*/
+	ControlCursorWait ControlCursorShape = 4
+	/*Show the system's busy mouse cursor when the user hovers the node. Often an arrow with a small hourglass.*/
+	ControlCursorBusy ControlCursorShape = 5
+	/*Show the system's drag mouse cursor, often a closed fist or a cross symbol, when the user hovers the node. It tells the user they're currently dragging an item, like a node in the Scene dock.*/
+	ControlCursorDrag ControlCursorShape = 6
+	/*Show the system's drop mouse cursor when the user hovers the node. It can be an open hand. It tells the user they can drop an item they're currently grabbing, like a node in the Scene dock.*/
+	ControlCursorCanDrop ControlCursorShape = 7
+	/*Show the system's forbidden mouse cursor when the user hovers the node. Often a crossed circle.*/
+	ControlCursorForbidden ControlCursorShape = 8
+	/*Show the system's vertical resize mouse cursor when the user hovers the node. A double-headed vertical arrow. It tells the user they can resize the window or the panel vertically.*/
+	ControlCursorVsize ControlCursorShape = 9
+	/*Show the system's horizontal resize mouse cursor when the user hovers the node. A double-headed horizontal arrow. It tells the user they can resize the window or the panel horizontally.*/
+	ControlCursorHsize ControlCursorShape = 10
+	/*Show the system's window resize mouse cursor when the user hovers the node. The cursor is a double-headed arrow that goes from the bottom left to the top right. It tells the user they can resize the window or the panel both horizontally and vertically.*/
+	ControlCursorBdiagsize ControlCursorShape = 11
+	/*Show the system's window resize mouse cursor when the user hovers the node. The cursor is a double-headed arrow that goes from the top left to the bottom right, the opposite of [constant CURSOR_BDIAGSIZE]. It tells the user they can resize the window or the panel both horizontally and vertically.*/
+	ControlCursorFdiagsize ControlCursorShape = 12
+	/*Show the system's move mouse cursor when the user hovers the node. It shows 2 double-headed arrows at a 90 degree angle. It tells the user they can move a UI element freely.*/
+	ControlCursorMove ControlCursorShape = 13
+	/*Show the system's vertical split mouse cursor when the user hovers the node. On Windows, it's the same as [constant CURSOR_VSIZE].*/
+	ControlCursorVsplit ControlCursorShape = 14
+	/*Show the system's horizontal split mouse cursor when the user hovers the node. On Windows, it's the same as [constant CURSOR_HSIZE].*/
+	ControlCursorHsplit ControlCursorShape = 15
+	/*Show the system's help mouse cursor when the user hovers the node, a question mark.*/
+	ControlCursorHelp ControlCursorShape = 16
 )
 
 type ControlLayoutPreset = classdb.ControlLayoutPreset
 
 const (
-	ControlPresetTopLeft      ControlLayoutPreset = 0
-	ControlPresetTopRight     ControlLayoutPreset = 1
-	ControlPresetBottomLeft   ControlLayoutPreset = 2
-	ControlPresetBottomRight  ControlLayoutPreset = 3
-	ControlPresetCenterLeft   ControlLayoutPreset = 4
-	ControlPresetCenterTop    ControlLayoutPreset = 5
-	ControlPresetCenterRight  ControlLayoutPreset = 6
+	/*Snap all 4 anchors to the top-left of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetTopLeft ControlLayoutPreset = 0
+	/*Snap all 4 anchors to the top-right of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetTopRight ControlLayoutPreset = 1
+	/*Snap all 4 anchors to the bottom-left of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetBottomLeft ControlLayoutPreset = 2
+	/*Snap all 4 anchors to the bottom-right of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetBottomRight ControlLayoutPreset = 3
+	/*Snap all 4 anchors to the center of the left edge of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetCenterLeft ControlLayoutPreset = 4
+	/*Snap all 4 anchors to the center of the top edge of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetCenterTop ControlLayoutPreset = 5
+	/*Snap all 4 anchors to the center of the right edge of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetCenterRight ControlLayoutPreset = 6
+	/*Snap all 4 anchors to the center of the bottom edge of the parent control's bounds. Use with [method set_anchors_preset].*/
 	ControlPresetCenterBottom ControlLayoutPreset = 7
-	ControlPresetCenter       ControlLayoutPreset = 8
-	ControlPresetLeftWide     ControlLayoutPreset = 9
-	ControlPresetTopWide      ControlLayoutPreset = 10
-	ControlPresetRightWide    ControlLayoutPreset = 11
-	ControlPresetBottomWide   ControlLayoutPreset = 12
-	ControlPresetVcenterWide  ControlLayoutPreset = 13
-	ControlPresetHcenterWide  ControlLayoutPreset = 14
-	ControlPresetFullRect     ControlLayoutPreset = 15
+	/*Snap all 4 anchors to the center of the parent control's bounds. Use with [method set_anchors_preset].*/
+	ControlPresetCenter ControlLayoutPreset = 8
+	/*Snap all 4 anchors to the left edge of the parent control. The left offset becomes relative to the left edge and the top offset relative to the top left corner of the node's parent. Use with [method set_anchors_preset].*/
+	ControlPresetLeftWide ControlLayoutPreset = 9
+	/*Snap all 4 anchors to the top edge of the parent control. The left offset becomes relative to the top left corner, the top offset relative to the top edge, and the right offset relative to the top right corner of the node's parent. Use with [method set_anchors_preset].*/
+	ControlPresetTopWide ControlLayoutPreset = 10
+	/*Snap all 4 anchors to the right edge of the parent control. The right offset becomes relative to the right edge and the top offset relative to the top right corner of the node's parent. Use with [method set_anchors_preset].*/
+	ControlPresetRightWide ControlLayoutPreset = 11
+	/*Snap all 4 anchors to the bottom edge of the parent control. The left offset becomes relative to the bottom left corner, the bottom offset relative to the bottom edge, and the right offset relative to the bottom right corner of the node's parent. Use with [method set_anchors_preset].*/
+	ControlPresetBottomWide ControlLayoutPreset = 12
+	/*Snap all 4 anchors to a vertical line that cuts the parent control in half. Use with [method set_anchors_preset].*/
+	ControlPresetVcenterWide ControlLayoutPreset = 13
+	/*Snap all 4 anchors to a horizontal line that cuts the parent control in half. Use with [method set_anchors_preset].*/
+	ControlPresetHcenterWide ControlLayoutPreset = 14
+	/*Snap all 4 anchors to the respective corners of the parent control. Set all 4 offsets to 0 after you applied this preset and the [Control] will fit its parent control. Use with [method set_anchors_preset].*/
+	ControlPresetFullRect ControlLayoutPreset = 15
 )
 
 type ControlLayoutPresetMode = classdb.ControlLayoutPresetMode
 
 const (
-	ControlPresetModeMinsize    ControlLayoutPresetMode = 0
-	ControlPresetModeKeepWidth  ControlLayoutPresetMode = 1
+	/*The control will be resized to its minimum size.*/
+	ControlPresetModeMinsize ControlLayoutPresetMode = 0
+	/*The control's width will not change.*/
+	ControlPresetModeKeepWidth ControlLayoutPresetMode = 1
+	/*The control's height will not change.*/
 	ControlPresetModeKeepHeight ControlLayoutPresetMode = 2
-	ControlPresetModeKeepSize   ControlLayoutPresetMode = 3
+	/*The control's size will not change.*/
+	ControlPresetModeKeepSize ControlLayoutPresetMode = 3
 )
 
 type ControlSizeFlags = classdb.ControlSizeFlags
 
 const (
-	ControlSizeShrinkBegin  ControlSizeFlags = 0
-	ControlSizeFill         ControlSizeFlags = 1
-	ControlSizeExpand       ControlSizeFlags = 2
-	ControlSizeExpandFill   ControlSizeFlags = 3
+	/*Tells the parent [Container] to align the node with its start, either the top or the left edge. It is mutually exclusive with [constant SIZE_FILL] and other shrink size flags, but can be used with [constant SIZE_EXPAND] in some containers. Use with [member size_flags_horizontal] and [member size_flags_vertical].
+	  [b]Note:[/b] Setting this flag is equal to not having any size flags.*/
+	ControlSizeShrinkBegin ControlSizeFlags = 0
+	/*Tells the parent [Container] to expand the bounds of this node to fill all the available space without pushing any other node. It is mutually exclusive with shrink size flags. Use with [member size_flags_horizontal] and [member size_flags_vertical].*/
+	ControlSizeFill ControlSizeFlags = 1
+	/*Tells the parent [Container] to let this node take all the available space on the axis you flag. If multiple neighboring nodes are set to expand, they'll share the space based on their stretch ratio. See [member size_flags_stretch_ratio]. Use with [member size_flags_horizontal] and [member size_flags_vertical].*/
+	ControlSizeExpand ControlSizeFlags = 2
+	/*Sets the node's size flags to both fill and expand. See [constant SIZE_FILL] and [constant SIZE_EXPAND] for more information.*/
+	ControlSizeExpandFill ControlSizeFlags = 3
+	/*Tells the parent [Container] to center the node in the available space. It is mutually exclusive with [constant SIZE_FILL] and other shrink size flags, but can be used with [constant SIZE_EXPAND] in some containers. Use with [member size_flags_horizontal] and [member size_flags_vertical].*/
 	ControlSizeShrinkCenter ControlSizeFlags = 4
-	ControlSizeShrinkEnd    ControlSizeFlags = 8
+	/*Tells the parent [Container] to align the node with its end, either the bottom or the right edge. It is mutually exclusive with [constant SIZE_FILL] and other shrink size flags, but can be used with [constant SIZE_EXPAND] in some containers. Use with [member size_flags_horizontal] and [member size_flags_vertical].*/
+	ControlSizeShrinkEnd ControlSizeFlags = 8
 )
 
 type ControlMouseFilter = classdb.ControlMouseFilter
 
 const (
-	ControlMouseFilterStop   ControlMouseFilter = 0
-	ControlMouseFilterPass   ControlMouseFilter = 1
+	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. And the control will receive the [signal mouse_entered] and [signal mouse_exited] signals. These events are automatically marked as handled, and they will not propagate further to other controls. This also results in blocking signals in other controls.*/
+	ControlMouseFilterStop ControlMouseFilter = 0
+	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. And the control will receive the [signal mouse_entered] and [signal mouse_exited] signals. If this control does not handle the event, the parent control (if any) will be considered, and so on until there is no more parent control to potentially handle it. This also allows signals to fire in other controls. If no control handled it, the event will be passed to [method Node._shortcut_input] for further processing.*/
+	ControlMouseFilterPass ControlMouseFilter = 1
+	/*The control will not receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. The control will also not receive the [signal mouse_entered] nor [signal mouse_exited] signals. This will not block other controls from receiving these events or firing the signals. Ignored events will not be handled automatically.
+	  [b]Note:[/b] If the control has received [signal mouse_entered] but not [signal mouse_exited], changing the [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] will cause [signal mouse_exited] to be emitted.*/
 	ControlMouseFilterIgnore ControlMouseFilter = 2
 )
 
 type ControlGrowDirection = classdb.ControlGrowDirection
 
 const (
+	/*The control will grow to the left or top to make up if its minimum size is changed to be greater than its current size on the respective axis.*/
 	ControlGrowDirectionBegin ControlGrowDirection = 0
-	ControlGrowDirectionEnd   ControlGrowDirection = 1
-	ControlGrowDirectionBoth  ControlGrowDirection = 2
+	/*The control will grow to the right or bottom to make up if its minimum size is changed to be greater than its current size on the respective axis.*/
+	ControlGrowDirectionEnd ControlGrowDirection = 1
+	/*The control will grow in both directions equally to make up if its minimum size is changed to be greater than its current size.*/
+	ControlGrowDirectionBoth ControlGrowDirection = 2
 )
 
 type ControlAnchor = classdb.ControlAnchor
 
 const (
+	/*Snaps one of the 4 anchor's sides to the origin of the node's [code]Rect[/code], in the top left. Use it with one of the [code]anchor_*[/code] member variables, like [member anchor_left]. To change all 4 anchors at once, use [method set_anchors_preset].*/
 	ControlAnchorBegin ControlAnchor = 0
-	ControlAnchorEnd   ControlAnchor = 1
+	/*Snaps one of the 4 anchor's sides to the end of the node's [code]Rect[/code], in the bottom right. Use it with one of the [code]anchor_*[/code] member variables, like [member anchor_left]. To change all 4 anchors at once, use [method set_anchors_preset].*/
+	ControlAnchorEnd ControlAnchor = 1
 )
 
 type ControlLayoutDirection = classdb.ControlLayoutDirection
 
 const (
+	/*Automatic layout direction, determined from the parent control layout direction.*/
 	ControlLayoutDirectionInherited ControlLayoutDirection = 0
-	ControlLayoutDirectionLocale    ControlLayoutDirection = 1
-	ControlLayoutDirectionLtr       ControlLayoutDirection = 2
-	ControlLayoutDirectionRtl       ControlLayoutDirection = 3
+	/*Automatic layout direction, determined from the current locale.*/
+	ControlLayoutDirectionLocale ControlLayoutDirection = 1
+	/*Left-to-right layout direction.*/
+	ControlLayoutDirectionLtr ControlLayoutDirection = 2
+	/*Right-to-left layout direction.*/
+	ControlLayoutDirectionRtl ControlLayoutDirection = 3
 )
 
 type ControlTextDirection = classdb.ControlTextDirection
 
 const (
+	/*Text writing direction is the same as layout direction.*/
 	ControlTextDirectionInherited ControlTextDirection = 3
-	ControlTextDirectionAuto      ControlTextDirection = 0
-	ControlTextDirectionLtr       ControlTextDirection = 1
-	ControlTextDirectionRtl       ControlTextDirection = 2
+	/*Automatic text writing direction, determined from the current locale and text content.*/
+	ControlTextDirectionAuto ControlTextDirection = 0
+	/*Left-to-right text writing direction.*/
+	ControlTextDirectionLtr ControlTextDirection = 1
+	/*Right-to-left text writing direction.*/
+	ControlTextDirectionRtl ControlTextDirection = 2
 )
 
 type CurveTangentMode = classdb.CurveTangentMode
 
 const (
-	CurveTangentFree      CurveTangentMode = 0
-	CurveTangentLinear    CurveTangentMode = 1
+	/*The tangent on this side of the point is user-defined.*/
+	CurveTangentFree CurveTangentMode = 0
+	/*The curve calculates the tangent on this side of the point as the slope halfway towards the adjacent point.*/
+	CurveTangentLinear CurveTangentMode = 1
+	/*The total number of available tangent modes.*/
 	CurveTangentModeCount CurveTangentMode = 2
 )
 
 type CurveTextureTextureMode = classdb.CurveTextureTextureMode
 
 const (
+	/*Store the curve equally across the red, green and blue channels. This uses more video memory, but is more compatible with shaders that only read the green and blue values.*/
 	CurveTextureTextureModeRgb CurveTextureTextureMode = 0
+	/*Store the curve only in the red channel. This saves video memory, but some custom shaders may not be able to work with this.*/
 	CurveTextureTextureModeRed CurveTextureTextureMode = 1
 )
 
 type DecalDecalTexture = classdb.DecalDecalTexture
 
 const (
-	DecalTextureAlbedo   DecalDecalTexture = 0
-	DecalTextureNormal   DecalDecalTexture = 1
-	DecalTextureOrm      DecalDecalTexture = 2
+	/*[Texture2D] corresponding to [member texture_albedo].*/
+	DecalTextureAlbedo DecalDecalTexture = 0
+	/*[Texture2D] corresponding to [member texture_normal].*/
+	DecalTextureNormal DecalDecalTexture = 1
+	/*[Texture2D] corresponding to [member texture_orm].*/
+	DecalTextureOrm DecalDecalTexture = 2
+	/*[Texture2D] corresponding to [member texture_emission].*/
 	DecalTextureEmission DecalDecalTexture = 3
-	DecalTextureMax      DecalDecalTexture = 4
+	/*Max size of [enum DecalTexture] enum.*/
+	DecalTextureMax DecalDecalTexture = 4
 )
 
 type DirectionalLight3DShadowMode = classdb.DirectionalLight3DShadowMode
 
 const (
-	DirectionalLight3DShadowOrthogonal      DirectionalLight3DShadowMode = 0
+	/*Renders the entire scene's shadow map from an orthogonal point of view. This is the fastest directional shadow mode. May result in blurrier shadows on close objects.*/
+	DirectionalLight3DShadowOrthogonal DirectionalLight3DShadowMode = 0
+	/*Splits the view frustum in 2 areas, each with its own shadow map. This shadow mode is a compromise between [constant SHADOW_ORTHOGONAL] and [constant SHADOW_PARALLEL_4_SPLITS] in terms of performance.*/
 	DirectionalLight3DShadowParallel2Splits DirectionalLight3DShadowMode = 1
+	/*Splits the view frustum in 4 areas, each with its own shadow map. This is the slowest directional shadow mode.*/
 	DirectionalLight3DShadowParallel4Splits DirectionalLight3DShadowMode = 2
 )
 
 type DirectionalLight3DSkyMode = classdb.DirectionalLight3DSkyMode
 
 const (
+	/*Makes the light visible in both scene lighting and sky rendering.*/
 	DirectionalLight3DSkyModeLightAndSky DirectionalLight3DSkyMode = 0
-	DirectionalLight3DSkyModeLightOnly   DirectionalLight3DSkyMode = 1
-	DirectionalLight3DSkyModeSkyOnly     DirectionalLight3DSkyMode = 2
+	/*Makes the light visible in scene lighting only (including direct lighting and global illumination). When using this mode, the light will not be visible from sky shaders.*/
+	DirectionalLight3DSkyModeLightOnly DirectionalLight3DSkyMode = 1
+	/*Makes the light visible to sky shaders only. When using this mode the light will not cast light into the scene (either through direct lighting or through global illumination), but can be accessed through sky shaders. This can be useful, for example, when you want to control sky effects without illuminating the scene (during a night cycle, for example).*/
+	DirectionalLight3DSkyModeSkyOnly DirectionalLight3DSkyMode = 2
 )
 
 type DisplayServerFeature = classdb.DisplayServerFeature
 
 const (
-	DisplayServerFeatureGlobalMenu         DisplayServerFeature = 0
-	DisplayServerFeatureSubwindows         DisplayServerFeature = 1
-	DisplayServerFeatureTouchscreen        DisplayServerFeature = 2
-	DisplayServerFeatureMouse              DisplayServerFeature = 3
-	DisplayServerFeatureMouseWarp          DisplayServerFeature = 4
-	DisplayServerFeatureClipboard          DisplayServerFeature = 5
-	DisplayServerFeatureVirtualKeyboard    DisplayServerFeature = 6
-	DisplayServerFeatureCursorShape        DisplayServerFeature = 7
-	DisplayServerFeatureCustomCursorShape  DisplayServerFeature = 8
-	DisplayServerFeatureNativeDialog       DisplayServerFeature = 9
-	DisplayServerFeatureIme                DisplayServerFeature = 10
+	/*Display server supports global menu. This allows the application to display its menu items in the operating system's top bar. [b]macOS[/b]*/
+	DisplayServerFeatureGlobalMenu DisplayServerFeature = 0
+	/*Display server supports multiple windows that can be moved outside of the main window. [b]Windows, macOS, Linux (X11)[/b]*/
+	DisplayServerFeatureSubwindows DisplayServerFeature = 1
+	/*Display server supports touchscreen input. [b]Windows, Linux (X11), Android, iOS, Web[/b]*/
+	DisplayServerFeatureTouchscreen DisplayServerFeature = 2
+	/*Display server supports mouse input. [b]Windows, macOS, Linux (X11), Android, Web[/b]*/
+	DisplayServerFeatureMouse DisplayServerFeature = 3
+	/*Display server supports warping mouse coordinates to keep the mouse cursor constrained within an area, but looping when one of the edges is reached. [b]Windows, macOS, Linux (X11)[/b]*/
+	DisplayServerFeatureMouseWarp DisplayServerFeature = 4
+	/*Display server supports setting and getting clipboard data. See also [constant FEATURE_CLIPBOARD_PRIMARY]. [b]Windows, macOS, Linux (X11), Android, iOS, Web[/b]*/
+	DisplayServerFeatureClipboard DisplayServerFeature = 5
+	/*Display server supports popping up a virtual keyboard when requested to input text without a physical keyboard. [b]Android, iOS, Web[/b]*/
+	DisplayServerFeatureVirtualKeyboard DisplayServerFeature = 6
+	/*Display server supports setting the mouse cursor shape to be different from the default. [b]Windows, macOS, Linux (X11), Android, Web[/b]*/
+	DisplayServerFeatureCursorShape DisplayServerFeature = 7
+	/*Display server supports setting the mouse cursor shape to a custom image. [b]Windows, macOS, Linux (X11), Web[/b]*/
+	DisplayServerFeatureCustomCursorShape DisplayServerFeature = 8
+	/*Display server supports spawning dialogs using the operating system's native look-and-feel. [b]Windows, macOS, Linux (X11)[/b]*/
+	DisplayServerFeatureNativeDialog DisplayServerFeature = 9
+	/*Display server supports [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url], which is commonly used for inputting Chinese/Japanese/Korean text. This is handled by the operating system, rather than by Godot. [b]Windows, macOS, Linux (X11)[/b]*/
+	DisplayServerFeatureIme DisplayServerFeature = 10
+	/*Display server supports windows can use per-pixel transparency to make windows behind them partially or fully visible. [b]Windows, macOS, Linux (X11)[/b]*/
 	DisplayServerFeatureWindowTransparency DisplayServerFeature = 11
-	DisplayServerFeatureHidpi              DisplayServerFeature = 12
-	DisplayServerFeatureIcon               DisplayServerFeature = 13
-	DisplayServerFeatureNativeIcon         DisplayServerFeature = 14
-	DisplayServerFeatureOrientation        DisplayServerFeature = 15
-	DisplayServerFeatureSwapBuffers        DisplayServerFeature = 16
-	DisplayServerFeatureClipboardPrimary   DisplayServerFeature = 18
-	DisplayServerFeatureTextToSpeech       DisplayServerFeature = 19
-	DisplayServerFeatureExtendToTitle      DisplayServerFeature = 20
-	DisplayServerFeatureScreenCapture      DisplayServerFeature = 21
+	/*Display server supports querying the operating system's display scale factor. This allows for [i]reliable[/i] automatic hiDPI display detection, as opposed to guessing based on the screen resolution and reported display DPI (which can be unreliable due to broken monitor EDID). [b]Windows, macOS[/b]*/
+	DisplayServerFeatureHidpi DisplayServerFeature = 12
+	/*Display server supports changing the window icon (usually displayed in the top-left corner). [b]Windows, macOS, Linux (X11)[/b]*/
+	DisplayServerFeatureIcon DisplayServerFeature = 13
+	/*Display server supports changing the window icon (usually displayed in the top-left corner). [b]Windows, macOS[/b]*/
+	DisplayServerFeatureNativeIcon DisplayServerFeature = 14
+	/*Display server supports changing the screen orientation. [b]Android, iOS[/b]*/
+	DisplayServerFeatureOrientation DisplayServerFeature = 15
+	/*Display server supports V-Sync status can be changed from the default (which is forced to be enabled platforms not supporting this feature). [b]Windows, macOS, Linux (X11)[/b]*/
+	DisplayServerFeatureSwapBuffers DisplayServerFeature = 16
+	/*Display server supports Primary clipboard can be used. This is a different clipboard from [constant FEATURE_CLIPBOARD]. [b]Linux (X11)[/b]*/
+	DisplayServerFeatureClipboardPrimary DisplayServerFeature = 18
+	/*Display server supports text-to-speech. See [code]tts_*[/code] methods. [b]Windows, macOS, Linux (X11), Android, iOS, Web[/b]*/
+	DisplayServerFeatureTextToSpeech DisplayServerFeature = 19
+	/*Display server supports expanding window content to the title. See [constant WINDOW_FLAG_EXTEND_TO_TITLE]. [b]macOS[/b]*/
+	DisplayServerFeatureExtendToTitle DisplayServerFeature = 20
+	/*Display server supports reading screen pixels. See [method screen_get_pixel].*/
+	DisplayServerFeatureScreenCapture DisplayServerFeature = 21
 )
 
 type DisplayServerMouseMode = classdb.DisplayServerMouseMode
 
 const (
-	DisplayServerMouseModeVisible        DisplayServerMouseMode = 0
-	DisplayServerMouseModeHidden         DisplayServerMouseMode = 1
-	DisplayServerMouseModeCaptured       DisplayServerMouseMode = 2
-	DisplayServerMouseModeConfined       DisplayServerMouseMode = 3
+	/*Makes the mouse cursor visible if it is hidden.*/
+	DisplayServerMouseModeVisible DisplayServerMouseMode = 0
+	/*Makes the mouse cursor hidden if it is visible.*/
+	DisplayServerMouseModeHidden DisplayServerMouseMode = 1
+	/*Captures the mouse. The mouse will be hidden and its position locked at the center of the window manager's window.
+	  [b]Note:[/b] If you want to process the mouse's movement in this mode, you need to use [member InputEventMouseMotion.relative].*/
+	DisplayServerMouseModeCaptured DisplayServerMouseMode = 2
+	/*Confines the mouse cursor to the game window, and make it visible.*/
+	DisplayServerMouseModeConfined DisplayServerMouseMode = 3
+	/*Confines the mouse cursor to the game window, and make it hidden.*/
 	DisplayServerMouseModeConfinedHidden DisplayServerMouseMode = 4
 )
 
 type DisplayServerScreenOrientation = classdb.DisplayServerScreenOrientation
 
 const (
-	DisplayServerScreenLandscape        DisplayServerScreenOrientation = 0
-	DisplayServerScreenPortrait         DisplayServerScreenOrientation = 1
+	/*Default landscape orientation.*/
+	DisplayServerScreenLandscape DisplayServerScreenOrientation = 0
+	/*Default portrait orientation.*/
+	DisplayServerScreenPortrait DisplayServerScreenOrientation = 1
+	/*Reverse landscape orientation (upside down).*/
 	DisplayServerScreenReverseLandscape DisplayServerScreenOrientation = 2
-	DisplayServerScreenReversePortrait  DisplayServerScreenOrientation = 3
-	DisplayServerScreenSensorLandscape  DisplayServerScreenOrientation = 4
-	DisplayServerScreenSensorPortrait   DisplayServerScreenOrientation = 5
-	DisplayServerScreenSensor           DisplayServerScreenOrientation = 6
+	/*Reverse portrait orientation (upside down).*/
+	DisplayServerScreenReversePortrait DisplayServerScreenOrientation = 3
+	/*Automatic landscape orientation (default or reverse depending on sensor).*/
+	DisplayServerScreenSensorLandscape DisplayServerScreenOrientation = 4
+	/*Automatic portrait orientation (default or reverse depending on sensor).*/
+	DisplayServerScreenSensorPortrait DisplayServerScreenOrientation = 5
+	/*Automatic landscape or portrait orientation (default or reverse depending on sensor).*/
+	DisplayServerScreenSensor DisplayServerScreenOrientation = 6
 )
 
 type DisplayServerVirtualKeyboardType = classdb.DisplayServerVirtualKeyboardType
 
 const (
-	DisplayServerKeyboardTypeDefault       DisplayServerVirtualKeyboardType = 0
-	DisplayServerKeyboardTypeMultiline     DisplayServerVirtualKeyboardType = 1
-	DisplayServerKeyboardTypeNumber        DisplayServerVirtualKeyboardType = 2
+	/*Default text virtual keyboard.*/
+	DisplayServerKeyboardTypeDefault DisplayServerVirtualKeyboardType = 0
+	/*Multiline virtual keyboard.*/
+	DisplayServerKeyboardTypeMultiline DisplayServerVirtualKeyboardType = 1
+	/*Virtual number keypad, useful for PIN entry.*/
+	DisplayServerKeyboardTypeNumber DisplayServerVirtualKeyboardType = 2
+	/*Virtual number keypad, useful for entering fractional numbers.*/
 	DisplayServerKeyboardTypeNumberDecimal DisplayServerVirtualKeyboardType = 3
-	DisplayServerKeyboardTypePhone         DisplayServerVirtualKeyboardType = 4
-	DisplayServerKeyboardTypeEmailAddress  DisplayServerVirtualKeyboardType = 5
-	DisplayServerKeyboardTypePassword      DisplayServerVirtualKeyboardType = 6
-	DisplayServerKeyboardTypeUrl           DisplayServerVirtualKeyboardType = 7
+	/*Virtual phone number keypad.*/
+	DisplayServerKeyboardTypePhone DisplayServerVirtualKeyboardType = 4
+	/*Virtual keyboard with additional keys to assist with typing email addresses.*/
+	DisplayServerKeyboardTypeEmailAddress DisplayServerVirtualKeyboardType = 5
+	/*Virtual keyboard for entering a password. On most platforms, this should disable autocomplete and autocapitalization.
+	  [b]Note:[/b] This is not supported on Web. Instead, this behaves identically to [constant KEYBOARD_TYPE_DEFAULT].*/
+	DisplayServerKeyboardTypePassword DisplayServerVirtualKeyboardType = 6
+	/*Virtual keyboard with additional keys to assist with typing URLs.*/
+	DisplayServerKeyboardTypeUrl DisplayServerVirtualKeyboardType = 7
 )
 
 type DisplayServerCursorShape = classdb.DisplayServerCursorShape
 
 const (
-	DisplayServerCursorArrow        DisplayServerCursorShape = 0
-	DisplayServerCursorIbeam        DisplayServerCursorShape = 1
+	/*Arrow cursor shape. This is the default when not pointing anything that overrides the mouse cursor, such as a [LineEdit] or [TextEdit].*/
+	DisplayServerCursorArrow DisplayServerCursorShape = 0
+	/*I-beam cursor shape. This is used by default when hovering a control that accepts text input, such as [LineEdit] or [TextEdit].*/
+	DisplayServerCursorIbeam DisplayServerCursorShape = 1
+	/*Pointing hand cursor shape. This is used by default when hovering a [LinkButton] or a URL tag in a [RichTextLabel].*/
 	DisplayServerCursorPointingHand DisplayServerCursorShape = 2
-	DisplayServerCursorCross        DisplayServerCursorShape = 3
-	DisplayServerCursorWait         DisplayServerCursorShape = 4
-	DisplayServerCursorBusy         DisplayServerCursorShape = 5
-	DisplayServerCursorDrag         DisplayServerCursorShape = 6
-	DisplayServerCursorCanDrop      DisplayServerCursorShape = 7
-	DisplayServerCursorForbidden    DisplayServerCursorShape = 8
-	DisplayServerCursorVsize        DisplayServerCursorShape = 9
-	DisplayServerCursorHsize        DisplayServerCursorShape = 10
-	DisplayServerCursorBdiagsize    DisplayServerCursorShape = 11
-	DisplayServerCursorFdiagsize    DisplayServerCursorShape = 12
-	DisplayServerCursorMove         DisplayServerCursorShape = 13
-	DisplayServerCursorVsplit       DisplayServerCursorShape = 14
-	DisplayServerCursorHsplit       DisplayServerCursorShape = 15
-	DisplayServerCursorHelp         DisplayServerCursorShape = 16
-	DisplayServerCursorMax          DisplayServerCursorShape = 17
+	/*Crosshair cursor. This is intended to be displayed when the user needs precise aim over an element, such as a rectangle selection tool or a color picker.*/
+	DisplayServerCursorCross DisplayServerCursorShape = 3
+	/*Wait cursor. On most cursor themes, this displays a spinning icon [i]besides[/i] the arrow. Intended to be used for non-blocking operations (when the user can do something else at the moment). See also [constant CURSOR_BUSY].*/
+	DisplayServerCursorWait DisplayServerCursorShape = 4
+	/*Wait cursor. On most cursor themes, this [i]replaces[/i] the arrow with a spinning icon. Intended to be used for blocking operations (when the user can't do anything else at the moment). See also [constant CURSOR_WAIT].*/
+	DisplayServerCursorBusy DisplayServerCursorShape = 5
+	/*Dragging hand cursor. This is displayed during drag-and-drop operations. See also [constant CURSOR_CAN_DROP].*/
+	DisplayServerCursorDrag DisplayServerCursorShape = 6
+	/*"Can drop" cursor. This is displayed during drag-and-drop operations if hovering over a [Control] that can accept the drag-and-drop event. On most cursor themes, this displays a dragging hand with an arrow symbol besides it. See also [constant CURSOR_DRAG].*/
+	DisplayServerCursorCanDrop DisplayServerCursorShape = 7
+	/*Forbidden cursor. This is displayed during drag-and-drop operations if the hovered [Control] can't accept the drag-and-drop event.*/
+	DisplayServerCursorForbidden DisplayServerCursorShape = 8
+	/*Vertical resize cursor. Intended to be displayed when the hovered [Control] can be vertically resized using the mouse. See also [constant CURSOR_VSPLIT].*/
+	DisplayServerCursorVsize DisplayServerCursorShape = 9
+	/*Horizontal resize cursor. Intended to be displayed when the hovered [Control] can be horizontally resized using the mouse. See also [constant CURSOR_HSPLIT].*/
+	DisplayServerCursorHsize DisplayServerCursorShape = 10
+	/*Secondary diagonal resize cursor (top-right/bottom-left). Intended to be displayed when the hovered [Control] can be resized on both axes at once using the mouse.*/
+	DisplayServerCursorBdiagsize DisplayServerCursorShape = 11
+	/*Main diagonal resize cursor (top-left/bottom-right). Intended to be displayed when the hovered [Control] can be resized on both axes at once using the mouse.*/
+	DisplayServerCursorFdiagsize DisplayServerCursorShape = 12
+	/*Move cursor. Intended to be displayed when the hovered [Control] can be moved using the mouse.*/
+	DisplayServerCursorMove DisplayServerCursorShape = 13
+	/*Vertical split cursor. This is displayed when hovering a [Control] with splits that can be vertically resized using the mouse, such as [VSplitContainer]. On some cursor themes, this cursor may have the same appearance as [constant CURSOR_VSIZE].*/
+	DisplayServerCursorVsplit DisplayServerCursorShape = 14
+	/*Horizontal split cursor. This is displayed when hovering a [Control] with splits that can be horizontally resized using the mouse, such as [HSplitContainer]. On some cursor themes, this cursor may have the same appearance as [constant CURSOR_HSIZE].*/
+	DisplayServerCursorHsplit DisplayServerCursorShape = 15
+	/*Help cursor. On most cursor themes, this displays a question mark icon instead of the mouse cursor. Intended to be used when the user has requested help on the next element that will be clicked.*/
+	DisplayServerCursorHelp DisplayServerCursorShape = 16
+	/*Represents the size of the [enum CursorShape] enum.*/
+	DisplayServerCursorMax DisplayServerCursorShape = 17
 )
 
 type DisplayServerFileDialogMode = classdb.DisplayServerFileDialogMode
 
 const (
-	DisplayServerFileDialogModeOpenFile  DisplayServerFileDialogMode = 0
+	/*The native file dialog allows selecting one, and only one file.*/
+	DisplayServerFileDialogModeOpenFile DisplayServerFileDialogMode = 0
+	/*The native file dialog allows selecting multiple files.*/
 	DisplayServerFileDialogModeOpenFiles DisplayServerFileDialogMode = 1
-	DisplayServerFileDialogModeOpenDir   DisplayServerFileDialogMode = 2
-	DisplayServerFileDialogModeOpenAny   DisplayServerFileDialogMode = 3
-	DisplayServerFileDialogModeSaveFile  DisplayServerFileDialogMode = 4
+	/*The native file dialog only allows selecting a directory, disallowing the selection of any file.*/
+	DisplayServerFileDialogModeOpenDir DisplayServerFileDialogMode = 2
+	/*The native file dialog allows selecting one file or directory.*/
+	DisplayServerFileDialogModeOpenAny DisplayServerFileDialogMode = 3
+	/*The native file dialog will warn when a file exists.*/
+	DisplayServerFileDialogModeSaveFile DisplayServerFileDialogMode = 4
 )
 
 type DisplayServerWindowMode = classdb.DisplayServerWindowMode
 
 const (
-	DisplayServerWindowModeWindowed            DisplayServerWindowMode = 0
-	DisplayServerWindowModeMinimized           DisplayServerWindowMode = 1
-	DisplayServerWindowModeMaximized           DisplayServerWindowMode = 2
-	DisplayServerWindowModeFullscreen          DisplayServerWindowMode = 3
+	/*Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).*/
+	DisplayServerWindowModeWindowed DisplayServerWindowMode = 0
+	/*Minimized window mode, i.e. [Window] is not visible and available on window manager's window list. Normally happens when the minimize button is pressed.*/
+	DisplayServerWindowModeMinimized DisplayServerWindowMode = 1
+	/*Maximized window mode, i.e. [Window] will occupy whole screen area except task bar and still display its borders. Normally happens when the maximize button is pressed.*/
+	DisplayServerWindowModeMaximized DisplayServerWindowMode = 2
+	/*Full screen mode with full multi-window support.
+	  Full screen window covers the entire display area of a screen and has no decorations. The display's video mode is not changed.
+	  [b]On Windows:[/b] Multi-window full-screen mode has a 1px border of the [member ProjectSettings.rendering/environment/defaults/default_clear_color] color.
+	  [b]On macOS:[/b] A new desktop is used to display the running project.
+	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
+	DisplayServerWindowModeFullscreen DisplayServerWindowMode = 3
+	/*A single window full screen mode. This mode has less overhead, but only one window can be open on a given screen at a time (opening a child window or application switching will trigger a full screen transition).
+	  Full screen window covers the entire display area of a screen and has no border or decorations. The display's video mode is not changed.
+	  [b]On Windows:[/b] Depending on video driver, full screen transition might cause screens to go black for a moment.
+	  [b]On macOS:[/b] A new desktop is used to display the running project. Exclusive full screen mode prevents Dock and Menu from showing up when the mouse pointer is hovering the edge of the screen.
+	  [b]On Linux (X11):[/b] Exclusive full screen mode bypasses compositor.
+	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
 	DisplayServerWindowModeExclusiveFullscreen DisplayServerWindowMode = 4
 )
 
 type DisplayServerWindowFlags = classdb.DisplayServerWindowFlags
 
 const (
-	DisplayServerWindowFlagResizeDisabled   DisplayServerWindowFlags = 0
-	DisplayServerWindowFlagBorderless       DisplayServerWindowFlags = 1
-	DisplayServerWindowFlagAlwaysOnTop      DisplayServerWindowFlags = 2
-	DisplayServerWindowFlagTransparent      DisplayServerWindowFlags = 3
-	DisplayServerWindowFlagNoFocus          DisplayServerWindowFlags = 4
-	DisplayServerWindowFlagPopup            DisplayServerWindowFlags = 5
-	DisplayServerWindowFlagExtendToTitle    DisplayServerWindowFlags = 6
+	/*The window can't be resized by dragging its resize grip. It's still possible to resize the window using [method window_set_size]. This flag is ignored for full screen windows.*/
+	DisplayServerWindowFlagResizeDisabled DisplayServerWindowFlags = 0
+	/*The window do not have native title bar and other decorations. This flag is ignored for full-screen windows.*/
+	DisplayServerWindowFlagBorderless DisplayServerWindowFlags = 1
+	/*The window is floating on top of all other windows. This flag is ignored for full-screen windows.*/
+	DisplayServerWindowFlagAlwaysOnTop DisplayServerWindowFlags = 2
+	/*The window background can be transparent.
+	  [b]Note:[/b] This flag has no effect if [member ProjectSettings.display/window/per_pixel_transparency/allowed] is set to [code]false[/code].
+	  [b]Note:[/b] Transparency support is implemented on Linux (X11), macOS and Windows, but availability might vary depending on GPU driver, display manager, and compositor capabilities.*/
+	DisplayServerWindowFlagTransparent DisplayServerWindowFlags = 3
+	/*The window can't be focused. No-focus window will ignore all input, except mouse clicks.*/
+	DisplayServerWindowFlagNoFocus DisplayServerWindowFlags = 4
+	/*Window is part of menu or [OptionButton] dropdown. This flag can't be changed when the window is visible. An active popup window will exclusively receive all input, without stealing focus from its parent. Popup windows are automatically closed when uses click outside it, or when an application is switched. Popup window must have transient parent set (see [method window_set_transient]).*/
+	DisplayServerWindowFlagPopup DisplayServerWindowFlags = 5
+	/*Window content is expanded to the full size of the window. Unlike borderless window, the frame is left intact and can be used to resize the window, title bar is transparent, but have minimize/maximize/close buttons.
+	  Use [method window_set_window_buttons_offset] to adjust minimize/maximize/close buttons offset.
+	  Use [method window_get_safe_title_margins] to determine area under the title bar that is not covered by decorations.
+	  [b]Note:[/b] This flag is implemented only on macOS.*/
+	DisplayServerWindowFlagExtendToTitle DisplayServerWindowFlags = 6
+	/*All mouse events are passed to the underlying window of the same application.*/
 	DisplayServerWindowFlagMousePassthrough DisplayServerWindowFlags = 7
-	DisplayServerWindowFlagMax              DisplayServerWindowFlags = 8
+	/*Max value of the [enum WindowFlags].*/
+	DisplayServerWindowFlagMax DisplayServerWindowFlags = 8
 )
 
 type DisplayServerWindowEvent = classdb.DisplayServerWindowEvent
 
 const (
-	DisplayServerWindowEventMouseEnter     DisplayServerWindowEvent = 0
-	DisplayServerWindowEventMouseExit      DisplayServerWindowEvent = 1
-	DisplayServerWindowEventFocusIn        DisplayServerWindowEvent = 2
-	DisplayServerWindowEventFocusOut       DisplayServerWindowEvent = 3
-	DisplayServerWindowEventCloseRequest   DisplayServerWindowEvent = 4
-	DisplayServerWindowEventGoBackRequest  DisplayServerWindowEvent = 5
-	DisplayServerWindowEventDpiChange      DisplayServerWindowEvent = 6
+	/*Sent when the mouse pointer enters the window.*/
+	DisplayServerWindowEventMouseEnter DisplayServerWindowEvent = 0
+	/*Sent when the mouse pointer exits the window.*/
+	DisplayServerWindowEventMouseExit DisplayServerWindowEvent = 1
+	/*Sent when the window grabs focus.*/
+	DisplayServerWindowEventFocusIn DisplayServerWindowEvent = 2
+	/*Sent when the window loses focus.*/
+	DisplayServerWindowEventFocusOut DisplayServerWindowEvent = 3
+	/*Sent when the user has attempted to close the window (e.g. close button is pressed).*/
+	DisplayServerWindowEventCloseRequest DisplayServerWindowEvent = 4
+	/*Sent when the device "Back" button is pressed.
+	  [b]Note:[/b] This event is implemented only on Android.*/
+	DisplayServerWindowEventGoBackRequest DisplayServerWindowEvent = 5
+	/*Sent when the window is moved to the display with different DPI, or display DPI is changed.
+	  [b]Note:[/b] This flag is implemented only on macOS.*/
+	DisplayServerWindowEventDpiChange DisplayServerWindowEvent = 6
+	/*Sent when the window title bar decoration is changed (e.g. [constant WINDOW_FLAG_EXTEND_TO_TITLE] is set or window entered/exited full screen mode).
+	  [b]Note:[/b] This flag is implemented only on macOS.*/
 	DisplayServerWindowEventTitlebarChange DisplayServerWindowEvent = 7
 )
 
 type DisplayServerVSyncMode = classdb.DisplayServerVSyncMode
 
 const (
+	/*No vertical synchronization, which means the engine will display frames as fast as possible (tearing may be visible). Framerate is unlimited (regardless of [member Engine.max_fps]).*/
 	DisplayServerVsyncDisabled DisplayServerVSyncMode = 0
-	DisplayServerVsyncEnabled  DisplayServerVSyncMode = 1
+	/*Default vertical synchronization mode, the image is displayed only on vertical blanking intervals (no tearing is visible). Framerate is limited by the monitor refresh rate (regardless of [member Engine.max_fps]).*/
+	DisplayServerVsyncEnabled DisplayServerVSyncMode = 1
+	/*Behaves like [constant VSYNC_DISABLED] when the framerate drops below the screen's refresh rate to reduce stuttering (tearing may be visible). Otherwise, vertical synchronization is enabled to avoid tearing. Framerate is limited by the monitor refresh rate (regardless of [member Engine.max_fps]). Behaves like [constant VSYNC_ENABLED] when using the Compatibility rendering method.*/
 	DisplayServerVsyncAdaptive DisplayServerVSyncMode = 2
-	DisplayServerVsyncMailbox  DisplayServerVSyncMode = 3
+	/*Displays the most recent image in the queue on vertical blanking intervals, while rendering to the other images (no tearing is visible). Framerate is unlimited (regardless of [member Engine.max_fps]).
+	  Although not guaranteed, the images can be rendered as fast as possible, which may reduce input lag (also called "Fast" V-Sync mode). [constant VSYNC_MAILBOX] works best when at least twice as many frames as the display refresh rate are rendered. Behaves like [constant VSYNC_ENABLED] when using the Compatibility rendering method.*/
+	DisplayServerVsyncMailbox DisplayServerVSyncMode = 3
 )
 
 type DisplayServerHandleType = classdb.DisplayServerHandleType
 
 const (
+	/*Display handle:
+	  - Linux (X11): [code]X11::Display*[/code] for the display.
+	  - Android: [code]EGLDisplay[/code] for the display.*/
 	DisplayServerDisplayHandle DisplayServerHandleType = 0
-	DisplayServerWindowHandle  DisplayServerHandleType = 1
-	DisplayServerWindowView    DisplayServerHandleType = 2
+	/*Window handle:
+	  - Windows: [code]HWND[/code] for the window.
+	  - Linux (X11): [code]X11::Window*[/code] for the window.
+	  - macOS: [code]NSWindow*[/code] for the window.
+	  - iOS: [code]UIViewController*[/code] for the view controller.
+	  - Android: [code]jObject[/code] for the activity.*/
+	DisplayServerWindowHandle DisplayServerHandleType = 1
+	/*Window view:
+	  - Windows: [code]HDC[/code] for the window (only with the GL Compatibility renderer).
+	  - macOS: [code]NSView*[/code] for the window main view.
+	  - iOS: [code]UIView*[/code] for the window main view.*/
+	DisplayServerWindowView DisplayServerHandleType = 2
+	/*OpenGL context (only with the GL Compatibility renderer):
+	  - Windows: [code]HGLRC[/code] for the window (native GL), or [code]EGLContext[/code] for the window (ANGLE).
+	  - Linux: [code]GLXContext*[/code] for the window.
+	  - macOS: [code]NSOpenGLContext*[/code] for the window (native GL), or [code]EGLContext[/code] for the window (ANGLE).
+	  - Android: [code]EGLContext[/code] for the window.*/
 	DisplayServerOpenglContext DisplayServerHandleType = 3
 )
 
 type DisplayServerTTSUtteranceEvent = classdb.DisplayServerTTSUtteranceEvent
 
 const (
-	DisplayServerTtsUtteranceStarted  DisplayServerTTSUtteranceEvent = 0
-	DisplayServerTtsUtteranceEnded    DisplayServerTTSUtteranceEvent = 1
+	/*Utterance has begun to be spoken.*/
+	DisplayServerTtsUtteranceStarted DisplayServerTTSUtteranceEvent = 0
+	/*Utterance was successfully finished.*/
+	DisplayServerTtsUtteranceEnded DisplayServerTTSUtteranceEvent = 1
+	/*Utterance was canceled, or TTS service was unable to process it.*/
 	DisplayServerTtsUtteranceCanceled DisplayServerTTSUtteranceEvent = 2
+	/*Utterance reached a word or sentence boundary.*/
 	DisplayServerTtsUtteranceBoundary DisplayServerTTSUtteranceEvent = 3
 )
 
 type ENetConnectionCompressionMode = classdb.ENetConnectionCompressionMode
 
 const (
-	ENetConnectionCompressNone       ENetConnectionCompressionMode = 0
+	/*No compression. This uses the most bandwidth, but has the upside of requiring the fewest CPU resources. This option may also be used to make network debugging using tools like Wireshark easier.*/
+	ENetConnectionCompressNone ENetConnectionCompressionMode = 0
+	/*ENet's built-in range encoding. Works well on small packets, but is not the most efficient algorithm on packets larger than 4 KB.*/
 	ENetConnectionCompressRangeCoder ENetConnectionCompressionMode = 1
-	ENetConnectionCompressFastlz     ENetConnectionCompressionMode = 2
-	ENetConnectionCompressZlib       ENetConnectionCompressionMode = 3
-	ENetConnectionCompressZstd       ENetConnectionCompressionMode = 4
+	/*[url=https://fastlz.org/]FastLZ[/url] compression. This option uses less CPU resources compared to [constant COMPRESS_ZLIB], at the expense of using more bandwidth.*/
+	ENetConnectionCompressFastlz ENetConnectionCompressionMode = 2
+	/*[url=https://www.zlib.net/]Zlib[/url] compression. This option uses less bandwidth compared to [constant COMPRESS_FASTLZ], at the expense of using more CPU resources.*/
+	ENetConnectionCompressZlib ENetConnectionCompressionMode = 3
+	/*[url=https://facebook.github.io/zstd/]Zstandard[/url] compression. Note that this algorithm is not very efficient on packets smaller than 4 KB. Therefore, it's recommended to use other compression algorithms in most cases.*/
+	ENetConnectionCompressZstd ENetConnectionCompressionMode = 4
 )
 
 type ENetConnectionEventType = classdb.ENetConnectionEventType
 
 const (
-	ENetConnectionEventError      ENetConnectionEventType = -1
-	ENetConnectionEventNone       ENetConnectionEventType = 0
-	ENetConnectionEventConnect    ENetConnectionEventType = 1
+	/*An error occurred during [method service]. You will likely need to [method destroy] the host and recreate it.*/
+	ENetConnectionEventError ENetConnectionEventType = -1
+	/*No event occurred within the specified time limit.*/
+	ENetConnectionEventNone ENetConnectionEventType = 0
+	/*A connection request initiated by enet_host_connect has completed. The array will contain the peer which successfully connected.*/
+	ENetConnectionEventConnect ENetConnectionEventType = 1
+	/*A peer has disconnected. This event is generated on a successful completion of a disconnect initiated by [method ENetPacketPeer.peer_disconnect], if a peer has timed out, or if a connection request initialized by [method connect_to_host] has timed out. The array will contain the peer which disconnected. The data field contains user supplied data describing the disconnection, or 0, if none is available.*/
 	ENetConnectionEventDisconnect ENetConnectionEventType = 2
-	ENetConnectionEventReceive    ENetConnectionEventType = 3
+	/*A packet has been received from a peer. The array will contain the peer which sent the packet and the channel number upon which the packet was received. The received packet will be queued to the associated [ENetPacketPeer].*/
+	ENetConnectionEventReceive ENetConnectionEventType = 3
 )
 
 type ENetConnectionHostStatistic = classdb.ENetConnectionHostStatistic
 
 const (
-	ENetConnectionHostTotalSentData        ENetConnectionHostStatistic = 0
-	ENetConnectionHostTotalSentPackets     ENetConnectionHostStatistic = 1
-	ENetConnectionHostTotalReceivedData    ENetConnectionHostStatistic = 2
+	/*Total data sent.*/
+	ENetConnectionHostTotalSentData ENetConnectionHostStatistic = 0
+	/*Total UDP packets sent.*/
+	ENetConnectionHostTotalSentPackets ENetConnectionHostStatistic = 1
+	/*Total data received.*/
+	ENetConnectionHostTotalReceivedData ENetConnectionHostStatistic = 2
+	/*Total UDP packets received.*/
 	ENetConnectionHostTotalReceivedPackets ENetConnectionHostStatistic = 3
 )
 
 type ENetPacketPeerPeerState = classdb.ENetPacketPeerPeerState
 
 const (
-	ENetPacketPeerStateDisconnected            ENetPacketPeerPeerState = 0
-	ENetPacketPeerStateConnecting              ENetPacketPeerPeerState = 1
-	ENetPacketPeerStateAcknowledgingConnect    ENetPacketPeerPeerState = 2
-	ENetPacketPeerStateConnectionPending       ENetPacketPeerPeerState = 3
-	ENetPacketPeerStateConnectionSucceeded     ENetPacketPeerPeerState = 4
-	ENetPacketPeerStateConnected               ENetPacketPeerPeerState = 5
-	ENetPacketPeerStateDisconnectLater         ENetPacketPeerPeerState = 6
-	ENetPacketPeerStateDisconnecting           ENetPacketPeerPeerState = 7
+	/*The peer is disconnected.*/
+	ENetPacketPeerStateDisconnected ENetPacketPeerPeerState = 0
+	/*The peer is currently attempting to connect.*/
+	ENetPacketPeerStateConnecting ENetPacketPeerPeerState = 1
+	/*The peer has acknowledged the connection request.*/
+	ENetPacketPeerStateAcknowledgingConnect ENetPacketPeerPeerState = 2
+	/*The peer is currently connecting.*/
+	ENetPacketPeerStateConnectionPending ENetPacketPeerPeerState = 3
+	/*The peer has successfully connected, but is not ready to communicate with yet ([constant STATE_CONNECTED]).*/
+	ENetPacketPeerStateConnectionSucceeded ENetPacketPeerPeerState = 4
+	/*The peer is currently connected and ready to communicate with.*/
+	ENetPacketPeerStateConnected ENetPacketPeerPeerState = 5
+	/*The peer is slated to disconnect after it has no more outgoing packets to send.*/
+	ENetPacketPeerStateDisconnectLater ENetPacketPeerPeerState = 6
+	/*The peer is currently disconnecting.*/
+	ENetPacketPeerStateDisconnecting ENetPacketPeerPeerState = 7
+	/*The peer has acknowledged the disconnection request.*/
 	ENetPacketPeerStateAcknowledgingDisconnect ENetPacketPeerPeerState = 8
-	ENetPacketPeerStateZombie                  ENetPacketPeerPeerState = 9
+	/*The peer has lost connection, but is not considered truly disconnected (as the peer didn't acknowledge the disconnection request).*/
+	ENetPacketPeerStateZombie ENetPacketPeerPeerState = 9
 )
 
 type ENetPacketPeerPeerStatistic = classdb.ENetPacketPeerPeerStatistic
 
 const (
-	ENetPacketPeerPeerPacketLoss                 ENetPacketPeerPeerStatistic = 0
-	ENetPacketPeerPeerPacketLossVariance         ENetPacketPeerPeerStatistic = 1
-	ENetPacketPeerPeerPacketLossEpoch            ENetPacketPeerPeerStatistic = 2
-	ENetPacketPeerPeerRoundTripTime              ENetPacketPeerPeerStatistic = 3
-	ENetPacketPeerPeerRoundTripTimeVariance      ENetPacketPeerPeerStatistic = 4
-	ENetPacketPeerPeerLastRoundTripTime          ENetPacketPeerPeerStatistic = 5
-	ENetPacketPeerPeerLastRoundTripTimeVariance  ENetPacketPeerPeerStatistic = 6
-	ENetPacketPeerPeerPacketThrottle             ENetPacketPeerPeerStatistic = 7
-	ENetPacketPeerPeerPacketThrottleLimit        ENetPacketPeerPeerStatistic = 8
-	ENetPacketPeerPeerPacketThrottleCounter      ENetPacketPeerPeerStatistic = 9
-	ENetPacketPeerPeerPacketThrottleEpoch        ENetPacketPeerPeerStatistic = 10
+	/*Mean packet loss of reliable packets as a ratio with respect to the [constant PACKET_LOSS_SCALE].*/
+	ENetPacketPeerPeerPacketLoss ENetPacketPeerPeerStatistic = 0
+	/*Packet loss variance.*/
+	ENetPacketPeerPeerPacketLossVariance ENetPacketPeerPeerStatistic = 1
+	/*The time at which packet loss statistics were last updated (in milliseconds since the connection started). The interval for packet loss statistics updates is 10 seconds, and at least one packet must have been sent since the last statistics update.*/
+	ENetPacketPeerPeerPacketLossEpoch ENetPacketPeerPeerStatistic = 2
+	/*Mean packet round trip time for reliable packets.*/
+	ENetPacketPeerPeerRoundTripTime ENetPacketPeerPeerStatistic = 3
+	/*Variance of the mean round trip time.*/
+	ENetPacketPeerPeerRoundTripTimeVariance ENetPacketPeerPeerStatistic = 4
+	/*Last recorded round trip time for a reliable packet.*/
+	ENetPacketPeerPeerLastRoundTripTime ENetPacketPeerPeerStatistic = 5
+	/*Variance of the last trip time recorded.*/
+	ENetPacketPeerPeerLastRoundTripTimeVariance ENetPacketPeerPeerStatistic = 6
+	/*The peer's current throttle status.*/
+	ENetPacketPeerPeerPacketThrottle ENetPacketPeerPeerStatistic = 7
+	/*The maximum number of unreliable packets that should not be dropped. This value is always greater than or equal to [code]1[/code]. The initial value is equal to [constant PACKET_THROTTLE_SCALE].*/
+	ENetPacketPeerPeerPacketThrottleLimit ENetPacketPeerPeerStatistic = 8
+	/*Internal value used to increment the packet throttle counter. The value is hardcoded to [code]7[/code] and cannot be changed. You probably want to look at [constant PEER_PACKET_THROTTLE_ACCELERATION] instead.*/
+	ENetPacketPeerPeerPacketThrottleCounter ENetPacketPeerPeerStatistic = 9
+	/*The time at which throttle statistics were last updated (in milliseconds since the connection started). The interval for throttle statistics updates is [constant PEER_PACKET_THROTTLE_INTERVAL].*/
+	ENetPacketPeerPeerPacketThrottleEpoch ENetPacketPeerPeerStatistic = 10
+	/*The throttle's acceleration factor. Higher values will make ENet adapt to fluctuating network conditions faster, causing unrelaible packets to be sent [i]more[/i] often. The default value is [code]2[/code].*/
 	ENetPacketPeerPeerPacketThrottleAcceleration ENetPacketPeerPeerStatistic = 11
+	/*The throttle's deceleration factor. Higher values will make ENet adapt to fluctuating network conditions faster, causing unrelaible packets to be sent [i]less[/i] often. The default value is [code]2[/code].*/
 	ENetPacketPeerPeerPacketThrottleDeceleration ENetPacketPeerPeerStatistic = 12
-	ENetPacketPeerPeerPacketThrottleInterval     ENetPacketPeerPeerStatistic = 13
+	/*The interval over which the lowest mean round trip time should be measured for use by the throttle mechanism (in milliseconds). The default value is [code]5000[/code].*/
+	ENetPacketPeerPeerPacketThrottleInterval ENetPacketPeerPeerStatistic = 13
 )
 
 type EditorFeatureProfileFeature = classdb.EditorFeatureProfileFeature
 
 const (
-	EditorFeatureProfileFeature3d             EditorFeatureProfileFeature = 0
-	EditorFeatureProfileFeatureScript         EditorFeatureProfileFeature = 1
-	EditorFeatureProfileFeatureAssetLib       EditorFeatureProfileFeature = 2
-	EditorFeatureProfileFeatureSceneTree      EditorFeatureProfileFeature = 3
-	EditorFeatureProfileFeatureNodeDock       EditorFeatureProfileFeature = 4
+	/*The 3D editor. If this feature is disabled, the 3D editor won't display but 3D nodes will still display in the Create New Node dialog.*/
+	EditorFeatureProfileFeature3d EditorFeatureProfileFeature = 0
+	/*The Script tab, which contains the script editor and class reference browser. If this feature is disabled, the Script tab won't display.*/
+	EditorFeatureProfileFeatureScript EditorFeatureProfileFeature = 1
+	/*The AssetLib tab. If this feature is disabled, the AssetLib tab won't display.*/
+	EditorFeatureProfileFeatureAssetLib EditorFeatureProfileFeature = 2
+	/*Scene tree editing. If this feature is disabled, the Scene tree dock will still be visible but will be read-only.*/
+	EditorFeatureProfileFeatureSceneTree EditorFeatureProfileFeature = 3
+	/*The Node dock. If this feature is disabled, signals and groups won't be visible and modifiable from the editor.*/
+	EditorFeatureProfileFeatureNodeDock EditorFeatureProfileFeature = 4
+	/*The FileSystem dock. If this feature is disabled, the FileSystem dock won't be visible.*/
 	EditorFeatureProfileFeatureFilesystemDock EditorFeatureProfileFeature = 5
-	EditorFeatureProfileFeatureImportDock     EditorFeatureProfileFeature = 6
-	EditorFeatureProfileFeatureHistoryDock    EditorFeatureProfileFeature = 7
-	EditorFeatureProfileFeatureMax            EditorFeatureProfileFeature = 8
+	/*The Import dock. If this feature is disabled, the Import dock won't be visible.*/
+	EditorFeatureProfileFeatureImportDock EditorFeatureProfileFeature = 6
+	/*The History dock. If this feature is disabled, the History dock won't be visible.*/
+	EditorFeatureProfileFeatureHistoryDock EditorFeatureProfileFeature = 7
+	/*Represents the size of the [enum Feature] enum.*/
+	EditorFeatureProfileFeatureMax EditorFeatureProfileFeature = 8
 )
 
 type EditorFileDialogFileMode = classdb.EditorFileDialogFileMode
 
 const (
-	EditorFileDialogFileModeOpenFile  EditorFileDialogFileMode = 0
+	/*The [EditorFileDialog] can select only one file. Accepting the window will open the file.*/
+	EditorFileDialogFileModeOpenFile EditorFileDialogFileMode = 0
+	/*The [EditorFileDialog] can select multiple files. Accepting the window will open all files.*/
 	EditorFileDialogFileModeOpenFiles EditorFileDialogFileMode = 1
-	EditorFileDialogFileModeOpenDir   EditorFileDialogFileMode = 2
-	EditorFileDialogFileModeOpenAny   EditorFileDialogFileMode = 3
-	EditorFileDialogFileModeSaveFile  EditorFileDialogFileMode = 4
+	/*The [EditorFileDialog] can select only one directory. Accepting the window will open the directory.*/
+	EditorFileDialogFileModeOpenDir EditorFileDialogFileMode = 2
+	/*The [EditorFileDialog] can select a file or directory. Accepting the window will open it.*/
+	EditorFileDialogFileModeOpenAny EditorFileDialogFileMode = 3
+	/*The [EditorFileDialog] can select only one file. Accepting the window will save the file.*/
+	EditorFileDialogFileModeSaveFile EditorFileDialogFileMode = 4
 )
 
 type EditorFileDialogAccess = classdb.EditorFileDialogAccess
 
 const (
-	EditorFileDialogAccessResources  EditorFileDialogAccess = 0
-	EditorFileDialogAccessUserdata   EditorFileDialogAccess = 1
+	/*The [EditorFileDialog] can only view [code]res://[/code] directory contents.*/
+	EditorFileDialogAccessResources EditorFileDialogAccess = 0
+	/*The [EditorFileDialog] can only view [code]user://[/code] directory contents.*/
+	EditorFileDialogAccessUserdata EditorFileDialogAccess = 1
+	/*The [EditorFileDialog] can view the entire local file system.*/
 	EditorFileDialogAccessFilesystem EditorFileDialogAccess = 2
 )
 
 type EditorFileDialogDisplayMode = classdb.EditorFileDialogDisplayMode
 
 const (
+	/*The [EditorFileDialog] displays resources as thumbnails.*/
 	EditorFileDialogDisplayThumbnails EditorFileDialogDisplayMode = 0
-	EditorFileDialogDisplayList       EditorFileDialogDisplayMode = 1
+	/*The [EditorFileDialog] displays resources as a list of filenames.*/
+	EditorFileDialogDisplayList EditorFileDialogDisplayMode = 1
 )
 
 type EditorPluginCustomControlContainer = classdb.EditorPluginCustomControlContainer
 
 const (
-	EditorPluginContainerToolbar                EditorPluginCustomControlContainer = 0
-	EditorPluginContainerSpatialEditorMenu      EditorPluginCustomControlContainer = 1
-	EditorPluginContainerSpatialEditorSideLeft  EditorPluginCustomControlContainer = 2
+	/*Main editor toolbar, next to play buttons.*/
+	EditorPluginContainerToolbar EditorPluginCustomControlContainer = 0
+	/*The toolbar that appears when 3D editor is active.*/
+	EditorPluginContainerSpatialEditorMenu EditorPluginCustomControlContainer = 1
+	/*Left sidebar of the 3D editor.*/
+	EditorPluginContainerSpatialEditorSideLeft EditorPluginCustomControlContainer = 2
+	/*Right sidebar of the 3D editor.*/
 	EditorPluginContainerSpatialEditorSideRight EditorPluginCustomControlContainer = 3
-	EditorPluginContainerSpatialEditorBottom    EditorPluginCustomControlContainer = 4
-	EditorPluginContainerCanvasEditorMenu       EditorPluginCustomControlContainer = 5
-	EditorPluginContainerCanvasEditorSideLeft   EditorPluginCustomControlContainer = 6
-	EditorPluginContainerCanvasEditorSideRight  EditorPluginCustomControlContainer = 7
-	EditorPluginContainerCanvasEditorBottom     EditorPluginCustomControlContainer = 8
-	EditorPluginContainerInspectorBottom        EditorPluginCustomControlContainer = 9
-	EditorPluginContainerProjectSettingTabLeft  EditorPluginCustomControlContainer = 10
+	/*Bottom panel of the 3D editor.*/
+	EditorPluginContainerSpatialEditorBottom EditorPluginCustomControlContainer = 4
+	/*The toolbar that appears when 2D editor is active.*/
+	EditorPluginContainerCanvasEditorMenu EditorPluginCustomControlContainer = 5
+	/*Left sidebar of the 2D editor.*/
+	EditorPluginContainerCanvasEditorSideLeft EditorPluginCustomControlContainer = 6
+	/*Right sidebar of the 2D editor.*/
+	EditorPluginContainerCanvasEditorSideRight EditorPluginCustomControlContainer = 7
+	/*Bottom panel of the 2D editor.*/
+	EditorPluginContainerCanvasEditorBottom EditorPluginCustomControlContainer = 8
+	/*Bottom section of the inspector.*/
+	EditorPluginContainerInspectorBottom EditorPluginCustomControlContainer = 9
+	/*Tab of Project Settings dialog, to the left of other tabs.*/
+	EditorPluginContainerProjectSettingTabLeft EditorPluginCustomControlContainer = 10
+	/*Tab of Project Settings dialog, to the right of other tabs.*/
 	EditorPluginContainerProjectSettingTabRight EditorPluginCustomControlContainer = 11
 )
 
 type EditorPluginDockSlot = classdb.EditorPluginDockSlot
 
 const (
-	EditorPluginDockSlotLeftUl  EditorPluginDockSlot = 0
-	EditorPluginDockSlotLeftBl  EditorPluginDockSlot = 1
-	EditorPluginDockSlotLeftUr  EditorPluginDockSlot = 2
-	EditorPluginDockSlotLeftBr  EditorPluginDockSlot = 3
+	/*Dock slot, left side, upper-left (empty in default layout).*/
+	EditorPluginDockSlotLeftUl EditorPluginDockSlot = 0
+	/*Dock slot, left side, bottom-left (empty in default layout).*/
+	EditorPluginDockSlotLeftBl EditorPluginDockSlot = 1
+	/*Dock slot, left side, upper-right (in default layout includes Scene and Import docks).*/
+	EditorPluginDockSlotLeftUr EditorPluginDockSlot = 2
+	/*Dock slot, left side, bottom-right (in default layout includes FileSystem dock).*/
+	EditorPluginDockSlotLeftBr EditorPluginDockSlot = 3
+	/*Dock slot, right side, upper-left (in default layout includes Inspector, Node, and History docks).*/
 	EditorPluginDockSlotRightUl EditorPluginDockSlot = 4
+	/*Dock slot, right side, bottom-left (empty in default layout).*/
 	EditorPluginDockSlotRightBl EditorPluginDockSlot = 5
+	/*Dock slot, right side, upper-right (empty in default layout).*/
 	EditorPluginDockSlotRightUr EditorPluginDockSlot = 6
+	/*Dock slot, right side, bottom-right (empty in default layout).*/
 	EditorPluginDockSlotRightBr EditorPluginDockSlot = 7
-	EditorPluginDockSlotMax     EditorPluginDockSlot = 8
+	/*Represents the size of the [enum DockSlot] enum.*/
+	EditorPluginDockSlotMax EditorPluginDockSlot = 8
 )
 
 type EditorPluginAfterGUIInput = classdb.EditorPluginAfterGUIInput
 
 const (
-	EditorPluginAfterGuiInputPass   EditorPluginAfterGUIInput = 0
-	EditorPluginAfterGuiInputStop   EditorPluginAfterGUIInput = 1
+	/*Forwards the [InputEvent] to other EditorPlugins.*/
+	EditorPluginAfterGuiInputPass EditorPluginAfterGUIInput = 0
+	/*Prevents the [InputEvent] from reaching other Editor classes.*/
+	EditorPluginAfterGuiInputStop EditorPluginAfterGUIInput = 1
+	/*Pass the [InputEvent] to other editor plugins except the main [Node3D] one. This can be used to prevent node selection changes and work with sub-gizmos instead.*/
 	EditorPluginAfterGuiInputCustom EditorPluginAfterGUIInput = 2
 )
 
@@ -2031,203 +3392,304 @@ const (
 type EditorUndoRedoManagerSpecialHistory = classdb.EditorUndoRedoManagerSpecialHistory
 
 const (
-	EditorUndoRedoManagerGlobalHistory  EditorUndoRedoManagerSpecialHistory = 0
-	EditorUndoRedoManagerRemoteHistory  EditorUndoRedoManagerSpecialHistory = -9
+	/*Global history not associated with any scene, but with external resources etc.*/
+	EditorUndoRedoManagerGlobalHistory EditorUndoRedoManagerSpecialHistory = 0
+	/*History associated with remote inspector. Used when live editing a running project.*/
+	EditorUndoRedoManagerRemoteHistory EditorUndoRedoManagerSpecialHistory = -9
+	/*Invalid "null" history. It's a special value, not associated with any object.*/
 	EditorUndoRedoManagerInvalidHistory EditorUndoRedoManagerSpecialHistory = -99
 )
 
 type EditorVCSInterfaceChangeType = classdb.EditorVCSInterfaceChangeType
 
 const (
-	EditorVCSInterfaceChangeTypeNew        EditorVCSInterfaceChangeType = 0
-	EditorVCSInterfaceChangeTypeModified   EditorVCSInterfaceChangeType = 1
-	EditorVCSInterfaceChangeTypeRenamed    EditorVCSInterfaceChangeType = 2
-	EditorVCSInterfaceChangeTypeDeleted    EditorVCSInterfaceChangeType = 3
+	/*A new file has been added.*/
+	EditorVCSInterfaceChangeTypeNew EditorVCSInterfaceChangeType = 0
+	/*An earlier added file has been modified.*/
+	EditorVCSInterfaceChangeTypeModified EditorVCSInterfaceChangeType = 1
+	/*An earlier added file has been renamed.*/
+	EditorVCSInterfaceChangeTypeRenamed EditorVCSInterfaceChangeType = 2
+	/*An earlier added file has been deleted.*/
+	EditorVCSInterfaceChangeTypeDeleted EditorVCSInterfaceChangeType = 3
+	/*An earlier added file has been typechanged.*/
 	EditorVCSInterfaceChangeTypeTypechange EditorVCSInterfaceChangeType = 4
-	EditorVCSInterfaceChangeTypeUnmerged   EditorVCSInterfaceChangeType = 5
+	/*A file is left unmerged.*/
+	EditorVCSInterfaceChangeTypeUnmerged EditorVCSInterfaceChangeType = 5
 )
 
 type EditorVCSInterfaceTreeArea = classdb.EditorVCSInterfaceTreeArea
 
 const (
-	EditorVCSInterfaceTreeAreaCommit   EditorVCSInterfaceTreeArea = 0
-	EditorVCSInterfaceTreeAreaStaged   EditorVCSInterfaceTreeArea = 1
+	/*A commit is encountered from the commit area.*/
+	EditorVCSInterfaceTreeAreaCommit EditorVCSInterfaceTreeArea = 0
+	/*A file is encountered from the staged area.*/
+	EditorVCSInterfaceTreeAreaStaged EditorVCSInterfaceTreeArea = 1
+	/*A file is encountered from the unstaged area.*/
 	EditorVCSInterfaceTreeAreaUnstaged EditorVCSInterfaceTreeArea = 2
 )
 
 type EnvironmentBGMode = classdb.EnvironmentBGMode
 
 const (
+	/*Clears the background using the clear color defined in [member ProjectSettings.rendering/environment/defaults/default_clear_color].*/
 	EnvironmentBgClearColor EnvironmentBGMode = 0
-	EnvironmentBgColor      EnvironmentBGMode = 1
-	EnvironmentBgSky        EnvironmentBGMode = 2
-	EnvironmentBgCanvas     EnvironmentBGMode = 3
-	EnvironmentBgKeep       EnvironmentBGMode = 4
+	/*Clears the background using a custom clear color.*/
+	EnvironmentBgColor EnvironmentBGMode = 1
+	/*Displays a user-defined sky in the background.*/
+	EnvironmentBgSky EnvironmentBGMode = 2
+	/*Displays a [CanvasLayer] in the background.*/
+	EnvironmentBgCanvas EnvironmentBGMode = 3
+	/*Keeps on screen every pixel drawn in the background. This is the fastest background mode, but it can only be safely used in fully-interior scenes (no visible sky or sky reflections). If enabled in a scene where the background is visible, "ghost trail" artifacts will be visible when moving the camera.*/
+	EnvironmentBgKeep EnvironmentBGMode = 4
+	/*Displays a camera feed in the background.*/
 	EnvironmentBgCameraFeed EnvironmentBGMode = 5
-	EnvironmentBgMax        EnvironmentBGMode = 6
+	/*Represents the size of the [enum BGMode] enum.*/
+	EnvironmentBgMax EnvironmentBGMode = 6
 )
 
 type EnvironmentAmbientSource = classdb.EnvironmentAmbientSource
 
 const (
-	EnvironmentAmbientSourceBg       EnvironmentAmbientSource = 0
+	/*Gather ambient light from whichever source is specified as the background.*/
+	EnvironmentAmbientSourceBg EnvironmentAmbientSource = 0
+	/*Disable ambient light. This provides a slight performance boost over [constant AMBIENT_SOURCE_SKY].*/
 	EnvironmentAmbientSourceDisabled EnvironmentAmbientSource = 1
-	EnvironmentAmbientSourceColor    EnvironmentAmbientSource = 2
-	EnvironmentAmbientSourceSky      EnvironmentAmbientSource = 3
+	/*Specify a specific [Color] for ambient light. This provides a slight performance boost over [constant AMBIENT_SOURCE_SKY].*/
+	EnvironmentAmbientSourceColor EnvironmentAmbientSource = 2
+	/*Gather ambient light from the [Sky] regardless of what the background is.*/
+	EnvironmentAmbientSourceSky EnvironmentAmbientSource = 3
 )
 
 type EnvironmentReflectionSource = classdb.EnvironmentReflectionSource
 
 const (
-	EnvironmentReflectionSourceBg       EnvironmentReflectionSource = 0
+	/*Use the background for reflections.*/
+	EnvironmentReflectionSourceBg EnvironmentReflectionSource = 0
+	/*Disable reflections. This provides a slight performance boost over other options.*/
 	EnvironmentReflectionSourceDisabled EnvironmentReflectionSource = 1
-	EnvironmentReflectionSourceSky      EnvironmentReflectionSource = 2
+	/*Use the [Sky] for reflections regardless of what the background is.*/
+	EnvironmentReflectionSourceSky EnvironmentReflectionSource = 2
 )
 
 type EnvironmentToneMapper = classdb.EnvironmentToneMapper
 
 const (
-	EnvironmentToneMapperLinear    EnvironmentToneMapper = 0
+	/*Linear tonemapper operator. Reads the linear data and passes it on unmodified. This can cause bright lighting to look blown out, with noticeable clipping in the output colors.*/
+	EnvironmentToneMapperLinear EnvironmentToneMapper = 0
+	/*Reinhardt tonemapper operator. Performs a variation on rendered pixels' colors by this formula: [code]color = color / (1 + color)[/code]. This avoids clipping bright highlights, but the resulting image can look a bit dull.*/
 	EnvironmentToneMapperReinhardt EnvironmentToneMapper = 1
-	EnvironmentToneMapperFilmic    EnvironmentToneMapper = 2
-	EnvironmentToneMapperAces      EnvironmentToneMapper = 3
+	/*Filmic tonemapper operator. This avoids clipping bright highlights, with a resulting image that usually looks more vivid than [constant TONE_MAPPER_REINHARDT].*/
+	EnvironmentToneMapperFilmic EnvironmentToneMapper = 2
+	/*Use the Academy Color Encoding System tonemapper. ACES is slightly more expensive than other options, but it handles bright lighting in a more realistic fashion by desaturating it as it becomes brighter. ACES typically has a more contrasted output compared to [constant TONE_MAPPER_REINHARDT] and [constant TONE_MAPPER_FILMIC].
+	  [b]Note:[/b] This tonemapping operator is called "ACES Fitted" in Godot 3.x.*/
+	EnvironmentToneMapperAces EnvironmentToneMapper = 3
 )
 
 type EnvironmentGlowBlendMode = classdb.EnvironmentGlowBlendMode
 
 const (
-	EnvironmentGlowBlendModeAdditive  EnvironmentGlowBlendMode = 0
-	EnvironmentGlowBlendModeScreen    EnvironmentGlowBlendMode = 1
+	/*Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.*/
+	EnvironmentGlowBlendModeAdditive EnvironmentGlowBlendMode = 0
+	/*Screen glow blending mode. Increases brightness, used frequently with bloom.*/
+	EnvironmentGlowBlendModeScreen EnvironmentGlowBlendMode = 1
+	/*Soft light glow blending mode. Modifies contrast, exposes shadows and highlights (vivid bloom).*/
 	EnvironmentGlowBlendModeSoftlight EnvironmentGlowBlendMode = 2
-	EnvironmentGlowBlendModeReplace   EnvironmentGlowBlendMode = 3
-	EnvironmentGlowBlendModeMix       EnvironmentGlowBlendMode = 4
+	/*Replace glow blending mode. Replaces all pixels' color by the glow value. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness.*/
+	EnvironmentGlowBlendModeReplace EnvironmentGlowBlendMode = 3
+	/*Mixes the glow with the underlying color to avoid increasing brightness as much while still maintaining a glow effect.*/
+	EnvironmentGlowBlendModeMix EnvironmentGlowBlendMode = 4
 )
 
 type EnvironmentSDFGIYScale = classdb.EnvironmentSDFGIYScale
 
 const (
-	EnvironmentSdfgiYScale50Percent  EnvironmentSDFGIYScale = 0
-	EnvironmentSdfgiYScale75Percent  EnvironmentSDFGIYScale = 1
+	/*Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.*/
+	EnvironmentSdfgiYScale50Percent EnvironmentSDFGIYScale = 0
+	/*Use 75% scale for SDFGI on the Y (vertical) axis. This is a balance between the 50% and 100% SDFGI Y scales.*/
+	EnvironmentSdfgiYScale75Percent EnvironmentSDFGIYScale = 1
+	/*Use 100% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be as tall as they are wide. This is usually the best choice for highly vertical scenes. The downside is that light leaking may become more noticeable with thin floors and ceilings.*/
 	EnvironmentSdfgiYScale100Percent EnvironmentSDFGIYScale = 2
 )
 
 type FastNoiseLiteNoiseType = classdb.FastNoiseLiteNoiseType
 
 const (
-	FastNoiseLiteTypeValue         FastNoiseLiteNoiseType = 5
-	FastNoiseLiteTypeValueCubic    FastNoiseLiteNoiseType = 4
-	FastNoiseLiteTypePerlin        FastNoiseLiteNoiseType = 3
-	FastNoiseLiteTypeCellular      FastNoiseLiteNoiseType = 2
-	FastNoiseLiteTypeSimplex       FastNoiseLiteNoiseType = 0
+	/*A lattice of points are assigned random values then interpolated based on neighboring values.*/
+	FastNoiseLiteTypeValue FastNoiseLiteNoiseType = 5
+	/*Similar to Value noise, but slower. Has more variance in peaks and valleys.
+	  Cubic noise can be used to avoid certain artifacts when using value noise to create a bumpmap. In general, you should always use this mode if the value noise is being used for a heightmap or bumpmap.*/
+	FastNoiseLiteTypeValueCubic FastNoiseLiteNoiseType = 4
+	/*A lattice of random gradients. Their dot products are interpolated to obtain values in between the lattices.*/
+	FastNoiseLiteTypePerlin FastNoiseLiteNoiseType = 3
+	/*Cellular includes both Worley noise and Voronoi diagrams which creates various regions of the same value.*/
+	FastNoiseLiteTypeCellular FastNoiseLiteNoiseType = 2
+	/*As opposed to [constant TYPE_PERLIN], gradients exist in a simplex lattice rather than a grid lattice, avoiding directional artifacts.*/
+	FastNoiseLiteTypeSimplex FastNoiseLiteNoiseType = 0
+	/*Modified, higher quality version of [constant TYPE_SIMPLEX], but slower.*/
 	FastNoiseLiteTypeSimplexSmooth FastNoiseLiteNoiseType = 1
 )
 
 type FastNoiseLiteFractalType = classdb.FastNoiseLiteFractalType
 
 const (
-	FastNoiseLiteFractalNone     FastNoiseLiteFractalType = 0
-	FastNoiseLiteFractalFbm      FastNoiseLiteFractalType = 1
-	FastNoiseLiteFractalRidged   FastNoiseLiteFractalType = 2
+	/*No fractal noise.*/
+	FastNoiseLiteFractalNone FastNoiseLiteFractalType = 0
+	/*Method using Fractional Brownian Motion to combine octaves into a fractal.*/
+	FastNoiseLiteFractalFbm FastNoiseLiteFractalType = 1
+	/*Method of combining octaves into a fractal resulting in a "ridged" look.*/
+	FastNoiseLiteFractalRidged FastNoiseLiteFractalType = 2
+	/*Method of combining octaves into a fractal with a ping pong effect.*/
 	FastNoiseLiteFractalPingPong FastNoiseLiteFractalType = 3
 )
 
 type FastNoiseLiteCellularDistanceFunction = classdb.FastNoiseLiteCellularDistanceFunction
 
 const (
-	FastNoiseLiteDistanceEuclidean        FastNoiseLiteCellularDistanceFunction = 0
+	/*Euclidean distance to the nearest point.*/
+	FastNoiseLiteDistanceEuclidean FastNoiseLiteCellularDistanceFunction = 0
+	/*Squared Euclidean distance to the nearest point.*/
 	FastNoiseLiteDistanceEuclideanSquared FastNoiseLiteCellularDistanceFunction = 1
-	FastNoiseLiteDistanceManhattan        FastNoiseLiteCellularDistanceFunction = 2
-	FastNoiseLiteDistanceHybrid           FastNoiseLiteCellularDistanceFunction = 3
+	/*Manhattan distance (taxicab metric) to the nearest point.*/
+	FastNoiseLiteDistanceManhattan FastNoiseLiteCellularDistanceFunction = 2
+	/*Blend of [constant DISTANCE_EUCLIDEAN] and [constant DISTANCE_MANHATTAN] to give curved cell boundaries*/
+	FastNoiseLiteDistanceHybrid FastNoiseLiteCellularDistanceFunction = 3
 )
 
 type FastNoiseLiteCellularReturnType = classdb.FastNoiseLiteCellularReturnType
 
 const (
-	FastNoiseLiteReturnCellValue    FastNoiseLiteCellularReturnType = 0
-	FastNoiseLiteReturnDistance     FastNoiseLiteCellularReturnType = 1
-	FastNoiseLiteReturnDistance2    FastNoiseLiteCellularReturnType = 2
+	/*The cellular distance function will return the same value for all points within a cell.*/
+	FastNoiseLiteReturnCellValue FastNoiseLiteCellularReturnType = 0
+	/*The cellular distance function will return a value determined by the distance to the nearest point.*/
+	FastNoiseLiteReturnDistance FastNoiseLiteCellularReturnType = 1
+	/*The cellular distance function returns the distance to the second-nearest point.*/
+	FastNoiseLiteReturnDistance2 FastNoiseLiteCellularReturnType = 2
+	/*The distance to the nearest point is added to the distance to the second-nearest point.*/
 	FastNoiseLiteReturnDistance2Add FastNoiseLiteCellularReturnType = 3
+	/*The distance to the nearest point is subtracted from the distance to the second-nearest point.*/
 	FastNoiseLiteReturnDistance2Sub FastNoiseLiteCellularReturnType = 4
+	/*The distance to the nearest point is multiplied with the distance to the second-nearest point.*/
 	FastNoiseLiteReturnDistance2Mul FastNoiseLiteCellularReturnType = 5
+	/*The distance to the nearest point is divided by the distance to the second-nearest point.*/
 	FastNoiseLiteReturnDistance2Div FastNoiseLiteCellularReturnType = 6
 )
 
 type FastNoiseLiteDomainWarpType = classdb.FastNoiseLiteDomainWarpType
 
 const (
-	FastNoiseLiteDomainWarpSimplex        FastNoiseLiteDomainWarpType = 0
+	/*The domain is warped using the simplex noise algorithm.*/
+	FastNoiseLiteDomainWarpSimplex FastNoiseLiteDomainWarpType = 0
+	/*The domain is warped using a simplified version of the simplex noise algorithm.*/
 	FastNoiseLiteDomainWarpSimplexReduced FastNoiseLiteDomainWarpType = 1
-	FastNoiseLiteDomainWarpBasicGrid      FastNoiseLiteDomainWarpType = 2
+	/*The domain is warped using a simple noise grid (not as smooth as the other methods, but more performant).*/
+	FastNoiseLiteDomainWarpBasicGrid FastNoiseLiteDomainWarpType = 2
 )
 
 type FastNoiseLiteDomainWarpFractalType = classdb.FastNoiseLiteDomainWarpFractalType
 
 const (
-	FastNoiseLiteDomainWarpFractalNone        FastNoiseLiteDomainWarpFractalType = 0
+	/*No fractal noise for warping the space.*/
+	FastNoiseLiteDomainWarpFractalNone FastNoiseLiteDomainWarpFractalType = 0
+	/*Warping the space progressively, octave for octave, resulting in a more "liquified" distortion.*/
 	FastNoiseLiteDomainWarpFractalProgressive FastNoiseLiteDomainWarpFractalType = 1
+	/*Warping the space independently for each octave, resulting in a more chaotic distortion.*/
 	FastNoiseLiteDomainWarpFractalIndependent FastNoiseLiteDomainWarpFractalType = 2
 )
 
 type FileAccessModeFlags = classdb.FileAccessModeFlags
 
 const (
-	FileAccessRead      FileAccessModeFlags = 1
-	FileAccessWrite     FileAccessModeFlags = 2
+	/*Opens the file for read operations. The cursor is positioned at the beginning of the file.*/
+	FileAccessRead FileAccessModeFlags = 1
+	/*Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
+	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive]).*/
+	FileAccessWrite FileAccessModeFlags = 2
+	/*Opens the file for read and write operations. Does not truncate the file. The cursor is positioned at the beginning of the file.*/
 	FileAccessReadWrite FileAccessModeFlags = 3
+	/*Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The cursor is positioned at the beginning of the file.
+	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive]).*/
 	FileAccessWriteRead FileAccessModeFlags = 7
 )
 
 type FileAccessCompressionMode = classdb.FileAccessCompressionMode
 
 const (
-	FileAccessCompressionFastlz  FileAccessCompressionMode = 0
+	/*Uses the [url=https://fastlz.org/]FastLZ[/url] compression method.*/
+	FileAccessCompressionFastlz FileAccessCompressionMode = 0
+	/*Uses the [url=https://en.wikipedia.org/wiki/DEFLATE]DEFLATE[/url] compression method.*/
 	FileAccessCompressionDeflate FileAccessCompressionMode = 1
-	FileAccessCompressionZstd    FileAccessCompressionMode = 2
-	FileAccessCompressionGzip    FileAccessCompressionMode = 3
-	FileAccessCompressionBrotli  FileAccessCompressionMode = 4
+	/*Uses the [url=https://facebook.github.io/zstd/]Zstandard[/url] compression method.*/
+	FileAccessCompressionZstd FileAccessCompressionMode = 2
+	/*Uses the [url=https://www.gzip.org/]gzip[/url] compression method.*/
+	FileAccessCompressionGzip FileAccessCompressionMode = 3
+	/*Uses the [url=https://github.com/google/brotli]brotli[/url] compression method (only decompression is supported).*/
+	FileAccessCompressionBrotli FileAccessCompressionMode = 4
 )
 
 type FileAccessUnixPermissionFlags = classdb.FileAccessUnixPermissionFlags
 
 const (
-	FileAccessUnixReadOwner        FileAccessUnixPermissionFlags = 256
-	FileAccessUnixWriteOwner       FileAccessUnixPermissionFlags = 128
-	FileAccessUnixExecuteOwner     FileAccessUnixPermissionFlags = 64
-	FileAccessUnixReadGroup        FileAccessUnixPermissionFlags = 32
-	FileAccessUnixWriteGroup       FileAccessUnixPermissionFlags = 16
-	FileAccessUnixExecuteGroup     FileAccessUnixPermissionFlags = 8
-	FileAccessUnixReadOther        FileAccessUnixPermissionFlags = 4
-	FileAccessUnixWriteOther       FileAccessUnixPermissionFlags = 2
-	FileAccessUnixExecuteOther     FileAccessUnixPermissionFlags = 1
-	FileAccessUnixSetUserId        FileAccessUnixPermissionFlags = 2048
-	FileAccessUnixSetGroupId       FileAccessUnixPermissionFlags = 1024
+	/*Read for owner bit.*/
+	FileAccessUnixReadOwner FileAccessUnixPermissionFlags = 256
+	/*Write for owner bit.*/
+	FileAccessUnixWriteOwner FileAccessUnixPermissionFlags = 128
+	/*Execute for owner bit.*/
+	FileAccessUnixExecuteOwner FileAccessUnixPermissionFlags = 64
+	/*Read for group bit.*/
+	FileAccessUnixReadGroup FileAccessUnixPermissionFlags = 32
+	/*Write for group bit.*/
+	FileAccessUnixWriteGroup FileAccessUnixPermissionFlags = 16
+	/*Execute for group bit.*/
+	FileAccessUnixExecuteGroup FileAccessUnixPermissionFlags = 8
+	/*Read for other bit.*/
+	FileAccessUnixReadOther FileAccessUnixPermissionFlags = 4
+	/*Write for other bit.*/
+	FileAccessUnixWriteOther FileAccessUnixPermissionFlags = 2
+	/*Execute for other bit.*/
+	FileAccessUnixExecuteOther FileAccessUnixPermissionFlags = 1
+	/*Set user id on execution bit.*/
+	FileAccessUnixSetUserId FileAccessUnixPermissionFlags = 2048
+	/*Set group id on execution bit.*/
+	FileAccessUnixSetGroupId FileAccessUnixPermissionFlags = 1024
+	/*Restricted deletion (sticky) bit.*/
 	FileAccessUnixRestrictedDelete FileAccessUnixPermissionFlags = 512
 )
 
 type FileDialogFileMode = classdb.FileDialogFileMode
 
 const (
-	FileDialogFileModeOpenFile  FileDialogFileMode = 0
+	/*The dialog allows selecting one, and only one file.*/
+	FileDialogFileModeOpenFile FileDialogFileMode = 0
+	/*The dialog allows selecting multiple files.*/
 	FileDialogFileModeOpenFiles FileDialogFileMode = 1
-	FileDialogFileModeOpenDir   FileDialogFileMode = 2
-	FileDialogFileModeOpenAny   FileDialogFileMode = 3
-	FileDialogFileModeSaveFile  FileDialogFileMode = 4
+	/*The dialog only allows selecting a directory, disallowing the selection of any file.*/
+	FileDialogFileModeOpenDir FileDialogFileMode = 2
+	/*The dialog allows selecting one file or directory.*/
+	FileDialogFileModeOpenAny FileDialogFileMode = 3
+	/*The dialog will warn when a file exists.*/
+	FileDialogFileModeSaveFile FileDialogFileMode = 4
 )
 
 type FileDialogAccess = classdb.FileDialogAccess
 
 const (
-	FileDialogAccessResources  FileDialogAccess = 0
-	FileDialogAccessUserdata   FileDialogAccess = 1
+	/*The dialog only allows accessing files under the [Resource] path ([code]res://[/code]).*/
+	FileDialogAccessResources FileDialogAccess = 0
+	/*The dialog only allows accessing files under user data path ([code]user://[/code]).*/
+	FileDialogAccessUserdata FileDialogAccess = 1
+	/*The dialog allows accessing files on the whole file system.*/
 	FileDialogAccessFilesystem FileDialogAccess = 2
 )
 
 type FlowContainerAlignmentMode = classdb.FlowContainerAlignmentMode
 
 const (
-	FlowContainerAlignmentBegin  FlowContainerAlignmentMode = 0
+	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
+	FlowContainerAlignmentBegin FlowContainerAlignmentMode = 0
+	/*The child controls will be centered in the container.*/
 	FlowContainerAlignmentCenter FlowContainerAlignmentMode = 1
-	FlowContainerAlignmentEnd    FlowContainerAlignmentMode = 2
+	/*The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).*/
+	FlowContainerAlignmentEnd FlowContainerAlignmentMode = 2
 )
 
 type GDExtensionInitializationLevel = classdb.GDExtensionInitializationLevel
@@ -2252,46 +3714,66 @@ const (
 type GLTFDocumentRootNodeMode = classdb.GLTFDocumentRootNodeMode
 
 const (
+	/*Treat the Godot scene's root node as the root node of the glTF file, and mark it as the single root node via the [code]GODOT_single_root[/code] glTF extension. This will be parsed the same as [constant ROOT_NODE_MODE_KEEP_ROOT] if the implementation does not support [code]GODOT_single_root[/code].*/
 	GLTFDocumentRootNodeModeSingleRoot GLTFDocumentRootNodeMode = 0
-	GLTFDocumentRootNodeModeKeepRoot   GLTFDocumentRootNodeMode = 1
-	GLTFDocumentRootNodeModeMultiRoot  GLTFDocumentRootNodeMode = 2
+	/*Treat the Godot scene's root node as the root node of the glTF file, but do not mark it as anything special. An extra root node will be generated when importing into Godot. This uses only vanilla glTF features. This is equivalent to the behavior in Godot 4.1 and earlier.*/
+	GLTFDocumentRootNodeModeKeepRoot GLTFDocumentRootNodeMode = 1
+	/*Treat the Godot scene's root node as the name of the glTF scene, and add all of its children as root nodes of the glTF file. This uses only vanilla glTF features. This avoids an extra root node, but only the name of the Godot scene's root node will be preserved, as it will not be saved as a node.*/
+	GLTFDocumentRootNodeModeMultiRoot GLTFDocumentRootNodeMode = 2
 )
 
 type GPUParticles2DDrawOrder = classdb.GPUParticles2DDrawOrder
 
 const (
-	GPUParticles2DDrawOrderIndex           GPUParticles2DDrawOrder = 0
-	GPUParticles2DDrawOrderLifetime        GPUParticles2DDrawOrder = 1
+	/*Particles are drawn in the order emitted.*/
+	GPUParticles2DDrawOrderIndex GPUParticles2DDrawOrder = 0
+	/*Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.*/
+	GPUParticles2DDrawOrderLifetime GPUParticles2DDrawOrder = 1
+	/*Particles are drawn in reverse order of remaining lifetime. In other words, the particle with the lowest lifetime is drawn at the front.*/
 	GPUParticles2DDrawOrderReverseLifetime GPUParticles2DDrawOrder = 2
 )
 
 type GPUParticles2DEmitFlags = classdb.GPUParticles2DEmitFlags
 
 const (
-	GPUParticles2DEmitFlagPosition      GPUParticles2DEmitFlags = 1
+	/*Particle starts at the specified position.*/
+	GPUParticles2DEmitFlagPosition GPUParticles2DEmitFlags = 1
+	/*Particle starts with specified rotation and scale.*/
 	GPUParticles2DEmitFlagRotationScale GPUParticles2DEmitFlags = 2
-	GPUParticles2DEmitFlagVelocity      GPUParticles2DEmitFlags = 4
-	GPUParticles2DEmitFlagColor         GPUParticles2DEmitFlags = 8
-	GPUParticles2DEmitFlagCustom        GPUParticles2DEmitFlags = 16
+	/*Particle starts with the specified velocity vector, which defines the emission direction and speed.*/
+	GPUParticles2DEmitFlagVelocity GPUParticles2DEmitFlags = 4
+	/*Particle starts with specified color.*/
+	GPUParticles2DEmitFlagColor GPUParticles2DEmitFlags = 8
+	/*Particle starts with specified [code]CUSTOM[/code] data.*/
+	GPUParticles2DEmitFlagCustom GPUParticles2DEmitFlags = 16
 )
 
 type GPUParticles3DDrawOrder = classdb.GPUParticles3DDrawOrder
 
 const (
-	GPUParticles3DDrawOrderIndex           GPUParticles3DDrawOrder = 0
-	GPUParticles3DDrawOrderLifetime        GPUParticles3DDrawOrder = 1
+	/*Particles are drawn in the order emitted.*/
+	GPUParticles3DDrawOrderIndex GPUParticles3DDrawOrder = 0
+	/*Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.*/
+	GPUParticles3DDrawOrderLifetime GPUParticles3DDrawOrder = 1
+	/*Particles are drawn in reverse order of remaining lifetime. In other words, the particle with the lowest lifetime is drawn at the front.*/
 	GPUParticles3DDrawOrderReverseLifetime GPUParticles3DDrawOrder = 2
-	GPUParticles3DDrawOrderViewDepth       GPUParticles3DDrawOrder = 3
+	/*Particles are drawn in order of depth.*/
+	GPUParticles3DDrawOrderViewDepth GPUParticles3DDrawOrder = 3
 )
 
 type GPUParticles3DEmitFlags = classdb.GPUParticles3DEmitFlags
 
 const (
-	GPUParticles3DEmitFlagPosition      GPUParticles3DEmitFlags = 1
+	/*Particle starts at the specified position.*/
+	GPUParticles3DEmitFlagPosition GPUParticles3DEmitFlags = 1
+	/*Particle starts with specified rotation and scale.*/
 	GPUParticles3DEmitFlagRotationScale GPUParticles3DEmitFlags = 2
-	GPUParticles3DEmitFlagVelocity      GPUParticles3DEmitFlags = 4
-	GPUParticles3DEmitFlagColor         GPUParticles3DEmitFlags = 8
-	GPUParticles3DEmitFlagCustom        GPUParticles3DEmitFlags = 16
+	/*Particle starts with the specified velocity vector, which defines the emission direction and speed.*/
+	GPUParticles3DEmitFlagVelocity GPUParticles3DEmitFlags = 4
+	/*Particle starts with specified color.*/
+	GPUParticles3DEmitFlagColor GPUParticles3DEmitFlags = 8
+	/*Particle starts with specified [code]CUSTOM[/code] data.*/
+	GPUParticles3DEmitFlagCustom GPUParticles3DEmitFlags = 16
 )
 
 type GPUParticles3DTransformAlign = classdb.GPUParticles3DTransformAlign
@@ -2306,435 +3788,710 @@ const (
 type GPUParticlesCollisionHeightField3DResolution = classdb.GPUParticlesCollisionHeightField3DResolution
 
 const (
-	GPUParticlesCollisionHeightField3DResolution256  GPUParticlesCollisionHeightField3DResolution = 0
-	GPUParticlesCollisionHeightField3DResolution512  GPUParticlesCollisionHeightField3DResolution = 1
+	/*Generate a 256×256 heightmap. Intended for small-scale scenes, or larger scenes with no distant particles.*/
+	GPUParticlesCollisionHeightField3DResolution256 GPUParticlesCollisionHeightField3DResolution = 0
+	/*Generate a 512×512 heightmap. Intended for medium-scale scenes, or larger scenes with no distant particles.*/
+	GPUParticlesCollisionHeightField3DResolution512 GPUParticlesCollisionHeightField3DResolution = 1
+	/*Generate a 1024×1024 heightmap. Intended for large scenes with distant particles.*/
 	GPUParticlesCollisionHeightField3DResolution1024 GPUParticlesCollisionHeightField3DResolution = 2
+	/*Generate a 2048×2048 heightmap. Intended for very large scenes with distant particles.*/
 	GPUParticlesCollisionHeightField3DResolution2048 GPUParticlesCollisionHeightField3DResolution = 3
+	/*Generate a 4096×4096 heightmap. Intended for huge scenes with distant particles.*/
 	GPUParticlesCollisionHeightField3DResolution4096 GPUParticlesCollisionHeightField3DResolution = 4
+	/*Generate a 8192×8192 heightmap. Intended for gigantic scenes with distant particles.*/
 	GPUParticlesCollisionHeightField3DResolution8192 GPUParticlesCollisionHeightField3DResolution = 5
-	GPUParticlesCollisionHeightField3DResolutionMax  GPUParticlesCollisionHeightField3DResolution = 6
+	/*Represents the size of the [enum Resolution] enum.*/
+	GPUParticlesCollisionHeightField3DResolutionMax GPUParticlesCollisionHeightField3DResolution = 6
 )
 
 type GPUParticlesCollisionHeightField3DUpdateMode = classdb.GPUParticlesCollisionHeightField3DUpdateMode
 
 const (
+	/*Only update the heightmap when the [GPUParticlesCollisionHeightField3D] node is moved, or when the camera moves if [member follow_camera_enabled] is [code]true[/code]. An update can be forced by slightly moving the [GPUParticlesCollisionHeightField3D] in any direction, or by calling [method RenderingServer.particles_collision_height_field_update].*/
 	GPUParticlesCollisionHeightField3DUpdateModeWhenMoved GPUParticlesCollisionHeightField3DUpdateMode = 0
-	GPUParticlesCollisionHeightField3DUpdateModeAlways    GPUParticlesCollisionHeightField3DUpdateMode = 1
+	/*Update the heightmap every frame. This has a significant performance cost. This update should only be used when geometry that particles can collide with changes significantly during gameplay.*/
+	GPUParticlesCollisionHeightField3DUpdateModeAlways GPUParticlesCollisionHeightField3DUpdateMode = 1
 )
 
 type GPUParticlesCollisionSDF3DResolution = classdb.GPUParticlesCollisionSDF3DResolution
 
 const (
-	GPUParticlesCollisionSDF3DResolution16  GPUParticlesCollisionSDF3DResolution = 0
-	GPUParticlesCollisionSDF3DResolution32  GPUParticlesCollisionSDF3DResolution = 1
-	GPUParticlesCollisionSDF3DResolution64  GPUParticlesCollisionSDF3DResolution = 2
+	/*Bake a 16×16×16 signed distance field. This is the fastest option, but also the least precise.*/
+	GPUParticlesCollisionSDF3DResolution16 GPUParticlesCollisionSDF3DResolution = 0
+	/*Bake a 32×32×32 signed distance field.*/
+	GPUParticlesCollisionSDF3DResolution32 GPUParticlesCollisionSDF3DResolution = 1
+	/*Bake a 64×64×64 signed distance field.*/
+	GPUParticlesCollisionSDF3DResolution64 GPUParticlesCollisionSDF3DResolution = 2
+	/*Bake a 128×128×128 signed distance field.*/
 	GPUParticlesCollisionSDF3DResolution128 GPUParticlesCollisionSDF3DResolution = 3
+	/*Bake a 256×256×256 signed distance field.*/
 	GPUParticlesCollisionSDF3DResolution256 GPUParticlesCollisionSDF3DResolution = 4
+	/*Bake a 512×512×512 signed distance field. This is the slowest option, but also the most precise.*/
 	GPUParticlesCollisionSDF3DResolution512 GPUParticlesCollisionSDF3DResolution = 5
+	/*Represents the size of the [enum Resolution] enum.*/
 	GPUParticlesCollisionSDF3DResolutionMax GPUParticlesCollisionSDF3DResolution = 6
 )
 
 type Generic6DOFJoint3DParam = classdb.Generic6DOFJoint3DParam
 
 const (
-	Generic6DOFJoint3DParamLinearLowerLimit              Generic6DOFJoint3DParam = 0
-	Generic6DOFJoint3DParamLinearUpperLimit              Generic6DOFJoint3DParam = 1
-	Generic6DOFJoint3DParamLinearLimitSoftness           Generic6DOFJoint3DParam = 2
-	Generic6DOFJoint3DParamLinearRestitution             Generic6DOFJoint3DParam = 3
-	Generic6DOFJoint3DParamLinearDamping                 Generic6DOFJoint3DParam = 4
-	Generic6DOFJoint3DParamLinearMotorTargetVelocity     Generic6DOFJoint3DParam = 5
-	Generic6DOFJoint3DParamLinearMotorForceLimit         Generic6DOFJoint3DParam = 6
-	Generic6DOFJoint3DParamLinearSpringStiffness         Generic6DOFJoint3DParam = 7
-	Generic6DOFJoint3DParamLinearSpringDamping           Generic6DOFJoint3DParam = 8
-	Generic6DOFJoint3DParamLinearSpringEquilibriumPoint  Generic6DOFJoint3DParam = 9
-	Generic6DOFJoint3DParamAngularLowerLimit             Generic6DOFJoint3DParam = 10
-	Generic6DOFJoint3DParamAngularUpperLimit             Generic6DOFJoint3DParam = 11
-	Generic6DOFJoint3DParamAngularLimitSoftness          Generic6DOFJoint3DParam = 12
-	Generic6DOFJoint3DParamAngularDamping                Generic6DOFJoint3DParam = 13
-	Generic6DOFJoint3DParamAngularRestitution            Generic6DOFJoint3DParam = 14
-	Generic6DOFJoint3DParamAngularForceLimit             Generic6DOFJoint3DParam = 15
-	Generic6DOFJoint3DParamAngularErp                    Generic6DOFJoint3DParam = 16
-	Generic6DOFJoint3DParamAngularMotorTargetVelocity    Generic6DOFJoint3DParam = 17
+	/*The minimum difference between the pivot points' axes.*/
+	Generic6DOFJoint3DParamLinearLowerLimit Generic6DOFJoint3DParam = 0
+	/*The maximum difference between the pivot points' axes.*/
+	Generic6DOFJoint3DParamLinearUpperLimit Generic6DOFJoint3DParam = 1
+	/*A factor applied to the movement across the axes. The lower, the slower the movement.*/
+	Generic6DOFJoint3DParamLinearLimitSoftness Generic6DOFJoint3DParam = 2
+	/*The amount of restitution on the axes' movement. The lower, the more momentum gets lost.*/
+	Generic6DOFJoint3DParamLinearRestitution Generic6DOFJoint3DParam = 3
+	/*The amount of damping that happens at the linear motion across the axes.*/
+	Generic6DOFJoint3DParamLinearDamping Generic6DOFJoint3DParam = 4
+	/*The velocity the linear motor will try to reach.*/
+	Generic6DOFJoint3DParamLinearMotorTargetVelocity Generic6DOFJoint3DParam = 5
+	/*The maximum force the linear motor will apply while trying to reach the velocity target.*/
+	Generic6DOFJoint3DParamLinearMotorForceLimit        Generic6DOFJoint3DParam = 6
+	Generic6DOFJoint3DParamLinearSpringStiffness        Generic6DOFJoint3DParam = 7
+	Generic6DOFJoint3DParamLinearSpringDamping          Generic6DOFJoint3DParam = 8
+	Generic6DOFJoint3DParamLinearSpringEquilibriumPoint Generic6DOFJoint3DParam = 9
+	/*The minimum rotation in negative direction to break loose and rotate around the axes.*/
+	Generic6DOFJoint3DParamAngularLowerLimit Generic6DOFJoint3DParam = 10
+	/*The minimum rotation in positive direction to break loose and rotate around the axes.*/
+	Generic6DOFJoint3DParamAngularUpperLimit Generic6DOFJoint3DParam = 11
+	/*The speed of all rotations across the axes.*/
+	Generic6DOFJoint3DParamAngularLimitSoftness Generic6DOFJoint3DParam = 12
+	/*The amount of rotational damping across the axes. The lower, the more damping occurs.*/
+	Generic6DOFJoint3DParamAngularDamping Generic6DOFJoint3DParam = 13
+	/*The amount of rotational restitution across the axes. The lower, the more restitution occurs.*/
+	Generic6DOFJoint3DParamAngularRestitution Generic6DOFJoint3DParam = 14
+	/*The maximum amount of force that can occur, when rotating around the axes.*/
+	Generic6DOFJoint3DParamAngularForceLimit Generic6DOFJoint3DParam = 15
+	/*When rotating across the axes, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.*/
+	Generic6DOFJoint3DParamAngularErp Generic6DOFJoint3DParam = 16
+	/*Target speed for the motor at the axes.*/
+	Generic6DOFJoint3DParamAngularMotorTargetVelocity Generic6DOFJoint3DParam = 17
+	/*Maximum acceleration for the motor at the axes.*/
 	Generic6DOFJoint3DParamAngularMotorForceLimit        Generic6DOFJoint3DParam = 18
 	Generic6DOFJoint3DParamAngularSpringStiffness        Generic6DOFJoint3DParam = 19
 	Generic6DOFJoint3DParamAngularSpringDamping          Generic6DOFJoint3DParam = 20
 	Generic6DOFJoint3DParamAngularSpringEquilibriumPoint Generic6DOFJoint3DParam = 21
-	Generic6DOFJoint3DParamMax                           Generic6DOFJoint3DParam = 22
+	/*Represents the size of the [enum Param] enum.*/
+	Generic6DOFJoint3DParamMax Generic6DOFJoint3DParam = 22
 )
 
 type Generic6DOFJoint3DFlag = classdb.Generic6DOFJoint3DFlag
 
 const (
-	Generic6DOFJoint3DFlagEnableLinearLimit   Generic6DOFJoint3DFlag = 0
+	/*If enabled, linear motion is possible within the given limits.*/
+	Generic6DOFJoint3DFlagEnableLinearLimit Generic6DOFJoint3DFlag = 0
+	/*If enabled, rotational motion is possible within the given limits.*/
 	Generic6DOFJoint3DFlagEnableAngularLimit  Generic6DOFJoint3DFlag = 1
 	Generic6DOFJoint3DFlagEnableLinearSpring  Generic6DOFJoint3DFlag = 3
 	Generic6DOFJoint3DFlagEnableAngularSpring Generic6DOFJoint3DFlag = 2
-	Generic6DOFJoint3DFlagEnableMotor         Generic6DOFJoint3DFlag = 4
-	Generic6DOFJoint3DFlagEnableLinearMotor   Generic6DOFJoint3DFlag = 5
-	Generic6DOFJoint3DFlagMax                 Generic6DOFJoint3DFlag = 6
+	/*If enabled, there is a rotational motor across these axes.*/
+	Generic6DOFJoint3DFlagEnableMotor Generic6DOFJoint3DFlag = 4
+	/*If enabled, there is a linear motor across these axes.*/
+	Generic6DOFJoint3DFlagEnableLinearMotor Generic6DOFJoint3DFlag = 5
+	/*Represents the size of the [enum Flag] enum.*/
+	Generic6DOFJoint3DFlagMax Generic6DOFJoint3DFlag = 6
 )
 
 type Geometry2DPolyBooleanOperation = classdb.Geometry2DPolyBooleanOperation
 
 const (
-	Geometry2DOperationUnion        Geometry2DPolyBooleanOperation = 0
-	Geometry2DOperationDifference   Geometry2DPolyBooleanOperation = 1
+	/*Create regions where either subject or clip polygons (or both) are filled.*/
+	Geometry2DOperationUnion Geometry2DPolyBooleanOperation = 0
+	/*Create regions where subject polygons are filled except where clip polygons are filled.*/
+	Geometry2DOperationDifference Geometry2DPolyBooleanOperation = 1
+	/*Create regions where both subject and clip polygons are filled.*/
 	Geometry2DOperationIntersection Geometry2DPolyBooleanOperation = 2
-	Geometry2DOperationXor          Geometry2DPolyBooleanOperation = 3
+	/*Create regions where either subject or clip polygons are filled but not where both are filled.*/
+	Geometry2DOperationXor Geometry2DPolyBooleanOperation = 3
 )
 
 type Geometry2DPolyJoinType = classdb.Geometry2DPolyJoinType
 
 const (
+	/*Squaring is applied uniformally at all convex edge joins at [code]1 * delta[/code].*/
 	Geometry2DJoinSquare Geometry2DPolyJoinType = 0
-	Geometry2DJoinRound  Geometry2DPolyJoinType = 1
-	Geometry2DJoinMiter  Geometry2DPolyJoinType = 2
+	/*While flattened paths can never perfectly trace an arc, they are approximated by a series of arc chords.*/
+	Geometry2DJoinRound Geometry2DPolyJoinType = 1
+	/*There's a necessary limit to mitered joins since offsetting edges that join at very acute angles will produce excessively long and narrow "spikes". For any given edge join, when miter offsetting would exceed that maximum distance, "square" joining is applied.*/
+	Geometry2DJoinMiter Geometry2DPolyJoinType = 2
 )
 
 type Geometry2DPolyEndType = classdb.Geometry2DPolyEndType
 
 const (
+	/*Endpoints are joined using the [enum PolyJoinType] value and the path filled as a polygon.*/
 	Geometry2DEndPolygon Geometry2DPolyEndType = 0
-	Geometry2DEndJoined  Geometry2DPolyEndType = 1
-	Geometry2DEndButt    Geometry2DPolyEndType = 2
-	Geometry2DEndSquare  Geometry2DPolyEndType = 3
-	Geometry2DEndRound   Geometry2DPolyEndType = 4
+	/*Endpoints are joined using the [enum PolyJoinType] value and the path filled as a polyline.*/
+	Geometry2DEndJoined Geometry2DPolyEndType = 1
+	/*Endpoints are squared off with no extension.*/
+	Geometry2DEndButt Geometry2DPolyEndType = 2
+	/*Endpoints are squared off and extended by [code]delta[/code] units.*/
+	Geometry2DEndSquare Geometry2DPolyEndType = 3
+	/*Endpoints are rounded off and extended by [code]delta[/code] units.*/
+	Geometry2DEndRound Geometry2DPolyEndType = 4
 )
 
 type GeometryInstance3DShadowCastingSetting = classdb.GeometryInstance3DShadowCastingSetting
 
 const (
-	GeometryInstance3DShadowCastingSettingOff         GeometryInstance3DShadowCastingSetting = 0
-	GeometryInstance3DShadowCastingSettingOn          GeometryInstance3DShadowCastingSetting = 1
+	/*Will not cast any shadows. Use this to improve performance for small geometry that is unlikely to cast noticeable shadows (such as debris).*/
+	GeometryInstance3DShadowCastingSettingOff GeometryInstance3DShadowCastingSetting = 0
+	/*Will cast shadows from all visible faces in the GeometryInstance3D.
+	  Will take culling into account, so faces not being rendered will not be taken into account when shadow casting.*/
+	GeometryInstance3DShadowCastingSettingOn GeometryInstance3DShadowCastingSetting = 1
+	/*Will cast shadows from all visible faces in the GeometryInstance3D.
+	  Will not take culling into account, so all faces will be taken into account when shadow casting.*/
 	GeometryInstance3DShadowCastingSettingDoubleSided GeometryInstance3DShadowCastingSetting = 2
+	/*Will only show the shadows casted from this object.
+	  In other words, the actual mesh will not be visible, only the shadows casted from the mesh will be.*/
 	GeometryInstance3DShadowCastingSettingShadowsOnly GeometryInstance3DShadowCastingSetting = 3
 )
 
 type GeometryInstance3DGIMode = classdb.GeometryInstance3DGIMode
 
 const (
+	/*Disabled global illumination mode. Use for dynamic objects that do not contribute to global illumination (such as characters). When using [VoxelGI] and SDFGI, the geometry will [i]receive[/i] indirect lighting and reflections but the geometry will not be considered in GI baking.*/
 	GeometryInstance3DGiModeDisabled GeometryInstance3DGIMode = 0
-	GeometryInstance3DGiModeStatic   GeometryInstance3DGIMode = 1
-	GeometryInstance3DGiModeDynamic  GeometryInstance3DGIMode = 2
+	/*Baked global illumination mode. Use for static objects that contribute to global illumination (such as level geometry). This GI mode is effective when using [VoxelGI], SDFGI and [LightmapGI].*/
+	GeometryInstance3DGiModeStatic GeometryInstance3DGIMode = 1
+	/*Dynamic global illumination mode. Use for dynamic objects that contribute to global illumination. This GI mode is only effective when using [VoxelGI], but it has a higher performance impact than [constant GI_MODE_STATIC]. When using other GI methods, this will act the same as [constant GI_MODE_DISABLED]. When using [LightmapGI], the object will receive indirect lighting using lightmap probes instead of using the baked lightmap texture.*/
+	GeometryInstance3DGiModeDynamic GeometryInstance3DGIMode = 2
 )
 
 type GeometryInstance3DLightmapScale = classdb.GeometryInstance3DLightmapScale
 
 const (
-	GeometryInstance3DLightmapScale1x  GeometryInstance3DLightmapScale = 0
-	GeometryInstance3DLightmapScale2x  GeometryInstance3DLightmapScale = 1
-	GeometryInstance3DLightmapScale4x  GeometryInstance3DLightmapScale = 2
-	GeometryInstance3DLightmapScale8x  GeometryInstance3DLightmapScale = 3
+	/*The standard texel density for lightmapping with [LightmapGI].*/
+	GeometryInstance3DLightmapScale1x GeometryInstance3DLightmapScale = 0
+	/*Multiplies texel density by 2× for lightmapping with [LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor between 1.5 and 3.0.*/
+	GeometryInstance3DLightmapScale2x GeometryInstance3DLightmapScale = 1
+	/*Multiplies texel density by 4× for lightmapping with [LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor between 3.0 and 6.0.*/
+	GeometryInstance3DLightmapScale4x GeometryInstance3DLightmapScale = 2
+	/*Multiplies texel density by 8× for lightmapping with [LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor greater than 6.0.*/
+	GeometryInstance3DLightmapScale8x GeometryInstance3DLightmapScale = 3
+	/*Represents the size of the [enum LightmapScale] enum.*/
 	GeometryInstance3DLightmapScaleMax GeometryInstance3DLightmapScale = 4
 )
 
 type GeometryInstance3DVisibilityRangeFadeMode = classdb.GeometryInstance3DVisibilityRangeFadeMode
 
 const (
-	GeometryInstance3DVisibilityRangeFadeDisabled     GeometryInstance3DVisibilityRangeFadeMode = 0
-	GeometryInstance3DVisibilityRangeFadeSelf         GeometryInstance3DVisibilityRangeFadeMode = 1
+	/*Will not fade itself nor its visibility dependencies, hysteresis will be used instead. This is the fastest approach to manual LOD, but it can result in noticeable LOD transitions depending on how the LOD meshes are authored. See [member visibility_range_begin] and [member Node3D.visibility_parent] for more information.*/
+	GeometryInstance3DVisibilityRangeFadeDisabled GeometryInstance3DVisibilityRangeFadeMode = 0
+	/*Will fade-out itself when reaching the limits of its own visibility range. This is slower than [constant VISIBILITY_RANGE_FADE_DISABLED], but it can provide smoother transitions. The fading range is determined by [member visibility_range_begin_margin] and [member visibility_range_end_margin].*/
+	GeometryInstance3DVisibilityRangeFadeSelf GeometryInstance3DVisibilityRangeFadeMode = 1
+	/*Will fade-in its visibility dependencies (see [member Node3D.visibility_parent]) when reaching the limits of its own visibility range. This is slower than [constant VISIBILITY_RANGE_FADE_DISABLED], but it can provide smoother transitions. The fading range is determined by [member visibility_range_begin_margin] and [member visibility_range_end_margin].*/
 	GeometryInstance3DVisibilityRangeFadeDependencies GeometryInstance3DVisibilityRangeFadeMode = 2
 )
 
 type GradientInterpolationMode = classdb.GradientInterpolationMode
 
 const (
-	GradientGradientInterpolateLinear   GradientInterpolationMode = 0
+	/*Linear interpolation.*/
+	GradientGradientInterpolateLinear GradientInterpolationMode = 0
+	/*Constant interpolation, color changes abruptly at each point and stays uniform between. This might cause visible aliasing when used for a gradient texture in some cases.*/
 	GradientGradientInterpolateConstant GradientInterpolationMode = 1
-	GradientGradientInterpolateCubic    GradientInterpolationMode = 2
+	/*Cubic interpolation.*/
+	GradientGradientInterpolateCubic GradientInterpolationMode = 2
 )
 
 type GradientColorSpace = classdb.GradientColorSpace
 
 const (
-	GradientGradientColorSpaceSrgb       GradientColorSpace = 0
+	/*sRGB color space.*/
+	GradientGradientColorSpaceSrgb GradientColorSpace = 0
+	/*Linear sRGB color space.*/
 	GradientGradientColorSpaceLinearSrgb GradientColorSpace = 1
-	GradientGradientColorSpaceOklab      GradientColorSpace = 2
+	/*[url=https://bottosson.github.io/posts/oklab/]Oklab[/url] color space. This color space provides a smooth and uniform-looking transition between colors.*/
+	GradientGradientColorSpaceOklab GradientColorSpace = 2
 )
 
 type GradientTexture2DFill = classdb.GradientTexture2DFill
 
 const (
+	/*The colors are linearly interpolated in a straight line.*/
 	GradientTexture2DFillLinear GradientTexture2DFill = 0
+	/*The colors are linearly interpolated in a circular pattern.*/
 	GradientTexture2DFillRadial GradientTexture2DFill = 1
+	/*The colors are linearly interpolated in a square pattern.*/
 	GradientTexture2DFillSquare GradientTexture2DFill = 2
 )
 
 type GradientTexture2DRepeat = classdb.GradientTexture2DRepeat
 
 const (
-	GradientTexture2DRepeatNone    GradientTexture2DRepeat = 0
+	/*The gradient fill is restricted to the range defined by [member fill_from] to [member fill_to] offsets.*/
+	GradientTexture2DRepeatNone GradientTexture2DRepeat = 0
+	/*The texture is filled starting from [member fill_from] to [member fill_to] offsets, repeating the same pattern in both directions.*/
 	GradientTexture2DRepeatDefault GradientTexture2DRepeat = 1
-	GradientTexture2DRepeatMirror  GradientTexture2DRepeat = 2
+	/*The texture is filled starting from [member fill_from] to [member fill_to] offsets, mirroring the pattern in both directions.*/
+	GradientTexture2DRepeatMirror GradientTexture2DRepeat = 2
 )
 
 type GraphEditPanningScheme = classdb.GraphEditPanningScheme
 
 const (
+	/*[kbd]Mouse Wheel[/kbd] will zoom, [kbd]Ctrl + Mouse Wheel[/kbd] will move the view.*/
 	GraphEditScrollZooms GraphEditPanningScheme = 0
-	GraphEditScrollPans  GraphEditPanningScheme = 1
+	/*[kbd]Mouse Wheel[/kbd] will move the view, [kbd]Ctrl + Mouse Wheel[/kbd] will zoom.*/
+	GraphEditScrollPans GraphEditPanningScheme = 1
 )
 
 type HTTPClientMethod = classdb.HTTPClientMethod
 
 const (
-	HTTPClientMethodGet     HTTPClientMethod = 0
-	HTTPClientMethodHead    HTTPClientMethod = 1
-	HTTPClientMethodPost    HTTPClientMethod = 2
-	HTTPClientMethodPut     HTTPClientMethod = 3
-	HTTPClientMethodDelete  HTTPClientMethod = 4
+	/*HTTP GET method. The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.*/
+	HTTPClientMethodGet HTTPClientMethod = 0
+	/*HTTP HEAD method. The HEAD method asks for a response identical to that of a GET request, but without the response body. This is useful to request metadata like HTTP headers or to check if a resource exists.*/
+	HTTPClientMethodHead HTTPClientMethod = 1
+	/*HTTP POST method. The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server. This is often used for forms and submitting data or uploading files.*/
+	HTTPClientMethodPost HTTPClientMethod = 2
+	/*HTTP PUT method. The PUT method asks to replace all current representations of the target resource with the request payload. (You can think of POST as "create or update" and PUT as "update", although many services tend to not make a clear distinction or change their meaning).*/
+	HTTPClientMethodPut HTTPClientMethod = 3
+	/*HTTP DELETE method. The DELETE method requests to delete the specified resource.*/
+	HTTPClientMethodDelete HTTPClientMethod = 4
+	/*HTTP OPTIONS method. The OPTIONS method asks for a description of the communication options for the target resource. Rarely used.*/
 	HTTPClientMethodOptions HTTPClientMethod = 5
-	HTTPClientMethodTrace   HTTPClientMethod = 6
+	/*HTTP TRACE method. The TRACE method performs a message loop-back test along the path to the target resource. Returns the entire HTTP request received in the response body. Rarely used.*/
+	HTTPClientMethodTrace HTTPClientMethod = 6
+	/*HTTP CONNECT method. The CONNECT method establishes a tunnel to the server identified by the target resource. Rarely used.*/
 	HTTPClientMethodConnect HTTPClientMethod = 7
-	HTTPClientMethodPatch   HTTPClientMethod = 8
-	HTTPClientMethodMax     HTTPClientMethod = 9
+	/*HTTP PATCH method. The PATCH method is used to apply partial modifications to a resource.*/
+	HTTPClientMethodPatch HTTPClientMethod = 8
+	/*Represents the size of the [enum Method] enum.*/
+	HTTPClientMethodMax HTTPClientMethod = 9
 )
 
 type HTTPClientStatus = classdb.HTTPClientStatus
 
 const (
-	HTTPClientStatusDisconnected      HTTPClientStatus = 0
-	HTTPClientStatusResolving         HTTPClientStatus = 1
-	HTTPClientStatusCantResolve       HTTPClientStatus = 2
-	HTTPClientStatusConnecting        HTTPClientStatus = 3
-	HTTPClientStatusCantConnect       HTTPClientStatus = 4
-	HTTPClientStatusConnected         HTTPClientStatus = 5
-	HTTPClientStatusRequesting        HTTPClientStatus = 6
-	HTTPClientStatusBody              HTTPClientStatus = 7
-	HTTPClientStatusConnectionError   HTTPClientStatus = 8
+	/*Status: Disconnected from the server.*/
+	HTTPClientStatusDisconnected HTTPClientStatus = 0
+	/*Status: Currently resolving the hostname for the given URL into an IP.*/
+	HTTPClientStatusResolving HTTPClientStatus = 1
+	/*Status: DNS failure: Can't resolve the hostname for the given URL.*/
+	HTTPClientStatusCantResolve HTTPClientStatus = 2
+	/*Status: Currently connecting to server.*/
+	HTTPClientStatusConnecting HTTPClientStatus = 3
+	/*Status: Can't connect to the server.*/
+	HTTPClientStatusCantConnect HTTPClientStatus = 4
+	/*Status: Connection established.*/
+	HTTPClientStatusConnected HTTPClientStatus = 5
+	/*Status: Currently sending request.*/
+	HTTPClientStatusRequesting HTTPClientStatus = 6
+	/*Status: HTTP body received.*/
+	HTTPClientStatusBody HTTPClientStatus = 7
+	/*Status: Error in HTTP connection.*/
+	HTTPClientStatusConnectionError HTTPClientStatus = 8
+	/*Status: Error in TLS handshake.*/
 	HTTPClientStatusTlsHandshakeError HTTPClientStatus = 9
 )
 
 type HTTPClientResponseCode = classdb.HTTPClientResponseCode
 
 const (
-	HTTPClientResponseContinue                     HTTPClientResponseCode = 100
-	HTTPClientResponseSwitchingProtocols           HTTPClientResponseCode = 101
-	HTTPClientResponseProcessing                   HTTPClientResponseCode = 102
-	HTTPClientResponseOk                           HTTPClientResponseCode = 200
-	HTTPClientResponseCreated                      HTTPClientResponseCode = 201
-	HTTPClientResponseAccepted                     HTTPClientResponseCode = 202
-	HTTPClientResponseNonAuthoritativeInformation  HTTPClientResponseCode = 203
-	HTTPClientResponseNoContent                    HTTPClientResponseCode = 204
-	HTTPClientResponseResetContent                 HTTPClientResponseCode = 205
-	HTTPClientResponsePartialContent               HTTPClientResponseCode = 206
-	HTTPClientResponseMultiStatus                  HTTPClientResponseCode = 207
-	HTTPClientResponseAlreadyReported              HTTPClientResponseCode = 208
-	HTTPClientResponseImUsed                       HTTPClientResponseCode = 226
-	HTTPClientResponseMultipleChoices              HTTPClientResponseCode = 300
-	HTTPClientResponseMovedPermanently             HTTPClientResponseCode = 301
-	HTTPClientResponseFound                        HTTPClientResponseCode = 302
-	HTTPClientResponseSeeOther                     HTTPClientResponseCode = 303
-	HTTPClientResponseNotModified                  HTTPClientResponseCode = 304
-	HTTPClientResponseUseProxy                     HTTPClientResponseCode = 305
-	HTTPClientResponseSwitchProxy                  HTTPClientResponseCode = 306
-	HTTPClientResponseTemporaryRedirect            HTTPClientResponseCode = 307
-	HTTPClientResponsePermanentRedirect            HTTPClientResponseCode = 308
-	HTTPClientResponseBadRequest                   HTTPClientResponseCode = 400
-	HTTPClientResponseUnauthorized                 HTTPClientResponseCode = 401
-	HTTPClientResponsePaymentRequired              HTTPClientResponseCode = 402
-	HTTPClientResponseForbidden                    HTTPClientResponseCode = 403
-	HTTPClientResponseNotFound                     HTTPClientResponseCode = 404
-	HTTPClientResponseMethodNotAllowed             HTTPClientResponseCode = 405
-	HTTPClientResponseNotAcceptable                HTTPClientResponseCode = 406
-	HTTPClientResponseProxyAuthenticationRequired  HTTPClientResponseCode = 407
-	HTTPClientResponseRequestTimeout               HTTPClientResponseCode = 408
-	HTTPClientResponseConflict                     HTTPClientResponseCode = 409
-	HTTPClientResponseGone                         HTTPClientResponseCode = 410
-	HTTPClientResponseLengthRequired               HTTPClientResponseCode = 411
-	HTTPClientResponsePreconditionFailed           HTTPClientResponseCode = 412
-	HTTPClientResponseRequestEntityTooLarge        HTTPClientResponseCode = 413
-	HTTPClientResponseRequestUriTooLong            HTTPClientResponseCode = 414
-	HTTPClientResponseUnsupportedMediaType         HTTPClientResponseCode = 415
+	/*HTTP status code [code]100 Continue[/code]. Interim response that indicates everything so far is OK and that the client should continue with the request (or ignore this status if already finished).*/
+	HTTPClientResponseContinue HTTPClientResponseCode = 100
+	/*HTTP status code [code]101 Switching Protocol[/code]. Sent in response to an [code]Upgrade[/code] request header by the client. Indicates the protocol the server is switching to.*/
+	HTTPClientResponseSwitchingProtocols HTTPClientResponseCode = 101
+	/*HTTP status code [code]102 Processing[/code] (WebDAV). Indicates that the server has received and is processing the request, but no response is available yet.*/
+	HTTPClientResponseProcessing HTTPClientResponseCode = 102
+	/*HTTP status code [code]200 OK[/code]. The request has succeeded. Default response for successful requests. Meaning varies depending on the request. GET: The resource has been fetched and is transmitted in the message body. HEAD: The entity headers are in the message body. POST: The resource describing the result of the action is transmitted in the message body. TRACE: The message body contains the request message as received by the server.*/
+	HTTPClientResponseOk HTTPClientResponseCode = 200
+	/*HTTP status code [code]201 Created[/code]. The request has succeeded and a new resource has been created as a result of it. This is typically the response sent after a PUT request.*/
+	HTTPClientResponseCreated HTTPClientResponseCode = 201
+	/*HTTP status code [code]202 Accepted[/code]. The request has been received but not yet acted upon. It is non-committal, meaning that there is no way in HTTP to later send an asynchronous response indicating the outcome of processing the request. It is intended for cases where another process or server handles the request, or for batch processing.*/
+	HTTPClientResponseAccepted HTTPClientResponseCode = 202
+	/*HTTP status code [code]203 Non-Authoritative Information[/code]. This response code means returned meta-information set is not exact set as available from the origin server, but collected from a local or a third party copy. Except this condition, 200 OK response should be preferred instead of this response.*/
+	HTTPClientResponseNonAuthoritativeInformation HTTPClientResponseCode = 203
+	/*HTTP status code [code]204 No Content[/code]. There is no content to send for this request, but the headers may be useful. The user-agent may update its cached headers for this resource with the new ones.*/
+	HTTPClientResponseNoContent HTTPClientResponseCode = 204
+	/*HTTP status code [code]205 Reset Content[/code]. The server has fulfilled the request and desires that the client resets the "document view" that caused the request to be sent to its original state as received from the origin server.*/
+	HTTPClientResponseResetContent HTTPClientResponseCode = 205
+	/*HTTP status code [code]206 Partial Content[/code]. This response code is used because of a range header sent by the client to separate download into multiple streams.*/
+	HTTPClientResponsePartialContent HTTPClientResponseCode = 206
+	/*HTTP status code [code]207 Multi-Status[/code] (WebDAV). A Multi-Status response conveys information about multiple resources in situations where multiple status codes might be appropriate.*/
+	HTTPClientResponseMultiStatus HTTPClientResponseCode = 207
+	/*HTTP status code [code]208 Already Reported[/code] (WebDAV). Used inside a DAV: propstat response element to avoid enumerating the internal members of multiple bindings to the same collection repeatedly.*/
+	HTTPClientResponseAlreadyReported HTTPClientResponseCode = 208
+	/*HTTP status code [code]226 IM Used[/code] (WebDAV). The server has fulfilled a GET request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.*/
+	HTTPClientResponseImUsed HTTPClientResponseCode = 226
+	/*HTTP status code [code]300 Multiple Choice[/code]. The request has more than one possible responses and there is no standardized way to choose one of the responses. User-agent or user should choose one of them.*/
+	HTTPClientResponseMultipleChoices HTTPClientResponseCode = 300
+	/*HTTP status code [code]301 Moved Permanently[/code]. Redirection. This response code means the URI of requested resource has been changed. The new URI is usually included in the response.*/
+	HTTPClientResponseMovedPermanently HTTPClientResponseCode = 301
+	/*HTTP status code [code]302 Found[/code]. Temporary redirection. This response code means the URI of requested resource has been changed temporarily. New changes in the URI might be made in the future. Therefore, this same URI should be used by the client in future requests.*/
+	HTTPClientResponseFound HTTPClientResponseCode = 302
+	/*HTTP status code [code]303 See Other[/code]. The server is redirecting the user agent to a different resource, as indicated by a URI in the Location header field, which is intended to provide an indirect response to the original request.*/
+	HTTPClientResponseSeeOther HTTPClientResponseCode = 303
+	/*HTTP status code [code]304 Not Modified[/code]. A conditional GET or HEAD request has been received and would have resulted in a 200 OK response if it were not for the fact that the condition evaluated to [code]false[/code].*/
+	HTTPClientResponseNotModified HTTPClientResponseCode = 304
+	/*[i]Deprecated.[/i] HTTP status code [code]305 Use Proxy[/code].*/
+	HTTPClientResponseUseProxy HTTPClientResponseCode = 305
+	/*[i]Deprecated.[/i] HTTP status code [code]306 Switch Proxy[/code].*/
+	HTTPClientResponseSwitchProxy HTTPClientResponseCode = 306
+	/*HTTP status code [code]307 Temporary Redirect[/code]. The target resource resides temporarily under a different URI and the user agent MUST NOT change the request method if it performs an automatic redirection to that URI.*/
+	HTTPClientResponseTemporaryRedirect HTTPClientResponseCode = 307
+	/*HTTP status code [code]308 Permanent Redirect[/code]. The target resource has been assigned a new permanent URI and any future references to this resource ought to use one of the enclosed URIs.*/
+	HTTPClientResponsePermanentRedirect HTTPClientResponseCode = 308
+	/*HTTP status code [code]400 Bad Request[/code]. The request was invalid. The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, invalid request contents, or deceptive request routing).*/
+	HTTPClientResponseBadRequest HTTPClientResponseCode = 400
+	/*HTTP status code [code]401 Unauthorized[/code]. Credentials required. The request has not been applied because it lacks valid authentication credentials for the target resource.*/
+	HTTPClientResponseUnauthorized HTTPClientResponseCode = 401
+	/*HTTP status code [code]402 Payment Required[/code]. This response code is reserved for future use. Initial aim for creating this code was using it for digital payment systems, however this is not currently used.*/
+	HTTPClientResponsePaymentRequired HTTPClientResponseCode = 402
+	/*HTTP status code [code]403 Forbidden[/code]. The client does not have access rights to the content, i.e. they are unauthorized, so server is rejecting to give proper response. Unlike [code]401[/code], the client's identity is known to the server.*/
+	HTTPClientResponseForbidden HTTPClientResponseCode = 403
+	/*HTTP status code [code]404 Not Found[/code]. The server can not find requested resource. Either the URL is not recognized or the endpoint is valid but the resource itself does not exist. May also be sent instead of 403 to hide existence of a resource if the client is not authorized.*/
+	HTTPClientResponseNotFound HTTPClientResponseCode = 404
+	/*HTTP status code [code]405 Method Not Allowed[/code]. The request's HTTP method is known by the server but has been disabled and cannot be used. For example, an API may forbid DELETE-ing a resource. The two mandatory methods, GET and HEAD, must never be disabled and should not return this error code.*/
+	HTTPClientResponseMethodNotAllowed HTTPClientResponseCode = 405
+	/*HTTP status code [code]406 Not Acceptable[/code]. The target resource does not have a current representation that would be acceptable to the user agent, according to the proactive negotiation header fields received in the request. Used when negotiation content.*/
+	HTTPClientResponseNotAcceptable HTTPClientResponseCode = 406
+	/*HTTP status code [code]407 Proxy Authentication Required[/code]. Similar to 401 Unauthorized, but it indicates that the client needs to authenticate itself in order to use a proxy.*/
+	HTTPClientResponseProxyAuthenticationRequired HTTPClientResponseCode = 407
+	/*HTTP status code [code]408 Request Timeout[/code]. The server did not receive a complete request message within the time that it was prepared to wait.*/
+	HTTPClientResponseRequestTimeout HTTPClientResponseCode = 408
+	/*HTTP status code [code]409 Conflict[/code]. The request could not be completed due to a conflict with the current state of the target resource. This code is used in situations where the user might be able to resolve the conflict and resubmit the request.*/
+	HTTPClientResponseConflict HTTPClientResponseCode = 409
+	/*HTTP status code [code]410 Gone[/code]. The target resource is no longer available at the origin server and this condition is likely permanent.*/
+	HTTPClientResponseGone HTTPClientResponseCode = 410
+	/*HTTP status code [code]411 Length Required[/code]. The server refuses to accept the request without a defined Content-Length header.*/
+	HTTPClientResponseLengthRequired HTTPClientResponseCode = 411
+	/*HTTP status code [code]412 Precondition Failed[/code]. One or more conditions given in the request header fields evaluated to [code]false[/code] when tested on the server.*/
+	HTTPClientResponsePreconditionFailed HTTPClientResponseCode = 412
+	/*HTTP status code [code]413 Entity Too Large[/code]. The server is refusing to process a request because the request payload is larger than the server is willing or able to process.*/
+	HTTPClientResponseRequestEntityTooLarge HTTPClientResponseCode = 413
+	/*HTTP status code [code]414 Request-URI Too Long[/code]. The server is refusing to service the request because the request-target is longer than the server is willing to interpret.*/
+	HTTPClientResponseRequestUriTooLong HTTPClientResponseCode = 414
+	/*HTTP status code [code]415 Unsupported Media Type[/code]. The origin server is refusing to service the request because the payload is in a format not supported by this method on the target resource.*/
+	HTTPClientResponseUnsupportedMediaType HTTPClientResponseCode = 415
+	/*HTTP status code [code]416 Requested Range Not Satisfiable[/code]. None of the ranges in the request's Range header field overlap the current extent of the selected resource or the set of ranges requested has been rejected due to invalid ranges or an excessive request of small or overlapping ranges.*/
 	HTTPClientResponseRequestedRangeNotSatisfiable HTTPClientResponseCode = 416
-	HTTPClientResponseExpectationFailed            HTTPClientResponseCode = 417
-	HTTPClientResponseImATeapot                    HTTPClientResponseCode = 418
-	HTTPClientResponseMisdirectedRequest           HTTPClientResponseCode = 421
-	HTTPClientResponseUnprocessableEntity          HTTPClientResponseCode = 422
-	HTTPClientResponseLocked                       HTTPClientResponseCode = 423
-	HTTPClientResponseFailedDependency             HTTPClientResponseCode = 424
-	HTTPClientResponseUpgradeRequired              HTTPClientResponseCode = 426
-	HTTPClientResponsePreconditionRequired         HTTPClientResponseCode = 428
-	HTTPClientResponseTooManyRequests              HTTPClientResponseCode = 429
-	HTTPClientResponseRequestHeaderFieldsTooLarge  HTTPClientResponseCode = 431
-	HTTPClientResponseUnavailableForLegalReasons   HTTPClientResponseCode = 451
-	HTTPClientResponseInternalServerError          HTTPClientResponseCode = 500
-	HTTPClientResponseNotImplemented               HTTPClientResponseCode = 501
-	HTTPClientResponseBadGateway                   HTTPClientResponseCode = 502
-	HTTPClientResponseServiceUnavailable           HTTPClientResponseCode = 503
-	HTTPClientResponseGatewayTimeout               HTTPClientResponseCode = 504
-	HTTPClientResponseHttpVersionNotSupported      HTTPClientResponseCode = 505
-	HTTPClientResponseVariantAlsoNegotiates        HTTPClientResponseCode = 506
-	HTTPClientResponseInsufficientStorage          HTTPClientResponseCode = 507
-	HTTPClientResponseLoopDetected                 HTTPClientResponseCode = 508
-	HTTPClientResponseNotExtended                  HTTPClientResponseCode = 510
-	HTTPClientResponseNetworkAuthRequired          HTTPClientResponseCode = 511
+	/*HTTP status code [code]417 Expectation Failed[/code]. The expectation given in the request's Expect header field could not be met by at least one of the inbound servers.*/
+	HTTPClientResponseExpectationFailed HTTPClientResponseCode = 417
+	/*HTTP status code [code]418 I'm A Teapot[/code]. Any attempt to brew coffee with a teapot should result in the error code "418 I'm a teapot". The resulting entity body MAY be short and stout.*/
+	HTTPClientResponseImATeapot HTTPClientResponseCode = 418
+	/*HTTP status code [code]421 Misdirected Request[/code]. The request was directed at a server that is not able to produce a response. This can be sent by a server that is not configured to produce responses for the combination of scheme and authority that are included in the request URI.*/
+	HTTPClientResponseMisdirectedRequest HTTPClientResponseCode = 421
+	/*HTTP status code [code]422 Unprocessable Entity[/code] (WebDAV). The server understands the content type of the request entity (hence a 415 Unsupported Media Type status code is inappropriate), and the syntax of the request entity is correct (thus a 400 Bad Request status code is inappropriate) but was unable to process the contained instructions.*/
+	HTTPClientResponseUnprocessableEntity HTTPClientResponseCode = 422
+	/*HTTP status code [code]423 Locked[/code] (WebDAV). The source or destination resource of a method is locked.*/
+	HTTPClientResponseLocked HTTPClientResponseCode = 423
+	/*HTTP status code [code]424 Failed Dependency[/code] (WebDAV). The method could not be performed on the resource because the requested action depended on another action and that action failed.*/
+	HTTPClientResponseFailedDependency HTTPClientResponseCode = 424
+	/*HTTP status code [code]426 Upgrade Required[/code]. The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.*/
+	HTTPClientResponseUpgradeRequired HTTPClientResponseCode = 426
+	/*HTTP status code [code]428 Precondition Required[/code]. The origin server requires the request to be conditional.*/
+	HTTPClientResponsePreconditionRequired HTTPClientResponseCode = 428
+	/*HTTP status code [code]429 Too Many Requests[/code]. The user has sent too many requests in a given amount of time (see "rate limiting"). Back off and increase time between requests or try again later.*/
+	HTTPClientResponseTooManyRequests HTTPClientResponseCode = 429
+	/*HTTP status code [code]431 Request Header Fields Too Large[/code]. The server is unwilling to process the request because its header fields are too large. The request MAY be resubmitted after reducing the size of the request header fields.*/
+	HTTPClientResponseRequestHeaderFieldsTooLarge HTTPClientResponseCode = 431
+	/*HTTP status code [code]451 Response Unavailable For Legal Reasons[/code]. The server is denying access to the resource as a consequence of a legal demand.*/
+	HTTPClientResponseUnavailableForLegalReasons HTTPClientResponseCode = 451
+	/*HTTP status code [code]500 Internal Server Error[/code]. The server encountered an unexpected condition that prevented it from fulfilling the request.*/
+	HTTPClientResponseInternalServerError HTTPClientResponseCode = 500
+	/*HTTP status code [code]501 Not Implemented[/code]. The server does not support the functionality required to fulfill the request.*/
+	HTTPClientResponseNotImplemented HTTPClientResponseCode = 501
+	/*HTTP status code [code]502 Bad Gateway[/code]. The server, while acting as a gateway or proxy, received an invalid response from an inbound server it accessed while attempting to fulfill the request. Usually returned by load balancers or proxies.*/
+	HTTPClientResponseBadGateway HTTPClientResponseCode = 502
+	/*HTTP status code [code]503 Service Unavailable[/code]. The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay. Try again later.*/
+	HTTPClientResponseServiceUnavailable HTTPClientResponseCode = 503
+	/*HTTP status code [code]504 Gateway Timeout[/code]. The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server it needed to access in order to complete the request. Usually returned by load balancers or proxies.*/
+	HTTPClientResponseGatewayTimeout HTTPClientResponseCode = 504
+	/*HTTP status code [code]505 HTTP Version Not Supported[/code]. The server does not support, or refuses to support, the major version of HTTP that was used in the request message.*/
+	HTTPClientResponseHttpVersionNotSupported HTTPClientResponseCode = 505
+	/*HTTP status code [code]506 Variant Also Negotiates[/code]. The server has an internal configuration error: the chosen variant resource is configured to engage in transparent content negotiation itself, and is therefore not a proper end point in the negotiation process.*/
+	HTTPClientResponseVariantAlsoNegotiates HTTPClientResponseCode = 506
+	/*HTTP status code [code]507 Insufficient Storage[/code]. The method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the request.*/
+	HTTPClientResponseInsufficientStorage HTTPClientResponseCode = 507
+	/*HTTP status code [code]508 Loop Detected[/code]. The server terminated an operation because it encountered an infinite loop while processing a request with "Depth: infinity". This status indicates that the entire operation failed.*/
+	HTTPClientResponseLoopDetected HTTPClientResponseCode = 508
+	/*HTTP status code [code]510 Not Extended[/code]. The policy for accessing the resource has not been met in the request. The server should send back all the information necessary for the client to issue an extended request.*/
+	HTTPClientResponseNotExtended HTTPClientResponseCode = 510
+	/*HTTP status code [code]511 Network Authentication Required[/code]. The client needs to authenticate to gain network access.*/
+	HTTPClientResponseNetworkAuthRequired HTTPClientResponseCode = 511
 )
 
 type HTTPRequestResult = classdb.HTTPRequestResult
 
 const (
+	/*Request successful.*/
 	HTTPRequestResultSuccess                 HTTPRequestResult = 0
 	HTTPRequestResultChunkedBodySizeMismatch HTTPRequestResult = 1
-	HTTPRequestResultCantConnect             HTTPRequestResult = 2
-	HTTPRequestResultCantResolve             HTTPRequestResult = 3
-	HTTPRequestResultConnectionError         HTTPRequestResult = 4
-	HTTPRequestResultTlsHandshakeError       HTTPRequestResult = 5
-	HTTPRequestResultNoResponse              HTTPRequestResult = 6
-	HTTPRequestResultBodySizeLimitExceeded   HTTPRequestResult = 7
-	HTTPRequestResultBodyDecompressFailed    HTTPRequestResult = 8
-	HTTPRequestResultRequestFailed           HTTPRequestResult = 9
-	HTTPRequestResultDownloadFileCantOpen    HTTPRequestResult = 10
-	HTTPRequestResultDownloadFileWriteError  HTTPRequestResult = 11
-	HTTPRequestResultRedirectLimitReached    HTTPRequestResult = 12
-	HTTPRequestResultTimeout                 HTTPRequestResult = 13
+	/*Request failed while connecting.*/
+	HTTPRequestResultCantConnect HTTPRequestResult = 2
+	/*Request failed while resolving.*/
+	HTTPRequestResultCantResolve HTTPRequestResult = 3
+	/*Request failed due to connection (read/write) error.*/
+	HTTPRequestResultConnectionError HTTPRequestResult = 4
+	/*Request failed on TLS handshake.*/
+	HTTPRequestResultTlsHandshakeError HTTPRequestResult = 5
+	/*Request does not have a response (yet).*/
+	HTTPRequestResultNoResponse HTTPRequestResult = 6
+	/*Request exceeded its maximum size limit, see [member body_size_limit].*/
+	HTTPRequestResultBodySizeLimitExceeded HTTPRequestResult = 7
+	HTTPRequestResultBodyDecompressFailed  HTTPRequestResult = 8
+	/*Request failed (currently unused).*/
+	HTTPRequestResultRequestFailed HTTPRequestResult = 9
+	/*HTTPRequest couldn't open the download file.*/
+	HTTPRequestResultDownloadFileCantOpen HTTPRequestResult = 10
+	/*HTTPRequest couldn't write to the download file.*/
+	HTTPRequestResultDownloadFileWriteError HTTPRequestResult = 11
+	/*Request reached its maximum redirect limit, see [member max_redirects].*/
+	HTTPRequestResultRedirectLimitReached HTTPRequestResult = 12
+	/*Request failed due to a timeout. If you expect requests to take a long time, try increasing the value of [member timeout] or setting it to [code]0.0[/code] to remove the timeout completely.*/
+	HTTPRequestResultTimeout HTTPRequestResult = 13
 )
 
 type HashingContextHashType = classdb.HashingContextHashType
 
 const (
-	HashingContextHashMd5    HashingContextHashType = 0
-	HashingContextHashSha1   HashingContextHashType = 1
+	/*Hashing algorithm: MD5.*/
+	HashingContextHashMd5 HashingContextHashType = 0
+	/*Hashing algorithm: SHA-1.*/
+	HashingContextHashSha1 HashingContextHashType = 1
+	/*Hashing algorithm: SHA-256.*/
 	HashingContextHashSha256 HashingContextHashType = 2
 )
 
 type HingeJoint3DParam = classdb.HingeJoint3DParam
 
 const (
-	HingeJoint3DParamBias                HingeJoint3DParam = 0
-	HingeJoint3DParamLimitUpper          HingeJoint3DParam = 1
-	HingeJoint3DParamLimitLower          HingeJoint3DParam = 2
-	HingeJoint3DParamLimitBias           HingeJoint3DParam = 3
-	HingeJoint3DParamLimitSoftness       HingeJoint3DParam = 4
-	HingeJoint3DParamLimitRelaxation     HingeJoint3DParam = 5
+	/*The speed with which the two bodies get pulled together when they move in different directions.*/
+	HingeJoint3DParamBias HingeJoint3DParam = 0
+	/*The maximum rotation. Only active if [member angular_limit/enable] is [code]true[/code].*/
+	HingeJoint3DParamLimitUpper HingeJoint3DParam = 1
+	/*The minimum rotation. Only active if [member angular_limit/enable] is [code]true[/code].*/
+	HingeJoint3DParamLimitLower HingeJoint3DParam = 2
+	/*The speed with which the rotation across the axis perpendicular to the hinge gets corrected.*/
+	HingeJoint3DParamLimitBias     HingeJoint3DParam = 3
+	HingeJoint3DParamLimitSoftness HingeJoint3DParam = 4
+	/*The lower this value, the more the rotation gets slowed down.*/
+	HingeJoint3DParamLimitRelaxation HingeJoint3DParam = 5
+	/*Target speed for the motor.*/
 	HingeJoint3DParamMotorTargetVelocity HingeJoint3DParam = 6
-	HingeJoint3DParamMotorMaxImpulse     HingeJoint3DParam = 7
-	HingeJoint3DParamMax                 HingeJoint3DParam = 8
+	/*Maximum acceleration for the motor.*/
+	HingeJoint3DParamMotorMaxImpulse HingeJoint3DParam = 7
+	/*Represents the size of the [enum Param] enum.*/
+	HingeJoint3DParamMax HingeJoint3DParam = 8
 )
 
 type HingeJoint3DFlag = classdb.HingeJoint3DFlag
 
 const (
-	HingeJoint3DFlagUseLimit    HingeJoint3DFlag = 0
+	/*If [code]true[/code], the hinges maximum and minimum rotation, defined by [member angular_limit/lower] and [member angular_limit/upper] has effects.*/
+	HingeJoint3DFlagUseLimit HingeJoint3DFlag = 0
+	/*When activated, a motor turns the hinge.*/
 	HingeJoint3DFlagEnableMotor HingeJoint3DFlag = 1
-	HingeJoint3DFlagMax         HingeJoint3DFlag = 2
+	/*Represents the size of the [enum Flag] enum.*/
+	HingeJoint3DFlagMax HingeJoint3DFlag = 2
 )
 
 type IPResolverStatus = classdb.IPResolverStatus
 
 const (
-	IPResolverStatusNone    IPResolverStatus = 0
+	/*DNS hostname resolver status: No status.*/
+	IPResolverStatusNone IPResolverStatus = 0
+	/*DNS hostname resolver status: Waiting.*/
 	IPResolverStatusWaiting IPResolverStatus = 1
-	IPResolverStatusDone    IPResolverStatus = 2
-	IPResolverStatusError   IPResolverStatus = 3
+	/*DNS hostname resolver status: Done.*/
+	IPResolverStatusDone IPResolverStatus = 2
+	/*DNS hostname resolver status: Error.*/
+	IPResolverStatusError IPResolverStatus = 3
 )
 
 type IPType = classdb.IPType
 
 const (
+	/*Address type: None.*/
 	IPTypeNone IPType = 0
+	/*Address type: Internet protocol version 4 (IPv4).*/
 	IPTypeIpv4 IPType = 1
+	/*Address type: Internet protocol version 6 (IPv6).*/
 	IPTypeIpv6 IPType = 2
-	IPTypeAny  IPType = 3
+	/*Address type: Any.*/
+	IPTypeAny IPType = 3
 )
 
 type ImageFormat = classdb.ImageFormat
 
 const (
-	ImageFormatL8         ImageFormat = 0
-	ImageFormatLa8        ImageFormat = 1
-	ImageFormatR8         ImageFormat = 2
-	ImageFormatRg8        ImageFormat = 3
-	ImageFormatRgb8       ImageFormat = 4
-	ImageFormatRgba8      ImageFormat = 5
-	ImageFormatRgba4444   ImageFormat = 6
-	ImageFormatRgb565     ImageFormat = 7
-	ImageFormatRf         ImageFormat = 8
-	ImageFormatRgf        ImageFormat = 9
-	ImageFormatRgbf       ImageFormat = 10
-	ImageFormatRgbaf      ImageFormat = 11
-	ImageFormatRh         ImageFormat = 12
-	ImageFormatRgh        ImageFormat = 13
-	ImageFormatRgbh       ImageFormat = 14
-	ImageFormatRgbah      ImageFormat = 15
-	ImageFormatRgbe9995   ImageFormat = 16
-	ImageFormatDxt1       ImageFormat = 17
-	ImageFormatDxt3       ImageFormat = 18
-	ImageFormatDxt5       ImageFormat = 19
-	ImageFormatRgtcR      ImageFormat = 20
-	ImageFormatRgtcRg     ImageFormat = 21
-	ImageFormatBptcRgba   ImageFormat = 22
-	ImageFormatBptcRgbf   ImageFormat = 23
-	ImageFormatBptcRgbfu  ImageFormat = 24
-	ImageFormatEtc        ImageFormat = 25
-	ImageFormatEtc2R11    ImageFormat = 26
-	ImageFormatEtc2R11s   ImageFormat = 27
-	ImageFormatEtc2Rg11   ImageFormat = 28
-	ImageFormatEtc2Rg11s  ImageFormat = 29
-	ImageFormatEtc2Rgb8   ImageFormat = 30
-	ImageFormatEtc2Rgba8  ImageFormat = 31
+	/*Texture format with a single 8-bit depth representing luminance.*/
+	ImageFormatL8 ImageFormat = 0
+	/*OpenGL texture format with two values, luminance and alpha each stored with 8 bits.*/
+	ImageFormatLa8 ImageFormat = 1
+	/*OpenGL texture format [code]RED[/code] with a single component and a bitdepth of 8.*/
+	ImageFormatR8 ImageFormat = 2
+	/*OpenGL texture format [code]RG[/code] with two components and a bitdepth of 8 for each.*/
+	ImageFormatRg8 ImageFormat = 3
+	/*OpenGL texture format [code]RGB[/code] with three components, each with a bitdepth of 8.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatRgb8 ImageFormat = 4
+	/*OpenGL texture format [code]RGBA[/code] with four components, each with a bitdepth of 8.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatRgba8 ImageFormat = 5
+	/*OpenGL texture format [code]RGBA[/code] with four components, each with a bitdepth of 4.*/
+	ImageFormatRgba4444 ImageFormat = 6
+	/*OpenGL texture format [code]RGB[/code] with three components. Red and blue have a bitdepth of 5, and green has a bitdepth of 6.*/
+	ImageFormatRgb565 ImageFormat = 7
+	/*OpenGL texture format [code]GL_R32F[/code] where there's one component, a 32-bit floating-point value.*/
+	ImageFormatRf ImageFormat = 8
+	/*OpenGL texture format [code]GL_RG32F[/code] where there are two components, each a 32-bit floating-point values.*/
+	ImageFormatRgf ImageFormat = 9
+	/*OpenGL texture format [code]GL_RGB32F[/code] where there are three components, each a 32-bit floating-point values.*/
+	ImageFormatRgbf ImageFormat = 10
+	/*OpenGL texture format [code]GL_RGBA32F[/code] where there are four components, each a 32-bit floating-point values.*/
+	ImageFormatRgbaf ImageFormat = 11
+	/*OpenGL texture format [code]GL_R16F[/code] where there's one component, a 16-bit "half-precision" floating-point value.*/
+	ImageFormatRh ImageFormat = 12
+	/*OpenGL texture format [code]GL_RG16F[/code] where there are two components, each a 16-bit "half-precision" floating-point value.*/
+	ImageFormatRgh ImageFormat = 13
+	/*OpenGL texture format [code]GL_RGB16F[/code] where there are three components, each a 16-bit "half-precision" floating-point value.*/
+	ImageFormatRgbh ImageFormat = 14
+	/*OpenGL texture format [code]GL_RGBA16F[/code] where there are four components, each a 16-bit "half-precision" floating-point value.*/
+	ImageFormatRgbah ImageFormat = 15
+	/*A special OpenGL texture format where the three color components have 9 bits of precision and all three share a single 5-bit exponent.*/
+	ImageFormatRgbe9995 ImageFormat = 16
+	/*The [url=https://en.wikipedia.org/wiki/S3_Texture_Compression]S3TC[/url] texture format that uses Block Compression 1, and is the smallest variation of S3TC, only providing 1 bit of alpha and color data being premultiplied with alpha.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatDxt1 ImageFormat = 17
+	/*The [url=https://en.wikipedia.org/wiki/S3_Texture_Compression]S3TC[/url] texture format that uses Block Compression 2, and color data is interpreted as not having been premultiplied by alpha. Well suited for images with sharp alpha transitions between translucent and opaque areas.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatDxt3 ImageFormat = 18
+	/*The [url=https://en.wikipedia.org/wiki/S3_Texture_Compression]S3TC[/url] texture format also known as Block Compression 3 or BC3 that contains 64 bits of alpha channel data followed by 64 bits of DXT1-encoded color data. Color data is not premultiplied by alpha, same as DXT3. DXT5 generally produces superior results for transparent gradients compared to DXT3.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatDxt5 ImageFormat = 19
+	/*Texture format that uses [url=https://www.khronos.org/opengl/wiki/Red_Green_Texture_Compression]Red Green Texture Compression[/url], normalizing the red channel data using the same compression algorithm that DXT5 uses for the alpha channel.*/
+	ImageFormatRgtcR ImageFormat = 20
+	/*Texture format that uses [url=https://www.khronos.org/opengl/wiki/Red_Green_Texture_Compression]Red Green Texture Compression[/url], normalizing the red and green channel data using the same compression algorithm that DXT5 uses for the alpha channel.*/
+	ImageFormatRgtcRg ImageFormat = 21
+	/*Texture format that uses [url=https://www.khronos.org/opengl/wiki/BPTC_Texture_Compression]BPTC[/url] compression with unsigned normalized RGBA components.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatBptcRgba ImageFormat = 22
+	/*Texture format that uses [url=https://www.khronos.org/opengl/wiki/BPTC_Texture_Compression]BPTC[/url] compression with signed floating-point RGB components.*/
+	ImageFormatBptcRgbf ImageFormat = 23
+	/*Texture format that uses [url=https://www.khronos.org/opengl/wiki/BPTC_Texture_Compression]BPTC[/url] compression with unsigned floating-point RGB components.*/
+	ImageFormatBptcRgbfu ImageFormat = 24
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC1]Ericsson Texture Compression format 1[/url], also referred to as "ETC1", and is part of the OpenGL ES graphics standard. This format cannot store an alpha channel.*/
+	ImageFormatEtc ImageFormat = 25
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]R11_EAC[/code] variant), which provides one channel of unsigned data.*/
+	ImageFormatEtc2R11 ImageFormat = 26
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]SIGNED_R11_EAC[/code] variant), which provides one channel of signed data.*/
+	ImageFormatEtc2R11s ImageFormat = 27
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]RG11_EAC[/code] variant), which provides two channels of unsigned data.*/
+	ImageFormatEtc2Rg11 ImageFormat = 28
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]SIGNED_RG11_EAC[/code] variant), which provides two channels of signed data.*/
+	ImageFormatEtc2Rg11s ImageFormat = 29
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]RGB8[/code] variant), which is a follow-up of ETC1 and compresses RGB888 data.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatEtc2Rgb8 ImageFormat = 30
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]RGBA8[/code]variant), which compresses RGBA8888 data with full alpha support.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
+	ImageFormatEtc2Rgba8 ImageFormat = 31
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]RGB8_PUNCHTHROUGH_ALPHA1[/code] variant), which compresses RGBA data to make alpha either fully transparent or fully opaque.
+	  [b]Note:[/b] When creating an [ImageTexture], an sRGB to linear color space conversion is performed.*/
 	ImageFormatEtc2Rgb8a1 ImageFormat = 32
+	/*[url=https://en.wikipedia.org/wiki/Ericsson_Texture_Compression#ETC2_and_EAC]Ericsson Texture Compression format 2[/url] ([code]RGBA8[/code] variant), which compresses RA data and interprets it as two channels (red and green). See also [constant FORMAT_ETC2_RGBA8].*/
 	ImageFormatEtc2RaAsRg ImageFormat = 33
+	/*The [url=https://en.wikipedia.org/wiki/S3_Texture_Compression]S3TC[/url] texture format also known as Block Compression 3 or BC3, which compresses RA data and interprets it as two channels (red and green). See also [constant FORMAT_DXT5].*/
 	ImageFormatDxt5RaAsRg ImageFormat = 34
-	ImageFormatAstc4x4    ImageFormat = 35
+	/*[url=https://en.wikipedia.org/wiki/Adaptive_scalable_texture_compression]Adaptive Scalable Texture Compression[/url]. This implements the 4x4 (high quality) mode.*/
+	ImageFormatAstc4x4 ImageFormat = 35
+	/*Same format as [constant FORMAT_ASTC_4x4], but with the hint to let the GPU know it is used for HDR.*/
 	ImageFormatAstc4x4Hdr ImageFormat = 36
-	ImageFormatAstc8x8    ImageFormat = 37
+	/*[url=https://en.wikipedia.org/wiki/Adaptive_scalable_texture_compression]Adaptive Scalable Texture Compression[/url]. This implements the 8x8 (low quality) mode.*/
+	ImageFormatAstc8x8 ImageFormat = 37
+	/*Same format as [constant FORMAT_ASTC_8x8], but with the hint to let the GPU know it is used for HDR.*/
 	ImageFormatAstc8x8Hdr ImageFormat = 38
-	ImageFormatMax        ImageFormat = 39
+	/*Represents the size of the [enum Format] enum.*/
+	ImageFormatMax ImageFormat = 39
 )
 
 type ImageInterpolation = classdb.ImageInterpolation
 
 const (
-	ImageInterpolateNearest   ImageInterpolation = 0
-	ImageInterpolateBilinear  ImageInterpolation = 1
-	ImageInterpolateCubic     ImageInterpolation = 2
+	/*Performs nearest-neighbor interpolation. If the image is resized, it will be pixelated.*/
+	ImageInterpolateNearest ImageInterpolation = 0
+	/*Performs bilinear interpolation. If the image is resized, it will be blurry. This mode is faster than [constant INTERPOLATE_CUBIC], but it results in lower quality.*/
+	ImageInterpolateBilinear ImageInterpolation = 1
+	/*Performs cubic interpolation. If the image is resized, it will be blurry. This mode often gives better results compared to [constant INTERPOLATE_BILINEAR], at the cost of being slower.*/
+	ImageInterpolateCubic ImageInterpolation = 2
+	/*Performs bilinear separately on the two most-suited mipmap levels, then linearly interpolates between them.
+	  It's slower than [constant INTERPOLATE_BILINEAR], but produces higher-quality results with far fewer aliasing artifacts.
+	  If the image does not have mipmaps, they will be generated and used internally, but no mipmaps will be generated on the resulting image.
+	  [b]Note:[/b] If you intend to scale multiple copies of the original image, it's better to call [method generate_mipmaps]] on it in advance, to avoid wasting processing power in generating them again and again.
+	  On the other hand, if the image already has mipmaps, they will be used, and a new set will be generated for the resulting image.*/
 	ImageInterpolateTrilinear ImageInterpolation = 3
-	ImageInterpolateLanczos   ImageInterpolation = 4
+	/*Performs Lanczos interpolation. This is the slowest image resizing mode, but it typically gives the best results, especially when downscaling images.*/
+	ImageInterpolateLanczos ImageInterpolation = 4
 )
 
 type ImageAlphaMode = classdb.ImageAlphaMode
 
 const (
-	ImageAlphaNone  ImageAlphaMode = 0
-	ImageAlphaBit   ImageAlphaMode = 1
+	/*Image does not have alpha.*/
+	ImageAlphaNone ImageAlphaMode = 0
+	/*Image stores alpha in a single bit.*/
+	ImageAlphaBit ImageAlphaMode = 1
+	/*Image uses alpha.*/
 	ImageAlphaBlend ImageAlphaMode = 2
 )
 
 type ImageCompressMode = classdb.ImageCompressMode
 
 const (
+	/*Use S3TC compression.*/
 	ImageCompressS3tc ImageCompressMode = 0
-	ImageCompressEtc  ImageCompressMode = 1
+	/*Use ETC compression.*/
+	ImageCompressEtc ImageCompressMode = 1
+	/*Use ETC2 compression.*/
 	ImageCompressEtc2 ImageCompressMode = 2
+	/*Use BPTC compression.*/
 	ImageCompressBptc ImageCompressMode = 3
+	/*Use ASTC compression.*/
 	ImageCompressAstc ImageCompressMode = 4
-	ImageCompressMax  ImageCompressMode = 5
+	/*Represents the size of the [enum CompressMode] enum.*/
+	ImageCompressMax ImageCompressMode = 5
 )
 
 type ImageUsedChannels = classdb.ImageUsedChannels
 
 const (
-	ImageUsedChannelsL    ImageUsedChannels = 0
-	ImageUsedChannelsLa   ImageUsedChannels = 1
-	ImageUsedChannelsR    ImageUsedChannels = 2
-	ImageUsedChannelsRg   ImageUsedChannels = 3
-	ImageUsedChannelsRgb  ImageUsedChannels = 4
+	/*The image only uses one channel for luminance (grayscale).*/
+	ImageUsedChannelsL ImageUsedChannels = 0
+	/*The image uses two channels for luminance and alpha, respectively.*/
+	ImageUsedChannelsLa ImageUsedChannels = 1
+	/*The image only uses the red channel.*/
+	ImageUsedChannelsR ImageUsedChannels = 2
+	/*The image uses two channels for red and green.*/
+	ImageUsedChannelsRg ImageUsedChannels = 3
+	/*The image uses three channels for red, green, and blue.*/
+	ImageUsedChannelsRgb ImageUsedChannels = 4
+	/*The image uses four channels for red, green, blue, and alpha.*/
 	ImageUsedChannelsRgba ImageUsedChannels = 5
 )
 
 type ImageCompressSource = classdb.ImageCompressSource
 
 const (
+	/*Source texture (before compression) is a regular texture. Default for all textures.*/
 	ImageCompressSourceGeneric ImageCompressSource = 0
-	ImageCompressSourceSrgb    ImageCompressSource = 1
-	ImageCompressSourceNormal  ImageCompressSource = 2
+	/*Source texture (before compression) is in sRGB space.*/
+	ImageCompressSourceSrgb ImageCompressSource = 1
+	/*Source texture (before compression) is a normal texture (e.g. it can be compressed into two channels).*/
+	ImageCompressSourceNormal ImageCompressSource = 2
 )
 
 type ImageASTCFormat = classdb.ImageASTCFormat
 
 const (
+	/*Hint to indicate that the high quality 4x4 ASTC compression format should be used.*/
 	ImageAstcFormat4x4 ImageASTCFormat = 0
+	/*Hint to indicate that the low quality 8x8 ASTC compression format should be used.*/
 	ImageAstcFormat8x8 ImageASTCFormat = 1
 )
 
@@ -2749,47 +4506,75 @@ const (
 type InputMouseMode = classdb.InputMouseMode
 
 const (
-	InputMouseModeVisible        InputMouseMode = 0
-	InputMouseModeHidden         InputMouseMode = 1
-	InputMouseModeCaptured       InputMouseMode = 2
-	InputMouseModeConfined       InputMouseMode = 3
+	/*Makes the mouse cursor visible if it is hidden.*/
+	InputMouseModeVisible InputMouseMode = 0
+	/*Makes the mouse cursor hidden if it is visible.*/
+	InputMouseModeHidden InputMouseMode = 1
+	/*Captures the mouse. The mouse will be hidden and its position locked at the center of the window manager's window.
+	  [b]Note:[/b] If you want to process the mouse's movement in this mode, you need to use [member InputEventMouseMotion.relative].*/
+	InputMouseModeCaptured InputMouseMode = 2
+	/*Confines the mouse cursor to the game window, and make it visible.*/
+	InputMouseModeConfined InputMouseMode = 3
+	/*Confines the mouse cursor to the game window, and make it hidden.*/
 	InputMouseModeConfinedHidden InputMouseMode = 4
 )
 
 type InputCursorShape = classdb.InputCursorShape
 
 const (
-	InputCursorArrow        InputCursorShape = 0
-	InputCursorIbeam        InputCursorShape = 1
+	/*Arrow cursor. Standard, default pointing cursor.*/
+	InputCursorArrow InputCursorShape = 0
+	/*I-beam cursor. Usually used to show where the text cursor will appear when the mouse is clicked.*/
+	InputCursorIbeam InputCursorShape = 1
+	/*Pointing hand cursor. Usually used to indicate the pointer is over a link or other interactable item.*/
 	InputCursorPointingHand InputCursorShape = 2
-	InputCursorCross        InputCursorShape = 3
-	InputCursorWait         InputCursorShape = 4
-	InputCursorBusy         InputCursorShape = 5
-	InputCursorDrag         InputCursorShape = 6
-	InputCursorCanDrop      InputCursorShape = 7
-	InputCursorForbidden    InputCursorShape = 8
-	InputCursorVsize        InputCursorShape = 9
-	InputCursorHsize        InputCursorShape = 10
-	InputCursorBdiagsize    InputCursorShape = 11
-	InputCursorFdiagsize    InputCursorShape = 12
-	InputCursorMove         InputCursorShape = 13
-	InputCursorVsplit       InputCursorShape = 14
-	InputCursorHsplit       InputCursorShape = 15
-	InputCursorHelp         InputCursorShape = 16
+	/*Cross cursor. Typically appears over regions in which a drawing operation can be performed or for selections.*/
+	InputCursorCross InputCursorShape = 3
+	/*Wait cursor. Indicates that the application is busy performing an operation. This cursor shape denotes that the application isn't usable during the operation (e.g. something is blocking its main thread).*/
+	InputCursorWait InputCursorShape = 4
+	/*Busy cursor. Indicates that the application is busy performing an operation. This cursor shape denotes that the application is still usable during the operation.*/
+	InputCursorBusy InputCursorShape = 5
+	/*Drag cursor. Usually displayed when dragging something.
+	  [b]Note:[/b] Windows lacks a dragging cursor, so [constant CURSOR_DRAG] is the same as [constant CURSOR_MOVE] for this platform.*/
+	InputCursorDrag InputCursorShape = 6
+	/*Can drop cursor. Usually displayed when dragging something to indicate that it can be dropped at the current position.*/
+	InputCursorCanDrop InputCursorShape = 7
+	/*Forbidden cursor. Indicates that the current action is forbidden (for example, when dragging something) or that the control at a position is disabled.*/
+	InputCursorForbidden InputCursorShape = 8
+	/*Vertical resize mouse cursor. A double-headed vertical arrow. It tells the user they can resize the window or the panel vertically.*/
+	InputCursorVsize InputCursorShape = 9
+	/*Horizontal resize mouse cursor. A double-headed horizontal arrow. It tells the user they can resize the window or the panel horizontally.*/
+	InputCursorHsize InputCursorShape = 10
+	/*Window resize mouse cursor. The cursor is a double-headed arrow that goes from the bottom left to the top right. It tells the user they can resize the window or the panel both horizontally and vertically.*/
+	InputCursorBdiagsize InputCursorShape = 11
+	/*Window resize mouse cursor. The cursor is a double-headed arrow that goes from the top left to the bottom right, the opposite of [constant CURSOR_BDIAGSIZE]. It tells the user they can resize the window or the panel both horizontally and vertically.*/
+	InputCursorFdiagsize InputCursorShape = 12
+	/*Move cursor. Indicates that something can be moved.*/
+	InputCursorMove InputCursorShape = 13
+	/*Vertical split mouse cursor. On Windows, it's the same as [constant CURSOR_VSIZE].*/
+	InputCursorVsplit InputCursorShape = 14
+	/*Horizontal split mouse cursor. On Windows, it's the same as [constant CURSOR_HSIZE].*/
+	InputCursorHsplit InputCursorShape = 15
+	/*Help cursor. Usually a question mark.*/
+	InputCursorHelp InputCursorShape = 16
 )
 
 type ItemListIconMode = classdb.ItemListIconMode
 
 const (
-	ItemListIconModeTop  ItemListIconMode = 0
+	/*Icon is drawn above the text.*/
+	ItemListIconModeTop ItemListIconMode = 0
+	/*Icon is drawn to the left of the text.*/
 	ItemListIconModeLeft ItemListIconMode = 1
 )
 
 type ItemListSelectMode = classdb.ItemListSelectMode
 
 const (
+	/*Only allow selecting a single item.*/
 	ItemListSelectSingle ItemListSelectMode = 0
-	ItemListSelectMulti  ItemListSelectMode = 1
+	/*Allows selecting multiple items by holding [kbd]Ctrl[/kbd] or [kbd]Shift[/kbd].*/
+	ItemListSelectMulti ItemListSelectMode = 1
 )
 
 type JSONRPCErrorCode = classdb.JSONRPCErrorCode
@@ -2797,6 +4582,7 @@ type JSONRPCErrorCode = classdb.JSONRPCErrorCode
 const (
 	JSONRPCParseError     JSONRPCErrorCode = -32700
 	JSONRPCInvalidRequest JSONRPCErrorCode = -32600
+	/*A method call was requested but no function of that name existed in the JSONRPC subclass.*/
 	JSONRPCMethodNotFound JSONRPCErrorCode = -32601
 	JSONRPCInvalidParams  JSONRPCErrorCode = -32602
 	JSONRPCInternalError  JSONRPCErrorCode = -32603
@@ -2805,468 +4591,725 @@ const (
 type Label3DDrawFlags = classdb.Label3DDrawFlags
 
 const (
-	Label3DFlagShaded           Label3DDrawFlags = 0
-	Label3DFlagDoubleSided      Label3DDrawFlags = 1
+	/*If set, lights in the environment affect the label.*/
+	Label3DFlagShaded Label3DDrawFlags = 0
+	/*If set, text can be seen from the back as well. If not, the text is invisible when looking at it from behind.*/
+	Label3DFlagDoubleSided Label3DDrawFlags = 1
+	/*Disables the depth test, so this object is drawn on top of all others. However, objects drawn after it in the draw order may cover it.*/
 	Label3DFlagDisableDepthTest Label3DDrawFlags = 2
-	Label3DFlagFixedSize        Label3DDrawFlags = 3
-	Label3DFlagMax              Label3DDrawFlags = 4
+	/*Label is scaled by depth so that it always appears the same size on screen.*/
+	Label3DFlagFixedSize Label3DDrawFlags = 3
+	/*Represents the size of the [enum DrawFlags] enum.*/
+	Label3DFlagMax Label3DDrawFlags = 4
 )
 
 type Label3DAlphaCutMode = classdb.Label3DAlphaCutMode
 
 const (
-	Label3DAlphaCutDisabled      Label3DAlphaCutMode = 0
-	Label3DAlphaCutDiscard       Label3DAlphaCutMode = 1
+	/*This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [member GeometryInstance3D.cast_shadow] has no effect when this transparency mode is used; the [Label3D] will never cast shadows.*/
+	Label3DAlphaCutDisabled Label3DAlphaCutMode = 0
+	/*This mode only allows fully transparent or fully opaque pixels. Harsh edges will be visible unless some form of screen-space antialiasing is enabled (see [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa]). This mode is also known as [i]alpha testing[/i] or [i]1-bit transparency[/i].
+	  [b]Note:[/b] This mode might have issues with anti-aliased fonts and outlines, try adjusting [member alpha_scissor_threshold] or using MSDF font.
+	  [b]Note:[/b] When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.*/
+	Label3DAlphaCutDiscard Label3DAlphaCutMode = 1
+	/*This mode draws fully opaque pixels in the depth prepass. This is slower than [constant ALPHA_CUT_DISABLED] or [constant ALPHA_CUT_DISCARD], but it allows displaying translucent areas and smooth edges while using proper sorting.
+	  [b]Note:[/b] When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.*/
 	Label3DAlphaCutOpaquePrepass Label3DAlphaCutMode = 2
-	Label3DAlphaCutHash          Label3DAlphaCutMode = 3
+	/*This mode draws cuts off all values below a spatially-deterministic threshold, the rest will remain opaque.*/
+	Label3DAlphaCutHash Label3DAlphaCutMode = 3
 )
 
 type Light2DShadowFilter = classdb.Light2DShadowFilter
 
 const (
-	Light2DShadowFilterNone  Light2DShadowFilter = 0
-	Light2DShadowFilterPcf5  Light2DShadowFilter = 1
+	/*No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [member shadow_filter].*/
+	Light2DShadowFilterNone Light2DShadowFilter = 0
+	/*Percentage closer filtering (5 samples) applies to the shadow map. This is slower compared to hard shadow rendering. See [member shadow_filter].*/
+	Light2DShadowFilterPcf5 Light2DShadowFilter = 1
+	/*Percentage closer filtering (13 samples) applies to the shadow map. This is the slowest shadow filtering mode, and should be used sparingly. See [member shadow_filter].*/
 	Light2DShadowFilterPcf13 Light2DShadowFilter = 2
 )
 
 type Light2DBlendMode = classdb.Light2DBlendMode
 
 const (
+	/*Adds the value of pixels corresponding to the Light2D to the values of pixels under it. This is the common behavior of a light.*/
 	Light2DBlendModeAdd Light2DBlendMode = 0
+	/*Subtracts the value of pixels corresponding to the Light2D to the values of pixels under it, resulting in inversed light effect.*/
 	Light2DBlendModeSub Light2DBlendMode = 1
+	/*Mix the value of pixels corresponding to the Light2D to the values of pixels under it by linear interpolation.*/
 	Light2DBlendModeMix Light2DBlendMode = 2
 )
 
 type Light3DParam = classdb.Light3DParam
 
 const (
-	Light3DParamEnergy              Light3DParam = 0
-	Light3DParamIndirectEnergy      Light3DParam = 1
+	/*Constant for accessing [member light_energy].*/
+	Light3DParamEnergy Light3DParam = 0
+	/*Constant for accessing [member light_indirect_energy].*/
+	Light3DParamIndirectEnergy Light3DParam = 1
+	/*Constant for accessing [member light_volumetric_fog_energy].*/
 	Light3DParamVolumetricFogEnergy Light3DParam = 2
-	Light3DParamSpecular            Light3DParam = 3
-	Light3DParamRange               Light3DParam = 4
-	Light3DParamSize                Light3DParam = 5
-	Light3DParamAttenuation         Light3DParam = 6
-	Light3DParamSpotAngle           Light3DParam = 7
-	Light3DParamSpotAttenuation     Light3DParam = 8
-	Light3DParamShadowMaxDistance   Light3DParam = 9
-	Light3DParamShadowSplit1Offset  Light3DParam = 10
-	Light3DParamShadowSplit2Offset  Light3DParam = 11
-	Light3DParamShadowSplit3Offset  Light3DParam = 12
-	Light3DParamShadowFadeStart     Light3DParam = 13
-	Light3DParamShadowNormalBias    Light3DParam = 14
-	Light3DParamShadowBias          Light3DParam = 15
-	Light3DParamShadowPancakeSize   Light3DParam = 16
-	Light3DParamShadowOpacity       Light3DParam = 17
-	Light3DParamShadowBlur          Light3DParam = 18
-	Light3DParamTransmittanceBias   Light3DParam = 19
-	Light3DParamIntensity           Light3DParam = 20
-	Light3DParamMax                 Light3DParam = 21
+	/*Constant for accessing [member light_specular].*/
+	Light3DParamSpecular Light3DParam = 3
+	/*Constant for accessing [member OmniLight3D.omni_range] or [member SpotLight3D.spot_range].*/
+	Light3DParamRange Light3DParam = 4
+	/*Constant for accessing [member light_size].*/
+	Light3DParamSize Light3DParam = 5
+	/*Constant for accessing [member OmniLight3D.omni_attenuation] or [member SpotLight3D.spot_attenuation].*/
+	Light3DParamAttenuation Light3DParam = 6
+	/*Constant for accessing [member SpotLight3D.spot_angle].*/
+	Light3DParamSpotAngle Light3DParam = 7
+	/*Constant for accessing [member SpotLight3D.spot_angle_attenuation].*/
+	Light3DParamSpotAttenuation Light3DParam = 8
+	/*Constant for accessing [member DirectionalLight3D.directional_shadow_max_distance].*/
+	Light3DParamShadowMaxDistance Light3DParam = 9
+	/*Constant for accessing [member DirectionalLight3D.directional_shadow_split_1].*/
+	Light3DParamShadowSplit1Offset Light3DParam = 10
+	/*Constant for accessing [member DirectionalLight3D.directional_shadow_split_2].*/
+	Light3DParamShadowSplit2Offset Light3DParam = 11
+	/*Constant for accessing [member DirectionalLight3D.directional_shadow_split_3].*/
+	Light3DParamShadowSplit3Offset Light3DParam = 12
+	/*Constant for accessing [member DirectionalLight3D.directional_shadow_fade_start].*/
+	Light3DParamShadowFadeStart Light3DParam = 13
+	/*Constant for accessing [member shadow_normal_bias].*/
+	Light3DParamShadowNormalBias Light3DParam = 14
+	/*Constant for accessing [member shadow_bias].*/
+	Light3DParamShadowBias Light3DParam = 15
+	/*Constant for accessing [member DirectionalLight3D.directional_shadow_pancake_size].*/
+	Light3DParamShadowPancakeSize Light3DParam = 16
+	/*Constant for accessing [member shadow_opacity].*/
+	Light3DParamShadowOpacity Light3DParam = 17
+	/*Constant for accessing [member shadow_blur].*/
+	Light3DParamShadowBlur Light3DParam = 18
+	/*Constant for accessing [member shadow_transmittance_bias].*/
+	Light3DParamTransmittanceBias Light3DParam = 19
+	/*Constant for accessing [member light_intensity_lumens] and [member light_intensity_lux]. Only used when [member ProjectSettings.rendering/lights_and_shadows/use_physical_light_units] is [code]true[/code].*/
+	Light3DParamIntensity Light3DParam = 20
+	/*Represents the size of the [enum Param] enum.*/
+	Light3DParamMax Light3DParam = 21
 )
 
 type Light3DBakeMode = classdb.Light3DBakeMode
 
 const (
+	/*Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
+	  [b]Note:[/b] Hiding a light does [i]not[/i] affect baking [LightmapGI]. Hiding a light will still affect baking [VoxelGI] and SDFGI (see [member Environment.sdfgi_enabled).*/
 	Light3DBakeDisabled Light3DBakeMode = 0
-	Light3DBakeStatic   Light3DBakeMode = 1
-	Light3DBakeDynamic  Light3DBakeMode = 2
+	/*Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([member Environment.sdfgi_enabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
+	  [b]Note:[/b] The light is not baked in [LightmapGI] if [member editor_only] is [code]true[/code].*/
+	Light3DBakeStatic Light3DBakeMode = 1
+	/*Light is taken into account in dynamic baking ([VoxelGI] and SDFGI ([member Environment.sdfgi_enabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [constant BAKE_STATIC]. This has a greater performance cost compared to [constant BAKE_STATIC]. When using SDFGI, the update speed of dynamic lights is affected by [member ProjectSettings.rendering/global_illumination/sdfgi/frames_to_update_lights].*/
+	Light3DBakeDynamic Light3DBakeMode = 2
 )
 
 type LightmapGIBakeQuality = classdb.LightmapGIBakeQuality
 
 const (
-	LightmapGIBakeQualityLow    LightmapGIBakeQuality = 0
+	/*Low bake quality (fastest bake times). The quality of this preset can be adjusted by changing [member ProjectSettings.rendering/lightmapping/bake_quality/low_quality_ray_count] and [member ProjectSettings.rendering/lightmapping/bake_quality/low_quality_probe_ray_count].*/
+	LightmapGIBakeQualityLow LightmapGIBakeQuality = 0
+	/*Medium bake quality (fast bake times). The quality of this preset can be adjusted by changing [member ProjectSettings.rendering/lightmapping/bake_quality/medium_quality_ray_count] and [member ProjectSettings.rendering/lightmapping/bake_quality/medium_quality_probe_ray_count].*/
 	LightmapGIBakeQualityMedium LightmapGIBakeQuality = 1
-	LightmapGIBakeQualityHigh   LightmapGIBakeQuality = 2
-	LightmapGIBakeQualityUltra  LightmapGIBakeQuality = 3
+	/*High bake quality (slow bake times). The quality of this preset can be adjusted by changing [member ProjectSettings.rendering/lightmapping/bake_quality/high_quality_ray_count] and [member ProjectSettings.rendering/lightmapping/bake_quality/high_quality_probe_ray_count].*/
+	LightmapGIBakeQualityHigh LightmapGIBakeQuality = 2
+	/*Highest bake quality (slowest bake times). The quality of this preset can be adjusted by changing [member ProjectSettings.rendering/lightmapping/bake_quality/ultra_quality_ray_count] and [member ProjectSettings.rendering/lightmapping/bake_quality/ultra_quality_probe_ray_count].*/
+	LightmapGIBakeQualityUltra LightmapGIBakeQuality = 3
 )
 
 type LightmapGIGenerateProbes = classdb.LightmapGIGenerateProbes
 
 const (
+	/*Don't generate lightmap probes for lighting dynamic objects.*/
 	LightmapGIGenerateProbesDisabled LightmapGIGenerateProbes = 0
-	LightmapGIGenerateProbesSubdiv4  LightmapGIGenerateProbes = 1
-	LightmapGIGenerateProbesSubdiv8  LightmapGIGenerateProbes = 2
+	/*Lowest level of subdivision (fastest bake times, smallest file sizes).*/
+	LightmapGIGenerateProbesSubdiv4 LightmapGIGenerateProbes = 1
+	/*Low level of subdivision (fast bake times, small file sizes).*/
+	LightmapGIGenerateProbesSubdiv8 LightmapGIGenerateProbes = 2
+	/*High level of subdivision (slow bake times, large file sizes).*/
 	LightmapGIGenerateProbesSubdiv16 LightmapGIGenerateProbes = 3
+	/*Highest level of subdivision (slowest bake times, largest file sizes).*/
 	LightmapGIGenerateProbesSubdiv32 LightmapGIGenerateProbes = 4
 )
 
 type LightmapGIBakeError = classdb.LightmapGIBakeError
 
 const (
-	LightmapGIBakeErrorOk                  LightmapGIBakeError = 0
-	LightmapGIBakeErrorNoSceneRoot         LightmapGIBakeError = 1
-	LightmapGIBakeErrorForeignData         LightmapGIBakeError = 2
-	LightmapGIBakeErrorNoLightmapper       LightmapGIBakeError = 3
-	LightmapGIBakeErrorNoSavePath          LightmapGIBakeError = 4
-	LightmapGIBakeErrorNoMeshes            LightmapGIBakeError = 5
-	LightmapGIBakeErrorMeshesInvalid       LightmapGIBakeError = 6
-	LightmapGIBakeErrorCantCreateImage     LightmapGIBakeError = 7
-	LightmapGIBakeErrorUserAborted         LightmapGIBakeError = 8
+	/*Lightmap baking was successful.*/
+	LightmapGIBakeErrorOk LightmapGIBakeError = 0
+	/*Lightmap baking failed because the root node for the edited scene could not be accessed.*/
+	LightmapGIBakeErrorNoSceneRoot LightmapGIBakeError = 1
+	/*Lightmap baking failed as the lightmap data resource is embedded in a foreign resource.*/
+	LightmapGIBakeErrorForeignData LightmapGIBakeError = 2
+	/*Lightmap baking failed as there is no lightmapper available in this Godot build.*/
+	LightmapGIBakeErrorNoLightmapper LightmapGIBakeError = 3
+	/*Lightmap baking failed as the [LightmapGIData] save path isn't configured in the resource.*/
+	LightmapGIBakeErrorNoSavePath LightmapGIBakeError = 4
+	/*Lightmap baking failed as there are no meshes whose [member GeometryInstance3D.gi_mode] is [constant GeometryInstance3D.GI_MODE_STATIC] and with valid UV2 mapping in the current scene. You may need to select 3D scenes in the Import dock and change their global illumination mode accordingly.*/
+	LightmapGIBakeErrorNoMeshes LightmapGIBakeError = 5
+	/*Lightmap baking failed as the lightmapper failed to analyze some of the meshes marked as static for baking.*/
+	LightmapGIBakeErrorMeshesInvalid LightmapGIBakeError = 6
+	/*Lightmap baking failed as the resulting image couldn't be saved or imported by Godot after it was saved.*/
+	LightmapGIBakeErrorCantCreateImage LightmapGIBakeError = 7
+	/*The user aborted the lightmap baking operation (typically by clicking the [b]Cancel[/b] button in the progress dialog).*/
+	LightmapGIBakeErrorUserAborted LightmapGIBakeError = 8
+	/*Lightmap baking failed as the maximum texture size is too small to fit some of the meshes marked for baking.*/
 	LightmapGIBakeErrorTextureSizeTooSmall LightmapGIBakeError = 9
 )
 
 type LightmapGIEnvironmentMode = classdb.LightmapGIEnvironmentMode
 
 const (
-	LightmapGIEnvironmentModeDisabled    LightmapGIEnvironmentMode = 0
-	LightmapGIEnvironmentModeScene       LightmapGIEnvironmentMode = 1
-	LightmapGIEnvironmentModeCustomSky   LightmapGIEnvironmentMode = 2
+	/*Ignore environment lighting when baking lightmaps.*/
+	LightmapGIEnvironmentModeDisabled LightmapGIEnvironmentMode = 0
+	/*Use the scene's environment lighting when baking lightmaps.
+	  [b]Note:[/b] If baking lightmaps in a scene with no [WorldEnvironment] node, this will act like [constant ENVIRONMENT_MODE_DISABLED]. The editor's preview sky and sun is [i]not[/i] taken into account by [LightmapGI] when baking lightmaps.*/
+	LightmapGIEnvironmentModeScene LightmapGIEnvironmentMode = 1
+	/*Use [member environment_custom_sky] as a source of environment lighting when baking lightmaps.*/
+	LightmapGIEnvironmentModeCustomSky LightmapGIEnvironmentMode = 2
+	/*Use [member environment_custom_color] multiplied by [member environment_custom_energy] as a constant source of environment lighting when baking lightmaps.*/
 	LightmapGIEnvironmentModeCustomColor LightmapGIEnvironmentMode = 3
 )
 
 type Line2DLineJointMode = classdb.Line2DLineJointMode
 
 const (
+	/*Makes the polyline's joints pointy, connecting the sides of the two segments by extending them until they intersect. If the rotation of a joint is too big (based on [member sharp_limit]), the joint falls back to [constant LINE_JOINT_BEVEL] to prevent very long miters.*/
 	Line2DLineJointSharp Line2DLineJointMode = 0
+	/*Makes the polyline's joints bevelled/chamfered, connecting the sides of the two segments with a simple line.*/
 	Line2DLineJointBevel Line2DLineJointMode = 1
+	/*Makes the polyline's joints rounded, connecting the sides of the two segments with an arc. The detail of this arc depends on [member round_precision].*/
 	Line2DLineJointRound Line2DLineJointMode = 2
 )
 
 type Line2DLineCapMode = classdb.Line2DLineCapMode
 
 const (
-	Line2DLineCapNone  Line2DLineCapMode = 0
-	Line2DLineCapBox   Line2DLineCapMode = 1
+	/*Draws no line cap.*/
+	Line2DLineCapNone Line2DLineCapMode = 0
+	/*Draws the line cap as a box, slightly extending the first/last segment.*/
+	Line2DLineCapBox Line2DLineCapMode = 1
+	/*Draws the line cap as a semicircle attached to the first/last segment.*/
 	Line2DLineCapRound Line2DLineCapMode = 2
 )
 
 type Line2DLineTextureMode = classdb.Line2DLineTextureMode
 
 const (
-	Line2DLineTextureNone    Line2DLineTextureMode = 0
-	Line2DLineTextureTile    Line2DLineTextureMode = 1
+	/*Takes the left pixels of the texture and renders them over the whole polyline.*/
+	Line2DLineTextureNone Line2DLineTextureMode = 0
+	/*Tiles the texture over the polyline. [member CanvasItem.texture_repeat] of the [Line2D] node must be [constant CanvasItem.TEXTURE_REPEAT_ENABLED] or [constant CanvasItem.TEXTURE_REPEAT_MIRROR] for it to work properly.*/
+	Line2DLineTextureTile Line2DLineTextureMode = 1
+	/*Stretches the texture across the polyline. [member CanvasItem.texture_repeat] of the [Line2D] node must be [constant CanvasItem.TEXTURE_REPEAT_DISABLED] for best results.*/
 	Line2DLineTextureStretch Line2DLineTextureMode = 2
 )
 
 type LineEditMenuItems = classdb.LineEditMenuItems
 
 const (
-	LineEditMenuCut              LineEditMenuItems = 0
-	LineEditMenuCopy             LineEditMenuItems = 1
-	LineEditMenuPaste            LineEditMenuItems = 2
-	LineEditMenuClear            LineEditMenuItems = 3
-	LineEditMenuSelectAll        LineEditMenuItems = 4
-	LineEditMenuUndo             LineEditMenuItems = 5
-	LineEditMenuRedo             LineEditMenuItems = 6
-	LineEditMenuSubmenuTextDir   LineEditMenuItems = 7
-	LineEditMenuDirInherited     LineEditMenuItems = 8
-	LineEditMenuDirAuto          LineEditMenuItems = 9
-	LineEditMenuDirLtr           LineEditMenuItems = 10
-	LineEditMenuDirRtl           LineEditMenuItems = 11
-	LineEditMenuDisplayUcc       LineEditMenuItems = 12
+	/*Cuts (copies and clears) the selected text.*/
+	LineEditMenuCut LineEditMenuItems = 0
+	/*Copies the selected text.*/
+	LineEditMenuCopy LineEditMenuItems = 1
+	/*Pastes the clipboard text over the selected text (or at the caret's position).
+	  Non-printable escape characters are automatically stripped from the OS clipboard via [method String.strip_escapes].*/
+	LineEditMenuPaste LineEditMenuItems = 2
+	/*Erases the whole [LineEdit] text.*/
+	LineEditMenuClear LineEditMenuItems = 3
+	/*Selects the whole [LineEdit] text.*/
+	LineEditMenuSelectAll LineEditMenuItems = 4
+	/*Undoes the previous action.*/
+	LineEditMenuUndo LineEditMenuItems = 5
+	/*Reverse the last undo action.*/
+	LineEditMenuRedo LineEditMenuItems = 6
+	/*ID of "Text Writing Direction" submenu.*/
+	LineEditMenuSubmenuTextDir LineEditMenuItems = 7
+	/*Sets text direction to inherited.*/
+	LineEditMenuDirInherited LineEditMenuItems = 8
+	/*Sets text direction to automatic.*/
+	LineEditMenuDirAuto LineEditMenuItems = 9
+	/*Sets text direction to left-to-right.*/
+	LineEditMenuDirLtr LineEditMenuItems = 10
+	/*Sets text direction to right-to-left.*/
+	LineEditMenuDirRtl LineEditMenuItems = 11
+	/*Toggles control character display.*/
+	LineEditMenuDisplayUcc LineEditMenuItems = 12
+	/*ID of "Insert Control Character" submenu.*/
 	LineEditMenuSubmenuInsertUcc LineEditMenuItems = 13
-	LineEditMenuInsertLrm        LineEditMenuItems = 14
-	LineEditMenuInsertRlm        LineEditMenuItems = 15
-	LineEditMenuInsertLre        LineEditMenuItems = 16
-	LineEditMenuInsertRle        LineEditMenuItems = 17
-	LineEditMenuInsertLro        LineEditMenuItems = 18
-	LineEditMenuInsertRlo        LineEditMenuItems = 19
-	LineEditMenuInsertPdf        LineEditMenuItems = 20
-	LineEditMenuInsertAlm        LineEditMenuItems = 21
-	LineEditMenuInsertLri        LineEditMenuItems = 22
-	LineEditMenuInsertRli        LineEditMenuItems = 23
-	LineEditMenuInsertFsi        LineEditMenuItems = 24
-	LineEditMenuInsertPdi        LineEditMenuItems = 25
-	LineEditMenuInsertZwj        LineEditMenuItems = 26
-	LineEditMenuInsertZwnj       LineEditMenuItems = 27
-	LineEditMenuInsertWj         LineEditMenuItems = 28
-	LineEditMenuInsertShy        LineEditMenuItems = 29
-	LineEditMenuMax              LineEditMenuItems = 30
+	/*Inserts left-to-right mark (LRM) character.*/
+	LineEditMenuInsertLrm LineEditMenuItems = 14
+	/*Inserts right-to-left mark (RLM) character.*/
+	LineEditMenuInsertRlm LineEditMenuItems = 15
+	/*Inserts start of left-to-right embedding (LRE) character.*/
+	LineEditMenuInsertLre LineEditMenuItems = 16
+	/*Inserts start of right-to-left embedding (RLE) character.*/
+	LineEditMenuInsertRle LineEditMenuItems = 17
+	/*Inserts start of left-to-right override (LRO) character.*/
+	LineEditMenuInsertLro LineEditMenuItems = 18
+	/*Inserts start of right-to-left override (RLO) character.*/
+	LineEditMenuInsertRlo LineEditMenuItems = 19
+	/*Inserts pop direction formatting (PDF) character.*/
+	LineEditMenuInsertPdf LineEditMenuItems = 20
+	/*Inserts Arabic letter mark (ALM) character.*/
+	LineEditMenuInsertAlm LineEditMenuItems = 21
+	/*Inserts left-to-right isolate (LRI) character.*/
+	LineEditMenuInsertLri LineEditMenuItems = 22
+	/*Inserts right-to-left isolate (RLI) character.*/
+	LineEditMenuInsertRli LineEditMenuItems = 23
+	/*Inserts first strong isolate (FSI) character.*/
+	LineEditMenuInsertFsi LineEditMenuItems = 24
+	/*Inserts pop direction isolate (PDI) character.*/
+	LineEditMenuInsertPdi LineEditMenuItems = 25
+	/*Inserts zero width joiner (ZWJ) character.*/
+	LineEditMenuInsertZwj LineEditMenuItems = 26
+	/*Inserts zero width non-joiner (ZWNJ) character.*/
+	LineEditMenuInsertZwnj LineEditMenuItems = 27
+	/*Inserts word joiner (WJ) character.*/
+	LineEditMenuInsertWj LineEditMenuItems = 28
+	/*Inserts soft hyphen (SHY) character.*/
+	LineEditMenuInsertShy LineEditMenuItems = 29
+	/*Represents the size of the [enum MenuItems] enum.*/
+	LineEditMenuMax LineEditMenuItems = 30
 )
 
 type LineEditVirtualKeyboardType = classdb.LineEditVirtualKeyboardType
 
 const (
-	LineEditKeyboardTypeDefault       LineEditVirtualKeyboardType = 0
-	LineEditKeyboardTypeMultiline     LineEditVirtualKeyboardType = 1
-	LineEditKeyboardTypeNumber        LineEditVirtualKeyboardType = 2
+	/*Default text virtual keyboard.*/
+	LineEditKeyboardTypeDefault LineEditVirtualKeyboardType = 0
+	/*Multiline virtual keyboard.*/
+	LineEditKeyboardTypeMultiline LineEditVirtualKeyboardType = 1
+	/*Virtual number keypad, useful for PIN entry.*/
+	LineEditKeyboardTypeNumber LineEditVirtualKeyboardType = 2
+	/*Virtual number keypad, useful for entering fractional numbers.*/
 	LineEditKeyboardTypeNumberDecimal LineEditVirtualKeyboardType = 3
-	LineEditKeyboardTypePhone         LineEditVirtualKeyboardType = 4
-	LineEditKeyboardTypeEmailAddress  LineEditVirtualKeyboardType = 5
-	LineEditKeyboardTypePassword      LineEditVirtualKeyboardType = 6
-	LineEditKeyboardTypeUrl           LineEditVirtualKeyboardType = 7
+	/*Virtual phone number keypad.*/
+	LineEditKeyboardTypePhone LineEditVirtualKeyboardType = 4
+	/*Virtual keyboard with additional keys to assist with typing email addresses.*/
+	LineEditKeyboardTypeEmailAddress LineEditVirtualKeyboardType = 5
+	/*Virtual keyboard for entering a password. On most platforms, this should disable autocomplete and autocapitalization.
+	  [b]Note:[/b] This is not supported on Web. Instead, this behaves identically to [constant KEYBOARD_TYPE_DEFAULT].*/
+	LineEditKeyboardTypePassword LineEditVirtualKeyboardType = 6
+	/*Virtual keyboard with additional keys to assist with typing URLs.*/
+	LineEditKeyboardTypeUrl LineEditVirtualKeyboardType = 7
 )
 
 type LinkButtonUnderlineMode = classdb.LinkButtonUnderlineMode
 
 const (
-	LinkButtonUnderlineModeAlways  LinkButtonUnderlineMode = 0
+	/*The LinkButton will always show an underline at the bottom of its text.*/
+	LinkButtonUnderlineModeAlways LinkButtonUnderlineMode = 0
+	/*The LinkButton will show an underline at the bottom of its text when the mouse cursor is over it.*/
 	LinkButtonUnderlineModeOnHover LinkButtonUnderlineMode = 1
-	LinkButtonUnderlineModeNever   LinkButtonUnderlineMode = 2
+	/*The LinkButton will never show an underline at the bottom of its text.*/
+	LinkButtonUnderlineModeNever LinkButtonUnderlineMode = 2
 )
 
 type MeshPrimitiveType = classdb.MeshPrimitiveType
 
 const (
-	MeshPrimitivePoints        MeshPrimitiveType = 0
-	MeshPrimitiveLines         MeshPrimitiveType = 1
-	MeshPrimitiveLineStrip     MeshPrimitiveType = 2
-	MeshPrimitiveTriangles     MeshPrimitiveType = 3
+	/*Render array as points (one vertex equals one point).*/
+	MeshPrimitivePoints MeshPrimitiveType = 0
+	/*Render array as lines (every two vertices a line is created).*/
+	MeshPrimitiveLines MeshPrimitiveType = 1
+	/*Render array as line strip.*/
+	MeshPrimitiveLineStrip MeshPrimitiveType = 2
+	/*Render array as triangles (every three vertices a triangle is created).*/
+	MeshPrimitiveTriangles MeshPrimitiveType = 3
+	/*Render array as triangle strips.*/
 	MeshPrimitiveTriangleStrip MeshPrimitiveType = 4
 )
 
 type MeshArrayType = classdb.MeshArrayType
 
 const (
-	MeshArrayVertex  MeshArrayType = 0
-	MeshArrayNormal  MeshArrayType = 1
+	/*[PackedVector3Array], [PackedVector2Array], or [Array] of vertex positions.*/
+	MeshArrayVertex MeshArrayType = 0
+	/*[PackedVector3Array] of vertex normals.*/
+	MeshArrayNormal MeshArrayType = 1
+	/*[PackedFloat32Array] of vertex tangents. Each element in groups of 4 floats, first 3 floats determine the tangent, and the last the binormal direction as -1 or 1.*/
 	MeshArrayTangent MeshArrayType = 2
-	MeshArrayColor   MeshArrayType = 3
-	MeshArrayTexUv   MeshArrayType = 4
-	MeshArrayTexUv2  MeshArrayType = 5
+	/*[PackedColorArray] of vertex colors.*/
+	MeshArrayColor MeshArrayType = 3
+	/*[PackedVector2Array] for UV coordinates.*/
+	MeshArrayTexUv MeshArrayType = 4
+	/*[PackedVector2Array] for second UV coordinates.*/
+	MeshArrayTexUv2 MeshArrayType = 5
+	/*Contains custom color channel 0. [PackedByteArray] if [code](format >> Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) & Mesh.ARRAY_FORMAT_CUSTOM_MASK[/code] is [constant ARRAY_CUSTOM_RGBA8_UNORM], [constant ARRAY_CUSTOM_RGBA8_SNORM], [constant ARRAY_CUSTOM_RG_HALF], or [constant ARRAY_CUSTOM_RGBA_HALF]. [PackedFloat32Array] otherwise.*/
 	MeshArrayCustom0 MeshArrayType = 6
+	/*Contains custom color channel 1. [PackedByteArray] if [code](format >> Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT) & Mesh.ARRAY_FORMAT_CUSTOM_MASK[/code] is [constant ARRAY_CUSTOM_RGBA8_UNORM], [constant ARRAY_CUSTOM_RGBA8_SNORM], [constant ARRAY_CUSTOM_RG_HALF], or [constant ARRAY_CUSTOM_RGBA_HALF]. [PackedFloat32Array] otherwise.*/
 	MeshArrayCustom1 MeshArrayType = 7
+	/*Contains custom color channel 2. [PackedByteArray] if [code](format >> Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT) & Mesh.ARRAY_FORMAT_CUSTOM_MASK[/code] is [constant ARRAY_CUSTOM_RGBA8_UNORM], [constant ARRAY_CUSTOM_RGBA8_SNORM], [constant ARRAY_CUSTOM_RG_HALF], or [constant ARRAY_CUSTOM_RGBA_HALF]. [PackedFloat32Array] otherwise.*/
 	MeshArrayCustom2 MeshArrayType = 8
+	/*Contains custom color channel 3. [PackedByteArray] if [code](format >> Mesh.ARRAY_FORMAT_CUSTOM3_SHIFT) & Mesh.ARRAY_FORMAT_CUSTOM_MASK[/code] is [constant ARRAY_CUSTOM_RGBA8_UNORM], [constant ARRAY_CUSTOM_RGBA8_SNORM], [constant ARRAY_CUSTOM_RG_HALF], or [constant ARRAY_CUSTOM_RGBA_HALF]. [PackedFloat32Array] otherwise.*/
 	MeshArrayCustom3 MeshArrayType = 9
-	MeshArrayBones   MeshArrayType = 10
+	/*[PackedFloat32Array] or [PackedInt32Array] of bone indices. Contains either 4 or 8 numbers per vertex depending on the presence of the [constant ARRAY_FLAG_USE_8_BONE_WEIGHTS] flag.*/
+	MeshArrayBones MeshArrayType = 10
+	/*[PackedFloat32Array] or [PackedFloat64Array] of bone weights in the range [code]0.0[/code] to [code]1.0[/code] (inclusive). Contains either 4 or 8 numbers per vertex depending on the presence of the [constant ARRAY_FLAG_USE_8_BONE_WEIGHTS] flag.*/
 	MeshArrayWeights MeshArrayType = 11
-	MeshArrayIndex   MeshArrayType = 12
-	MeshArrayMax     MeshArrayType = 13
+	/*[PackedInt32Array] of integers used as indices referencing vertices, colors, normals, tangents, and textures. All of those arrays must have the same number of elements as the vertex array. No index can be beyond the vertex array size. When this index array is present, it puts the function into "index mode," where the index selects the [i]i[/i]'th vertex, normal, tangent, color, UV, etc. This means if you want to have different normals or colors along an edge, you have to duplicate the vertices.
+	  For triangles, the index array is interpreted as triples, referring to the vertices of each triangle. For lines, the index array is in pairs indicating the start and end of each line.*/
+	MeshArrayIndex MeshArrayType = 12
+	/*Represents the size of the [enum ArrayType] enum.*/
+	MeshArrayMax MeshArrayType = 13
 )
 
 type MeshArrayCustomFormat = classdb.MeshArrayCustomFormat
 
 const (
+	/*Indicates this custom channel contains unsigned normalized byte colors from 0 to 1, encoded as [PackedByteArray].*/
 	MeshArrayCustomRgba8Unorm MeshArrayCustomFormat = 0
+	/*Indicates this custom channel contains signed normalized byte colors from -1 to 1, encoded as [PackedByteArray].*/
 	MeshArrayCustomRgba8Snorm MeshArrayCustomFormat = 1
-	MeshArrayCustomRgHalf     MeshArrayCustomFormat = 2
-	MeshArrayCustomRgbaHalf   MeshArrayCustomFormat = 3
-	MeshArrayCustomRFloat     MeshArrayCustomFormat = 4
-	MeshArrayCustomRgFloat    MeshArrayCustomFormat = 5
-	MeshArrayCustomRgbFloat   MeshArrayCustomFormat = 6
-	MeshArrayCustomRgbaFloat  MeshArrayCustomFormat = 7
-	MeshArrayCustomMax        MeshArrayCustomFormat = 8
+	/*Indicates this custom channel contains half precision float colors, encoded as [PackedByteArray]. Only red and green channels are used.*/
+	MeshArrayCustomRgHalf MeshArrayCustomFormat = 2
+	/*Indicates this custom channel contains half precision float colors, encoded as [PackedByteArray].*/
+	MeshArrayCustomRgbaHalf MeshArrayCustomFormat = 3
+	/*Indicates this custom channel contains full float colors, in a [PackedFloat32Array]. Only the red channel is used.*/
+	MeshArrayCustomRFloat MeshArrayCustomFormat = 4
+	/*Indicates this custom channel contains full float colors, in a [PackedFloat32Array]. Only red and green channels are used.*/
+	MeshArrayCustomRgFloat MeshArrayCustomFormat = 5
+	/*Indicates this custom channel contains full float colors, in a [PackedFloat32Array]. Only red, green and blue channels are used.*/
+	MeshArrayCustomRgbFloat MeshArrayCustomFormat = 6
+	/*Indicates this custom channel contains full float colors, in a [PackedFloat32Array].*/
+	MeshArrayCustomRgbaFloat MeshArrayCustomFormat = 7
+	/*Represents the size of the [enum ArrayCustomFormat] enum.*/
+	MeshArrayCustomMax MeshArrayCustomFormat = 8
 )
 
 type MeshArrayFormat = classdb.MeshArrayFormat
 
 const (
-	MeshArrayFormatVertex             MeshArrayFormat = 1
-	MeshArrayFormatNormal             MeshArrayFormat = 2
-	MeshArrayFormatTangent            MeshArrayFormat = 4
-	MeshArrayFormatColor              MeshArrayFormat = 8
-	MeshArrayFormatTexUv              MeshArrayFormat = 16
-	MeshArrayFormatTexUv2             MeshArrayFormat = 32
-	MeshArrayFormatCustom0            MeshArrayFormat = 64
-	MeshArrayFormatCustom1            MeshArrayFormat = 128
-	MeshArrayFormatCustom2            MeshArrayFormat = 256
-	MeshArrayFormatCustom3            MeshArrayFormat = 512
-	MeshArrayFormatBones              MeshArrayFormat = 1024
-	MeshArrayFormatWeights            MeshArrayFormat = 2048
-	MeshArrayFormatIndex              MeshArrayFormat = 4096
-	MeshArrayFormatBlendShapeMask     MeshArrayFormat = 7
-	MeshArrayFormatCustomBase         MeshArrayFormat = 13
-	MeshArrayFormatCustomBits         MeshArrayFormat = 3
-	MeshArrayFormatCustom0Shift       MeshArrayFormat = 13
-	MeshArrayFormatCustom1Shift       MeshArrayFormat = 16
-	MeshArrayFormatCustom2Shift       MeshArrayFormat = 19
-	MeshArrayFormatCustom3Shift       MeshArrayFormat = 22
-	MeshArrayFormatCustomMask         MeshArrayFormat = 7
-	MeshArrayCompressFlagsBase        MeshArrayFormat = 25
-	MeshArrayFlagUse2dVertices        MeshArrayFormat = 33554432
-	MeshArrayFlagUseDynamicUpdate     MeshArrayFormat = 67108864
-	MeshArrayFlagUse8BoneWeights      MeshArrayFormat = 134217728
+	/*Mesh array contains vertices. All meshes require a vertex array so this should always be present.*/
+	MeshArrayFormatVertex MeshArrayFormat = 1
+	/*Mesh array contains normals.*/
+	MeshArrayFormatNormal MeshArrayFormat = 2
+	/*Mesh array contains tangents.*/
+	MeshArrayFormatTangent MeshArrayFormat = 4
+	/*Mesh array contains colors.*/
+	MeshArrayFormatColor MeshArrayFormat = 8
+	/*Mesh array contains UVs.*/
+	MeshArrayFormatTexUv MeshArrayFormat = 16
+	/*Mesh array contains second UV.*/
+	MeshArrayFormatTexUv2 MeshArrayFormat = 32
+	/*Mesh array contains custom channel index 0.*/
+	MeshArrayFormatCustom0 MeshArrayFormat = 64
+	/*Mesh array contains custom channel index 1.*/
+	MeshArrayFormatCustom1 MeshArrayFormat = 128
+	/*Mesh array contains custom channel index 2.*/
+	MeshArrayFormatCustom2 MeshArrayFormat = 256
+	/*Mesh array contains custom channel index 3.*/
+	MeshArrayFormatCustom3 MeshArrayFormat = 512
+	/*Mesh array contains bones.*/
+	MeshArrayFormatBones MeshArrayFormat = 1024
+	/*Mesh array contains bone weights.*/
+	MeshArrayFormatWeights MeshArrayFormat = 2048
+	/*Mesh array uses indices.*/
+	MeshArrayFormatIndex MeshArrayFormat = 4096
+	/*Mask of mesh channels permitted in blend shapes.*/
+	MeshArrayFormatBlendShapeMask MeshArrayFormat = 7
+	/*Shift of first custom channel.*/
+	MeshArrayFormatCustomBase MeshArrayFormat = 13
+	/*Number of format bits per custom channel. See [enum ArrayCustomFormat].*/
+	MeshArrayFormatCustomBits MeshArrayFormat = 3
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 0.*/
+	MeshArrayFormatCustom0Shift MeshArrayFormat = 13
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 1.*/
+	MeshArrayFormatCustom1Shift MeshArrayFormat = 16
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 2.*/
+	MeshArrayFormatCustom2Shift MeshArrayFormat = 19
+	/*Amount to shift [enum ArrayCustomFormat] for custom channel index 3.*/
+	MeshArrayFormatCustom3Shift MeshArrayFormat = 22
+	/*Mask of custom format bits per custom channel. Must be shifted by one of the SHIFT constants. See [enum ArrayCustomFormat].*/
+	MeshArrayFormatCustomMask MeshArrayFormat = 7
+	/*Shift of first compress flag. Compress flags should be passed to [method ArrayMesh.add_surface_from_arrays] and [method SurfaceTool.commit].*/
+	MeshArrayCompressFlagsBase MeshArrayFormat = 25
+	/*Flag used to mark that the array contains 2D vertices.*/
+	MeshArrayFlagUse2dVertices MeshArrayFormat = 33554432
+	/*Flag indices that the mesh data will use [code]GL_DYNAMIC_DRAW[/code] on GLES. Unused on Vulkan.*/
+	MeshArrayFlagUseDynamicUpdate MeshArrayFormat = 67108864
+	/*Flag used to mark that the mesh contains up to 8 bone influences per vertex. This flag indicates that [constant ARRAY_BONES] and [constant ARRAY_WEIGHTS] elements will have double length.*/
+	MeshArrayFlagUse8BoneWeights MeshArrayFormat = 134217728
+	/*Flag used to mark that the mesh intentionally contains no vertex array.*/
 	MeshArrayFlagUsesEmptyVertexArray MeshArrayFormat = 268435456
-	MeshArrayFlagCompressAttributes   MeshArrayFormat = 536870912
+	/*Flag used to mark that a mesh is using compressed attributes (vertices, normals, tangents, UVs). When this form of compression is enabled, vertex positions will be packed into an RGBA16UNORM attribute and scaled in the vertex shader. The normal and tangent will be packed into an RG16UNORM representing an axis, and a 16-bit float stored in the A-channel of the vertex. UVs will use 16-bit normalized floats instead of full 32-bit signed floats. When using this compression mode you must use either vertices, normals, and tangents or only vertices. You cannot use normals without tangents. Importers will automatically enable this compression if they can.*/
+	MeshArrayFlagCompressAttributes MeshArrayFormat = 536870912
 )
 
 type MeshBlendShapeMode = classdb.MeshBlendShapeMode
 
 const (
+	/*Blend shapes are normalized.*/
 	MeshBlendShapeModeNormalized MeshBlendShapeMode = 0
-	MeshBlendShapeModeRelative   MeshBlendShapeMode = 1
+	/*Blend shapes are relative to base weight.*/
+	MeshBlendShapeModeRelative MeshBlendShapeMode = 1
 )
 
 type MeshConvexDecompositionSettingsMode = classdb.MeshConvexDecompositionSettingsMode
 
 const (
-	MeshConvexDecompositionSettingsConvexDecompositionModeVoxel       MeshConvexDecompositionSettingsMode = 0
+	/*Constant for voxel-based approximate convex decomposition.*/
+	MeshConvexDecompositionSettingsConvexDecompositionModeVoxel MeshConvexDecompositionSettingsMode = 0
+	/*Constant for tetrahedron-based approximate convex decomposition.*/
 	MeshConvexDecompositionSettingsConvexDecompositionModeTetrahedron MeshConvexDecompositionSettingsMode = 1
 )
 
 type MultiMeshTransformFormat = classdb.MultiMeshTransformFormat
 
 const (
+	/*Use this when using 2D transforms.*/
 	MultiMeshTransform2d MultiMeshTransformFormat = 0
+	/*Use this when using 3D transforms.*/
 	MultiMeshTransform3d MultiMeshTransformFormat = 1
 )
 
 type MultiplayerAPIRPCMode = classdb.MultiplayerAPIRPCMode
 
 const (
-	MultiplayerAPIRpcModeDisabled  MultiplayerAPIRPCMode = 0
-	MultiplayerAPIRpcModeAnyPeer   MultiplayerAPIRPCMode = 1
+	/*Used with [method Node.rpc_config] to disable a method or property for all RPC calls, making it unavailable. Default for all methods.*/
+	MultiplayerAPIRpcModeDisabled MultiplayerAPIRPCMode = 0
+	/*Used with [method Node.rpc_config] to set a method to be callable remotely by any peer. Analogous to the [code]@rpc("any_peer")[/code] annotation. Calls are accepted from all remote peers, no matter if they are node's authority or not.*/
+	MultiplayerAPIRpcModeAnyPeer MultiplayerAPIRPCMode = 1
+	/*Used with [method Node.rpc_config] to set a method to be callable remotely only by the current multiplayer authority (which is the server by default). Analogous to the [code]@rpc("authority")[/code] annotation. See [method Node.set_multiplayer_authority].*/
 	MultiplayerAPIRpcModeAuthority MultiplayerAPIRPCMode = 2
 )
 
 type MultiplayerPeerConnectionStatus = classdb.MultiplayerPeerConnectionStatus
 
 const (
+	/*The MultiplayerPeer is disconnected.*/
 	MultiplayerPeerConnectionDisconnected MultiplayerPeerConnectionStatus = 0
-	MultiplayerPeerConnectionConnecting   MultiplayerPeerConnectionStatus = 1
-	MultiplayerPeerConnectionConnected    MultiplayerPeerConnectionStatus = 2
+	/*The MultiplayerPeer is currently connecting to a server.*/
+	MultiplayerPeerConnectionConnecting MultiplayerPeerConnectionStatus = 1
+	/*This MultiplayerPeer is connected.*/
+	MultiplayerPeerConnectionConnected MultiplayerPeerConnectionStatus = 2
 )
 
 type MultiplayerPeerTransferMode = classdb.MultiplayerPeerTransferMode
 
 const (
-	MultiplayerPeerTransferModeUnreliable        MultiplayerPeerTransferMode = 0
+	/*Packets are not acknowledged, no resend attempts are made for lost packets. Packets may arrive in any order. Potentially faster than [constant TRANSFER_MODE_UNRELIABLE_ORDERED]. Use for non-critical data, and always consider whether the order matters.*/
+	MultiplayerPeerTransferModeUnreliable MultiplayerPeerTransferMode = 0
+	/*Packets are not acknowledged, no resend attempts are made for lost packets. Packets are received in the order they were sent in. Potentially faster than [constant TRANSFER_MODE_RELIABLE]. Use for non-critical data or data that would be outdated if received late due to resend attempt(s) anyway, for example movement and positional data.*/
 	MultiplayerPeerTransferModeUnreliableOrdered MultiplayerPeerTransferMode = 1
-	MultiplayerPeerTransferModeReliable          MultiplayerPeerTransferMode = 2
+	/*Packets must be received and resend attempts should be made until the packets are acknowledged. Packets must be received in the order they were sent in. Most reliable transfer mode, but potentially the slowest due to the overhead. Use for critical data that must be transmitted and arrive in order, for example an ability being triggered or a chat message. Consider carefully if the information really is critical, and use sparingly.*/
+	MultiplayerPeerTransferModeReliable MultiplayerPeerTransferMode = 2
 )
 
 type MultiplayerSynchronizerVisibilityUpdateMode = classdb.MultiplayerSynchronizerVisibilityUpdateMode
 
 const (
-	MultiplayerSynchronizerVisibilityProcessIdle    MultiplayerSynchronizerVisibilityUpdateMode = 0
+	/*Visibility filters are updated during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	MultiplayerSynchronizerVisibilityProcessIdle MultiplayerSynchronizerVisibilityUpdateMode = 0
+	/*Visibility filters are updated during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	MultiplayerSynchronizerVisibilityProcessPhysics MultiplayerSynchronizerVisibilityUpdateMode = 1
-	MultiplayerSynchronizerVisibilityProcessNone    MultiplayerSynchronizerVisibilityUpdateMode = 2
+	/*Visibility filters are not updated automatically, and must be updated manually by calling [method update_visibility].*/
+	MultiplayerSynchronizerVisibilityProcessNone MultiplayerSynchronizerVisibilityUpdateMode = 2
 )
 
 type NavigationMeshSamplePartitionType = classdb.NavigationMeshSamplePartitionType
 
 const (
+	/*Watershed partitioning. Generally the best choice if you precompute the navigation mesh, use this if you have large open areas.*/
 	NavigationMeshSamplePartitionWatershed NavigationMeshSamplePartitionType = 0
-	NavigationMeshSamplePartitionMonotone  NavigationMeshSamplePartitionType = 1
-	NavigationMeshSamplePartitionLayers    NavigationMeshSamplePartitionType = 2
-	NavigationMeshSamplePartitionMax       NavigationMeshSamplePartitionType = 3
+	/*Monotone partitioning. Use this if you want fast navigation mesh generation.*/
+	NavigationMeshSamplePartitionMonotone NavigationMeshSamplePartitionType = 1
+	/*Layer partitioning. Good choice to use for tiled navigation mesh with medium and small sized tiles.*/
+	NavigationMeshSamplePartitionLayers NavigationMeshSamplePartitionType = 2
+	/*Represents the size of the [enum SamplePartitionType] enum.*/
+	NavigationMeshSamplePartitionMax NavigationMeshSamplePartitionType = 3
 )
 
 type NavigationMeshParsedGeometryType = classdb.NavigationMeshParsedGeometryType
 
 const (
-	NavigationMeshParsedGeometryMeshInstances   NavigationMeshParsedGeometryType = 0
+	/*Parses mesh instances as geometry. This includes [MeshInstance3D], [CSGShape3D], and [GridMap] nodes.*/
+	NavigationMeshParsedGeometryMeshInstances NavigationMeshParsedGeometryType = 0
+	/*Parses [StaticBody3D] colliders as geometry. The collider should be in any of the layers specified by [member geometry_collision_mask].*/
 	NavigationMeshParsedGeometryStaticColliders NavigationMeshParsedGeometryType = 1
-	NavigationMeshParsedGeometryBoth            NavigationMeshParsedGeometryType = 2
-	NavigationMeshParsedGeometryMax             NavigationMeshParsedGeometryType = 3
+	/*Both [constant PARSED_GEOMETRY_MESH_INSTANCES] and [constant PARSED_GEOMETRY_STATIC_COLLIDERS].*/
+	NavigationMeshParsedGeometryBoth NavigationMeshParsedGeometryType = 2
+	/*Represents the size of the [enum ParsedGeometryType] enum.*/
+	NavigationMeshParsedGeometryMax NavigationMeshParsedGeometryType = 3
 )
 
 type NavigationMeshSourceGeometryMode = classdb.NavigationMeshSourceGeometryMode
 
 const (
-	NavigationMeshSourceGeometryRootNodeChildren   NavigationMeshSourceGeometryMode = 0
+	/*Scans the child nodes of the root node recursively for geometry.*/
+	NavigationMeshSourceGeometryRootNodeChildren NavigationMeshSourceGeometryMode = 0
+	/*Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [member geometry_source_group_name].*/
 	NavigationMeshSourceGeometryGroupsWithChildren NavigationMeshSourceGeometryMode = 1
-	NavigationMeshSourceGeometryGroupsExplicit     NavigationMeshSourceGeometryMode = 2
-	NavigationMeshSourceGeometryMax                NavigationMeshSourceGeometryMode = 3
+	/*Uses nodes in a group for geometry. The group is specified by [member geometry_source_group_name].*/
+	NavigationMeshSourceGeometryGroupsExplicit NavigationMeshSourceGeometryMode = 2
+	/*Represents the size of the [enum SourceGeometryMode] enum.*/
+	NavigationMeshSourceGeometryMax NavigationMeshSourceGeometryMode = 3
 )
 
 type NavigationPathQueryParameters2DPathfindingAlgorithm = classdb.NavigationPathQueryParameters2DPathfindingAlgorithm
 
 const (
+	/*The path query uses the default A* pathfinding algorithm.*/
 	NavigationPathQueryParameters2DPathfindingAlgorithmAstar NavigationPathQueryParameters2DPathfindingAlgorithm = 0
 )
 
 type NavigationPathQueryParameters2DPathPostProcessing = classdb.NavigationPathQueryParameters2DPathPostProcessing
 
 const (
+	/*Applies a funnel algorithm to the raw path corridor found by the pathfinding algorithm. This will result in the shortest path possible inside the path corridor. This postprocessing very much depends on the navigation mesh polygon layout and the created corridor. Especially tile- or gridbased layouts can face artificial corners with diagonal movement due to a jagged path corridor imposed by the cell shapes.*/
 	NavigationPathQueryParameters2DPathPostprocessingCorridorfunnel NavigationPathQueryParameters2DPathPostProcessing = 0
-	NavigationPathQueryParameters2DPathPostprocessingEdgecentered   NavigationPathQueryParameters2DPathPostProcessing = 1
+	/*Centers every path position in the middle of the traveled navigation mesh polygon edge. This creates better paths for tile- or gridbased layouts that restrict the movement to the cells center.*/
+	NavigationPathQueryParameters2DPathPostprocessingEdgecentered NavigationPathQueryParameters2DPathPostProcessing = 1
 )
 
 type NavigationPathQueryParameters2DPathMetadataFlags = classdb.NavigationPathQueryParameters2DPathMetadataFlags
 
 const (
-	NavigationPathQueryParameters2DPathMetadataIncludeNone   NavigationPathQueryParameters2DPathMetadataFlags = 0
-	NavigationPathQueryParameters2DPathMetadataIncludeTypes  NavigationPathQueryParameters2DPathMetadataFlags = 1
-	NavigationPathQueryParameters2DPathMetadataIncludeRids   NavigationPathQueryParameters2DPathMetadataFlags = 2
+	/*Don't include any additional metadata about the returned path.*/
+	NavigationPathQueryParameters2DPathMetadataIncludeNone NavigationPathQueryParameters2DPathMetadataFlags = 0
+	/*Include the type of navigation primitive (region or link) that each point of the path goes through.*/
+	NavigationPathQueryParameters2DPathMetadataIncludeTypes NavigationPathQueryParameters2DPathMetadataFlags = 1
+	/*Include the [RID]s of the regions and links that each point of the path goes through.*/
+	NavigationPathQueryParameters2DPathMetadataIncludeRids NavigationPathQueryParameters2DPathMetadataFlags = 2
+	/*Include the [code]ObjectID[/code]s of the [Object]s which manage the regions and links each point of the path goes through.*/
 	NavigationPathQueryParameters2DPathMetadataIncludeOwners NavigationPathQueryParameters2DPathMetadataFlags = 4
-	NavigationPathQueryParameters2DPathMetadataIncludeAll    NavigationPathQueryParameters2DPathMetadataFlags = 7
+	/*Include all available metadata about the returned path.*/
+	NavigationPathQueryParameters2DPathMetadataIncludeAll NavigationPathQueryParameters2DPathMetadataFlags = 7
 )
 
 type NavigationPathQueryParameters3DPathfindingAlgorithm = classdb.NavigationPathQueryParameters3DPathfindingAlgorithm
 
 const (
+	/*The path query uses the default A* pathfinding algorithm.*/
 	NavigationPathQueryParameters3DPathfindingAlgorithmAstar NavigationPathQueryParameters3DPathfindingAlgorithm = 0
 )
 
 type NavigationPathQueryParameters3DPathPostProcessing = classdb.NavigationPathQueryParameters3DPathPostProcessing
 
 const (
+	/*Applies a funnel algorithm to the raw path corridor found by the pathfinding algorithm. This will result in the shortest path possible inside the path corridor. This postprocessing very much depends on the navigation mesh polygon layout and the created corridor. Especially tile- or gridbased layouts can face artificial corners with diagonal movement due to a jagged path corridor imposed by the cell shapes.*/
 	NavigationPathQueryParameters3DPathPostprocessingCorridorfunnel NavigationPathQueryParameters3DPathPostProcessing = 0
-	NavigationPathQueryParameters3DPathPostprocessingEdgecentered   NavigationPathQueryParameters3DPathPostProcessing = 1
+	/*Centers every path position in the middle of the traveled navigation mesh polygon edge. This creates better paths for tile- or gridbased layouts that restrict the movement to the cells center.*/
+	NavigationPathQueryParameters3DPathPostprocessingEdgecentered NavigationPathQueryParameters3DPathPostProcessing = 1
 )
 
 type NavigationPathQueryParameters3DPathMetadataFlags = classdb.NavigationPathQueryParameters3DPathMetadataFlags
 
 const (
-	NavigationPathQueryParameters3DPathMetadataIncludeNone   NavigationPathQueryParameters3DPathMetadataFlags = 0
-	NavigationPathQueryParameters3DPathMetadataIncludeTypes  NavigationPathQueryParameters3DPathMetadataFlags = 1
-	NavigationPathQueryParameters3DPathMetadataIncludeRids   NavigationPathQueryParameters3DPathMetadataFlags = 2
+	/*Don't include any additional metadata about the returned path.*/
+	NavigationPathQueryParameters3DPathMetadataIncludeNone NavigationPathQueryParameters3DPathMetadataFlags = 0
+	/*Include the type of navigation primitive (region or link) that each point of the path goes through.*/
+	NavigationPathQueryParameters3DPathMetadataIncludeTypes NavigationPathQueryParameters3DPathMetadataFlags = 1
+	/*Include the [RID]s of the regions and links that each point of the path goes through.*/
+	NavigationPathQueryParameters3DPathMetadataIncludeRids NavigationPathQueryParameters3DPathMetadataFlags = 2
+	/*Include the [code]ObjectID[/code]s of the [Object]s which manage the regions and links each point of the path goes through.*/
 	NavigationPathQueryParameters3DPathMetadataIncludeOwners NavigationPathQueryParameters3DPathMetadataFlags = 4
-	NavigationPathQueryParameters3DPathMetadataIncludeAll    NavigationPathQueryParameters3DPathMetadataFlags = 7
+	/*Include all available metadata about the returned path.*/
+	NavigationPathQueryParameters3DPathMetadataIncludeAll NavigationPathQueryParameters3DPathMetadataFlags = 7
 )
 
 type NavigationPathQueryResult2DPathSegmentType = classdb.NavigationPathQueryResult2DPathSegmentType
 
 const (
+	/*This segment of the path goes through a region.*/
 	NavigationPathQueryResult2DPathSegmentTypeRegion NavigationPathQueryResult2DPathSegmentType = 0
-	NavigationPathQueryResult2DPathSegmentTypeLink   NavigationPathQueryResult2DPathSegmentType = 1
+	/*This segment of the path goes through a link.*/
+	NavigationPathQueryResult2DPathSegmentTypeLink NavigationPathQueryResult2DPathSegmentType = 1
 )
 
 type NavigationPathQueryResult3DPathSegmentType = classdb.NavigationPathQueryResult3DPathSegmentType
 
 const (
+	/*This segment of the path goes through a region.*/
 	NavigationPathQueryResult3DPathSegmentTypeRegion NavigationPathQueryResult3DPathSegmentType = 0
-	NavigationPathQueryResult3DPathSegmentTypeLink   NavigationPathQueryResult3DPathSegmentType = 1
+	/*This segment of the path goes through a link.*/
+	NavigationPathQueryResult3DPathSegmentTypeLink NavigationPathQueryResult3DPathSegmentType = 1
 )
 
 type NavigationPolygonParsedGeometryType = classdb.NavigationPolygonParsedGeometryType
 
 const (
-	NavigationPolygonParsedGeometryMeshInstances   NavigationPolygonParsedGeometryType = 0
+	/*Parses mesh instances as obstruction geometry. This includes [Polygon2D], [MeshInstance2D], [MultiMeshInstance2D], and [TileMap] nodes.
+	  Meshes are only parsed when they use a 2D vertices surface format.*/
+	NavigationPolygonParsedGeometryMeshInstances NavigationPolygonParsedGeometryType = 0
+	/*Parses [StaticBody2D] and [TileMap] colliders as obstruction geometry. The collider should be in any of the layers specified by [member parsed_collision_mask].*/
 	NavigationPolygonParsedGeometryStaticColliders NavigationPolygonParsedGeometryType = 1
-	NavigationPolygonParsedGeometryBoth            NavigationPolygonParsedGeometryType = 2
-	NavigationPolygonParsedGeometryMax             NavigationPolygonParsedGeometryType = 3
+	/*Both [constant PARSED_GEOMETRY_MESH_INSTANCES] and [constant PARSED_GEOMETRY_STATIC_COLLIDERS].*/
+	NavigationPolygonParsedGeometryBoth NavigationPolygonParsedGeometryType = 2
+	/*Represents the size of the [enum ParsedGeometryType] enum.*/
+	NavigationPolygonParsedGeometryMax NavigationPolygonParsedGeometryType = 3
 )
 
 type NavigationPolygonSourceGeometryMode = classdb.NavigationPolygonSourceGeometryMode
 
 const (
-	NavigationPolygonSourceGeometryRootNodeChildren   NavigationPolygonSourceGeometryMode = 0
+	/*Scans the child nodes of the root node recursively for geometry.*/
+	NavigationPolygonSourceGeometryRootNodeChildren NavigationPolygonSourceGeometryMode = 0
+	/*Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [member source_geometry_group_name].*/
 	NavigationPolygonSourceGeometryGroupsWithChildren NavigationPolygonSourceGeometryMode = 1
-	NavigationPolygonSourceGeometryGroupsExplicit     NavigationPolygonSourceGeometryMode = 2
-	NavigationPolygonSourceGeometryMax                NavigationPolygonSourceGeometryMode = 3
+	/*Uses nodes in a group for geometry. The group is specified by [member source_geometry_group_name].*/
+	NavigationPolygonSourceGeometryGroupsExplicit NavigationPolygonSourceGeometryMode = 2
+	/*Represents the size of the [enum SourceGeometryMode] enum.*/
+	NavigationPolygonSourceGeometryMax NavigationPolygonSourceGeometryMode = 3
 )
 
 type NavigationServer3DProcessInfo = classdb.NavigationServer3DProcessInfo
 
 const (
-	NavigationServer3DInfoActiveMaps          NavigationServer3DProcessInfo = 0
-	NavigationServer3DInfoRegionCount         NavigationServer3DProcessInfo = 1
-	NavigationServer3DInfoAgentCount          NavigationServer3DProcessInfo = 2
-	NavigationServer3DInfoLinkCount           NavigationServer3DProcessInfo = 3
-	NavigationServer3DInfoPolygonCount        NavigationServer3DProcessInfo = 4
-	NavigationServer3DInfoEdgeCount           NavigationServer3DProcessInfo = 5
-	NavigationServer3DInfoEdgeMergeCount      NavigationServer3DProcessInfo = 6
+	/*Constant to get the number of active navigation maps.*/
+	NavigationServer3DInfoActiveMaps NavigationServer3DProcessInfo = 0
+	/*Constant to get the number of active navigation regions.*/
+	NavigationServer3DInfoRegionCount NavigationServer3DProcessInfo = 1
+	/*Constant to get the number of active navigation agents processing avoidance.*/
+	NavigationServer3DInfoAgentCount NavigationServer3DProcessInfo = 2
+	/*Constant to get the number of active navigation links.*/
+	NavigationServer3DInfoLinkCount NavigationServer3DProcessInfo = 3
+	/*Constant to get the number of navigation mesh polygons.*/
+	NavigationServer3DInfoPolygonCount NavigationServer3DProcessInfo = 4
+	/*Constant to get the number of navigation mesh polygon edges.*/
+	NavigationServer3DInfoEdgeCount NavigationServer3DProcessInfo = 5
+	/*Constant to get the number of navigation mesh polygon edges that were merged due to edge key overlap.*/
+	NavigationServer3DInfoEdgeMergeCount NavigationServer3DProcessInfo = 6
+	/*Constant to get the number of navigation mesh polygon edges that are considered connected by edge proximity.*/
 	NavigationServer3DInfoEdgeConnectionCount NavigationServer3DProcessInfo = 7
-	NavigationServer3DInfoEdgeFreeCount       NavigationServer3DProcessInfo = 8
+	/*Constant to get the number of navigation mesh polygon edges that could not be merged but may be still connected by edge proximity or with links.*/
+	NavigationServer3DInfoEdgeFreeCount NavigationServer3DProcessInfo = 8
 )
 
 type NinePatchRectAxisStretchMode = classdb.NinePatchRectAxisStretchMode
 
 const (
+	/*Stretches the center texture across the NinePatchRect. This may cause the texture to be distorted.*/
 	NinePatchRectAxisStretchModeStretch NinePatchRectAxisStretchMode = 0
-	NinePatchRectAxisStretchModeTile    NinePatchRectAxisStretchMode = 1
+	/*Repeats the center texture across the NinePatchRect. This won't cause any visible distortion. The texture must be seamless for this to work without displaying artifacts between edges.*/
+	NinePatchRectAxisStretchModeTile NinePatchRectAxisStretchMode = 1
+	/*Repeats the center texture across the NinePatchRect, but will also stretch the texture to make sure each tile is visible in full. This may cause the texture to be distorted, but less than [constant AXIS_STRETCH_MODE_STRETCH]. The texture must be seamless for this to work without displaying artifacts between edges.*/
 	NinePatchRectAxisStretchModeTileFit NinePatchRectAxisStretchMode = 2
 )
 
 type NodeProcessMode = classdb.NodeProcessMode
 
 const (
-	NodeProcessModeInherit    NodeProcessMode = 0
-	NodeProcessModePausable   NodeProcessMode = 1
+	/*Inherits [member process_mode] from the node's parent. For the root node, it is equivalent to [constant PROCESS_MODE_PAUSABLE]. This is the default for any newly created node.*/
+	NodeProcessModeInherit NodeProcessMode = 0
+	/*Stops processing when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_WHEN_PAUSED].*/
+	NodeProcessModePausable NodeProcessMode = 1
+	/*Process [b]only[/b] when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_PAUSABLE].*/
 	NodeProcessModeWhenPaused NodeProcessMode = 2
-	NodeProcessModeAlways     NodeProcessMode = 3
-	NodeProcessModeDisabled   NodeProcessMode = 4
+	/*Always process. Keeps processing, ignoring [member SceneTree.paused]. This is the inverse of [constant PROCESS_MODE_DISABLED].*/
+	NodeProcessModeAlways NodeProcessMode = 3
+	/*Never process. Completely disables processing, ignoring [member SceneTree.paused]. This is the inverse of [constant PROCESS_MODE_ALWAYS].*/
+	NodeProcessModeDisabled NodeProcessMode = 4
 )
 
 type NodeProcessThreadGroup = classdb.NodeProcessThreadGroup
 
 const (
-	NodeProcessThreadGroupInherit    NodeProcessThreadGroup = 0
+	/*Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [member process_thread_group] for more information.*/
+	NodeProcessThreadGroupInherit NodeProcessThreadGroup = 0
+	/*Process this node (and child nodes set to inherit) on the main thread. See [member process_thread_group] for more information.*/
 	NodeProcessThreadGroupMainThread NodeProcessThreadGroup = 1
-	NodeProcessThreadGroupSubThread  NodeProcessThreadGroup = 2
+	/*Process this node (and child nodes set to inherit) on a sub-thread. See [member process_thread_group] for more information.*/
+	NodeProcessThreadGroupSubThread NodeProcessThreadGroup = 2
 )
 
 type NodeProcessThreadMessages = classdb.NodeProcessThreadMessages
@@ -3280,77 +5323,109 @@ const (
 type NodeDuplicateFlags = classdb.NodeDuplicateFlags
 
 const (
-	NodeDuplicateSignals          NodeDuplicateFlags = 1
-	NodeDuplicateGroups           NodeDuplicateFlags = 2
-	NodeDuplicateScripts          NodeDuplicateFlags = 4
+	/*Duplicate the node's signal connections.*/
+	NodeDuplicateSignals NodeDuplicateFlags = 1
+	/*Duplicate the node's groups.*/
+	NodeDuplicateGroups NodeDuplicateFlags = 2
+	/*Duplicate the node's script (including the ancestor's script, if combined with [constant DUPLICATE_USE_INSTANTIATION]).*/
+	NodeDuplicateScripts NodeDuplicateFlags = 4
+	/*Duplicate using [method PackedScene.instantiate]. If the node comes from a scene saved on disk, re-uses [method PackedScene.instantiate] as the base for the duplicated node and its children.*/
 	NodeDuplicateUseInstantiation NodeDuplicateFlags = 8
 )
 
 type NodeInternalMode = classdb.NodeInternalMode
 
 const (
+	/*The node will not be internal.*/
 	NodeInternalModeDisabled NodeInternalMode = 0
-	NodeInternalModeFront    NodeInternalMode = 1
-	NodeInternalModeBack     NodeInternalMode = 2
+	/*The node will be placed at the beginning of the parent's children, before any non-internal sibling.*/
+	NodeInternalModeFront NodeInternalMode = 1
+	/*The node will be placed at the end of the parent's children, after any non-internal sibling.*/
+	NodeInternalModeBack NodeInternalMode = 2
 )
 
 type Node3DRotationEditMode = classdb.Node3DRotationEditMode
 
 const (
-	Node3DRotationEditModeEuler      Node3DRotationEditMode = 0
+	/*The rotation is edited using [Vector3] Euler angles.*/
+	Node3DRotationEditModeEuler Node3DRotationEditMode = 0
+	/*The rotation is edited using a [Quaternion].*/
 	Node3DRotationEditModeQuaternion Node3DRotationEditMode = 1
-	Node3DRotationEditModeBasis      Node3DRotationEditMode = 2
+	/*The rotation is edited using a [Basis]. In this mode, [member scale] can't be edited separately.*/
+	Node3DRotationEditModeBasis Node3DRotationEditMode = 2
 )
 
 type OSRenderingDriver = classdb.OSRenderingDriver
 
 const (
-	OSRenderingDriverVulkan  OSRenderingDriver = 0
+	/*The Vulkan rendering driver. It requires Vulkan 1.0 support and automatically uses features from Vulkan 1.1 and 1.2 if available.*/
+	OSRenderingDriverVulkan OSRenderingDriver = 0
+	/*The OpenGL 3 rendering driver. It uses OpenGL 3.3 Core Profile on desktop platforms, OpenGL ES 3.0 on mobile devices, and WebGL 2.0 on Web.*/
 	OSRenderingDriverOpengl3 OSRenderingDriver = 1
 )
 
 type OSSystemDir = classdb.OSSystemDir
 
 const (
-	OSSystemDirDesktop   OSSystemDir = 0
-	OSSystemDirDcim      OSSystemDir = 1
+	/*Desktop directory path.*/
+	OSSystemDirDesktop OSSystemDir = 0
+	/*DCIM (Digital Camera Images) directory path.*/
+	OSSystemDirDcim OSSystemDir = 1
+	/*Documents directory path.*/
 	OSSystemDirDocuments OSSystemDir = 2
+	/*Downloads directory path.*/
 	OSSystemDirDownloads OSSystemDir = 3
-	OSSystemDirMovies    OSSystemDir = 4
-	OSSystemDirMusic     OSSystemDir = 5
-	OSSystemDirPictures  OSSystemDir = 6
+	/*Movies directory path.*/
+	OSSystemDirMovies OSSystemDir = 4
+	/*Music directory path.*/
+	OSSystemDirMusic OSSystemDir = 5
+	/*Pictures directory path.*/
+	OSSystemDirPictures OSSystemDir = 6
+	/*Ringtones directory path.*/
 	OSSystemDirRingtones OSSystemDir = 7
 )
 
 type ObjectConnectFlags = gd.ObjectConnectFlags
 
 const (
-	ObjectConnectDeferred         ObjectConnectFlags = 1
-	ObjectConnectPersist          ObjectConnectFlags = 2
-	ObjectConnectOneShot          ObjectConnectFlags = 4
+	/*Deferred connections trigger their [Callable]s on idle time (at the end of the frame), rather than instantly.*/
+	ObjectConnectDeferred ObjectConnectFlags = 1
+	/*Persisting connections are stored when the object is serialized (such as when using [method PackedScene.pack]). In the editor, connections created through the Node dock are always persisting.*/
+	ObjectConnectPersist ObjectConnectFlags = 2
+	/*One-shot connections disconnect themselves after emission.*/
+	ObjectConnectOneShot ObjectConnectFlags = 4
+	/*Reference-counted connections can be assigned to the same [Callable] multiple times. Each disconnection decreases the internal counter. The signal fully disconnects only when the counter reaches 0.*/
 	ObjectConnectReferenceCounted ObjectConnectFlags = 8
 )
 
 type OccluderPolygon2DCullMode = classdb.OccluderPolygon2DCullMode
 
 const (
-	OccluderPolygon2DCullDisabled         OccluderPolygon2DCullMode = 0
-	OccluderPolygon2DCullClockwise        OccluderPolygon2DCullMode = 1
+	/*Culling is disabled. See [member cull_mode].*/
+	OccluderPolygon2DCullDisabled OccluderPolygon2DCullMode = 0
+	/*Culling is performed in the clockwise direction. See [member cull_mode].*/
+	OccluderPolygon2DCullClockwise OccluderPolygon2DCullMode = 1
+	/*Culling is performed in the counterclockwise direction. See [member cull_mode].*/
 	OccluderPolygon2DCullCounterClockwise OccluderPolygon2DCullMode = 2
 )
 
 type OmniLight3DShadowMode = classdb.OmniLight3DShadowMode
 
 const (
+	/*Shadows are rendered to a dual-paraboloid texture. Faster than [constant SHADOW_CUBE], but lower-quality.*/
 	OmniLight3DShadowDualParaboloid OmniLight3DShadowMode = 0
-	OmniLight3DShadowCube           OmniLight3DShadowMode = 1
+	/*Shadows are rendered to a cubemap. Slower than [constant SHADOW_DUAL_PARABOLOID], but higher-quality.*/
+	OmniLight3DShadowCube OmniLight3DShadowMode = 1
 )
 
 type OpenXRActionActionType = classdb.OpenXRActionActionType
 
 const (
-	OpenXRActionOpenxrActionBool    OpenXRActionActionType = 0
-	OpenXRActionOpenxrActionFloat   OpenXRActionActionType = 1
+	/*This action provides a boolean value.*/
+	OpenXRActionOpenxrActionBool OpenXRActionActionType = 0
+	/*This action provides a float value between [code]0.0[/code] and [code]1.0[/code] for any analog input such as triggers.*/
+	OpenXRActionOpenxrActionFloat OpenXRActionActionType = 1
+	/*This action provides a [Vector2] value and can be bound to embedded trackpads and joysticks.*/
 	OpenXRActionOpenxrActionVector2 OpenXRActionActionType = 2
 	OpenXRActionOpenxrActionPose    OpenXRActionActionType = 3
 )
@@ -3358,25 +5433,34 @@ const (
 type OpenXRHandHands = classdb.OpenXRHandHands
 
 const (
-	OpenXRHandHandLeft  OpenXRHandHands = 0
+	/*Tracking the player's left hand.*/
+	OpenXRHandHandLeft OpenXRHandHands = 0
+	/*Tracking the player's right hand.*/
 	OpenXRHandHandRight OpenXRHandHands = 1
-	OpenXRHandHandMax   OpenXRHandHands = 2
+	/*Maximum supported hands.*/
+	OpenXRHandHandMax OpenXRHandHands = 2
 )
 
 type OpenXRHandMotionRange = classdb.OpenXRHandMotionRange
 
 const (
-	OpenXRHandMotionRangeUnobstructed        OpenXRHandMotionRange = 0
+	/*When player grips, hand skeleton will form a full fist.*/
+	OpenXRHandMotionRangeUnobstructed OpenXRHandMotionRange = 0
+	/*When player grips, hand skeleton conforms to the controller the player is holding.*/
 	OpenXRHandMotionRangeConformToController OpenXRHandMotionRange = 1
-	OpenXRHandMotionRangeMax                 OpenXRHandMotionRange = 2
+	/*Maximum supported motion ranges.*/
+	OpenXRHandMotionRangeMax OpenXRHandMotionRange = 2
 )
 
 type OpenXRInterfaceHand = classdb.OpenXRInterfaceHand
 
 const (
-	OpenXRInterfaceHandLeft  OpenXRInterfaceHand = 0
+	/*Left hand.*/
+	OpenXRInterfaceHandLeft OpenXRInterfaceHand = 0
+	/*Right hand.*/
 	OpenXRInterfaceHandRight OpenXRInterfaceHand = 1
-	OpenXRInterfaceHandMax   OpenXRInterfaceHand = 2
+	/*Maximum value for the hand enum.*/
+	OpenXRInterfaceHandMax OpenXRInterfaceHand = 2
 )
 
 type OpenXRInterfaceHandMotionRange = classdb.OpenXRInterfaceHandMotionRange
@@ -3390,111 +5474,188 @@ const (
 type OpenXRInterfaceHandJoints = classdb.OpenXRInterfaceHandJoints
 
 const (
-	OpenXRInterfaceHandJointPalm               OpenXRInterfaceHandJoints = 0
-	OpenXRInterfaceHandJointWrist              OpenXRInterfaceHandJoints = 1
-	OpenXRInterfaceHandJointThumbMetacarpal    OpenXRInterfaceHandJoints = 2
-	OpenXRInterfaceHandJointThumbProximal      OpenXRInterfaceHandJoints = 3
-	OpenXRInterfaceHandJointThumbDistal        OpenXRInterfaceHandJoints = 4
-	OpenXRInterfaceHandJointThumbTip           OpenXRInterfaceHandJoints = 5
-	OpenXRInterfaceHandJointIndexMetacarpal    OpenXRInterfaceHandJoints = 6
-	OpenXRInterfaceHandJointIndexProximal      OpenXRInterfaceHandJoints = 7
-	OpenXRInterfaceHandJointIndexIntermediate  OpenXRInterfaceHandJoints = 8
-	OpenXRInterfaceHandJointIndexDistal        OpenXRInterfaceHandJoints = 9
-	OpenXRInterfaceHandJointIndexTip           OpenXRInterfaceHandJoints = 10
-	OpenXRInterfaceHandJointMiddleMetacarpal   OpenXRInterfaceHandJoints = 11
-	OpenXRInterfaceHandJointMiddleProximal     OpenXRInterfaceHandJoints = 12
+	/*Palm joint.*/
+	OpenXRInterfaceHandJointPalm OpenXRInterfaceHandJoints = 0
+	/*Wrist joint.*/
+	OpenXRInterfaceHandJointWrist OpenXRInterfaceHandJoints = 1
+	/*Thumb metacarpal joint.*/
+	OpenXRInterfaceHandJointThumbMetacarpal OpenXRInterfaceHandJoints = 2
+	/*Thumb proximal joint.*/
+	OpenXRInterfaceHandJointThumbProximal OpenXRInterfaceHandJoints = 3
+	/*Thumb distal joint.*/
+	OpenXRInterfaceHandJointThumbDistal OpenXRInterfaceHandJoints = 4
+	/*Thumb tip joint.*/
+	OpenXRInterfaceHandJointThumbTip OpenXRInterfaceHandJoints = 5
+	/*Index metacarpal joint.*/
+	OpenXRInterfaceHandJointIndexMetacarpal OpenXRInterfaceHandJoints = 6
+	/*Index proximal joint.*/
+	OpenXRInterfaceHandJointIndexProximal OpenXRInterfaceHandJoints = 7
+	/*Index intermediate joint.*/
+	OpenXRInterfaceHandJointIndexIntermediate OpenXRInterfaceHandJoints = 8
+	/*Index distal joint.*/
+	OpenXRInterfaceHandJointIndexDistal OpenXRInterfaceHandJoints = 9
+	/*Index tip joint.*/
+	OpenXRInterfaceHandJointIndexTip OpenXRInterfaceHandJoints = 10
+	/*Middle metacarpal joint.*/
+	OpenXRInterfaceHandJointMiddleMetacarpal OpenXRInterfaceHandJoints = 11
+	/*Middle proximal joint.*/
+	OpenXRInterfaceHandJointMiddleProximal OpenXRInterfaceHandJoints = 12
+	/*Middle intermediate joint.*/
 	OpenXRInterfaceHandJointMiddleIntermediate OpenXRInterfaceHandJoints = 13
-	OpenXRInterfaceHandJointMiddleDistal       OpenXRInterfaceHandJoints = 14
-	OpenXRInterfaceHandJointMiddleTip          OpenXRInterfaceHandJoints = 15
-	OpenXRInterfaceHandJointRingMetacarpal     OpenXRInterfaceHandJoints = 16
-	OpenXRInterfaceHandJointRingProximal       OpenXRInterfaceHandJoints = 17
-	OpenXRInterfaceHandJointRingIntermediate   OpenXRInterfaceHandJoints = 18
-	OpenXRInterfaceHandJointRingDistal         OpenXRInterfaceHandJoints = 19
-	OpenXRInterfaceHandJointRingTip            OpenXRInterfaceHandJoints = 20
-	OpenXRInterfaceHandJointLittleMetacarpal   OpenXRInterfaceHandJoints = 21
-	OpenXRInterfaceHandJointLittleProximal     OpenXRInterfaceHandJoints = 22
+	/*Middle distal joint.*/
+	OpenXRInterfaceHandJointMiddleDistal OpenXRInterfaceHandJoints = 14
+	/*Middle tip joint.*/
+	OpenXRInterfaceHandJointMiddleTip OpenXRInterfaceHandJoints = 15
+	/*Ring metacarpal joint.*/
+	OpenXRInterfaceHandJointRingMetacarpal OpenXRInterfaceHandJoints = 16
+	/*Ring proximal joint.*/
+	OpenXRInterfaceHandJointRingProximal OpenXRInterfaceHandJoints = 17
+	/*Ring intermediate joint.*/
+	OpenXRInterfaceHandJointRingIntermediate OpenXRInterfaceHandJoints = 18
+	/*Ring distal joint.*/
+	OpenXRInterfaceHandJointRingDistal OpenXRInterfaceHandJoints = 19
+	/*Ring tip joint.*/
+	OpenXRInterfaceHandJointRingTip OpenXRInterfaceHandJoints = 20
+	/*Little metacarpal joint.*/
+	OpenXRInterfaceHandJointLittleMetacarpal OpenXRInterfaceHandJoints = 21
+	/*Little proximal joint.*/
+	OpenXRInterfaceHandJointLittleProximal OpenXRInterfaceHandJoints = 22
+	/*Little intermediate joint.*/
 	OpenXRInterfaceHandJointLittleIntermediate OpenXRInterfaceHandJoints = 23
-	OpenXRInterfaceHandJointLittleDistal       OpenXRInterfaceHandJoints = 24
-	OpenXRInterfaceHandJointLittleTip          OpenXRInterfaceHandJoints = 25
-	OpenXRInterfaceHandJointMax                OpenXRInterfaceHandJoints = 26
+	/*Little distal joint.*/
+	OpenXRInterfaceHandJointLittleDistal OpenXRInterfaceHandJoints = 24
+	/*Little tip joint.*/
+	OpenXRInterfaceHandJointLittleTip OpenXRInterfaceHandJoints = 25
+	/*Maximum value for the hand joint enum.*/
+	OpenXRInterfaceHandJointMax OpenXRInterfaceHandJoints = 26
 )
 
 type OpenXRInterfaceHandJointFlags = classdb.OpenXRInterfaceHandJointFlags
 
 const (
-	OpenXRInterfaceHandJointNone                 OpenXRInterfaceHandJointFlags = 0
-	OpenXRInterfaceHandJointOrientationValid     OpenXRInterfaceHandJointFlags = 1
-	OpenXRInterfaceHandJointOrientationTracked   OpenXRInterfaceHandJointFlags = 2
-	OpenXRInterfaceHandJointPositionValid        OpenXRInterfaceHandJointFlags = 4
-	OpenXRInterfaceHandJointPositionTracked      OpenXRInterfaceHandJointFlags = 8
-	OpenXRInterfaceHandJointLinearVelocityValid  OpenXRInterfaceHandJointFlags = 16
+	/*No flags are set.*/
+	OpenXRInterfaceHandJointNone OpenXRInterfaceHandJointFlags = 0
+	/*If set, the orientation data is valid, otherwise, the orientation data is unreliable and should not be used.*/
+	OpenXRInterfaceHandJointOrientationValid OpenXRInterfaceHandJointFlags = 1
+	/*If set, the orientation data comes from tracking data, otherwise, the orientation data contains predicted data.*/
+	OpenXRInterfaceHandJointOrientationTracked OpenXRInterfaceHandJointFlags = 2
+	/*If set, the positional data is valid, otherwise, the positional data is unreliable and should not be used.*/
+	OpenXRInterfaceHandJointPositionValid OpenXRInterfaceHandJointFlags = 4
+	/*If set, the positional data comes from tracking data, otherwise, the positional data contains predicted data.*/
+	OpenXRInterfaceHandJointPositionTracked OpenXRInterfaceHandJointFlags = 8
+	/*If set, our linear velocity data is valid, otherwise, the linear velocity data is unreliable and should not be used.*/
+	OpenXRInterfaceHandJointLinearVelocityValid OpenXRInterfaceHandJointFlags = 16
+	/*If set, our angular velocity data is valid, otherwise, the angular velocity data is unreliable and should not be used.*/
 	OpenXRInterfaceHandJointAngularVelocityValid OpenXRInterfaceHandJointFlags = 32
 )
 
 type PackedSceneGenEditState = classdb.PackedSceneGenEditState
 
 const (
-	PackedSceneGenEditStateDisabled      PackedSceneGenEditState = 0
-	PackedSceneGenEditStateInstance      PackedSceneGenEditState = 1
-	PackedSceneGenEditStateMain          PackedSceneGenEditState = 2
+	/*If passed to [method instantiate], blocks edits to the scene state.*/
+	PackedSceneGenEditStateDisabled PackedSceneGenEditState = 0
+	/*If passed to [method instantiate], provides local scene resources to the local scene.
+	  [b]Note:[/b] Only available in editor builds.*/
+	PackedSceneGenEditStateInstance PackedSceneGenEditState = 1
+	/*If passed to [method instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
+	  [b]Note:[/b] Only available in editor builds.*/
+	PackedSceneGenEditStateMain PackedSceneGenEditState = 2
+	/*It's similar to [constant GEN_EDIT_STATE_MAIN], but for the case where the scene is being instantiated to be the base of another one.
+	  [b]Note:[/b] Only available in editor builds.*/
 	PackedSceneGenEditStateMainInherited PackedSceneGenEditState = 3
 )
 
 type PacketPeerDTLSStatus = classdb.PacketPeerDTLSStatus
 
 const (
-	PacketPeerDTLSStatusDisconnected          PacketPeerDTLSStatus = 0
-	PacketPeerDTLSStatusHandshaking           PacketPeerDTLSStatus = 1
-	PacketPeerDTLSStatusConnected             PacketPeerDTLSStatus = 2
-	PacketPeerDTLSStatusError                 PacketPeerDTLSStatus = 3
+	/*A status representing a [PacketPeerDTLS] that is disconnected.*/
+	PacketPeerDTLSStatusDisconnected PacketPeerDTLSStatus = 0
+	/*A status representing a [PacketPeerDTLS] that is currently performing the handshake with a remote peer.*/
+	PacketPeerDTLSStatusHandshaking PacketPeerDTLSStatus = 1
+	/*A status representing a [PacketPeerDTLS] that is connected to a remote peer.*/
+	PacketPeerDTLSStatusConnected PacketPeerDTLSStatus = 2
+	/*A status representing a [PacketPeerDTLS] in a generic error state.*/
+	PacketPeerDTLSStatusError PacketPeerDTLSStatus = 3
+	/*An error status that shows a mismatch in the DTLS certificate domain presented by the host and the domain requested for validation.*/
 	PacketPeerDTLSStatusErrorHostnameMismatch PacketPeerDTLSStatus = 4
 )
 
 type ParticleProcessMaterialParameter = classdb.ParticleProcessMaterialParameter
 
 const (
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set initial velocity properties.*/
 	ParticleProcessMaterialParamInitialLinearVelocity ParticleProcessMaterialParameter = 0
-	ParticleProcessMaterialParamAngularVelocity       ParticleProcessMaterialParameter = 1
-	ParticleProcessMaterialParamOrbitVelocity         ParticleProcessMaterialParameter = 2
-	ParticleProcessMaterialParamLinearAccel           ParticleProcessMaterialParameter = 3
-	ParticleProcessMaterialParamRadialAccel           ParticleProcessMaterialParameter = 4
-	ParticleProcessMaterialParamTangentialAccel       ParticleProcessMaterialParameter = 5
-	ParticleProcessMaterialParamDamping               ParticleProcessMaterialParameter = 6
-	ParticleProcessMaterialParamAngle                 ParticleProcessMaterialParameter = 7
-	ParticleProcessMaterialParamScale                 ParticleProcessMaterialParameter = 8
-	ParticleProcessMaterialParamHueVariation          ParticleProcessMaterialParameter = 9
-	ParticleProcessMaterialParamAnimSpeed             ParticleProcessMaterialParameter = 10
-	ParticleProcessMaterialParamAnimOffset            ParticleProcessMaterialParameter = 11
-	ParticleProcessMaterialParamRadialVelocity        ParticleProcessMaterialParameter = 15
-	ParticleProcessMaterialParamDirectionalVelocity   ParticleProcessMaterialParameter = 16
-	ParticleProcessMaterialParamScaleOverVelocity     ParticleProcessMaterialParameter = 17
-	ParticleProcessMaterialParamMax                   ParticleProcessMaterialParameter = 18
-	ParticleProcessMaterialParamTurbVelInfluence      ParticleProcessMaterialParameter = 13
-	ParticleProcessMaterialParamTurbInitDisplacement  ParticleProcessMaterialParameter = 14
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set angular velocity properties.*/
+	ParticleProcessMaterialParamAngularVelocity ParticleProcessMaterialParameter = 1
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set orbital velocity properties.*/
+	ParticleProcessMaterialParamOrbitVelocity ParticleProcessMaterialParameter = 2
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set linear acceleration properties.*/
+	ParticleProcessMaterialParamLinearAccel ParticleProcessMaterialParameter = 3
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set radial acceleration properties.*/
+	ParticleProcessMaterialParamRadialAccel ParticleProcessMaterialParameter = 4
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set tangential acceleration properties.*/
+	ParticleProcessMaterialParamTangentialAccel ParticleProcessMaterialParameter = 5
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set damping properties.*/
+	ParticleProcessMaterialParamDamping ParticleProcessMaterialParameter = 6
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set angle properties.*/
+	ParticleProcessMaterialParamAngle ParticleProcessMaterialParameter = 7
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set scale properties.*/
+	ParticleProcessMaterialParamScale ParticleProcessMaterialParameter = 8
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set hue variation properties.*/
+	ParticleProcessMaterialParamHueVariation ParticleProcessMaterialParameter = 9
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set animation speed properties.*/
+	ParticleProcessMaterialParamAnimSpeed ParticleProcessMaterialParameter = 10
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set animation offset properties.*/
+	ParticleProcessMaterialParamAnimOffset ParticleProcessMaterialParameter = 11
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set radial velocity properties.*/
+	ParticleProcessMaterialParamRadialVelocity ParticleProcessMaterialParameter = 15
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set directional velocity properties.*/
+	ParticleProcessMaterialParamDirectionalVelocity ParticleProcessMaterialParameter = 16
+	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set scale over velocity properties.*/
+	ParticleProcessMaterialParamScaleOverVelocity ParticleProcessMaterialParameter = 17
+	/*Represents the size of the [enum Parameter] enum.*/
+	ParticleProcessMaterialParamMax ParticleProcessMaterialParameter = 18
+	/*Use with [method set_param_min] and [method set_param_max] to set the turbulence minimum und maximum influence on each particles velocity.*/
+	ParticleProcessMaterialParamTurbVelInfluence ParticleProcessMaterialParameter = 13
+	/*Use with [method set_param_min] and [method set_param_max] to set the turbulence minimum and maximum displacement of the particles spawn position.*/
+	ParticleProcessMaterialParamTurbInitDisplacement ParticleProcessMaterialParameter = 14
+	/*Use with [method set_param_texture] to set the turbulence influence over the particles life time.*/
 	ParticleProcessMaterialParamTurbInfluenceOverLife ParticleProcessMaterialParameter = 12
 )
 
 type ParticleProcessMaterialParticleFlags = classdb.ParticleProcessMaterialParticleFlags
 
 const (
-	ParticleProcessMaterialParticleFlagAlignYToVelocity  ParticleProcessMaterialParticleFlags = 0
-	ParticleProcessMaterialParticleFlagRotateY           ParticleProcessMaterialParticleFlags = 1
+	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
+	ParticleProcessMaterialParticleFlagAlignYToVelocity ParticleProcessMaterialParticleFlags = 0
+	/*Use with [method set_particle_flag] to set [member particle_flag_rotate_y].*/
+	ParticleProcessMaterialParticleFlagRotateY ParticleProcessMaterialParticleFlags = 1
+	/*Use with [method set_particle_flag] to set [member particle_flag_disable_z].*/
 	ParticleProcessMaterialParticleFlagDisableZ          ParticleProcessMaterialParticleFlags = 2
 	ParticleProcessMaterialParticleFlagDampingAsFriction ParticleProcessMaterialParticleFlags = 3
-	ParticleProcessMaterialParticleFlagMax               ParticleProcessMaterialParticleFlags = 4
+	/*Represents the size of the [enum ParticleFlags] enum.*/
+	ParticleProcessMaterialParticleFlagMax ParticleProcessMaterialParticleFlags = 4
 )
 
 type ParticleProcessMaterialEmissionShape = classdb.ParticleProcessMaterialEmissionShape
 
 const (
-	ParticleProcessMaterialEmissionShapePoint          ParticleProcessMaterialEmissionShape = 0
-	ParticleProcessMaterialEmissionShapeSphere         ParticleProcessMaterialEmissionShape = 1
-	ParticleProcessMaterialEmissionShapeSphereSurface  ParticleProcessMaterialEmissionShape = 2
-	ParticleProcessMaterialEmissionShapeBox            ParticleProcessMaterialEmissionShape = 3
-	ParticleProcessMaterialEmissionShapePoints         ParticleProcessMaterialEmissionShape = 4
+	/*All particles will be emitted from a single point.*/
+	ParticleProcessMaterialEmissionShapePoint ParticleProcessMaterialEmissionShape = 0
+	/*Particles will be emitted in the volume of a sphere.*/
+	ParticleProcessMaterialEmissionShapeSphere ParticleProcessMaterialEmissionShape = 1
+	/*Particles will be emitted on the surface of a sphere.*/
+	ParticleProcessMaterialEmissionShapeSphereSurface ParticleProcessMaterialEmissionShape = 2
+	/*Particles will be emitted in the volume of a box.*/
+	ParticleProcessMaterialEmissionShapeBox ParticleProcessMaterialEmissionShape = 3
+	/*Particles will be emitted at a position determined by sampling a random point on the [member emission_point_texture]. Particle color will be modulated by [member emission_color_texture].*/
+	ParticleProcessMaterialEmissionShapePoints ParticleProcessMaterialEmissionShape = 4
+	/*Particles will be emitted at a position determined by sampling a random point on the [member emission_point_texture]. Particle velocity and rotation will be set based on [member emission_normal_texture]. Particle color will be modulated by [member emission_color_texture].*/
 	ParticleProcessMaterialEmissionShapeDirectedPoints ParticleProcessMaterialEmissionShape = 5
-	ParticleProcessMaterialEmissionShapeRing           ParticleProcessMaterialEmissionShape = 6
-	ParticleProcessMaterialEmissionShapeMax            ParticleProcessMaterialEmissionShape = 7
+	/*Particles will be emitted in a ring or cylinder.*/
+	ParticleProcessMaterialEmissionShapeRing ParticleProcessMaterialEmissionShape = 6
+	/*Represents the size of the [enum EmissionShape] enum.*/
+	ParticleProcessMaterialEmissionShapeMax ParticleProcessMaterialEmissionShape = 7
 )
 
 type ParticleProcessMaterialSubEmitterMode = classdb.ParticleProcessMaterialSubEmitterMode
@@ -3504,71 +5665,117 @@ const (
 	ParticleProcessMaterialSubEmitterConstant    ParticleProcessMaterialSubEmitterMode = 1
 	ParticleProcessMaterialSubEmitterAtEnd       ParticleProcessMaterialSubEmitterMode = 2
 	ParticleProcessMaterialSubEmitterAtCollision ParticleProcessMaterialSubEmitterMode = 3
-	ParticleProcessMaterialSubEmitterMax         ParticleProcessMaterialSubEmitterMode = 4
+	/*Represents the size of the [enum SubEmitterMode] enum.*/
+	ParticleProcessMaterialSubEmitterMax ParticleProcessMaterialSubEmitterMode = 4
 )
 
 type ParticleProcessMaterialCollisionMode = classdb.ParticleProcessMaterialCollisionMode
 
 const (
-	ParticleProcessMaterialCollisionDisabled      ParticleProcessMaterialCollisionMode = 0
-	ParticleProcessMaterialCollisionRigid         ParticleProcessMaterialCollisionMode = 1
+	/*No collision for particles. Particles will go through [GPUParticlesCollision3D] nodes.*/
+	ParticleProcessMaterialCollisionDisabled ParticleProcessMaterialCollisionMode = 0
+	/*[RigidBody3D]-style collision for particles using [GPUParticlesCollision3D] nodes.*/
+	ParticleProcessMaterialCollisionRigid ParticleProcessMaterialCollisionMode = 1
+	/*Hide particles instantly when colliding with a [GPUParticlesCollision3D] node. This can be combined with a subemitter that uses the [constant COLLISION_RIGID] collision mode to "replace" the parent particle with the subemitter on impact.*/
 	ParticleProcessMaterialCollisionHideOnContact ParticleProcessMaterialCollisionMode = 2
-	ParticleProcessMaterialCollisionMax           ParticleProcessMaterialCollisionMode = 3
+	/*Represents the size of the [enum CollisionMode] enum.*/
+	ParticleProcessMaterialCollisionMax ParticleProcessMaterialCollisionMode = 3
 )
 
 type PathFollow3DRotationMode = classdb.PathFollow3DRotationMode
 
 const (
-	PathFollow3DRotationNone     PathFollow3DRotationMode = 0
-	PathFollow3DRotationY        PathFollow3DRotationMode = 1
-	PathFollow3DRotationXy       PathFollow3DRotationMode = 2
-	PathFollow3DRotationXyz      PathFollow3DRotationMode = 3
+	/*Forbids the PathFollow3D to rotate.*/
+	PathFollow3DRotationNone PathFollow3DRotationMode = 0
+	/*Allows the PathFollow3D to rotate in the Y axis only.*/
+	PathFollow3DRotationY PathFollow3DRotationMode = 1
+	/*Allows the PathFollow3D to rotate in both the X, and Y axes.*/
+	PathFollow3DRotationXy PathFollow3DRotationMode = 2
+	/*Allows the PathFollow3D to rotate in any axis.*/
+	PathFollow3DRotationXyz PathFollow3DRotationMode = 3
+	/*Uses the up vector information in a [Curve3D] to enforce orientation. This rotation mode requires the [Path3D]'s [member Curve3D.up_vector_enabled] property to be set to [code]true[/code].*/
 	PathFollow3DRotationOriented PathFollow3DRotationMode = 4
 )
 
 type PerformanceMonitor = classdb.PerformanceMonitor
 
 const (
-	PerformanceTimeFps                       PerformanceMonitor = 0
-	PerformanceTimeProcess                   PerformanceMonitor = 1
-	PerformanceTimePhysicsProcess            PerformanceMonitor = 2
-	PerformanceTimeNavigationProcess         PerformanceMonitor = 3
-	PerformanceMemoryStatic                  PerformanceMonitor = 4
-	PerformanceMemoryStaticMax               PerformanceMonitor = 5
-	PerformanceMemoryMessageBufferMax        PerformanceMonitor = 6
-	PerformanceObjectCount                   PerformanceMonitor = 7
-	PerformanceObjectResourceCount           PerformanceMonitor = 8
-	PerformanceObjectNodeCount               PerformanceMonitor = 9
-	PerformanceObjectOrphanNodeCount         PerformanceMonitor = 10
-	PerformanceRenderTotalObjectsInFrame     PerformanceMonitor = 11
-	PerformanceRenderTotalPrimitivesInFrame  PerformanceMonitor = 12
-	PerformanceRenderTotalDrawCallsInFrame   PerformanceMonitor = 13
-	PerformanceRenderVideoMemUsed            PerformanceMonitor = 14
-	PerformanceRenderTextureMemUsed          PerformanceMonitor = 15
-	PerformanceRenderBufferMemUsed           PerformanceMonitor = 16
-	PerformancePhysics2dActiveObjects        PerformanceMonitor = 17
-	PerformancePhysics2dCollisionPairs       PerformanceMonitor = 18
-	PerformancePhysics2dIslandCount          PerformanceMonitor = 19
-	PerformancePhysics3dActiveObjects        PerformanceMonitor = 20
-	PerformancePhysics3dCollisionPairs       PerformanceMonitor = 21
-	PerformancePhysics3dIslandCount          PerformanceMonitor = 22
-	PerformanceAudioOutputLatency            PerformanceMonitor = 23
-	PerformanceNavigationActiveMaps          PerformanceMonitor = 24
-	PerformanceNavigationRegionCount         PerformanceMonitor = 25
-	PerformanceNavigationAgentCount          PerformanceMonitor = 26
-	PerformanceNavigationLinkCount           PerformanceMonitor = 27
-	PerformanceNavigationPolygonCount        PerformanceMonitor = 28
-	PerformanceNavigationEdgeCount           PerformanceMonitor = 29
-	PerformanceNavigationEdgeMergeCount      PerformanceMonitor = 30
+	/*The number of frames rendered in the last second. This metric is only updated once per second, even if queried more often. [i]Higher is better.[/i]*/
+	PerformanceTimeFps PerformanceMonitor = 0
+	/*Time it took to complete one frame, in seconds. [i]Lower is better.[/i]*/
+	PerformanceTimeProcess PerformanceMonitor = 1
+	/*Time it took to complete one physics frame, in seconds. [i]Lower is better.[/i]*/
+	PerformanceTimePhysicsProcess PerformanceMonitor = 2
+	/*Time it took to complete one navigation step, in seconds. This includes navigation map updates as well as agent avoidance calculations. [i]Lower is better.[/i]*/
+	PerformanceTimeNavigationProcess PerformanceMonitor = 3
+	/*Static memory currently used, in bytes. Not available in release builds. [i]Lower is better.[/i]*/
+	PerformanceMemoryStatic PerformanceMonitor = 4
+	/*Available static memory. Not available in release builds. [i]Lower is better.[/i]*/
+	PerformanceMemoryStaticMax PerformanceMonitor = 5
+	/*Largest amount of memory the message queue buffer has used, in bytes. The message queue is used for deferred functions calls and notifications. [i]Lower is better.[/i]*/
+	PerformanceMemoryMessageBufferMax PerformanceMonitor = 6
+	/*Number of objects currently instantiated (including nodes). [i]Lower is better.[/i]*/
+	PerformanceObjectCount PerformanceMonitor = 7
+	/*Number of resources currently used. [i]Lower is better.[/i]*/
+	PerformanceObjectResourceCount PerformanceMonitor = 8
+	/*Number of nodes currently instantiated in the scene tree. This also includes the root node. [i]Lower is better.[/i]*/
+	PerformanceObjectNodeCount PerformanceMonitor = 9
+	/*Number of orphan nodes, i.e. nodes which are not parented to a node of the scene tree. [i]Lower is better.[/i]*/
+	PerformanceObjectOrphanNodeCount PerformanceMonitor = 10
+	/*The total number of objects in the last rendered frame. This metric doesn't include culled objects (either via hiding nodes, frustum culling or occlusion culling). [i]Lower is better.[/i]*/
+	PerformanceRenderTotalObjectsInFrame PerformanceMonitor = 11
+	/*The total number of vertices or indices rendered in the last rendered frame. This metric doesn't include primitives from culled objects (either via hiding nodes, frustum culling or occlusion culling). Due to the depth prepass and shadow passes, the number of primitives is always higher than the actual number of vertices in the scene (typically double or triple the original vertex count). [i]Lower is better.[/i]*/
+	PerformanceRenderTotalPrimitivesInFrame PerformanceMonitor = 12
+	/*The total number of draw calls performed in the last rendered frame. This metric doesn't include culled objects (either via hiding nodes, frustum culling or occlusion culling), since they do not result in draw calls. [i]Lower is better.[/i]*/
+	PerformanceRenderTotalDrawCallsInFrame PerformanceMonitor = 13
+	/*The amount of video memory used (texture and vertex memory combined, in bytes). Since this metric also includes miscellaneous allocations, this value is always greater than the sum of [constant RENDER_TEXTURE_MEM_USED] and [constant RENDER_BUFFER_MEM_USED]. [i]Lower is better.[/i]*/
+	PerformanceRenderVideoMemUsed PerformanceMonitor = 14
+	/*The amount of texture memory used (in bytes). [i]Lower is better.[/i]*/
+	PerformanceRenderTextureMemUsed PerformanceMonitor = 15
+	/*The amount of render buffer memory used (in bytes). [i]Lower is better.[/i]*/
+	PerformanceRenderBufferMemUsed PerformanceMonitor = 16
+	/*Number of active [RigidBody2D] nodes in the game. [i]Lower is better.[/i]*/
+	PerformancePhysics2dActiveObjects PerformanceMonitor = 17
+	/*Number of collision pairs in the 2D physics engine. [i]Lower is better.[/i]*/
+	PerformancePhysics2dCollisionPairs PerformanceMonitor = 18
+	/*Number of islands in the 2D physics engine. [i]Lower is better.[/i]*/
+	PerformancePhysics2dIslandCount PerformanceMonitor = 19
+	/*Number of active [RigidBody3D] and [VehicleBody3D] nodes in the game. [i]Lower is better.[/i]*/
+	PerformancePhysics3dActiveObjects PerformanceMonitor = 20
+	/*Number of collision pairs in the 3D physics engine. [i]Lower is better.[/i]*/
+	PerformancePhysics3dCollisionPairs PerformanceMonitor = 21
+	/*Number of islands in the 3D physics engine. [i]Lower is better.[/i]*/
+	PerformancePhysics3dIslandCount PerformanceMonitor = 22
+	/*Output latency of the [AudioServer]. Equivalent to calling [method AudioServer.get_output_latency], it is not recommended to call this every frame.*/
+	PerformanceAudioOutputLatency PerformanceMonitor = 23
+	/*Number of active navigation maps in the [NavigationServer3D]. This also includes the two empty default navigation maps created by World2D and World3D.*/
+	PerformanceNavigationActiveMaps PerformanceMonitor = 24
+	/*Number of active navigation regions in the [NavigationServer3D].*/
+	PerformanceNavigationRegionCount PerformanceMonitor = 25
+	/*Number of active navigation agents processing avoidance in the [NavigationServer3D].*/
+	PerformanceNavigationAgentCount PerformanceMonitor = 26
+	/*Number of active navigation links in the [NavigationServer3D].*/
+	PerformanceNavigationLinkCount PerformanceMonitor = 27
+	/*Number of navigation mesh polygons in the [NavigationServer3D].*/
+	PerformanceNavigationPolygonCount PerformanceMonitor = 28
+	/*Number of navigation mesh polygon edges in the [NavigationServer3D].*/
+	PerformanceNavigationEdgeCount PerformanceMonitor = 29
+	/*Number of navigation mesh polygon edges that were merged due to edge key overlap in the [NavigationServer3D].*/
+	PerformanceNavigationEdgeMergeCount PerformanceMonitor = 30
+	/*Number of polygon edges that are considered connected by edge proximity [NavigationServer3D].*/
 	PerformanceNavigationEdgeConnectionCount PerformanceMonitor = 31
-	PerformanceNavigationEdgeFreeCount       PerformanceMonitor = 32
-	PerformanceMonitorMax                    PerformanceMonitor = 33
+	/*Number of navigation mesh polygon edges that could not be merged in the [NavigationServer3D]. The edges still may be connected by edge proximity or with links.*/
+	PerformanceNavigationEdgeFreeCount PerformanceMonitor = 32
+	/*Represents the size of the [enum Monitor] enum.*/
+	PerformanceMonitorMax PerformanceMonitor = 33
 )
 
 type PhysicalBone3DDampMode = classdb.PhysicalBone3DDampMode
 
 const (
+	/*In this mode, the body's damping value is added to any value set in areas or the default value.*/
 	PhysicalBone3DDampModeCombine PhysicalBone3DDampMode = 0
+	/*In this mode, the body's damping value replaces any value set in areas or the default value.*/
 	PhysicalBone3DDampModeReplace PhysicalBone3DDampMode = 1
 )
 
@@ -3586,382 +5793,606 @@ const (
 type PhysicsServer2DSpaceParameter = classdb.PhysicsServer2DSpaceParameter
 
 const (
-	PhysicsServer2DSpaceParamContactRecycleRadius              PhysicsServer2DSpaceParameter = 0
-	PhysicsServer2DSpaceParamContactMaxSeparation              PhysicsServer2DSpaceParameter = 1
-	PhysicsServer2DSpaceParamContactMaxAllowedPenetration      PhysicsServer2DSpaceParameter = 2
-	PhysicsServer2DSpaceParamContactDefaultBias                PhysicsServer2DSpaceParameter = 3
-	PhysicsServer2DSpaceParamBodyLinearVelocitySleepThreshold  PhysicsServer2DSpaceParameter = 4
+	/*Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated. The default value of this parameter is [member ProjectSettings.physics/2d/solver/contact_recycle_radius].*/
+	PhysicsServer2DSpaceParamContactRecycleRadius PhysicsServer2DSpaceParameter = 0
+	/*Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded. The default value of this parameter is [member ProjectSettings.physics/2d/solver/contact_max_separation].*/
+	PhysicsServer2DSpaceParamContactMaxSeparation PhysicsServer2DSpaceParameter = 1
+	/*Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision. The default value of this parameter is [member ProjectSettings.physics/2d/solver/contact_max_allowed_penetration].*/
+	PhysicsServer2DSpaceParamContactMaxAllowedPenetration PhysicsServer2DSpaceParameter = 2
+	/*Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision. The default value of this parameter is [member ProjectSettings.physics/2d/solver/default_contact_bias].*/
+	PhysicsServer2DSpaceParamContactDefaultBias PhysicsServer2DSpaceParameter = 3
+	/*Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. The default value of this parameter is [member ProjectSettings.physics/2d/sleep_threshold_linear].*/
+	PhysicsServer2DSpaceParamBodyLinearVelocitySleepThreshold PhysicsServer2DSpaceParameter = 4
+	/*Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. The default value of this parameter is [member ProjectSettings.physics/2d/sleep_threshold_angular].*/
 	PhysicsServer2DSpaceParamBodyAngularVelocitySleepThreshold PhysicsServer2DSpaceParameter = 5
-	PhysicsServer2DSpaceParamBodyTimeToSleep                   PhysicsServer2DSpaceParameter = 6
-	PhysicsServer2DSpaceParamConstraintDefaultBias             PhysicsServer2DSpaceParameter = 7
-	PhysicsServer2DSpaceParamSolverIterations                  PhysicsServer2DSpaceParameter = 8
+	/*Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time. The default value of this parameter is [member ProjectSettings.physics/2d/time_before_sleep].*/
+	PhysicsServer2DSpaceParamBodyTimeToSleep PhysicsServer2DSpaceParameter = 6
+	/*Constant to set/get the default solver bias for all physics constraints. A solver bias is a factor controlling how much two objects "rebound", after violating a constraint, to avoid leaving them in that state because of numerical imprecision. The default value of this parameter is [member ProjectSettings.physics/2d/solver/default_constraint_bias].*/
+	PhysicsServer2DSpaceParamConstraintDefaultBias PhysicsServer2DSpaceParameter = 7
+	/*Constant to set/get the number of solver iterations for all contacts and constraints. The greater the number of iterations, the more accurate the collisions will be. However, a greater number of iterations requires more CPU power, which can decrease performance. The default value of this parameter is [member ProjectSettings.physics/2d/solver/solver_iterations].*/
+	PhysicsServer2DSpaceParamSolverIterations PhysicsServer2DSpaceParameter = 8
 )
 
 type PhysicsServer2DShapeType = classdb.PhysicsServer2DShapeType
 
 const (
-	PhysicsServer2DShapeWorldBoundary  PhysicsServer2DShapeType = 0
-	PhysicsServer2DShapeSeparationRay  PhysicsServer2DShapeType = 1
-	PhysicsServer2DShapeSegment        PhysicsServer2DShapeType = 2
-	PhysicsServer2DShapeCircle         PhysicsServer2DShapeType = 3
-	PhysicsServer2DShapeRectangle      PhysicsServer2DShapeType = 4
-	PhysicsServer2DShapeCapsule        PhysicsServer2DShapeType = 5
-	PhysicsServer2DShapeConvexPolygon  PhysicsServer2DShapeType = 6
+	/*This is the constant for creating world boundary shapes. A world boundary shape is an [i]infinite[/i] line with an origin point, and a normal. Thus, it can be used for front/behind checks.*/
+	PhysicsServer2DShapeWorldBoundary PhysicsServer2DShapeType = 0
+	/*This is the constant for creating separation ray shapes. A separation ray is defined by a length and separates itself from what is touching its far endpoint. Useful for character controllers.*/
+	PhysicsServer2DShapeSeparationRay PhysicsServer2DShapeType = 1
+	/*This is the constant for creating segment shapes. A segment shape is a [i]finite[/i] line from a point A to a point B. It can be checked for intersections.*/
+	PhysicsServer2DShapeSegment PhysicsServer2DShapeType = 2
+	/*This is the constant for creating circle shapes. A circle shape only has a radius. It can be used for intersections and inside/outside checks.*/
+	PhysicsServer2DShapeCircle PhysicsServer2DShapeType = 3
+	/*This is the constant for creating rectangle shapes. A rectangle shape is defined by a width and a height. It can be used for intersections and inside/outside checks.*/
+	PhysicsServer2DShapeRectangle PhysicsServer2DShapeType = 4
+	/*This is the constant for creating capsule shapes. A capsule shape is defined by a radius and a length. It can be used for intersections and inside/outside checks.*/
+	PhysicsServer2DShapeCapsule PhysicsServer2DShapeType = 5
+	/*This is the constant for creating convex polygon shapes. A polygon is defined by a list of points. It can be used for intersections and inside/outside checks.*/
+	PhysicsServer2DShapeConvexPolygon PhysicsServer2DShapeType = 6
+	/*This is the constant for creating concave polygon shapes. A polygon is defined by a list of points. It can be used for intersections checks, but not for inside/outside checks.*/
 	PhysicsServer2DShapeConcavePolygon PhysicsServer2DShapeType = 7
-	PhysicsServer2DShapeCustom         PhysicsServer2DShapeType = 8
+	/*This constant is used internally by the engine. Any attempt to create this kind of shape results in an error.*/
+	PhysicsServer2DShapeCustom PhysicsServer2DShapeType = 8
 )
 
 type PhysicsServer2DAreaParameter = classdb.PhysicsServer2DAreaParameter
 
 const (
-	PhysicsServer2DAreaParamGravityOverrideMode      PhysicsServer2DAreaParameter = 0
-	PhysicsServer2DAreaParamGravity                  PhysicsServer2DAreaParameter = 1
-	PhysicsServer2DAreaParamGravityVector            PhysicsServer2DAreaParameter = 2
-	PhysicsServer2DAreaParamGravityIsPoint           PhysicsServer2DAreaParameter = 3
+	/*Constant to set/get gravity override mode in an area. See [enum AreaSpaceOverrideMode] for possible values. The default value of this parameter is [constant AREA_SPACE_OVERRIDE_DISABLED].*/
+	PhysicsServer2DAreaParamGravityOverrideMode PhysicsServer2DAreaParameter = 0
+	/*Constant to set/get gravity strength in an area. The default value of this parameter is [code]9.80665[/code].*/
+	PhysicsServer2DAreaParamGravity PhysicsServer2DAreaParameter = 1
+	/*Constant to set/get gravity vector/center in an area. The default value of this parameter is [code]Vector2(0, -1)[/code].*/
+	PhysicsServer2DAreaParamGravityVector PhysicsServer2DAreaParameter = 2
+	/*Constant to set/get whether the gravity vector of an area is a direction, or a center point. The default value of this parameter is [code]false[/code].*/
+	PhysicsServer2DAreaParamGravityIsPoint PhysicsServer2DAreaParameter = 3
+	/*Constant to set/get the distance at which the gravity strength is equal to the gravity controlled by [constant AREA_PARAM_GRAVITY]. For example, on a planet 100 pixels in radius with a surface gravity of 4.0 px/s², set the gravity to 4.0 and the unit distance to 100.0. The gravity will have falloff according to the inverse square law, so in the example, at 200 pixels from the center the gravity will be 1.0 px/s² (twice the distance, 1/4th the gravity), at 50 pixels it will be 16.0 px/s² (half the distance, 4x the gravity), and so on.
+	  The above is true only when the unit distance is a positive number. When the unit distance is set to 0.0, the gravity will be constant regardless of distance. The default value of this parameter is [code]0.0[/code].*/
 	PhysicsServer2DAreaParamGravityPointUnitDistance PhysicsServer2DAreaParameter = 4
-	PhysicsServer2DAreaParamLinearDampOverrideMode   PhysicsServer2DAreaParameter = 5
-	PhysicsServer2DAreaParamLinearDamp               PhysicsServer2DAreaParameter = 6
-	PhysicsServer2DAreaParamAngularDampOverrideMode  PhysicsServer2DAreaParameter = 7
-	PhysicsServer2DAreaParamAngularDamp              PhysicsServer2DAreaParameter = 8
-	PhysicsServer2DAreaParamPriority                 PhysicsServer2DAreaParameter = 9
+	/*Constant to set/get linear damping override mode in an area. See [enum AreaSpaceOverrideMode] for possible values. The default value of this parameter is [constant AREA_SPACE_OVERRIDE_DISABLED].*/
+	PhysicsServer2DAreaParamLinearDampOverrideMode PhysicsServer2DAreaParameter = 5
+	/*Constant to set/get the linear damping factor of an area. The default value of this parameter is [code]0.1[/code].*/
+	PhysicsServer2DAreaParamLinearDamp PhysicsServer2DAreaParameter = 6
+	/*Constant to set/get angular damping override mode in an area. See [enum AreaSpaceOverrideMode] for possible values. The default value of this parameter is [constant AREA_SPACE_OVERRIDE_DISABLED].*/
+	PhysicsServer2DAreaParamAngularDampOverrideMode PhysicsServer2DAreaParameter = 7
+	/*Constant to set/get the angular damping factor of an area. The default value of this parameter is [code]1.0[/code].*/
+	PhysicsServer2DAreaParamAngularDamp PhysicsServer2DAreaParameter = 8
+	/*Constant to set/get the priority (order of processing) of an area. The default value of this parameter is [code]0[/code].*/
+	PhysicsServer2DAreaParamPriority PhysicsServer2DAreaParameter = 9
 )
 
 type PhysicsServer2DAreaSpaceOverrideMode = classdb.PhysicsServer2DAreaSpaceOverrideMode
 
 const (
-	PhysicsServer2DAreaSpaceOverrideDisabled       PhysicsServer2DAreaSpaceOverrideMode = 0
-	PhysicsServer2DAreaSpaceOverrideCombine        PhysicsServer2DAreaSpaceOverrideMode = 1
+	/*This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.*/
+	PhysicsServer2DAreaSpaceOverrideDisabled PhysicsServer2DAreaSpaceOverrideMode = 0
+	/*This area adds its gravity/damp values to whatever has been calculated so far. This way, many overlapping areas can combine their physics to make interesting effects.*/
+	PhysicsServer2DAreaSpaceOverrideCombine PhysicsServer2DAreaSpaceOverrideMode = 1
+	/*This area adds its gravity/damp values to whatever has been calculated so far. Then stops taking into account the rest of the areas, even the default one.*/
 	PhysicsServer2DAreaSpaceOverrideCombineReplace PhysicsServer2DAreaSpaceOverrideMode = 2
-	PhysicsServer2DAreaSpaceOverrideReplace        PhysicsServer2DAreaSpaceOverrideMode = 3
+	/*This area replaces any gravity/damp, even the default one, and stops taking into account the rest of the areas.*/
+	PhysicsServer2DAreaSpaceOverrideReplace PhysicsServer2DAreaSpaceOverrideMode = 3
+	/*This area replaces any gravity/damp calculated so far, but keeps calculating the rest of the areas, down to the default one.*/
 	PhysicsServer2DAreaSpaceOverrideReplaceCombine PhysicsServer2DAreaSpaceOverrideMode = 4
 )
 
 type PhysicsServer2DBodyMode = classdb.PhysicsServer2DBodyMode
 
 const (
-	PhysicsServer2DBodyModeStatic      PhysicsServer2DBodyMode = 0
-	PhysicsServer2DBodyModeKinematic   PhysicsServer2DBodyMode = 1
-	PhysicsServer2DBodyModeRigid       PhysicsServer2DBodyMode = 2
+	/*Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.*/
+	PhysicsServer2DBodyModeStatic PhysicsServer2DBodyMode = 0
+	/*Constant for kinematic bodies. In this mode, a body can be only moved by user code and collides with other bodies along its path.*/
+	PhysicsServer2DBodyModeKinematic PhysicsServer2DBodyMode = 1
+	/*Constant for rigid bodies. In this mode, a body can be pushed by other bodies and has forces applied.*/
+	PhysicsServer2DBodyModeRigid PhysicsServer2DBodyMode = 2
+	/*Constant for linear rigid bodies. In this mode, a body can not rotate, and only its linear velocity is affected by external forces.*/
 	PhysicsServer2DBodyModeRigidLinear PhysicsServer2DBodyMode = 3
 )
 
 type PhysicsServer2DBodyParameter = classdb.PhysicsServer2DBodyParameter
 
 const (
-	PhysicsServer2DBodyParamBounce          PhysicsServer2DBodyParameter = 0
-	PhysicsServer2DBodyParamFriction        PhysicsServer2DBodyParameter = 1
-	PhysicsServer2DBodyParamMass            PhysicsServer2DBodyParameter = 2
-	PhysicsServer2DBodyParamInertia         PhysicsServer2DBodyParameter = 3
-	PhysicsServer2DBodyParamCenterOfMass    PhysicsServer2DBodyParameter = 4
-	PhysicsServer2DBodyParamGravityScale    PhysicsServer2DBodyParameter = 5
-	PhysicsServer2DBodyParamLinearDampMode  PhysicsServer2DBodyParameter = 6
+	/*Constant to set/get a body's bounce factor. The default value of this parameter is [code]0.0[/code].*/
+	PhysicsServer2DBodyParamBounce PhysicsServer2DBodyParameter = 0
+	/*Constant to set/get a body's friction. The default value of this parameter is [code]1.0[/code].*/
+	PhysicsServer2DBodyParamFriction PhysicsServer2DBodyParameter = 1
+	/*Constant to set/get a body's mass. The default value of this parameter is [code]1.0[/code]. If the body's mode is set to [constant BODY_MODE_RIGID], then setting this parameter will have the following additional effects:
+	  - If the parameter [constant BODY_PARAM_CENTER_OF_MASS] has never been set explicitly, then the value of that parameter will be recalculated based on the body's shapes.
+	  - If the parameter [constant BODY_PARAM_INERTIA] is set to a value [code]<= 0.0[/code], then the value of that parameter will be recalculated based on the body's shapes, mass, and center of mass.*/
+	PhysicsServer2DBodyParamMass PhysicsServer2DBodyParameter = 2
+	/*Constant to set/get a body's inertia. The default value of this parameter is [code]0.0[/code]. If the body's inertia is set to a value [code]<= 0.0[/code], then the inertia will be recalculated based on the body's shapes, mass, and center of mass.*/
+	PhysicsServer2DBodyParamInertia PhysicsServer2DBodyParameter = 3
+	/*Constant to set/get a body's center of mass position in the body's local coordinate system. The default value of this parameter is [code]Vector2(0,0)[/code]. If this parameter is never set explicitly, then it is recalculated based on the body's shapes when setting the parameter [constant BODY_PARAM_MASS] or when calling [method body_set_space].*/
+	PhysicsServer2DBodyParamCenterOfMass PhysicsServer2DBodyParameter = 4
+	/*Constant to set/get a body's gravity multiplier. The default value of this parameter is [code]1.0[/code].*/
+	PhysicsServer2DBodyParamGravityScale PhysicsServer2DBodyParameter = 5
+	/*Constant to set/get a body's linear damping mode. See [enum BodyDampMode] for possible values. The default value of this parameter is [constant BODY_DAMP_MODE_COMBINE].*/
+	PhysicsServer2DBodyParamLinearDampMode PhysicsServer2DBodyParameter = 6
+	/*Constant to set/get a body's angular damping mode. See [enum BodyDampMode] for possible values. The default value of this parameter is [constant BODY_DAMP_MODE_COMBINE].*/
 	PhysicsServer2DBodyParamAngularDampMode PhysicsServer2DBodyParameter = 7
-	PhysicsServer2DBodyParamLinearDamp      PhysicsServer2DBodyParameter = 8
-	PhysicsServer2DBodyParamAngularDamp     PhysicsServer2DBodyParameter = 9
-	PhysicsServer2DBodyParamMax             PhysicsServer2DBodyParameter = 10
+	/*Constant to set/get a body's linear damping factor. The default value of this parameter is [code]0.0[/code].*/
+	PhysicsServer2DBodyParamLinearDamp PhysicsServer2DBodyParameter = 8
+	/*Constant to set/get a body's angular damping factor. The default value of this parameter is [code]0.0[/code].*/
+	PhysicsServer2DBodyParamAngularDamp PhysicsServer2DBodyParameter = 9
+	/*Represents the size of the [enum BodyParameter] enum.*/
+	PhysicsServer2DBodyParamMax PhysicsServer2DBodyParameter = 10
 )
 
 type PhysicsServer2DBodyDampMode = classdb.PhysicsServer2DBodyDampMode
 
 const (
+	/*The body's damping value is added to any value set in areas or the default value.*/
 	PhysicsServer2DBodyDampModeCombine PhysicsServer2DBodyDampMode = 0
+	/*The body's damping value replaces any value set in areas or the default value.*/
 	PhysicsServer2DBodyDampModeReplace PhysicsServer2DBodyDampMode = 1
 )
 
 type PhysicsServer2DBodyState = classdb.PhysicsServer2DBodyState
 
 const (
-	PhysicsServer2DBodyStateTransform       PhysicsServer2DBodyState = 0
-	PhysicsServer2DBodyStateLinearVelocity  PhysicsServer2DBodyState = 1
+	/*Constant to set/get the current transform matrix of the body.*/
+	PhysicsServer2DBodyStateTransform PhysicsServer2DBodyState = 0
+	/*Constant to set/get the current linear velocity of the body.*/
+	PhysicsServer2DBodyStateLinearVelocity PhysicsServer2DBodyState = 1
+	/*Constant to set/get the current angular velocity of the body.*/
 	PhysicsServer2DBodyStateAngularVelocity PhysicsServer2DBodyState = 2
-	PhysicsServer2DBodyStateSleeping        PhysicsServer2DBodyState = 3
-	PhysicsServer2DBodyStateCanSleep        PhysicsServer2DBodyState = 4
+	/*Constant to sleep/wake up a body, or to get whether it is sleeping.*/
+	PhysicsServer2DBodyStateSleeping PhysicsServer2DBodyState = 3
+	/*Constant to set/get whether the body can sleep.*/
+	PhysicsServer2DBodyStateCanSleep PhysicsServer2DBodyState = 4
 )
 
 type PhysicsServer2DJointType = classdb.PhysicsServer2DJointType
 
 const (
-	PhysicsServer2DJointTypePin          PhysicsServer2DJointType = 0
-	PhysicsServer2DJointTypeGroove       PhysicsServer2DJointType = 1
+	/*Constant to create pin joints.*/
+	PhysicsServer2DJointTypePin PhysicsServer2DJointType = 0
+	/*Constant to create groove joints.*/
+	PhysicsServer2DJointTypeGroove PhysicsServer2DJointType = 1
+	/*Constant to create damped spring joints.*/
 	PhysicsServer2DJointTypeDampedSpring PhysicsServer2DJointType = 2
-	PhysicsServer2DJointTypeMax          PhysicsServer2DJointType = 3
+	/*Represents the size of the [enum JointType] enum.*/
+	PhysicsServer2DJointTypeMax PhysicsServer2DJointType = 3
 )
 
 type PhysicsServer2DJointParam = classdb.PhysicsServer2DJointParam
 
 const (
-	PhysicsServer2DJointParamBias     PhysicsServer2DJointParam = 0
-	PhysicsServer2DJointParamMaxBias  PhysicsServer2DJointParam = 1
+	/*Constant to set/get how fast the joint pulls the bodies back to satisfy the joint constraint. The lower the value, the more the two bodies can pull on the joint. The default value of this parameter is [code]0.0[/code].
+	  [b]Note:[/b] In Godot Physics, this parameter is only used for pin joints and groove joints.*/
+	PhysicsServer2DJointParamBias PhysicsServer2DJointParam = 0
+	/*Constant to set/get the maximum speed with which the joint can apply corrections. The default value of this parameter is [code]3.40282e+38[/code].
+	  [b]Note:[/b] In Godot Physics, this parameter is only used for groove joints.*/
+	PhysicsServer2DJointParamMaxBias PhysicsServer2DJointParam = 1
+	/*Constant to set/get the maximum force that the joint can use to act on the two bodies. The default value of this parameter is [code]3.40282e+38[/code].
+	  [b]Note:[/b] In Godot Physics, this parameter is only used for groove joints.*/
 	PhysicsServer2DJointParamMaxForce PhysicsServer2DJointParam = 2
 )
 
 type PhysicsServer2DPinJointParam = classdb.PhysicsServer2DPinJointParam
 
 const (
-	PhysicsServer2DPinJointSoftness            PhysicsServer2DPinJointParam = 0
-	PhysicsServer2DPinJointLimitUpper          PhysicsServer2DPinJointParam = 1
-	PhysicsServer2DPinJointLimitLower          PhysicsServer2DPinJointParam = 2
+	/*Constant to set/get a how much the bond of the pin joint can flex. The default value of this parameter is [code]0.0[/code].*/
+	PhysicsServer2DPinJointSoftness PhysicsServer2DPinJointParam = 0
+	/*The maximum rotation around the pin.*/
+	PhysicsServer2DPinJointLimitUpper PhysicsServer2DPinJointParam = 1
+	/*The minimum rotation around the pin.*/
+	PhysicsServer2DPinJointLimitLower PhysicsServer2DPinJointParam = 2
+	/*Target speed for the motor. In radians per second.*/
 	PhysicsServer2DPinJointMotorTargetVelocity PhysicsServer2DPinJointParam = 3
 )
 
 type PhysicsServer2DPinJointFlag = classdb.PhysicsServer2DPinJointFlag
 
 const (
+	/*If [code]true[/code], the pin has a maximum and a minimum rotation.*/
 	PhysicsServer2DPinJointFlagAngularLimitEnabled PhysicsServer2DPinJointFlag = 0
-	PhysicsServer2DPinJointFlagMotorEnabled        PhysicsServer2DPinJointFlag = 1
+	/*If [code]true[/code], a motor turns the pin.*/
+	PhysicsServer2DPinJointFlagMotorEnabled PhysicsServer2DPinJointFlag = 1
 )
 
 type PhysicsServer2DDampedSpringParam = classdb.PhysicsServer2DDampedSpringParam
 
 const (
+	/*Sets the resting length of the spring joint. The joint will always try to go to back this length when pulled apart. The default value of this parameter is the distance between the joint's anchor points.*/
 	PhysicsServer2DDampedSpringRestLength PhysicsServer2DDampedSpringParam = 0
-	PhysicsServer2DDampedSpringStiffness  PhysicsServer2DDampedSpringParam = 1
-	PhysicsServer2DDampedSpringDamping    PhysicsServer2DDampedSpringParam = 2
+	/*Sets the stiffness of the spring joint. The joint applies a force equal to the stiffness times the distance from its resting length. The default value of this parameter is [code]20.0[/code].*/
+	PhysicsServer2DDampedSpringStiffness PhysicsServer2DDampedSpringParam = 1
+	/*Sets the damping ratio of the spring joint. A value of 0 indicates an undamped spring, while 1 causes the system to reach equilibrium as fast as possible (critical damping). The default value of this parameter is [code]1.5[/code].*/
+	PhysicsServer2DDampedSpringDamping PhysicsServer2DDampedSpringParam = 2
 )
 
 type PhysicsServer2DCCDMode = classdb.PhysicsServer2DCCDMode
 
 const (
-	PhysicsServer2DCcdModeDisabled  PhysicsServer2DCCDMode = 0
-	PhysicsServer2DCcdModeCastRay   PhysicsServer2DCCDMode = 1
+	/*Disables continuous collision detection. This is the fastest way to detect body collisions, but it can miss small and/or fast-moving objects.*/
+	PhysicsServer2DCcdModeDisabled PhysicsServer2DCCDMode = 0
+	/*Enables continuous collision detection by raycasting. It is faster than shapecasting, but less precise.*/
+	PhysicsServer2DCcdModeCastRay PhysicsServer2DCCDMode = 1
+	/*Enables continuous collision detection by shapecasting. It is the slowest CCD method, and the most precise.*/
 	PhysicsServer2DCcdModeCastShape PhysicsServer2DCCDMode = 2
 )
 
 type PhysicsServer2DAreaBodyStatus = classdb.PhysicsServer2DAreaBodyStatus
 
 const (
-	PhysicsServer2DAreaBodyAdded   PhysicsServer2DAreaBodyStatus = 0
+	/*The value of the first parameter and area callback function receives, when an object enters one of its shapes.*/
+	PhysicsServer2DAreaBodyAdded PhysicsServer2DAreaBodyStatus = 0
+	/*The value of the first parameter and area callback function receives, when an object exits one of its shapes.*/
 	PhysicsServer2DAreaBodyRemoved PhysicsServer2DAreaBodyStatus = 1
 )
 
 type PhysicsServer2DProcessInfo = classdb.PhysicsServer2DProcessInfo
 
 const (
-	PhysicsServer2DInfoActiveObjects  PhysicsServer2DProcessInfo = 0
+	/*Constant to get the number of objects that are not sleeping.*/
+	PhysicsServer2DInfoActiveObjects PhysicsServer2DProcessInfo = 0
+	/*Constant to get the number of possible collisions.*/
 	PhysicsServer2DInfoCollisionPairs PhysicsServer2DProcessInfo = 1
-	PhysicsServer2DInfoIslandCount    PhysicsServer2DProcessInfo = 2
+	/*Constant to get the number of space regions where a collision could occur.*/
+	PhysicsServer2DInfoIslandCount PhysicsServer2DProcessInfo = 2
 )
 
 type PhysicsServer3DJointType = classdb.PhysicsServer3DJointType
 
 const (
-	PhysicsServer3DJointTypePin       PhysicsServer3DJointType = 0
-	PhysicsServer3DJointTypeHinge     PhysicsServer3DJointType = 1
-	PhysicsServer3DJointTypeSlider    PhysicsServer3DJointType = 2
+	/*The [Joint3D] is a [PinJoint3D].*/
+	PhysicsServer3DJointTypePin PhysicsServer3DJointType = 0
+	/*The [Joint3D] is a [HingeJoint3D].*/
+	PhysicsServer3DJointTypeHinge PhysicsServer3DJointType = 1
+	/*The [Joint3D] is a [SliderJoint3D].*/
+	PhysicsServer3DJointTypeSlider PhysicsServer3DJointType = 2
+	/*The [Joint3D] is a [ConeTwistJoint3D].*/
 	PhysicsServer3DJointTypeConeTwist PhysicsServer3DJointType = 3
-	PhysicsServer3DJointType6dof      PhysicsServer3DJointType = 4
-	PhysicsServer3DJointTypeMax       PhysicsServer3DJointType = 5
+	/*The [Joint3D] is a [Generic6DOFJoint3D].*/
+	PhysicsServer3DJointType6dof PhysicsServer3DJointType = 4
+	/*Represents the size of the [enum JointType] enum.*/
+	PhysicsServer3DJointTypeMax PhysicsServer3DJointType = 5
 )
 
 type PhysicsServer3DPinJointParam = classdb.PhysicsServer3DPinJointParam
 
 const (
-	PhysicsServer3DPinJointBias         PhysicsServer3DPinJointParam = 0
-	PhysicsServer3DPinJointDamping      PhysicsServer3DPinJointParam = 1
+	/*The strength with which the pinned objects try to stay in positional relation to each other.
+	  The higher, the stronger.*/
+	PhysicsServer3DPinJointBias PhysicsServer3DPinJointParam = 0
+	/*The strength with which the pinned objects try to stay in velocity relation to each other.
+	  The higher, the stronger.*/
+	PhysicsServer3DPinJointDamping PhysicsServer3DPinJointParam = 1
+	/*If above 0, this value is the maximum value for an impulse that this Joint3D puts on its ends.*/
 	PhysicsServer3DPinJointImpulseClamp PhysicsServer3DPinJointParam = 2
 )
 
 type PhysicsServer3DHingeJointParam = classdb.PhysicsServer3DHingeJointParam
 
 const (
-	PhysicsServer3DHingeJointBias                PhysicsServer3DHingeJointParam = 0
-	PhysicsServer3DHingeJointLimitUpper          PhysicsServer3DHingeJointParam = 1
-	PhysicsServer3DHingeJointLimitLower          PhysicsServer3DHingeJointParam = 2
-	PhysicsServer3DHingeJointLimitBias           PhysicsServer3DHingeJointParam = 3
-	PhysicsServer3DHingeJointLimitSoftness       PhysicsServer3DHingeJointParam = 4
-	PhysicsServer3DHingeJointLimitRelaxation     PhysicsServer3DHingeJointParam = 5
+	/*The speed with which the two bodies get pulled together when they move in different directions.*/
+	PhysicsServer3DHingeJointBias PhysicsServer3DHingeJointParam = 0
+	/*The maximum rotation across the Hinge.*/
+	PhysicsServer3DHingeJointLimitUpper PhysicsServer3DHingeJointParam = 1
+	/*The minimum rotation across the Hinge.*/
+	PhysicsServer3DHingeJointLimitLower PhysicsServer3DHingeJointParam = 2
+	/*The speed with which the rotation across the axis perpendicular to the hinge gets corrected.*/
+	PhysicsServer3DHingeJointLimitBias     PhysicsServer3DHingeJointParam = 3
+	PhysicsServer3DHingeJointLimitSoftness PhysicsServer3DHingeJointParam = 4
+	/*The lower this value, the more the rotation gets slowed down.*/
+	PhysicsServer3DHingeJointLimitRelaxation PhysicsServer3DHingeJointParam = 5
+	/*Target speed for the motor.*/
 	PhysicsServer3DHingeJointMotorTargetVelocity PhysicsServer3DHingeJointParam = 6
-	PhysicsServer3DHingeJointMotorMaxImpulse     PhysicsServer3DHingeJointParam = 7
+	/*Maximum acceleration for the motor.*/
+	PhysicsServer3DHingeJointMotorMaxImpulse PhysicsServer3DHingeJointParam = 7
 )
 
 type PhysicsServer3DHingeJointFlag = classdb.PhysicsServer3DHingeJointFlag
 
 const (
-	PhysicsServer3DHingeJointFlagUseLimit    PhysicsServer3DHingeJointFlag = 0
+	/*If [code]true[/code], the Hinge has a maximum and a minimum rotation.*/
+	PhysicsServer3DHingeJointFlagUseLimit PhysicsServer3DHingeJointFlag = 0
+	/*If [code]true[/code], a motor turns the Hinge.*/
 	PhysicsServer3DHingeJointFlagEnableMotor PhysicsServer3DHingeJointFlag = 1
 )
 
 type PhysicsServer3DSliderJointParam = classdb.PhysicsServer3DSliderJointParam
 
 const (
-	PhysicsServer3DSliderJointLinearLimitUpper             PhysicsServer3DSliderJointParam = 0
-	PhysicsServer3DSliderJointLinearLimitLower             PhysicsServer3DSliderJointParam = 1
-	PhysicsServer3DSliderJointLinearLimitSoftness          PhysicsServer3DSliderJointParam = 2
-	PhysicsServer3DSliderJointLinearLimitRestitution       PhysicsServer3DSliderJointParam = 3
-	PhysicsServer3DSliderJointLinearLimitDamping           PhysicsServer3DSliderJointParam = 4
-	PhysicsServer3DSliderJointLinearMotionSoftness         PhysicsServer3DSliderJointParam = 5
-	PhysicsServer3DSliderJointLinearMotionRestitution      PhysicsServer3DSliderJointParam = 6
-	PhysicsServer3DSliderJointLinearMotionDamping          PhysicsServer3DSliderJointParam = 7
-	PhysicsServer3DSliderJointLinearOrthogonalSoftness     PhysicsServer3DSliderJointParam = 8
-	PhysicsServer3DSliderJointLinearOrthogonalRestitution  PhysicsServer3DSliderJointParam = 9
-	PhysicsServer3DSliderJointLinearOrthogonalDamping      PhysicsServer3DSliderJointParam = 10
-	PhysicsServer3DSliderJointAngularLimitUpper            PhysicsServer3DSliderJointParam = 11
-	PhysicsServer3DSliderJointAngularLimitLower            PhysicsServer3DSliderJointParam = 12
-	PhysicsServer3DSliderJointAngularLimitSoftness         PhysicsServer3DSliderJointParam = 13
-	PhysicsServer3DSliderJointAngularLimitRestitution      PhysicsServer3DSliderJointParam = 14
-	PhysicsServer3DSliderJointAngularLimitDamping          PhysicsServer3DSliderJointParam = 15
-	PhysicsServer3DSliderJointAngularMotionSoftness        PhysicsServer3DSliderJointParam = 16
-	PhysicsServer3DSliderJointAngularMotionRestitution     PhysicsServer3DSliderJointParam = 17
-	PhysicsServer3DSliderJointAngularMotionDamping         PhysicsServer3DSliderJointParam = 18
-	PhysicsServer3DSliderJointAngularOrthogonalSoftness    PhysicsServer3DSliderJointParam = 19
+	/*The maximum difference between the pivot points on their X axis before damping happens.*/
+	PhysicsServer3DSliderJointLinearLimitUpper PhysicsServer3DSliderJointParam = 0
+	/*The minimum difference between the pivot points on their X axis before damping happens.*/
+	PhysicsServer3DSliderJointLinearLimitLower PhysicsServer3DSliderJointParam = 1
+	/*A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement.*/
+	PhysicsServer3DSliderJointLinearLimitSoftness PhysicsServer3DSliderJointParam = 2
+	/*The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost.*/
+	PhysicsServer3DSliderJointLinearLimitRestitution PhysicsServer3DSliderJointParam = 3
+	/*The amount of damping once the slider limits are surpassed.*/
+	PhysicsServer3DSliderJointLinearLimitDamping PhysicsServer3DSliderJointParam = 4
+	/*A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement.*/
+	PhysicsServer3DSliderJointLinearMotionSoftness PhysicsServer3DSliderJointParam = 5
+	/*The amount of restitution inside the slider limits.*/
+	PhysicsServer3DSliderJointLinearMotionRestitution PhysicsServer3DSliderJointParam = 6
+	/*The amount of damping inside the slider limits.*/
+	PhysicsServer3DSliderJointLinearMotionDamping PhysicsServer3DSliderJointParam = 7
+	/*A factor applied to the movement across axes orthogonal to the slider.*/
+	PhysicsServer3DSliderJointLinearOrthogonalSoftness PhysicsServer3DSliderJointParam = 8
+	/*The amount of restitution when movement is across axes orthogonal to the slider.*/
+	PhysicsServer3DSliderJointLinearOrthogonalRestitution PhysicsServer3DSliderJointParam = 9
+	/*The amount of damping when movement is across axes orthogonal to the slider.*/
+	PhysicsServer3DSliderJointLinearOrthogonalDamping PhysicsServer3DSliderJointParam = 10
+	/*The upper limit of rotation in the slider.*/
+	PhysicsServer3DSliderJointAngularLimitUpper PhysicsServer3DSliderJointParam = 11
+	/*The lower limit of rotation in the slider.*/
+	PhysicsServer3DSliderJointAngularLimitLower PhysicsServer3DSliderJointParam = 12
+	/*A factor applied to the all rotation once the limit is surpassed.*/
+	PhysicsServer3DSliderJointAngularLimitSoftness PhysicsServer3DSliderJointParam = 13
+	/*The amount of restitution of the rotation when the limit is surpassed.*/
+	PhysicsServer3DSliderJointAngularLimitRestitution PhysicsServer3DSliderJointParam = 14
+	/*The amount of damping of the rotation when the limit is surpassed.*/
+	PhysicsServer3DSliderJointAngularLimitDamping PhysicsServer3DSliderJointParam = 15
+	/*A factor that gets applied to the all rotation in the limits.*/
+	PhysicsServer3DSliderJointAngularMotionSoftness PhysicsServer3DSliderJointParam = 16
+	/*The amount of restitution of the rotation in the limits.*/
+	PhysicsServer3DSliderJointAngularMotionRestitution PhysicsServer3DSliderJointParam = 17
+	/*The amount of damping of the rotation in the limits.*/
+	PhysicsServer3DSliderJointAngularMotionDamping PhysicsServer3DSliderJointParam = 18
+	/*A factor that gets applied to the all rotation across axes orthogonal to the slider.*/
+	PhysicsServer3DSliderJointAngularOrthogonalSoftness PhysicsServer3DSliderJointParam = 19
+	/*The amount of restitution of the rotation across axes orthogonal to the slider.*/
 	PhysicsServer3DSliderJointAngularOrthogonalRestitution PhysicsServer3DSliderJointParam = 20
-	PhysicsServer3DSliderJointAngularOrthogonalDamping     PhysicsServer3DSliderJointParam = 21
-	PhysicsServer3DSliderJointMax                          PhysicsServer3DSliderJointParam = 22
+	/*The amount of damping of the rotation across axes orthogonal to the slider.*/
+	PhysicsServer3DSliderJointAngularOrthogonalDamping PhysicsServer3DSliderJointParam = 21
+	/*Represents the size of the [enum SliderJointParam] enum.*/
+	PhysicsServer3DSliderJointMax PhysicsServer3DSliderJointParam = 22
 )
 
 type PhysicsServer3DConeTwistJointParam = classdb.PhysicsServer3DConeTwistJointParam
 
 const (
-	PhysicsServer3DConeTwistJointSwingSpan  PhysicsServer3DConeTwistJointParam = 0
-	PhysicsServer3DConeTwistJointTwistSpan  PhysicsServer3DConeTwistJointParam = 1
-	PhysicsServer3DConeTwistJointBias       PhysicsServer3DConeTwistJointParam = 2
-	PhysicsServer3DConeTwistJointSoftness   PhysicsServer3DConeTwistJointParam = 3
+	/*Swing is rotation from side to side, around the axis perpendicular to the twist axis.
+	  The swing span defines, how much rotation will not get corrected along the swing axis.
+	  Could be defined as looseness in the [ConeTwistJoint3D].
+	  If below 0.05, this behavior is locked.*/
+	PhysicsServer3DConeTwistJointSwingSpan PhysicsServer3DConeTwistJointParam = 0
+	/*Twist is the rotation around the twist axis, this value defined how far the joint can twist.
+	  Twist is locked if below 0.05.*/
+	PhysicsServer3DConeTwistJointTwistSpan PhysicsServer3DConeTwistJointParam = 1
+	/*The speed with which the swing or twist will take place.
+	  The higher, the faster.*/
+	PhysicsServer3DConeTwistJointBias PhysicsServer3DConeTwistJointParam = 2
+	/*The ease with which the Joint3D twists, if it's too low, it takes more force to twist the joint.*/
+	PhysicsServer3DConeTwistJointSoftness PhysicsServer3DConeTwistJointParam = 3
+	/*Defines, how fast the swing- and twist-speed-difference on both sides gets synced.*/
 	PhysicsServer3DConeTwistJointRelaxation PhysicsServer3DConeTwistJointParam = 4
 )
 
 type PhysicsServer3DG6DOFJointAxisParam = classdb.PhysicsServer3DG6DOFJointAxisParam
 
 const (
-	PhysicsServer3DG6dofJointLinearLowerLimit           PhysicsServer3DG6DOFJointAxisParam = 0
-	PhysicsServer3DG6dofJointLinearUpperLimit           PhysicsServer3DG6DOFJointAxisParam = 1
-	PhysicsServer3DG6dofJointLinearLimitSoftness        PhysicsServer3DG6DOFJointAxisParam = 2
-	PhysicsServer3DG6dofJointLinearRestitution          PhysicsServer3DG6DOFJointAxisParam = 3
-	PhysicsServer3DG6dofJointLinearDamping              PhysicsServer3DG6DOFJointAxisParam = 4
-	PhysicsServer3DG6dofJointLinearMotorTargetVelocity  PhysicsServer3DG6DOFJointAxisParam = 5
-	PhysicsServer3DG6dofJointLinearMotorForceLimit      PhysicsServer3DG6DOFJointAxisParam = 6
-	PhysicsServer3DG6dofJointAngularLowerLimit          PhysicsServer3DG6DOFJointAxisParam = 10
-	PhysicsServer3DG6dofJointAngularUpperLimit          PhysicsServer3DG6DOFJointAxisParam = 11
-	PhysicsServer3DG6dofJointAngularLimitSoftness       PhysicsServer3DG6DOFJointAxisParam = 12
-	PhysicsServer3DG6dofJointAngularDamping             PhysicsServer3DG6DOFJointAxisParam = 13
-	PhysicsServer3DG6dofJointAngularRestitution         PhysicsServer3DG6DOFJointAxisParam = 14
-	PhysicsServer3DG6dofJointAngularForceLimit          PhysicsServer3DG6DOFJointAxisParam = 15
-	PhysicsServer3DG6dofJointAngularErp                 PhysicsServer3DG6DOFJointAxisParam = 16
+	/*The minimum difference between the pivot points' axes.*/
+	PhysicsServer3DG6dofJointLinearLowerLimit PhysicsServer3DG6DOFJointAxisParam = 0
+	/*The maximum difference between the pivot points' axes.*/
+	PhysicsServer3DG6dofJointLinearUpperLimit PhysicsServer3DG6DOFJointAxisParam = 1
+	/*A factor that gets applied to the movement across the axes. The lower, the slower the movement.*/
+	PhysicsServer3DG6dofJointLinearLimitSoftness PhysicsServer3DG6DOFJointAxisParam = 2
+	/*The amount of restitution on the axes movement. The lower, the more velocity-energy gets lost.*/
+	PhysicsServer3DG6dofJointLinearRestitution PhysicsServer3DG6DOFJointAxisParam = 3
+	/*The amount of damping that happens at the linear motion across the axes.*/
+	PhysicsServer3DG6dofJointLinearDamping PhysicsServer3DG6DOFJointAxisParam = 4
+	/*The velocity that the joint's linear motor will attempt to reach.*/
+	PhysicsServer3DG6dofJointLinearMotorTargetVelocity PhysicsServer3DG6DOFJointAxisParam = 5
+	/*The maximum force that the linear motor can apply while trying to reach the target velocity.*/
+	PhysicsServer3DG6dofJointLinearMotorForceLimit PhysicsServer3DG6DOFJointAxisParam = 6
+	/*The minimum rotation in negative direction to break loose and rotate around the axes.*/
+	PhysicsServer3DG6dofJointAngularLowerLimit PhysicsServer3DG6DOFJointAxisParam = 10
+	/*The minimum rotation in positive direction to break loose and rotate around the axes.*/
+	PhysicsServer3DG6dofJointAngularUpperLimit PhysicsServer3DG6DOFJointAxisParam = 11
+	/*A factor that gets multiplied onto all rotations across the axes.*/
+	PhysicsServer3DG6dofJointAngularLimitSoftness PhysicsServer3DG6DOFJointAxisParam = 12
+	/*The amount of rotational damping across the axes. The lower, the more damping occurs.*/
+	PhysicsServer3DG6dofJointAngularDamping PhysicsServer3DG6DOFJointAxisParam = 13
+	/*The amount of rotational restitution across the axes. The lower, the more restitution occurs.*/
+	PhysicsServer3DG6dofJointAngularRestitution PhysicsServer3DG6DOFJointAxisParam = 14
+	/*The maximum amount of force that can occur, when rotating around the axes.*/
+	PhysicsServer3DG6dofJointAngularForceLimit PhysicsServer3DG6DOFJointAxisParam = 15
+	/*When correcting the crossing of limits in rotation across the axes, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.*/
+	PhysicsServer3DG6dofJointAngularErp PhysicsServer3DG6DOFJointAxisParam = 16
+	/*Target speed for the motor at the axes.*/
 	PhysicsServer3DG6dofJointAngularMotorTargetVelocity PhysicsServer3DG6DOFJointAxisParam = 17
-	PhysicsServer3DG6dofJointAngularMotorForceLimit     PhysicsServer3DG6DOFJointAxisParam = 18
+	/*Maximum acceleration for the motor at the axes.*/
+	PhysicsServer3DG6dofJointAngularMotorForceLimit PhysicsServer3DG6DOFJointAxisParam = 18
 )
 
 type PhysicsServer3DG6DOFJointAxisFlag = classdb.PhysicsServer3DG6DOFJointAxisFlag
 
 const (
-	PhysicsServer3DG6dofJointFlagEnableLinearLimit  PhysicsServer3DG6DOFJointAxisFlag = 0
+	/*If set, linear motion is possible within the given limits.*/
+	PhysicsServer3DG6dofJointFlagEnableLinearLimit PhysicsServer3DG6DOFJointAxisFlag = 0
+	/*If set, rotational motion is possible.*/
 	PhysicsServer3DG6dofJointFlagEnableAngularLimit PhysicsServer3DG6DOFJointAxisFlag = 1
-	PhysicsServer3DG6dofJointFlagEnableMotor        PhysicsServer3DG6DOFJointAxisFlag = 4
-	PhysicsServer3DG6dofJointFlagEnableLinearMotor  PhysicsServer3DG6DOFJointAxisFlag = 5
+	/*If set, there is a rotational motor across these axes.*/
+	PhysicsServer3DG6dofJointFlagEnableMotor PhysicsServer3DG6DOFJointAxisFlag = 4
+	/*If set, there is a linear motor on this axis that targets a specific velocity.*/
+	PhysicsServer3DG6dofJointFlagEnableLinearMotor PhysicsServer3DG6DOFJointAxisFlag = 5
 )
 
 type PhysicsServer3DShapeType = classdb.PhysicsServer3DShapeType
 
 const (
-	PhysicsServer3DShapeWorldBoundary  PhysicsServer3DShapeType = 0
-	PhysicsServer3DShapeSeparationRay  PhysicsServer3DShapeType = 1
-	PhysicsServer3DShapeSphere         PhysicsServer3DShapeType = 2
-	PhysicsServer3DShapeBox            PhysicsServer3DShapeType = 3
-	PhysicsServer3DShapeCapsule        PhysicsServer3DShapeType = 4
-	PhysicsServer3DShapeCylinder       PhysicsServer3DShapeType = 5
-	PhysicsServer3DShapeConvexPolygon  PhysicsServer3DShapeType = 6
+	/*The [Shape3D] is a [WorldBoundaryShape3D].*/
+	PhysicsServer3DShapeWorldBoundary PhysicsServer3DShapeType = 0
+	/*The [Shape3D] is a [SeparationRayShape3D].*/
+	PhysicsServer3DShapeSeparationRay PhysicsServer3DShapeType = 1
+	/*The [Shape3D] is a [SphereShape3D].*/
+	PhysicsServer3DShapeSphere PhysicsServer3DShapeType = 2
+	/*The [Shape3D] is a [BoxShape3D].*/
+	PhysicsServer3DShapeBox PhysicsServer3DShapeType = 3
+	/*The [Shape3D] is a [CapsuleShape3D].*/
+	PhysicsServer3DShapeCapsule PhysicsServer3DShapeType = 4
+	/*The [Shape3D] is a [CylinderShape3D].*/
+	PhysicsServer3DShapeCylinder PhysicsServer3DShapeType = 5
+	/*The [Shape3D] is a [ConvexPolygonShape3D].*/
+	PhysicsServer3DShapeConvexPolygon PhysicsServer3DShapeType = 6
+	/*The [Shape3D] is a [ConcavePolygonShape3D].*/
 	PhysicsServer3DShapeConcavePolygon PhysicsServer3DShapeType = 7
-	PhysicsServer3DShapeHeightmap      PhysicsServer3DShapeType = 8
-	PhysicsServer3DShapeSoftBody       PhysicsServer3DShapeType = 9
-	PhysicsServer3DShapeCustom         PhysicsServer3DShapeType = 10
+	/*The [Shape3D] is a [HeightMapShape3D].*/
+	PhysicsServer3DShapeHeightmap PhysicsServer3DShapeType = 8
+	/*The [Shape3D] is used internally for a soft body. Any attempt to create this kind of shape results in an error.*/
+	PhysicsServer3DShapeSoftBody PhysicsServer3DShapeType = 9
+	/*This constant is used internally by the engine. Any attempt to create this kind of shape results in an error.*/
+	PhysicsServer3DShapeCustom PhysicsServer3DShapeType = 10
 )
 
 type PhysicsServer3DAreaParameter = classdb.PhysicsServer3DAreaParameter
 
 const (
-	PhysicsServer3DAreaParamGravityOverrideMode      PhysicsServer3DAreaParameter = 0
-	PhysicsServer3DAreaParamGravity                  PhysicsServer3DAreaParameter = 1
-	PhysicsServer3DAreaParamGravityVector            PhysicsServer3DAreaParameter = 2
-	PhysicsServer3DAreaParamGravityIsPoint           PhysicsServer3DAreaParameter = 3
+	/*Constant to set/get gravity override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
+	PhysicsServer3DAreaParamGravityOverrideMode PhysicsServer3DAreaParameter = 0
+	/*Constant to set/get gravity strength in an area.*/
+	PhysicsServer3DAreaParamGravity PhysicsServer3DAreaParameter = 1
+	/*Constant to set/get gravity vector/center in an area.*/
+	PhysicsServer3DAreaParamGravityVector PhysicsServer3DAreaParameter = 2
+	/*Constant to set/get whether the gravity vector of an area is a direction, or a center point.*/
+	PhysicsServer3DAreaParamGravityIsPoint PhysicsServer3DAreaParameter = 3
+	/*Constant to set/get the distance at which the gravity strength is equal to the gravity controlled by [constant AREA_PARAM_GRAVITY]. For example, on a planet 100 meters in radius with a surface gravity of 4.0 m/s², set the gravity to 4.0 and the unit distance to 100.0. The gravity will have falloff according to the inverse square law, so in the example, at 200 meters from the center the gravity will be 1.0 m/s² (twice the distance, 1/4th the gravity), at 50 meters it will be 16.0 m/s² (half the distance, 4x the gravity), and so on.
+	  The above is true only when the unit distance is a positive number. When this is set to 0.0, the gravity will be constant regardless of distance.*/
 	PhysicsServer3DAreaParamGravityPointUnitDistance PhysicsServer3DAreaParameter = 4
-	PhysicsServer3DAreaParamLinearDampOverrideMode   PhysicsServer3DAreaParameter = 5
-	PhysicsServer3DAreaParamLinearDamp               PhysicsServer3DAreaParameter = 6
-	PhysicsServer3DAreaParamAngularDampOverrideMode  PhysicsServer3DAreaParameter = 7
-	PhysicsServer3DAreaParamAngularDamp              PhysicsServer3DAreaParameter = 8
-	PhysicsServer3DAreaParamPriority                 PhysicsServer3DAreaParameter = 9
-	PhysicsServer3DAreaParamWindForceMagnitude       PhysicsServer3DAreaParameter = 10
-	PhysicsServer3DAreaParamWindSource               PhysicsServer3DAreaParameter = 11
-	PhysicsServer3DAreaParamWindDirection            PhysicsServer3DAreaParameter = 12
-	PhysicsServer3DAreaParamWindAttenuationFactor    PhysicsServer3DAreaParameter = 13
+	/*Constant to set/get linear damping override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
+	PhysicsServer3DAreaParamLinearDampOverrideMode PhysicsServer3DAreaParameter = 5
+	/*Constant to set/get the linear damping factor of an area.*/
+	PhysicsServer3DAreaParamLinearDamp PhysicsServer3DAreaParameter = 6
+	/*Constant to set/get angular damping override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
+	PhysicsServer3DAreaParamAngularDampOverrideMode PhysicsServer3DAreaParameter = 7
+	/*Constant to set/get the angular damping factor of an area.*/
+	PhysicsServer3DAreaParamAngularDamp PhysicsServer3DAreaParameter = 8
+	/*Constant to set/get the priority (order of processing) of an area.*/
+	PhysicsServer3DAreaParamPriority PhysicsServer3DAreaParameter = 9
+	/*Constant to set/get the magnitude of area-specific wind force.*/
+	PhysicsServer3DAreaParamWindForceMagnitude PhysicsServer3DAreaParameter = 10
+	/*Constant to set/get the 3D vector that specifies the origin from which an area-specific wind blows.*/
+	PhysicsServer3DAreaParamWindSource PhysicsServer3DAreaParameter = 11
+	/*Constant to set/get the 3D vector that specifies the direction in which an area-specific wind blows.*/
+	PhysicsServer3DAreaParamWindDirection PhysicsServer3DAreaParameter = 12
+	/*Constant to set/get the exponential rate at which wind force decreases with distance from its origin.*/
+	PhysicsServer3DAreaParamWindAttenuationFactor PhysicsServer3DAreaParameter = 13
 )
 
 type PhysicsServer3DAreaSpaceOverrideMode = classdb.PhysicsServer3DAreaSpaceOverrideMode
 
 const (
-	PhysicsServer3DAreaSpaceOverrideDisabled       PhysicsServer3DAreaSpaceOverrideMode = 0
-	PhysicsServer3DAreaSpaceOverrideCombine        PhysicsServer3DAreaSpaceOverrideMode = 1
+	/*This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.*/
+	PhysicsServer3DAreaSpaceOverrideDisabled PhysicsServer3DAreaSpaceOverrideMode = 0
+	/*This area adds its gravity/damp values to whatever has been calculated so far. This way, many overlapping areas can combine their physics to make interesting effects.*/
+	PhysicsServer3DAreaSpaceOverrideCombine PhysicsServer3DAreaSpaceOverrideMode = 1
+	/*This area adds its gravity/damp values to whatever has been calculated so far. Then stops taking into account the rest of the areas, even the default one.*/
 	PhysicsServer3DAreaSpaceOverrideCombineReplace PhysicsServer3DAreaSpaceOverrideMode = 2
-	PhysicsServer3DAreaSpaceOverrideReplace        PhysicsServer3DAreaSpaceOverrideMode = 3
+	/*This area replaces any gravity/damp, even the default one, and stops taking into account the rest of the areas.*/
+	PhysicsServer3DAreaSpaceOverrideReplace PhysicsServer3DAreaSpaceOverrideMode = 3
+	/*This area replaces any gravity/damp calculated so far, but keeps calculating the rest of the areas, down to the default one.*/
 	PhysicsServer3DAreaSpaceOverrideReplaceCombine PhysicsServer3DAreaSpaceOverrideMode = 4
 )
 
 type PhysicsServer3DBodyMode = classdb.PhysicsServer3DBodyMode
 
 const (
-	PhysicsServer3DBodyModeStatic      PhysicsServer3DBodyMode = 0
-	PhysicsServer3DBodyModeKinematic   PhysicsServer3DBodyMode = 1
-	PhysicsServer3DBodyModeRigid       PhysicsServer3DBodyMode = 2
+	/*Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.*/
+	PhysicsServer3DBodyModeStatic PhysicsServer3DBodyMode = 0
+	/*Constant for kinematic bodies. In this mode, a body can be only moved by user code and collides with other bodies along its path.*/
+	PhysicsServer3DBodyModeKinematic PhysicsServer3DBodyMode = 1
+	/*Constant for rigid bodies. In this mode, a body can be pushed by other bodies and has forces applied.*/
+	PhysicsServer3DBodyModeRigid PhysicsServer3DBodyMode = 2
+	/*Constant for linear rigid bodies. In this mode, a body can not rotate, and only its linear velocity is affected by external forces.*/
 	PhysicsServer3DBodyModeRigidLinear PhysicsServer3DBodyMode = 3
 )
 
 type PhysicsServer3DBodyParameter = classdb.PhysicsServer3DBodyParameter
 
 const (
-	PhysicsServer3DBodyParamBounce          PhysicsServer3DBodyParameter = 0
-	PhysicsServer3DBodyParamFriction        PhysicsServer3DBodyParameter = 1
-	PhysicsServer3DBodyParamMass            PhysicsServer3DBodyParameter = 2
-	PhysicsServer3DBodyParamInertia         PhysicsServer3DBodyParameter = 3
-	PhysicsServer3DBodyParamCenterOfMass    PhysicsServer3DBodyParameter = 4
-	PhysicsServer3DBodyParamGravityScale    PhysicsServer3DBodyParameter = 5
-	PhysicsServer3DBodyParamLinearDampMode  PhysicsServer3DBodyParameter = 6
+	/*Constant to set/get a body's bounce factor.*/
+	PhysicsServer3DBodyParamBounce PhysicsServer3DBodyParameter = 0
+	/*Constant to set/get a body's friction.*/
+	PhysicsServer3DBodyParamFriction PhysicsServer3DBodyParameter = 1
+	/*Constant to set/get a body's mass.*/
+	PhysicsServer3DBodyParamMass PhysicsServer3DBodyParameter = 2
+	/*Constant to set/get a body's inertia.*/
+	PhysicsServer3DBodyParamInertia PhysicsServer3DBodyParameter = 3
+	/*Constant to set/get a body's center of mass position in the body's local coordinate system.*/
+	PhysicsServer3DBodyParamCenterOfMass PhysicsServer3DBodyParameter = 4
+	/*Constant to set/get a body's gravity multiplier.*/
+	PhysicsServer3DBodyParamGravityScale PhysicsServer3DBodyParameter = 5
+	/*Constant to set/get a body's linear damping mode. See [enum BodyDampMode] for possible values.*/
+	PhysicsServer3DBodyParamLinearDampMode PhysicsServer3DBodyParameter = 6
+	/*Constant to set/get a body's angular damping mode. See [enum BodyDampMode] for possible values.*/
 	PhysicsServer3DBodyParamAngularDampMode PhysicsServer3DBodyParameter = 7
-	PhysicsServer3DBodyParamLinearDamp      PhysicsServer3DBodyParameter = 8
-	PhysicsServer3DBodyParamAngularDamp     PhysicsServer3DBodyParameter = 9
-	PhysicsServer3DBodyParamMax             PhysicsServer3DBodyParameter = 10
+	/*Constant to set/get a body's linear damping factor.*/
+	PhysicsServer3DBodyParamLinearDamp PhysicsServer3DBodyParameter = 8
+	/*Constant to set/get a body's angular damping factor.*/
+	PhysicsServer3DBodyParamAngularDamp PhysicsServer3DBodyParameter = 9
+	/*Represents the size of the [enum BodyParameter] enum.*/
+	PhysicsServer3DBodyParamMax PhysicsServer3DBodyParameter = 10
 )
 
 type PhysicsServer3DBodyDampMode = classdb.PhysicsServer3DBodyDampMode
 
 const (
+	/*The body's damping value is added to any value set in areas or the default value.*/
 	PhysicsServer3DBodyDampModeCombine PhysicsServer3DBodyDampMode = 0
+	/*The body's damping value replaces any value set in areas or the default value.*/
 	PhysicsServer3DBodyDampModeReplace PhysicsServer3DBodyDampMode = 1
 )
 
 type PhysicsServer3DBodyState = classdb.PhysicsServer3DBodyState
 
 const (
-	PhysicsServer3DBodyStateTransform       PhysicsServer3DBodyState = 0
-	PhysicsServer3DBodyStateLinearVelocity  PhysicsServer3DBodyState = 1
+	/*Constant to set/get the current transform matrix of the body.*/
+	PhysicsServer3DBodyStateTransform PhysicsServer3DBodyState = 0
+	/*Constant to set/get the current linear velocity of the body.*/
+	PhysicsServer3DBodyStateLinearVelocity PhysicsServer3DBodyState = 1
+	/*Constant to set/get the current angular velocity of the body.*/
 	PhysicsServer3DBodyStateAngularVelocity PhysicsServer3DBodyState = 2
-	PhysicsServer3DBodyStateSleeping        PhysicsServer3DBodyState = 3
-	PhysicsServer3DBodyStateCanSleep        PhysicsServer3DBodyState = 4
+	/*Constant to sleep/wake up a body, or to get whether it is sleeping.*/
+	PhysicsServer3DBodyStateSleeping PhysicsServer3DBodyState = 3
+	/*Constant to set/get whether the body can sleep.*/
+	PhysicsServer3DBodyStateCanSleep PhysicsServer3DBodyState = 4
 )
 
 type PhysicsServer3DAreaBodyStatus = classdb.PhysicsServer3DAreaBodyStatus
 
 const (
-	PhysicsServer3DAreaBodyAdded   PhysicsServer3DAreaBodyStatus = 0
+	/*The value of the first parameter and area callback function receives, when an object enters one of its shapes.*/
+	PhysicsServer3DAreaBodyAdded PhysicsServer3DAreaBodyStatus = 0
+	/*The value of the first parameter and area callback function receives, when an object exits one of its shapes.*/
 	PhysicsServer3DAreaBodyRemoved PhysicsServer3DAreaBodyStatus = 1
 )
 
 type PhysicsServer3DProcessInfo = classdb.PhysicsServer3DProcessInfo
 
 const (
-	PhysicsServer3DInfoActiveObjects  PhysicsServer3DProcessInfo = 0
+	/*Constant to get the number of objects that are not sleeping.*/
+	PhysicsServer3DInfoActiveObjects PhysicsServer3DProcessInfo = 0
+	/*Constant to get the number of possible collisions.*/
 	PhysicsServer3DInfoCollisionPairs PhysicsServer3DProcessInfo = 1
-	PhysicsServer3DInfoIslandCount    PhysicsServer3DProcessInfo = 2
+	/*Constant to get the number of space regions where a collision could occur.*/
+	PhysicsServer3DInfoIslandCount PhysicsServer3DProcessInfo = 2
 )
 
 type PhysicsServer3DSpaceParameter = classdb.PhysicsServer3DSpaceParameter
 
 const (
-	PhysicsServer3DSpaceParamContactRecycleRadius              PhysicsServer3DSpaceParameter = 0
-	PhysicsServer3DSpaceParamContactMaxSeparation              PhysicsServer3DSpaceParameter = 1
-	PhysicsServer3DSpaceParamContactMaxAllowedPenetration      PhysicsServer3DSpaceParameter = 2
-	PhysicsServer3DSpaceParamContactDefaultBias                PhysicsServer3DSpaceParameter = 3
-	PhysicsServer3DSpaceParamBodyLinearVelocitySleepThreshold  PhysicsServer3DSpaceParameter = 4
+	/*Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.*/
+	PhysicsServer3DSpaceParamContactRecycleRadius PhysicsServer3DSpaceParameter = 0
+	/*Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded.*/
+	PhysicsServer3DSpaceParamContactMaxSeparation PhysicsServer3DSpaceParameter = 1
+	/*Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision.*/
+	PhysicsServer3DSpaceParamContactMaxAllowedPenetration PhysicsServer3DSpaceParameter = 2
+	/*Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision.*/
+	PhysicsServer3DSpaceParamContactDefaultBias PhysicsServer3DSpaceParameter = 3
+	/*Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given.*/
+	PhysicsServer3DSpaceParamBodyLinearVelocitySleepThreshold PhysicsServer3DSpaceParameter = 4
+	/*Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given.*/
 	PhysicsServer3DSpaceParamBodyAngularVelocitySleepThreshold PhysicsServer3DSpaceParameter = 5
-	PhysicsServer3DSpaceParamBodyTimeToSleep                   PhysicsServer3DSpaceParameter = 6
-	PhysicsServer3DSpaceParamSolverIterations                  PhysicsServer3DSpaceParameter = 7
+	/*Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time.*/
+	PhysicsServer3DSpaceParamBodyTimeToSleep PhysicsServer3DSpaceParameter = 6
+	/*Constant to set/get the number of solver iterations for contacts and constraints. The greater the number of iterations, the more accurate the collisions and constraints will be. However, a greater number of iterations requires more CPU power, which can decrease performance.*/
+	PhysicsServer3DSpaceParamSolverIterations PhysicsServer3DSpaceParameter = 7
 )
 
 type PhysicsServer3DBodyAxis = classdb.PhysicsServer3DBodyAxis
@@ -3978,16 +6409,22 @@ const (
 type PinJoint3DParam = classdb.PinJoint3DParam
 
 const (
-	PinJoint3DParamBias         PinJoint3DParam = 0
-	PinJoint3DParamDamping      PinJoint3DParam = 1
+	/*The force with which the pinned objects stay in positional relation to each other. The higher, the stronger.*/
+	PinJoint3DParamBias PinJoint3DParam = 0
+	/*The force with which the pinned objects stay in velocity relation to each other. The higher, the stronger.*/
+	PinJoint3DParamDamping PinJoint3DParam = 1
+	/*If above 0, this value is the maximum value for an impulse that this Joint3D produces.*/
 	PinJoint3DParamImpulseClamp PinJoint3DParam = 2
 )
 
 type PlaneMeshOrientation = classdb.PlaneMeshOrientation
 
 const (
+	/*[PlaneMesh] will face the positive X-axis.*/
 	PlaneMeshFaceX PlaneMeshOrientation = 0
+	/*[PlaneMesh] will face the positive Y-axis. This matches the behavior of the [PlaneMesh] in Godot 3.x.*/
 	PlaneMeshFaceY PlaneMeshOrientation = 1
+	/*[PlaneMesh] will face the positive Z-axis. This matches the behavior of the QuadMesh in Godot 3.x.*/
 	PlaneMeshFaceZ PlaneMeshOrientation = 2
 )
 
@@ -4005,395 +6442,706 @@ const (
 type ProgressBarFillMode = classdb.ProgressBarFillMode
 
 const (
-	ProgressBarFillBeginToEnd  ProgressBarFillMode = 0
-	ProgressBarFillEndToBegin  ProgressBarFillMode = 1
+	/*The progress bar fills from begin to end horizontally, according to the language direction. If [method Control.is_layout_rtl] returns [code]false[/code], it fills from left to right, and if it returns [code]true[/code], it fills from right to left.*/
+	ProgressBarFillBeginToEnd ProgressBarFillMode = 0
+	/*The progress bar fills from end to begin horizontally, according to the language direction. If [method Control.is_layout_rtl] returns [code]false[/code], it fills from right to left, and if it returns [code]true[/code], it fills from left to right.*/
+	ProgressBarFillEndToBegin ProgressBarFillMode = 1
+	/*The progress fills from top to bottom.*/
 	ProgressBarFillTopToBottom ProgressBarFillMode = 2
+	/*The progress fills from bottom to top.*/
 	ProgressBarFillBottomToTop ProgressBarFillMode = 3
 )
 
 type ReflectionProbeUpdateMode = classdb.ReflectionProbeUpdateMode
 
 const (
-	ReflectionProbeUpdateOnce   ReflectionProbeUpdateMode = 0
+	/*Update the probe once on the next frame (recommended for most objects). The corresponding radiance map will be generated over the following six frames. This takes more time to update than [constant UPDATE_ALWAYS], but it has a lower performance cost and can result in higher-quality reflections. The ReflectionProbe is updated when its transform changes, but not when nearby geometry changes. You can force a [ReflectionProbe] update by moving the [ReflectionProbe] slightly in any direction.*/
+	ReflectionProbeUpdateOnce ReflectionProbeUpdateMode = 0
+	/*Update the probe every frame. This provides better results for fast-moving dynamic objects (such as cars). However, it has a significant performance cost. Due to the cost, it's recommended to only use one ReflectionProbe with [constant UPDATE_ALWAYS] at most per scene. For all other use cases, use [constant UPDATE_ONCE].*/
 	ReflectionProbeUpdateAlways ReflectionProbeUpdateMode = 1
 )
 
 type ReflectionProbeAmbientMode = classdb.ReflectionProbeAmbientMode
 
 const (
-	ReflectionProbeAmbientDisabled    ReflectionProbeAmbientMode = 0
+	/*Do not apply any ambient lighting inside the [ReflectionProbe]'s box defined by its [member size].*/
+	ReflectionProbeAmbientDisabled ReflectionProbeAmbientMode = 0
+	/*Apply automatically-sourced environment lighting inside the [ReflectionProbe]'s box defined by its [member size].*/
 	ReflectionProbeAmbientEnvironment ReflectionProbeAmbientMode = 1
-	ReflectionProbeAmbientColor       ReflectionProbeAmbientMode = 2
+	/*Apply custom ambient lighting inside the [ReflectionProbe]'s box defined by its [member size]. See [member ambient_color] and [member ambient_color_energy].*/
+	ReflectionProbeAmbientColor ReflectionProbeAmbientMode = 2
 )
 
 type RenderingDeviceDeviceType = classdb.RenderingDeviceDeviceType
 
 const (
-	RenderingDeviceDeviceTypeOther         RenderingDeviceDeviceType = 0
+	/*Rendering device type does not match any of the other enum values or is unknown.*/
+	RenderingDeviceDeviceTypeOther RenderingDeviceDeviceType = 0
+	/*Rendering device is an integrated GPU, which is typically [i](but not always)[/i] slower than dedicated GPUs ([constant DEVICE_TYPE_DISCRETE_GPU]). On Android and iOS, the rendering device type is always considered to be [constant DEVICE_TYPE_INTEGRATED_GPU].*/
 	RenderingDeviceDeviceTypeIntegratedGpu RenderingDeviceDeviceType = 1
-	RenderingDeviceDeviceTypeDiscreteGpu   RenderingDeviceDeviceType = 2
-	RenderingDeviceDeviceTypeVirtualGpu    RenderingDeviceDeviceType = 3
-	RenderingDeviceDeviceTypeCpu           RenderingDeviceDeviceType = 4
-	RenderingDeviceDeviceTypeMax           RenderingDeviceDeviceType = 5
+	/*Rendering device is a dedicated GPU, which is typically [i](but not always)[/i] faster than integrated GPUs ([constant DEVICE_TYPE_INTEGRATED_GPU]).*/
+	RenderingDeviceDeviceTypeDiscreteGpu RenderingDeviceDeviceType = 2
+	/*Rendering device is an emulated GPU in a virtual environment. This is typically much slower than the host GPU, which means the expected performance level on a dedicated GPU will be roughly equivalent to [constant DEVICE_TYPE_INTEGRATED_GPU]. Virtual machine GPU passthrough (such as VFIO) will not report the device type as [constant DEVICE_TYPE_VIRTUAL_GPU]. Instead, the host GPU's device type will be reported as if the GPU was not emulated.*/
+	RenderingDeviceDeviceTypeVirtualGpu RenderingDeviceDeviceType = 3
+	/*Rendering device is provided by software emulation (such as Lavapipe or [url=https://github.com/google/swiftshader]SwiftShader[/url]). This is the slowest kind of rendering device available; it's typically much slower than [constant DEVICE_TYPE_INTEGRATED_GPU].*/
+	RenderingDeviceDeviceTypeCpu RenderingDeviceDeviceType = 4
+	/*Represents the size of the [enum DeviceType] enum.*/
+	RenderingDeviceDeviceTypeMax RenderingDeviceDeviceType = 5
 )
 
 type RenderingDeviceDriverResource = classdb.RenderingDeviceDriverResource
 
 const (
-	RenderingDeviceDriverResourceVulkanDevice                   RenderingDeviceDriverResource = 0
-	RenderingDeviceDriverResourceVulkanPhysicalDevice           RenderingDeviceDriverResource = 1
-	RenderingDeviceDriverResourceVulkanInstance                 RenderingDeviceDriverResource = 2
-	RenderingDeviceDriverResourceVulkanQueue                    RenderingDeviceDriverResource = 3
-	RenderingDeviceDriverResourceVulkanQueueFamilyIndex         RenderingDeviceDriverResource = 4
-	RenderingDeviceDriverResourceVulkanImage                    RenderingDeviceDriverResource = 5
-	RenderingDeviceDriverResourceVulkanImageView                RenderingDeviceDriverResource = 6
+	/*Vulkan device driver resource. This is a "global" resource and ignores the RID passed in*/
+	RenderingDeviceDriverResourceVulkanDevice RenderingDeviceDriverResource = 0
+	/*Physical device (graphics card) driver resource.*/
+	RenderingDeviceDriverResourceVulkanPhysicalDevice RenderingDeviceDriverResource = 1
+	/*Vulkan instance driver resource.*/
+	RenderingDeviceDriverResourceVulkanInstance RenderingDeviceDriverResource = 2
+	/*Vulkan queue driver resource.*/
+	RenderingDeviceDriverResourceVulkanQueue RenderingDeviceDriverResource = 3
+	/*Vulkan queue family index driver resource.*/
+	RenderingDeviceDriverResourceVulkanQueueFamilyIndex RenderingDeviceDriverResource = 4
+	/*Vulkan image driver resource.*/
+	RenderingDeviceDriverResourceVulkanImage RenderingDeviceDriverResource = 5
+	/*Vulkan image view driver resource.*/
+	RenderingDeviceDriverResourceVulkanImageView RenderingDeviceDriverResource = 6
+	/*Vulkan image native texture format driver resource.*/
 	RenderingDeviceDriverResourceVulkanImageNativeTextureFormat RenderingDeviceDriverResource = 7
-	RenderingDeviceDriverResourceVulkanSampler                  RenderingDeviceDriverResource = 8
-	RenderingDeviceDriverResourceVulkanDescriptorSet            RenderingDeviceDriverResource = 9
-	RenderingDeviceDriverResourceVulkanBuffer                   RenderingDeviceDriverResource = 10
-	RenderingDeviceDriverResourceVulkanComputePipeline          RenderingDeviceDriverResource = 11
-	RenderingDeviceDriverResourceVulkanRenderPipeline           RenderingDeviceDriverResource = 12
+	/*Vulkan sampler driver resource.*/
+	RenderingDeviceDriverResourceVulkanSampler RenderingDeviceDriverResource = 8
+	/*Vulkan [url=https://vkguide.dev/docs/chapter-4/descriptors/]descriptor set[/url] driver resource.*/
+	RenderingDeviceDriverResourceVulkanDescriptorSet RenderingDeviceDriverResource = 9
+	/*Vulkan buffer driver resource.*/
+	RenderingDeviceDriverResourceVulkanBuffer RenderingDeviceDriverResource = 10
+	/*Vulkan compute pipeline driver resource.*/
+	RenderingDeviceDriverResourceVulkanComputePipeline RenderingDeviceDriverResource = 11
+	/*Vulkan render pipeline driver resource.*/
+	RenderingDeviceDriverResourceVulkanRenderPipeline RenderingDeviceDriverResource = 12
 )
 
 type RenderingDeviceDataFormat = classdb.RenderingDeviceDataFormat
 
 const (
-	RenderingDeviceDataFormatR4g4UnormPack8                       RenderingDeviceDataFormat = 0
-	RenderingDeviceDataFormatR4g4b4a4UnormPack16                  RenderingDeviceDataFormat = 1
-	RenderingDeviceDataFormatB4g4r4a4UnormPack16                  RenderingDeviceDataFormat = 2
-	RenderingDeviceDataFormatR5g6b5UnormPack16                    RenderingDeviceDataFormat = 3
-	RenderingDeviceDataFormatB5g6r5UnormPack16                    RenderingDeviceDataFormat = 4
-	RenderingDeviceDataFormatR5g5b5a1UnormPack16                  RenderingDeviceDataFormat = 5
-	RenderingDeviceDataFormatB5g5r5a1UnormPack16                  RenderingDeviceDataFormat = 6
-	RenderingDeviceDataFormatA1r5g5b5UnormPack16                  RenderingDeviceDataFormat = 7
-	RenderingDeviceDataFormatR8Unorm                              RenderingDeviceDataFormat = 8
-	RenderingDeviceDataFormatR8Snorm                              RenderingDeviceDataFormat = 9
-	RenderingDeviceDataFormatR8Uscaled                            RenderingDeviceDataFormat = 10
-	RenderingDeviceDataFormatR8Sscaled                            RenderingDeviceDataFormat = 11
-	RenderingDeviceDataFormatR8Uint                               RenderingDeviceDataFormat = 12
-	RenderingDeviceDataFormatR8Sint                               RenderingDeviceDataFormat = 13
-	RenderingDeviceDataFormatR8Srgb                               RenderingDeviceDataFormat = 14
-	RenderingDeviceDataFormatR8g8Unorm                            RenderingDeviceDataFormat = 15
-	RenderingDeviceDataFormatR8g8Snorm                            RenderingDeviceDataFormat = 16
-	RenderingDeviceDataFormatR8g8Uscaled                          RenderingDeviceDataFormat = 17
-	RenderingDeviceDataFormatR8g8Sscaled                          RenderingDeviceDataFormat = 18
-	RenderingDeviceDataFormatR8g8Uint                             RenderingDeviceDataFormat = 19
-	RenderingDeviceDataFormatR8g8Sint                             RenderingDeviceDataFormat = 20
-	RenderingDeviceDataFormatR8g8Srgb                             RenderingDeviceDataFormat = 21
-	RenderingDeviceDataFormatR8g8b8Unorm                          RenderingDeviceDataFormat = 22
-	RenderingDeviceDataFormatR8g8b8Snorm                          RenderingDeviceDataFormat = 23
-	RenderingDeviceDataFormatR8g8b8Uscaled                        RenderingDeviceDataFormat = 24
-	RenderingDeviceDataFormatR8g8b8Sscaled                        RenderingDeviceDataFormat = 25
-	RenderingDeviceDataFormatR8g8b8Uint                           RenderingDeviceDataFormat = 26
-	RenderingDeviceDataFormatR8g8b8Sint                           RenderingDeviceDataFormat = 27
-	RenderingDeviceDataFormatR8g8b8Srgb                           RenderingDeviceDataFormat = 28
-	RenderingDeviceDataFormatB8g8r8Unorm                          RenderingDeviceDataFormat = 29
-	RenderingDeviceDataFormatB8g8r8Snorm                          RenderingDeviceDataFormat = 30
-	RenderingDeviceDataFormatB8g8r8Uscaled                        RenderingDeviceDataFormat = 31
-	RenderingDeviceDataFormatB8g8r8Sscaled                        RenderingDeviceDataFormat = 32
-	RenderingDeviceDataFormatB8g8r8Uint                           RenderingDeviceDataFormat = 33
-	RenderingDeviceDataFormatB8g8r8Sint                           RenderingDeviceDataFormat = 34
-	RenderingDeviceDataFormatB8g8r8Srgb                           RenderingDeviceDataFormat = 35
-	RenderingDeviceDataFormatR8g8b8a8Unorm                        RenderingDeviceDataFormat = 36
-	RenderingDeviceDataFormatR8g8b8a8Snorm                        RenderingDeviceDataFormat = 37
-	RenderingDeviceDataFormatR8g8b8a8Uscaled                      RenderingDeviceDataFormat = 38
-	RenderingDeviceDataFormatR8g8b8a8Sscaled                      RenderingDeviceDataFormat = 39
-	RenderingDeviceDataFormatR8g8b8a8Uint                         RenderingDeviceDataFormat = 40
-	RenderingDeviceDataFormatR8g8b8a8Sint                         RenderingDeviceDataFormat = 41
-	RenderingDeviceDataFormatR8g8b8a8Srgb                         RenderingDeviceDataFormat = 42
-	RenderingDeviceDataFormatB8g8r8a8Unorm                        RenderingDeviceDataFormat = 43
-	RenderingDeviceDataFormatB8g8r8a8Snorm                        RenderingDeviceDataFormat = 44
-	RenderingDeviceDataFormatB8g8r8a8Uscaled                      RenderingDeviceDataFormat = 45
-	RenderingDeviceDataFormatB8g8r8a8Sscaled                      RenderingDeviceDataFormat = 46
-	RenderingDeviceDataFormatB8g8r8a8Uint                         RenderingDeviceDataFormat = 47
-	RenderingDeviceDataFormatB8g8r8a8Sint                         RenderingDeviceDataFormat = 48
-	RenderingDeviceDataFormatB8g8r8a8Srgb                         RenderingDeviceDataFormat = 49
-	RenderingDeviceDataFormatA8b8g8r8UnormPack32                  RenderingDeviceDataFormat = 50
-	RenderingDeviceDataFormatA8b8g8r8SnormPack32                  RenderingDeviceDataFormat = 51
-	RenderingDeviceDataFormatA8b8g8r8UscaledPack32                RenderingDeviceDataFormat = 52
-	RenderingDeviceDataFormatA8b8g8r8SscaledPack32                RenderingDeviceDataFormat = 53
-	RenderingDeviceDataFormatA8b8g8r8UintPack32                   RenderingDeviceDataFormat = 54
-	RenderingDeviceDataFormatA8b8g8r8SintPack32                   RenderingDeviceDataFormat = 55
-	RenderingDeviceDataFormatA8b8g8r8SrgbPack32                   RenderingDeviceDataFormat = 56
-	RenderingDeviceDataFormatA2r10g10b10UnormPack32               RenderingDeviceDataFormat = 57
-	RenderingDeviceDataFormatA2r10g10b10SnormPack32               RenderingDeviceDataFormat = 58
-	RenderingDeviceDataFormatA2r10g10b10UscaledPack32             RenderingDeviceDataFormat = 59
-	RenderingDeviceDataFormatA2r10g10b10SscaledPack32             RenderingDeviceDataFormat = 60
-	RenderingDeviceDataFormatA2r10g10b10UintPack32                RenderingDeviceDataFormat = 61
-	RenderingDeviceDataFormatA2r10g10b10SintPack32                RenderingDeviceDataFormat = 62
-	RenderingDeviceDataFormatA2b10g10r10UnormPack32               RenderingDeviceDataFormat = 63
-	RenderingDeviceDataFormatA2b10g10r10SnormPack32               RenderingDeviceDataFormat = 64
-	RenderingDeviceDataFormatA2b10g10r10UscaledPack32             RenderingDeviceDataFormat = 65
-	RenderingDeviceDataFormatA2b10g10r10SscaledPack32             RenderingDeviceDataFormat = 66
-	RenderingDeviceDataFormatA2b10g10r10UintPack32                RenderingDeviceDataFormat = 67
-	RenderingDeviceDataFormatA2b10g10r10SintPack32                RenderingDeviceDataFormat = 68
-	RenderingDeviceDataFormatR16Unorm                             RenderingDeviceDataFormat = 69
-	RenderingDeviceDataFormatR16Snorm                             RenderingDeviceDataFormat = 70
-	RenderingDeviceDataFormatR16Uscaled                           RenderingDeviceDataFormat = 71
-	RenderingDeviceDataFormatR16Sscaled                           RenderingDeviceDataFormat = 72
-	RenderingDeviceDataFormatR16Uint                              RenderingDeviceDataFormat = 73
-	RenderingDeviceDataFormatR16Sint                              RenderingDeviceDataFormat = 74
-	RenderingDeviceDataFormatR16Sfloat                            RenderingDeviceDataFormat = 75
-	RenderingDeviceDataFormatR16g16Unorm                          RenderingDeviceDataFormat = 76
-	RenderingDeviceDataFormatR16g16Snorm                          RenderingDeviceDataFormat = 77
-	RenderingDeviceDataFormatR16g16Uscaled                        RenderingDeviceDataFormat = 78
-	RenderingDeviceDataFormatR16g16Sscaled                        RenderingDeviceDataFormat = 79
-	RenderingDeviceDataFormatR16g16Uint                           RenderingDeviceDataFormat = 80
-	RenderingDeviceDataFormatR16g16Sint                           RenderingDeviceDataFormat = 81
-	RenderingDeviceDataFormatR16g16Sfloat                         RenderingDeviceDataFormat = 82
-	RenderingDeviceDataFormatR16g16b16Unorm                       RenderingDeviceDataFormat = 83
-	RenderingDeviceDataFormatR16g16b16Snorm                       RenderingDeviceDataFormat = 84
-	RenderingDeviceDataFormatR16g16b16Uscaled                     RenderingDeviceDataFormat = 85
-	RenderingDeviceDataFormatR16g16b16Sscaled                     RenderingDeviceDataFormat = 86
-	RenderingDeviceDataFormatR16g16b16Uint                        RenderingDeviceDataFormat = 87
-	RenderingDeviceDataFormatR16g16b16Sint                        RenderingDeviceDataFormat = 88
-	RenderingDeviceDataFormatR16g16b16Sfloat                      RenderingDeviceDataFormat = 89
-	RenderingDeviceDataFormatR16g16b16a16Unorm                    RenderingDeviceDataFormat = 90
-	RenderingDeviceDataFormatR16g16b16a16Snorm                    RenderingDeviceDataFormat = 91
-	RenderingDeviceDataFormatR16g16b16a16Uscaled                  RenderingDeviceDataFormat = 92
-	RenderingDeviceDataFormatR16g16b16a16Sscaled                  RenderingDeviceDataFormat = 93
-	RenderingDeviceDataFormatR16g16b16a16Uint                     RenderingDeviceDataFormat = 94
-	RenderingDeviceDataFormatR16g16b16a16Sint                     RenderingDeviceDataFormat = 95
-	RenderingDeviceDataFormatR16g16b16a16Sfloat                   RenderingDeviceDataFormat = 96
-	RenderingDeviceDataFormatR32Uint                              RenderingDeviceDataFormat = 97
-	RenderingDeviceDataFormatR32Sint                              RenderingDeviceDataFormat = 98
-	RenderingDeviceDataFormatR32Sfloat                            RenderingDeviceDataFormat = 99
-	RenderingDeviceDataFormatR32g32Uint                           RenderingDeviceDataFormat = 100
-	RenderingDeviceDataFormatR32g32Sint                           RenderingDeviceDataFormat = 101
-	RenderingDeviceDataFormatR32g32Sfloat                         RenderingDeviceDataFormat = 102
-	RenderingDeviceDataFormatR32g32b32Uint                        RenderingDeviceDataFormat = 103
-	RenderingDeviceDataFormatR32g32b32Sint                        RenderingDeviceDataFormat = 104
-	RenderingDeviceDataFormatR32g32b32Sfloat                      RenderingDeviceDataFormat = 105
-	RenderingDeviceDataFormatR32g32b32a32Uint                     RenderingDeviceDataFormat = 106
-	RenderingDeviceDataFormatR32g32b32a32Sint                     RenderingDeviceDataFormat = 107
-	RenderingDeviceDataFormatR32g32b32a32Sfloat                   RenderingDeviceDataFormat = 108
-	RenderingDeviceDataFormatR64Uint                              RenderingDeviceDataFormat = 109
-	RenderingDeviceDataFormatR64Sint                              RenderingDeviceDataFormat = 110
-	RenderingDeviceDataFormatR64Sfloat                            RenderingDeviceDataFormat = 111
-	RenderingDeviceDataFormatR64g64Uint                           RenderingDeviceDataFormat = 112
-	RenderingDeviceDataFormatR64g64Sint                           RenderingDeviceDataFormat = 113
-	RenderingDeviceDataFormatR64g64Sfloat                         RenderingDeviceDataFormat = 114
-	RenderingDeviceDataFormatR64g64b64Uint                        RenderingDeviceDataFormat = 115
-	RenderingDeviceDataFormatR64g64b64Sint                        RenderingDeviceDataFormat = 116
-	RenderingDeviceDataFormatR64g64b64Sfloat                      RenderingDeviceDataFormat = 117
-	RenderingDeviceDataFormatR64g64b64a64Uint                     RenderingDeviceDataFormat = 118
-	RenderingDeviceDataFormatR64g64b64a64Sint                     RenderingDeviceDataFormat = 119
-	RenderingDeviceDataFormatR64g64b64a64Sfloat                   RenderingDeviceDataFormat = 120
-	RenderingDeviceDataFormatB10g11r11UfloatPack32                RenderingDeviceDataFormat = 121
-	RenderingDeviceDataFormatE5b9g9r9UfloatPack32                 RenderingDeviceDataFormat = 122
-	RenderingDeviceDataFormatD16Unorm                             RenderingDeviceDataFormat = 123
-	RenderingDeviceDataFormatX8D24UnormPack32                     RenderingDeviceDataFormat = 124
-	RenderingDeviceDataFormatD32Sfloat                            RenderingDeviceDataFormat = 125
-	RenderingDeviceDataFormatS8Uint                               RenderingDeviceDataFormat = 126
-	RenderingDeviceDataFormatD16UnormS8Uint                       RenderingDeviceDataFormat = 127
-	RenderingDeviceDataFormatD24UnormS8Uint                       RenderingDeviceDataFormat = 128
-	RenderingDeviceDataFormatD32SfloatS8Uint                      RenderingDeviceDataFormat = 129
-	RenderingDeviceDataFormatBc1RgbUnormBlock                     RenderingDeviceDataFormat = 130
-	RenderingDeviceDataFormatBc1RgbSrgbBlock                      RenderingDeviceDataFormat = 131
-	RenderingDeviceDataFormatBc1RgbaUnormBlock                    RenderingDeviceDataFormat = 132
-	RenderingDeviceDataFormatBc1RgbaSrgbBlock                     RenderingDeviceDataFormat = 133
-	RenderingDeviceDataFormatBc2UnormBlock                        RenderingDeviceDataFormat = 134
-	RenderingDeviceDataFormatBc2SrgbBlock                         RenderingDeviceDataFormat = 135
-	RenderingDeviceDataFormatBc3UnormBlock                        RenderingDeviceDataFormat = 136
-	RenderingDeviceDataFormatBc3SrgbBlock                         RenderingDeviceDataFormat = 137
-	RenderingDeviceDataFormatBc4UnormBlock                        RenderingDeviceDataFormat = 138
-	RenderingDeviceDataFormatBc4SnormBlock                        RenderingDeviceDataFormat = 139
-	RenderingDeviceDataFormatBc5UnormBlock                        RenderingDeviceDataFormat = 140
-	RenderingDeviceDataFormatBc5SnormBlock                        RenderingDeviceDataFormat = 141
-	RenderingDeviceDataFormatBc6hUfloatBlock                      RenderingDeviceDataFormat = 142
-	RenderingDeviceDataFormatBc6hSfloatBlock                      RenderingDeviceDataFormat = 143
-	RenderingDeviceDataFormatBc7UnormBlock                        RenderingDeviceDataFormat = 144
-	RenderingDeviceDataFormatBc7SrgbBlock                         RenderingDeviceDataFormat = 145
-	RenderingDeviceDataFormatEtc2R8g8b8UnormBlock                 RenderingDeviceDataFormat = 146
-	RenderingDeviceDataFormatEtc2R8g8b8SrgbBlock                  RenderingDeviceDataFormat = 147
-	RenderingDeviceDataFormatEtc2R8g8b8a1UnormBlock               RenderingDeviceDataFormat = 148
-	RenderingDeviceDataFormatEtc2R8g8b8a1SrgbBlock                RenderingDeviceDataFormat = 149
-	RenderingDeviceDataFormatEtc2R8g8b8a8UnormBlock               RenderingDeviceDataFormat = 150
-	RenderingDeviceDataFormatEtc2R8g8b8a8SrgbBlock                RenderingDeviceDataFormat = 151
-	RenderingDeviceDataFormatEacR11UnormBlock                     RenderingDeviceDataFormat = 152
-	RenderingDeviceDataFormatEacR11SnormBlock                     RenderingDeviceDataFormat = 153
-	RenderingDeviceDataFormatEacR11g11UnormBlock                  RenderingDeviceDataFormat = 154
-	RenderingDeviceDataFormatEacR11g11SnormBlock                  RenderingDeviceDataFormat = 155
-	RenderingDeviceDataFormatAstc4x4UnormBlock                    RenderingDeviceDataFormat = 156
-	RenderingDeviceDataFormatAstc4x4SrgbBlock                     RenderingDeviceDataFormat = 157
-	RenderingDeviceDataFormatAstc5x4UnormBlock                    RenderingDeviceDataFormat = 158
-	RenderingDeviceDataFormatAstc5x4SrgbBlock                     RenderingDeviceDataFormat = 159
-	RenderingDeviceDataFormatAstc5x5UnormBlock                    RenderingDeviceDataFormat = 160
-	RenderingDeviceDataFormatAstc5x5SrgbBlock                     RenderingDeviceDataFormat = 161
-	RenderingDeviceDataFormatAstc6x5UnormBlock                    RenderingDeviceDataFormat = 162
-	RenderingDeviceDataFormatAstc6x5SrgbBlock                     RenderingDeviceDataFormat = 163
-	RenderingDeviceDataFormatAstc6x6UnormBlock                    RenderingDeviceDataFormat = 164
-	RenderingDeviceDataFormatAstc6x6SrgbBlock                     RenderingDeviceDataFormat = 165
-	RenderingDeviceDataFormatAstc8x5UnormBlock                    RenderingDeviceDataFormat = 166
-	RenderingDeviceDataFormatAstc8x5SrgbBlock                     RenderingDeviceDataFormat = 167
-	RenderingDeviceDataFormatAstc8x6UnormBlock                    RenderingDeviceDataFormat = 168
-	RenderingDeviceDataFormatAstc8x6SrgbBlock                     RenderingDeviceDataFormat = 169
-	RenderingDeviceDataFormatAstc8x8UnormBlock                    RenderingDeviceDataFormat = 170
-	RenderingDeviceDataFormatAstc8x8SrgbBlock                     RenderingDeviceDataFormat = 171
-	RenderingDeviceDataFormatAstc10x5UnormBlock                   RenderingDeviceDataFormat = 172
-	RenderingDeviceDataFormatAstc10x5SrgbBlock                    RenderingDeviceDataFormat = 173
-	RenderingDeviceDataFormatAstc10x6UnormBlock                   RenderingDeviceDataFormat = 174
-	RenderingDeviceDataFormatAstc10x6SrgbBlock                    RenderingDeviceDataFormat = 175
-	RenderingDeviceDataFormatAstc10x8UnormBlock                   RenderingDeviceDataFormat = 176
-	RenderingDeviceDataFormatAstc10x8SrgbBlock                    RenderingDeviceDataFormat = 177
-	RenderingDeviceDataFormatAstc10x10UnormBlock                  RenderingDeviceDataFormat = 178
-	RenderingDeviceDataFormatAstc10x10SrgbBlock                   RenderingDeviceDataFormat = 179
-	RenderingDeviceDataFormatAstc12x10UnormBlock                  RenderingDeviceDataFormat = 180
-	RenderingDeviceDataFormatAstc12x10SrgbBlock                   RenderingDeviceDataFormat = 181
-	RenderingDeviceDataFormatAstc12x12UnormBlock                  RenderingDeviceDataFormat = 182
-	RenderingDeviceDataFormatAstc12x12SrgbBlock                   RenderingDeviceDataFormat = 183
-	RenderingDeviceDataFormatG8b8g8r8422Unorm                     RenderingDeviceDataFormat = 184
-	RenderingDeviceDataFormatB8g8r8g8422Unorm                     RenderingDeviceDataFormat = 185
-	RenderingDeviceDataFormatG8B8R83plane420Unorm                 RenderingDeviceDataFormat = 186
-	RenderingDeviceDataFormatG8B8r82plane420Unorm                 RenderingDeviceDataFormat = 187
-	RenderingDeviceDataFormatG8B8R83plane422Unorm                 RenderingDeviceDataFormat = 188
-	RenderingDeviceDataFormatG8B8r82plane422Unorm                 RenderingDeviceDataFormat = 189
-	RenderingDeviceDataFormatG8B8R83plane444Unorm                 RenderingDeviceDataFormat = 190
-	RenderingDeviceDataFormatR10x6UnormPack16                     RenderingDeviceDataFormat = 191
-	RenderingDeviceDataFormatR10x6g10x6Unorm2pack16               RenderingDeviceDataFormat = 192
-	RenderingDeviceDataFormatR10x6g10x6b10x6a10x6Unorm4pack16     RenderingDeviceDataFormat = 193
-	RenderingDeviceDataFormatG10x6b10x6g10x6r10x6422Unorm4pack16  RenderingDeviceDataFormat = 194
-	RenderingDeviceDataFormatB10x6g10x6r10x6g10x6422Unorm4pack16  RenderingDeviceDataFormat = 195
+	/*4-bit-per-channel red/green channel data format, packed into 8 bits. Values are in the [code][0.0, 1.0][/code] range.
+	  [b]Note:[/b] More information on all data formats can be found on the [url=https://registry.khronos.org/vulkan/specs/1.1/html/vkspec.html#_identification_of_formats]Identification of formats[/url] section of the Vulkan specification, as well as the [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkFormat.html]VkFormat[/url] enum.*/
+	RenderingDeviceDataFormatR4g4UnormPack8 RenderingDeviceDataFormat = 0
+	/*4-bit-per-channel red/green/blue/alpha channel data format, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR4g4b4a4UnormPack16 RenderingDeviceDataFormat = 1
+	/*4-bit-per-channel blue/green/red/alpha channel data format, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB4g4r4a4UnormPack16 RenderingDeviceDataFormat = 2
+	/*Red/green/blue channel data format with 5 bits of red, 6 bits of green and 5 bits of blue, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR5g6b5UnormPack16 RenderingDeviceDataFormat = 3
+	/*Blue/green/red channel data format with 5 bits of blue, 6 bits of green and 5 bits of red, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB5g6r5UnormPack16 RenderingDeviceDataFormat = 4
+	/*Red/green/blue/alpha channel data format with 5 bits of red, 6 bits of green, 5 bits of blue and 1 bit of alpha, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR5g5b5a1UnormPack16 RenderingDeviceDataFormat = 5
+	/*Blue/green/red/alpha channel data format with 5 bits of blue, 6 bits of green, 5 bits of red and 1 bit of alpha, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB5g5r5a1UnormPack16 RenderingDeviceDataFormat = 6
+	/*Alpha/red/green/blue channel data format with 1 bit of alpha, 5 bits of red, 6 bits of green and 5 bits of blue, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA1r5g5b5UnormPack16 RenderingDeviceDataFormat = 7
+	/*8-bit-per-channel unsigned floating-point red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8Unorm RenderingDeviceDataFormat = 8
+	/*8-bit-per-channel signed floating-point red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8Snorm RenderingDeviceDataFormat = 9
+	/*8-bit-per-channel unsigned floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatR8Uscaled RenderingDeviceDataFormat = 10
+	/*8-bit-per-channel signed floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatR8Sscaled RenderingDeviceDataFormat = 11
+	/*8-bit-per-channel unsigned integer red channel data format. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatR8Uint RenderingDeviceDataFormat = 12
+	/*8-bit-per-channel signed integer red channel data format. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatR8Sint RenderingDeviceDataFormat = 13
+	/*8-bit-per-channel unsigned floating-point red channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8Srgb RenderingDeviceDataFormat = 14
+	/*8-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8Unorm RenderingDeviceDataFormat = 15
+	/*8-bit-per-channel signed floating-point red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8Snorm RenderingDeviceDataFormat = 16
+	/*8-bit-per-channel unsigned floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8Uscaled RenderingDeviceDataFormat = 17
+	/*8-bit-per-channel signed floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8Sscaled RenderingDeviceDataFormat = 18
+	/*8-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatR8g8Uint RenderingDeviceDataFormat = 19
+	/*8-bit-per-channel signed integer red/green channel data format. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatR8g8Sint RenderingDeviceDataFormat = 20
+	/*8-bit-per-channel unsigned floating-point red/green channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8Srgb RenderingDeviceDataFormat = 21
+	/*8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Unorm RenderingDeviceDataFormat = 22
+	/*8-bit-per-channel signed floating-point red/green/blue channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Snorm RenderingDeviceDataFormat = 23
+	/*8-bit-per-channel unsigned floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Uscaled RenderingDeviceDataFormat = 24
+	/*8-bit-per-channel signed floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Sscaled RenderingDeviceDataFormat = 25
+	/*8-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Uint RenderingDeviceDataFormat = 26
+	/*8-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Sint RenderingDeviceDataFormat = 27
+	/*8-bit-per-channel unsigned floating-point red/green/blue/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8Srgb RenderingDeviceDataFormat = 28
+	/*8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Unorm RenderingDeviceDataFormat = 29
+	/*8-bit-per-channel signed floating-point blue/green/red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Snorm RenderingDeviceDataFormat = 30
+	/*8-bit-per-channel unsigned floating-point blue/green/red channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Uscaled RenderingDeviceDataFormat = 31
+	/*8-bit-per-channel signed floating-point blue/green/red channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Sscaled RenderingDeviceDataFormat = 32
+	/*8-bit-per-channel unsigned integer blue/green/red channel data format. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Uint RenderingDeviceDataFormat = 33
+	/*8-bit-per-channel signed integer blue/green/red channel data format. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Sint RenderingDeviceDataFormat = 34
+	/*8-bit-per-channel unsigned floating-point blue/green/red data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8Srgb RenderingDeviceDataFormat = 35
+	/*8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Unorm RenderingDeviceDataFormat = 36
+	/*8-bit-per-channel signed floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Snorm RenderingDeviceDataFormat = 37
+	/*8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Uscaled RenderingDeviceDataFormat = 38
+	/*8-bit-per-channel signed floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Sscaled RenderingDeviceDataFormat = 39
+	/*8-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Uint RenderingDeviceDataFormat = 40
+	/*8-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Sint RenderingDeviceDataFormat = 41
+	/*8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR8g8b8a8Srgb RenderingDeviceDataFormat = 42
+	/*8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Unorm RenderingDeviceDataFormat = 43
+	/*8-bit-per-channel signed floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Snorm RenderingDeviceDataFormat = 44
+	/*8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Uscaled RenderingDeviceDataFormat = 45
+	/*8-bit-per-channel signed floating-point blue/green/red/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Sscaled RenderingDeviceDataFormat = 46
+	/*8-bit-per-channel unsigned integer blue/green/red/alpha channel data format. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Uint RenderingDeviceDataFormat = 47
+	/*8-bit-per-channel signed integer blue/green/red/alpha channel data format. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Sint RenderingDeviceDataFormat = 48
+	/*8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatB8g8r8a8Srgb RenderingDeviceDataFormat = 49
+	/*8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8UnormPack32 RenderingDeviceDataFormat = 50
+	/*8-bit-per-channel signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8SnormPack32 RenderingDeviceDataFormat = 51
+	/*8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with scaled value (value is converted from integer to float), packed in 32 bits. Values are in the [code][0.0, 255.0][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8UscaledPack32 RenderingDeviceDataFormat = 52
+	/*8-bit-per-channel signed floating-point alpha/red/green/blue channel data format with scaled value (value is converted from integer to float), packed in 32 bits. Values are in the [code][-127.0, 127.0][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8SscaledPack32 RenderingDeviceDataFormat = 53
+	/*8-bit-per-channel unsigned integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8UintPack32 RenderingDeviceDataFormat = 54
+	/*8-bit-per-channel signed integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [code][-127, 127][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8SintPack32 RenderingDeviceDataFormat = 55
+	/*8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value and non-linear sRGB encoding, packed in 32 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA8b8g8r8SrgbPack32 RenderingDeviceDataFormat = 56
+	/*Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA2r10g10b10UnormPack32 RenderingDeviceDataFormat = 57
+	/*Signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA2r10g10b10SnormPack32 RenderingDeviceDataFormat = 58
+	/*Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][0.0, 1023.0][/code] range for red/green/blue and [code][0.0, 3.0][/code] for alpha.*/
+	RenderingDeviceDataFormatA2r10g10b10UscaledPack32 RenderingDeviceDataFormat = 59
+	/*Signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][-511.0, 511.0][/code] range for red/green/blue and [code][-1.0, 1.0][/code] for alpha.*/
+	RenderingDeviceDataFormatA2r10g10b10SscaledPack32 RenderingDeviceDataFormat = 60
+	/*Unsigned integer alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][0, 1023][/code] range for red/green/blue and [code][0, 3][/code] for alpha.*/
+	RenderingDeviceDataFormatA2r10g10b10UintPack32 RenderingDeviceDataFormat = 61
+	/*Signed integer alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][-511, 511][/code] range for red/green/blue and [code][-1, 1][/code] for alpha.*/
+	RenderingDeviceDataFormatA2r10g10b10SintPack32 RenderingDeviceDataFormat = 62
+	/*Unsigned floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA2b10g10r10UnormPack32 RenderingDeviceDataFormat = 63
+	/*Signed floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatA2b10g10r10SnormPack32 RenderingDeviceDataFormat = 64
+	/*Unsigned floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][0.0, 1023.0][/code] range for blue/green/red and [code][0.0, 3.0][/code] for alpha.*/
+	RenderingDeviceDataFormatA2b10g10r10UscaledPack32 RenderingDeviceDataFormat = 65
+	/*Signed floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][-511.0, 511.0][/code] range for blue/green/red and [code][-1.0, 1.0][/code] for alpha.*/
+	RenderingDeviceDataFormatA2b10g10r10SscaledPack32 RenderingDeviceDataFormat = 66
+	/*Unsigned integer alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][0, 1023][/code] range for blue/green/red and [code][0, 3][/code] for alpha.*/
+	RenderingDeviceDataFormatA2b10g10r10UintPack32 RenderingDeviceDataFormat = 67
+	/*Signed integer alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][-511, 511][/code] range for blue/green/red and [code][-1, 1][/code] for alpha.*/
+	RenderingDeviceDataFormatA2b10g10r10SintPack32 RenderingDeviceDataFormat = 68
+	/*16-bit-per-channel unsigned floating-point red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16Unorm RenderingDeviceDataFormat = 69
+	/*16-bit-per-channel signed floating-point red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16Snorm RenderingDeviceDataFormat = 70
+	/*16-bit-per-channel unsigned floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	RenderingDeviceDataFormatR16Uscaled RenderingDeviceDataFormat = 71
+	/*16-bit-per-channel signed floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	RenderingDeviceDataFormatR16Sscaled RenderingDeviceDataFormat = 72
+	/*16-bit-per-channel unsigned integer red channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	RenderingDeviceDataFormatR16Uint RenderingDeviceDataFormat = 73
+	/*16-bit-per-channel signed integer red channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	RenderingDeviceDataFormatR16Sint RenderingDeviceDataFormat = 74
+	/*16-bit-per-channel signed floating-point red channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR16Sfloat RenderingDeviceDataFormat = 75
+	/*16-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16Unorm RenderingDeviceDataFormat = 76
+	/*16-bit-per-channel signed floating-point red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16Snorm RenderingDeviceDataFormat = 77
+	/*16-bit-per-channel unsigned floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16Uscaled RenderingDeviceDataFormat = 78
+	/*16-bit-per-channel signed floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16Sscaled RenderingDeviceDataFormat = 79
+	/*16-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	RenderingDeviceDataFormatR16g16Uint RenderingDeviceDataFormat = 80
+	/*16-bit-per-channel signed integer red/green channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	RenderingDeviceDataFormatR16g16Sint RenderingDeviceDataFormat = 81
+	/*16-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR16g16Sfloat RenderingDeviceDataFormat = 82
+	/*16-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16Unorm RenderingDeviceDataFormat = 83
+	/*16-bit-per-channel signed floating-point red/green/blue channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16Snorm RenderingDeviceDataFormat = 84
+	/*16-bit-per-channel unsigned floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16Uscaled RenderingDeviceDataFormat = 85
+	/*16-bit-per-channel signed floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16Sscaled RenderingDeviceDataFormat = 86
+	/*16-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16Uint RenderingDeviceDataFormat = 87
+	/*16-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16Sint RenderingDeviceDataFormat = 88
+	/*16-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR16g16b16Sfloat RenderingDeviceDataFormat = 89
+	/*16-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16a16Unorm RenderingDeviceDataFormat = 90
+	/*16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16a16Snorm RenderingDeviceDataFormat = 91
+	/*16-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16a16Uscaled RenderingDeviceDataFormat = 92
+	/*16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16a16Sscaled RenderingDeviceDataFormat = 93
+	/*16-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16a16Uint RenderingDeviceDataFormat = 94
+	/*16-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	RenderingDeviceDataFormatR16g16b16a16Sint RenderingDeviceDataFormat = 95
+	/*16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR16g16b16a16Sfloat RenderingDeviceDataFormat = 96
+	/*32-bit-per-channel unsigned integer red channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32Uint RenderingDeviceDataFormat = 97
+	/*32-bit-per-channel signed integer red channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32Sint RenderingDeviceDataFormat = 98
+	/*32-bit-per-channel signed floating-point red channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR32Sfloat RenderingDeviceDataFormat = 99
+	/*32-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32g32Uint RenderingDeviceDataFormat = 100
+	/*32-bit-per-channel signed integer red/green channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32g32Sint RenderingDeviceDataFormat = 101
+	/*32-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR32g32Sfloat RenderingDeviceDataFormat = 102
+	/*32-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32g32b32Uint RenderingDeviceDataFormat = 103
+	/*32-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32g32b32Sint RenderingDeviceDataFormat = 104
+	/*32-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR32g32b32Sfloat RenderingDeviceDataFormat = 105
+	/*32-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32g32b32a32Uint RenderingDeviceDataFormat = 106
+	/*32-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	RenderingDeviceDataFormatR32g32b32a32Sint RenderingDeviceDataFormat = 107
+	/*32-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR32g32b32a32Sfloat RenderingDeviceDataFormat = 108
+	/*64-bit-per-channel unsigned integer red channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64Uint RenderingDeviceDataFormat = 109
+	/*64-bit-per-channel signed integer red channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64Sint RenderingDeviceDataFormat = 110
+	/*64-bit-per-channel signed floating-point red channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR64Sfloat RenderingDeviceDataFormat = 111
+	/*64-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64g64Uint RenderingDeviceDataFormat = 112
+	/*64-bit-per-channel signed integer red/green channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64g64Sint RenderingDeviceDataFormat = 113
+	/*64-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR64g64Sfloat RenderingDeviceDataFormat = 114
+	/*64-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64g64b64Uint RenderingDeviceDataFormat = 115
+	/*64-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64g64b64Sint RenderingDeviceDataFormat = 116
+	/*64-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR64g64b64Sfloat RenderingDeviceDataFormat = 117
+	/*64-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64g64b64a64Uint RenderingDeviceDataFormat = 118
+	/*64-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	RenderingDeviceDataFormatR64g64b64a64Sint RenderingDeviceDataFormat = 119
+	/*64-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.*/
+	RenderingDeviceDataFormatR64g64b64a64Sfloat RenderingDeviceDataFormat = 120
+	/*Unsigned floating-point blue/green/red data format with the value stored as-is, packed in 32 bits. The format's precision is 10 bits of blue channel, 11 bits of green channel and 11 bits of red channel.*/
+	RenderingDeviceDataFormatB10g11r11UfloatPack32 RenderingDeviceDataFormat = 121
+	/*Unsigned floating-point exposure/blue/green/red data format with the value stored as-is, packed in 32 bits. The format's precision is 5 bits of exposure, 9 bits of blue channel, 9 bits of green channel and 9 bits of red channel.*/
+	RenderingDeviceDataFormatE5b9g9r9UfloatPack32 RenderingDeviceDataFormat = 122
+	/*16-bit unsigned floating-point depth data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatD16Unorm RenderingDeviceDataFormat = 123
+	/*24-bit unsigned floating-point depth data format with normalized value, plus 8 unused bits, packed in 32 bits. Values for depth are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatX8D24UnormPack32 RenderingDeviceDataFormat = 124
+	/*32-bit signed floating-point depth data format with the value stored as-is.*/
+	RenderingDeviceDataFormatD32Sfloat RenderingDeviceDataFormat = 125
+	/*8-bit unsigned integer stencil data format.*/
+	RenderingDeviceDataFormatS8Uint RenderingDeviceDataFormat = 126
+	/*16-bit unsigned floating-point depth data format with normalized value, plus 8 bits of stencil in unsigned integer format. Values for depth are in the [code][0.0, 1.0][/code] range. Values for stencil are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatD16UnormS8Uint RenderingDeviceDataFormat = 127
+	/*24-bit unsigned floating-point depth data format with normalized value, plus 8 bits of stencil in unsigned integer format. Values for depth are in the [code][0.0, 1.0][/code] range. Values for stencil are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatD24UnormS8Uint RenderingDeviceDataFormat = 128
+	/*32-bit signed floating-point depth data format with the value stored as-is, plus 8 bits of stencil in unsigned integer format. Values for stencil are in the [code][0, 255][/code] range.*/
+	RenderingDeviceDataFormatD32SfloatS8Uint RenderingDeviceDataFormat = 129
+	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	RenderingDeviceDataFormatBc1RgbUnormBlock RenderingDeviceDataFormat = 130
+	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	RenderingDeviceDataFormatBc1RgbSrgbBlock RenderingDeviceDataFormat = 131
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	RenderingDeviceDataFormatBc1RgbaUnormBlock RenderingDeviceDataFormat = 132
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	RenderingDeviceDataFormatBc1RgbaSrgbBlock RenderingDeviceDataFormat = 133
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).*/
+	RenderingDeviceDataFormatBc2UnormBlock RenderingDeviceDataFormat = 134
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).*/
+	RenderingDeviceDataFormatBc2SrgbBlock RenderingDeviceDataFormat = 135
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).*/
+	RenderingDeviceDataFormatBc3UnormBlock RenderingDeviceDataFormat = 136
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).*/
+	RenderingDeviceDataFormatBc3SrgbBlock RenderingDeviceDataFormat = 137
+	/*VRAM-compressed unsigned red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.*/
+	RenderingDeviceDataFormatBc4UnormBlock RenderingDeviceDataFormat = 138
+	/*VRAM-compressed signed red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.*/
+	RenderingDeviceDataFormatBc4SnormBlock RenderingDeviceDataFormat = 139
+	/*VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).*/
+	RenderingDeviceDataFormatBc5UnormBlock RenderingDeviceDataFormat = 140
+	/*VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).*/
+	RenderingDeviceDataFormatBc5SnormBlock RenderingDeviceDataFormat = 141
+	/*VRAM-compressed unsigned red/green/blue channel data format with the floating-point value stored as-is. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC6H texture compression (also known as BPTC HDR).*/
+	RenderingDeviceDataFormatBc6hUfloatBlock RenderingDeviceDataFormat = 142
+	/*VRAM-compressed signed red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Using BC7 texture compression (also known as BPTC HDR).*/
+	RenderingDeviceDataFormatBc6hSfloatBlock RenderingDeviceDataFormat = 143
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.*/
+	RenderingDeviceDataFormatBc7UnormBlock RenderingDeviceDataFormat = 144
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.*/
+	RenderingDeviceDataFormatBc7SrgbBlock RenderingDeviceDataFormat = 145
+	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEtc2R8g8b8UnormBlock RenderingDeviceDataFormat = 146
+	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEtc2R8g8b8SrgbBlock RenderingDeviceDataFormat = 147
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEtc2R8g8b8a1UnormBlock RenderingDeviceDataFormat = 148
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEtc2R8g8b8a1SrgbBlock RenderingDeviceDataFormat = 149
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEtc2R8g8b8a8UnormBlock RenderingDeviceDataFormat = 150
+	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEtc2R8g8b8a8SrgbBlock RenderingDeviceDataFormat = 151
+	/*11-bit VRAM-compressed unsigned red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEacR11UnormBlock RenderingDeviceDataFormat = 152
+	/*11-bit VRAM-compressed signed red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEacR11SnormBlock RenderingDeviceDataFormat = 153
+	/*11-bit VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEacR11g11UnormBlock RenderingDeviceDataFormat = 154
+	/*11-bit VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	RenderingDeviceDataFormatEacR11g11SnormBlock RenderingDeviceDataFormat = 155
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 4×4 blocks (highest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc4x4UnormBlock RenderingDeviceDataFormat = 156
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 4×4 blocks (highest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc4x4SrgbBlock RenderingDeviceDataFormat = 157
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×4 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc5x4UnormBlock RenderingDeviceDataFormat = 158
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×4 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc5x4SrgbBlock RenderingDeviceDataFormat = 159
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc5x5UnormBlock RenderingDeviceDataFormat = 160
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc5x5SrgbBlock RenderingDeviceDataFormat = 161
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc6x5UnormBlock RenderingDeviceDataFormat = 162
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc6x5SrgbBlock RenderingDeviceDataFormat = 163
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc6x6UnormBlock RenderingDeviceDataFormat = 164
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc6x6SrgbBlock RenderingDeviceDataFormat = 165
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc8x5UnormBlock RenderingDeviceDataFormat = 166
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc8x5SrgbBlock RenderingDeviceDataFormat = 167
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc8x6UnormBlock RenderingDeviceDataFormat = 168
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc8x6SrgbBlock RenderingDeviceDataFormat = 169
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc8x8UnormBlock RenderingDeviceDataFormat = 170
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc8x8SrgbBlock RenderingDeviceDataFormat = 171
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x5UnormBlock RenderingDeviceDataFormat = 172
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x5SrgbBlock RenderingDeviceDataFormat = 173
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x6UnormBlock RenderingDeviceDataFormat = 174
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x6SrgbBlock RenderingDeviceDataFormat = 175
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x8UnormBlock RenderingDeviceDataFormat = 176
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x8SrgbBlock RenderingDeviceDataFormat = 177
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x10UnormBlock RenderingDeviceDataFormat = 178
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc10x10SrgbBlock RenderingDeviceDataFormat = 179
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 12×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc12x10UnormBlock RenderingDeviceDataFormat = 180
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc12x10SrgbBlock RenderingDeviceDataFormat = 181
+	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 12 blocks (lowest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc12x12UnormBlock RenderingDeviceDataFormat = 182
+	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12 blocks (lowest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	RenderingDeviceDataFormatAstc12x12SrgbBlock RenderingDeviceDataFormat = 183
+	/*8-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG8b8g8r8422Unorm RenderingDeviceDataFormat = 184
+	/*8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatB8g8r8g8422Unorm RenderingDeviceDataFormat = 185
+	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG8B8R83plane420Unorm RenderingDeviceDataFormat = 186
+	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG8B8r82plane420Unorm RenderingDeviceDataFormat = 187
+	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG8B8R83plane422Unorm RenderingDeviceDataFormat = 188
+	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG8B8r82plane422Unorm RenderingDeviceDataFormat = 189
+	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 3 separate planes. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatG8B8R83plane444Unorm RenderingDeviceDataFormat = 190
+	/*10-bit-per-channel unsigned floating-point red channel data with normalized value, plus 6 unused bits, packed in 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR10x6UnormPack16 RenderingDeviceDataFormat = 191
+	/*10-bit-per-channel unsigned floating-point red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 2×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR10x6g10x6Unorm2pack16 RenderingDeviceDataFormat = 192
+	/*10-bit-per-channel unsigned floating-point red/green/blue/alpha channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR10x6g10x6b10x6a10x6Unorm4pack16 RenderingDeviceDataFormat = 193
+	/*10-bit-per-channel unsigned floating-point green/blue/green/red channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	RenderingDeviceDataFormatG10x6b10x6g10x6r10x6422Unorm4pack16 RenderingDeviceDataFormat = 194
+	/*10-bit-per-channel unsigned floating-point blue/green/red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	RenderingDeviceDataFormatB10x6g10x6r10x6g10x6422Unorm4pack16 RenderingDeviceDataFormat = 195
+	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG10x6B10x6R10x63plane420Unorm3pack16 RenderingDeviceDataFormat = 196
+	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG10x6B10x6r10x62plane420Unorm3pack16 RenderingDeviceDataFormat = 197
+	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG10x6B10x6R10x63plane422Unorm3pack16 RenderingDeviceDataFormat = 198
+	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG10x6B10x6r10x62plane422Unorm3pack16 RenderingDeviceDataFormat = 199
+	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
 	RenderingDeviceDataFormatG10x6B10x6R10x63plane444Unorm3pack16 RenderingDeviceDataFormat = 200
-	RenderingDeviceDataFormatR12x4UnormPack16                     RenderingDeviceDataFormat = 201
-	RenderingDeviceDataFormatR12x4g12x4Unorm2pack16               RenderingDeviceDataFormat = 202
-	RenderingDeviceDataFormatR12x4g12x4b12x4a12x4Unorm4pack16     RenderingDeviceDataFormat = 203
-	RenderingDeviceDataFormatG12x4b12x4g12x4r12x4422Unorm4pack16  RenderingDeviceDataFormat = 204
-	RenderingDeviceDataFormatB12x4g12x4r12x4g12x4422Unorm4pack16  RenderingDeviceDataFormat = 205
+	/*12-bit-per-channel unsigned floating-point red channel data with normalized value, plus 6 unused bits, packed in 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR12x4UnormPack16 RenderingDeviceDataFormat = 201
+	/*12-bit-per-channel unsigned floating-point red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 2×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR12x4g12x4Unorm2pack16 RenderingDeviceDataFormat = 202
+	/*12-bit-per-channel unsigned floating-point red/green/blue/alpha channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatR12x4g12x4b12x4a12x4Unorm4pack16 RenderingDeviceDataFormat = 203
+	/*12-bit-per-channel unsigned floating-point green/blue/green/red channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	RenderingDeviceDataFormatG12x4b12x4g12x4r12x4422Unorm4pack16 RenderingDeviceDataFormat = 204
+	/*12-bit-per-channel unsigned floating-point blue/green/red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	RenderingDeviceDataFormatB12x4g12x4r12x4g12x4422Unorm4pack16 RenderingDeviceDataFormat = 205
+	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG12x4B12x4R12x43plane420Unorm3pack16 RenderingDeviceDataFormat = 206
+	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG12x4B12x4r12x42plane420Unorm3pack16 RenderingDeviceDataFormat = 207
+	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG12x4B12x4R12x43plane422Unorm3pack16 RenderingDeviceDataFormat = 208
+	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
 	RenderingDeviceDataFormatG12x4B12x4r12x42plane422Unorm3pack16 RenderingDeviceDataFormat = 209
+	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
 	RenderingDeviceDataFormatG12x4B12x4R12x43plane444Unorm3pack16 RenderingDeviceDataFormat = 210
-	RenderingDeviceDataFormatG16b16g16r16422Unorm                 RenderingDeviceDataFormat = 211
-	RenderingDeviceDataFormatB16g16r16g16422Unorm                 RenderingDeviceDataFormat = 212
-	RenderingDeviceDataFormatG16B16R163plane420Unorm              RenderingDeviceDataFormat = 213
-	RenderingDeviceDataFormatG16B16r162plane420Unorm              RenderingDeviceDataFormat = 214
-	RenderingDeviceDataFormatG16B16R163plane422Unorm              RenderingDeviceDataFormat = 215
-	RenderingDeviceDataFormatG16B16r162plane422Unorm              RenderingDeviceDataFormat = 216
-	RenderingDeviceDataFormatG16B16R163plane444Unorm              RenderingDeviceDataFormat = 217
-	RenderingDeviceDataFormatMax                                  RenderingDeviceDataFormat = 218
+	/*16-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG16b16g16r16422Unorm RenderingDeviceDataFormat = 211
+	/*16-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatB16g16r16g16422Unorm RenderingDeviceDataFormat = 212
+	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG16B16R163plane420Unorm RenderingDeviceDataFormat = 213
+	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG16B16r162plane420Unorm RenderingDeviceDataFormat = 214
+	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG16B16R163plane422Unorm RenderingDeviceDataFormat = 215
+	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	RenderingDeviceDataFormatG16B16r162plane422Unorm RenderingDeviceDataFormat = 216
+	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
+	RenderingDeviceDataFormatG16B16R163plane444Unorm RenderingDeviceDataFormat = 217
+	/*Represents the size of the [enum DataFormat] enum.*/
+	RenderingDeviceDataFormatMax RenderingDeviceDataFormat = 218
 )
 
 type RenderingDeviceBarrierMask = classdb.RenderingDeviceBarrierMask
 
 const (
-	RenderingDeviceBarrierMaskVertex      RenderingDeviceBarrierMask = 1
-	RenderingDeviceBarrierMaskFragment    RenderingDeviceBarrierMask = 8
-	RenderingDeviceBarrierMaskCompute     RenderingDeviceBarrierMask = 2
-	RenderingDeviceBarrierMaskTransfer    RenderingDeviceBarrierMask = 4
-	RenderingDeviceBarrierMaskRaster      RenderingDeviceBarrierMask = 9
+	/*Vertex shader barrier mask.*/
+	RenderingDeviceBarrierMaskVertex RenderingDeviceBarrierMask = 1
+	/*Fragment shader barrier mask.*/
+	RenderingDeviceBarrierMaskFragment RenderingDeviceBarrierMask = 8
+	/*Compute barrier mask.*/
+	RenderingDeviceBarrierMaskCompute RenderingDeviceBarrierMask = 2
+	/*Transfer barrier mask.*/
+	RenderingDeviceBarrierMaskTransfer RenderingDeviceBarrierMask = 4
+	/*Raster barrier mask (vertex and fragment). Equivalent to [code]BARRIER_MASK_VERTEX | BARRIER_MASK_FRAGMENT[/code].*/
+	RenderingDeviceBarrierMaskRaster RenderingDeviceBarrierMask = 9
+	/*Barrier mask for all types (vertex, fragment, compute, transfer).*/
 	RenderingDeviceBarrierMaskAllBarriers RenderingDeviceBarrierMask = 32767
-	RenderingDeviceBarrierMaskNoBarrier   RenderingDeviceBarrierMask = 32768
+	/*No barrier for any type.*/
+	RenderingDeviceBarrierMaskNoBarrier RenderingDeviceBarrierMask = 32768
 )
 
 type RenderingDeviceTextureType = classdb.RenderingDeviceTextureType
 
 const (
-	RenderingDeviceTextureType1d        RenderingDeviceTextureType = 0
-	RenderingDeviceTextureType2d        RenderingDeviceTextureType = 1
-	RenderingDeviceTextureType3d        RenderingDeviceTextureType = 2
-	RenderingDeviceTextureTypeCube      RenderingDeviceTextureType = 3
-	RenderingDeviceTextureType1dArray   RenderingDeviceTextureType = 4
-	RenderingDeviceTextureType2dArray   RenderingDeviceTextureType = 5
+	/*1-dimensional texture.*/
+	RenderingDeviceTextureType1d RenderingDeviceTextureType = 0
+	/*2-dimensional texture.*/
+	RenderingDeviceTextureType2d RenderingDeviceTextureType = 1
+	/*3-dimensional texture.*/
+	RenderingDeviceTextureType3d RenderingDeviceTextureType = 2
+	/*[Cubemap] texture.*/
+	RenderingDeviceTextureTypeCube RenderingDeviceTextureType = 3
+	/*Array of 1-dimensional textures.*/
+	RenderingDeviceTextureType1dArray RenderingDeviceTextureType = 4
+	/*Array of 2-dimensional textures.*/
+	RenderingDeviceTextureType2dArray RenderingDeviceTextureType = 5
+	/*Array of [Cubemap] textures.*/
 	RenderingDeviceTextureTypeCubeArray RenderingDeviceTextureType = 6
-	RenderingDeviceTextureTypeMax       RenderingDeviceTextureType = 7
+	/*Represents the size of the [enum TextureType] enum.*/
+	RenderingDeviceTextureTypeMax RenderingDeviceTextureType = 7
 )
 
 type RenderingDeviceTextureSamples = classdb.RenderingDeviceTextureSamples
 
 const (
-	RenderingDeviceTextureSamples1   RenderingDeviceTextureSamples = 0
-	RenderingDeviceTextureSamples2   RenderingDeviceTextureSamples = 1
-	RenderingDeviceTextureSamples4   RenderingDeviceTextureSamples = 2
-	RenderingDeviceTextureSamples8   RenderingDeviceTextureSamples = 3
-	RenderingDeviceTextureSamples16  RenderingDeviceTextureSamples = 4
-	RenderingDeviceTextureSamples32  RenderingDeviceTextureSamples = 5
-	RenderingDeviceTextureSamples64  RenderingDeviceTextureSamples = 6
+	/*Perform 1 texture sample (this is the fastest but lowest-quality for antialiasing).*/
+	RenderingDeviceTextureSamples1 RenderingDeviceTextureSamples = 0
+	/*Perform 2 texture samples.*/
+	RenderingDeviceTextureSamples2 RenderingDeviceTextureSamples = 1
+	/*Perform 4 texture samples.*/
+	RenderingDeviceTextureSamples4 RenderingDeviceTextureSamples = 2
+	/*Perform 8 texture samples. Not supported on mobile GPUs (including Apple Silicon).*/
+	RenderingDeviceTextureSamples8 RenderingDeviceTextureSamples = 3
+	/*Perform 16 texture samples. Not supported on mobile GPUs and many desktop GPUs.*/
+	RenderingDeviceTextureSamples16 RenderingDeviceTextureSamples = 4
+	/*Perform 32 texture samples. Not supported on most GPUs.*/
+	RenderingDeviceTextureSamples32 RenderingDeviceTextureSamples = 5
+	/*Perform 64 texture samples (this is the slowest but highest-quality for antialiasing). Not supported on most GPUs.*/
+	RenderingDeviceTextureSamples64 RenderingDeviceTextureSamples = 6
+	/*Represents the size of the [enum TextureSamples] enum.*/
 	RenderingDeviceTextureSamplesMax RenderingDeviceTextureSamples = 7
 )
 
 type RenderingDeviceTextureUsageBits = classdb.RenderingDeviceTextureUsageBits
 
 const (
-	RenderingDeviceTextureUsageSamplingBit               RenderingDeviceTextureUsageBits = 1
-	RenderingDeviceTextureUsageColorAttachmentBit        RenderingDeviceTextureUsageBits = 2
+	/*Texture can be sampled.*/
+	RenderingDeviceTextureUsageSamplingBit RenderingDeviceTextureUsageBits = 1
+	/*Texture can be used as a color attachment in a framebuffer.*/
+	RenderingDeviceTextureUsageColorAttachmentBit RenderingDeviceTextureUsageBits = 2
+	/*Texture can be used as a depth/stencil attachment in a framebuffer.*/
 	RenderingDeviceTextureUsageDepthStencilAttachmentBit RenderingDeviceTextureUsageBits = 4
-	RenderingDeviceTextureUsageStorageBit                RenderingDeviceTextureUsageBits = 8
-	RenderingDeviceTextureUsageStorageAtomicBit          RenderingDeviceTextureUsageBits = 16
-	RenderingDeviceTextureUsageCpuReadBit                RenderingDeviceTextureUsageBits = 32
-	RenderingDeviceTextureUsageCanUpdateBit              RenderingDeviceTextureUsageBits = 64
-	RenderingDeviceTextureUsageCanCopyFromBit            RenderingDeviceTextureUsageBits = 128
-	RenderingDeviceTextureUsageCanCopyToBit              RenderingDeviceTextureUsageBits = 256
-	RenderingDeviceTextureUsageInputAttachmentBit        RenderingDeviceTextureUsageBits = 512
+	/*Texture can be used as a [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage]storage image[/url].*/
+	RenderingDeviceTextureUsageStorageBit RenderingDeviceTextureUsageBits = 8
+	/*Texture can be used as a [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage]storage image[/url] with support for atomic operations.*/
+	RenderingDeviceTextureUsageStorageAtomicBit RenderingDeviceTextureUsageBits = 16
+	/*Texture can be read back on the CPU using [method texture_get_data] faster than without this bit, since it is always kept in the system memory.*/
+	RenderingDeviceTextureUsageCpuReadBit RenderingDeviceTextureUsageBits = 32
+	/*Texture can be updated using [method texture_update].*/
+	RenderingDeviceTextureUsageCanUpdateBit RenderingDeviceTextureUsageBits = 64
+	/*Texture can be a source for [method texture_copy].*/
+	RenderingDeviceTextureUsageCanCopyFromBit RenderingDeviceTextureUsageBits = 128
+	/*Texture can be a destination for [method texture_copy].*/
+	RenderingDeviceTextureUsageCanCopyToBit RenderingDeviceTextureUsageBits = 256
+	/*Texture can be used as a [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-inputattachment]input attachment[/url] in a framebuffer.*/
+	RenderingDeviceTextureUsageInputAttachmentBit RenderingDeviceTextureUsageBits = 512
 )
 
 type RenderingDeviceTextureSwizzle = classdb.RenderingDeviceTextureSwizzle
 
 const (
+	/*Return the sampled value as-is.*/
 	RenderingDeviceTextureSwizzleIdentity RenderingDeviceTextureSwizzle = 0
-	RenderingDeviceTextureSwizzleZero     RenderingDeviceTextureSwizzle = 1
-	RenderingDeviceTextureSwizzleOne      RenderingDeviceTextureSwizzle = 2
-	RenderingDeviceTextureSwizzleR        RenderingDeviceTextureSwizzle = 3
-	RenderingDeviceTextureSwizzleG        RenderingDeviceTextureSwizzle = 4
-	RenderingDeviceTextureSwizzleB        RenderingDeviceTextureSwizzle = 5
-	RenderingDeviceTextureSwizzleA        RenderingDeviceTextureSwizzle = 6
-	RenderingDeviceTextureSwizzleMax      RenderingDeviceTextureSwizzle = 7
+	/*Always return [code]0.0[/code] when sampling.*/
+	RenderingDeviceTextureSwizzleZero RenderingDeviceTextureSwizzle = 1
+	/*Always return [code]1.0[/code] when sampling.*/
+	RenderingDeviceTextureSwizzleOne RenderingDeviceTextureSwizzle = 2
+	/*Sample the red color channel.*/
+	RenderingDeviceTextureSwizzleR RenderingDeviceTextureSwizzle = 3
+	/*Sample the green color channel.*/
+	RenderingDeviceTextureSwizzleG RenderingDeviceTextureSwizzle = 4
+	/*Sample the blue color channel.*/
+	RenderingDeviceTextureSwizzleB RenderingDeviceTextureSwizzle = 5
+	/*Sample the alpha channel.*/
+	RenderingDeviceTextureSwizzleA RenderingDeviceTextureSwizzle = 6
+	/*Represents the size of the [enum TextureSwizzle] enum.*/
+	RenderingDeviceTextureSwizzleMax RenderingDeviceTextureSwizzle = 7
 )
 
 type RenderingDeviceTextureSliceType = classdb.RenderingDeviceTextureSliceType
 
 const (
-	RenderingDeviceTextureSlice2d      RenderingDeviceTextureSliceType = 0
+	/*2-dimensional texture slice.*/
+	RenderingDeviceTextureSlice2d RenderingDeviceTextureSliceType = 0
+	/*Cubemap texture slice.*/
 	RenderingDeviceTextureSliceCubemap RenderingDeviceTextureSliceType = 1
-	RenderingDeviceTextureSlice3d      RenderingDeviceTextureSliceType = 2
+	/*3-dimensional texture slice.*/
+	RenderingDeviceTextureSlice3d RenderingDeviceTextureSliceType = 2
 )
 
 type RenderingDeviceSamplerFilter = classdb.RenderingDeviceSamplerFilter
 
 const (
+	/*Nearest-neighbor sampler filtering. Sampling at higher resolutions than the source will result in a pixelated look.*/
 	RenderingDeviceSamplerFilterNearest RenderingDeviceSamplerFilter = 0
-	RenderingDeviceSamplerFilterLinear  RenderingDeviceSamplerFilter = 1
+	/*Bilinear sampler filtering. Sampling at higher resolutions than the source will result in a blurry look.*/
+	RenderingDeviceSamplerFilterLinear RenderingDeviceSamplerFilter = 1
 )
 
 type RenderingDeviceSamplerRepeatMode = classdb.RenderingDeviceSamplerRepeatMode
 
 const (
-	RenderingDeviceSamplerRepeatModeRepeat            RenderingDeviceSamplerRepeatMode = 0
-	RenderingDeviceSamplerRepeatModeMirroredRepeat    RenderingDeviceSamplerRepeatMode = 1
-	RenderingDeviceSamplerRepeatModeClampToEdge       RenderingDeviceSamplerRepeatMode = 2
-	RenderingDeviceSamplerRepeatModeClampToBorder     RenderingDeviceSamplerRepeatMode = 3
+	/*Sample with repeating enabled.*/
+	RenderingDeviceSamplerRepeatModeRepeat RenderingDeviceSamplerRepeatMode = 0
+	/*Sample with mirrored repeating enabled. When sampling outside the [code][0.0, 1.0][/code] range, return a mirrored version of the sampler. This mirrored version is mirrored again if sampling further away, with the pattern repeating indefinitely.*/
+	RenderingDeviceSamplerRepeatModeMirroredRepeat RenderingDeviceSamplerRepeatMode = 1
+	/*Sample with repeating disabled. When sampling outside the [code][0.0, 1.0][/code] range, return the color of the last pixel on the edge.*/
+	RenderingDeviceSamplerRepeatModeClampToEdge RenderingDeviceSamplerRepeatMode = 2
+	/*Sample with repeating disabled. When sampling outside the [code][0.0, 1.0][/code] range, return the specified [member RDSamplerState.border_color].*/
+	RenderingDeviceSamplerRepeatModeClampToBorder RenderingDeviceSamplerRepeatMode = 3
+	/*Sample with mirrored repeating enabled, but only once. When sampling in the [code][-1.0, 0.0][/code] range, return a mirrored version of the sampler. When sampling outside the [code][-1.0, 1.0][/code] range, return the color of the last pixel on the edge.*/
 	RenderingDeviceSamplerRepeatModeMirrorClampToEdge RenderingDeviceSamplerRepeatMode = 4
-	RenderingDeviceSamplerRepeatModeMax               RenderingDeviceSamplerRepeatMode = 5
+	/*Represents the size of the [enum SamplerRepeatMode] enum.*/
+	RenderingDeviceSamplerRepeatModeMax RenderingDeviceSamplerRepeatMode = 5
 )
 
 type RenderingDeviceSamplerBorderColor = classdb.RenderingDeviceSamplerBorderColor
 
 const (
+	/*Return a floating-point transparent black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
 	RenderingDeviceSamplerBorderColorFloatTransparentBlack RenderingDeviceSamplerBorderColor = 0
-	RenderingDeviceSamplerBorderColorIntTransparentBlack   RenderingDeviceSamplerBorderColor = 1
-	RenderingDeviceSamplerBorderColorFloatOpaqueBlack      RenderingDeviceSamplerBorderColor = 2
-	RenderingDeviceSamplerBorderColorIntOpaqueBlack        RenderingDeviceSamplerBorderColor = 3
-	RenderingDeviceSamplerBorderColorFloatOpaqueWhite      RenderingDeviceSamplerBorderColor = 4
-	RenderingDeviceSamplerBorderColorIntOpaqueWhite        RenderingDeviceSamplerBorderColor = 5
-	RenderingDeviceSamplerBorderColorMax                   RenderingDeviceSamplerBorderColor = 6
+	/*Return a integer transparent black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	RenderingDeviceSamplerBorderColorIntTransparentBlack RenderingDeviceSamplerBorderColor = 1
+	/*Return a floating-point opaque black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	RenderingDeviceSamplerBorderColorFloatOpaqueBlack RenderingDeviceSamplerBorderColor = 2
+	/*Return a integer opaque black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	RenderingDeviceSamplerBorderColorIntOpaqueBlack RenderingDeviceSamplerBorderColor = 3
+	/*Return a floating-point opaque white color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	RenderingDeviceSamplerBorderColorFloatOpaqueWhite RenderingDeviceSamplerBorderColor = 4
+	/*Return a integer opaque white color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	RenderingDeviceSamplerBorderColorIntOpaqueWhite RenderingDeviceSamplerBorderColor = 5
+	/*Represents the size of the [enum SamplerBorderColor] enum.*/
+	RenderingDeviceSamplerBorderColorMax RenderingDeviceSamplerBorderColor = 6
 )
 
 type RenderingDeviceVertexFrequency = classdb.RenderingDeviceVertexFrequency
 
 const (
-	RenderingDeviceVertexFrequencyVertex   RenderingDeviceVertexFrequency = 0
+	/*Vertex attribute addressing is a function of the vertex. This is used to specify the rate at which vertex attributes are pulled from buffers.*/
+	RenderingDeviceVertexFrequencyVertex RenderingDeviceVertexFrequency = 0
+	/*Vertex attribute addressing is a function of the instance index. This is used to specify the rate at which vertex attributes are pulled from buffers.*/
 	RenderingDeviceVertexFrequencyInstance RenderingDeviceVertexFrequency = 1
 )
 
 type RenderingDeviceIndexBufferFormat = classdb.RenderingDeviceIndexBufferFormat
 
 const (
+	/*Index buffer in 16-bit unsigned integer format. This limits the maximum index that can be specified to [code]65535[/code].*/
 	RenderingDeviceIndexBufferFormatUint16 RenderingDeviceIndexBufferFormat = 0
+	/*Index buffer in 32-bit unsigned integer format. This limits the maximum index that can be specified to [code]4294967295[/code].*/
 	RenderingDeviceIndexBufferFormatUint32 RenderingDeviceIndexBufferFormat = 1
 )
 
@@ -4406,135 +7154,229 @@ const (
 type RenderingDeviceUniformType = classdb.RenderingDeviceUniformType
 
 const (
-	RenderingDeviceUniformTypeSampler                  RenderingDeviceUniformType = 0
-	RenderingDeviceUniformTypeSamplerWithTexture       RenderingDeviceUniformType = 1
-	RenderingDeviceUniformTypeTexture                  RenderingDeviceUniformType = 2
-	RenderingDeviceUniformTypeImage                    RenderingDeviceUniformType = 3
-	RenderingDeviceUniformTypeTextureBuffer            RenderingDeviceUniformType = 4
+	/*Sampler uniform.*/
+	RenderingDeviceUniformTypeSampler RenderingDeviceUniformType = 0
+	/*Sampler uniform with a texture.*/
+	RenderingDeviceUniformTypeSamplerWithTexture RenderingDeviceUniformType = 1
+	/*Texture uniform.*/
+	RenderingDeviceUniformTypeTexture RenderingDeviceUniformType = 2
+	/*Image uniform.*/
+	RenderingDeviceUniformTypeImage RenderingDeviceUniformType = 3
+	/*Texture buffer uniform.*/
+	RenderingDeviceUniformTypeTextureBuffer RenderingDeviceUniformType = 4
+	/*Sampler uniform with a texture buffer.*/
 	RenderingDeviceUniformTypeSamplerWithTextureBuffer RenderingDeviceUniformType = 5
-	RenderingDeviceUniformTypeImageBuffer              RenderingDeviceUniformType = 6
-	RenderingDeviceUniformTypeUniformBuffer            RenderingDeviceUniformType = 7
-	RenderingDeviceUniformTypeStorageBuffer            RenderingDeviceUniformType = 8
-	RenderingDeviceUniformTypeInputAttachment          RenderingDeviceUniformType = 9
-	RenderingDeviceUniformTypeMax                      RenderingDeviceUniformType = 10
+	/*Image buffer uniform.*/
+	RenderingDeviceUniformTypeImageBuffer RenderingDeviceUniformType = 6
+	/*Uniform buffer uniform.*/
+	RenderingDeviceUniformTypeUniformBuffer RenderingDeviceUniformType = 7
+	/*[url=https://vkguide.dev/docs/chapter-4/storage_buffers/]Storage buffer[/url] uniform.*/
+	RenderingDeviceUniformTypeStorageBuffer RenderingDeviceUniformType = 8
+	/*Input attachment uniform.*/
+	RenderingDeviceUniformTypeInputAttachment RenderingDeviceUniformType = 9
+	/*Represents the size of the [enum UniformType] enum.*/
+	RenderingDeviceUniformTypeMax RenderingDeviceUniformType = 10
 )
 
 type RenderingDeviceRenderPrimitive = classdb.RenderingDeviceRenderPrimitive
 
 const (
-	RenderingDeviceRenderPrimitivePoints                         RenderingDeviceRenderPrimitive = 0
-	RenderingDeviceRenderPrimitiveLines                          RenderingDeviceRenderPrimitive = 1
-	RenderingDeviceRenderPrimitiveLinesWithAdjacency             RenderingDeviceRenderPrimitive = 2
-	RenderingDeviceRenderPrimitiveLinestrips                     RenderingDeviceRenderPrimitive = 3
-	RenderingDeviceRenderPrimitiveLinestripsWithAdjacency        RenderingDeviceRenderPrimitive = 4
-	RenderingDeviceRenderPrimitiveTriangles                      RenderingDeviceRenderPrimitive = 5
-	RenderingDeviceRenderPrimitiveTrianglesWithAdjacency         RenderingDeviceRenderPrimitive = 6
-	RenderingDeviceRenderPrimitiveTriangleStrips                 RenderingDeviceRenderPrimitive = 7
-	RenderingDeviceRenderPrimitiveTriangleStripsWithAjacency     RenderingDeviceRenderPrimitive = 8
+	/*Point rendering primitive (with constant size, regardless of distance from camera).*/
+	RenderingDeviceRenderPrimitivePoints RenderingDeviceRenderPrimitive = 0
+	/*Line list rendering primitive. Lines are drawn separated from each other.*/
+	RenderingDeviceRenderPrimitiveLines RenderingDeviceRenderPrimitive = 1
+	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-line-lists-with-adjacency]Line list rendering primitive with adjacency.[/url]
+	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	RenderingDeviceRenderPrimitiveLinesWithAdjacency RenderingDeviceRenderPrimitive = 2
+	/*Line strip rendering primitive. Lines drawn are connected to the previous vertex.*/
+	RenderingDeviceRenderPrimitiveLinestrips RenderingDeviceRenderPrimitive = 3
+	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-line-strips-with-adjacency]Line strip rendering primitive with adjacency.[/url]
+	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	RenderingDeviceRenderPrimitiveLinestripsWithAdjacency RenderingDeviceRenderPrimitive = 4
+	/*Triangle list rendering primitive. Triangles are drawn separated from each other.*/
+	RenderingDeviceRenderPrimitiveTriangles RenderingDeviceRenderPrimitive = 5
+	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-lists-with-adjacency]Triangle list rendering primitive with adjacency.[/url]
+	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	RenderingDeviceRenderPrimitiveTrianglesWithAdjacency RenderingDeviceRenderPrimitive = 6
+	/*Triangle strip rendering primitive. Triangles drawn are connected to the previous triangle.*/
+	RenderingDeviceRenderPrimitiveTriangleStrips RenderingDeviceRenderPrimitive = 7
+	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-strips-with-adjacency]Triangle strip rendering primitive with adjacency.[/url]
+	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	RenderingDeviceRenderPrimitiveTriangleStripsWithAjacency RenderingDeviceRenderPrimitive = 8
+	/*Triangle strip rendering primitive with [i]primitive restart[/i] enabled. Triangles drawn are connected to the previous triangle, but a primitive restart index can be specified before drawing to create a second triangle strip after the specified index.
+	  [b]Note:[/b] Only compatible with indexed draws.*/
 	RenderingDeviceRenderPrimitiveTriangleStripsWithRestartIndex RenderingDeviceRenderPrimitive = 9
-	RenderingDeviceRenderPrimitiveTesselationPatch               RenderingDeviceRenderPrimitive = 10
-	RenderingDeviceRenderPrimitiveMax                            RenderingDeviceRenderPrimitive = 11
+	/*Tessellation patch rendering primitive. Only useful with tessellation shaders, which can be used to deform these patches.*/
+	RenderingDeviceRenderPrimitiveTesselationPatch RenderingDeviceRenderPrimitive = 10
+	/*Represents the size of the [enum RenderPrimitive] enum.*/
+	RenderingDeviceRenderPrimitiveMax RenderingDeviceRenderPrimitive = 11
 )
 
 type RenderingDevicePolygonCullMode = classdb.RenderingDevicePolygonCullMode
 
 const (
+	/*Do not use polygon front face or backface culling.*/
 	RenderingDevicePolygonCullDisabled RenderingDevicePolygonCullMode = 0
-	RenderingDevicePolygonCullFront    RenderingDevicePolygonCullMode = 1
-	RenderingDevicePolygonCullBack     RenderingDevicePolygonCullMode = 2
+	/*Use polygon frontface culling (faces pointing towards the camera are hidden).*/
+	RenderingDevicePolygonCullFront RenderingDevicePolygonCullMode = 1
+	/*Use polygon backface culling (faces pointing away from the camera are hidden).*/
+	RenderingDevicePolygonCullBack RenderingDevicePolygonCullMode = 2
 )
 
 type RenderingDevicePolygonFrontFace = classdb.RenderingDevicePolygonFrontFace
 
 const (
-	RenderingDevicePolygonFrontFaceClockwise        RenderingDevicePolygonFrontFace = 0
+	/*Clockwise winding order to determine which face of a polygon is its front face.*/
+	RenderingDevicePolygonFrontFaceClockwise RenderingDevicePolygonFrontFace = 0
+	/*Counter-clockwise winding order to determine which face of a polygon is its front face.*/
 	RenderingDevicePolygonFrontFaceCounterClockwise RenderingDevicePolygonFrontFace = 1
 )
 
 type RenderingDeviceStencilOperation = classdb.RenderingDeviceStencilOperation
 
 const (
-	RenderingDeviceStencilOpKeep              RenderingDeviceStencilOperation = 0
-	RenderingDeviceStencilOpZero              RenderingDeviceStencilOperation = 1
-	RenderingDeviceStencilOpReplace           RenderingDeviceStencilOperation = 2
+	/*Keep the current stencil value.*/
+	RenderingDeviceStencilOpKeep RenderingDeviceStencilOperation = 0
+	/*Set the stencil value to [code]0[/code].*/
+	RenderingDeviceStencilOpZero RenderingDeviceStencilOperation = 1
+	/*Replace the existing stencil value with the new one.*/
+	RenderingDeviceStencilOpReplace RenderingDeviceStencilOperation = 2
+	/*Increment the existing stencil value and clamp to the maximum representable unsigned value if reached. Stencil bits are considered as an unsigned integer.*/
 	RenderingDeviceStencilOpIncrementAndClamp RenderingDeviceStencilOperation = 3
+	/*Decrement the existing stencil value and clamp to the minimum value if reached. Stencil bits are considered as an unsigned integer.*/
 	RenderingDeviceStencilOpDecrementAndClamp RenderingDeviceStencilOperation = 4
-	RenderingDeviceStencilOpInvert            RenderingDeviceStencilOperation = 5
-	RenderingDeviceStencilOpIncrementAndWrap  RenderingDeviceStencilOperation = 6
-	RenderingDeviceStencilOpDecrementAndWrap  RenderingDeviceStencilOperation = 7
-	RenderingDeviceStencilOpMax               RenderingDeviceStencilOperation = 8
+	/*Bitwise-invert the existing stencil value.*/
+	RenderingDeviceStencilOpInvert RenderingDeviceStencilOperation = 5
+	/*Increment the stencil value and wrap around to [code]0[/code] if reaching the maximum representable unsigned. Stencil bits are considered as an unsigned integer.*/
+	RenderingDeviceStencilOpIncrementAndWrap RenderingDeviceStencilOperation = 6
+	/*Decrement the stencil value and wrap around to the maximum representable unsigned if reaching the minimum. Stencil bits are considered as an unsigned integer.*/
+	RenderingDeviceStencilOpDecrementAndWrap RenderingDeviceStencilOperation = 7
+	/*Represents the size of the [enum StencilOperation] enum.*/
+	RenderingDeviceStencilOpMax RenderingDeviceStencilOperation = 8
 )
 
 type RenderingDeviceCompareOperator = classdb.RenderingDeviceCompareOperator
 
 const (
-	RenderingDeviceCompareOpNever          RenderingDeviceCompareOperator = 0
-	RenderingDeviceCompareOpLess           RenderingDeviceCompareOperator = 1
-	RenderingDeviceCompareOpEqual          RenderingDeviceCompareOperator = 2
-	RenderingDeviceCompareOpLessOrEqual    RenderingDeviceCompareOperator = 3
-	RenderingDeviceCompareOpGreater        RenderingDeviceCompareOperator = 4
-	RenderingDeviceCompareOpNotEqual       RenderingDeviceCompareOperator = 5
+	/*"Never" comparison (opposite of [constant COMPARE_OP_ALWAYS]).*/
+	RenderingDeviceCompareOpNever RenderingDeviceCompareOperator = 0
+	/*"Less than" comparison.*/
+	RenderingDeviceCompareOpLess RenderingDeviceCompareOperator = 1
+	/*"Equal" comparison.*/
+	RenderingDeviceCompareOpEqual RenderingDeviceCompareOperator = 2
+	/*"Less than or equal" comparison.*/
+	RenderingDeviceCompareOpLessOrEqual RenderingDeviceCompareOperator = 3
+	/*"Greater than" comparison.*/
+	RenderingDeviceCompareOpGreater RenderingDeviceCompareOperator = 4
+	/*"Not equal" comparison.*/
+	RenderingDeviceCompareOpNotEqual RenderingDeviceCompareOperator = 5
+	/*"Greater than or equal" comparison.*/
 	RenderingDeviceCompareOpGreaterOrEqual RenderingDeviceCompareOperator = 6
-	RenderingDeviceCompareOpAlways         RenderingDeviceCompareOperator = 7
-	RenderingDeviceCompareOpMax            RenderingDeviceCompareOperator = 8
+	/*"Always" comparison (opposite of [constant COMPARE_OP_NEVER]).*/
+	RenderingDeviceCompareOpAlways RenderingDeviceCompareOperator = 7
+	/*Represents the size of the [enum CompareOperator] enum.*/
+	RenderingDeviceCompareOpMax RenderingDeviceCompareOperator = 8
 )
 
 type RenderingDeviceLogicOperation = classdb.RenderingDeviceLogicOperation
 
 const (
-	RenderingDeviceLogicOpClear        RenderingDeviceLogicOperation = 0
-	RenderingDeviceLogicOpAnd          RenderingDeviceLogicOperation = 1
-	RenderingDeviceLogicOpAndReverse   RenderingDeviceLogicOperation = 2
-	RenderingDeviceLogicOpCopy         RenderingDeviceLogicOperation = 3
-	RenderingDeviceLogicOpAndInverted  RenderingDeviceLogicOperation = 4
-	RenderingDeviceLogicOpNoOp         RenderingDeviceLogicOperation = 5
-	RenderingDeviceLogicOpXor          RenderingDeviceLogicOperation = 6
-	RenderingDeviceLogicOpOr           RenderingDeviceLogicOperation = 7
-	RenderingDeviceLogicOpNor          RenderingDeviceLogicOperation = 8
-	RenderingDeviceLogicOpEquivalent   RenderingDeviceLogicOperation = 9
-	RenderingDeviceLogicOpInvert       RenderingDeviceLogicOperation = 10
-	RenderingDeviceLogicOpOrReverse    RenderingDeviceLogicOperation = 11
+	/*Clear logic operation (result is always [code]0[/code]). See also [constant LOGIC_OP_SET].*/
+	RenderingDeviceLogicOpClear RenderingDeviceLogicOperation = 0
+	/*AND logic operation.*/
+	RenderingDeviceLogicOpAnd RenderingDeviceLogicOperation = 1
+	/*AND logic operation with the [i]destination[/i] operand being inverted. See also [constant LOGIC_OP_AND_INVERTED].*/
+	RenderingDeviceLogicOpAndReverse RenderingDeviceLogicOperation = 2
+	/*Copy logic operation (keeps the [i]source[/i] value as-is). See also [constant LOGIC_OP_COPY_INVERTED] and [constant LOGIC_OP_NO_OP].*/
+	RenderingDeviceLogicOpCopy RenderingDeviceLogicOperation = 3
+	/*AND logic operation with the [i]source[/i] operand being inverted. See also [constant LOGIC_OP_AND_REVERSE].*/
+	RenderingDeviceLogicOpAndInverted RenderingDeviceLogicOperation = 4
+	/*No-op logic operation (keeps the [i]destination[/i] value as-is). See also [constant LOGIC_OP_COPY].*/
+	RenderingDeviceLogicOpNoOp RenderingDeviceLogicOperation = 5
+	/*Exclusive or (XOR) logic operation.*/
+	RenderingDeviceLogicOpXor RenderingDeviceLogicOperation = 6
+	/*OR logic operation.*/
+	RenderingDeviceLogicOpOr RenderingDeviceLogicOperation = 7
+	/*Not-OR (NOR) logic operation.*/
+	RenderingDeviceLogicOpNor RenderingDeviceLogicOperation = 8
+	/*Not-XOR (XNOR) logic operation.*/
+	RenderingDeviceLogicOpEquivalent RenderingDeviceLogicOperation = 9
+	/*Invert logic operation.*/
+	RenderingDeviceLogicOpInvert RenderingDeviceLogicOperation = 10
+	/*OR logic operation with the [i]destination[/i] operand being inverted. See also [constant LOGIC_OP_OR_REVERSE].*/
+	RenderingDeviceLogicOpOrReverse RenderingDeviceLogicOperation = 11
+	/*NOT logic operation (inverts the value). See also [constant LOGIC_OP_COPY].*/
 	RenderingDeviceLogicOpCopyInverted RenderingDeviceLogicOperation = 12
-	RenderingDeviceLogicOpOrInverted   RenderingDeviceLogicOperation = 13
-	RenderingDeviceLogicOpNand         RenderingDeviceLogicOperation = 14
-	RenderingDeviceLogicOpSet          RenderingDeviceLogicOperation = 15
-	RenderingDeviceLogicOpMax          RenderingDeviceLogicOperation = 16
+	/*OR logic operation with the [i]source[/i] operand being inverted. See also [constant LOGIC_OP_OR_REVERSE].*/
+	RenderingDeviceLogicOpOrInverted RenderingDeviceLogicOperation = 13
+	/*Not-AND (NAND) logic operation.*/
+	RenderingDeviceLogicOpNand RenderingDeviceLogicOperation = 14
+	/*SET logic operation (result is always [code]1[/code]). See also [constant LOGIC_OP_CLEAR].*/
+	RenderingDeviceLogicOpSet RenderingDeviceLogicOperation = 15
+	/*Represents the size of the [enum LogicOperation] enum.*/
+	RenderingDeviceLogicOpMax RenderingDeviceLogicOperation = 16
 )
 
 type RenderingDeviceBlendFactor = classdb.RenderingDeviceBlendFactor
 
 const (
-	RenderingDeviceBlendFactorZero                  RenderingDeviceBlendFactor = 0
-	RenderingDeviceBlendFactorOne                   RenderingDeviceBlendFactor = 1
-	RenderingDeviceBlendFactorSrcColor              RenderingDeviceBlendFactor = 2
-	RenderingDeviceBlendFactorOneMinusSrcColor      RenderingDeviceBlendFactor = 3
-	RenderingDeviceBlendFactorDstColor              RenderingDeviceBlendFactor = 4
-	RenderingDeviceBlendFactorOneMinusDstColor      RenderingDeviceBlendFactor = 5
-	RenderingDeviceBlendFactorSrcAlpha              RenderingDeviceBlendFactor = 6
-	RenderingDeviceBlendFactorOneMinusSrcAlpha      RenderingDeviceBlendFactor = 7
-	RenderingDeviceBlendFactorDstAlpha              RenderingDeviceBlendFactor = 8
-	RenderingDeviceBlendFactorOneMinusDstAlpha      RenderingDeviceBlendFactor = 9
-	RenderingDeviceBlendFactorConstantColor         RenderingDeviceBlendFactor = 10
+	/*Constant [code]0.0[/code] blend factor.*/
+	RenderingDeviceBlendFactorZero RenderingDeviceBlendFactor = 0
+	/*Constant [code]1.0[/code] blend factor.*/
+	RenderingDeviceBlendFactorOne RenderingDeviceBlendFactor = 1
+	/*Color blend factor is [code]source color[/code]. Alpha blend factor is [code]source alpha[/code].*/
+	RenderingDeviceBlendFactorSrcColor RenderingDeviceBlendFactor = 2
+	/*Color blend factor is [code]1.0 - source color[/code]. Alpha blend factor is [code]1.0 - source alpha[/code].*/
+	RenderingDeviceBlendFactorOneMinusSrcColor RenderingDeviceBlendFactor = 3
+	/*Color blend factor is [code]destination color[/code]. Alpha blend factor is [code]destination alpha[/code].*/
+	RenderingDeviceBlendFactorDstColor RenderingDeviceBlendFactor = 4
+	/*Color blend factor is [code]1.0 - destination color[/code]. Alpha blend factor is [code]1.0 - destination alpha[/code].*/
+	RenderingDeviceBlendFactorOneMinusDstColor RenderingDeviceBlendFactor = 5
+	/*Color and alpha blend factor is [code]source alpha[/code].*/
+	RenderingDeviceBlendFactorSrcAlpha RenderingDeviceBlendFactor = 6
+	/*Color and alpha blend factor is [code]1.0 - source alpha[/code].*/
+	RenderingDeviceBlendFactorOneMinusSrcAlpha RenderingDeviceBlendFactor = 7
+	/*Color and alpha blend factor is [code]destination alpha[/code].*/
+	RenderingDeviceBlendFactorDstAlpha RenderingDeviceBlendFactor = 8
+	/*Color and alpha blend factor is [code]1.0 - destination alpha[/code].*/
+	RenderingDeviceBlendFactorOneMinusDstAlpha RenderingDeviceBlendFactor = 9
+	/*Color blend factor is [code]blend constant color[/code]. Alpha blend factor is [code]blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
+	RenderingDeviceBlendFactorConstantColor RenderingDeviceBlendFactor = 10
+	/*Color blend factor is [code]1.0 - blend constant color[/code]. Alpha blend factor is [code]1.0 - blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
 	RenderingDeviceBlendFactorOneMinusConstantColor RenderingDeviceBlendFactor = 11
-	RenderingDeviceBlendFactorConstantAlpha         RenderingDeviceBlendFactor = 12
+	/*Color and alpha blend factor is [code]blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
+	RenderingDeviceBlendFactorConstantAlpha RenderingDeviceBlendFactor = 12
+	/*Color and alpha blend factor is [code]1.0 - blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
 	RenderingDeviceBlendFactorOneMinusConstantAlpha RenderingDeviceBlendFactor = 13
-	RenderingDeviceBlendFactorSrcAlphaSaturate      RenderingDeviceBlendFactor = 14
-	RenderingDeviceBlendFactorSrc1Color             RenderingDeviceBlendFactor = 15
-	RenderingDeviceBlendFactorOneMinusSrc1Color     RenderingDeviceBlendFactor = 16
-	RenderingDeviceBlendFactorSrc1Alpha             RenderingDeviceBlendFactor = 17
-	RenderingDeviceBlendFactorOneMinusSrc1Alpha     RenderingDeviceBlendFactor = 18
-	RenderingDeviceBlendFactorMax                   RenderingDeviceBlendFactor = 19
+	/*Color blend factor is [code]min(source alpha, 1.0 - destination alpha)[/code]. Alpha blend factor is [code]1.0[/code].*/
+	RenderingDeviceBlendFactorSrcAlphaSaturate RenderingDeviceBlendFactor = 14
+	/*Color blend factor is [code]second source color[/code]. Alpha blend factor is [code]second source alpha[/code]. Only relevant for dual-source blending.*/
+	RenderingDeviceBlendFactorSrc1Color RenderingDeviceBlendFactor = 15
+	/*Color blend factor is [code]1.0 - second source color[/code]. Alpha blend factor is [code]1.0 - second source alpha[/code]. Only relevant for dual-source blending.*/
+	RenderingDeviceBlendFactorOneMinusSrc1Color RenderingDeviceBlendFactor = 16
+	/*Color and alpha blend factor is [code]second source alpha[/code]. Only relevant for dual-source blending.*/
+	RenderingDeviceBlendFactorSrc1Alpha RenderingDeviceBlendFactor = 17
+	/*Color and alpha blend factor is [code]1.0 - second source alpha[/code]. Only relevant for dual-source blending.*/
+	RenderingDeviceBlendFactorOneMinusSrc1Alpha RenderingDeviceBlendFactor = 18
+	/*Represents the size of the [enum BlendFactor] enum.*/
+	RenderingDeviceBlendFactorMax RenderingDeviceBlendFactor = 19
 )
 
 type RenderingDeviceBlendOperation = classdb.RenderingDeviceBlendOperation
 
 const (
-	RenderingDeviceBlendOpAdd             RenderingDeviceBlendOperation = 0
-	RenderingDeviceBlendOpSubtract        RenderingDeviceBlendOperation = 1
+	/*Additive blending operation ([code]source + destination[/code]).*/
+	RenderingDeviceBlendOpAdd RenderingDeviceBlendOperation = 0
+	/*Subtractive blending operation ([code]source - destination[/code]).*/
+	RenderingDeviceBlendOpSubtract RenderingDeviceBlendOperation = 1
+	/*Reverse subtractive blending operation ([code]destination - source[/code]).*/
 	RenderingDeviceBlendOpReverseSubtract RenderingDeviceBlendOperation = 2
-	RenderingDeviceBlendOpMinimum         RenderingDeviceBlendOperation = 3
-	RenderingDeviceBlendOpMaximum         RenderingDeviceBlendOperation = 4
-	RenderingDeviceBlendOpMax             RenderingDeviceBlendOperation = 5
+	/*Minimum blending operation (keep the lowest value of the two).*/
+	RenderingDeviceBlendOpMinimum RenderingDeviceBlendOperation = 3
+	/*Maximum blending operation (keep the highest value of the two).*/
+	RenderingDeviceBlendOpMaximum RenderingDeviceBlendOperation = 4
+	/*Represents the size of the [enum BlendOperation] enum.*/
+	RenderingDeviceBlendOpMax RenderingDeviceBlendOperation = 5
 )
 
 type RenderingDevicePipelineDynamicStateFlags = classdb.RenderingDevicePipelineDynamicStateFlags
@@ -4552,367 +7394,574 @@ const (
 type RenderingDeviceInitialAction = classdb.RenderingDeviceInitialAction
 
 const (
-	RenderingDeviceInitialActionClear               RenderingDeviceInitialAction = 0
-	RenderingDeviceInitialActionClearRegion         RenderingDeviceInitialAction = 1
+	/*Start rendering and clear the whole framebuffer.*/
+	RenderingDeviceInitialActionClear RenderingDeviceInitialAction = 0
+	/*Start rendering and clear the framebuffer in the specified region.*/
+	RenderingDeviceInitialActionClearRegion RenderingDeviceInitialAction = 1
+	/*Continue rendering and clear the framebuffer in the specified region. Framebuffer must have been left in [constant FINAL_ACTION_CONTINUE] state as the final action previously.*/
 	RenderingDeviceInitialActionClearRegionContinue RenderingDeviceInitialAction = 2
-	RenderingDeviceInitialActionKeep                RenderingDeviceInitialAction = 3
-	RenderingDeviceInitialActionDrop                RenderingDeviceInitialAction = 4
-	RenderingDeviceInitialActionContinue            RenderingDeviceInitialAction = 5
-	RenderingDeviceInitialActionMax                 RenderingDeviceInitialAction = 6
+	/*Start rendering, but keep attached color texture contents. If the framebuffer was previously used to read in a shader, this will automatically insert a layout transition.*/
+	RenderingDeviceInitialActionKeep RenderingDeviceInitialAction = 3
+	/*Start rendering, ignore what is there; write above it. In general, this is the fastest option when you will be writing every single pixel and you don't need a clear color.*/
+	RenderingDeviceInitialActionDrop RenderingDeviceInitialAction = 4
+	/*Continue rendering. Framebuffer must have been left in [constant FINAL_ACTION_CONTINUE] state as the final action previously.*/
+	RenderingDeviceInitialActionContinue RenderingDeviceInitialAction = 5
+	/*Represents the size of the [enum InitialAction] enum.*/
+	RenderingDeviceInitialActionMax RenderingDeviceInitialAction = 6
 )
 
 type RenderingDeviceFinalAction = classdb.RenderingDeviceFinalAction
 
 const (
-	RenderingDeviceFinalActionRead     RenderingDeviceFinalAction = 0
-	RenderingDeviceFinalActionDiscard  RenderingDeviceFinalAction = 1
+	/*Store the texture for reading and make it read-only if it has the [constant TEXTURE_USAGE_SAMPLING_BIT] bit (only applies to color, depth and stencil attachments).*/
+	RenderingDeviceFinalActionRead RenderingDeviceFinalAction = 0
+	/*Discard the texture data and make it read-only if it has the [constant TEXTURE_USAGE_SAMPLING_BIT] bit (only applies to color, depth and stencil attachments).*/
+	RenderingDeviceFinalActionDiscard RenderingDeviceFinalAction = 1
+	/*Store the texture and continue for further processing. Similar to [constant FINAL_ACTION_READ], but does not make the texture read-only if it has the [constant TEXTURE_USAGE_SAMPLING_BIT] bit.*/
 	RenderingDeviceFinalActionContinue RenderingDeviceFinalAction = 2
-	RenderingDeviceFinalActionMax      RenderingDeviceFinalAction = 3
+	/*Represents the size of the [enum FinalAction] enum.*/
+	RenderingDeviceFinalActionMax RenderingDeviceFinalAction = 3
 )
 
 type RenderingDeviceShaderStage = classdb.RenderingDeviceShaderStage
 
 const (
-	RenderingDeviceShaderStageVertex                   RenderingDeviceShaderStage = 0
-	RenderingDeviceShaderStageFragment                 RenderingDeviceShaderStage = 1
-	RenderingDeviceShaderStageTesselationControl       RenderingDeviceShaderStage = 2
-	RenderingDeviceShaderStageTesselationEvaluation    RenderingDeviceShaderStage = 3
-	RenderingDeviceShaderStageCompute                  RenderingDeviceShaderStage = 4
-	RenderingDeviceShaderStageMax                      RenderingDeviceShaderStage = 5
-	RenderingDeviceShaderStageVertexBit                RenderingDeviceShaderStage = 1
-	RenderingDeviceShaderStageFragmentBit              RenderingDeviceShaderStage = 2
-	RenderingDeviceShaderStageTesselationControlBit    RenderingDeviceShaderStage = 4
+	/*Vertex shader stage. This can be used to manipulate vertices from a shader (but not create new vertices).*/
+	RenderingDeviceShaderStageVertex RenderingDeviceShaderStage = 0
+	/*Fragment shader stage (called "pixel shader" in Direct3D). This can be used to manipulate pixels from a shader.*/
+	RenderingDeviceShaderStageFragment RenderingDeviceShaderStage = 1
+	/*Tessellation control shader stage. This can be used to create additional geometry from a shader.*/
+	RenderingDeviceShaderStageTesselationControl RenderingDeviceShaderStage = 2
+	/*Tessellation evaluation shader stage. This can be used to create additional geometry from a shader.*/
+	RenderingDeviceShaderStageTesselationEvaluation RenderingDeviceShaderStage = 3
+	/*Compute shader stage. This can be used to run arbitrary computing tasks in a shader, performing them on the GPU instead of the CPU.*/
+	RenderingDeviceShaderStageCompute RenderingDeviceShaderStage = 4
+	/*Represents the size of the [enum ShaderStage] enum.*/
+	RenderingDeviceShaderStageMax RenderingDeviceShaderStage = 5
+	/*Vertex shader stage bit (see also [constant SHADER_STAGE_VERTEX]).*/
+	RenderingDeviceShaderStageVertexBit RenderingDeviceShaderStage = 1
+	/*Fragment shader stage bit (see also [constant SHADER_STAGE_FRAGMENT]).*/
+	RenderingDeviceShaderStageFragmentBit RenderingDeviceShaderStage = 2
+	/*Tessellation control shader stage bit (see also [constant SHADER_STAGE_TESSELATION_CONTROL]).*/
+	RenderingDeviceShaderStageTesselationControlBit RenderingDeviceShaderStage = 4
+	/*Tessellation evaluation shader stage bit (see also [constant SHADER_STAGE_TESSELATION_EVALUATION]).*/
 	RenderingDeviceShaderStageTesselationEvaluationBit RenderingDeviceShaderStage = 8
-	RenderingDeviceShaderStageComputeBit               RenderingDeviceShaderStage = 16
+	/*Compute shader stage bit (see also [constant SHADER_STAGE_COMPUTE]).*/
+	RenderingDeviceShaderStageComputeBit RenderingDeviceShaderStage = 16
 )
 
 type RenderingDeviceShaderLanguage = classdb.RenderingDeviceShaderLanguage
 
 const (
+	/*Khronos' GLSL shading language (used natively by OpenGL and Vulkan). This is the language used for core Godot shaders.*/
 	RenderingDeviceShaderLanguageGlsl RenderingDeviceShaderLanguage = 0
+	/*Microsoft's High-Level Shading Language (used natively by Direct3D, but can also be used in Vulkan).*/
 	RenderingDeviceShaderLanguageHlsl RenderingDeviceShaderLanguage = 1
 )
 
 type RenderingDevicePipelineSpecializationConstantType = classdb.RenderingDevicePipelineSpecializationConstantType
 
 const (
-	RenderingDevicePipelineSpecializationConstantTypeBool  RenderingDevicePipelineSpecializationConstantType = 0
-	RenderingDevicePipelineSpecializationConstantTypeInt   RenderingDevicePipelineSpecializationConstantType = 1
+	/*Boolean specialization constant.*/
+	RenderingDevicePipelineSpecializationConstantTypeBool RenderingDevicePipelineSpecializationConstantType = 0
+	/*Integer specialization constant.*/
+	RenderingDevicePipelineSpecializationConstantTypeInt RenderingDevicePipelineSpecializationConstantType = 1
+	/*Floating-point specialization constant.*/
 	RenderingDevicePipelineSpecializationConstantTypeFloat RenderingDevicePipelineSpecializationConstantType = 2
 )
 
 type RenderingDeviceLimit = classdb.RenderingDeviceLimit
 
 const (
-	RenderingDeviceLimitMaxBoundUniformSets             RenderingDeviceLimit = 0
-	RenderingDeviceLimitMaxFramebufferColorAttachments  RenderingDeviceLimit = 1
-	RenderingDeviceLimitMaxTexturesPerUniformSet        RenderingDeviceLimit = 2
-	RenderingDeviceLimitMaxSamplersPerUniformSet        RenderingDeviceLimit = 3
-	RenderingDeviceLimitMaxStorageBuffersPerUniformSet  RenderingDeviceLimit = 4
-	RenderingDeviceLimitMaxStorageImagesPerUniformSet   RenderingDeviceLimit = 5
-	RenderingDeviceLimitMaxUniformBuffersPerUniformSet  RenderingDeviceLimit = 6
-	RenderingDeviceLimitMaxDrawIndexedIndex             RenderingDeviceLimit = 7
-	RenderingDeviceLimitMaxFramebufferHeight            RenderingDeviceLimit = 8
-	RenderingDeviceLimitMaxFramebufferWidth             RenderingDeviceLimit = 9
-	RenderingDeviceLimitMaxTextureArrayLayers           RenderingDeviceLimit = 10
-	RenderingDeviceLimitMaxTextureSize1d                RenderingDeviceLimit = 11
-	RenderingDeviceLimitMaxTextureSize2d                RenderingDeviceLimit = 12
-	RenderingDeviceLimitMaxTextureSize3d                RenderingDeviceLimit = 13
-	RenderingDeviceLimitMaxTextureSizeCube              RenderingDeviceLimit = 14
-	RenderingDeviceLimitMaxTexturesPerShaderStage       RenderingDeviceLimit = 15
-	RenderingDeviceLimitMaxSamplersPerShaderStage       RenderingDeviceLimit = 16
+	/*Maximum number of uniform sets that can be bound at a given time.*/
+	RenderingDeviceLimitMaxBoundUniformSets RenderingDeviceLimit = 0
+	/*Maximum number of color framebuffer attachments that can be used at a given time.*/
+	RenderingDeviceLimitMaxFramebufferColorAttachments RenderingDeviceLimit = 1
+	/*Maximum number of textures that can be used per uniform set.*/
+	RenderingDeviceLimitMaxTexturesPerUniformSet RenderingDeviceLimit = 2
+	/*Maximum number of samplers that can be used per uniform set.*/
+	RenderingDeviceLimitMaxSamplersPerUniformSet RenderingDeviceLimit = 3
+	/*Maximum number of [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffers[/url] per uniform set.*/
+	RenderingDeviceLimitMaxStorageBuffersPerUniformSet RenderingDeviceLimit = 4
+	/*Maximum number of storage images per uniform set.*/
+	RenderingDeviceLimitMaxStorageImagesPerUniformSet RenderingDeviceLimit = 5
+	/*Maximum number of uniform buffers per uniform set.*/
+	RenderingDeviceLimitMaxUniformBuffersPerUniformSet RenderingDeviceLimit = 6
+	/*Maximum index for an indexed draw command.*/
+	RenderingDeviceLimitMaxDrawIndexedIndex RenderingDeviceLimit = 7
+	/*Maximum height of a framebuffer (in pixels).*/
+	RenderingDeviceLimitMaxFramebufferHeight RenderingDeviceLimit = 8
+	/*Maximum width of a framebuffer (in pixels).*/
+	RenderingDeviceLimitMaxFramebufferWidth RenderingDeviceLimit = 9
+	/*Maximum number of texture array layers.*/
+	RenderingDeviceLimitMaxTextureArrayLayers RenderingDeviceLimit = 10
+	/*Maximum supported 1-dimensional texture size (in pixels on a single axis).*/
+	RenderingDeviceLimitMaxTextureSize1d RenderingDeviceLimit = 11
+	/*Maximum supported 2-dimensional texture size (in pixels on a single axis).*/
+	RenderingDeviceLimitMaxTextureSize2d RenderingDeviceLimit = 12
+	/*Maximum supported 3-dimensional texture size (in pixels on a single axis).*/
+	RenderingDeviceLimitMaxTextureSize3d RenderingDeviceLimit = 13
+	/*Maximum supported cubemap texture size (in pixels on a single axis of a single face).*/
+	RenderingDeviceLimitMaxTextureSizeCube RenderingDeviceLimit = 14
+	/*Maximum number of textures per shader stage.*/
+	RenderingDeviceLimitMaxTexturesPerShaderStage RenderingDeviceLimit = 15
+	/*Maximum number of samplers per shader stage.*/
+	RenderingDeviceLimitMaxSamplersPerShaderStage RenderingDeviceLimit = 16
+	/*Maximum number of [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffers[/url] per shader stage.*/
 	RenderingDeviceLimitMaxStorageBuffersPerShaderStage RenderingDeviceLimit = 17
-	RenderingDeviceLimitMaxStorageImagesPerShaderStage  RenderingDeviceLimit = 18
+	/*Maximum number of storage images per shader stage.*/
+	RenderingDeviceLimitMaxStorageImagesPerShaderStage RenderingDeviceLimit = 18
+	/*Maximum number of uniform buffers per uniform set.*/
 	RenderingDeviceLimitMaxUniformBuffersPerShaderStage RenderingDeviceLimit = 19
-	RenderingDeviceLimitMaxPushConstantSize             RenderingDeviceLimit = 20
-	RenderingDeviceLimitMaxUniformBufferSize            RenderingDeviceLimit = 21
-	RenderingDeviceLimitMaxVertexInputAttributeOffset   RenderingDeviceLimit = 22
-	RenderingDeviceLimitMaxVertexInputAttributes        RenderingDeviceLimit = 23
-	RenderingDeviceLimitMaxVertexInputBindings          RenderingDeviceLimit = 24
-	RenderingDeviceLimitMaxVertexInputBindingStride     RenderingDeviceLimit = 25
+	/*Maximum size of a push constant. A lot of devices are limited to 128 bytes, so try to avoid exceeding 128 bytes in push constants to ensure compatibility even if your GPU is reporting a higher value.*/
+	RenderingDeviceLimitMaxPushConstantSize RenderingDeviceLimit = 20
+	/*Maximum size of a uniform buffer.*/
+	RenderingDeviceLimitMaxUniformBufferSize RenderingDeviceLimit = 21
+	/*Maximum vertex input attribute offset.*/
+	RenderingDeviceLimitMaxVertexInputAttributeOffset RenderingDeviceLimit = 22
+	/*Maximum number of vertex input attributes.*/
+	RenderingDeviceLimitMaxVertexInputAttributes RenderingDeviceLimit = 23
+	/*Maximum number of vertex input bindings.*/
+	RenderingDeviceLimitMaxVertexInputBindings RenderingDeviceLimit = 24
+	/*Maximum vertex input binding stride.*/
+	RenderingDeviceLimitMaxVertexInputBindingStride RenderingDeviceLimit = 25
+	/*Minimum uniform buffer offset alignment.*/
 	RenderingDeviceLimitMinUniformBufferOffsetAlignment RenderingDeviceLimit = 26
-	RenderingDeviceLimitMaxComputeSharedMemorySize      RenderingDeviceLimit = 27
-	RenderingDeviceLimitMaxComputeWorkgroupCountX       RenderingDeviceLimit = 28
-	RenderingDeviceLimitMaxComputeWorkgroupCountY       RenderingDeviceLimit = 29
-	RenderingDeviceLimitMaxComputeWorkgroupCountZ       RenderingDeviceLimit = 30
-	RenderingDeviceLimitMaxComputeWorkgroupInvocations  RenderingDeviceLimit = 31
-	RenderingDeviceLimitMaxComputeWorkgroupSizeX        RenderingDeviceLimit = 32
-	RenderingDeviceLimitMaxComputeWorkgroupSizeY        RenderingDeviceLimit = 33
-	RenderingDeviceLimitMaxComputeWorkgroupSizeZ        RenderingDeviceLimit = 34
-	RenderingDeviceLimitMaxViewportDimensionsX          RenderingDeviceLimit = 35
-	RenderingDeviceLimitMaxViewportDimensionsY          RenderingDeviceLimit = 36
+	/*Maximum shared memory size for compute shaders.*/
+	RenderingDeviceLimitMaxComputeSharedMemorySize RenderingDeviceLimit = 27
+	/*Maximum number of workgroups for compute shaders on the X axis.*/
+	RenderingDeviceLimitMaxComputeWorkgroupCountX RenderingDeviceLimit = 28
+	/*Maximum number of workgroups for compute shaders on the Y axis.*/
+	RenderingDeviceLimitMaxComputeWorkgroupCountY RenderingDeviceLimit = 29
+	/*Maximum number of workgroups for compute shaders on the Z axis.*/
+	RenderingDeviceLimitMaxComputeWorkgroupCountZ RenderingDeviceLimit = 30
+	/*Maximum number of workgroup invocations for compute shaders.*/
+	RenderingDeviceLimitMaxComputeWorkgroupInvocations RenderingDeviceLimit = 31
+	/*Maximum workgroup size for compute shaders on the X axis.*/
+	RenderingDeviceLimitMaxComputeWorkgroupSizeX RenderingDeviceLimit = 32
+	/*Maximum workgroup size for compute shaders on the Y axis.*/
+	RenderingDeviceLimitMaxComputeWorkgroupSizeY RenderingDeviceLimit = 33
+	/*Maximum workgroup size for compute shaders on the Z axis.*/
+	RenderingDeviceLimitMaxComputeWorkgroupSizeZ RenderingDeviceLimit = 34
+	/*Maximum viewport width (in pixels).*/
+	RenderingDeviceLimitMaxViewportDimensionsX RenderingDeviceLimit = 35
+	/*Maximum viewport height (in pixels).*/
+	RenderingDeviceLimitMaxViewportDimensionsY RenderingDeviceLimit = 36
 )
 
 type RenderingDeviceMemoryType = classdb.RenderingDeviceMemoryType
 
 const (
+	/*Memory taken by textures.*/
 	RenderingDeviceMemoryTextures RenderingDeviceMemoryType = 0
-	RenderingDeviceMemoryBuffers  RenderingDeviceMemoryType = 1
-	RenderingDeviceMemoryTotal    RenderingDeviceMemoryType = 2
+	/*Memory taken by buffers.*/
+	RenderingDeviceMemoryBuffers RenderingDeviceMemoryType = 1
+	/*Total memory taken. This is greater than the sum of [constant MEMORY_TEXTURES] and [constant MEMORY_BUFFERS], as it also includes miscellaneous memory usage.*/
+	RenderingDeviceMemoryTotal RenderingDeviceMemoryType = 2
 )
 
 type RenderingServerTextureLayeredType = classdb.RenderingServerTextureLayeredType
 
 const (
-	RenderingServerTextureLayered2dArray      RenderingServerTextureLayeredType = 0
-	RenderingServerTextureLayeredCubemap      RenderingServerTextureLayeredType = 1
+	/*Array of 2-dimensional textures (see [Texture2DArray]).*/
+	RenderingServerTextureLayered2dArray RenderingServerTextureLayeredType = 0
+	/*Cubemap texture (see [Cubemap]).*/
+	RenderingServerTextureLayeredCubemap RenderingServerTextureLayeredType = 1
+	/*Array of cubemap textures (see [CubemapArray]).*/
 	RenderingServerTextureLayeredCubemapArray RenderingServerTextureLayeredType = 2
 )
 
 type RenderingServerCubeMapLayer = classdb.RenderingServerCubeMapLayer
 
 const (
-	RenderingServerCubemapLayerLeft   RenderingServerCubeMapLayer = 0
-	RenderingServerCubemapLayerRight  RenderingServerCubeMapLayer = 1
+	/*Left face of a [Cubemap].*/
+	RenderingServerCubemapLayerLeft RenderingServerCubeMapLayer = 0
+	/*Right face of a [Cubemap].*/
+	RenderingServerCubemapLayerRight RenderingServerCubeMapLayer = 1
+	/*Bottom face of a [Cubemap].*/
 	RenderingServerCubemapLayerBottom RenderingServerCubeMapLayer = 2
-	RenderingServerCubemapLayerTop    RenderingServerCubeMapLayer = 3
-	RenderingServerCubemapLayerFront  RenderingServerCubeMapLayer = 4
-	RenderingServerCubemapLayerBack   RenderingServerCubeMapLayer = 5
+	/*Top face of a [Cubemap].*/
+	RenderingServerCubemapLayerTop RenderingServerCubeMapLayer = 3
+	/*Front face of a [Cubemap].*/
+	RenderingServerCubemapLayerFront RenderingServerCubeMapLayer = 4
+	/*Back face of a [Cubemap].*/
+	RenderingServerCubemapLayerBack RenderingServerCubeMapLayer = 5
 )
 
 type RenderingServerShaderMode = classdb.RenderingServerShaderMode
 
 const (
-	RenderingServerShaderSpatial    RenderingServerShaderMode = 0
+	/*Shader is a 3D shader.*/
+	RenderingServerShaderSpatial RenderingServerShaderMode = 0
+	/*Shader is a 2D shader.*/
 	RenderingServerShaderCanvasItem RenderingServerShaderMode = 1
-	RenderingServerShaderParticles  RenderingServerShaderMode = 2
-	RenderingServerShaderSky        RenderingServerShaderMode = 3
-	RenderingServerShaderFog        RenderingServerShaderMode = 4
-	RenderingServerShaderMax        RenderingServerShaderMode = 5
+	/*Shader is a particle shader (can be used in both 2D and 3D).*/
+	RenderingServerShaderParticles RenderingServerShaderMode = 2
+	/*Shader is a 3D sky shader.*/
+	RenderingServerShaderSky RenderingServerShaderMode = 3
+	/*Shader is a 3D fog shader.*/
+	RenderingServerShaderFog RenderingServerShaderMode = 4
+	/*Represents the size of the [enum ShaderMode] enum.*/
+	RenderingServerShaderMax RenderingServerShaderMode = 5
 )
 
 type RenderingServerArrayType = classdb.RenderingServerArrayType
 
 const (
-	RenderingServerArrayVertex  RenderingServerArrayType = 0
-	RenderingServerArrayNormal  RenderingServerArrayType = 1
+	/*Array is a vertex position array.*/
+	RenderingServerArrayVertex RenderingServerArrayType = 0
+	/*Array is a normal array.*/
+	RenderingServerArrayNormal RenderingServerArrayType = 1
+	/*Array is a tangent array.*/
 	RenderingServerArrayTangent RenderingServerArrayType = 2
-	RenderingServerArrayColor   RenderingServerArrayType = 3
-	RenderingServerArrayTexUv   RenderingServerArrayType = 4
-	RenderingServerArrayTexUv2  RenderingServerArrayType = 5
+	/*Array is a vertex color array.*/
+	RenderingServerArrayColor RenderingServerArrayType = 3
+	/*Array is a UV coordinates array.*/
+	RenderingServerArrayTexUv RenderingServerArrayType = 4
+	/*Array is a UV coordinates array for the second set of UV coordinates.*/
+	RenderingServerArrayTexUv2 RenderingServerArrayType = 5
+	/*Array is a custom data array for the first set of custom data.*/
 	RenderingServerArrayCustom0 RenderingServerArrayType = 6
+	/*Array is a custom data array for the second set of custom data.*/
 	RenderingServerArrayCustom1 RenderingServerArrayType = 7
+	/*Array is a custom data array for the third set of custom data.*/
 	RenderingServerArrayCustom2 RenderingServerArrayType = 8
+	/*Array is a custom data array for the fourth set of custom data.*/
 	RenderingServerArrayCustom3 RenderingServerArrayType = 9
-	RenderingServerArrayBones   RenderingServerArrayType = 10
+	/*Array contains bone information.*/
+	RenderingServerArrayBones RenderingServerArrayType = 10
+	/*Array is weight information.*/
 	RenderingServerArrayWeights RenderingServerArrayType = 11
-	RenderingServerArrayIndex   RenderingServerArrayType = 12
-	RenderingServerArrayMax     RenderingServerArrayType = 13
+	/*Array is an index array.*/
+	RenderingServerArrayIndex RenderingServerArrayType = 12
+	/*Represents the size of the [enum ArrayType] enum.*/
+	RenderingServerArrayMax RenderingServerArrayType = 13
 )
 
 type RenderingServerArrayCustomFormat = classdb.RenderingServerArrayCustomFormat
 
 const (
+	/*Custom data array contains 8-bit-per-channel red/green/blue/alpha color data. Values are normalized, unsigned floating-point in the [code][0.0, 1.0][/code] range.*/
 	RenderingServerArrayCustomRgba8Unorm RenderingServerArrayCustomFormat = 0
+	/*Custom data array contains 8-bit-per-channel red/green/blue/alpha color data. Values are normalized, signed floating-point in the [code][-1.0, 1.0][/code] range.*/
 	RenderingServerArrayCustomRgba8Snorm RenderingServerArrayCustomFormat = 1
-	RenderingServerArrayCustomRgHalf     RenderingServerArrayCustomFormat = 2
-	RenderingServerArrayCustomRgbaHalf   RenderingServerArrayCustomFormat = 3
-	RenderingServerArrayCustomRFloat     RenderingServerArrayCustomFormat = 4
-	RenderingServerArrayCustomRgFloat    RenderingServerArrayCustomFormat = 5
-	RenderingServerArrayCustomRgbFloat   RenderingServerArrayCustomFormat = 6
-	RenderingServerArrayCustomRgbaFloat  RenderingServerArrayCustomFormat = 7
-	RenderingServerArrayCustomMax        RenderingServerArrayCustomFormat = 8
+	/*Custom data array contains 16-bit-per-channel red/green color data. Values are floating-point in half precision.*/
+	RenderingServerArrayCustomRgHalf RenderingServerArrayCustomFormat = 2
+	/*Custom data array contains 16-bit-per-channel red/green/blue/alpha color data. Values are floating-point in half precision.*/
+	RenderingServerArrayCustomRgbaHalf RenderingServerArrayCustomFormat = 3
+	/*Custom data array contains 32-bit-per-channel red color data. Values are floating-point in single precision.*/
+	RenderingServerArrayCustomRFloat RenderingServerArrayCustomFormat = 4
+	/*Custom data array contains 32-bit-per-channel red/green color data. Values are floating-point in single precision.*/
+	RenderingServerArrayCustomRgFloat RenderingServerArrayCustomFormat = 5
+	/*Custom data array contains 32-bit-per-channel red/green/blue color data. Values are floating-point in single precision.*/
+	RenderingServerArrayCustomRgbFloat RenderingServerArrayCustomFormat = 6
+	/*Custom data array contains 32-bit-per-channel red/green/blue/alpha color data. Values are floating-point in single precision.*/
+	RenderingServerArrayCustomRgbaFloat RenderingServerArrayCustomFormat = 7
+	/*Represents the size of the [enum ArrayCustomFormat] enum.*/
+	RenderingServerArrayCustomMax RenderingServerArrayCustomFormat = 8
 )
 
 type RenderingServerArrayFormat = classdb.RenderingServerArrayFormat
 
 const (
-	RenderingServerArrayFormatVertex             RenderingServerArrayFormat = 1
-	RenderingServerArrayFormatNormal             RenderingServerArrayFormat = 2
-	RenderingServerArrayFormatTangent            RenderingServerArrayFormat = 4
-	RenderingServerArrayFormatColor              RenderingServerArrayFormat = 8
-	RenderingServerArrayFormatTexUv              RenderingServerArrayFormat = 16
-	RenderingServerArrayFormatTexUv2             RenderingServerArrayFormat = 32
-	RenderingServerArrayFormatCustom0            RenderingServerArrayFormat = 64
-	RenderingServerArrayFormatCustom1            RenderingServerArrayFormat = 128
-	RenderingServerArrayFormatCustom2            RenderingServerArrayFormat = 256
-	RenderingServerArrayFormatCustom3            RenderingServerArrayFormat = 512
-	RenderingServerArrayFormatBones              RenderingServerArrayFormat = 1024
-	RenderingServerArrayFormatWeights            RenderingServerArrayFormat = 2048
-	RenderingServerArrayFormatIndex              RenderingServerArrayFormat = 4096
-	RenderingServerArrayFormatBlendShapeMask     RenderingServerArrayFormat = 7
-	RenderingServerArrayFormatCustomBase         RenderingServerArrayFormat = 13
-	RenderingServerArrayFormatCustomBits         RenderingServerArrayFormat = 3
-	RenderingServerArrayFormatCustom0Shift       RenderingServerArrayFormat = 13
-	RenderingServerArrayFormatCustom1Shift       RenderingServerArrayFormat = 16
-	RenderingServerArrayFormatCustom2Shift       RenderingServerArrayFormat = 19
-	RenderingServerArrayFormatCustom3Shift       RenderingServerArrayFormat = 22
-	RenderingServerArrayFormatCustomMask         RenderingServerArrayFormat = 7
-	RenderingServerArrayCompressFlagsBase        RenderingServerArrayFormat = 25
-	RenderingServerArrayFlagUse2dVertices        RenderingServerArrayFormat = 33554432
-	RenderingServerArrayFlagUseDynamicUpdate     RenderingServerArrayFormat = 67108864
-	RenderingServerArrayFlagUse8BoneWeights      RenderingServerArrayFormat = 134217728
+	/*Flag used to mark a vertex position array.*/
+	RenderingServerArrayFormatVertex RenderingServerArrayFormat = 1
+	/*Flag used to mark a normal array.*/
+	RenderingServerArrayFormatNormal RenderingServerArrayFormat = 2
+	/*Flag used to mark a tangent array.*/
+	RenderingServerArrayFormatTangent RenderingServerArrayFormat = 4
+	/*Flag used to mark a vertex color array.*/
+	RenderingServerArrayFormatColor RenderingServerArrayFormat = 8
+	/*Flag used to mark a UV coordinates array.*/
+	RenderingServerArrayFormatTexUv RenderingServerArrayFormat = 16
+	/*Flag used to mark a UV coordinates array for the second UV coordinates.*/
+	RenderingServerArrayFormatTexUv2 RenderingServerArrayFormat = 32
+	/*Flag used to mark an array of custom per-vertex data for the first set of custom data.*/
+	RenderingServerArrayFormatCustom0 RenderingServerArrayFormat = 64
+	/*Flag used to mark an array of custom per-vertex data for the second set of custom data.*/
+	RenderingServerArrayFormatCustom1 RenderingServerArrayFormat = 128
+	/*Flag used to mark an array of custom per-vertex data for the third set of custom data.*/
+	RenderingServerArrayFormatCustom2 RenderingServerArrayFormat = 256
+	/*Flag used to mark an array of custom per-vertex data for the fourth set of custom data.*/
+	RenderingServerArrayFormatCustom3 RenderingServerArrayFormat = 512
+	/*Flag used to mark a bone information array.*/
+	RenderingServerArrayFormatBones RenderingServerArrayFormat = 1024
+	/*Flag used to mark a weights array.*/
+	RenderingServerArrayFormatWeights RenderingServerArrayFormat = 2048
+	/*Flag used to mark an index array.*/
+	RenderingServerArrayFormatIndex          RenderingServerArrayFormat = 4096
+	RenderingServerArrayFormatBlendShapeMask RenderingServerArrayFormat = 7
+	RenderingServerArrayFormatCustomBase     RenderingServerArrayFormat = 13
+	RenderingServerArrayFormatCustomBits     RenderingServerArrayFormat = 3
+	RenderingServerArrayFormatCustom0Shift   RenderingServerArrayFormat = 13
+	RenderingServerArrayFormatCustom1Shift   RenderingServerArrayFormat = 16
+	RenderingServerArrayFormatCustom2Shift   RenderingServerArrayFormat = 19
+	RenderingServerArrayFormatCustom3Shift   RenderingServerArrayFormat = 22
+	RenderingServerArrayFormatCustomMask     RenderingServerArrayFormat = 7
+	RenderingServerArrayCompressFlagsBase    RenderingServerArrayFormat = 25
+	/*Flag used to mark that the array contains 2D vertices.*/
+	RenderingServerArrayFlagUse2dVertices    RenderingServerArrayFormat = 33554432
+	RenderingServerArrayFlagUseDynamicUpdate RenderingServerArrayFormat = 67108864
+	/*Flag used to mark that the array uses 8 bone weights instead of 4.*/
+	RenderingServerArrayFlagUse8BoneWeights RenderingServerArrayFormat = 134217728
+	/*Flag used to mark that the mesh does not have a vertex array and instead will infer vertex positions in the shader using indices and other information.*/
 	RenderingServerArrayFlagUsesEmptyVertexArray RenderingServerArrayFormat = 268435456
-	RenderingServerArrayFlagCompressAttributes   RenderingServerArrayFormat = 536870912
-	RenderingServerArrayFlagFormatVersionBase    RenderingServerArrayFormat = 35
-	RenderingServerArrayFlagFormatVersionShift   RenderingServerArrayFormat = 35
-	RenderingServerArrayFlagFormatVersion1       RenderingServerArrayFormat = 0
-	RenderingServerArrayFlagFormatVersion2       RenderingServerArrayFormat = 34359738368
+	/*Flag used to mark that a mesh is using compressed attributes (vertices, normals, tangents, UVs). When this form of compression is enabled, vertex positions will be packed into an RGBA16UNORM attribute and scaled in the vertex shader. The normal and tangent will be packed into an RG16UNORM representing an axis, and a 16-bit float stored in the A-channel of the vertex. UVs will use 16-bit normalized floats instead of full 32-bit signed floats. When using this compression mode you must use either vertices, normals, and tangents or only vertices. You cannot use normals without tangents. Importers will automatically enable this compression if they can.*/
+	RenderingServerArrayFlagCompressAttributes RenderingServerArrayFormat = 536870912
+	/*Flag used to mark the start of the bits used to store the mesh version.*/
+	RenderingServerArrayFlagFormatVersionBase RenderingServerArrayFormat = 35
+	/*Flag used to shift a mesh format int to bring the version into the lowest digits.*/
+	RenderingServerArrayFlagFormatVersionShift RenderingServerArrayFormat = 35
+	/*Flag used to record the format used by prior mesh versions before the introduction of a version.*/
+	RenderingServerArrayFlagFormatVersion1 RenderingServerArrayFormat = 0
+	/*Flag used to record the second iteration of the mesh version flag. The primary difference between this and [constant ARRAY_FLAG_FORMAT_VERSION_1] is that this version supports [constant ARRAY_FLAG_COMPRESS_ATTRIBUTES] and in this version vertex positions are de-interleaved from normals and tangents.*/
+	RenderingServerArrayFlagFormatVersion2 RenderingServerArrayFormat = 34359738368
+	/*Flag used to record the current version that the engine expects. Currently this is the same as [constant ARRAY_FLAG_FORMAT_VERSION_2].*/
 	RenderingServerArrayFlagFormatCurrentVersion RenderingServerArrayFormat = 34359738368
-	RenderingServerArrayFlagFormatVersionMask    RenderingServerArrayFormat = 255
+	/*Flag used to isolate the bits used for mesh version after using [constant ARRAY_FLAG_FORMAT_VERSION_SHIFT] to shift them into place.*/
+	RenderingServerArrayFlagFormatVersionMask RenderingServerArrayFormat = 255
 )
 
 type RenderingServerPrimitiveType = classdb.RenderingServerPrimitiveType
 
 const (
-	RenderingServerPrimitivePoints        RenderingServerPrimitiveType = 0
-	RenderingServerPrimitiveLines         RenderingServerPrimitiveType = 1
-	RenderingServerPrimitiveLineStrip     RenderingServerPrimitiveType = 2
-	RenderingServerPrimitiveTriangles     RenderingServerPrimitiveType = 3
+	/*Primitive to draw consists of points.*/
+	RenderingServerPrimitivePoints RenderingServerPrimitiveType = 0
+	/*Primitive to draw consists of lines.*/
+	RenderingServerPrimitiveLines RenderingServerPrimitiveType = 1
+	/*Primitive to draw consists of a line strip from start to end.*/
+	RenderingServerPrimitiveLineStrip RenderingServerPrimitiveType = 2
+	/*Primitive to draw consists of triangles.*/
+	RenderingServerPrimitiveTriangles RenderingServerPrimitiveType = 3
+	/*Primitive to draw consists of a triangle strip (the last 3 vertices are always combined to make a triangle).*/
 	RenderingServerPrimitiveTriangleStrip RenderingServerPrimitiveType = 4
-	RenderingServerPrimitiveMax           RenderingServerPrimitiveType = 5
+	/*Represents the size of the [enum PrimitiveType] enum.*/
+	RenderingServerPrimitiveMax RenderingServerPrimitiveType = 5
 )
 
 type RenderingServerBlendShapeMode = classdb.RenderingServerBlendShapeMode
 
 const (
+	/*Blend shapes are normalized.*/
 	RenderingServerBlendShapeModeNormalized RenderingServerBlendShapeMode = 0
-	RenderingServerBlendShapeModeRelative   RenderingServerBlendShapeMode = 1
+	/*Blend shapes are relative to base weight.*/
+	RenderingServerBlendShapeModeRelative RenderingServerBlendShapeMode = 1
 )
 
 type RenderingServerMultimeshTransformFormat = classdb.RenderingServerMultimeshTransformFormat
 
 const (
+	/*Use [Transform2D] to store MultiMesh transform.*/
 	RenderingServerMultimeshTransform2d RenderingServerMultimeshTransformFormat = 0
+	/*Use [Transform3D] to store MultiMesh transform.*/
 	RenderingServerMultimeshTransform3d RenderingServerMultimeshTransformFormat = 1
 )
 
 type RenderingServerLightProjectorFilter = classdb.RenderingServerLightProjectorFilter
 
 const (
-	RenderingServerLightProjectorFilterNearest                   RenderingServerLightProjectorFilter = 0
-	RenderingServerLightProjectorFilterLinear                    RenderingServerLightProjectorFilter = 1
-	RenderingServerLightProjectorFilterNearestMipmaps            RenderingServerLightProjectorFilter = 2
-	RenderingServerLightProjectorFilterLinearMipmaps             RenderingServerLightProjectorFilter = 3
+	/*Nearest-neighbor filter for light projectors (use for pixel art light projectors). No mipmaps are used for rendering, which means light projectors at a distance will look sharp but grainy. This has roughly the same performance cost as using mipmaps.*/
+	RenderingServerLightProjectorFilterNearest RenderingServerLightProjectorFilter = 0
+	/*Linear filter for light projectors (use for non-pixel art light projectors). No mipmaps are used for rendering, which means light projectors at a distance will look smooth but blurry. This has roughly the same performance cost as using mipmaps.*/
+	RenderingServerLightProjectorFilterLinear RenderingServerLightProjectorFilter = 1
+	/*Nearest-neighbor filter for light projectors (use for pixel art light projectors). Isotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth but blurry. This has roughly the same performance cost as not using mipmaps.*/
+	RenderingServerLightProjectorFilterNearestMipmaps RenderingServerLightProjectorFilter = 2
+	/*Linear filter for light projectors (use for non-pixel art light projectors). Isotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth but blurry. This has roughly the same performance cost as not using mipmaps.*/
+	RenderingServerLightProjectorFilterLinearMipmaps RenderingServerLightProjectorFilter = 3
+	/*Nearest-neighbor filter for light projectors (use for pixel art light projectors). Anisotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
 	RenderingServerLightProjectorFilterNearestMipmapsAnisotropic RenderingServerLightProjectorFilter = 4
-	RenderingServerLightProjectorFilterLinearMipmapsAnisotropic  RenderingServerLightProjectorFilter = 5
+	/*Linear filter for light projectors (use for non-pixel art light projectors). Anisotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
+	RenderingServerLightProjectorFilterLinearMipmapsAnisotropic RenderingServerLightProjectorFilter = 5
 )
 
 type RenderingServerLightType = classdb.RenderingServerLightType
 
 const (
+	/*Directional (sun/moon) light (see [DirectionalLight3D]).*/
 	RenderingServerLightDirectional RenderingServerLightType = 0
-	RenderingServerLightOmni        RenderingServerLightType = 1
-	RenderingServerLightSpot        RenderingServerLightType = 2
+	/*Omni light (see [OmniLight3D]).*/
+	RenderingServerLightOmni RenderingServerLightType = 1
+	/*Spot light (see [SpotLight3D]).*/
+	RenderingServerLightSpot RenderingServerLightType = 2
 )
 
 type RenderingServerLightParam = classdb.RenderingServerLightParam
 
 const (
-	RenderingServerLightParamEnergy              RenderingServerLightParam = 0
-	RenderingServerLightParamIndirectEnergy      RenderingServerLightParam = 1
+	/*The light's energy multiplier.*/
+	RenderingServerLightParamEnergy RenderingServerLightParam = 0
+	/*The light's indirect energy multiplier (final indirect energy is [constant LIGHT_PARAM_ENERGY] * [constant LIGHT_PARAM_INDIRECT_ENERGY]).*/
+	RenderingServerLightParamIndirectEnergy RenderingServerLightParam = 1
+	/*The light's volumetric fog energy multiplier (final volumetric fog energy is [constant LIGHT_PARAM_ENERGY] * [constant LIGHT_PARAM_VOLUMETRIC_FOG_ENERGY]).*/
 	RenderingServerLightParamVolumetricFogEnergy RenderingServerLightParam = 2
-	RenderingServerLightParamSpecular            RenderingServerLightParam = 3
-	RenderingServerLightParamRange               RenderingServerLightParam = 4
-	RenderingServerLightParamSize                RenderingServerLightParam = 5
-	RenderingServerLightParamAttenuation         RenderingServerLightParam = 6
-	RenderingServerLightParamSpotAngle           RenderingServerLightParam = 7
-	RenderingServerLightParamSpotAttenuation     RenderingServerLightParam = 8
-	RenderingServerLightParamShadowMaxDistance   RenderingServerLightParam = 9
-	RenderingServerLightParamShadowSplit1Offset  RenderingServerLightParam = 10
-	RenderingServerLightParamShadowSplit2Offset  RenderingServerLightParam = 11
-	RenderingServerLightParamShadowSplit3Offset  RenderingServerLightParam = 12
-	RenderingServerLightParamShadowFadeStart     RenderingServerLightParam = 13
-	RenderingServerLightParamShadowNormalBias    RenderingServerLightParam = 14
-	RenderingServerLightParamShadowBias          RenderingServerLightParam = 15
-	RenderingServerLightParamShadowPancakeSize   RenderingServerLightParam = 16
-	RenderingServerLightParamShadowOpacity       RenderingServerLightParam = 17
-	RenderingServerLightParamShadowBlur          RenderingServerLightParam = 18
-	RenderingServerLightParamTransmittanceBias   RenderingServerLightParam = 19
-	RenderingServerLightParamIntensity           RenderingServerLightParam = 20
-	RenderingServerLightParamMax                 RenderingServerLightParam = 21
+	/*The light's influence on specularity.*/
+	RenderingServerLightParamSpecular RenderingServerLightParam = 3
+	/*The light's range.*/
+	RenderingServerLightParamRange RenderingServerLightParam = 4
+	/*The size of the light when using spot light or omni light. The angular size of the light when using directional light.*/
+	RenderingServerLightParamSize RenderingServerLightParam = 5
+	/*The light's attenuation.*/
+	RenderingServerLightParamAttenuation RenderingServerLightParam = 6
+	/*The spotlight's angle.*/
+	RenderingServerLightParamSpotAngle RenderingServerLightParam = 7
+	/*The spotlight's attenuation.*/
+	RenderingServerLightParamSpotAttenuation RenderingServerLightParam = 8
+	/*The maximum distance for shadow splits. Increasing this value will make directional shadows visible from further away, at the cost of lower overall shadow detail and performance (since more objects need to be included in the directional shadow rendering).*/
+	RenderingServerLightParamShadowMaxDistance RenderingServerLightParam = 9
+	/*Proportion of shadow atlas occupied by the first split.*/
+	RenderingServerLightParamShadowSplit1Offset RenderingServerLightParam = 10
+	/*Proportion of shadow atlas occupied by the second split.*/
+	RenderingServerLightParamShadowSplit2Offset RenderingServerLightParam = 11
+	/*Proportion of shadow atlas occupied by the third split. The fourth split occupies the rest.*/
+	RenderingServerLightParamShadowSplit3Offset RenderingServerLightParam = 12
+	/*Proportion of shadow max distance where the shadow will start to fade out.*/
+	RenderingServerLightParamShadowFadeStart RenderingServerLightParam = 13
+	/*Normal bias used to offset shadow lookup by object normal. Can be used to fix self-shadowing artifacts.*/
+	RenderingServerLightParamShadowNormalBias RenderingServerLightParam = 14
+	/*Bias the shadow lookup to fix self-shadowing artifacts.*/
+	RenderingServerLightParamShadowBias RenderingServerLightParam = 15
+	/*Sets the size of the directional shadow pancake. The pancake offsets the start of the shadow's camera frustum to provide a higher effective depth resolution for the shadow. However, a high pancake size can cause artifacts in the shadows of large objects that are close to the edge of the frustum. Reducing the pancake size can help. Setting the size to [code]0[/code] turns off the pancaking effect.*/
+	RenderingServerLightParamShadowPancakeSize RenderingServerLightParam = 16
+	/*The light's shadow opacity. Values lower than [code]1.0[/code] make the light appear through shadows. This can be used to fake global illumination at a low performance cost.*/
+	RenderingServerLightParamShadowOpacity RenderingServerLightParam = 17
+	/*Blurs the edges of the shadow. Can be used to hide pixel artifacts in low resolution shadow maps. A high value can make shadows appear grainy and can cause other unwanted artifacts. Try to keep as near default as possible.*/
+	RenderingServerLightParamShadowBlur        RenderingServerLightParam = 18
+	RenderingServerLightParamTransmittanceBias RenderingServerLightParam = 19
+	/*Constant representing the intensity of the light, measured in Lumens when dealing with a [SpotLight3D] or [OmniLight3D], or measured in Lux with a [DirectionalLight3D]. Only used when [member ProjectSettings.rendering/lights_and_shadows/use_physical_light_units] is [code]true[/code].*/
+	RenderingServerLightParamIntensity RenderingServerLightParam = 20
+	/*Represents the size of the [enum LightParam] enum.*/
+	RenderingServerLightParamMax RenderingServerLightParam = 21
 )
 
 type RenderingServerLightBakeMode = classdb.RenderingServerLightBakeMode
 
 const (
+	/*Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.*/
 	RenderingServerLightBakeDisabled RenderingServerLightBakeMode = 0
-	RenderingServerLightBakeStatic   RenderingServerLightBakeMode = 1
-	RenderingServerLightBakeDynamic  RenderingServerLightBakeMode = 2
+	/*Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([member Environment.sdfgi_enabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.*/
+	RenderingServerLightBakeStatic RenderingServerLightBakeMode = 1
+	/*Light is taken into account in dynamic baking ([VoxelGI] and SDFGI ([member Environment.sdfgi_enabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [constant LIGHT_BAKE_STATIC]. This has a greater performance cost compared to [constant LIGHT_BAKE_STATIC]. When using SDFGI, the update speed of dynamic lights is affected by [member ProjectSettings.rendering/global_illumination/sdfgi/frames_to_update_lights].*/
+	RenderingServerLightBakeDynamic RenderingServerLightBakeMode = 2
 )
 
 type RenderingServerLightOmniShadowMode = classdb.RenderingServerLightOmniShadowMode
 
 const (
+	/*Use a dual paraboloid shadow map for omni lights.*/
 	RenderingServerLightOmniShadowDualParaboloid RenderingServerLightOmniShadowMode = 0
-	RenderingServerLightOmniShadowCube           RenderingServerLightOmniShadowMode = 1
+	/*Use a cubemap shadow map for omni lights. Slower but better quality than dual paraboloid.*/
+	RenderingServerLightOmniShadowCube RenderingServerLightOmniShadowMode = 1
 )
 
 type RenderingServerLightDirectionalShadowMode = classdb.RenderingServerLightDirectionalShadowMode
 
 const (
-	RenderingServerLightDirectionalShadowOrthogonal      RenderingServerLightDirectionalShadowMode = 0
+	/*Use orthogonal shadow projection for directional light.*/
+	RenderingServerLightDirectionalShadowOrthogonal RenderingServerLightDirectionalShadowMode = 0
+	/*Use 2 splits for shadow projection when using directional light.*/
 	RenderingServerLightDirectionalShadowParallel2Splits RenderingServerLightDirectionalShadowMode = 1
+	/*Use 4 splits for shadow projection when using directional light.*/
 	RenderingServerLightDirectionalShadowParallel4Splits RenderingServerLightDirectionalShadowMode = 2
 )
 
 type RenderingServerLightDirectionalSkyMode = classdb.RenderingServerLightDirectionalSkyMode
 
 const (
+	/*Use DirectionalLight3D in both sky rendering and scene lighting.*/
 	RenderingServerLightDirectionalSkyModeLightAndSky RenderingServerLightDirectionalSkyMode = 0
-	RenderingServerLightDirectionalSkyModeLightOnly   RenderingServerLightDirectionalSkyMode = 1
-	RenderingServerLightDirectionalSkyModeSkyOnly     RenderingServerLightDirectionalSkyMode = 2
+	/*Only use DirectionalLight3D in scene lighting.*/
+	RenderingServerLightDirectionalSkyModeLightOnly RenderingServerLightDirectionalSkyMode = 1
+	/*Only use DirectionalLight3D in sky rendering.*/
+	RenderingServerLightDirectionalSkyModeSkyOnly RenderingServerLightDirectionalSkyMode = 2
 )
 
 type RenderingServerShadowQuality = classdb.RenderingServerShadowQuality
 
 const (
-	RenderingServerShadowQualityHard        RenderingServerShadowQuality = 0
+	/*Lowest shadow filtering quality (fastest). Soft shadows are not available with this quality setting, which means the [member Light3D.shadow_blur] property is ignored if [member Light3D.light_size] and [member Light3D.light_angular_distance] is [code]0.0[/code].
+	  [b]Note:[/b] The variable shadow blur performed by [member Light3D.light_size] and [member Light3D.light_angular_distance] is still effective when using hard shadow filtering. In this case, [member Light3D.shadow_blur] [i]is[/i] taken into account. However, the results will not be blurred, instead the blur amount is treated as a maximum radius for the penumbra.*/
+	RenderingServerShadowQualityHard RenderingServerShadowQuality = 0
+	/*Very low shadow filtering quality (faster). When using this quality setting, [member Light3D.shadow_blur] is automatically multiplied by 0.75× to avoid introducing too much noise. This division only applies to lights whose [member Light3D.light_size] or [member Light3D.light_angular_distance] is [code]0.0[/code]).*/
 	RenderingServerShadowQualitySoftVeryLow RenderingServerShadowQuality = 1
-	RenderingServerShadowQualitySoftLow     RenderingServerShadowQuality = 2
-	RenderingServerShadowQualitySoftMedium  RenderingServerShadowQuality = 3
-	RenderingServerShadowQualitySoftHigh    RenderingServerShadowQuality = 4
-	RenderingServerShadowQualitySoftUltra   RenderingServerShadowQuality = 5
-	RenderingServerShadowQualityMax         RenderingServerShadowQuality = 6
+	/*Low shadow filtering quality (fast).*/
+	RenderingServerShadowQualitySoftLow RenderingServerShadowQuality = 2
+	/*Medium low shadow filtering quality (average).*/
+	RenderingServerShadowQualitySoftMedium RenderingServerShadowQuality = 3
+	/*High low shadow filtering quality (slow). When using this quality setting, [member Light3D.shadow_blur] is automatically multiplied by 1.5× to better make use of the high sample count. This increased blur also improves the stability of dynamic object shadows. This multiplier only applies to lights whose [member Light3D.light_size] or [member Light3D.light_angular_distance] is [code]0.0[/code]).*/
+	RenderingServerShadowQualitySoftHigh RenderingServerShadowQuality = 4
+	/*Highest low shadow filtering quality (slowest). When using this quality setting, [member Light3D.shadow_blur] is automatically multiplied by 2× to better make use of the high sample count. This increased blur also improves the stability of dynamic object shadows. This multiplier only applies to lights whose [member Light3D.light_size] or [member Light3D.light_angular_distance] is [code]0.0[/code]).*/
+	RenderingServerShadowQualitySoftUltra RenderingServerShadowQuality = 5
+	/*Represents the size of the [enum ShadowQuality] enum.*/
+	RenderingServerShadowQualityMax RenderingServerShadowQuality = 6
 )
 
 type RenderingServerReflectionProbeUpdateMode = classdb.RenderingServerReflectionProbeUpdateMode
 
 const (
-	RenderingServerReflectionProbeUpdateOnce   RenderingServerReflectionProbeUpdateMode = 0
+	/*Reflection probe will update reflections once and then stop.*/
+	RenderingServerReflectionProbeUpdateOnce RenderingServerReflectionProbeUpdateMode = 0
+	/*Reflection probe will update each frame. This mode is necessary to capture moving objects.*/
 	RenderingServerReflectionProbeUpdateAlways RenderingServerReflectionProbeUpdateMode = 1
 )
 
 type RenderingServerReflectionProbeAmbientMode = classdb.RenderingServerReflectionProbeAmbientMode
 
 const (
-	RenderingServerReflectionProbeAmbientDisabled    RenderingServerReflectionProbeAmbientMode = 0
+	/*Do not apply any ambient lighting inside the reflection probe's box defined by its size.*/
+	RenderingServerReflectionProbeAmbientDisabled RenderingServerReflectionProbeAmbientMode = 0
+	/*Apply automatically-sourced environment lighting inside the reflection probe's box defined by its size.*/
 	RenderingServerReflectionProbeAmbientEnvironment RenderingServerReflectionProbeAmbientMode = 1
-	RenderingServerReflectionProbeAmbientColor       RenderingServerReflectionProbeAmbientMode = 2
+	/*Apply custom ambient lighting inside the reflection probe's box defined by its size. See [method reflection_probe_set_ambient_color] and [method reflection_probe_set_ambient_energy].*/
+	RenderingServerReflectionProbeAmbientColor RenderingServerReflectionProbeAmbientMode = 2
 )
 
 type RenderingServerDecalTexture = classdb.RenderingServerDecalTexture
 
 const (
-	RenderingServerDecalTextureAlbedo   RenderingServerDecalTexture = 0
-	RenderingServerDecalTextureNormal   RenderingServerDecalTexture = 1
-	RenderingServerDecalTextureOrm      RenderingServerDecalTexture = 2
+	/*Albedo texture slot in a decal ([member Decal.texture_albedo]).*/
+	RenderingServerDecalTextureAlbedo RenderingServerDecalTexture = 0
+	/*Normal map texture slot in a decal ([member Decal.texture_normal]).*/
+	RenderingServerDecalTextureNormal RenderingServerDecalTexture = 1
+	/*Occlusion/Roughness/Metallic texture slot in a decal ([member Decal.texture_orm]).*/
+	RenderingServerDecalTextureOrm RenderingServerDecalTexture = 2
+	/*Emission texture slot in a decal ([member Decal.texture_emission]).*/
 	RenderingServerDecalTextureEmission RenderingServerDecalTexture = 3
-	RenderingServerDecalTextureMax      RenderingServerDecalTexture = 4
+	/*Represents the size of the [enum DecalTexture] enum.*/
+	RenderingServerDecalTextureMax RenderingServerDecalTexture = 4
 )
 
 type RenderingServerDecalFilter = classdb.RenderingServerDecalFilter
 
 const (
-	RenderingServerDecalFilterNearest                   RenderingServerDecalFilter = 0
-	RenderingServerDecalFilterLinear                    RenderingServerDecalFilter = 1
-	RenderingServerDecalFilterNearestMipmaps            RenderingServerDecalFilter = 2
-	RenderingServerDecalFilterLinearMipmaps             RenderingServerDecalFilter = 3
+	/*Nearest-neighbor filter for decals (use for pixel art decals). No mipmaps are used for rendering, which means decals at a distance will look sharp but grainy. This has roughly the same performance cost as using mipmaps.*/
+	RenderingServerDecalFilterNearest RenderingServerDecalFilter = 0
+	/*Linear filter for decals (use for non-pixel art decals). No mipmaps are used for rendering, which means decals at a distance will look smooth but blurry. This has roughly the same performance cost as using mipmaps.*/
+	RenderingServerDecalFilterLinear RenderingServerDecalFilter = 1
+	/*Nearest-neighbor filter for decals (use for pixel art decals). Isotropic mipmaps are used for rendering, which means decals at a distance will look smooth but blurry. This has roughly the same performance cost as not using mipmaps.*/
+	RenderingServerDecalFilterNearestMipmaps RenderingServerDecalFilter = 2
+	/*Linear filter for decals (use for non-pixel art decals). Isotropic mipmaps are used for rendering, which means decals at a distance will look smooth but blurry. This has roughly the same performance cost as not using mipmaps.*/
+	RenderingServerDecalFilterLinearMipmaps RenderingServerDecalFilter = 3
+	/*Nearest-neighbor filter for decals (use for pixel art decals). Anisotropic mipmaps are used for rendering, which means decals at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
 	RenderingServerDecalFilterNearestMipmapsAnisotropic RenderingServerDecalFilter = 4
-	RenderingServerDecalFilterLinearMipmapsAnisotropic  RenderingServerDecalFilter = 5
+	/*Linear filter for decals (use for non-pixel art decals). Anisotropic mipmaps are used for rendering, which means decals at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
+	RenderingServerDecalFilterLinearMipmapsAnisotropic RenderingServerDecalFilter = 5
 )
 
 type RenderingServerVoxelGIQuality = classdb.RenderingServerVoxelGIQuality
 
 const (
-	RenderingServerVoxelGiQualityLow  RenderingServerVoxelGIQuality = 0
+	/*Low [VoxelGI] rendering quality using 4 cones.*/
+	RenderingServerVoxelGiQualityLow RenderingServerVoxelGIQuality = 0
+	/*High [VoxelGI] rendering quality using 6 cones.*/
 	RenderingServerVoxelGiQualityHigh RenderingServerVoxelGIQuality = 1
 )
 
 type RenderingServerParticlesMode = classdb.RenderingServerParticlesMode
 
 const (
+	/*2D particles.*/
 	RenderingServerParticlesMode2d RenderingServerParticlesMode = 0
+	/*3D particles.*/
 	RenderingServerParticlesMode3d RenderingServerParticlesMode = 1
 )
 
@@ -4928,10 +7977,14 @@ const (
 type RenderingServerParticlesDrawOrder = classdb.RenderingServerParticlesDrawOrder
 
 const (
-	RenderingServerParticlesDrawOrderIndex           RenderingServerParticlesDrawOrder = 0
-	RenderingServerParticlesDrawOrderLifetime        RenderingServerParticlesDrawOrder = 1
+	/*Draw particles in the order that they appear in the particles array.*/
+	RenderingServerParticlesDrawOrderIndex RenderingServerParticlesDrawOrder = 0
+	/*Sort particles based on their lifetime. In other words, the particle with the highest lifetime is drawn at the front.*/
+	RenderingServerParticlesDrawOrderLifetime RenderingServerParticlesDrawOrder = 1
+	/*Sort particles based on the inverse of their lifetime. In other words, the particle with the lowest lifetime is drawn at the front.*/
 	RenderingServerParticlesDrawOrderReverseLifetime RenderingServerParticlesDrawOrder = 2
-	RenderingServerParticlesDrawOrderViewDepth       RenderingServerParticlesDrawOrder = 3
+	/*Sort particles based on their distance to the camera.*/
+	RenderingServerParticlesDrawOrderViewDepth RenderingServerParticlesDrawOrder = 3
 )
 
 type RenderingServerParticlesCollisionType = classdb.RenderingServerParticlesCollisionType
@@ -4955,415 +8008,634 @@ const (
 	RenderingServerParticlesCollisionHeightfieldResolution2048 RenderingServerParticlesCollisionHeightfieldResolution = 3
 	RenderingServerParticlesCollisionHeightfieldResolution4096 RenderingServerParticlesCollisionHeightfieldResolution = 4
 	RenderingServerParticlesCollisionHeightfieldResolution8192 RenderingServerParticlesCollisionHeightfieldResolution = 5
-	RenderingServerParticlesCollisionHeightfieldResolutionMax  RenderingServerParticlesCollisionHeightfieldResolution = 6
+	/*Represents the size of the [enum ParticlesCollisionHeightfieldResolution] enum.*/
+	RenderingServerParticlesCollisionHeightfieldResolutionMax RenderingServerParticlesCollisionHeightfieldResolution = 6
 )
 
 type RenderingServerFogVolumeShape = classdb.RenderingServerFogVolumeShape
 
 const (
+	/*[FogVolume] will be shaped like an ellipsoid (stretched sphere).*/
 	RenderingServerFogVolumeShapeEllipsoid RenderingServerFogVolumeShape = 0
-	RenderingServerFogVolumeShapeCone      RenderingServerFogVolumeShape = 1
-	RenderingServerFogVolumeShapeCylinder  RenderingServerFogVolumeShape = 2
-	RenderingServerFogVolumeShapeBox       RenderingServerFogVolumeShape = 3
-	RenderingServerFogVolumeShapeWorld     RenderingServerFogVolumeShape = 4
-	RenderingServerFogVolumeShapeMax       RenderingServerFogVolumeShape = 5
+	/*[FogVolume] will be shaped like a cone pointing upwards (in local coordinates). The cone's angle is set automatically to fill the size. The cone will be adjusted to fit within the size. Rotate the [FogVolume] node to reorient the cone. Non-uniform scaling via size is not supported (scale the [FogVolume] node instead).*/
+	RenderingServerFogVolumeShapeCone RenderingServerFogVolumeShape = 1
+	/*[FogVolume] will be shaped like an upright cylinder (in local coordinates). Rotate the [FogVolume] node to reorient the cylinder. The cylinder will be adjusted to fit within the size. Non-uniform scaling via size is not supported (scale the [FogVolume] node instead).*/
+	RenderingServerFogVolumeShapeCylinder RenderingServerFogVolumeShape = 2
+	/*[FogVolume] will be shaped like a box.*/
+	RenderingServerFogVolumeShapeBox RenderingServerFogVolumeShape = 3
+	/*[FogVolume] will have no shape, will cover the whole world and will not be culled.*/
+	RenderingServerFogVolumeShapeWorld RenderingServerFogVolumeShape = 4
+	/*Represents the size of the [enum FogVolumeShape] enum.*/
+	RenderingServerFogVolumeShapeMax RenderingServerFogVolumeShape = 5
 )
 
 type RenderingServerViewportScaling3DMode = classdb.RenderingServerViewportScaling3DMode
 
 const (
+	/*Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will result in undersampling while values greater than [code]1.0[/code] will result in supersampling. A value of [code]1.0[/code] disables scaling.*/
 	RenderingServerViewportScaling3dModeBilinear RenderingServerViewportScaling3DMode = 0
-	RenderingServerViewportScaling3dModeFsr      RenderingServerViewportScaling3DMode = 1
-	RenderingServerViewportScaling3dModeFsr2     RenderingServerViewportScaling3DMode = 2
-	RenderingServerViewportScaling3dModeMax      RenderingServerViewportScaling3DMode = 3
+	/*Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] disables scaling.*/
+	RenderingServerViewportScaling3dModeFsr RenderingServerViewportScaling3DMode = 1
+	/*Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR2. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use FSR2 at native resolution as a TAA solution.*/
+	RenderingServerViewportScaling3dModeFsr2 RenderingServerViewportScaling3DMode = 2
+	/*Represents the size of the [enum ViewportScaling3DMode] enum.*/
+	RenderingServerViewportScaling3dModeMax RenderingServerViewportScaling3DMode = 3
 )
 
 type RenderingServerViewportUpdateMode = classdb.RenderingServerViewportUpdateMode
 
 const (
-	RenderingServerViewportUpdateDisabled          RenderingServerViewportUpdateMode = 0
-	RenderingServerViewportUpdateOnce              RenderingServerViewportUpdateMode = 1
-	RenderingServerViewportUpdateWhenVisible       RenderingServerViewportUpdateMode = 2
+	/*Do not update the viewport's render target.*/
+	RenderingServerViewportUpdateDisabled RenderingServerViewportUpdateMode = 0
+	/*Update the viewport's render target once, then switch to [constant VIEWPORT_UPDATE_DISABLED].*/
+	RenderingServerViewportUpdateOnce RenderingServerViewportUpdateMode = 1
+	/*Update the viewport's render target only when it is visible. This is the default value.*/
+	RenderingServerViewportUpdateWhenVisible RenderingServerViewportUpdateMode = 2
+	/*Update the viewport's render target only when its parent is visible.*/
 	RenderingServerViewportUpdateWhenParentVisible RenderingServerViewportUpdateMode = 3
-	RenderingServerViewportUpdateAlways            RenderingServerViewportUpdateMode = 4
+	/*Always update the viewport's render target.*/
+	RenderingServerViewportUpdateAlways RenderingServerViewportUpdateMode = 4
 )
 
 type RenderingServerViewportClearMode = classdb.RenderingServerViewportClearMode
 
 const (
-	RenderingServerViewportClearAlways        RenderingServerViewportClearMode = 0
-	RenderingServerViewportClearNever         RenderingServerViewportClearMode = 1
+	/*Always clear the viewport's render target before drawing.*/
+	RenderingServerViewportClearAlways RenderingServerViewportClearMode = 0
+	/*Never clear the viewport's render target.*/
+	RenderingServerViewportClearNever RenderingServerViewportClearMode = 1
+	/*Clear the viewport's render target on the next frame, then switch to [constant VIEWPORT_CLEAR_NEVER].*/
 	RenderingServerViewportClearOnlyNextFrame RenderingServerViewportClearMode = 2
 )
 
 type RenderingServerViewportEnvironmentMode = classdb.RenderingServerViewportEnvironmentMode
 
 const (
+	/*Disable rendering of 3D environment over 2D canvas.*/
 	RenderingServerViewportEnvironmentDisabled RenderingServerViewportEnvironmentMode = 0
-	RenderingServerViewportEnvironmentEnabled  RenderingServerViewportEnvironmentMode = 1
-	RenderingServerViewportEnvironmentInherit  RenderingServerViewportEnvironmentMode = 2
-	RenderingServerViewportEnvironmentMax      RenderingServerViewportEnvironmentMode = 3
+	/*Enable rendering of 3D environment over 2D canvas.*/
+	RenderingServerViewportEnvironmentEnabled RenderingServerViewportEnvironmentMode = 1
+	/*Inherit enable/disable value from parent. If the topmost parent is also set to [constant VIEWPORT_ENVIRONMENT_INHERIT], then this has the same behavior as [constant VIEWPORT_ENVIRONMENT_ENABLED].*/
+	RenderingServerViewportEnvironmentInherit RenderingServerViewportEnvironmentMode = 2
+	/*Represents the size of the [enum ViewportEnvironmentMode] enum.*/
+	RenderingServerViewportEnvironmentMax RenderingServerViewportEnvironmentMode = 3
 )
 
 type RenderingServerViewportSDFOversize = classdb.RenderingServerViewportSDFOversize
 
 const (
+	/*Do not oversize the 2D signed distance field. Occluders may disappear when touching the viewport's edges, and [GPUParticles3D] collision may stop working earlier than intended. This has the lowest GPU requirements.*/
 	RenderingServerViewportSdfOversize100Percent RenderingServerViewportSDFOversize = 0
+	/*2D signed distance field covers 20% of the viewport's size outside the viewport on each side (top, right, bottom, left).*/
 	RenderingServerViewportSdfOversize120Percent RenderingServerViewportSDFOversize = 1
+	/*2D signed distance field covers 50% of the viewport's size outside the viewport on each side (top, right, bottom, left).*/
 	RenderingServerViewportSdfOversize150Percent RenderingServerViewportSDFOversize = 2
+	/*2D signed distance field covers 100% of the viewport's size outside the viewport on each side (top, right, bottom, left). This has the highest GPU requirements.*/
 	RenderingServerViewportSdfOversize200Percent RenderingServerViewportSDFOversize = 3
-	RenderingServerViewportSdfOversizeMax        RenderingServerViewportSDFOversize = 4
+	/*Represents the size of the [enum ViewportSDFOversize] enum.*/
+	RenderingServerViewportSdfOversizeMax RenderingServerViewportSDFOversize = 4
 )
 
 type RenderingServerViewportSDFScale = classdb.RenderingServerViewportSDFScale
 
 const (
+	/*Full resolution 2D signed distance field scale. This has the highest GPU requirements.*/
 	RenderingServerViewportSdfScale100Percent RenderingServerViewportSDFScale = 0
-	RenderingServerViewportSdfScale50Percent  RenderingServerViewportSDFScale = 1
-	RenderingServerViewportSdfScale25Percent  RenderingServerViewportSDFScale = 2
-	RenderingServerViewportSdfScaleMax        RenderingServerViewportSDFScale = 3
+	/*Half resolution 2D signed distance field scale on each axis (25% of the viewport pixel count).*/
+	RenderingServerViewportSdfScale50Percent RenderingServerViewportSDFScale = 1
+	/*Quarter resolution 2D signed distance field scale on each axis (6.25% of the viewport pixel count). This has the lowest GPU requirements.*/
+	RenderingServerViewportSdfScale25Percent RenderingServerViewportSDFScale = 2
+	/*Represents the size of the [enum ViewportSDFScale] enum.*/
+	RenderingServerViewportSdfScaleMax RenderingServerViewportSDFScale = 3
 )
 
 type RenderingServerViewportMSAA = classdb.RenderingServerViewportMSAA
 
 const (
+	/*Multisample antialiasing for 3D is disabled. This is the default value, and also the fastest setting.*/
 	RenderingServerViewportMsaaDisabled RenderingServerViewportMSAA = 0
-	RenderingServerViewportMsaa2x       RenderingServerViewportMSAA = 1
-	RenderingServerViewportMsaa4x       RenderingServerViewportMSAA = 2
-	RenderingServerViewportMsaa8x       RenderingServerViewportMSAA = 3
-	RenderingServerViewportMsaaMax      RenderingServerViewportMSAA = 4
+	/*Multisample antialiasing uses 2 samples per pixel for 3D. This has a moderate impact on performance.*/
+	RenderingServerViewportMsaa2x RenderingServerViewportMSAA = 1
+	/*Multisample antialiasing uses 4 samples per pixel for 3D. This has a high impact on performance.*/
+	RenderingServerViewportMsaa4x RenderingServerViewportMSAA = 2
+	/*Multisample antialiasing uses 8 samples per pixel for 3D. This has a very high impact on performance. Likely unsupported on low-end and older hardware.*/
+	RenderingServerViewportMsaa8x RenderingServerViewportMSAA = 3
+	/*Represents the size of the [enum ViewportMSAA] enum.*/
+	RenderingServerViewportMsaaMax RenderingServerViewportMSAA = 4
 )
 
 type RenderingServerViewportScreenSpaceAA = classdb.RenderingServerViewportScreenSpaceAA
 
 const (
+	/*Do not perform any antialiasing in the full screen post-process.*/
 	RenderingServerViewportScreenSpaceAaDisabled RenderingServerViewportScreenSpaceAA = 0
-	RenderingServerViewportScreenSpaceAaFxaa     RenderingServerViewportScreenSpaceAA = 1
-	RenderingServerViewportScreenSpaceAaMax      RenderingServerViewportScreenSpaceAA = 2
+	/*Use fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.*/
+	RenderingServerViewportScreenSpaceAaFxaa RenderingServerViewportScreenSpaceAA = 1
+	/*Represents the size of the [enum ViewportScreenSpaceAA] enum.*/
+	RenderingServerViewportScreenSpaceAaMax RenderingServerViewportScreenSpaceAA = 2
 )
 
 type RenderingServerViewportOcclusionCullingBuildQuality = classdb.RenderingServerViewportOcclusionCullingBuildQuality
 
 const (
-	RenderingServerViewportOcclusionBuildQualityLow    RenderingServerViewportOcclusionCullingBuildQuality = 0
+	/*Low occlusion culling BVH build quality (as defined by Embree). Results in the lowest CPU usage, but least effective culling.*/
+	RenderingServerViewportOcclusionBuildQualityLow RenderingServerViewportOcclusionCullingBuildQuality = 0
+	/*Medium occlusion culling BVH build quality (as defined by Embree).*/
 	RenderingServerViewportOcclusionBuildQualityMedium RenderingServerViewportOcclusionCullingBuildQuality = 1
-	RenderingServerViewportOcclusionBuildQualityHigh   RenderingServerViewportOcclusionCullingBuildQuality = 2
+	/*High occlusion culling BVH build quality (as defined by Embree). Results in the highest CPU usage, but most effective culling.*/
+	RenderingServerViewportOcclusionBuildQualityHigh RenderingServerViewportOcclusionCullingBuildQuality = 2
 )
 
 type RenderingServerViewportRenderInfo = classdb.RenderingServerViewportRenderInfo
 
 const (
-	RenderingServerViewportRenderInfoObjectsInFrame    RenderingServerViewportRenderInfo = 0
+	/*Number of objects drawn in a single frame.*/
+	RenderingServerViewportRenderInfoObjectsInFrame RenderingServerViewportRenderInfo = 0
+	/*Number of points, lines, or triangles drawn in a single frame.*/
 	RenderingServerViewportRenderInfoPrimitivesInFrame RenderingServerViewportRenderInfo = 1
-	RenderingServerViewportRenderInfoDrawCallsInFrame  RenderingServerViewportRenderInfo = 2
-	RenderingServerViewportRenderInfoMax               RenderingServerViewportRenderInfo = 3
+	/*Number of draw calls during this frame.*/
+	RenderingServerViewportRenderInfoDrawCallsInFrame RenderingServerViewportRenderInfo = 2
+	/*Represents the size of the [enum ViewportRenderInfo] enum.*/
+	RenderingServerViewportRenderInfoMax RenderingServerViewportRenderInfo = 3
 )
 
 type RenderingServerViewportRenderInfoType = classdb.RenderingServerViewportRenderInfoType
 
 const (
+	/*Visible render pass (excluding shadows).*/
 	RenderingServerViewportRenderInfoTypeVisible RenderingServerViewportRenderInfoType = 0
-	RenderingServerViewportRenderInfoTypeShadow  RenderingServerViewportRenderInfoType = 1
-	RenderingServerViewportRenderInfoTypeMax     RenderingServerViewportRenderInfoType = 2
+	/*Shadow render pass. Objects will be rendered several times depending on the number of amounts of lights with shadows and the number of directional shadow splits.*/
+	RenderingServerViewportRenderInfoTypeShadow RenderingServerViewportRenderInfoType = 1
+	/*Represents the size of the [enum ViewportRenderInfoType] enum.*/
+	RenderingServerViewportRenderInfoTypeMax RenderingServerViewportRenderInfoType = 2
 )
 
 type RenderingServerViewportDebugDraw = classdb.RenderingServerViewportDebugDraw
 
 const (
-	RenderingServerViewportDebugDrawDisabled                RenderingServerViewportDebugDraw = 0
-	RenderingServerViewportDebugDrawUnshaded                RenderingServerViewportDebugDraw = 1
-	RenderingServerViewportDebugDrawLighting                RenderingServerViewportDebugDraw = 2
-	RenderingServerViewportDebugDrawOverdraw                RenderingServerViewportDebugDraw = 3
-	RenderingServerViewportDebugDrawWireframe               RenderingServerViewportDebugDraw = 4
-	RenderingServerViewportDebugDrawNormalBuffer            RenderingServerViewportDebugDraw = 5
-	RenderingServerViewportDebugDrawVoxelGiAlbedo           RenderingServerViewportDebugDraw = 6
-	RenderingServerViewportDebugDrawVoxelGiLighting         RenderingServerViewportDebugDraw = 7
-	RenderingServerViewportDebugDrawVoxelGiEmission         RenderingServerViewportDebugDraw = 8
-	RenderingServerViewportDebugDrawShadowAtlas             RenderingServerViewportDebugDraw = 9
-	RenderingServerViewportDebugDrawDirectionalShadowAtlas  RenderingServerViewportDebugDraw = 10
-	RenderingServerViewportDebugDrawSceneLuminance          RenderingServerViewportDebugDraw = 11
-	RenderingServerViewportDebugDrawSsao                    RenderingServerViewportDebugDraw = 12
-	RenderingServerViewportDebugDrawSsil                    RenderingServerViewportDebugDraw = 13
-	RenderingServerViewportDebugDrawPssmSplits              RenderingServerViewportDebugDraw = 14
-	RenderingServerViewportDebugDrawDecalAtlas              RenderingServerViewportDebugDraw = 15
-	RenderingServerViewportDebugDrawSdfgi                   RenderingServerViewportDebugDraw = 16
-	RenderingServerViewportDebugDrawSdfgiProbes             RenderingServerViewportDebugDraw = 17
-	RenderingServerViewportDebugDrawGiBuffer                RenderingServerViewportDebugDraw = 18
-	RenderingServerViewportDebugDrawDisableLod              RenderingServerViewportDebugDraw = 19
-	RenderingServerViewportDebugDrawClusterOmniLights       RenderingServerViewportDebugDraw = 20
-	RenderingServerViewportDebugDrawClusterSpotLights       RenderingServerViewportDebugDraw = 21
-	RenderingServerViewportDebugDrawClusterDecals           RenderingServerViewportDebugDraw = 22
+	/*Debug draw is disabled. Default setting.*/
+	RenderingServerViewportDebugDrawDisabled RenderingServerViewportDebugDraw = 0
+	/*Objects are displayed without light information.*/
+	RenderingServerViewportDebugDrawUnshaded RenderingServerViewportDebugDraw = 1
+	/*Objects are displayed with only light information.*/
+	RenderingServerViewportDebugDrawLighting RenderingServerViewportDebugDraw = 2
+	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw (represented by brighter colors) means you are wasting performance on drawing pixels that are being hidden behind others.
+	  [b]Note:[/b] When using this debug draw mode, custom shaders will be ignored. This means vertex displacement won't be visible anymore.*/
+	RenderingServerViewportDebugDrawOverdraw RenderingServerViewportDebugDraw = 3
+	/*Debug draw draws objects in wireframe.*/
+	RenderingServerViewportDebugDrawWireframe RenderingServerViewportDebugDraw = 4
+	/*Normal buffer is drawn instead of regular scene so you can see the per-pixel normals that will be used by post-processing effects.*/
+	RenderingServerViewportDebugDrawNormalBuffer RenderingServerViewportDebugDraw = 5
+	/*Objects are displayed with only the albedo value from [VoxelGI]s.*/
+	RenderingServerViewportDebugDrawVoxelGiAlbedo RenderingServerViewportDebugDraw = 6
+	/*Objects are displayed with only the lighting value from [VoxelGI]s.*/
+	RenderingServerViewportDebugDrawVoxelGiLighting RenderingServerViewportDebugDraw = 7
+	/*Objects are displayed with only the emission color from [VoxelGI]s.*/
+	RenderingServerViewportDebugDrawVoxelGiEmission RenderingServerViewportDebugDraw = 8
+	/*Draws the shadow atlas that stores shadows from [OmniLight3D]s and [SpotLight3D]s in the upper left quadrant of the [Viewport].*/
+	RenderingServerViewportDebugDrawShadowAtlas RenderingServerViewportDebugDraw = 9
+	/*Draws the shadow atlas that stores shadows from [DirectionalLight3D]s in the upper left quadrant of the [Viewport].
+	  The slice of the camera frustum related to the shadow map cascade is superimposed to visualize coverage. The color of each slice matches the colors used for [constant VIEWPORT_DEBUG_DRAW_PSSM_SPLITS]. When shadow cascades are blended the overlap is taken into account when drawing the frustum slices.
+	  The last cascade shows all frustum slices to illustrate the coverage of all slices.*/
+	RenderingServerViewportDebugDrawDirectionalShadowAtlas RenderingServerViewportDebugDraw = 10
+	/*Draws the estimated scene luminance. This is a 1×1 texture that is generated when autoexposure is enabled to control the scene's exposure.*/
+	RenderingServerViewportDebugDrawSceneLuminance RenderingServerViewportDebugDraw = 11
+	/*Draws the screen space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [member Environment.ssao_enabled] set in your [WorldEnvironment].*/
+	RenderingServerViewportDebugDrawSsao RenderingServerViewportDebugDraw = 12
+	/*Draws the screen space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [member Environment.ssil_enabled] set in your [WorldEnvironment].*/
+	RenderingServerViewportDebugDrawSsil RenderingServerViewportDebugDraw = 13
+	/*Colors each PSSM split for the [DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order they will be colored red, green, blue, yellow.*/
+	RenderingServerViewportDebugDrawPssmSplits RenderingServerViewportDebugDraw = 14
+	/*Draws the decal atlas that stores decal textures from [Decal]s.*/
+	RenderingServerViewportDebugDrawDecalAtlas RenderingServerViewportDebugDraw = 15
+	/*Draws SDFGI cascade data. This is the data structure that is used to bounce lighting against and create reflections.*/
+	RenderingServerViewportDebugDrawSdfgi RenderingServerViewportDebugDraw = 16
+	/*Draws SDFGI probe data. This is the data structure that is used to give indirect lighting dynamic objects moving within the scene.*/
+	RenderingServerViewportDebugDrawSdfgiProbes RenderingServerViewportDebugDraw = 17
+	/*Draws the global illumination buffer ([VoxelGI] or SDFGI).*/
+	RenderingServerViewportDebugDrawGiBuffer RenderingServerViewportDebugDraw = 18
+	/*Disable mesh LOD. All meshes are drawn with full detail, which can be used to compare performance.*/
+	RenderingServerViewportDebugDrawDisableLod RenderingServerViewportDebugDraw = 19
+	/*Draws the [OmniLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.*/
+	RenderingServerViewportDebugDrawClusterOmniLights RenderingServerViewportDebugDraw = 20
+	/*Draws the [SpotLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.*/
+	RenderingServerViewportDebugDrawClusterSpotLights RenderingServerViewportDebugDraw = 21
+	/*Draws the [Decal] cluster. Clustering determines where decals are positioned in screen-space, which allows the engine to only process these portions of the screen for decals.*/
+	RenderingServerViewportDebugDrawClusterDecals RenderingServerViewportDebugDraw = 22
+	/*Draws the [ReflectionProbe] cluster. Clustering determines where reflection probes are positioned in screen-space, which allows the engine to only process these portions of the screen for reflection probes.*/
 	RenderingServerViewportDebugDrawClusterReflectionProbes RenderingServerViewportDebugDraw = 23
-	RenderingServerViewportDebugDrawOccluders               RenderingServerViewportDebugDraw = 24
-	RenderingServerViewportDebugDrawMotionVectors           RenderingServerViewportDebugDraw = 25
-	RenderingServerViewportDebugDrawInternalBuffer          RenderingServerViewportDebugDraw = 26
+	/*Draws the occlusion culling buffer. This low-resolution occlusion culling buffer is rasterized on the CPU and is used to check whether instances are occluded by other objects.*/
+	RenderingServerViewportDebugDrawOccluders RenderingServerViewportDebugDraw = 24
+	/*Draws the motion vectors buffer. This is used by temporal antialiasing to correct for motion that occurs during gameplay.*/
+	RenderingServerViewportDebugDrawMotionVectors RenderingServerViewportDebugDraw = 25
+	/*Internal buffer is drawn instead of regular scene so you can see the per-pixel output that will be used by post-processing effects.*/
+	RenderingServerViewportDebugDrawInternalBuffer RenderingServerViewportDebugDraw = 26
 )
 
 type RenderingServerViewportVRSMode = classdb.RenderingServerViewportVRSMode
 
 const (
+	/*Variable rate shading is disabled.*/
 	RenderingServerViewportVrsDisabled RenderingServerViewportVRSMode = 0
-	RenderingServerViewportVrsTexture  RenderingServerViewportVRSMode = 1
-	RenderingServerViewportVrsXr       RenderingServerViewportVRSMode = 2
-	RenderingServerViewportVrsMax      RenderingServerViewportVRSMode = 3
+	/*Variable rate shading uses a texture. Note, for stereoscopic use a texture atlas with a texture for each view.*/
+	RenderingServerViewportVrsTexture RenderingServerViewportVRSMode = 1
+	/*Variable rate shading texture is supplied by the primary [XRInterface].*/
+	RenderingServerViewportVrsXr RenderingServerViewportVRSMode = 2
+	/*Represents the size of the [enum ViewportVRSMode] enum.*/
+	RenderingServerViewportVrsMax RenderingServerViewportVRSMode = 3
 )
 
 type RenderingServerSkyMode = classdb.RenderingServerSkyMode
 
 const (
-	RenderingServerSkyModeAutomatic   RenderingServerSkyMode = 0
-	RenderingServerSkyModeQuality     RenderingServerSkyMode = 1
+	/*Automatically selects the appropriate process mode based on your sky shader. If your shader uses [code]TIME[/code] or [code]POSITION[/code], this will use [constant SKY_MODE_REALTIME]. If your shader uses any of the [code]LIGHT_*[/code] variables or any custom uniforms, this uses [constant SKY_MODE_INCREMENTAL]. Otherwise, this defaults to [constant SKY_MODE_QUALITY].*/
+	RenderingServerSkyModeAutomatic RenderingServerSkyMode = 0
+	/*Uses high quality importance sampling to process the radiance map. In general, this results in much higher quality than [constant SKY_MODE_REALTIME] but takes much longer to generate. This should not be used if you plan on changing the sky at runtime. If you are finding that the reflection is not blurry enough and is showing sparkles or fireflies, try increasing [member ProjectSettings.rendering/reflections/sky_reflections/ggx_samples].*/
+	RenderingServerSkyModeQuality RenderingServerSkyMode = 1
+	/*Uses the same high quality importance sampling to process the radiance map as [constant SKY_MODE_QUALITY], but updates over several frames. The number of frames is determined by [member ProjectSettings.rendering/reflections/sky_reflections/roughness_layers]. Use this when you need highest quality radiance maps, but have a sky that updates slowly.*/
 	RenderingServerSkyModeIncremental RenderingServerSkyMode = 2
-	RenderingServerSkyModeRealtime    RenderingServerSkyMode = 3
+	/*Uses the fast filtering algorithm to process the radiance map. In general this results in lower quality, but substantially faster run times. If you need better quality, but still need to update the sky every frame, consider turning on [member ProjectSettings.rendering/reflections/sky_reflections/fast_filter_high_quality].
+	  [b]Note:[/b] The fast filtering algorithm is limited to 256×256 cubemaps, so [method sky_set_radiance_size] must be set to [code]256[/code]. Otherwise, a warning is printed and the overridden radiance size is ignored.*/
+	RenderingServerSkyModeRealtime RenderingServerSkyMode = 3
 )
 
 type RenderingServerEnvironmentBG = classdb.RenderingServerEnvironmentBG
 
 const (
+	/*Use the clear color as background.*/
 	RenderingServerEnvBgClearColor RenderingServerEnvironmentBG = 0
-	RenderingServerEnvBgColor      RenderingServerEnvironmentBG = 1
-	RenderingServerEnvBgSky        RenderingServerEnvironmentBG = 2
-	RenderingServerEnvBgCanvas     RenderingServerEnvironmentBG = 3
-	RenderingServerEnvBgKeep       RenderingServerEnvironmentBG = 4
+	/*Use a specified color as the background.*/
+	RenderingServerEnvBgColor RenderingServerEnvironmentBG = 1
+	/*Use a sky resource for the background.*/
+	RenderingServerEnvBgSky RenderingServerEnvironmentBG = 2
+	/*Use a specified canvas layer as the background. This can be useful for instantiating a 2D scene in a 3D world.*/
+	RenderingServerEnvBgCanvas RenderingServerEnvironmentBG = 3
+	/*Do not clear the background, use whatever was rendered last frame as the background.*/
+	RenderingServerEnvBgKeep RenderingServerEnvironmentBG = 4
+	/*Displays a camera feed in the background.*/
 	RenderingServerEnvBgCameraFeed RenderingServerEnvironmentBG = 5
-	RenderingServerEnvBgMax        RenderingServerEnvironmentBG = 6
+	/*Represents the size of the [enum EnvironmentBG] enum.*/
+	RenderingServerEnvBgMax RenderingServerEnvironmentBG = 6
 )
 
 type RenderingServerEnvironmentAmbientSource = classdb.RenderingServerEnvironmentAmbientSource
 
 const (
-	RenderingServerEnvAmbientSourceBg       RenderingServerEnvironmentAmbientSource = 0
+	/*Gather ambient light from whichever source is specified as the background.*/
+	RenderingServerEnvAmbientSourceBg RenderingServerEnvironmentAmbientSource = 0
+	/*Disable ambient light.*/
 	RenderingServerEnvAmbientSourceDisabled RenderingServerEnvironmentAmbientSource = 1
-	RenderingServerEnvAmbientSourceColor    RenderingServerEnvironmentAmbientSource = 2
-	RenderingServerEnvAmbientSourceSky      RenderingServerEnvironmentAmbientSource = 3
+	/*Specify a specific [Color] for ambient light.*/
+	RenderingServerEnvAmbientSourceColor RenderingServerEnvironmentAmbientSource = 2
+	/*Gather ambient light from the [Sky] regardless of what the background is.*/
+	RenderingServerEnvAmbientSourceSky RenderingServerEnvironmentAmbientSource = 3
 )
 
 type RenderingServerEnvironmentReflectionSource = classdb.RenderingServerEnvironmentReflectionSource
 
 const (
-	RenderingServerEnvReflectionSourceBg       RenderingServerEnvironmentReflectionSource = 0
+	/*Use the background for reflections.*/
+	RenderingServerEnvReflectionSourceBg RenderingServerEnvironmentReflectionSource = 0
+	/*Disable reflections.*/
 	RenderingServerEnvReflectionSourceDisabled RenderingServerEnvironmentReflectionSource = 1
-	RenderingServerEnvReflectionSourceSky      RenderingServerEnvironmentReflectionSource = 2
+	/*Use the [Sky] for reflections regardless of what the background is.*/
+	RenderingServerEnvReflectionSourceSky RenderingServerEnvironmentReflectionSource = 2
 )
 
 type RenderingServerEnvironmentGlowBlendMode = classdb.RenderingServerEnvironmentGlowBlendMode
 
 const (
-	RenderingServerEnvGlowBlendModeAdditive  RenderingServerEnvironmentGlowBlendMode = 0
-	RenderingServerEnvGlowBlendModeScreen    RenderingServerEnvironmentGlowBlendMode = 1
+	/*Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.*/
+	RenderingServerEnvGlowBlendModeAdditive RenderingServerEnvironmentGlowBlendMode = 0
+	/*Screen glow blending mode. Increases brightness, used frequently with bloom.*/
+	RenderingServerEnvGlowBlendModeScreen RenderingServerEnvironmentGlowBlendMode = 1
+	/*Soft light glow blending mode. Modifies contrast, exposes shadows and highlights (vivid bloom).*/
 	RenderingServerEnvGlowBlendModeSoftlight RenderingServerEnvironmentGlowBlendMode = 2
-	RenderingServerEnvGlowBlendModeReplace   RenderingServerEnvironmentGlowBlendMode = 3
-	RenderingServerEnvGlowBlendModeMix       RenderingServerEnvironmentGlowBlendMode = 4
+	/*Replace glow blending mode. Replaces all pixels' color by the glow value. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness.*/
+	RenderingServerEnvGlowBlendModeReplace RenderingServerEnvironmentGlowBlendMode = 3
+	/*Mixes the glow with the underlying color to avoid increasing brightness as much while still maintaining a glow effect.*/
+	RenderingServerEnvGlowBlendModeMix RenderingServerEnvironmentGlowBlendMode = 4
 )
 
 type RenderingServerEnvironmentToneMapper = classdb.RenderingServerEnvironmentToneMapper
 
 const (
-	RenderingServerEnvToneMapperLinear   RenderingServerEnvironmentToneMapper = 0
+	/*Output color as they came in. This can cause bright lighting to look blown out, with noticeable clipping in the output colors.*/
+	RenderingServerEnvToneMapperLinear RenderingServerEnvironmentToneMapper = 0
+	/*Use the Reinhard tonemapper. Performs a variation on rendered pixels' colors by this formula: [code]color = color / (1 + color)[/code]. This avoids clipping bright highlights, but the resulting image can look a bit dull.*/
 	RenderingServerEnvToneMapperReinhard RenderingServerEnvironmentToneMapper = 1
-	RenderingServerEnvToneMapperFilmic   RenderingServerEnvironmentToneMapper = 2
-	RenderingServerEnvToneMapperAces     RenderingServerEnvironmentToneMapper = 3
+	/*Use the filmic tonemapper. This avoids clipping bright highlights, with a resulting image that usually looks more vivid than [constant ENV_TONE_MAPPER_REINHARD].*/
+	RenderingServerEnvToneMapperFilmic RenderingServerEnvironmentToneMapper = 2
+	/*Use the Academy Color Encoding System tonemapper. ACES is slightly more expensive than other options, but it handles bright lighting in a more realistic fashion by desaturating it as it becomes brighter. ACES typically has a more contrasted output compared to [constant ENV_TONE_MAPPER_REINHARD] and [constant ENV_TONE_MAPPER_FILMIC].
+	  [b]Note:[/b] This tonemapping operator is called "ACES Fitted" in Godot 3.x.*/
+	RenderingServerEnvToneMapperAces RenderingServerEnvironmentToneMapper = 3
 )
 
 type RenderingServerEnvironmentSSRRoughnessQuality = classdb.RenderingServerEnvironmentSSRRoughnessQuality
 
 const (
+	/*Lowest quality of roughness filter for screen-space reflections. Rough materials will not have blurrier screen-space reflections compared to smooth (non-rough) materials. This is the fastest option.*/
 	RenderingServerEnvSsrRoughnessQualityDisabled RenderingServerEnvironmentSSRRoughnessQuality = 0
-	RenderingServerEnvSsrRoughnessQualityLow      RenderingServerEnvironmentSSRRoughnessQuality = 1
-	RenderingServerEnvSsrRoughnessQualityMedium   RenderingServerEnvironmentSSRRoughnessQuality = 2
-	RenderingServerEnvSsrRoughnessQualityHigh     RenderingServerEnvironmentSSRRoughnessQuality = 3
+	/*Low quality of roughness filter for screen-space reflections.*/
+	RenderingServerEnvSsrRoughnessQualityLow RenderingServerEnvironmentSSRRoughnessQuality = 1
+	/*Medium quality of roughness filter for screen-space reflections.*/
+	RenderingServerEnvSsrRoughnessQualityMedium RenderingServerEnvironmentSSRRoughnessQuality = 2
+	/*High quality of roughness filter for screen-space reflections. This is the slowest option.*/
+	RenderingServerEnvSsrRoughnessQualityHigh RenderingServerEnvironmentSSRRoughnessQuality = 3
 )
 
 type RenderingServerEnvironmentSSAOQuality = classdb.RenderingServerEnvironmentSSAOQuality
 
 const (
+	/*Lowest quality of screen-space ambient occlusion.*/
 	RenderingServerEnvSsaoQualityVeryLow RenderingServerEnvironmentSSAOQuality = 0
-	RenderingServerEnvSsaoQualityLow     RenderingServerEnvironmentSSAOQuality = 1
-	RenderingServerEnvSsaoQualityMedium  RenderingServerEnvironmentSSAOQuality = 2
-	RenderingServerEnvSsaoQualityHigh    RenderingServerEnvironmentSSAOQuality = 3
-	RenderingServerEnvSsaoQualityUltra   RenderingServerEnvironmentSSAOQuality = 4
+	/*Low quality screen-space ambient occlusion.*/
+	RenderingServerEnvSsaoQualityLow RenderingServerEnvironmentSSAOQuality = 1
+	/*Medium quality screen-space ambient occlusion.*/
+	RenderingServerEnvSsaoQualityMedium RenderingServerEnvironmentSSAOQuality = 2
+	/*High quality screen-space ambient occlusion.*/
+	RenderingServerEnvSsaoQualityHigh RenderingServerEnvironmentSSAOQuality = 3
+	/*Highest quality screen-space ambient occlusion. Uses the adaptive target setting which can be dynamically adjusted to smoothly balance performance and visual quality.*/
+	RenderingServerEnvSsaoQualityUltra RenderingServerEnvironmentSSAOQuality = 4
 )
 
 type RenderingServerEnvironmentSSILQuality = classdb.RenderingServerEnvironmentSSILQuality
 
 const (
+	/*Lowest quality of screen-space indirect lighting.*/
 	RenderingServerEnvSsilQualityVeryLow RenderingServerEnvironmentSSILQuality = 0
-	RenderingServerEnvSsilQualityLow     RenderingServerEnvironmentSSILQuality = 1
-	RenderingServerEnvSsilQualityMedium  RenderingServerEnvironmentSSILQuality = 2
-	RenderingServerEnvSsilQualityHigh    RenderingServerEnvironmentSSILQuality = 3
-	RenderingServerEnvSsilQualityUltra   RenderingServerEnvironmentSSILQuality = 4
+	/*Low quality screen-space indirect lighting.*/
+	RenderingServerEnvSsilQualityLow RenderingServerEnvironmentSSILQuality = 1
+	/*High quality screen-space indirect lighting.*/
+	RenderingServerEnvSsilQualityMedium RenderingServerEnvironmentSSILQuality = 2
+	/*High quality screen-space indirect lighting.*/
+	RenderingServerEnvSsilQualityHigh RenderingServerEnvironmentSSILQuality = 3
+	/*Highest quality screen-space indirect lighting. Uses the adaptive target setting which can be dynamically adjusted to smoothly balance performance and visual quality.*/
+	RenderingServerEnvSsilQualityUltra RenderingServerEnvironmentSSILQuality = 4
 )
 
 type RenderingServerEnvironmentSDFGIYScale = classdb.RenderingServerEnvironmentSDFGIYScale
 
 const (
-	RenderingServerEnvSdfgiYScale50Percent  RenderingServerEnvironmentSDFGIYScale = 0
-	RenderingServerEnvSdfgiYScale75Percent  RenderingServerEnvironmentSDFGIYScale = 1
+	/*Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.*/
+	RenderingServerEnvSdfgiYScale50Percent RenderingServerEnvironmentSDFGIYScale = 0
+	/*Use 75% scale for SDFGI on the Y (vertical) axis. This is a balance between the 50% and 100% SDFGI Y scales.*/
+	RenderingServerEnvSdfgiYScale75Percent RenderingServerEnvironmentSDFGIYScale = 1
+	/*Use 100% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be as tall as they are wide. This is usually the best choice for highly vertical scenes. The downside is that light leaking may become more noticeable with thin floors and ceilings.*/
 	RenderingServerEnvSdfgiYScale100Percent RenderingServerEnvironmentSDFGIYScale = 2
 )
 
 type RenderingServerEnvironmentSDFGIRayCount = classdb.RenderingServerEnvironmentSDFGIRayCount
 
 const (
-	RenderingServerEnvSdfgiRayCount4   RenderingServerEnvironmentSDFGIRayCount = 0
-	RenderingServerEnvSdfgiRayCount8   RenderingServerEnvironmentSDFGIRayCount = 1
-	RenderingServerEnvSdfgiRayCount16  RenderingServerEnvironmentSDFGIRayCount = 2
-	RenderingServerEnvSdfgiRayCount32  RenderingServerEnvironmentSDFGIRayCount = 3
-	RenderingServerEnvSdfgiRayCount64  RenderingServerEnvironmentSDFGIRayCount = 4
-	RenderingServerEnvSdfgiRayCount96  RenderingServerEnvironmentSDFGIRayCount = 5
+	/*Throw 4 rays per frame when converging SDFGI. This has the lowest GPU requirements, but creates the most noisy result.*/
+	RenderingServerEnvSdfgiRayCount4 RenderingServerEnvironmentSDFGIRayCount = 0
+	/*Throw 8 rays per frame when converging SDFGI.*/
+	RenderingServerEnvSdfgiRayCount8 RenderingServerEnvironmentSDFGIRayCount = 1
+	/*Throw 16 rays per frame when converging SDFGI.*/
+	RenderingServerEnvSdfgiRayCount16 RenderingServerEnvironmentSDFGIRayCount = 2
+	/*Throw 32 rays per frame when converging SDFGI.*/
+	RenderingServerEnvSdfgiRayCount32 RenderingServerEnvironmentSDFGIRayCount = 3
+	/*Throw 64 rays per frame when converging SDFGI.*/
+	RenderingServerEnvSdfgiRayCount64 RenderingServerEnvironmentSDFGIRayCount = 4
+	/*Throw 96 rays per frame when converging SDFGI. This has high GPU requirements.*/
+	RenderingServerEnvSdfgiRayCount96 RenderingServerEnvironmentSDFGIRayCount = 5
+	/*Throw 128 rays per frame when converging SDFGI. This has very high GPU requirements, but creates the least noisy result.*/
 	RenderingServerEnvSdfgiRayCount128 RenderingServerEnvironmentSDFGIRayCount = 6
+	/*Represents the size of the [enum EnvironmentSDFGIRayCount] enum.*/
 	RenderingServerEnvSdfgiRayCountMax RenderingServerEnvironmentSDFGIRayCount = 7
 )
 
 type RenderingServerEnvironmentSDFGIFramesToConverge = classdb.RenderingServerEnvironmentSDFGIFramesToConverge
 
 const (
-	RenderingServerEnvSdfgiConvergeIn5Frames  RenderingServerEnvironmentSDFGIFramesToConverge = 0
+	/*Converge SDFGI over 5 frames. This is the most responsive, but creates the most noisy result with a given ray count.*/
+	RenderingServerEnvSdfgiConvergeIn5Frames RenderingServerEnvironmentSDFGIFramesToConverge = 0
+	/*Configure SDFGI to fully converge over 10 frames.*/
 	RenderingServerEnvSdfgiConvergeIn10Frames RenderingServerEnvironmentSDFGIFramesToConverge = 1
+	/*Configure SDFGI to fully converge over 15 frames.*/
 	RenderingServerEnvSdfgiConvergeIn15Frames RenderingServerEnvironmentSDFGIFramesToConverge = 2
+	/*Configure SDFGI to fully converge over 20 frames.*/
 	RenderingServerEnvSdfgiConvergeIn20Frames RenderingServerEnvironmentSDFGIFramesToConverge = 3
+	/*Configure SDFGI to fully converge over 25 frames.*/
 	RenderingServerEnvSdfgiConvergeIn25Frames RenderingServerEnvironmentSDFGIFramesToConverge = 4
+	/*Configure SDFGI to fully converge over 30 frames. This is the least responsive, but creates the least noisy result with a given ray count.*/
 	RenderingServerEnvSdfgiConvergeIn30Frames RenderingServerEnvironmentSDFGIFramesToConverge = 5
-	RenderingServerEnvSdfgiConvergeMax        RenderingServerEnvironmentSDFGIFramesToConverge = 6
+	/*Represents the size of the [enum EnvironmentSDFGIFramesToConverge] enum.*/
+	RenderingServerEnvSdfgiConvergeMax RenderingServerEnvironmentSDFGIFramesToConverge = 6
 )
 
 type RenderingServerEnvironmentSDFGIFramesToUpdateLight = classdb.RenderingServerEnvironmentSDFGIFramesToUpdateLight
 
 const (
-	RenderingServerEnvSdfgiUpdateLightIn1Frame   RenderingServerEnvironmentSDFGIFramesToUpdateLight = 0
-	RenderingServerEnvSdfgiUpdateLightIn2Frames  RenderingServerEnvironmentSDFGIFramesToUpdateLight = 1
-	RenderingServerEnvSdfgiUpdateLightIn4Frames  RenderingServerEnvironmentSDFGIFramesToUpdateLight = 2
-	RenderingServerEnvSdfgiUpdateLightIn8Frames  RenderingServerEnvironmentSDFGIFramesToUpdateLight = 3
+	/*Update indirect light from dynamic lights in SDFGI over 1 frame. This is the most responsive, but has the highest GPU requirements.*/
+	RenderingServerEnvSdfgiUpdateLightIn1Frame RenderingServerEnvironmentSDFGIFramesToUpdateLight = 0
+	/*Update indirect light from dynamic lights in SDFGI over 2 frames.*/
+	RenderingServerEnvSdfgiUpdateLightIn2Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 1
+	/*Update indirect light from dynamic lights in SDFGI over 4 frames.*/
+	RenderingServerEnvSdfgiUpdateLightIn4Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 2
+	/*Update indirect light from dynamic lights in SDFGI over 8 frames.*/
+	RenderingServerEnvSdfgiUpdateLightIn8Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 3
+	/*Update indirect light from dynamic lights in SDFGI over 16 frames. This is the least responsive, but has the lowest GPU requirements.*/
 	RenderingServerEnvSdfgiUpdateLightIn16Frames RenderingServerEnvironmentSDFGIFramesToUpdateLight = 4
-	RenderingServerEnvSdfgiUpdateLightMax        RenderingServerEnvironmentSDFGIFramesToUpdateLight = 5
+	/*Represents the size of the [enum EnvironmentSDFGIFramesToUpdateLight] enum.*/
+	RenderingServerEnvSdfgiUpdateLightMax RenderingServerEnvironmentSDFGIFramesToUpdateLight = 5
 )
 
 type RenderingServerSubSurfaceScatteringQuality = classdb.RenderingServerSubSurfaceScatteringQuality
 
 const (
+	/*Disables subsurface scattering entirely, even on materials that have [member BaseMaterial3D.subsurf_scatter_enabled] set to [code]true[/code]. This has the lowest GPU requirements.*/
 	RenderingServerSubSurfaceScatteringQualityDisabled RenderingServerSubSurfaceScatteringQuality = 0
-	RenderingServerSubSurfaceScatteringQualityLow      RenderingServerSubSurfaceScatteringQuality = 1
-	RenderingServerSubSurfaceScatteringQualityMedium   RenderingServerSubSurfaceScatteringQuality = 2
-	RenderingServerSubSurfaceScatteringQualityHigh     RenderingServerSubSurfaceScatteringQuality = 3
+	/*Low subsurface scattering quality.*/
+	RenderingServerSubSurfaceScatteringQualityLow RenderingServerSubSurfaceScatteringQuality = 1
+	/*Medium subsurface scattering quality.*/
+	RenderingServerSubSurfaceScatteringQualityMedium RenderingServerSubSurfaceScatteringQuality = 2
+	/*High subsurface scattering quality. This has the highest GPU requirements.*/
+	RenderingServerSubSurfaceScatteringQualityHigh RenderingServerSubSurfaceScatteringQuality = 3
 )
 
 type RenderingServerDOFBokehShape = classdb.RenderingServerDOFBokehShape
 
 const (
-	RenderingServerDofBokehBox     RenderingServerDOFBokehShape = 0
+	/*Calculate the DOF blur using a box filter. The fastest option, but results in obvious lines in blur pattern.*/
+	RenderingServerDofBokehBox RenderingServerDOFBokehShape = 0
+	/*Calculates DOF blur using a hexagon shaped filter.*/
 	RenderingServerDofBokehHexagon RenderingServerDOFBokehShape = 1
-	RenderingServerDofBokehCircle  RenderingServerDOFBokehShape = 2
+	/*Calculates DOF blur using a circle shaped filter. Best quality and most realistic, but slowest. Use only for areas where a lot of performance can be dedicated to post-processing (e.g. cutscenes).*/
+	RenderingServerDofBokehCircle RenderingServerDOFBokehShape = 2
 )
 
 type RenderingServerDOFBlurQuality = classdb.RenderingServerDOFBlurQuality
 
 const (
+	/*Lowest quality DOF blur. This is the fastest setting, but you may be able to see filtering artifacts.*/
 	RenderingServerDofBlurQualityVeryLow RenderingServerDOFBlurQuality = 0
-	RenderingServerDofBlurQualityLow     RenderingServerDOFBlurQuality = 1
-	RenderingServerDofBlurQualityMedium  RenderingServerDOFBlurQuality = 2
-	RenderingServerDofBlurQualityHigh    RenderingServerDOFBlurQuality = 3
+	/*Low quality DOF blur.*/
+	RenderingServerDofBlurQualityLow RenderingServerDOFBlurQuality = 1
+	/*Medium quality DOF blur.*/
+	RenderingServerDofBlurQualityMedium RenderingServerDOFBlurQuality = 2
+	/*Highest quality DOF blur. Results in the smoothest looking blur by taking the most samples, but is also significantly slower.*/
+	RenderingServerDofBlurQualityHigh RenderingServerDOFBlurQuality = 3
 )
 
 type RenderingServerInstanceType = classdb.RenderingServerInstanceType
 
 const (
-	RenderingServerInstanceNone               RenderingServerInstanceType = 0
-	RenderingServerInstanceMesh               RenderingServerInstanceType = 1
-	RenderingServerInstanceMultimesh          RenderingServerInstanceType = 2
-	RenderingServerInstanceParticles          RenderingServerInstanceType = 3
+	/*The instance does not have a type.*/
+	RenderingServerInstanceNone RenderingServerInstanceType = 0
+	/*The instance is a mesh.*/
+	RenderingServerInstanceMesh RenderingServerInstanceType = 1
+	/*The instance is a multimesh.*/
+	RenderingServerInstanceMultimesh RenderingServerInstanceType = 2
+	/*The instance is a particle emitter.*/
+	RenderingServerInstanceParticles RenderingServerInstanceType = 3
+	/*The instance is a GPUParticles collision shape.*/
 	RenderingServerInstanceParticlesCollision RenderingServerInstanceType = 4
-	RenderingServerInstanceLight              RenderingServerInstanceType = 5
-	RenderingServerInstanceReflectionProbe    RenderingServerInstanceType = 6
-	RenderingServerInstanceDecal              RenderingServerInstanceType = 7
-	RenderingServerInstanceVoxelGi            RenderingServerInstanceType = 8
-	RenderingServerInstanceLightmap           RenderingServerInstanceType = 9
-	RenderingServerInstanceOccluder           RenderingServerInstanceType = 10
-	RenderingServerInstanceVisiblityNotifier  RenderingServerInstanceType = 11
-	RenderingServerInstanceFogVolume          RenderingServerInstanceType = 12
-	RenderingServerInstanceMax                RenderingServerInstanceType = 13
-	RenderingServerInstanceGeometryMask       RenderingServerInstanceType = 14
+	/*The instance is a light.*/
+	RenderingServerInstanceLight RenderingServerInstanceType = 5
+	/*The instance is a reflection probe.*/
+	RenderingServerInstanceReflectionProbe RenderingServerInstanceType = 6
+	/*The instance is a decal.*/
+	RenderingServerInstanceDecal RenderingServerInstanceType = 7
+	/*The instance is a VoxelGI.*/
+	RenderingServerInstanceVoxelGi RenderingServerInstanceType = 8
+	/*The instance is a lightmap.*/
+	RenderingServerInstanceLightmap RenderingServerInstanceType = 9
+	/*The instance is an occlusion culling occluder.*/
+	RenderingServerInstanceOccluder RenderingServerInstanceType = 10
+	/*The instance is a visible on-screen notifier.*/
+	RenderingServerInstanceVisiblityNotifier RenderingServerInstanceType = 11
+	/*The instance is a fog volume.*/
+	RenderingServerInstanceFogVolume RenderingServerInstanceType = 12
+	/*Represents the size of the [enum InstanceType] enum.*/
+	RenderingServerInstanceMax RenderingServerInstanceType = 13
+	/*A combination of the flags of geometry instances (mesh, multimesh, immediate and particles).*/
+	RenderingServerInstanceGeometryMask RenderingServerInstanceType = 14
 )
 
 type RenderingServerInstanceFlags = classdb.RenderingServerInstanceFlags
 
 const (
-	RenderingServerInstanceFlagUseBakedLight          RenderingServerInstanceFlags = 0
-	RenderingServerInstanceFlagUseDynamicGi           RenderingServerInstanceFlags = 1
+	/*Allows the instance to be used in baked lighting.*/
+	RenderingServerInstanceFlagUseBakedLight RenderingServerInstanceFlags = 0
+	/*Allows the instance to be used with dynamic global illumination.*/
+	RenderingServerInstanceFlagUseDynamicGi RenderingServerInstanceFlags = 1
+	/*When set, manually requests to draw geometry on next frame.*/
 	RenderingServerInstanceFlagDrawNextFrameIfVisible RenderingServerInstanceFlags = 2
+	/*Always draw, even if the instance would be culled by occlusion culling. Does not affect view frustum culling.*/
 	RenderingServerInstanceFlagIgnoreOcclusionCulling RenderingServerInstanceFlags = 3
-	RenderingServerInstanceFlagMax                    RenderingServerInstanceFlags = 4
+	/*Represents the size of the [enum InstanceFlags] enum.*/
+	RenderingServerInstanceFlagMax RenderingServerInstanceFlags = 4
 )
 
 type RenderingServerShadowCastingSetting = classdb.RenderingServerShadowCastingSetting
 
 const (
-	RenderingServerShadowCastingSettingOff         RenderingServerShadowCastingSetting = 0
-	RenderingServerShadowCastingSettingOn          RenderingServerShadowCastingSetting = 1
+	/*Disable shadows from this instance.*/
+	RenderingServerShadowCastingSettingOff RenderingServerShadowCastingSetting = 0
+	/*Cast shadows from this instance.*/
+	RenderingServerShadowCastingSettingOn RenderingServerShadowCastingSetting = 1
+	/*Disable backface culling when rendering the shadow of the object. This is slightly slower but may result in more correct shadows.*/
 	RenderingServerShadowCastingSettingDoubleSided RenderingServerShadowCastingSetting = 2
+	/*Only render the shadows from the object. The object itself will not be drawn.*/
 	RenderingServerShadowCastingSettingShadowsOnly RenderingServerShadowCastingSetting = 3
 )
 
 type RenderingServerVisibilityRangeFadeMode = classdb.RenderingServerVisibilityRangeFadeMode
 
 const (
-	RenderingServerVisibilityRangeFadeDisabled     RenderingServerVisibilityRangeFadeMode = 0
-	RenderingServerVisibilityRangeFadeSelf         RenderingServerVisibilityRangeFadeMode = 1
+	/*Disable visibility range fading for the given instance.*/
+	RenderingServerVisibilityRangeFadeDisabled RenderingServerVisibilityRangeFadeMode = 0
+	/*Fade-out the given instance when it approaches its visibility range limits.*/
+	RenderingServerVisibilityRangeFadeSelf RenderingServerVisibilityRangeFadeMode = 1
+	/*Fade-in the given instance's dependencies when reaching its visibility range limits.*/
 	RenderingServerVisibilityRangeFadeDependencies RenderingServerVisibilityRangeFadeMode = 2
 )
 
 type RenderingServerBakeChannels = classdb.RenderingServerBakeChannels
 
 const (
+	/*Index of [Image] in array of [Image]s returned by [method bake_render_uv2]. Image uses [constant Image.FORMAT_RGBA8] and contains albedo color in the [code].rgb[/code] channels and alpha in the [code].a[/code] channel.*/
 	RenderingServerBakeChannelAlbedoAlpha RenderingServerBakeChannels = 0
-	RenderingServerBakeChannelNormal      RenderingServerBakeChannels = 1
-	RenderingServerBakeChannelOrm         RenderingServerBakeChannels = 2
-	RenderingServerBakeChannelEmission    RenderingServerBakeChannels = 3
+	/*Index of [Image] in array of [Image]s returned by [method bake_render_uv2]. Image uses [constant Image.FORMAT_RGBA8] and contains the per-pixel normal of the object in the [code].rgb[/code] channels and nothing in the [code].a[/code] channel. The per-pixel normal is encoded as [code]normal * 0.5 + 0.5[/code].*/
+	RenderingServerBakeChannelNormal RenderingServerBakeChannels = 1
+	/*Index of [Image] in array of [Image]s returned by [method bake_render_uv2]. Image uses [constant Image.FORMAT_RGBA8] and contains ambient occlusion (from material and decals only) in the [code].r[/code] channel, roughness in the [code].g[/code] channel, metallic in the [code].b[/code] channel and sub surface scattering amount in the [code].a[/code] channel.*/
+	RenderingServerBakeChannelOrm RenderingServerBakeChannels = 2
+	/*Index of [Image] in array of [Image]s returned by [method bake_render_uv2]. Image uses [constant Image.FORMAT_RGBAH] and contains emission color in the [code].rgb[/code] channels and nothing in the [code].a[/code] channel.*/
+	RenderingServerBakeChannelEmission RenderingServerBakeChannels = 3
 )
 
 type RenderingServerCanvasTextureChannel = classdb.RenderingServerCanvasTextureChannel
 
 const (
-	RenderingServerCanvasTextureChannelDiffuse  RenderingServerCanvasTextureChannel = 0
-	RenderingServerCanvasTextureChannelNormal   RenderingServerCanvasTextureChannel = 1
+	/*Diffuse canvas texture ([member CanvasTexture.diffuse_texture]).*/
+	RenderingServerCanvasTextureChannelDiffuse RenderingServerCanvasTextureChannel = 0
+	/*Normal map canvas texture ([member CanvasTexture.normal_texture]).*/
+	RenderingServerCanvasTextureChannelNormal RenderingServerCanvasTextureChannel = 1
+	/*Specular map canvas texture ([member CanvasTexture.specular_texture]).*/
 	RenderingServerCanvasTextureChannelSpecular RenderingServerCanvasTextureChannel = 2
 )
 
 type RenderingServerNinePatchAxisMode = classdb.RenderingServerNinePatchAxisMode
 
 const (
+	/*The nine patch gets stretched where needed.*/
 	RenderingServerNinePatchStretch RenderingServerNinePatchAxisMode = 0
-	RenderingServerNinePatchTile    RenderingServerNinePatchAxisMode = 1
+	/*The nine patch gets filled with tiles where needed.*/
+	RenderingServerNinePatchTile RenderingServerNinePatchAxisMode = 1
+	/*The nine patch gets filled with tiles where needed and stretches them a bit if needed.*/
 	RenderingServerNinePatchTileFit RenderingServerNinePatchAxisMode = 2
 )
 
 type RenderingServerCanvasItemTextureFilter = classdb.RenderingServerCanvasItemTextureFilter
 
 const (
-	RenderingServerCanvasItemTextureFilterDefault                       RenderingServerCanvasItemTextureFilter = 0
-	RenderingServerCanvasItemTextureFilterNearest                       RenderingServerCanvasItemTextureFilter = 1
-	RenderingServerCanvasItemTextureFilterLinear                        RenderingServerCanvasItemTextureFilter = 2
-	RenderingServerCanvasItemTextureFilterNearestWithMipmaps            RenderingServerCanvasItemTextureFilter = 3
-	RenderingServerCanvasItemTextureFilterLinearWithMipmaps             RenderingServerCanvasItemTextureFilter = 4
+	/*Uses the default filter mode for this [Viewport].*/
+	RenderingServerCanvasItemTextureFilterDefault RenderingServerCanvasItemTextureFilter = 0
+	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	RenderingServerCanvasItemTextureFilterNearest RenderingServerCanvasItemTextureFilter = 1
+	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	RenderingServerCanvasItemTextureFilterLinear RenderingServerCanvasItemTextureFilter = 2
+	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	RenderingServerCanvasItemTextureFilterNearestWithMipmaps RenderingServerCanvasItemTextureFilter = 3
+	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	RenderingServerCanvasItemTextureFilterLinearWithMipmaps RenderingServerCanvasItemTextureFilter = 4
+	/*The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
+	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant CANVAS_ITEM_TEXTURE_FILTER_NEAREST_WITH_MIPMAPS] is usually more appropriate in this case.*/
 	RenderingServerCanvasItemTextureFilterNearestWithMipmapsAnisotropic RenderingServerCanvasItemTextureFilter = 5
-	RenderingServerCanvasItemTextureFilterLinearWithMipmapsAnisotropic  RenderingServerCanvasItemTextureFilter = 6
-	RenderingServerCanvasItemTextureFilterMax                           RenderingServerCanvasItemTextureFilter = 7
+	/*The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
+	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS] is usually more appropriate in this case.*/
+	RenderingServerCanvasItemTextureFilterLinearWithMipmapsAnisotropic RenderingServerCanvasItemTextureFilter = 6
+	/*Max value for [enum CanvasItemTextureFilter] enum.*/
+	RenderingServerCanvasItemTextureFilterMax RenderingServerCanvasItemTextureFilter = 7
 )
 
 type RenderingServerCanvasItemTextureRepeat = classdb.RenderingServerCanvasItemTextureRepeat
 
 const (
-	RenderingServerCanvasItemTextureRepeatDefault  RenderingServerCanvasItemTextureRepeat = 0
+	/*Uses the default repeat mode for this [Viewport].*/
+	RenderingServerCanvasItemTextureRepeatDefault RenderingServerCanvasItemTextureRepeat = 0
+	/*Disables textures repeating. Instead, when reading UVs outside the 0-1 range, the value will be clamped to the edge of the texture, resulting in a stretched out look at the borders of the texture.*/
 	RenderingServerCanvasItemTextureRepeatDisabled RenderingServerCanvasItemTextureRepeat = 1
-	RenderingServerCanvasItemTextureRepeatEnabled  RenderingServerCanvasItemTextureRepeat = 2
-	RenderingServerCanvasItemTextureRepeatMirror   RenderingServerCanvasItemTextureRepeat = 3
-	RenderingServerCanvasItemTextureRepeatMax      RenderingServerCanvasItemTextureRepeat = 4
+	/*Enables the texture to repeat when UV coordinates are outside the 0-1 range. If using one of the linear filtering modes, this can result in artifacts at the edges of a texture when the sampler filters across the edges of the texture.*/
+	RenderingServerCanvasItemTextureRepeatEnabled RenderingServerCanvasItemTextureRepeat = 2
+	/*Flip the texture when repeating so that the edge lines up instead of abruptly changing.*/
+	RenderingServerCanvasItemTextureRepeatMirror RenderingServerCanvasItemTextureRepeat = 3
+	/*Max value for [enum CanvasItemTextureRepeat] enum.*/
+	RenderingServerCanvasItemTextureRepeatMax RenderingServerCanvasItemTextureRepeat = 4
 )
 
 type RenderingServerCanvasGroupMode = classdb.RenderingServerCanvasGroupMode
 
 const (
-	RenderingServerCanvasGroupModeDisabled    RenderingServerCanvasGroupMode = 0
-	RenderingServerCanvasGroupModeClipOnly    RenderingServerCanvasGroupMode = 1
+	/*Child draws over parent and is not clipped.*/
+	RenderingServerCanvasGroupModeDisabled RenderingServerCanvasGroupMode = 0
+	/*Parent is used for the purposes of clipping only. Child is clipped to the parent's visible area, parent is not drawn.*/
+	RenderingServerCanvasGroupModeClipOnly RenderingServerCanvasGroupMode = 1
+	/*Parent is used for clipping child, but parent is also drawn underneath child as normal before clipping child to its visible area.*/
 	RenderingServerCanvasGroupModeClipAndDraw RenderingServerCanvasGroupMode = 2
 	RenderingServerCanvasGroupModeTransparent RenderingServerCanvasGroupMode = 3
 )
@@ -5371,84 +8643,133 @@ const (
 type RenderingServerCanvasLightMode = classdb.RenderingServerCanvasLightMode
 
 const (
-	RenderingServerCanvasLightModePoint       RenderingServerCanvasLightMode = 0
+	/*2D point light (see [PointLight2D]).*/
+	RenderingServerCanvasLightModePoint RenderingServerCanvasLightMode = 0
+	/*2D directional (sun/moon) light (see [DirectionalLight2D]).*/
 	RenderingServerCanvasLightModeDirectional RenderingServerCanvasLightMode = 1
 )
 
 type RenderingServerCanvasLightBlendMode = classdb.RenderingServerCanvasLightBlendMode
 
 const (
+	/*Adds light color additive to the canvas.*/
 	RenderingServerCanvasLightBlendModeAdd RenderingServerCanvasLightBlendMode = 0
+	/*Adds light color subtractive to the canvas.*/
 	RenderingServerCanvasLightBlendModeSub RenderingServerCanvasLightBlendMode = 1
+	/*The light adds color depending on transparency.*/
 	RenderingServerCanvasLightBlendModeMix RenderingServerCanvasLightBlendMode = 2
 )
 
 type RenderingServerCanvasLightShadowFilter = classdb.RenderingServerCanvasLightShadowFilter
 
 const (
-	RenderingServerCanvasLightFilterNone  RenderingServerCanvasLightShadowFilter = 0
-	RenderingServerCanvasLightFilterPcf5  RenderingServerCanvasLightShadowFilter = 1
+	/*Do not apply a filter to canvas light shadows.*/
+	RenderingServerCanvasLightFilterNone RenderingServerCanvasLightShadowFilter = 0
+	/*Use PCF5 filtering to filter canvas light shadows.*/
+	RenderingServerCanvasLightFilterPcf5 RenderingServerCanvasLightShadowFilter = 1
+	/*Use PCF13 filtering to filter canvas light shadows.*/
 	RenderingServerCanvasLightFilterPcf13 RenderingServerCanvasLightShadowFilter = 2
-	RenderingServerCanvasLightFilterMax   RenderingServerCanvasLightShadowFilter = 3
+	/*Max value of the [enum CanvasLightShadowFilter] enum.*/
+	RenderingServerCanvasLightFilterMax RenderingServerCanvasLightShadowFilter = 3
 )
 
 type RenderingServerCanvasOccluderPolygonCullMode = classdb.RenderingServerCanvasOccluderPolygonCullMode
 
 const (
-	RenderingServerCanvasOccluderPolygonCullDisabled         RenderingServerCanvasOccluderPolygonCullMode = 0
-	RenderingServerCanvasOccluderPolygonCullClockwise        RenderingServerCanvasOccluderPolygonCullMode = 1
+	/*Culling of the canvas occluder is disabled.*/
+	RenderingServerCanvasOccluderPolygonCullDisabled RenderingServerCanvasOccluderPolygonCullMode = 0
+	/*Culling of the canvas occluder is clockwise.*/
+	RenderingServerCanvasOccluderPolygonCullClockwise RenderingServerCanvasOccluderPolygonCullMode = 1
+	/*Culling of the canvas occluder is counterclockwise.*/
 	RenderingServerCanvasOccluderPolygonCullCounterClockwise RenderingServerCanvasOccluderPolygonCullMode = 2
 )
 
 type RenderingServerGlobalShaderParameterType = classdb.RenderingServerGlobalShaderParameterType
 
 const (
-	RenderingServerGlobalVarTypeBool           RenderingServerGlobalShaderParameterType = 0
-	RenderingServerGlobalVarTypeBvec2          RenderingServerGlobalShaderParameterType = 1
-	RenderingServerGlobalVarTypeBvec3          RenderingServerGlobalShaderParameterType = 2
-	RenderingServerGlobalVarTypeBvec4          RenderingServerGlobalShaderParameterType = 3
-	RenderingServerGlobalVarTypeInt            RenderingServerGlobalShaderParameterType = 4
-	RenderingServerGlobalVarTypeIvec2          RenderingServerGlobalShaderParameterType = 5
-	RenderingServerGlobalVarTypeIvec3          RenderingServerGlobalShaderParameterType = 6
-	RenderingServerGlobalVarTypeIvec4          RenderingServerGlobalShaderParameterType = 7
-	RenderingServerGlobalVarTypeRect2i         RenderingServerGlobalShaderParameterType = 8
-	RenderingServerGlobalVarTypeUint           RenderingServerGlobalShaderParameterType = 9
-	RenderingServerGlobalVarTypeUvec2          RenderingServerGlobalShaderParameterType = 10
-	RenderingServerGlobalVarTypeUvec3          RenderingServerGlobalShaderParameterType = 11
-	RenderingServerGlobalVarTypeUvec4          RenderingServerGlobalShaderParameterType = 12
-	RenderingServerGlobalVarTypeFloat          RenderingServerGlobalShaderParameterType = 13
-	RenderingServerGlobalVarTypeVec2           RenderingServerGlobalShaderParameterType = 14
-	RenderingServerGlobalVarTypeVec3           RenderingServerGlobalShaderParameterType = 15
-	RenderingServerGlobalVarTypeVec4           RenderingServerGlobalShaderParameterType = 16
-	RenderingServerGlobalVarTypeColor          RenderingServerGlobalShaderParameterType = 17
-	RenderingServerGlobalVarTypeRect2          RenderingServerGlobalShaderParameterType = 18
-	RenderingServerGlobalVarTypeMat2           RenderingServerGlobalShaderParameterType = 19
-	RenderingServerGlobalVarTypeMat3           RenderingServerGlobalShaderParameterType = 20
-	RenderingServerGlobalVarTypeMat4           RenderingServerGlobalShaderParameterType = 21
-	RenderingServerGlobalVarTypeTransform2d    RenderingServerGlobalShaderParameterType = 22
-	RenderingServerGlobalVarTypeTransform      RenderingServerGlobalShaderParameterType = 23
-	RenderingServerGlobalVarTypeSampler2d      RenderingServerGlobalShaderParameterType = 24
+	/*Boolean global shader parameter ([code]global uniform bool ...[/code]).*/
+	RenderingServerGlobalVarTypeBool RenderingServerGlobalShaderParameterType = 0
+	/*2-dimensional boolean vector global shader parameter ([code]global uniform bvec2 ...[/code]).*/
+	RenderingServerGlobalVarTypeBvec2 RenderingServerGlobalShaderParameterType = 1
+	/*3-dimensional boolean vector global shader parameter ([code]global uniform bvec3 ...[/code]).*/
+	RenderingServerGlobalVarTypeBvec3 RenderingServerGlobalShaderParameterType = 2
+	/*4-dimensional boolean vector global shader parameter ([code]global uniform bvec4 ...[/code]).*/
+	RenderingServerGlobalVarTypeBvec4 RenderingServerGlobalShaderParameterType = 3
+	/*Integer global shader parameter ([code]global uniform int ...[/code]).*/
+	RenderingServerGlobalVarTypeInt RenderingServerGlobalShaderParameterType = 4
+	/*2-dimensional integer vector global shader parameter ([code]global uniform ivec2 ...[/code]).*/
+	RenderingServerGlobalVarTypeIvec2 RenderingServerGlobalShaderParameterType = 5
+	/*3-dimensional integer vector global shader parameter ([code]global uniform ivec3 ...[/code]).*/
+	RenderingServerGlobalVarTypeIvec3 RenderingServerGlobalShaderParameterType = 6
+	/*4-dimensional integer vector global shader parameter ([code]global uniform ivec4 ...[/code]).*/
+	RenderingServerGlobalVarTypeIvec4 RenderingServerGlobalShaderParameterType = 7
+	/*2-dimensional integer rectangle global shader parameter ([code]global uniform ivec4 ...[/code]). Equivalent to [constant GLOBAL_VAR_TYPE_IVEC4] in shader code, but exposed as a [Rect2i] in the editor UI.*/
+	RenderingServerGlobalVarTypeRect2i RenderingServerGlobalShaderParameterType = 8
+	/*Unsigned integer global shader parameter ([code]global uniform uint ...[/code]).*/
+	RenderingServerGlobalVarTypeUint RenderingServerGlobalShaderParameterType = 9
+	/*2-dimensional unsigned integer vector global shader parameter ([code]global uniform uvec2 ...[/code]).*/
+	RenderingServerGlobalVarTypeUvec2 RenderingServerGlobalShaderParameterType = 10
+	/*3-dimensional unsigned integer vector global shader parameter ([code]global uniform uvec3 ...[/code]).*/
+	RenderingServerGlobalVarTypeUvec3 RenderingServerGlobalShaderParameterType = 11
+	/*4-dimensional unsigned integer vector global shader parameter ([code]global uniform uvec4 ...[/code]).*/
+	RenderingServerGlobalVarTypeUvec4 RenderingServerGlobalShaderParameterType = 12
+	/*Single-precision floating-point global shader parameter ([code]global uniform float ...[/code]).*/
+	RenderingServerGlobalVarTypeFloat RenderingServerGlobalShaderParameterType = 13
+	/*2-dimensional floating-point vector global shader parameter ([code]global uniform vec2 ...[/code]).*/
+	RenderingServerGlobalVarTypeVec2 RenderingServerGlobalShaderParameterType = 14
+	/*3-dimensional floating-point vector global shader parameter ([code]global uniform vec3 ...[/code]).*/
+	RenderingServerGlobalVarTypeVec3 RenderingServerGlobalShaderParameterType = 15
+	/*4-dimensional floating-point vector global shader parameter ([code]global uniform vec4 ...[/code]).*/
+	RenderingServerGlobalVarTypeVec4 RenderingServerGlobalShaderParameterType = 16
+	/*Color global shader parameter ([code]global uniform vec4 ...[/code]). Equivalent to [constant GLOBAL_VAR_TYPE_VEC4] in shader code, but exposed as a [Color] in the editor UI.*/
+	RenderingServerGlobalVarTypeColor RenderingServerGlobalShaderParameterType = 17
+	/*2-dimensional floating-point rectangle global shader parameter ([code]global uniform vec4 ...[/code]). Equivalent to [constant GLOBAL_VAR_TYPE_VEC4] in shader code, but exposed as a [Rect2] in the editor UI.*/
+	RenderingServerGlobalVarTypeRect2 RenderingServerGlobalShaderParameterType = 18
+	/*2×2 matrix global shader parameter ([code]global uniform mat2 ...[/code]). Exposed as a [PackedInt32Array] in the editor UI.*/
+	RenderingServerGlobalVarTypeMat2 RenderingServerGlobalShaderParameterType = 19
+	/*3×3 matrix global shader parameter ([code]global uniform mat3 ...[/code]). Exposed as a [Basis] in the editor UI.*/
+	RenderingServerGlobalVarTypeMat3 RenderingServerGlobalShaderParameterType = 20
+	/*4×4 matrix global shader parameter ([code]global uniform mat4 ...[/code]). Exposed as a [Projection] in the editor UI.*/
+	RenderingServerGlobalVarTypeMat4 RenderingServerGlobalShaderParameterType = 21
+	/*2-dimensional transform global shader parameter ([code]global uniform mat2x3 ...[/code]). Exposed as a [Transform2D] in the editor UI.*/
+	RenderingServerGlobalVarTypeTransform2d RenderingServerGlobalShaderParameterType = 22
+	/*3-dimensional transform global shader parameter ([code]global uniform mat3x4 ...[/code]). Exposed as a [Transform3D] in the editor UI.*/
+	RenderingServerGlobalVarTypeTransform RenderingServerGlobalShaderParameterType = 23
+	/*2D sampler global shader parameter ([code]global uniform sampler2D ...[/code]). Exposed as a [Texture2D] in the editor UI.*/
+	RenderingServerGlobalVarTypeSampler2d RenderingServerGlobalShaderParameterType = 24
+	/*2D sampler array global shader parameter ([code]global uniform sampler2DArray ...[/code]). Exposed as a [Texture2DArray] in the editor UI.*/
 	RenderingServerGlobalVarTypeSampler2darray RenderingServerGlobalShaderParameterType = 25
-	RenderingServerGlobalVarTypeSampler3d      RenderingServerGlobalShaderParameterType = 26
-	RenderingServerGlobalVarTypeSamplercube    RenderingServerGlobalShaderParameterType = 27
-	RenderingServerGlobalVarTypeMax            RenderingServerGlobalShaderParameterType = 28
+	/*3D sampler global shader parameter ([code]global uniform sampler3D ...[/code]). Exposed as a [Texture3D] in the editor UI.*/
+	RenderingServerGlobalVarTypeSampler3d RenderingServerGlobalShaderParameterType = 26
+	/*Cubemap sampler global shader parameter ([code]global uniform samplerCube ...[/code]). Exposed as a [Cubemap] in the editor UI.*/
+	RenderingServerGlobalVarTypeSamplercube RenderingServerGlobalShaderParameterType = 27
+	/*Represents the size of the [enum GlobalShaderParameterType] enum.*/
+	RenderingServerGlobalVarTypeMax RenderingServerGlobalShaderParameterType = 28
 )
 
 type RenderingServerRenderingInfo = classdb.RenderingServerRenderingInfo
 
 const (
-	RenderingServerRenderingInfoTotalObjectsInFrame    RenderingServerRenderingInfo = 0
+	/*Number of objects rendered in the current 3D scene. This varies depending on camera position and rotation.*/
+	RenderingServerRenderingInfoTotalObjectsInFrame RenderingServerRenderingInfo = 0
+	/*Number of points, lines, or triangles rendered in the current 3D scene. This varies depending on camera position and rotation.*/
 	RenderingServerRenderingInfoTotalPrimitivesInFrame RenderingServerRenderingInfo = 1
-	RenderingServerRenderingInfoTotalDrawCallsInFrame  RenderingServerRenderingInfo = 2
-	RenderingServerRenderingInfoTextureMemUsed         RenderingServerRenderingInfo = 3
-	RenderingServerRenderingInfoBufferMemUsed          RenderingServerRenderingInfo = 4
-	RenderingServerRenderingInfoVideoMemUsed           RenderingServerRenderingInfo = 5
+	/*Number of draw calls performed to render in the current 3D scene. This varies depending on camera position and rotation.*/
+	RenderingServerRenderingInfoTotalDrawCallsInFrame RenderingServerRenderingInfo = 2
+	/*Texture memory used (in bytes).*/
+	RenderingServerRenderingInfoTextureMemUsed RenderingServerRenderingInfo = 3
+	/*Buffer memory used (in bytes). This includes vertex data, uniform buffers, and many miscellaneous buffer types used internally.*/
+	RenderingServerRenderingInfoBufferMemUsed RenderingServerRenderingInfo = 4
+	/*Video memory used (in bytes). When using the Forward+ or mobile rendering backends, this is always greater than the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED], since there is miscellaneous data not accounted for by those two metrics. When using the GL Compatibility backend, this is equal to the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED].*/
+	RenderingServerRenderingInfoVideoMemUsed RenderingServerRenderingInfo = 5
 )
 
 type RenderingServerFeatures = classdb.RenderingServerFeatures
 
 const (
-	RenderingServerFeatureShaders       RenderingServerFeatures = 0
+	/*Hardware supports shaders. This enum is currently unused in Godot 3.x.*/
+	RenderingServerFeatureShaders RenderingServerFeatures = 0
+	/*Hardware supports multithreading. This enum is currently unused in Godot 3.x.*/
 	RenderingServerFeatureMultithreaded RenderingServerFeatures = 1
 )
 
@@ -5463,17 +8784,23 @@ const (
 type ResourceImporterImportOrder = classdb.ResourceImporterImportOrder
 
 const (
+	/*The default import order.*/
 	ResourceImporterImportOrderDefault ResourceImporterImportOrder = 0
-	ResourceImporterImportOrderScene   ResourceImporterImportOrder = 100
+	/*The import order for scenes, which ensures scenes are imported [i]after[/i] all other core resources such as textures. Custom importers should generally have an import order lower than [code]100[/code] to avoid issues when importing scenes that rely on custom resources.*/
+	ResourceImporterImportOrderScene ResourceImporterImportOrder = 100
 )
 
 type ResourceLoaderThreadLoadStatus = classdb.ResourceLoaderThreadLoadStatus
 
 const (
+	/*The resource is invalid, or has not been loaded with [method load_threaded_request].*/
 	ResourceLoaderThreadLoadInvalidResource ResourceLoaderThreadLoadStatus = 0
-	ResourceLoaderThreadLoadInProgress      ResourceLoaderThreadLoadStatus = 1
-	ResourceLoaderThreadLoadFailed          ResourceLoaderThreadLoadStatus = 2
-	ResourceLoaderThreadLoadLoaded          ResourceLoaderThreadLoadStatus = 3
+	/*The resource is still being loaded.*/
+	ResourceLoaderThreadLoadInProgress ResourceLoaderThreadLoadStatus = 1
+	/*Some error occurred during loading and it failed.*/
+	ResourceLoaderThreadLoadFailed ResourceLoaderThreadLoadStatus = 2
+	/*The resource was loaded successfully and can be accessed via [method load_threaded_get].*/
+	ResourceLoaderThreadLoadLoaded ResourceLoaderThreadLoadStatus = 3
 )
 
 type ResourceLoaderCacheMode = classdb.ResourceLoaderCacheMode
@@ -5487,127 +8814,182 @@ const (
 type ResourceSaverSaverFlags = classdb.ResourceSaverSaverFlags
 
 const (
-	ResourceSaverFlagNone                    ResourceSaverSaverFlags = 0
-	ResourceSaverFlagRelativePaths           ResourceSaverSaverFlags = 1
-	ResourceSaverFlagBundleResources         ResourceSaverSaverFlags = 2
-	ResourceSaverFlagChangePath              ResourceSaverSaverFlags = 4
-	ResourceSaverFlagOmitEditorProperties    ResourceSaverSaverFlags = 8
-	ResourceSaverFlagSaveBigEndian           ResourceSaverSaverFlags = 16
-	ResourceSaverFlagCompress                ResourceSaverSaverFlags = 32
+	/*No resource saving option.*/
+	ResourceSaverFlagNone ResourceSaverSaverFlags = 0
+	/*Save the resource with a path relative to the scene which uses it.*/
+	ResourceSaverFlagRelativePaths ResourceSaverSaverFlags = 1
+	/*Bundles external resources.*/
+	ResourceSaverFlagBundleResources ResourceSaverSaverFlags = 2
+	/*Changes the [member Resource.resource_path] of the saved resource to match its new location.*/
+	ResourceSaverFlagChangePath ResourceSaverSaverFlags = 4
+	/*Do not save editor-specific metadata (identified by their [code]__editor[/code] prefix).*/
+	ResourceSaverFlagOmitEditorProperties ResourceSaverSaverFlags = 8
+	/*Save as big endian (see [member FileAccess.big_endian]).*/
+	ResourceSaverFlagSaveBigEndian ResourceSaverSaverFlags = 16
+	/*Compress the resource on save using [constant FileAccess.COMPRESSION_ZSTD]. Only available for binary resource types.*/
+	ResourceSaverFlagCompress ResourceSaverSaverFlags = 32
+	/*Take over the paths of the saved subresources (see [method Resource.take_over_path]).*/
 	ResourceSaverFlagReplaceSubresourcePaths ResourceSaverSaverFlags = 64
 )
 
 type RibbonTrailMeshShape = classdb.RibbonTrailMeshShape
 
 const (
-	RibbonTrailMeshShapeFlat  RibbonTrailMeshShape = 0
+	/*Gives the mesh a single flat face.*/
+	RibbonTrailMeshShapeFlat RibbonTrailMeshShape = 0
+	/*Gives the mesh two perpendicular flat faces, making a cross shape.*/
 	RibbonTrailMeshShapeCross RibbonTrailMeshShape = 1
 )
 
 type RichTextLabelListType = classdb.RichTextLabelListType
 
 const (
+	/*Each list item has a number marker.*/
 	RichTextLabelListNumbers RichTextLabelListType = 0
+	/*Each list item has a letter marker.*/
 	RichTextLabelListLetters RichTextLabelListType = 1
-	RichTextLabelListRoman   RichTextLabelListType = 2
-	RichTextLabelListDots    RichTextLabelListType = 3
+	/*Each list item has a roman number marker.*/
+	RichTextLabelListRoman RichTextLabelListType = 2
+	/*Each list item has a filled circle marker.*/
+	RichTextLabelListDots RichTextLabelListType = 3
 )
 
 type RichTextLabelMenuItems = classdb.RichTextLabelMenuItems
 
 const (
-	RichTextLabelMenuCopy      RichTextLabelMenuItems = 0
+	/*Copies the selected text.*/
+	RichTextLabelMenuCopy RichTextLabelMenuItems = 0
+	/*Selects the whole [RichTextLabel] text.*/
 	RichTextLabelMenuSelectAll RichTextLabelMenuItems = 1
-	RichTextLabelMenuMax       RichTextLabelMenuItems = 2
+	/*Represents the size of the [enum MenuItems] enum.*/
+	RichTextLabelMenuMax RichTextLabelMenuItems = 2
 )
 
 type RichTextLabelImageUpdateMask = classdb.RichTextLabelImageUpdateMask
 
 const (
-	RichTextLabelUpdateTexture        RichTextLabelImageUpdateMask = 1
-	RichTextLabelUpdateSize           RichTextLabelImageUpdateMask = 2
-	RichTextLabelUpdateColor          RichTextLabelImageUpdateMask = 4
-	RichTextLabelUpdateAlignment      RichTextLabelImageUpdateMask = 8
-	RichTextLabelUpdateRegion         RichTextLabelImageUpdateMask = 16
-	RichTextLabelUpdatePad            RichTextLabelImageUpdateMask = 32
-	RichTextLabelUpdateTooltip        RichTextLabelImageUpdateMask = 64
+	/*If this bit is set, [method update_image] changes image texture.*/
+	RichTextLabelUpdateTexture RichTextLabelImageUpdateMask = 1
+	/*If this bit is set, [method update_image] changes image size.*/
+	RichTextLabelUpdateSize RichTextLabelImageUpdateMask = 2
+	/*If this bit is set, [method update_image] changes image color.*/
+	RichTextLabelUpdateColor RichTextLabelImageUpdateMask = 4
+	/*If this bit is set, [method update_image] changes image inline alignment.*/
+	RichTextLabelUpdateAlignment RichTextLabelImageUpdateMask = 8
+	/*If this bit is set, [method update_image] changes image texture region.*/
+	RichTextLabelUpdateRegion RichTextLabelImageUpdateMask = 16
+	/*If this bit is set, [method update_image] changes image padding.*/
+	RichTextLabelUpdatePad RichTextLabelImageUpdateMask = 32
+	/*If this bit is set, [method update_image] changes image tooltip.*/
+	RichTextLabelUpdateTooltip RichTextLabelImageUpdateMask = 64
+	/*If this bit is set, [method update_image] changes image width from/to percents.*/
 	RichTextLabelUpdateWidthInPercent RichTextLabelImageUpdateMask = 128
 )
 
 type RigidBody2DFreezeMode = classdb.RigidBody2DFreezeMode
 
 const (
-	RigidBody2DFreezeModeStatic    RigidBody2DFreezeMode = 0
+	/*Static body freeze mode (default). The body is not affected by gravity and forces. It can be only moved by user code and doesn't collide with other bodies along its path.*/
+	RigidBody2DFreezeModeStatic RigidBody2DFreezeMode = 0
+	/*Kinematic body freeze mode. Similar to [constant FREEZE_MODE_STATIC], but collides with other bodies along its path when moved. Useful for a frozen body that needs to be animated.*/
 	RigidBody2DFreezeModeKinematic RigidBody2DFreezeMode = 1
 )
 
 type RigidBody2DCenterOfMassMode = classdb.RigidBody2DCenterOfMassMode
 
 const (
-	RigidBody2DCenterOfMassModeAuto   RigidBody2DCenterOfMassMode = 0
+	/*In this mode, the body's center of mass is calculated automatically based on its shapes. This assumes that the shapes' origins are also their center of mass.*/
+	RigidBody2DCenterOfMassModeAuto RigidBody2DCenterOfMassMode = 0
+	/*In this mode, the body's center of mass is set through [member center_of_mass]. Defaults to the body's origin position.*/
 	RigidBody2DCenterOfMassModeCustom RigidBody2DCenterOfMassMode = 1
 )
 
 type RigidBody2DDampMode = classdb.RigidBody2DDampMode
 
 const (
+	/*In this mode, the body's damping value is added to any value set in areas or the default value.*/
 	RigidBody2DDampModeCombine RigidBody2DDampMode = 0
+	/*In this mode, the body's damping value replaces any value set in areas or the default value.*/
 	RigidBody2DDampModeReplace RigidBody2DDampMode = 1
 )
 
 type RigidBody2DCCDMode = classdb.RigidBody2DCCDMode
 
 const (
-	RigidBody2DCcdModeDisabled  RigidBody2DCCDMode = 0
-	RigidBody2DCcdModeCastRay   RigidBody2DCCDMode = 1
+	/*Continuous collision detection disabled. This is the fastest way to detect body collisions, but can miss small, fast-moving objects.*/
+	RigidBody2DCcdModeDisabled RigidBody2DCCDMode = 0
+	/*Continuous collision detection enabled using raycasting. This is faster than shapecasting but less precise.*/
+	RigidBody2DCcdModeCastRay RigidBody2DCCDMode = 1
+	/*Continuous collision detection enabled using shapecasting. This is the slowest CCD method and the most precise.*/
 	RigidBody2DCcdModeCastShape RigidBody2DCCDMode = 2
 )
 
 type RigidBody3DFreezeMode = classdb.RigidBody3DFreezeMode
 
 const (
-	RigidBody3DFreezeModeStatic    RigidBody3DFreezeMode = 0
+	/*Static body freeze mode (default). The body is not affected by gravity and forces. It can be only moved by user code and doesn't collide with other bodies along its path.*/
+	RigidBody3DFreezeModeStatic RigidBody3DFreezeMode = 0
+	/*Kinematic body freeze mode. Similar to [constant FREEZE_MODE_STATIC], but collides with other bodies along its path when moved. Useful for a frozen body that needs to be animated.*/
 	RigidBody3DFreezeModeKinematic RigidBody3DFreezeMode = 1
 )
 
 type RigidBody3DCenterOfMassMode = classdb.RigidBody3DCenterOfMassMode
 
 const (
-	RigidBody3DCenterOfMassModeAuto   RigidBody3DCenterOfMassMode = 0
+	/*In this mode, the body's center of mass is calculated automatically based on its shapes. This assumes that the shapes' origins are also their center of mass.*/
+	RigidBody3DCenterOfMassModeAuto RigidBody3DCenterOfMassMode = 0
+	/*In this mode, the body's center of mass is set through [member center_of_mass]. Defaults to the body's origin position.*/
 	RigidBody3DCenterOfMassModeCustom RigidBody3DCenterOfMassMode = 1
 )
 
 type RigidBody3DDampMode = classdb.RigidBody3DDampMode
 
 const (
+	/*In this mode, the body's damping value is added to any value set in areas or the default value.*/
 	RigidBody3DDampModeCombine RigidBody3DDampMode = 0
+	/*In this mode, the body's damping value replaces any value set in areas or the default value.*/
 	RigidBody3DDampModeReplace RigidBody3DDampMode = 1
 )
 
 type SceneReplicationConfigReplicationMode = classdb.SceneReplicationConfigReplicationMode
 
 const (
-	SceneReplicationConfigReplicationModeNever    SceneReplicationConfigReplicationMode = 0
-	SceneReplicationConfigReplicationModeAlways   SceneReplicationConfigReplicationMode = 1
+	/*Do not keep the given property synchronized.*/
+	SceneReplicationConfigReplicationModeNever SceneReplicationConfigReplicationMode = 0
+	/*Replicate the given property on process by constantly sending updates using unreliable transfer mode.*/
+	SceneReplicationConfigReplicationModeAlways SceneReplicationConfigReplicationMode = 1
+	/*Replicate the given property on process by sending updates using reliable transfer mode when its value changes.*/
 	SceneReplicationConfigReplicationModeOnChange SceneReplicationConfigReplicationMode = 2
 )
 
 type SceneStateGenEditState = classdb.SceneStateGenEditState
 
 const (
-	SceneStateGenEditStateDisabled      SceneStateGenEditState = 0
-	SceneStateGenEditStateInstance      SceneStateGenEditState = 1
-	SceneStateGenEditStateMain          SceneStateGenEditState = 2
+	/*If passed to [method PackedScene.instantiate], blocks edits to the scene state.*/
+	SceneStateGenEditStateDisabled SceneStateGenEditState = 0
+	/*If passed to [method PackedScene.instantiate], provides inherited scene resources to the local scene.
+	  [b]Note:[/b] Only available in editor builds.*/
+	SceneStateGenEditStateInstance SceneStateGenEditState = 1
+	/*If passed to [method PackedScene.instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
+	  [b]Note:[/b] Only available in editor builds.*/
+	SceneStateGenEditStateMain SceneStateGenEditState = 2
+	/*If passed to [method PackedScene.instantiate], it's similar to [constant GEN_EDIT_STATE_MAIN], but for the case where the scene is being instantiated to be the base of another one.
+	  [b]Note:[/b] Only available in editor builds.*/
 	SceneStateGenEditStateMainInherited SceneStateGenEditState = 3
 )
 
 type SceneTreeGroupCallFlags = classdb.SceneTreeGroupCallFlags
 
 const (
-	SceneTreeGroupCallDefault  SceneTreeGroupCallFlags = 0
-	SceneTreeGroupCallReverse  SceneTreeGroupCallFlags = 1
+	/*Call a group with no flags (default).*/
+	SceneTreeGroupCallDefault SceneTreeGroupCallFlags = 0
+	/*Call a group in reverse scene order.*/
+	SceneTreeGroupCallReverse SceneTreeGroupCallFlags = 1
+	/*Call a group at the end of the current frame (process or physics).*/
 	SceneTreeGroupCallDeferred SceneTreeGroupCallFlags = 2
-	SceneTreeGroupCallUnique   SceneTreeGroupCallFlags = 4
+	/*Call a group only once even if the call is executed many times.
+	  [b]Note:[/b] Arguments are not taken into account when deciding whether the call is unique or not. Therefore when the same method is called with different arguments, only the first call will be performed.*/
+	SceneTreeGroupCallUnique SceneTreeGroupCallFlags = 4
 )
 
 type ScriptLanguageExtensionLookupResultType = classdb.ScriptLanguageExtensionLookupResultType
@@ -5628,10 +9010,14 @@ const (
 type ScriptLanguageExtensionCodeCompletionLocation = classdb.ScriptLanguageExtensionCodeCompletionLocation
 
 const (
-	ScriptLanguageExtensionLocationLocal         ScriptLanguageExtensionCodeCompletionLocation = 0
-	ScriptLanguageExtensionLocationParentMask    ScriptLanguageExtensionCodeCompletionLocation = 256
+	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
+	ScriptLanguageExtensionLocationLocal ScriptLanguageExtensionCodeCompletionLocation = 0
+	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. 0 for the local class, 1 for the parent, 2 for the grandparent, etc) to store the depth of an option in the class or a parent class.*/
+	ScriptLanguageExtensionLocationParentMask ScriptLanguageExtensionCodeCompletionLocation = 256
+	/*The option is from user code which is not local and not in a derived class (e.g. Autoload Singletons).*/
 	ScriptLanguageExtensionLocationOtherUserCode ScriptLanguageExtensionCodeCompletionLocation = 512
-	ScriptLanguageExtensionLocationOther         ScriptLanguageExtensionCodeCompletionLocation = 1024
+	/*The option is from other engine code, not covered by the other enum constants - e.g. built-in classes.*/
+	ScriptLanguageExtensionLocationOther ScriptLanguageExtensionCodeCompletionLocation = 1024
 )
 
 type ScriptLanguageExtensionCodeCompletionKind = classdb.ScriptLanguageExtensionCodeCompletionKind
@@ -5653,701 +9039,1088 @@ const (
 type ScrollContainerScrollMode = classdb.ScrollContainerScrollMode
 
 const (
-	ScrollContainerScrollModeDisabled   ScrollContainerScrollMode = 0
-	ScrollContainerScrollModeAuto       ScrollContainerScrollMode = 1
+	/*Scrolling disabled, scrollbar will be invisible.*/
+	ScrollContainerScrollModeDisabled ScrollContainerScrollMode = 0
+	/*Scrolling enabled, scrollbar will be visible only if necessary, i.e. container's content is bigger than the container.*/
+	ScrollContainerScrollModeAuto ScrollContainerScrollMode = 1
+	/*Scrolling enabled, scrollbar will be always visible.*/
 	ScrollContainerScrollModeShowAlways ScrollContainerScrollMode = 2
-	ScrollContainerScrollModeShowNever  ScrollContainerScrollMode = 3
+	/*Scrolling enabled, scrollbar will be hidden.*/
+	ScrollContainerScrollModeShowNever ScrollContainerScrollMode = 3
 )
 
 type ShaderMode = classdb.ShaderMode
 
 const (
-	ShaderModeSpatial    ShaderMode = 0
+	/*Mode used to draw all 3D objects.*/
+	ShaderModeSpatial ShaderMode = 0
+	/*Mode used to draw all 2D objects.*/
 	ShaderModeCanvasItem ShaderMode = 1
-	ShaderModeParticles  ShaderMode = 2
-	ShaderModeSky        ShaderMode = 3
-	ShaderModeFog        ShaderMode = 4
+	/*Mode used to calculate particle information on a per-particle basis. Not used for drawing.*/
+	ShaderModeParticles ShaderMode = 2
+	/*Mode used for drawing skies. Only works with shaders attached to [Sky] objects.*/
+	ShaderModeSky ShaderMode = 3
+	/*Mode used for setting the color and density of volumetric fog effect.*/
+	ShaderModeFog ShaderMode = 4
 )
 
 type SkeletonProfileTailDirection = classdb.SkeletonProfileTailDirection
 
 const (
+	/*Direction to the average coordinates of bone children.*/
 	SkeletonProfileTailDirectionAverageChildren SkeletonProfileTailDirection = 0
-	SkeletonProfileTailDirectionSpecificChild   SkeletonProfileTailDirection = 1
-	SkeletonProfileTailDirectionEnd             SkeletonProfileTailDirection = 2
+	/*Direction to the coordinates of specified bone child.*/
+	SkeletonProfileTailDirectionSpecificChild SkeletonProfileTailDirection = 1
+	/*Direction is not calculated.*/
+	SkeletonProfileTailDirectionEnd SkeletonProfileTailDirection = 2
 )
 
 type SkyRadianceSize = classdb.SkyRadianceSize
 
 const (
-	SkyRadianceSize32   SkyRadianceSize = 0
-	SkyRadianceSize64   SkyRadianceSize = 1
-	SkyRadianceSize128  SkyRadianceSize = 2
-	SkyRadianceSize256  SkyRadianceSize = 3
-	SkyRadianceSize512  SkyRadianceSize = 4
+	/*Radiance texture size is 32×32 pixels.*/
+	SkyRadianceSize32 SkyRadianceSize = 0
+	/*Radiance texture size is 64×64 pixels.*/
+	SkyRadianceSize64 SkyRadianceSize = 1
+	/*Radiance texture size is 128×128 pixels.*/
+	SkyRadianceSize128 SkyRadianceSize = 2
+	/*Radiance texture size is 256×256 pixels.*/
+	SkyRadianceSize256 SkyRadianceSize = 3
+	/*Radiance texture size is 512×512 pixels.*/
+	SkyRadianceSize512 SkyRadianceSize = 4
+	/*Radiance texture size is 1024×1024 pixels.*/
 	SkyRadianceSize1024 SkyRadianceSize = 5
+	/*Radiance texture size is 2048×2048 pixels.*/
 	SkyRadianceSize2048 SkyRadianceSize = 6
-	SkyRadianceSizeMax  SkyRadianceSize = 7
+	/*Represents the size of the [enum RadianceSize] enum.*/
+	SkyRadianceSizeMax SkyRadianceSize = 7
 )
 
 type SkyProcessMode = classdb.SkyProcessMode
 
 const (
-	SkyProcessModeAutomatic   SkyProcessMode = 0
-	SkyProcessModeQuality     SkyProcessMode = 1
+	/*Automatically selects the appropriate process mode based on your sky shader. If your shader uses [code]TIME[/code] or [code]POSITION[/code], this will use [constant PROCESS_MODE_REALTIME]. If your shader uses any of the [code]LIGHT_*[/code] variables or any custom uniforms, this uses [constant PROCESS_MODE_INCREMENTAL]. Otherwise, this defaults to [constant PROCESS_MODE_QUALITY].*/
+	SkyProcessModeAutomatic SkyProcessMode = 0
+	/*Uses high quality importance sampling to process the radiance map. In general, this results in much higher quality than [constant PROCESS_MODE_REALTIME] but takes much longer to generate. This should not be used if you plan on changing the sky at runtime. If you are finding that the reflection is not blurry enough and is showing sparkles or fireflies, try increasing [member ProjectSettings.rendering/reflections/sky_reflections/ggx_samples].*/
+	SkyProcessModeQuality SkyProcessMode = 1
+	/*Uses the same high quality importance sampling to process the radiance map as [constant PROCESS_MODE_QUALITY], but updates over several frames. The number of frames is determined by [member ProjectSettings.rendering/reflections/sky_reflections/roughness_layers]. Use this when you need highest quality radiance maps, but have a sky that updates slowly.*/
 	SkyProcessModeIncremental SkyProcessMode = 2
-	SkyProcessModeRealtime    SkyProcessMode = 3
+	/*Uses the fast filtering algorithm to process the radiance map. In general this results in lower quality, but substantially faster run times. If you need better quality, but still need to update the sky every frame, consider turning on [member ProjectSettings.rendering/reflections/sky_reflections/fast_filter_high_quality].
+	  [b]Note:[/b] The fast filtering algorithm is limited to 256×256 cubemaps, so [member radiance_size] must be set to [constant RADIANCE_SIZE_256]. Otherwise, a warning is printed and the overridden radiance size is ignored.*/
+	SkyProcessModeRealtime SkyProcessMode = 3
 )
 
 type SliderJoint3DParam = classdb.SliderJoint3DParam
 
 const (
-	SliderJoint3DParamLinearLimitUpper             SliderJoint3DParam = 0
-	SliderJoint3DParamLinearLimitLower             SliderJoint3DParam = 1
-	SliderJoint3DParamLinearLimitSoftness          SliderJoint3DParam = 2
-	SliderJoint3DParamLinearLimitRestitution       SliderJoint3DParam = 3
-	SliderJoint3DParamLinearLimitDamping           SliderJoint3DParam = 4
-	SliderJoint3DParamLinearMotionSoftness         SliderJoint3DParam = 5
-	SliderJoint3DParamLinearMotionRestitution      SliderJoint3DParam = 6
-	SliderJoint3DParamLinearMotionDamping          SliderJoint3DParam = 7
-	SliderJoint3DParamLinearOrthogonalSoftness     SliderJoint3DParam = 8
-	SliderJoint3DParamLinearOrthogonalRestitution  SliderJoint3DParam = 9
-	SliderJoint3DParamLinearOrthogonalDamping      SliderJoint3DParam = 10
-	SliderJoint3DParamAngularLimitUpper            SliderJoint3DParam = 11
-	SliderJoint3DParamAngularLimitLower            SliderJoint3DParam = 12
-	SliderJoint3DParamAngularLimitSoftness         SliderJoint3DParam = 13
-	SliderJoint3DParamAngularLimitRestitution      SliderJoint3DParam = 14
-	SliderJoint3DParamAngularLimitDamping          SliderJoint3DParam = 15
-	SliderJoint3DParamAngularMotionSoftness        SliderJoint3DParam = 16
-	SliderJoint3DParamAngularMotionRestitution     SliderJoint3DParam = 17
-	SliderJoint3DParamAngularMotionDamping         SliderJoint3DParam = 18
-	SliderJoint3DParamAngularOrthogonalSoftness    SliderJoint3DParam = 19
+	/*The maximum difference between the pivot points on their X axis before damping happens.*/
+	SliderJoint3DParamLinearLimitUpper SliderJoint3DParam = 0
+	/*The minimum difference between the pivot points on their X axis before damping happens.*/
+	SliderJoint3DParamLinearLimitLower SliderJoint3DParam = 1
+	/*A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement.*/
+	SliderJoint3DParamLinearLimitSoftness SliderJoint3DParam = 2
+	/*The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost.*/
+	SliderJoint3DParamLinearLimitRestitution SliderJoint3DParam = 3
+	/*The amount of damping once the slider limits are surpassed.*/
+	SliderJoint3DParamLinearLimitDamping SliderJoint3DParam = 4
+	/*A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement.*/
+	SliderJoint3DParamLinearMotionSoftness SliderJoint3DParam = 5
+	/*The amount of restitution inside the slider limits.*/
+	SliderJoint3DParamLinearMotionRestitution SliderJoint3DParam = 6
+	/*The amount of damping inside the slider limits.*/
+	SliderJoint3DParamLinearMotionDamping SliderJoint3DParam = 7
+	/*A factor applied to the movement across axes orthogonal to the slider.*/
+	SliderJoint3DParamLinearOrthogonalSoftness SliderJoint3DParam = 8
+	/*The amount of restitution when movement is across axes orthogonal to the slider.*/
+	SliderJoint3DParamLinearOrthogonalRestitution SliderJoint3DParam = 9
+	/*The amount of damping when movement is across axes orthogonal to the slider.*/
+	SliderJoint3DParamLinearOrthogonalDamping SliderJoint3DParam = 10
+	/*The upper limit of rotation in the slider.*/
+	SliderJoint3DParamAngularLimitUpper SliderJoint3DParam = 11
+	/*The lower limit of rotation in the slider.*/
+	SliderJoint3DParamAngularLimitLower SliderJoint3DParam = 12
+	/*A factor applied to the all rotation once the limit is surpassed.*/
+	SliderJoint3DParamAngularLimitSoftness SliderJoint3DParam = 13
+	/*The amount of restitution of the rotation when the limit is surpassed.*/
+	SliderJoint3DParamAngularLimitRestitution SliderJoint3DParam = 14
+	/*The amount of damping of the rotation when the limit is surpassed.*/
+	SliderJoint3DParamAngularLimitDamping SliderJoint3DParam = 15
+	/*A factor applied to the all rotation in the limits.*/
+	SliderJoint3DParamAngularMotionSoftness SliderJoint3DParam = 16
+	/*The amount of restitution of the rotation in the limits.*/
+	SliderJoint3DParamAngularMotionRestitution SliderJoint3DParam = 17
+	/*The amount of damping of the rotation in the limits.*/
+	SliderJoint3DParamAngularMotionDamping SliderJoint3DParam = 18
+	/*A factor applied to the all rotation across axes orthogonal to the slider.*/
+	SliderJoint3DParamAngularOrthogonalSoftness SliderJoint3DParam = 19
+	/*The amount of restitution of the rotation across axes orthogonal to the slider.*/
 	SliderJoint3DParamAngularOrthogonalRestitution SliderJoint3DParam = 20
-	SliderJoint3DParamAngularOrthogonalDamping     SliderJoint3DParam = 21
-	SliderJoint3DParamMax                          SliderJoint3DParam = 22
+	/*The amount of damping of the rotation across axes orthogonal to the slider.*/
+	SliderJoint3DParamAngularOrthogonalDamping SliderJoint3DParam = 21
+	/*Represents the size of the [enum Param] enum.*/
+	SliderJoint3DParamMax SliderJoint3DParam = 22
 )
 
 type SoftBody3DDisableMode = classdb.SoftBody3DDisableMode
 
 const (
-	SoftBody3DDisableModeRemove     SoftBody3DDisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [SoftBody3D].
+	  Automatically re-added to the physics simulation when the [Node] is processed again.*/
+	SoftBody3DDisableModeRemove SoftBody3DDisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], do not affect the physics simulation.*/
 	SoftBody3DDisableModeKeepActive SoftBody3DDisableMode = 1
 )
 
 type SplitContainerDraggerVisibility = classdb.SplitContainerDraggerVisibility
 
 const (
-	SplitContainerDraggerVisible         SplitContainerDraggerVisibility = 0
-	SplitContainerDraggerHidden          SplitContainerDraggerVisibility = 1
+	/*The split dragger is visible when the cursor hovers it.*/
+	SplitContainerDraggerVisible SplitContainerDraggerVisibility = 0
+	/*The split dragger is never visible.*/
+	SplitContainerDraggerHidden SplitContainerDraggerVisibility = 1
+	/*The split dragger is never visible and its space collapsed.*/
 	SplitContainerDraggerHiddenCollapsed SplitContainerDraggerVisibility = 2
 )
 
 type SpriteBase3DDrawFlags = classdb.SpriteBase3DDrawFlags
 
 const (
-	SpriteBase3DFlagTransparent      SpriteBase3DDrawFlags = 0
-	SpriteBase3DFlagShaded           SpriteBase3DDrawFlags = 1
-	SpriteBase3DFlagDoubleSided      SpriteBase3DDrawFlags = 2
+	/*If set, the texture's transparency and the opacity are used to make those parts of the sprite invisible.*/
+	SpriteBase3DFlagTransparent SpriteBase3DDrawFlags = 0
+	/*If set, lights in the environment affect the sprite.*/
+	SpriteBase3DFlagShaded SpriteBase3DDrawFlags = 1
+	/*If set, texture can be seen from the back as well. If not, the texture is invisible when looking at it from behind.*/
+	SpriteBase3DFlagDoubleSided SpriteBase3DDrawFlags = 2
+	/*Disables the depth test, so this object is drawn on top of all others. However, objects drawn after it in the draw order may cover it.*/
 	SpriteBase3DFlagDisableDepthTest SpriteBase3DDrawFlags = 3
-	SpriteBase3DFlagFixedSize        SpriteBase3DDrawFlags = 4
-	SpriteBase3DFlagMax              SpriteBase3DDrawFlags = 5
+	/*Label is scaled by depth so that it always appears the same size on screen.*/
+	SpriteBase3DFlagFixedSize SpriteBase3DDrawFlags = 4
+	/*Represents the size of the [enum DrawFlags] enum.*/
+	SpriteBase3DFlagMax SpriteBase3DDrawFlags = 5
 )
 
 type SpriteBase3DAlphaCutMode = classdb.SpriteBase3DAlphaCutMode
 
 const (
-	SpriteBase3DAlphaCutDisabled      SpriteBase3DAlphaCutMode = 0
-	SpriteBase3DAlphaCutDiscard       SpriteBase3DAlphaCutMode = 1
+	/*This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping.*/
+	SpriteBase3DAlphaCutDisabled SpriteBase3DAlphaCutMode = 0
+	/*This mode only allows fully transparent or fully opaque pixels. Harsh edges will be visible unless some form of screen-space antialiasing is enabled (see [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa]). On the bright side, this mode doesn't suffer from transparency sorting issues when multiple transparent materials are overlapping. This mode is also known as [i]alpha testing[/i] or [i]1-bit transparency[/i].*/
+	SpriteBase3DAlphaCutDiscard SpriteBase3DAlphaCutMode = 1
+	/*This mode draws fully opaque pixels in the depth prepass. This is slower than [constant ALPHA_CUT_DISABLED] or [constant ALPHA_CUT_DISCARD], but it allows displaying translucent areas and smooth edges while using proper sorting.*/
 	SpriteBase3DAlphaCutOpaquePrepass SpriteBase3DAlphaCutMode = 2
-	SpriteBase3DAlphaCutHash          SpriteBase3DAlphaCutMode = 3
+	/*This mode draws cuts off all values below a spatially-deterministic threshold, the rest will remain opaque.*/
+	SpriteBase3DAlphaCutHash SpriteBase3DAlphaCutMode = 3
 )
 
 type StreamPeerTCPStatus = classdb.StreamPeerTCPStatus
 
 const (
-	StreamPeerTCPStatusNone       StreamPeerTCPStatus = 0
+	/*The initial status of the [StreamPeerTCP]. This is also the status after disconnecting.*/
+	StreamPeerTCPStatusNone StreamPeerTCPStatus = 0
+	/*A status representing a [StreamPeerTCP] that is connecting to a host.*/
 	StreamPeerTCPStatusConnecting StreamPeerTCPStatus = 1
-	StreamPeerTCPStatusConnected  StreamPeerTCPStatus = 2
-	StreamPeerTCPStatusError      StreamPeerTCPStatus = 3
+	/*A status representing a [StreamPeerTCP] that is connected to a host.*/
+	StreamPeerTCPStatusConnected StreamPeerTCPStatus = 2
+	/*A status representing a [StreamPeerTCP] in error state.*/
+	StreamPeerTCPStatusError StreamPeerTCPStatus = 3
 )
 
 type StreamPeerTLSStatus = classdb.StreamPeerTLSStatus
 
 const (
-	StreamPeerTLSStatusDisconnected          StreamPeerTLSStatus = 0
-	StreamPeerTLSStatusHandshaking           StreamPeerTLSStatus = 1
-	StreamPeerTLSStatusConnected             StreamPeerTLSStatus = 2
-	StreamPeerTLSStatusError                 StreamPeerTLSStatus = 3
+	/*A status representing a [StreamPeerTLS] that is disconnected.*/
+	StreamPeerTLSStatusDisconnected StreamPeerTLSStatus = 0
+	/*A status representing a [StreamPeerTLS] during handshaking.*/
+	StreamPeerTLSStatusHandshaking StreamPeerTLSStatus = 1
+	/*A status representing a [StreamPeerTLS] that is connected to a host.*/
+	StreamPeerTLSStatusConnected StreamPeerTLSStatus = 2
+	/*A status representing a [StreamPeerTLS] in error state.*/
+	StreamPeerTLSStatusError StreamPeerTLSStatus = 3
+	/*An error status that shows a mismatch in the TLS certificate domain presented by the host and the domain requested for validation.*/
 	StreamPeerTLSStatusErrorHostnameMismatch StreamPeerTLSStatus = 4
 )
 
 type StyleBoxTextureAxisStretchMode = classdb.StyleBoxTextureAxisStretchMode
 
 const (
+	/*Stretch the stylebox's texture. This results in visible distortion unless the texture size matches the stylebox's size perfectly.*/
 	StyleBoxTextureAxisStretchModeStretch StyleBoxTextureAxisStretchMode = 0
-	StyleBoxTextureAxisStretchModeTile    StyleBoxTextureAxisStretchMode = 1
+	/*Repeats the stylebox's texture to match the stylebox's size according to the nine-patch system.*/
+	StyleBoxTextureAxisStretchModeTile StyleBoxTextureAxisStretchMode = 1
+	/*Repeats the stylebox's texture to match the stylebox's size according to the nine-patch system. Unlike [constant AXIS_STRETCH_MODE_TILE], the texture may be slightly stretched to make the nine-patch texture tile seamlessly.*/
 	StyleBoxTextureAxisStretchModeTileFit StyleBoxTextureAxisStretchMode = 2
 )
 
 type SubViewportClearMode = classdb.SubViewportClearMode
 
 const (
+	/*Always clear the render target before drawing.*/
 	SubViewportClearModeAlways SubViewportClearMode = 0
-	SubViewportClearModeNever  SubViewportClearMode = 1
-	SubViewportClearModeOnce   SubViewportClearMode = 2
+	/*Never clear the render target.*/
+	SubViewportClearModeNever SubViewportClearMode = 1
+	/*Clear the render target on the next frame, then switch to [constant CLEAR_MODE_NEVER].*/
+	SubViewportClearModeOnce SubViewportClearMode = 2
 )
 
 type SubViewportUpdateMode = classdb.SubViewportUpdateMode
 
 const (
-	SubViewportUpdateDisabled          SubViewportUpdateMode = 0
-	SubViewportUpdateOnce              SubViewportUpdateMode = 1
-	SubViewportUpdateWhenVisible       SubViewportUpdateMode = 2
+	/*Do not update the render target.*/
+	SubViewportUpdateDisabled SubViewportUpdateMode = 0
+	/*Update the render target once, then switch to [constant UPDATE_DISABLED].*/
+	SubViewportUpdateOnce SubViewportUpdateMode = 1
+	/*Update the render target only when it is visible. This is the default value.*/
+	SubViewportUpdateWhenVisible SubViewportUpdateMode = 2
+	/*Update the render target only when its parent is visible.*/
 	SubViewportUpdateWhenParentVisible SubViewportUpdateMode = 3
-	SubViewportUpdateAlways            SubViewportUpdateMode = 4
+	/*Always update the render target.*/
+	SubViewportUpdateAlways SubViewportUpdateMode = 4
 )
 
 type SurfaceToolCustomFormat = classdb.SurfaceToolCustomFormat
 
 const (
+	/*Limits range of data passed to [method set_custom] to unsigned normalized 0 to 1 stored in 8 bits per channel. See [constant Mesh.ARRAY_CUSTOM_RGBA8_UNORM].*/
 	SurfaceToolCustomRgba8Unorm SurfaceToolCustomFormat = 0
+	/*Limits range of data passed to [method set_custom] to signed normalized -1 to 1 stored in 8 bits per channel. See [constant Mesh.ARRAY_CUSTOM_RGBA8_SNORM].*/
 	SurfaceToolCustomRgba8Snorm SurfaceToolCustomFormat = 1
-	SurfaceToolCustomRgHalf     SurfaceToolCustomFormat = 2
-	SurfaceToolCustomRgbaHalf   SurfaceToolCustomFormat = 3
-	SurfaceToolCustomRFloat     SurfaceToolCustomFormat = 4
-	SurfaceToolCustomRgFloat    SurfaceToolCustomFormat = 5
-	SurfaceToolCustomRgbFloat   SurfaceToolCustomFormat = 6
-	SurfaceToolCustomRgbaFloat  SurfaceToolCustomFormat = 7
-	SurfaceToolCustomMax        SurfaceToolCustomFormat = 8
+	/*Stores data passed to [method set_custom] as half precision floats, and uses only red and green color channels. See [constant Mesh.ARRAY_CUSTOM_RG_HALF].*/
+	SurfaceToolCustomRgHalf SurfaceToolCustomFormat = 2
+	/*Stores data passed to [method set_custom] as half precision floats and uses all color channels. See [constant Mesh.ARRAY_CUSTOM_RGBA_HALF].*/
+	SurfaceToolCustomRgbaHalf SurfaceToolCustomFormat = 3
+	/*Stores data passed to [method set_custom] as full precision floats, and uses only red color channel. See [constant Mesh.ARRAY_CUSTOM_R_FLOAT].*/
+	SurfaceToolCustomRFloat SurfaceToolCustomFormat = 4
+	/*Stores data passed to [method set_custom] as full precision floats, and uses only red and green color channels. See [constant Mesh.ARRAY_CUSTOM_RG_FLOAT].*/
+	SurfaceToolCustomRgFloat SurfaceToolCustomFormat = 5
+	/*Stores data passed to [method set_custom] as full precision floats, and uses only red, green and blue color channels. See [constant Mesh.ARRAY_CUSTOM_RGB_FLOAT].*/
+	SurfaceToolCustomRgbFloat SurfaceToolCustomFormat = 6
+	/*Stores data passed to [method set_custom] as full precision floats, and uses all color channels. See [constant Mesh.ARRAY_CUSTOM_RGBA_FLOAT].*/
+	SurfaceToolCustomRgbaFloat SurfaceToolCustomFormat = 7
+	/*Used to indicate a disabled custom channel.*/
+	SurfaceToolCustomMax SurfaceToolCustomFormat = 8
 )
 
 type SurfaceToolSkinWeightCount = classdb.SurfaceToolSkinWeightCount
 
 const (
+	/*Each individual vertex can be influenced by only 4 bone weights.*/
 	SurfaceToolSkin4Weights SurfaceToolSkinWeightCount = 0
+	/*Each individual vertex can be influenced by up to 8 bone weights.*/
 	SurfaceToolSkin8Weights SurfaceToolSkinWeightCount = 1
 )
 
 type TabBarAlignmentMode = classdb.TabBarAlignmentMode
 
 const (
-	TabBarAlignmentLeft   TabBarAlignmentMode = 0
+	/*Places tabs to the left.*/
+	TabBarAlignmentLeft TabBarAlignmentMode = 0
+	/*Places tabs in the middle.*/
 	TabBarAlignmentCenter TabBarAlignmentMode = 1
-	TabBarAlignmentRight  TabBarAlignmentMode = 2
-	TabBarAlignmentMax    TabBarAlignmentMode = 3
+	/*Places tabs to the right.*/
+	TabBarAlignmentRight TabBarAlignmentMode = 2
+	/*Represents the size of the [enum AlignmentMode] enum.*/
+	TabBarAlignmentMax TabBarAlignmentMode = 3
 )
 
 type TabBarCloseButtonDisplayPolicy = classdb.TabBarCloseButtonDisplayPolicy
 
 const (
-	TabBarCloseButtonShowNever      TabBarCloseButtonDisplayPolicy = 0
+	/*Never show the close buttons.*/
+	TabBarCloseButtonShowNever TabBarCloseButtonDisplayPolicy = 0
+	/*Only show the close button on the currently active tab.*/
 	TabBarCloseButtonShowActiveOnly TabBarCloseButtonDisplayPolicy = 1
-	TabBarCloseButtonShowAlways     TabBarCloseButtonDisplayPolicy = 2
-	TabBarCloseButtonMax            TabBarCloseButtonDisplayPolicy = 3
+	/*Show the close button on all tabs.*/
+	TabBarCloseButtonShowAlways TabBarCloseButtonDisplayPolicy = 2
+	/*Represents the size of the [enum CloseButtonDisplayPolicy] enum.*/
+	TabBarCloseButtonMax TabBarCloseButtonDisplayPolicy = 3
 )
 
 type TextEditMenuItems = classdb.TextEditMenuItems
 
 const (
-	TextEditMenuCut              TextEditMenuItems = 0
-	TextEditMenuCopy             TextEditMenuItems = 1
-	TextEditMenuPaste            TextEditMenuItems = 2
-	TextEditMenuClear            TextEditMenuItems = 3
-	TextEditMenuSelectAll        TextEditMenuItems = 4
-	TextEditMenuUndo             TextEditMenuItems = 5
-	TextEditMenuRedo             TextEditMenuItems = 6
-	TextEditMenuSubmenuTextDir   TextEditMenuItems = 7
-	TextEditMenuDirInherited     TextEditMenuItems = 8
-	TextEditMenuDirAuto          TextEditMenuItems = 9
-	TextEditMenuDirLtr           TextEditMenuItems = 10
-	TextEditMenuDirRtl           TextEditMenuItems = 11
-	TextEditMenuDisplayUcc       TextEditMenuItems = 12
+	/*Cuts (copies and clears) the selected text.*/
+	TextEditMenuCut TextEditMenuItems = 0
+	/*Copies the selected text.*/
+	TextEditMenuCopy TextEditMenuItems = 1
+	/*Pastes the clipboard text over the selected text (or at the cursor's position).*/
+	TextEditMenuPaste TextEditMenuItems = 2
+	/*Erases the whole [TextEdit] text.*/
+	TextEditMenuClear TextEditMenuItems = 3
+	/*Selects the whole [TextEdit] text.*/
+	TextEditMenuSelectAll TextEditMenuItems = 4
+	/*Undoes the previous action.*/
+	TextEditMenuUndo TextEditMenuItems = 5
+	/*Redoes the previous action.*/
+	TextEditMenuRedo TextEditMenuItems = 6
+	/*ID of "Text Writing Direction" submenu.*/
+	TextEditMenuSubmenuTextDir TextEditMenuItems = 7
+	/*Sets text direction to inherited.*/
+	TextEditMenuDirInherited TextEditMenuItems = 8
+	/*Sets text direction to automatic.*/
+	TextEditMenuDirAuto TextEditMenuItems = 9
+	/*Sets text direction to left-to-right.*/
+	TextEditMenuDirLtr TextEditMenuItems = 10
+	/*Sets text direction to right-to-left.*/
+	TextEditMenuDirRtl TextEditMenuItems = 11
+	/*Toggles control character display.*/
+	TextEditMenuDisplayUcc TextEditMenuItems = 12
+	/*ID of "Insert Control Character" submenu.*/
 	TextEditMenuSubmenuInsertUcc TextEditMenuItems = 13
-	TextEditMenuInsertLrm        TextEditMenuItems = 14
-	TextEditMenuInsertRlm        TextEditMenuItems = 15
-	TextEditMenuInsertLre        TextEditMenuItems = 16
-	TextEditMenuInsertRle        TextEditMenuItems = 17
-	TextEditMenuInsertLro        TextEditMenuItems = 18
-	TextEditMenuInsertRlo        TextEditMenuItems = 19
-	TextEditMenuInsertPdf        TextEditMenuItems = 20
-	TextEditMenuInsertAlm        TextEditMenuItems = 21
-	TextEditMenuInsertLri        TextEditMenuItems = 22
-	TextEditMenuInsertRli        TextEditMenuItems = 23
-	TextEditMenuInsertFsi        TextEditMenuItems = 24
-	TextEditMenuInsertPdi        TextEditMenuItems = 25
-	TextEditMenuInsertZwj        TextEditMenuItems = 26
-	TextEditMenuInsertZwnj       TextEditMenuItems = 27
-	TextEditMenuInsertWj         TextEditMenuItems = 28
-	TextEditMenuInsertShy        TextEditMenuItems = 29
-	TextEditMenuMax              TextEditMenuItems = 30
+	/*Inserts left-to-right mark (LRM) character.*/
+	TextEditMenuInsertLrm TextEditMenuItems = 14
+	/*Inserts right-to-left mark (RLM) character.*/
+	TextEditMenuInsertRlm TextEditMenuItems = 15
+	/*Inserts start of left-to-right embedding (LRE) character.*/
+	TextEditMenuInsertLre TextEditMenuItems = 16
+	/*Inserts start of right-to-left embedding (RLE) character.*/
+	TextEditMenuInsertRle TextEditMenuItems = 17
+	/*Inserts start of left-to-right override (LRO) character.*/
+	TextEditMenuInsertLro TextEditMenuItems = 18
+	/*Inserts start of right-to-left override (RLO) character.*/
+	TextEditMenuInsertRlo TextEditMenuItems = 19
+	/*Inserts pop direction formatting (PDF) character.*/
+	TextEditMenuInsertPdf TextEditMenuItems = 20
+	/*Inserts Arabic letter mark (ALM) character.*/
+	TextEditMenuInsertAlm TextEditMenuItems = 21
+	/*Inserts left-to-right isolate (LRI) character.*/
+	TextEditMenuInsertLri TextEditMenuItems = 22
+	/*Inserts right-to-left isolate (RLI) character.*/
+	TextEditMenuInsertRli TextEditMenuItems = 23
+	/*Inserts first strong isolate (FSI) character.*/
+	TextEditMenuInsertFsi TextEditMenuItems = 24
+	/*Inserts pop direction isolate (PDI) character.*/
+	TextEditMenuInsertPdi TextEditMenuItems = 25
+	/*Inserts zero width joiner (ZWJ) character.*/
+	TextEditMenuInsertZwj TextEditMenuItems = 26
+	/*Inserts zero width non-joiner (ZWNJ) character.*/
+	TextEditMenuInsertZwnj TextEditMenuItems = 27
+	/*Inserts word joiner (WJ) character.*/
+	TextEditMenuInsertWj TextEditMenuItems = 28
+	/*Inserts soft hyphen (SHY) character.*/
+	TextEditMenuInsertShy TextEditMenuItems = 29
+	/*Represents the size of the [enum MenuItems] enum.*/
+	TextEditMenuMax TextEditMenuItems = 30
 )
 
 type TextEditEditAction = classdb.TextEditEditAction
 
 const (
-	TextEditActionNone      TextEditEditAction = 0
-	TextEditActionTyping    TextEditEditAction = 1
+	/*No current action.*/
+	TextEditActionNone TextEditEditAction = 0
+	/*A typing action.*/
+	TextEditActionTyping TextEditEditAction = 1
+	/*A backwards delete action.*/
 	TextEditActionBackspace TextEditEditAction = 2
-	TextEditActionDelete    TextEditEditAction = 3
+	/*A forward delete action.*/
+	TextEditActionDelete TextEditEditAction = 3
 )
 
 type TextEditSearchFlags = classdb.TextEditSearchFlags
 
 const (
-	TextEditSearchMatchCase  TextEditSearchFlags = 1
+	/*Match case when searching.*/
+	TextEditSearchMatchCase TextEditSearchFlags = 1
+	/*Match whole words when searching.*/
 	TextEditSearchWholeWords TextEditSearchFlags = 2
-	TextEditSearchBackwards  TextEditSearchFlags = 4
+	/*Search from end to beginning.*/
+	TextEditSearchBackwards TextEditSearchFlags = 4
 )
 
 type TextEditCaretType = classdb.TextEditCaretType
 
 const (
-	TextEditCaretTypeLine  TextEditCaretType = 0
+	/*Vertical line caret.*/
+	TextEditCaretTypeLine TextEditCaretType = 0
+	/*Block caret.*/
 	TextEditCaretTypeBlock TextEditCaretType = 1
 )
 
 type TextEditSelectionMode = classdb.TextEditSelectionMode
 
 const (
-	TextEditSelectionModeNone    TextEditSelectionMode = 0
-	TextEditSelectionModeShift   TextEditSelectionMode = 1
+	/*Not selecting.*/
+	TextEditSelectionModeNone TextEditSelectionMode = 0
+	/*Select as if [code]shift[/code] is pressed.*/
+	TextEditSelectionModeShift TextEditSelectionMode = 1
+	/*Select single characters as if the user single clicked.*/
 	TextEditSelectionModePointer TextEditSelectionMode = 2
-	TextEditSelectionModeWord    TextEditSelectionMode = 3
-	TextEditSelectionModeLine    TextEditSelectionMode = 4
+	/*Select whole words as if the user double clicked.*/
+	TextEditSelectionModeWord TextEditSelectionMode = 3
+	/*Select whole lines as if the user triple clicked.*/
+	TextEditSelectionModeLine TextEditSelectionMode = 4
 )
 
 type TextEditLineWrappingMode = classdb.TextEditLineWrappingMode
 
 const (
-	TextEditLineWrappingNone     TextEditLineWrappingMode = 0
+	/*Line wrapping is disabled.*/
+	TextEditLineWrappingNone TextEditLineWrappingMode = 0
+	/*Line wrapping occurs at the control boundary, beyond what would normally be visible.*/
 	TextEditLineWrappingBoundary TextEditLineWrappingMode = 1
 )
 
 type TextEditGutterType = classdb.TextEditGutterType
 
 const (
+	/*Draw a string.*/
 	TextEditGutterTypeString TextEditGutterType = 0
-	TextEditGutterTypeIcon   TextEditGutterType = 1
+	/*Draw an icon.*/
+	TextEditGutterTypeIcon TextEditGutterType = 1
+	/*Custom draw.*/
 	TextEditGutterTypeCustom TextEditGutterType = 2
 )
 
 type TextServerFontAntialiasing = classdb.TextServerFontAntialiasing
 
 const (
+	/*Font glyphs are rasterized as 1-bit bitmaps.*/
 	TextServerFontAntialiasingNone TextServerFontAntialiasing = 0
+	/*Font glyphs are rasterized as 8-bit grayscale anti-aliased bitmaps.*/
 	TextServerFontAntialiasingGray TextServerFontAntialiasing = 1
-	TextServerFontAntialiasingLcd  TextServerFontAntialiasing = 2
+	/*Font glyphs are rasterized for LCD screens.
+	  LCD subpixel layout is determined by the value of [code]gui/theme/lcd_subpixel_layout[/code] project settings.
+	  LCD subpixel anti-aliasing mode is suitable only for rendering horizontal, unscaled text in 2D.*/
+	TextServerFontAntialiasingLcd TextServerFontAntialiasing = 2
 )
 
 type TextServerFontLCDSubpixelLayout = classdb.TextServerFontLCDSubpixelLayout
 
 const (
+	/*Unknown or unsupported subpixel layout, LCD subpixel antialiasing is disabled.*/
 	TextServerFontLcdSubpixelLayoutNone TextServerFontLCDSubpixelLayout = 0
+	/*Horizontal RGB subpixel layout.*/
 	TextServerFontLcdSubpixelLayoutHrgb TextServerFontLCDSubpixelLayout = 1
+	/*Horizontal BGR subpixel layout.*/
 	TextServerFontLcdSubpixelLayoutHbgr TextServerFontLCDSubpixelLayout = 2
+	/*Vertical RGB subpixel layout.*/
 	TextServerFontLcdSubpixelLayoutVrgb TextServerFontLCDSubpixelLayout = 3
+	/*Vertical BGR subpixel layout.*/
 	TextServerFontLcdSubpixelLayoutVbgr TextServerFontLCDSubpixelLayout = 4
-	TextServerFontLcdSubpixelLayoutMax  TextServerFontLCDSubpixelLayout = 5
+	/*Represents the size of the [enum FontLCDSubpixelLayout] enum.*/
+	TextServerFontLcdSubpixelLayoutMax TextServerFontLCDSubpixelLayout = 5
 )
 
 type TextServerDirection = classdb.TextServerDirection
 
 const (
-	TextServerDirectionAuto      TextServerDirection = 0
-	TextServerDirectionLtr       TextServerDirection = 1
-	TextServerDirectionRtl       TextServerDirection = 2
+	/*Text direction is determined based on contents and current locale.*/
+	TextServerDirectionAuto TextServerDirection = 0
+	/*Text is written from left to right.*/
+	TextServerDirectionLtr TextServerDirection = 1
+	/*Text is written from right to left.*/
+	TextServerDirectionRtl TextServerDirection = 2
+	/*Text writing direction is the same as base string writing direction. Used for BiDi override only.*/
 	TextServerDirectionInherited TextServerDirection = 3
 )
 
 type TextServerOrientation = classdb.TextServerOrientation
 
 const (
+	/*Text is written horizontally.*/
 	TextServerOrientationHorizontal TextServerOrientation = 0
-	TextServerOrientationVertical   TextServerOrientation = 1
+	/*Left to right text is written vertically from top to bottom.
+	  Right to left text is written vertically from bottom to top.*/
+	TextServerOrientationVertical TextServerOrientation = 1
 )
 
 type TextServerJustificationFlag = classdb.TextServerJustificationFlag
 
 const (
-	TextServerJustificationNone                         TextServerJustificationFlag = 0
-	TextServerJustificationKashida                      TextServerJustificationFlag = 1
-	TextServerJustificationWordBound                    TextServerJustificationFlag = 2
-	TextServerJustificationTrimEdgeSpaces               TextServerJustificationFlag = 4
-	TextServerJustificationAfterLastTab                 TextServerJustificationFlag = 8
-	TextServerJustificationConstrainEllipsis            TextServerJustificationFlag = 16
-	TextServerJustificationSkipLastLine                 TextServerJustificationFlag = 32
+	/*Do not justify text.*/
+	TextServerJustificationNone TextServerJustificationFlag = 0
+	/*Justify text by adding and removing kashidas.*/
+	TextServerJustificationKashida TextServerJustificationFlag = 1
+	/*Justify text by changing width of the spaces between the words.*/
+	TextServerJustificationWordBound TextServerJustificationFlag = 2
+	/*Remove trailing and leading spaces from the justified text.*/
+	TextServerJustificationTrimEdgeSpaces TextServerJustificationFlag = 4
+	/*Only apply justification to the part of the text after the last tab.*/
+	TextServerJustificationAfterLastTab TextServerJustificationFlag = 8
+	/*Apply justification to the trimmed line with ellipsis.*/
+	TextServerJustificationConstrainEllipsis TextServerJustificationFlag = 16
+	/*Do not apply justification to the last line of the paragraph.*/
+	TextServerJustificationSkipLastLine TextServerJustificationFlag = 32
+	/*Do not apply justification to the last line of the paragraph with visible characters (takes precedence over [constant JUSTIFICATION_SKIP_LAST_LINE]).*/
 	TextServerJustificationSkipLastLineWithVisibleChars TextServerJustificationFlag = 64
-	TextServerJustificationDoNotSkipSingleLine          TextServerJustificationFlag = 128
+	/*Always apply justification to the paragraphs with a single line ([constant JUSTIFICATION_SKIP_LAST_LINE] and [constant JUSTIFICATION_SKIP_LAST_LINE_WITH_VISIBLE_CHARS] are ignored).*/
+	TextServerJustificationDoNotSkipSingleLine TextServerJustificationFlag = 128
 )
 
 type TextServerAutowrapMode = classdb.TextServerAutowrapMode
 
 const (
-	TextServerAutowrapOff       TextServerAutowrapMode = 0
+	/*Autowrap is disabled.*/
+	TextServerAutowrapOff TextServerAutowrapMode = 0
+	/*Wraps the text inside the node's bounding rectangle by allowing to break lines at arbitrary positions, which is useful when very limited space is available.*/
 	TextServerAutowrapArbitrary TextServerAutowrapMode = 1
-	TextServerAutowrapWord      TextServerAutowrapMode = 2
+	/*Wraps the text inside the node's bounding rectangle by soft-breaking between words.*/
+	TextServerAutowrapWord TextServerAutowrapMode = 2
+	/*Behaves similarly to [constant AUTOWRAP_WORD], but force-breaks a word if that single word does not fit in one line.*/
 	TextServerAutowrapWordSmart TextServerAutowrapMode = 3
 )
 
 type TextServerLineBreakFlag = classdb.TextServerLineBreakFlag
 
 const (
-	TextServerBreakNone           TextServerLineBreakFlag = 0
-	TextServerBreakMandatory      TextServerLineBreakFlag = 1
-	TextServerBreakWordBound      TextServerLineBreakFlag = 2
-	TextServerBreakGraphemeBound  TextServerLineBreakFlag = 4
-	TextServerBreakAdaptive       TextServerLineBreakFlag = 8
+	/*Do not break the line.*/
+	TextServerBreakNone TextServerLineBreakFlag = 0
+	/*Break the line at the line mandatory break characters (e.g. [code]"\n"[/code]).*/
+	TextServerBreakMandatory TextServerLineBreakFlag = 1
+	/*Break the line between the words.*/
+	TextServerBreakWordBound TextServerLineBreakFlag = 2
+	/*Break the line between any unconnected graphemes.*/
+	TextServerBreakGraphemeBound TextServerLineBreakFlag = 4
+	/*Should be used only in conjunction with [constant BREAK_WORD_BOUND], break the line between any unconnected graphemes, if it's impossible to break it between the words.*/
+	TextServerBreakAdaptive TextServerLineBreakFlag = 8
+	/*Remove edge spaces from the broken line segments.*/
 	TextServerBreakTrimEdgeSpaces TextServerLineBreakFlag = 16
 )
 
 type TextServerVisibleCharactersBehavior = classdb.TextServerVisibleCharactersBehavior
 
 const (
+	/*Trims text before the shaping. e.g, increasing [member Label.visible_characters] or [member RichTextLabel.visible_characters] value is visually identical to typing the text.*/
 	TextServerVcCharsBeforeShaping TextServerVisibleCharactersBehavior = 0
-	TextServerVcCharsAfterShaping  TextServerVisibleCharactersBehavior = 1
-	TextServerVcGlyphsAuto         TextServerVisibleCharactersBehavior = 2
-	TextServerVcGlyphsLtr          TextServerVisibleCharactersBehavior = 3
-	TextServerVcGlyphsRtl          TextServerVisibleCharactersBehavior = 4
+	/*Displays glyphs that are mapped to the first [member Label.visible_characters] or [member RichTextLabel.visible_characters] characters from the beginning of the text.*/
+	TextServerVcCharsAfterShaping TextServerVisibleCharactersBehavior = 1
+	/*Displays [member Label.visible_ratio] or [member RichTextLabel.visible_ratio] glyphs, starting from the left or from the right, depending on [member Control.layout_direction] value.*/
+	TextServerVcGlyphsAuto TextServerVisibleCharactersBehavior = 2
+	/*Displays [member Label.visible_ratio] or [member RichTextLabel.visible_ratio] glyphs, starting from the left.*/
+	TextServerVcGlyphsLtr TextServerVisibleCharactersBehavior = 3
+	/*Displays [member Label.visible_ratio] or [member RichTextLabel.visible_ratio] glyphs, starting from the right.*/
+	TextServerVcGlyphsRtl TextServerVisibleCharactersBehavior = 4
 )
 
 type TextServerOverrunBehavior = classdb.TextServerOverrunBehavior
 
 const (
-	TextServerOverrunNoTrimming       TextServerOverrunBehavior = 0
-	TextServerOverrunTrimChar         TextServerOverrunBehavior = 1
-	TextServerOverrunTrimWord         TextServerOverrunBehavior = 2
-	TextServerOverrunTrimEllipsis     TextServerOverrunBehavior = 3
+	/*No text trimming is performed.*/
+	TextServerOverrunNoTrimming TextServerOverrunBehavior = 0
+	/*Trims the text per character.*/
+	TextServerOverrunTrimChar TextServerOverrunBehavior = 1
+	/*Trims the text per word.*/
+	TextServerOverrunTrimWord TextServerOverrunBehavior = 2
+	/*Trims the text per character and adds an ellipsis to indicate that parts are hidden.*/
+	TextServerOverrunTrimEllipsis TextServerOverrunBehavior = 3
+	/*Trims the text per word and adds an ellipsis to indicate that parts are hidden.*/
 	TextServerOverrunTrimWordEllipsis TextServerOverrunBehavior = 4
 )
 
 type TextServerTextOverrunFlag = classdb.TextServerTextOverrunFlag
 
 const (
-	TextServerOverrunNoTrim             TextServerTextOverrunFlag = 0
-	TextServerOverrunTrim               TextServerTextOverrunFlag = 1
-	TextServerOverrunTrimWordOnly       TextServerTextOverrunFlag = 2
-	TextServerOverrunAddEllipsis        TextServerTextOverrunFlag = 4
-	TextServerOverrunEnforceEllipsis    TextServerTextOverrunFlag = 8
+	/*No trimming is performed.*/
+	TextServerOverrunNoTrim TextServerTextOverrunFlag = 0
+	/*Trims the text when it exceeds the given width.*/
+	TextServerOverrunTrim TextServerTextOverrunFlag = 1
+	/*Trims the text per word instead of per grapheme.*/
+	TextServerOverrunTrimWordOnly TextServerTextOverrunFlag = 2
+	/*Determines whether an ellipsis should be added at the end of the text.*/
+	TextServerOverrunAddEllipsis TextServerTextOverrunFlag = 4
+	/*Determines whether the ellipsis at the end of the text is enforced and may not be hidden.*/
+	TextServerOverrunEnforceEllipsis TextServerTextOverrunFlag = 8
+	/*Accounts for the text being justified before attempting to trim it (see [enum JustificationFlag]).*/
 	TextServerOverrunJustificationAware TextServerTextOverrunFlag = 16
 )
 
 type TextServerGraphemeFlag = classdb.TextServerGraphemeFlag
 
 const (
-	TextServerGraphemeIsValid               TextServerGraphemeFlag = 1
-	TextServerGraphemeIsRtl                 TextServerGraphemeFlag = 2
-	TextServerGraphemeIsVirtual             TextServerGraphemeFlag = 4
-	TextServerGraphemeIsSpace               TextServerGraphemeFlag = 8
-	TextServerGraphemeIsBreakHard           TextServerGraphemeFlag = 16
-	TextServerGraphemeIsBreakSoft           TextServerGraphemeFlag = 32
-	TextServerGraphemeIsTab                 TextServerGraphemeFlag = 64
-	TextServerGraphemeIsElongation          TextServerGraphemeFlag = 128
-	TextServerGraphemeIsPunctuation         TextServerGraphemeFlag = 256
-	TextServerGraphemeIsUnderscore          TextServerGraphemeFlag = 512
-	TextServerGraphemeIsConnected           TextServerGraphemeFlag = 1024
+	/*Grapheme is supported by the font, and can be drawn.*/
+	TextServerGraphemeIsValid TextServerGraphemeFlag = 1
+	/*Grapheme is part of right-to-left or bottom-to-top run.*/
+	TextServerGraphemeIsRtl TextServerGraphemeFlag = 2
+	/*Grapheme is not part of source text, it was added by justification process.*/
+	TextServerGraphemeIsVirtual TextServerGraphemeFlag = 4
+	/*Grapheme is whitespace.*/
+	TextServerGraphemeIsSpace TextServerGraphemeFlag = 8
+	/*Grapheme is mandatory break point (e.g. [code]"\n"[/code]).*/
+	TextServerGraphemeIsBreakHard TextServerGraphemeFlag = 16
+	/*Grapheme is optional break point (e.g. space).*/
+	TextServerGraphemeIsBreakSoft TextServerGraphemeFlag = 32
+	/*Grapheme is the tabulation character.*/
+	TextServerGraphemeIsTab TextServerGraphemeFlag = 64
+	/*Grapheme is kashida.*/
+	TextServerGraphemeIsElongation TextServerGraphemeFlag = 128
+	/*Grapheme is punctuation character.*/
+	TextServerGraphemeIsPunctuation TextServerGraphemeFlag = 256
+	/*Grapheme is underscore character.*/
+	TextServerGraphemeIsUnderscore TextServerGraphemeFlag = 512
+	/*Grapheme is connected to the previous grapheme. Breaking line before this grapheme is not safe.*/
+	TextServerGraphemeIsConnected TextServerGraphemeFlag = 1024
+	/*It is safe to insert a U+0640 before this grapheme for elongation.*/
 	TextServerGraphemeIsSafeToInsertTatweel TextServerGraphemeFlag = 2048
-	TextServerGraphemeIsEmbeddedObject      TextServerGraphemeFlag = 4096
+	/*Grapheme is an object replacement character for the embedded object.*/
+	TextServerGraphemeIsEmbeddedObject TextServerGraphemeFlag = 4096
 )
 
 type TextServerHinting = classdb.TextServerHinting
 
 const (
-	TextServerHintingNone   TextServerHinting = 0
-	TextServerHintingLight  TextServerHinting = 1
+	/*Disables font hinting (smoother but less crisp).*/
+	TextServerHintingNone TextServerHinting = 0
+	/*Use the light font hinting mode.*/
+	TextServerHintingLight TextServerHinting = 1
+	/*Use the default font hinting mode (crisper but less smooth).
+	  [b]Note:[/b] This hinting mode changes both horizontal and vertical glyph metrics. If applied to monospace font, some glyphs might have different width.*/
 	TextServerHintingNormal TextServerHinting = 2
 )
 
 type TextServerSubpixelPositioning = classdb.TextServerSubpixelPositioning
 
 const (
-	TextServerSubpixelPositioningDisabled          TextServerSubpixelPositioning = 0
-	TextServerSubpixelPositioningAuto              TextServerSubpixelPositioning = 1
-	TextServerSubpixelPositioningOneHalf           TextServerSubpixelPositioning = 2
-	TextServerSubpixelPositioningOneQuarter        TextServerSubpixelPositioning = 3
-	TextServerSubpixelPositioningOneHalfMaxSize    TextServerSubpixelPositioning = 20
+	/*Glyph horizontal position is rounded to the whole pixel size, each glyph is rasterized once.*/
+	TextServerSubpixelPositioningDisabled TextServerSubpixelPositioning = 0
+	/*Glyph horizontal position is rounded based on font size.
+	  - To one quarter of the pixel size if font size is smaller or equal to [constant SUBPIXEL_POSITIONING_ONE_QUARTER_MAX_SIZE].
+	  - To one half of the pixel size if font size is smaller or equal to [constant SUBPIXEL_POSITIONING_ONE_HALF_MAX_SIZE].
+	  - To the whole pixel size for larger fonts.*/
+	TextServerSubpixelPositioningAuto TextServerSubpixelPositioning = 1
+	/*Glyph horizontal position is rounded to one half of the pixel size, each glyph is rasterized up to two times.*/
+	TextServerSubpixelPositioningOneHalf TextServerSubpixelPositioning = 2
+	/*Glyph horizontal position is rounded to one quarter of the pixel size, each glyph is rasterized up to four times.*/
+	TextServerSubpixelPositioningOneQuarter TextServerSubpixelPositioning = 3
+	/*Maximum font size which will use one half of the pixel subpixel positioning in [constant SUBPIXEL_POSITIONING_AUTO] mode.*/
+	TextServerSubpixelPositioningOneHalfMaxSize TextServerSubpixelPositioning = 20
+	/*Maximum font size which will use one quarter of the pixel subpixel positioning in [constant SUBPIXEL_POSITIONING_AUTO] mode.*/
 	TextServerSubpixelPositioningOneQuarterMaxSize TextServerSubpixelPositioning = 16
 )
 
 type TextServerFeature = classdb.TextServerFeature
 
 const (
-	TextServerFeatureSimpleLayout                   TextServerFeature = 1
-	TextServerFeatureBidiLayout                     TextServerFeature = 2
-	TextServerFeatureVerticalLayout                 TextServerFeature = 4
-	TextServerFeatureShaping                        TextServerFeature = 8
-	TextServerFeatureKashidaJustification           TextServerFeature = 16
-	TextServerFeatureBreakIterators                 TextServerFeature = 32
-	TextServerFeatureFontBitmap                     TextServerFeature = 64
-	TextServerFeatureFontDynamic                    TextServerFeature = 128
-	TextServerFeatureFontMsdf                       TextServerFeature = 256
-	TextServerFeatureFontSystem                     TextServerFeature = 512
-	TextServerFeatureFontVariable                   TextServerFeature = 1024
+	/*TextServer supports simple text layouts.*/
+	TextServerFeatureSimpleLayout TextServerFeature = 1
+	/*TextServer supports bidirectional text layouts.*/
+	TextServerFeatureBidiLayout TextServerFeature = 2
+	/*TextServer supports vertical layouts.*/
+	TextServerFeatureVerticalLayout TextServerFeature = 4
+	/*TextServer supports complex text shaping.*/
+	TextServerFeatureShaping TextServerFeature = 8
+	/*TextServer supports justification using kashidas.*/
+	TextServerFeatureKashidaJustification TextServerFeature = 16
+	/*TextServer supports complex line/word breaking rules (e.g. dictionary based).*/
+	TextServerFeatureBreakIterators TextServerFeature = 32
+	/*TextServer supports loading bitmap fonts.*/
+	TextServerFeatureFontBitmap TextServerFeature = 64
+	/*TextServer supports loading dynamic (TrueType, OpeType, etc.) fonts.*/
+	TextServerFeatureFontDynamic TextServerFeature = 128
+	/*TextServer supports multichannel signed distance field dynamic font rendering.*/
+	TextServerFeatureFontMsdf TextServerFeature = 256
+	/*TextServer supports loading system fonts.*/
+	TextServerFeatureFontSystem TextServerFeature = 512
+	/*TextServer supports variable fonts.*/
+	TextServerFeatureFontVariable TextServerFeature = 1024
+	/*TextServer supports locale dependent and context sensitive case conversion.*/
 	TextServerFeatureContextSensitiveCaseConversion TextServerFeature = 2048
-	TextServerFeatureUseSupportData                 TextServerFeature = 4096
-	TextServerFeatureUnicodeIdentifiers             TextServerFeature = 8192
-	TextServerFeatureUnicodeSecurity                TextServerFeature = 16384
+	/*TextServer require external data file for some features, see [method load_support_data].*/
+	TextServerFeatureUseSupportData TextServerFeature = 4096
+	/*TextServer supports UAX #31 identifier validation, see [method is_valid_identifier].*/
+	TextServerFeatureUnicodeIdentifiers TextServerFeature = 8192
+	/*TextServer supports [url=https://unicode.org/reports/tr36/]Unicode Technical Report #36[/url] and [url=https://unicode.org/reports/tr39/]Unicode Technical Standard #39[/url] based spoof detection features.*/
+	TextServerFeatureUnicodeSecurity TextServerFeature = 16384
 )
 
 type TextServerContourPointTag = classdb.TextServerContourPointTag
 
 const (
-	TextServerContourCurveTagOn       TextServerContourPointTag = 1
+	/*Contour point is on the curve.*/
+	TextServerContourCurveTagOn TextServerContourPointTag = 1
+	/*Contour point isn't on the curve, but serves as a control point for a conic (quadratic) Bézier arc.*/
 	TextServerContourCurveTagOffConic TextServerContourPointTag = 0
+	/*Contour point isn't on the curve, but serves as a control point for a cubic Bézier arc.*/
 	TextServerContourCurveTagOffCubic TextServerContourPointTag = 2
 )
 
 type TextServerSpacingType = classdb.TextServerSpacingType
 
 const (
-	TextServerSpacingGlyph  TextServerSpacingType = 0
-	TextServerSpacingSpace  TextServerSpacingType = 1
-	TextServerSpacingTop    TextServerSpacingType = 2
+	/*Spacing for each glyph.*/
+	TextServerSpacingGlyph TextServerSpacingType = 0
+	/*Spacing for the space character.*/
+	TextServerSpacingSpace TextServerSpacingType = 1
+	/*Spacing at the top of the line.*/
+	TextServerSpacingTop TextServerSpacingType = 2
+	/*Spacing at the bottom of the line.*/
 	TextServerSpacingBottom TextServerSpacingType = 3
-	TextServerSpacingMax    TextServerSpacingType = 4
+	/*Represents the size of the [enum SpacingType] enum.*/
+	TextServerSpacingMax TextServerSpacingType = 4
 )
 
 type TextServerFontStyle = classdb.TextServerFontStyle
 
 const (
-	TextServerFontBold       TextServerFontStyle = 1
-	TextServerFontItalic     TextServerFontStyle = 2
+	/*Font is bold.*/
+	TextServerFontBold TextServerFontStyle = 1
+	/*Font is italic or oblique.*/
+	TextServerFontItalic TextServerFontStyle = 2
+	/*Font have fixed-width characters.*/
 	TextServerFontFixedWidth TextServerFontStyle = 4
 )
 
 type TextServerStructuredTextParser = classdb.TextServerStructuredTextParser
 
 const (
-	TextServerStructuredTextDefault  TextServerStructuredTextParser = 0
-	TextServerStructuredTextUri      TextServerStructuredTextParser = 1
-	TextServerStructuredTextFile     TextServerStructuredTextParser = 2
-	TextServerStructuredTextEmail    TextServerStructuredTextParser = 3
-	TextServerStructuredTextList     TextServerStructuredTextParser = 4
+	/*Use default Unicode BiDi algorithm.*/
+	TextServerStructuredTextDefault TextServerStructuredTextParser = 0
+	/*BiDi override for URI.*/
+	TextServerStructuredTextUri TextServerStructuredTextParser = 1
+	/*BiDi override for file path.*/
+	TextServerStructuredTextFile TextServerStructuredTextParser = 2
+	/*BiDi override for email.*/
+	TextServerStructuredTextEmail TextServerStructuredTextParser = 3
+	/*BiDi override for lists. Structured text options: list separator [String].*/
+	TextServerStructuredTextList TextServerStructuredTextParser = 4
+	/*BiDi override for GDScript.*/
 	TextServerStructuredTextGdscript TextServerStructuredTextParser = 5
-	TextServerStructuredTextCustom   TextServerStructuredTextParser = 6
+	/*User defined structured text BiDi override function.*/
+	TextServerStructuredTextCustom TextServerStructuredTextParser = 6
 )
 
 type TextServerFixedSizeScaleMode = classdb.TextServerFixedSizeScaleMode
 
 const (
-	TextServerFixedSizeScaleDisable     TextServerFixedSizeScaleMode = 0
+	/*Bitmap font is not scaled.*/
+	TextServerFixedSizeScaleDisable TextServerFixedSizeScaleMode = 0
+	/*Bitmap font is scaled to the closest integer multiple of the font's fixed size. This is the recommended option for pixel art fonts.*/
 	TextServerFixedSizeScaleIntegerOnly TextServerFixedSizeScaleMode = 1
-	TextServerFixedSizeScaleEnabled     TextServerFixedSizeScaleMode = 2
+	/*Bitmap font is scaled to an arbitrary (fractional) size. This is the recommended option for non-pixel art fonts.*/
+	TextServerFixedSizeScaleEnabled TextServerFixedSizeScaleMode = 2
 )
 
 type TextureButtonStretchMode = classdb.TextureButtonStretchMode
 
 const (
-	TextureButtonStretchScale              TextureButtonStretchMode = 0
-	TextureButtonStretchTile               TextureButtonStretchMode = 1
-	TextureButtonStretchKeep               TextureButtonStretchMode = 2
-	TextureButtonStretchKeepCentered       TextureButtonStretchMode = 3
-	TextureButtonStretchKeepAspect         TextureButtonStretchMode = 4
+	/*Scale to fit the node's bounding rectangle.*/
+	TextureButtonStretchScale TextureButtonStretchMode = 0
+	/*Tile inside the node's bounding rectangle.*/
+	TextureButtonStretchTile TextureButtonStretchMode = 1
+	/*The texture keeps its original size and stays in the bounding rectangle's top-left corner.*/
+	TextureButtonStretchKeep TextureButtonStretchMode = 2
+	/*The texture keeps its original size and stays centered in the node's bounding rectangle.*/
+	TextureButtonStretchKeepCentered TextureButtonStretchMode = 3
+	/*Scale the texture to fit the node's bounding rectangle, but maintain the texture's aspect ratio.*/
+	TextureButtonStretchKeepAspect TextureButtonStretchMode = 4
+	/*Scale the texture to fit the node's bounding rectangle, center it, and maintain its aspect ratio.*/
 	TextureButtonStretchKeepAspectCentered TextureButtonStretchMode = 5
-	TextureButtonStretchKeepAspectCovered  TextureButtonStretchMode = 6
+	/*Scale the texture so that the shorter side fits the bounding rectangle. The other side clips to the node's limits.*/
+	TextureButtonStretchKeepAspectCovered TextureButtonStretchMode = 6
 )
 
 type TextureLayeredLayeredType = classdb.TextureLayeredLayeredType
 
 const (
-	TextureLayeredLayeredType2dArray      TextureLayeredLayeredType = 0
-	TextureLayeredLayeredTypeCubemap      TextureLayeredLayeredType = 1
+	/*Texture is a generic [Texture2DArray].*/
+	TextureLayeredLayeredType2dArray TextureLayeredLayeredType = 0
+	/*Texture is a [Cubemap], with each side in its own layer (6 in total).*/
+	TextureLayeredLayeredTypeCubemap TextureLayeredLayeredType = 1
+	/*Texture is a [CubemapArray], with each cubemap being made of 6 layers.*/
 	TextureLayeredLayeredTypeCubemapArray TextureLayeredLayeredType = 2
 )
 
 type TextureProgressBarFillMode = classdb.TextureProgressBarFillMode
 
 const (
-	TextureProgressBarFillLeftToRight                  TextureProgressBarFillMode = 0
-	TextureProgressBarFillRightToLeft                  TextureProgressBarFillMode = 1
-	TextureProgressBarFillTopToBottom                  TextureProgressBarFillMode = 2
-	TextureProgressBarFillBottomToTop                  TextureProgressBarFillMode = 3
-	TextureProgressBarFillClockwise                    TextureProgressBarFillMode = 4
-	TextureProgressBarFillCounterClockwise             TextureProgressBarFillMode = 5
-	TextureProgressBarFillBilinearLeftAndRight         TextureProgressBarFillMode = 6
-	TextureProgressBarFillBilinearTopAndBottom         TextureProgressBarFillMode = 7
+	/*The [member texture_progress] fills from left to right.*/
+	TextureProgressBarFillLeftToRight TextureProgressBarFillMode = 0
+	/*The [member texture_progress] fills from right to left.*/
+	TextureProgressBarFillRightToLeft TextureProgressBarFillMode = 1
+	/*The [member texture_progress] fills from top to bottom.*/
+	TextureProgressBarFillTopToBottom TextureProgressBarFillMode = 2
+	/*The [member texture_progress] fills from bottom to top.*/
+	TextureProgressBarFillBottomToTop TextureProgressBarFillMode = 3
+	/*Turns the node into a radial bar. The [member texture_progress] fills clockwise. See [member radial_center_offset], [member radial_initial_angle] and [member radial_fill_degrees] to control the way the bar fills up.*/
+	TextureProgressBarFillClockwise TextureProgressBarFillMode = 4
+	/*Turns the node into a radial bar. The [member texture_progress] fills counterclockwise. See [member radial_center_offset], [member radial_initial_angle] and [member radial_fill_degrees] to control the way the bar fills up.*/
+	TextureProgressBarFillCounterClockwise TextureProgressBarFillMode = 5
+	/*The [member texture_progress] fills from the center, expanding both towards the left and the right.*/
+	TextureProgressBarFillBilinearLeftAndRight TextureProgressBarFillMode = 6
+	/*The [member texture_progress] fills from the center, expanding both towards the top and the bottom.*/
+	TextureProgressBarFillBilinearTopAndBottom TextureProgressBarFillMode = 7
+	/*Turns the node into a radial bar. The [member texture_progress] fills radially from the center, expanding both clockwise and counterclockwise. See [member radial_center_offset], [member radial_initial_angle] and [member radial_fill_degrees] to control the way the bar fills up.*/
 	TextureProgressBarFillClockwiseAndCounterClockwise TextureProgressBarFillMode = 8
 )
 
 type TextureRectExpandMode = classdb.TextureRectExpandMode
 
 const (
-	TextureRectExpandKeepSize              TextureRectExpandMode = 0
-	TextureRectExpandIgnoreSize            TextureRectExpandMode = 1
-	TextureRectExpandFitWidth              TextureRectExpandMode = 2
-	TextureRectExpandFitWidthProportional  TextureRectExpandMode = 3
-	TextureRectExpandFitHeight             TextureRectExpandMode = 4
+	/*The minimum size will be equal to texture size, i.e. [TextureRect] can't be smaller than the texture.*/
+	TextureRectExpandKeepSize TextureRectExpandMode = 0
+	/*The size of the texture won't be considered for minimum size calculation, so the [TextureRect] can be shrunk down past the texture size.*/
+	TextureRectExpandIgnoreSize TextureRectExpandMode = 1
+	/*The height of the texture will be ignored. Minimum width will be equal to the current height. Useful for horizontal layouts, e.g. inside [HBoxContainer].*/
+	TextureRectExpandFitWidth TextureRectExpandMode = 2
+	/*Same as [constant EXPAND_FIT_WIDTH], but keeps texture's aspect ratio.*/
+	TextureRectExpandFitWidthProportional TextureRectExpandMode = 3
+	/*The width of the texture will be ignored. Minimum height will be equal to the current width. Useful for vertical layouts, e.g. inside [VBoxContainer].*/
+	TextureRectExpandFitHeight TextureRectExpandMode = 4
+	/*Same as [constant EXPAND_FIT_HEIGHT], but keeps texture's aspect ratio.*/
 	TextureRectExpandFitHeightProportional TextureRectExpandMode = 5
 )
 
 type TextureRectStretchMode = classdb.TextureRectStretchMode
 
 const (
-	TextureRectStretchScale              TextureRectStretchMode = 0
-	TextureRectStretchTile               TextureRectStretchMode = 1
-	TextureRectStretchKeep               TextureRectStretchMode = 2
-	TextureRectStretchKeepCentered       TextureRectStretchMode = 3
-	TextureRectStretchKeepAspect         TextureRectStretchMode = 4
+	/*Scale to fit the node's bounding rectangle.*/
+	TextureRectStretchScale TextureRectStretchMode = 0
+	/*Tile inside the node's bounding rectangle.*/
+	TextureRectStretchTile TextureRectStretchMode = 1
+	/*The texture keeps its original size and stays in the bounding rectangle's top-left corner.*/
+	TextureRectStretchKeep TextureRectStretchMode = 2
+	/*The texture keeps its original size and stays centered in the node's bounding rectangle.*/
+	TextureRectStretchKeepCentered TextureRectStretchMode = 3
+	/*Scale the texture to fit the node's bounding rectangle, but maintain the texture's aspect ratio.*/
+	TextureRectStretchKeepAspect TextureRectStretchMode = 4
+	/*Scale the texture to fit the node's bounding rectangle, center it and maintain its aspect ratio.*/
 	TextureRectStretchKeepAspectCentered TextureRectStretchMode = 5
-	TextureRectStretchKeepAspectCovered  TextureRectStretchMode = 6
+	/*Scale the texture so that the shorter side fits the bounding rectangle. The other side clips to the node's limits.*/
+	TextureRectStretchKeepAspectCovered TextureRectStretchMode = 6
 )
 
 type ThemeDataType = classdb.ThemeDataType
 
 const (
-	ThemeDataTypeColor    ThemeDataType = 0
+	/*Theme's [Color] item type.*/
+	ThemeDataTypeColor ThemeDataType = 0
+	/*Theme's constant item type.*/
 	ThemeDataTypeConstant ThemeDataType = 1
-	ThemeDataTypeFont     ThemeDataType = 2
+	/*Theme's [Font] item type.*/
+	ThemeDataTypeFont ThemeDataType = 2
+	/*Theme's font size item type.*/
 	ThemeDataTypeFontSize ThemeDataType = 3
-	ThemeDataTypeIcon     ThemeDataType = 4
+	/*Theme's icon [Texture2D] item type.*/
+	ThemeDataTypeIcon ThemeDataType = 4
+	/*Theme's [StyleBox] item type.*/
 	ThemeDataTypeStylebox ThemeDataType = 5
-	ThemeDataTypeMax      ThemeDataType = 6
+	/*Maximum value for the DataType enum.*/
+	ThemeDataTypeMax ThemeDataType = 6
 )
 
 type ThreadPriority = classdb.ThreadPriority
 
 const (
-	ThreadPriorityLow    ThreadPriority = 0
+	/*A thread running with lower priority than normally.*/
+	ThreadPriorityLow ThreadPriority = 0
+	/*A thread with a standard priority.*/
 	ThreadPriorityNormal ThreadPriority = 1
-	ThreadPriorityHigh   ThreadPriority = 2
+	/*A thread running with higher priority than normally.*/
+	ThreadPriorityHigh ThreadPriority = 2
 )
 
 type TileMapVisibilityMode = classdb.TileMapVisibilityMode
 
 const (
-	TileMapVisibilityModeDefault   TileMapVisibilityMode = 0
+	/*Use the debug settings to determine visibility.*/
+	TileMapVisibilityModeDefault TileMapVisibilityMode = 0
+	/*Always hide.*/
 	TileMapVisibilityModeForceHide TileMapVisibilityMode = 2
+	/*Always show.*/
 	TileMapVisibilityModeForceShow TileMapVisibilityMode = 1
 )
 
 type TileSetTileShape = classdb.TileSetTileShape
 
 const (
-	TileSetTileShapeSquare           TileSetTileShape = 0
-	TileSetTileShapeIsometric        TileSetTileShape = 1
+	/*Rectangular tile shape.*/
+	TileSetTileShapeSquare TileSetTileShape = 0
+	/*Diamond tile shape (for isometric look).
+	  [b]Note:[/b] Isometric [TileSet] works best if [TileMap] and all its layers have Y-sort enabled.*/
+	TileSetTileShapeIsometric TileSetTileShape = 1
+	/*Rectangular tile shape with one row/column out of two offset by half a tile.*/
 	TileSetTileShapeHalfOffsetSquare TileSetTileShape = 2
-	TileSetTileShapeHexagon          TileSetTileShape = 3
+	/*Hexagonal tile shape.*/
+	TileSetTileShapeHexagon TileSetTileShape = 3
 )
 
 type TileSetTileLayout = classdb.TileSetTileLayout
 
 const (
-	TileSetTileLayoutStacked       TileSetTileLayout = 0
+	/*Tile coordinates layout where both axis stay consistent with their respective local horizontal and vertical axis.*/
+	TileSetTileLayoutStacked TileSetTileLayout = 0
+	/*Same as [constant TILE_LAYOUT_STACKED], but the first half-offset is negative instead of positive.*/
 	TileSetTileLayoutStackedOffset TileSetTileLayout = 1
-	TileSetTileLayoutStairsRight   TileSetTileLayout = 2
-	TileSetTileLayoutStairsDown    TileSetTileLayout = 3
-	TileSetTileLayoutDiamondRight  TileSetTileLayout = 4
-	TileSetTileLayoutDiamondDown   TileSetTileLayout = 5
+	/*Tile coordinates layout where the horizontal axis stay horizontal, and the vertical one goes down-right.*/
+	TileSetTileLayoutStairsRight TileSetTileLayout = 2
+	/*Tile coordinates layout where the vertical axis stay vertical, and the horizontal one goes down-right.*/
+	TileSetTileLayoutStairsDown TileSetTileLayout = 3
+	/*Tile coordinates layout where the horizontal axis goes up-right, and the vertical one goes down-right.*/
+	TileSetTileLayoutDiamondRight TileSetTileLayout = 4
+	/*Tile coordinates layout where the horizontal axis goes down-right, and the vertical one goes down-left.*/
+	TileSetTileLayoutDiamondDown TileSetTileLayout = 5
 )
 
 type TileSetTileOffsetAxis = classdb.TileSetTileOffsetAxis
 
 const (
+	/*Horizontal half-offset.*/
 	TileSetTileOffsetAxisHorizontal TileSetTileOffsetAxis = 0
-	TileSetTileOffsetAxisVertical   TileSetTileOffsetAxis = 1
+	/*Vertical half-offset.*/
+	TileSetTileOffsetAxisVertical TileSetTileOffsetAxis = 1
 )
 
 type TileSetCellNeighbor = classdb.TileSetCellNeighbor
 
 const (
-	TileSetCellNeighborRightSide         TileSetCellNeighbor = 0
-	TileSetCellNeighborRightCorner       TileSetCellNeighbor = 1
-	TileSetCellNeighborBottomRightSide   TileSetCellNeighbor = 2
+	/*Neighbor on the right side.*/
+	TileSetCellNeighborRightSide TileSetCellNeighbor = 0
+	/*Neighbor in the right corner.*/
+	TileSetCellNeighborRightCorner TileSetCellNeighbor = 1
+	/*Neighbor on the bottom right side.*/
+	TileSetCellNeighborBottomRightSide TileSetCellNeighbor = 2
+	/*Neighbor in the bottom right corner.*/
 	TileSetCellNeighborBottomRightCorner TileSetCellNeighbor = 3
-	TileSetCellNeighborBottomSide        TileSetCellNeighbor = 4
-	TileSetCellNeighborBottomCorner      TileSetCellNeighbor = 5
-	TileSetCellNeighborBottomLeftSide    TileSetCellNeighbor = 6
-	TileSetCellNeighborBottomLeftCorner  TileSetCellNeighbor = 7
-	TileSetCellNeighborLeftSide          TileSetCellNeighbor = 8
-	TileSetCellNeighborLeftCorner        TileSetCellNeighbor = 9
-	TileSetCellNeighborTopLeftSide       TileSetCellNeighbor = 10
-	TileSetCellNeighborTopLeftCorner     TileSetCellNeighbor = 11
-	TileSetCellNeighborTopSide           TileSetCellNeighbor = 12
-	TileSetCellNeighborTopCorner         TileSetCellNeighbor = 13
-	TileSetCellNeighborTopRightSide      TileSetCellNeighbor = 14
-	TileSetCellNeighborTopRightCorner    TileSetCellNeighbor = 15
+	/*Neighbor on the bottom side.*/
+	TileSetCellNeighborBottomSide TileSetCellNeighbor = 4
+	/*Neighbor in the bottom corner.*/
+	TileSetCellNeighborBottomCorner TileSetCellNeighbor = 5
+	/*Neighbor on the bottom left side.*/
+	TileSetCellNeighborBottomLeftSide TileSetCellNeighbor = 6
+	/*Neighbor in the bottom left corner.*/
+	TileSetCellNeighborBottomLeftCorner TileSetCellNeighbor = 7
+	/*Neighbor on the left side.*/
+	TileSetCellNeighborLeftSide TileSetCellNeighbor = 8
+	/*Neighbor in the left corner.*/
+	TileSetCellNeighborLeftCorner TileSetCellNeighbor = 9
+	/*Neighbor on the top left side.*/
+	TileSetCellNeighborTopLeftSide TileSetCellNeighbor = 10
+	/*Neighbor in the top left corner.*/
+	TileSetCellNeighborTopLeftCorner TileSetCellNeighbor = 11
+	/*Neighbor on the top side.*/
+	TileSetCellNeighborTopSide TileSetCellNeighbor = 12
+	/*Neighbor in the top corner.*/
+	TileSetCellNeighborTopCorner TileSetCellNeighbor = 13
+	/*Neighbor on the top right side.*/
+	TileSetCellNeighborTopRightSide TileSetCellNeighbor = 14
+	/*Neighbor in the top right corner.*/
+	TileSetCellNeighborTopRightCorner TileSetCellNeighbor = 15
 )
 
 type TileSetTerrainMode = classdb.TileSetTerrainMode
 
 const (
+	/*Requires both corners and side to match with neighboring tiles' terrains.*/
 	TileSetTerrainModeMatchCornersAndSides TileSetTerrainMode = 0
-	TileSetTerrainModeMatchCorners         TileSetTerrainMode = 1
-	TileSetTerrainModeMatchSides           TileSetTerrainMode = 2
+	/*Requires corners to match with neighboring tiles' terrains.*/
+	TileSetTerrainModeMatchCorners TileSetTerrainMode = 1
+	/*Requires sides to match with neighboring tiles' terrains.*/
+	TileSetTerrainModeMatchSides TileSetTerrainMode = 2
 )
 
 type TileSetAtlasSourceTileAnimationMode = classdb.TileSetAtlasSourceTileAnimationMode
 
 const (
-	TileSetAtlasSourceTileAnimationModeDefault          TileSetAtlasSourceTileAnimationMode = 0
+	/*Tile animations start at same time, looking identical.*/
+	TileSetAtlasSourceTileAnimationModeDefault TileSetAtlasSourceTileAnimationMode = 0
+	/*Tile animations start at random times, looking varied.*/
 	TileSetAtlasSourceTileAnimationModeRandomStartTimes TileSetAtlasSourceTileAnimationMode = 1
-	TileSetAtlasSourceTileAnimationModeMax              TileSetAtlasSourceTileAnimationMode = 2
+	/*Represents the size of the [enum TileAnimationMode] enum.*/
+	TileSetAtlasSourceTileAnimationModeMax TileSetAtlasSourceTileAnimationMode = 2
 )
 
 type TimeMonth = classdb.TimeMonth
 
 const (
-	TimeMonthJanuary   TimeMonth = 1
-	TimeMonthFebruary  TimeMonth = 2
-	TimeMonthMarch     TimeMonth = 3
-	TimeMonthApril     TimeMonth = 4
-	TimeMonthMay       TimeMonth = 5
-	TimeMonthJune      TimeMonth = 6
-	TimeMonthJuly      TimeMonth = 7
-	TimeMonthAugust    TimeMonth = 8
+	/*The month of January, represented numerically as [code]01[/code].*/
+	TimeMonthJanuary TimeMonth = 1
+	/*The month of February, represented numerically as [code]02[/code].*/
+	TimeMonthFebruary TimeMonth = 2
+	/*The month of March, represented numerically as [code]03[/code].*/
+	TimeMonthMarch TimeMonth = 3
+	/*The month of April, represented numerically as [code]04[/code].*/
+	TimeMonthApril TimeMonth = 4
+	/*The month of May, represented numerically as [code]05[/code].*/
+	TimeMonthMay TimeMonth = 5
+	/*The month of June, represented numerically as [code]06[/code].*/
+	TimeMonthJune TimeMonth = 6
+	/*The month of July, represented numerically as [code]07[/code].*/
+	TimeMonthJuly TimeMonth = 7
+	/*The month of August, represented numerically as [code]08[/code].*/
+	TimeMonthAugust TimeMonth = 8
+	/*The month of September, represented numerically as [code]09[/code].*/
 	TimeMonthSeptember TimeMonth = 9
-	TimeMonthOctober   TimeMonth = 10
-	TimeMonthNovember  TimeMonth = 11
-	TimeMonthDecember  TimeMonth = 12
+	/*The month of October, represented numerically as [code]10[/code].*/
+	TimeMonthOctober TimeMonth = 10
+	/*The month of November, represented numerically as [code]11[/code].*/
+	TimeMonthNovember TimeMonth = 11
+	/*The month of December, represented numerically as [code]12[/code].*/
+	TimeMonthDecember TimeMonth = 12
 )
 
 type TimeWeekday = classdb.TimeWeekday
 
 const (
-	TimeWeekdaySunday    TimeWeekday = 0
-	TimeWeekdayMonday    TimeWeekday = 1
-	TimeWeekdayTuesday   TimeWeekday = 2
+	/*The day of the week Sunday, represented numerically as [code]0[/code].*/
+	TimeWeekdaySunday TimeWeekday = 0
+	/*The day of the week Monday, represented numerically as [code]1[/code].*/
+	TimeWeekdayMonday TimeWeekday = 1
+	/*The day of the week Tuesday, represented numerically as [code]2[/code].*/
+	TimeWeekdayTuesday TimeWeekday = 2
+	/*The day of the week Wednesday, represented numerically as [code]3[/code].*/
 	TimeWeekdayWednesday TimeWeekday = 3
-	TimeWeekdayThursday  TimeWeekday = 4
-	TimeWeekdayFriday    TimeWeekday = 5
-	TimeWeekdaySaturday  TimeWeekday = 6
+	/*The day of the week Thursday, represented numerically as [code]4[/code].*/
+	TimeWeekdayThursday TimeWeekday = 4
+	/*The day of the week Friday, represented numerically as [code]5[/code].*/
+	TimeWeekdayFriday TimeWeekday = 5
+	/*The day of the week Saturday, represented numerically as [code]6[/code].*/
+	TimeWeekdaySaturday TimeWeekday = 6
 )
 
 type TimerTimerProcessCallback = classdb.TimerTimerProcessCallback
 
 const (
+	/*Update the timer during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	TimerTimerProcessPhysics TimerTimerProcessCallback = 0
-	TimerTimerProcessIdle    TimerTimerProcessCallback = 1
+	/*Update the timer during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	TimerTimerProcessIdle TimerTimerProcessCallback = 1
 )
 
 type TouchScreenButtonVisibilityMode = classdb.TouchScreenButtonVisibilityMode
 
 const (
-	TouchScreenButtonVisibilityAlways          TouchScreenButtonVisibilityMode = 0
+	/*Always visible.*/
+	TouchScreenButtonVisibilityAlways TouchScreenButtonVisibilityMode = 0
+	/*Visible on touch screens only.*/
 	TouchScreenButtonVisibilityTouchscreenOnly TouchScreenButtonVisibilityMode = 1
 )
 
 type TreeSelectMode = classdb.TreeSelectMode
 
 const (
+	/*Allows selection of a single cell at a time. From the perspective of items, only a single item is allowed to be selected. And there is only one column selected in the selected item.
+	  The focus cursor is always hidden in this mode, but it is positioned at the current selection, making the currently selected item the currently focused item.*/
 	TreeSelectSingle TreeSelectMode = 0
-	TreeSelectRow    TreeSelectMode = 1
-	TreeSelectMulti  TreeSelectMode = 2
+	/*Allows selection of a single row at a time. From the perspective of items, only a single items is allowed to be selected. And all the columns are selected in the selected item.
+	  The focus cursor is always hidden in this mode, but it is positioned at the first column of the current selection, making the currently selected item the currently focused item.*/
+	TreeSelectRow TreeSelectMode = 1
+	/*Allows selection of multiple cells at the same time. From the perspective of items, multiple items are allowed to be selected. And there can be multiple columns selected in each selected item.
+	  The focus cursor is visible in this mode, the item or column under the cursor is not necessarily selected.*/
+	TreeSelectMulti TreeSelectMode = 2
 )
 
 type TreeDropModeFlags = classdb.TreeDropModeFlags
 
 const (
-	TreeDropModeDisabled  TreeDropModeFlags = 0
-	TreeDropModeOnItem    TreeDropModeFlags = 1
+	/*Disables all drop sections, but still allows to detect the "on item" drop section by [method get_drop_section_at_position].
+	  [b]Note:[/b] This is the default flag, it has no effect when combined with other flags.*/
+	TreeDropModeDisabled TreeDropModeFlags = 0
+	/*Enables the "on item" drop section. This drop section covers the entire item.
+	  When combined with [constant DROP_MODE_INBETWEEN], this drop section halves the height and stays centered vertically.*/
+	TreeDropModeOnItem TreeDropModeFlags = 1
+	/*Enables "above item" and "below item" drop sections. The "above item" drop section covers the top half of the item, and the "below item" drop section covers the bottom half.
+	  When combined with [constant DROP_MODE_ON_ITEM], these drop sections halves the height and stays on top / bottom accordingly.*/
 	TreeDropModeInbetween TreeDropModeFlags = 2
 )
 
 type TreeItemTreeCellMode = classdb.TreeItemTreeCellMode
 
 const (
+	/*Cell contains a string.*/
 	TreeItemCellModeString TreeItemTreeCellMode = 0
-	TreeItemCellModeCheck  TreeItemTreeCellMode = 1
-	TreeItemCellModeRange  TreeItemTreeCellMode = 2
+	/*Cell contains a checkbox.*/
+	TreeItemCellModeCheck TreeItemTreeCellMode = 1
+	/*Cell contains a range.*/
+	TreeItemCellModeRange TreeItemTreeCellMode = 2
+	/*Cell contains an icon.*/
 	TreeItemCellModeIcon   TreeItemTreeCellMode = 3
 	TreeItemCellModeCustom TreeItemTreeCellMode = 4
 )
@@ -6355,148 +10128,235 @@ const (
 type TweenTweenProcessMode = classdb.TweenTweenProcessMode
 
 const (
+	/*The [Tween] updates after each physics frame (see [method Node._physics_process]).*/
 	TweenTweenProcessPhysics TweenTweenProcessMode = 0
-	TweenTweenProcessIdle    TweenTweenProcessMode = 1
+	/*The [Tween] updates after each process frame (see [method Node._process]).*/
+	TweenTweenProcessIdle TweenTweenProcessMode = 1
 )
 
 type TweenTweenPauseMode = classdb.TweenTweenPauseMode
 
 const (
-	TweenTweenPauseBound   TweenTweenPauseMode = 0
-	TweenTweenPauseStop    TweenTweenPauseMode = 1
+	/*If the [Tween] has a bound node, it will process when that node can process (see [member Node.process_mode]). Otherwise it's the same as [constant TWEEN_PAUSE_STOP].*/
+	TweenTweenPauseBound TweenTweenPauseMode = 0
+	/*If [SceneTree] is paused, the [Tween] will also pause.*/
+	TweenTweenPauseStop TweenTweenPauseMode = 1
+	/*The [Tween] will process regardless of whether [SceneTree] is paused.*/
 	TweenTweenPauseProcess TweenTweenPauseMode = 2
 )
 
 type TweenTransitionType = classdb.TweenTransitionType
 
 const (
-	TweenTransLinear  TweenTransitionType = 0
-	TweenTransSine    TweenTransitionType = 1
-	TweenTransQuint   TweenTransitionType = 2
-	TweenTransQuart   TweenTransitionType = 3
-	TweenTransQuad    TweenTransitionType = 4
-	TweenTransExpo    TweenTransitionType = 5
+	/*The animation is interpolated linearly.*/
+	TweenTransLinear TweenTransitionType = 0
+	/*The animation is interpolated using a sine function.*/
+	TweenTransSine TweenTransitionType = 1
+	/*The animation is interpolated with a quintic (to the power of 5) function.*/
+	TweenTransQuint TweenTransitionType = 2
+	/*The animation is interpolated with a quartic (to the power of 4) function.*/
+	TweenTransQuart TweenTransitionType = 3
+	/*The animation is interpolated with a quadratic (to the power of 2) function.*/
+	TweenTransQuad TweenTransitionType = 4
+	/*The animation is interpolated with an exponential (to the power of x) function.*/
+	TweenTransExpo TweenTransitionType = 5
+	/*The animation is interpolated with elasticity, wiggling around the edges.*/
 	TweenTransElastic TweenTransitionType = 6
-	TweenTransCubic   TweenTransitionType = 7
-	TweenTransCirc    TweenTransitionType = 8
-	TweenTransBounce  TweenTransitionType = 9
-	TweenTransBack    TweenTransitionType = 10
-	TweenTransSpring  TweenTransitionType = 11
+	/*The animation is interpolated with a cubic (to the power of 3) function.*/
+	TweenTransCubic TweenTransitionType = 7
+	/*The animation is interpolated with a function using square roots.*/
+	TweenTransCirc TweenTransitionType = 8
+	/*The animation is interpolated by bouncing at the end.*/
+	TweenTransBounce TweenTransitionType = 9
+	/*The animation is interpolated backing out at ends.*/
+	TweenTransBack TweenTransitionType = 10
+	/*The animation is interpolated like a spring towards the end.*/
+	TweenTransSpring TweenTransitionType = 11
 )
 
 type TweenEaseType = classdb.TweenEaseType
 
 const (
-	TweenEaseIn    TweenEaseType = 0
-	TweenEaseOut   TweenEaseType = 1
+	/*The interpolation starts slowly and speeds up towards the end.*/
+	TweenEaseIn TweenEaseType = 0
+	/*The interpolation starts quickly and slows down towards the end.*/
+	TweenEaseOut TweenEaseType = 1
+	/*A combination of [constant EASE_IN] and [constant EASE_OUT]. The interpolation is slowest at both ends.*/
 	TweenEaseInOut TweenEaseType = 2
+	/*A combination of [constant EASE_IN] and [constant EASE_OUT]. The interpolation is fastest at both ends.*/
 	TweenEaseOutIn TweenEaseType = 3
 )
 
 type UPNPUPNPResult = classdb.UPNPUPNPResult
 
 const (
-	UPNPUpnpResultSuccess                     UPNPUPNPResult = 0
-	UPNPUpnpResultNotAuthorized               UPNPUPNPResult = 1
-	UPNPUpnpResultPortMappingNotFound         UPNPUPNPResult = 2
-	UPNPUpnpResultInconsistentParameters      UPNPUPNPResult = 3
-	UPNPUpnpResultNoSuchEntryInArray          UPNPUPNPResult = 4
-	UPNPUpnpResultActionFailed                UPNPUPNPResult = 5
-	UPNPUpnpResultSrcIpWildcardNotPermitted   UPNPUPNPResult = 6
+	/*UPNP command or discovery was successful.*/
+	UPNPUpnpResultSuccess UPNPUPNPResult = 0
+	/*Not authorized to use the command on the [UPNPDevice]. May be returned when the user disabled UPNP on their router.*/
+	UPNPUpnpResultNotAuthorized UPNPUPNPResult = 1
+	/*No port mapping was found for the given port, protocol combination on the given [UPNPDevice].*/
+	UPNPUpnpResultPortMappingNotFound UPNPUPNPResult = 2
+	/*Inconsistent parameters.*/
+	UPNPUpnpResultInconsistentParameters UPNPUPNPResult = 3
+	/*No such entry in array. May be returned if a given port, protocol combination is not found on an [UPNPDevice].*/
+	UPNPUpnpResultNoSuchEntryInArray UPNPUPNPResult = 4
+	/*The action failed.*/
+	UPNPUpnpResultActionFailed UPNPUPNPResult = 5
+	/*The [UPNPDevice] does not allow wildcard values for the source IP address.*/
+	UPNPUpnpResultSrcIpWildcardNotPermitted UPNPUPNPResult = 6
+	/*The [UPNPDevice] does not allow wildcard values for the external port.*/
 	UPNPUpnpResultExtPortWildcardNotPermitted UPNPUPNPResult = 7
+	/*The [UPNPDevice] does not allow wildcard values for the internal port.*/
 	UPNPUpnpResultIntPortWildcardNotPermitted UPNPUPNPResult = 8
-	UPNPUpnpResultRemoteHostMustBeWildcard    UPNPUPNPResult = 9
-	UPNPUpnpResultExtPortMustBeWildcard       UPNPUPNPResult = 10
-	UPNPUpnpResultNoPortMapsAvailable         UPNPUPNPResult = 11
-	UPNPUpnpResultConflictWithOtherMechanism  UPNPUPNPResult = 12
-	UPNPUpnpResultConflictWithOtherMapping    UPNPUPNPResult = 13
-	UPNPUpnpResultSamePortValuesRequired      UPNPUPNPResult = 14
+	/*The remote host value must be a wildcard.*/
+	UPNPUpnpResultRemoteHostMustBeWildcard UPNPUPNPResult = 9
+	/*The external port value must be a wildcard.*/
+	UPNPUpnpResultExtPortMustBeWildcard UPNPUPNPResult = 10
+	/*No port maps are available. May also be returned if port mapping functionality is not available.*/
+	UPNPUpnpResultNoPortMapsAvailable UPNPUPNPResult = 11
+	/*Conflict with other mechanism. May be returned instead of [constant UPNP_RESULT_CONFLICT_WITH_OTHER_MAPPING] if a port mapping conflicts with an existing one.*/
+	UPNPUpnpResultConflictWithOtherMechanism UPNPUPNPResult = 12
+	/*Conflict with an existing port mapping.*/
+	UPNPUpnpResultConflictWithOtherMapping UPNPUPNPResult = 13
+	/*External and internal port values must be the same.*/
+	UPNPUpnpResultSamePortValuesRequired UPNPUPNPResult = 14
+	/*Only permanent leases are supported. Do not use the [code]duration[/code] parameter when adding port mappings.*/
 	UPNPUpnpResultOnlyPermanentLeaseSupported UPNPUPNPResult = 15
-	UPNPUpnpResultInvalidGateway              UPNPUPNPResult = 16
-	UPNPUpnpResultInvalidPort                 UPNPUPNPResult = 17
-	UPNPUpnpResultInvalidProtocol             UPNPUPNPResult = 18
-	UPNPUpnpResultInvalidDuration             UPNPUPNPResult = 19
-	UPNPUpnpResultInvalidArgs                 UPNPUPNPResult = 20
-	UPNPUpnpResultInvalidResponse             UPNPUPNPResult = 21
-	UPNPUpnpResultInvalidParam                UPNPUPNPResult = 22
-	UPNPUpnpResultHttpError                   UPNPUPNPResult = 23
-	UPNPUpnpResultSocketError                 UPNPUPNPResult = 24
-	UPNPUpnpResultMemAllocError               UPNPUPNPResult = 25
-	UPNPUpnpResultNoGateway                   UPNPUPNPResult = 26
-	UPNPUpnpResultNoDevices                   UPNPUPNPResult = 27
-	UPNPUpnpResultUnknownError                UPNPUPNPResult = 28
+	/*Invalid gateway.*/
+	UPNPUpnpResultInvalidGateway UPNPUPNPResult = 16
+	/*Invalid port.*/
+	UPNPUpnpResultInvalidPort UPNPUPNPResult = 17
+	/*Invalid protocol.*/
+	UPNPUpnpResultInvalidProtocol UPNPUPNPResult = 18
+	/*Invalid duration.*/
+	UPNPUpnpResultInvalidDuration UPNPUPNPResult = 19
+	/*Invalid arguments.*/
+	UPNPUpnpResultInvalidArgs UPNPUPNPResult = 20
+	/*Invalid response.*/
+	UPNPUpnpResultInvalidResponse UPNPUPNPResult = 21
+	/*Invalid parameter.*/
+	UPNPUpnpResultInvalidParam UPNPUPNPResult = 22
+	/*HTTP error.*/
+	UPNPUpnpResultHttpError UPNPUPNPResult = 23
+	/*Socket error.*/
+	UPNPUpnpResultSocketError UPNPUPNPResult = 24
+	/*Error allocating memory.*/
+	UPNPUpnpResultMemAllocError UPNPUPNPResult = 25
+	/*No gateway available. You may need to call [method discover] first, or discovery didn't detect any valid IGDs (InternetGatewayDevices).*/
+	UPNPUpnpResultNoGateway UPNPUPNPResult = 26
+	/*No devices available. You may need to call [method discover] first, or discovery didn't detect any valid [UPNPDevice]s.*/
+	UPNPUpnpResultNoDevices UPNPUPNPResult = 27
+	/*Unknown error.*/
+	UPNPUpnpResultUnknownError UPNPUPNPResult = 28
 )
 
 type UPNPDeviceIGDStatus = classdb.UPNPDeviceIGDStatus
 
 const (
-	UPNPDeviceIgdStatusOk             UPNPDeviceIGDStatus = 0
-	UPNPDeviceIgdStatusHttpError      UPNPDeviceIGDStatus = 1
-	UPNPDeviceIgdStatusHttpEmpty      UPNPDeviceIGDStatus = 2
-	UPNPDeviceIgdStatusNoUrls         UPNPDeviceIGDStatus = 3
-	UPNPDeviceIgdStatusNoIgd          UPNPDeviceIGDStatus = 4
-	UPNPDeviceIgdStatusDisconnected   UPNPDeviceIGDStatus = 5
-	UPNPDeviceIgdStatusUnknownDevice  UPNPDeviceIGDStatus = 6
+	/*OK.*/
+	UPNPDeviceIgdStatusOk UPNPDeviceIGDStatus = 0
+	/*HTTP error.*/
+	UPNPDeviceIgdStatusHttpError UPNPDeviceIGDStatus = 1
+	/*Empty HTTP response.*/
+	UPNPDeviceIgdStatusHttpEmpty UPNPDeviceIGDStatus = 2
+	/*Returned response contained no URLs.*/
+	UPNPDeviceIgdStatusNoUrls UPNPDeviceIGDStatus = 3
+	/*Not a valid IGD.*/
+	UPNPDeviceIgdStatusNoIgd UPNPDeviceIGDStatus = 4
+	/*Disconnected.*/
+	UPNPDeviceIgdStatusDisconnected UPNPDeviceIGDStatus = 5
+	/*Unknown device.*/
+	UPNPDeviceIgdStatusUnknownDevice UPNPDeviceIGDStatus = 6
+	/*Invalid control.*/
 	UPNPDeviceIgdStatusInvalidControl UPNPDeviceIGDStatus = 7
-	UPNPDeviceIgdStatusMallocError    UPNPDeviceIGDStatus = 8
-	UPNPDeviceIgdStatusUnknownError   UPNPDeviceIGDStatus = 9
+	/*Memory allocation error.*/
+	UPNPDeviceIgdStatusMallocError UPNPDeviceIGDStatus = 8
+	/*Unknown error.*/
+	UPNPDeviceIgdStatusUnknownError UPNPDeviceIGDStatus = 9
 )
 
 type UndoRedoMergeMode = classdb.UndoRedoMergeMode
 
 const (
+	/*Makes "do"/"undo" operations stay in separate actions.*/
 	UndoRedoMergeDisable UndoRedoMergeMode = 0
-	UndoRedoMergeEnds    UndoRedoMergeMode = 1
-	UndoRedoMergeAll     UndoRedoMergeMode = 2
+	/*Makes so that the action's "undo" operations are from the first action created and the "do" operations are from the last subsequent action with the same name.*/
+	UndoRedoMergeEnds UndoRedoMergeMode = 1
+	/*Makes subsequent actions with the same name be merged into one.*/
+	UndoRedoMergeAll UndoRedoMergeMode = 2
 )
 
 type ViewportPositionalShadowAtlasQuadrantSubdiv = classdb.ViewportPositionalShadowAtlasQuadrantSubdiv
 
 const (
+	/*This quadrant will not be used.*/
 	ViewportShadowAtlasQuadrantSubdivDisabled ViewportPositionalShadowAtlasQuadrantSubdiv = 0
-	ViewportShadowAtlasQuadrantSubdiv1        ViewportPositionalShadowAtlasQuadrantSubdiv = 1
-	ViewportShadowAtlasQuadrantSubdiv4        ViewportPositionalShadowAtlasQuadrantSubdiv = 2
-	ViewportShadowAtlasQuadrantSubdiv16       ViewportPositionalShadowAtlasQuadrantSubdiv = 3
-	ViewportShadowAtlasQuadrantSubdiv64       ViewportPositionalShadowAtlasQuadrantSubdiv = 4
-	ViewportShadowAtlasQuadrantSubdiv256      ViewportPositionalShadowAtlasQuadrantSubdiv = 5
-	ViewportShadowAtlasQuadrantSubdiv1024     ViewportPositionalShadowAtlasQuadrantSubdiv = 6
-	ViewportShadowAtlasQuadrantSubdivMax      ViewportPositionalShadowAtlasQuadrantSubdiv = 7
+	/*This quadrant will only be used by one shadow map.*/
+	ViewportShadowAtlasQuadrantSubdiv1 ViewportPositionalShadowAtlasQuadrantSubdiv = 1
+	/*This quadrant will be split in 4 and used by up to 4 shadow maps.*/
+	ViewportShadowAtlasQuadrantSubdiv4 ViewportPositionalShadowAtlasQuadrantSubdiv = 2
+	/*This quadrant will be split 16 ways and used by up to 16 shadow maps.*/
+	ViewportShadowAtlasQuadrantSubdiv16 ViewportPositionalShadowAtlasQuadrantSubdiv = 3
+	/*This quadrant will be split 64 ways and used by up to 64 shadow maps.*/
+	ViewportShadowAtlasQuadrantSubdiv64 ViewportPositionalShadowAtlasQuadrantSubdiv = 4
+	/*This quadrant will be split 256 ways and used by up to 256 shadow maps. Unless the [member positional_shadow_atlas_size] is very high, the shadows in this quadrant will be very low resolution.*/
+	ViewportShadowAtlasQuadrantSubdiv256 ViewportPositionalShadowAtlasQuadrantSubdiv = 5
+	/*This quadrant will be split 1024 ways and used by up to 1024 shadow maps. Unless the [member positional_shadow_atlas_size] is very high, the shadows in this quadrant will be very low resolution.*/
+	ViewportShadowAtlasQuadrantSubdiv1024 ViewportPositionalShadowAtlasQuadrantSubdiv = 6
+	/*Represents the size of the [enum PositionalShadowAtlasQuadrantSubdiv] enum.*/
+	ViewportShadowAtlasQuadrantSubdivMax ViewportPositionalShadowAtlasQuadrantSubdiv = 7
 )
 
 type ViewportScaling3DMode = classdb.ViewportScaling3DMode
 
 const (
+	/*Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [member scaling_3d_scale]. Values less than [code]1.0[/code] will result in undersampling while values greater than [code]1.0[/code] will result in supersampling. A value of [code]1.0[/code] disables scaling.*/
 	ViewportScaling3dModeBilinear ViewportScaling3DMode = 0
-	ViewportScaling3dModeFsr      ViewportScaling3DMode = 1
-	ViewportScaling3dModeFsr2     ViewportScaling3DMode = 2
-	ViewportScaling3dModeMax      ViewportScaling3DMode = 3
+	/*Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] disables scaling.*/
+	ViewportScaling3dModeFsr ViewportScaling3DMode = 1
+	/*Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR2. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use FSR2 at native resolution as a TAA solution.*/
+	ViewportScaling3dModeFsr2 ViewportScaling3DMode = 2
+	/*Represents the size of the [enum Scaling3DMode] enum.*/
+	ViewportScaling3dModeMax ViewportScaling3DMode = 3
 )
 
 type ViewportMSAA = classdb.ViewportMSAA
 
 const (
+	/*Multisample antialiasing mode disabled. This is the default value, and is also the fastest setting.*/
 	ViewportMsaaDisabled ViewportMSAA = 0
-	ViewportMsaa2x       ViewportMSAA = 1
-	ViewportMsaa4x       ViewportMSAA = 2
-	ViewportMsaa8x       ViewportMSAA = 3
-	ViewportMsaaMax      ViewportMSAA = 4
+	/*Use 2× Multisample Antialiasing. This has a moderate performance cost. It helps reduce aliasing noticeably, but 4× MSAA still looks substantially better.*/
+	ViewportMsaa2x ViewportMSAA = 1
+	/*Use 4× Multisample Antialiasing. This has a significant performance cost, and is generally a good compromise between performance and quality.*/
+	ViewportMsaa4x ViewportMSAA = 2
+	/*Use 8× Multisample Antialiasing. This has a very high performance cost. The difference between 4× and 8× MSAA may not always be visible in real gameplay conditions. Likely unsupported on low-end and older hardware.*/
+	ViewportMsaa8x ViewportMSAA = 3
+	/*Represents the size of the [enum MSAA] enum.*/
+	ViewportMsaaMax ViewportMSAA = 4
 )
 
 type ViewportScreenSpaceAA = classdb.ViewportScreenSpaceAA
 
 const (
+	/*Do not perform any antialiasing in the full screen post-process.*/
 	ViewportScreenSpaceAaDisabled ViewportScreenSpaceAA = 0
-	ViewportScreenSpaceAaFxaa     ViewportScreenSpaceAA = 1
-	ViewportScreenSpaceAaMax      ViewportScreenSpaceAA = 2
+	/*Use fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.*/
+	ViewportScreenSpaceAaFxaa ViewportScreenSpaceAA = 1
+	/*Represents the size of the [enum ScreenSpaceAA] enum.*/
+	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 2
 )
 
 type ViewportRenderInfo = classdb.ViewportRenderInfo
 
 const (
-	ViewportRenderInfoObjectsInFrame    ViewportRenderInfo = 0
+	/*Amount of objects in frame.*/
+	ViewportRenderInfoObjectsInFrame ViewportRenderInfo = 0
+	/*Amount of vertices in frame.*/
 	ViewportRenderInfoPrimitivesInFrame ViewportRenderInfo = 1
-	ViewportRenderInfoDrawCallsInFrame  ViewportRenderInfo = 2
-	ViewportRenderInfoMax               ViewportRenderInfo = 3
+	/*Amount of draw calls in frame.*/
+	ViewportRenderInfoDrawCallsInFrame ViewportRenderInfo = 2
+	/*Represents the size of the [enum RenderInfo] enum.*/
+	ViewportRenderInfoMax ViewportRenderInfo = 3
 )
 
 type ViewportRenderInfoType = classdb.ViewportRenderInfoType
@@ -6510,21 +10370,34 @@ const (
 type ViewportDebugDraw = classdb.ViewportDebugDraw
 
 const (
-	ViewportDebugDrawDisabled                ViewportDebugDraw = 0
-	ViewportDebugDrawUnshaded                ViewportDebugDraw = 1
-	ViewportDebugDrawLighting                ViewportDebugDraw = 2
-	ViewportDebugDrawOverdraw                ViewportDebugDraw = 3
-	ViewportDebugDrawWireframe               ViewportDebugDraw = 4
-	ViewportDebugDrawNormalBuffer            ViewportDebugDraw = 5
-	ViewportDebugDrawVoxelGiAlbedo           ViewportDebugDraw = 6
-	ViewportDebugDrawVoxelGiLighting         ViewportDebugDraw = 7
-	ViewportDebugDrawVoxelGiEmission         ViewportDebugDraw = 8
-	ViewportDebugDrawShadowAtlas             ViewportDebugDraw = 9
-	ViewportDebugDrawDirectionalShadowAtlas  ViewportDebugDraw = 10
-	ViewportDebugDrawSceneLuminance          ViewportDebugDraw = 11
-	ViewportDebugDrawSsao                    ViewportDebugDraw = 12
-	ViewportDebugDrawSsil                    ViewportDebugDraw = 13
-	ViewportDebugDrawPssmSplits              ViewportDebugDraw = 14
+	/*Objects are displayed normally.*/
+	ViewportDebugDrawDisabled ViewportDebugDraw = 0
+	/*Objects are displayed without light information.*/
+	ViewportDebugDrawUnshaded ViewportDebugDraw = 1
+	ViewportDebugDrawLighting ViewportDebugDraw = 2
+	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw means you are wasting performance on drawing pixels that are being hidden behind others.*/
+	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
+	/*Objects are displayed in wireframe style.*/
+	ViewportDebugDrawWireframe    ViewportDebugDraw = 4
+	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
+	/*Objects are displayed with only the albedo value from [VoxelGI]s.*/
+	ViewportDebugDrawVoxelGiAlbedo ViewportDebugDraw = 6
+	/*Objects are displayed with only the lighting value from [VoxelGI]s.*/
+	ViewportDebugDrawVoxelGiLighting ViewportDebugDraw = 7
+	/*Objects are displayed with only the emission color from [VoxelGI]s.*/
+	ViewportDebugDrawVoxelGiEmission ViewportDebugDraw = 8
+	/*Draws the shadow atlas that stores shadows from [OmniLight3D]s and [SpotLight3D]s in the upper left quadrant of the [Viewport].*/
+	ViewportDebugDrawShadowAtlas ViewportDebugDraw = 9
+	/*Draws the shadow atlas that stores shadows from [DirectionalLight3D]s in the upper left quadrant of the [Viewport].*/
+	ViewportDebugDrawDirectionalShadowAtlas ViewportDebugDraw = 10
+	ViewportDebugDrawSceneLuminance         ViewportDebugDraw = 11
+	/*Draws the screen-space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [member Environment.ssao_enabled] set in your [WorldEnvironment].*/
+	ViewportDebugDrawSsao ViewportDebugDraw = 12
+	/*Draws the screen-space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [member Environment.ssil_enabled] set in your [WorldEnvironment].*/
+	ViewportDebugDrawSsil ViewportDebugDraw = 13
+	/*Colors each PSSM split for the [DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order, they will be colored red, green, blue, and yellow.*/
+	ViewportDebugDrawPssmSplits ViewportDebugDraw = 14
+	/*Draws the decal atlas used by [Decal]s and light projector textures in the upper left quadrant of the [Viewport].*/
 	ViewportDebugDrawDecalAtlas              ViewportDebugDraw = 15
 	ViewportDebugDrawSdfgi                   ViewportDebugDraw = 16
 	ViewportDebugDrawSdfgiProbes             ViewportDebugDraw = 17
@@ -6536,26 +10409,38 @@ const (
 	ViewportDebugDrawClusterReflectionProbes ViewportDebugDraw = 23
 	ViewportDebugDrawOccluders               ViewportDebugDraw = 24
 	ViewportDebugDrawMotionVectors           ViewportDebugDraw = 25
-	ViewportDebugDrawInternalBuffer          ViewportDebugDraw = 26
+	/*Draws the internal resolution buffer of the scene before post-processing is applied.*/
+	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
 )
 
 type ViewportDefaultCanvasItemTextureFilter = classdb.ViewportDefaultCanvasItemTextureFilter
 
 const (
-	ViewportDefaultCanvasItemTextureFilterNearest            ViewportDefaultCanvasItemTextureFilter = 0
-	ViewportDefaultCanvasItemTextureFilterLinear             ViewportDefaultCanvasItemTextureFilter = 1
-	ViewportDefaultCanvasItemTextureFilterLinearWithMipmaps  ViewportDefaultCanvasItemTextureFilter = 2
+	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	ViewportDefaultCanvasItemTextureFilterNearest ViewportDefaultCanvasItemTextureFilter = 0
+	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	ViewportDefaultCanvasItemTextureFilterLinear ViewportDefaultCanvasItemTextureFilter = 1
+	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	ViewportDefaultCanvasItemTextureFilterLinearWithMipmaps ViewportDefaultCanvasItemTextureFilter = 2
+	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
 	ViewportDefaultCanvasItemTextureFilterNearestWithMipmaps ViewportDefaultCanvasItemTextureFilter = 3
-	ViewportDefaultCanvasItemTextureFilterMax                ViewportDefaultCanvasItemTextureFilter = 4
+	/*Max value for [enum DefaultCanvasItemTextureFilter] enum.*/
+	ViewportDefaultCanvasItemTextureFilterMax ViewportDefaultCanvasItemTextureFilter = 4
 )
 
 type ViewportDefaultCanvasItemTextureRepeat = classdb.ViewportDefaultCanvasItemTextureRepeat
 
 const (
+	/*Disables textures repeating. Instead, when reading UVs outside the 0-1 range, the value will be clamped to the edge of the texture, resulting in a stretched out look at the borders of the texture.*/
 	ViewportDefaultCanvasItemTextureRepeatDisabled ViewportDefaultCanvasItemTextureRepeat = 0
-	ViewportDefaultCanvasItemTextureRepeatEnabled  ViewportDefaultCanvasItemTextureRepeat = 1
-	ViewportDefaultCanvasItemTextureRepeatMirror   ViewportDefaultCanvasItemTextureRepeat = 2
-	ViewportDefaultCanvasItemTextureRepeatMax      ViewportDefaultCanvasItemTextureRepeat = 3
+	/*Enables the texture to repeat when UV coordinates are outside the 0-1 range. If using one of the linear filtering modes, this can result in artifacts at the edges of a texture when the sampler filters across the edges of the texture.*/
+	ViewportDefaultCanvasItemTextureRepeatEnabled ViewportDefaultCanvasItemTextureRepeat = 1
+	/*Flip the texture when repeating so that the edge lines up instead of abruptly changing.*/
+	ViewportDefaultCanvasItemTextureRepeatMirror ViewportDefaultCanvasItemTextureRepeat = 2
+	/*Max value for [enum DefaultCanvasItemTextureRepeat] enum.*/
+	ViewportDefaultCanvasItemTextureRepeatMax ViewportDefaultCanvasItemTextureRepeat = 3
 )
 
 type ViewportSDFOversize = classdb.ViewportSDFOversize
@@ -6580,873 +10465,1440 @@ const (
 type ViewportVRSMode = classdb.ViewportVRSMode
 
 const (
+	/*VRS is disabled.*/
 	ViewportVrsDisabled ViewportVRSMode = 0
-	ViewportVrsTexture  ViewportVRSMode = 1
-	ViewportVrsXr       ViewportVRSMode = 2
-	ViewportVrsMax      ViewportVRSMode = 3
+	/*VRS uses a texture. Note, for stereoscopic use a texture atlas with a texture for each view.*/
+	ViewportVrsTexture ViewportVRSMode = 1
+	/*VRS texture is supplied by the primary [XRInterface].*/
+	ViewportVrsXr ViewportVRSMode = 2
+	/*Represents the size of the [enum VRSMode] enum.*/
+	ViewportVrsMax ViewportVRSMode = 3
 )
 
 type VisibleOnScreenEnabler2DEnableMode = classdb.VisibleOnScreenEnabler2DEnableMode
 
 const (
-	VisibleOnScreenEnabler2DEnableModeInherit    VisibleOnScreenEnabler2DEnableMode = 0
-	VisibleOnScreenEnabler2DEnableModeAlways     VisibleOnScreenEnabler2DEnableMode = 1
+	/*Corresponds to [constant Node.PROCESS_MODE_INHERIT].*/
+	VisibleOnScreenEnabler2DEnableModeInherit VisibleOnScreenEnabler2DEnableMode = 0
+	/*Corresponds to [constant Node.PROCESS_MODE_ALWAYS].*/
+	VisibleOnScreenEnabler2DEnableModeAlways VisibleOnScreenEnabler2DEnableMode = 1
+	/*Corresponds to [constant Node.PROCESS_MODE_WHEN_PAUSED].*/
 	VisibleOnScreenEnabler2DEnableModeWhenPaused VisibleOnScreenEnabler2DEnableMode = 2
 )
 
 type VisibleOnScreenEnabler3DEnableMode = classdb.VisibleOnScreenEnabler3DEnableMode
 
 const (
-	VisibleOnScreenEnabler3DEnableModeInherit    VisibleOnScreenEnabler3DEnableMode = 0
-	VisibleOnScreenEnabler3DEnableModeAlways     VisibleOnScreenEnabler3DEnableMode = 1
+	/*Corresponds to [constant Node.PROCESS_MODE_INHERIT].*/
+	VisibleOnScreenEnabler3DEnableModeInherit VisibleOnScreenEnabler3DEnableMode = 0
+	/*Corresponds to [constant Node.PROCESS_MODE_ALWAYS].*/
+	VisibleOnScreenEnabler3DEnableModeAlways VisibleOnScreenEnabler3DEnableMode = 1
+	/*Corresponds to [constant Node.PROCESS_MODE_WHEN_PAUSED].*/
 	VisibleOnScreenEnabler3DEnableModeWhenPaused VisibleOnScreenEnabler3DEnableMode = 2
 )
 
 type VisualShaderType = classdb.VisualShaderType
 
 const (
-	VisualShaderTypeVertex        VisualShaderType = 0
-	VisualShaderTypeFragment      VisualShaderType = 1
-	VisualShaderTypeLight         VisualShaderType = 2
-	VisualShaderTypeStart         VisualShaderType = 3
-	VisualShaderTypeProcess       VisualShaderType = 4
-	VisualShaderTypeCollide       VisualShaderType = 5
-	VisualShaderTypeStartCustom   VisualShaderType = 6
+	/*A vertex shader, operating on vertices.*/
+	VisualShaderTypeVertex VisualShaderType = 0
+	/*A fragment shader, operating on fragments (pixels).*/
+	VisualShaderTypeFragment VisualShaderType = 1
+	/*A shader for light calculations.*/
+	VisualShaderTypeLight VisualShaderType = 2
+	/*A function for the "start" stage of particle shader.*/
+	VisualShaderTypeStart VisualShaderType = 3
+	/*A function for the "process" stage of particle shader.*/
+	VisualShaderTypeProcess VisualShaderType = 4
+	/*A function for the "collide" stage (particle collision handler) of particle shader.*/
+	VisualShaderTypeCollide VisualShaderType = 5
+	/*A function for the "start" stage of particle shader, with customized output.*/
+	VisualShaderTypeStartCustom VisualShaderType = 6
+	/*A function for the "process" stage of particle shader, with customized output.*/
 	VisualShaderTypeProcessCustom VisualShaderType = 7
-	VisualShaderTypeSky           VisualShaderType = 8
-	VisualShaderTypeFog           VisualShaderType = 9
-	VisualShaderTypeMax           VisualShaderType = 10
+	/*A shader for 3D environment's sky.*/
+	VisualShaderTypeSky VisualShaderType = 8
+	/*A compute shader that runs for each froxel of the volumetric fog map.*/
+	VisualShaderTypeFog VisualShaderType = 9
+	/*Represents the size of the [enum Type] enum.*/
+	VisualShaderTypeMax VisualShaderType = 10
 )
 
 type VisualShaderVaryingMode = classdb.VisualShaderVaryingMode
 
 const (
+	/*Varying is passed from [code]Vertex[/code] function to [code]Fragment[/code] and [code]Light[/code] functions.*/
 	VisualShaderVaryingModeVertexToFragLight VisualShaderVaryingMode = 0
-	VisualShaderVaryingModeFragToLight       VisualShaderVaryingMode = 1
-	VisualShaderVaryingModeMax               VisualShaderVaryingMode = 2
+	/*Varying is passed from [code]Fragment[/code] function to [code]Light[/code] function.*/
+	VisualShaderVaryingModeFragToLight VisualShaderVaryingMode = 1
+	/*Represents the size of the [enum VaryingMode] enum.*/
+	VisualShaderVaryingModeMax VisualShaderVaryingMode = 2
 )
 
 type VisualShaderVaryingType = classdb.VisualShaderVaryingType
 
 const (
-	VisualShaderVaryingTypeFloat     VisualShaderVaryingType = 0
-	VisualShaderVaryingTypeInt       VisualShaderVaryingType = 1
-	VisualShaderVaryingTypeUint      VisualShaderVaryingType = 2
-	VisualShaderVaryingTypeVector2d  VisualShaderVaryingType = 3
-	VisualShaderVaryingTypeVector3d  VisualShaderVaryingType = 4
-	VisualShaderVaryingTypeVector4d  VisualShaderVaryingType = 5
-	VisualShaderVaryingTypeBoolean   VisualShaderVaryingType = 6
+	/*Varying is of type [float].*/
+	VisualShaderVaryingTypeFloat VisualShaderVaryingType = 0
+	/*Varying is of type [int].*/
+	VisualShaderVaryingTypeInt VisualShaderVaryingType = 1
+	/*Varying is of type unsigned [int].*/
+	VisualShaderVaryingTypeUint VisualShaderVaryingType = 2
+	/*Varying is of type [Vector2].*/
+	VisualShaderVaryingTypeVector2d VisualShaderVaryingType = 3
+	/*Varying is of type [Vector3].*/
+	VisualShaderVaryingTypeVector3d VisualShaderVaryingType = 4
+	/*Varying is of type [Vector4].*/
+	VisualShaderVaryingTypeVector4d VisualShaderVaryingType = 5
+	/*Varying is of type [bool].*/
+	VisualShaderVaryingTypeBoolean VisualShaderVaryingType = 6
+	/*Varying is of type [Transform3D].*/
 	VisualShaderVaryingTypeTransform VisualShaderVaryingType = 7
-	VisualShaderVaryingTypeMax       VisualShaderVaryingType = 8
+	/*Represents the size of the [enum VaryingType] enum.*/
+	VisualShaderVaryingTypeMax VisualShaderVaryingType = 8
 )
 
 type VisualShaderNodePortType = classdb.VisualShaderNodePortType
 
 const (
-	VisualShaderNodePortTypeScalar     VisualShaderNodePortType = 0
-	VisualShaderNodePortTypeScalarInt  VisualShaderNodePortType = 1
+	/*Floating-point scalar. Translated to [code skip-lint]float[/code] type in shader code.*/
+	VisualShaderNodePortTypeScalar VisualShaderNodePortType = 0
+	/*Integer scalar. Translated to [code skip-lint]int[/code] type in shader code.*/
+	VisualShaderNodePortTypeScalarInt VisualShaderNodePortType = 1
+	/*Unsigned integer scalar. Translated to [code skip-lint]uint[/code] type in shader code.*/
 	VisualShaderNodePortTypeScalarUint VisualShaderNodePortType = 2
-	VisualShaderNodePortTypeVector2d   VisualShaderNodePortType = 3
-	VisualShaderNodePortTypeVector3d   VisualShaderNodePortType = 4
-	VisualShaderNodePortTypeVector4d   VisualShaderNodePortType = 5
-	VisualShaderNodePortTypeBoolean    VisualShaderNodePortType = 6
-	VisualShaderNodePortTypeTransform  VisualShaderNodePortType = 7
-	VisualShaderNodePortTypeSampler    VisualShaderNodePortType = 8
-	VisualShaderNodePortTypeMax        VisualShaderNodePortType = 9
+	/*2D vector of floating-point values. Translated to [code skip-lint]vec2[/code] type in shader code.*/
+	VisualShaderNodePortTypeVector2d VisualShaderNodePortType = 3
+	/*3D vector of floating-point values. Translated to [code skip-lint]vec3[/code] type in shader code.*/
+	VisualShaderNodePortTypeVector3d VisualShaderNodePortType = 4
+	/*4D vector of floating-point values. Translated to [code skip-lint]vec4[/code] type in shader code.*/
+	VisualShaderNodePortTypeVector4d VisualShaderNodePortType = 5
+	/*Boolean type. Translated to [code skip-lint]bool[/code] type in shader code.*/
+	VisualShaderNodePortTypeBoolean VisualShaderNodePortType = 6
+	/*Transform type. Translated to [code skip-lint]mat4[/code] type in shader code.*/
+	VisualShaderNodePortTypeTransform VisualShaderNodePortType = 7
+	/*Sampler type. Translated to reference of sampler uniform in shader code. Can only be used for input ports in non-uniform nodes.*/
+	VisualShaderNodePortTypeSampler VisualShaderNodePortType = 8
+	/*Represents the size of the [enum PortType] enum.*/
+	VisualShaderNodePortTypeMax VisualShaderNodePortType = 9
 )
 
 type VisualShaderNodeBillboardBillboardType = classdb.VisualShaderNodeBillboardBillboardType
 
 const (
-	VisualShaderNodeBillboardBillboardTypeDisabled  VisualShaderNodeBillboardBillboardType = 0
-	VisualShaderNodeBillboardBillboardTypeEnabled   VisualShaderNodeBillboardBillboardType = 1
-	VisualShaderNodeBillboardBillboardTypeFixedY    VisualShaderNodeBillboardBillboardType = 2
+	/*Billboarding is disabled and the node does nothing.*/
+	VisualShaderNodeBillboardBillboardTypeDisabled VisualShaderNodeBillboardBillboardType = 0
+	/*A standard billboarding algorithm is enabled.*/
+	VisualShaderNodeBillboardBillboardTypeEnabled VisualShaderNodeBillboardBillboardType = 1
+	/*A billboarding algorithm to rotate around Y-axis is enabled.*/
+	VisualShaderNodeBillboardBillboardTypeFixedY VisualShaderNodeBillboardBillboardType = 2
+	/*A billboarding algorithm designed to use on particles is enabled.*/
 	VisualShaderNodeBillboardBillboardTypeParticles VisualShaderNodeBillboardBillboardType = 3
-	VisualShaderNodeBillboardBillboardTypeMax       VisualShaderNodeBillboardBillboardType = 4
+	/*Represents the size of the [enum BillboardType] enum.*/
+	VisualShaderNodeBillboardBillboardTypeMax VisualShaderNodeBillboardBillboardType = 4
 )
 
 type VisualShaderNodeClampOpType = classdb.VisualShaderNodeClampOpType
 
 const (
-	VisualShaderNodeClampOpTypeFloat    VisualShaderNodeClampOpType = 0
-	VisualShaderNodeClampOpTypeInt      VisualShaderNodeClampOpType = 1
-	VisualShaderNodeClampOpTypeUint     VisualShaderNodeClampOpType = 2
+	/*A floating-point scalar.*/
+	VisualShaderNodeClampOpTypeFloat VisualShaderNodeClampOpType = 0
+	/*An integer scalar.*/
+	VisualShaderNodeClampOpTypeInt VisualShaderNodeClampOpType = 1
+	/*An unsigned integer scalar.*/
+	VisualShaderNodeClampOpTypeUint VisualShaderNodeClampOpType = 2
+	/*A 2D vector type.*/
 	VisualShaderNodeClampOpTypeVector2d VisualShaderNodeClampOpType = 3
+	/*A 3D vector type.*/
 	VisualShaderNodeClampOpTypeVector3d VisualShaderNodeClampOpType = 4
+	/*A 4D vector type.*/
 	VisualShaderNodeClampOpTypeVector4d VisualShaderNodeClampOpType = 5
-	VisualShaderNodeClampOpTypeMax      VisualShaderNodeClampOpType = 6
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeClampOpTypeMax VisualShaderNodeClampOpType = 6
 )
 
 type VisualShaderNodeColorFuncFunction = classdb.VisualShaderNodeColorFuncFunction
 
 const (
+	/*Converts the color to grayscale using the following formula:
+	  [codeblock]
+	  vec3 c = input;
+	  float max1 = max(c.r, c.g);
+	  float max2 = max(max1, c.b);
+	  float max3 = max(max1, max2);
+	  return vec3(max3, max3, max3);
+	  [/codeblock]*/
 	VisualShaderNodeColorFuncFuncGrayscale VisualShaderNodeColorFuncFunction = 0
-	VisualShaderNodeColorFuncFuncHsv2rgb   VisualShaderNodeColorFuncFunction = 1
-	VisualShaderNodeColorFuncFuncRgb2hsv   VisualShaderNodeColorFuncFunction = 2
-	VisualShaderNodeColorFuncFuncSepia     VisualShaderNodeColorFuncFunction = 3
-	VisualShaderNodeColorFuncFuncMax       VisualShaderNodeColorFuncFunction = 4
+	/*Converts HSV vector to RGB equivalent.*/
+	VisualShaderNodeColorFuncFuncHsv2rgb VisualShaderNodeColorFuncFunction = 1
+	/*Converts RGB vector to HSV equivalent.*/
+	VisualShaderNodeColorFuncFuncRgb2hsv VisualShaderNodeColorFuncFunction = 2
+	/*Applies sepia tone effect using the following formula:
+	  [codeblock]
+	  vec3 c = input;
+	  float r = (c.r * 0.393) + (c.g * 0.769) + (c.b * 0.189);
+	  float g = (c.r * 0.349) + (c.g * 0.686) + (c.b * 0.168);
+	  float b = (c.r * 0.272) + (c.g * 0.534) + (c.b * 0.131);
+	  return vec3(r, g, b);
+	  [/codeblock]*/
+	VisualShaderNodeColorFuncFuncSepia VisualShaderNodeColorFuncFunction = 3
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeColorFuncFuncMax VisualShaderNodeColorFuncFunction = 4
 )
 
 type VisualShaderNodeColorOpOperator = classdb.VisualShaderNodeColorOpOperator
 
 const (
-	VisualShaderNodeColorOpOpScreen     VisualShaderNodeColorOpOperator = 0
+	/*Produce a screen effect with the following formula:
+	  [codeblock]
+	  result = vec3(1.0) - (vec3(1.0) - a) * (vec3(1.0) - b);
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpScreen VisualShaderNodeColorOpOperator = 0
+	/*Produce a difference effect with the following formula:
+	  [codeblock]
+	  result = abs(a - b);
+	  [/codeblock]*/
 	VisualShaderNodeColorOpOpDifference VisualShaderNodeColorOpOperator = 1
-	VisualShaderNodeColorOpOpDarken     VisualShaderNodeColorOpOperator = 2
-	VisualShaderNodeColorOpOpLighten    VisualShaderNodeColorOpOperator = 3
-	VisualShaderNodeColorOpOpOverlay    VisualShaderNodeColorOpOperator = 4
-	VisualShaderNodeColorOpOpDodge      VisualShaderNodeColorOpOperator = 5
-	VisualShaderNodeColorOpOpBurn       VisualShaderNodeColorOpOperator = 6
-	VisualShaderNodeColorOpOpSoftLight  VisualShaderNodeColorOpOperator = 7
-	VisualShaderNodeColorOpOpHardLight  VisualShaderNodeColorOpOperator = 8
-	VisualShaderNodeColorOpOpMax        VisualShaderNodeColorOpOperator = 9
+	/*Produce a darken effect with the following formula:
+	  [codeblock]
+	  result = min(a, b);
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpDarken VisualShaderNodeColorOpOperator = 2
+	/*Produce a lighten effect with the following formula:
+	  [codeblock]
+	  result = max(a, b);
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpLighten VisualShaderNodeColorOpOperator = 3
+	/*Produce an overlay effect with the following formula:
+	  [codeblock]
+	  for (int i = 0; i < 3; i++) {
+	      float base = a[i];
+	      float blend = b[i];
+	      if (base < 0.5) {
+	          result[i] = 2.0 * base * blend;
+	      } else {
+	          result[i] = 1.0 - 2.0 * (1.0 - blend) * (1.0 - base);
+	      }
+	  }
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpOverlay VisualShaderNodeColorOpOperator = 4
+	/*Produce a dodge effect with the following formula:
+	  [codeblock]
+	  result = a / (vec3(1.0) - b);
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpDodge VisualShaderNodeColorOpOperator = 5
+	/*Produce a burn effect with the following formula:
+	  [codeblock]
+	  result = vec3(1.0) - (vec3(1.0) - a) / b;
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpBurn VisualShaderNodeColorOpOperator = 6
+	/*Produce a soft light effect with the following formula:
+	  [codeblock]
+	  for (int i = 0; i < 3; i++) {
+	      float base = a[i];
+	      float blend = b[i];
+	      if (base < 0.5) {
+	          result[i] = base * (blend + 0.5);
+	      } else {
+	          result[i] = 1.0 - (1.0 - base) * (1.0 - (blend - 0.5));
+	      }
+	  }
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpSoftLight VisualShaderNodeColorOpOperator = 7
+	/*Produce a hard light effect with the following formula:
+	  [codeblock]
+	  for (int i = 0; i < 3; i++) {
+	      float base = a[i];
+	      float blend = b[i];
+	      if (base < 0.5) {
+	          result[i] = base * (2.0 * blend);
+	      } else {
+	          result[i] = 1.0 - (1.0 - base) * (1.0 - 2.0 * (blend - 0.5));
+	      }
+	  }
+	  [/codeblock]*/
+	VisualShaderNodeColorOpOpHardLight VisualShaderNodeColorOpOperator = 8
+	/*Represents the size of the [enum Operator] enum.*/
+	VisualShaderNodeColorOpOpMax VisualShaderNodeColorOpOperator = 9
 )
 
 type VisualShaderNodeCompareComparisonType = classdb.VisualShaderNodeCompareComparisonType
 
 const (
-	VisualShaderNodeCompareCtypeScalar     VisualShaderNodeCompareComparisonType = 0
-	VisualShaderNodeCompareCtypeScalarInt  VisualShaderNodeCompareComparisonType = 1
+	/*A floating-point scalar.*/
+	VisualShaderNodeCompareCtypeScalar VisualShaderNodeCompareComparisonType = 0
+	/*An integer scalar.*/
+	VisualShaderNodeCompareCtypeScalarInt VisualShaderNodeCompareComparisonType = 1
+	/*An unsigned integer scalar.*/
 	VisualShaderNodeCompareCtypeScalarUint VisualShaderNodeCompareComparisonType = 2
-	VisualShaderNodeCompareCtypeVector2d   VisualShaderNodeCompareComparisonType = 3
-	VisualShaderNodeCompareCtypeVector3d   VisualShaderNodeCompareComparisonType = 4
-	VisualShaderNodeCompareCtypeVector4d   VisualShaderNodeCompareComparisonType = 5
-	VisualShaderNodeCompareCtypeBoolean    VisualShaderNodeCompareComparisonType = 6
-	VisualShaderNodeCompareCtypeTransform  VisualShaderNodeCompareComparisonType = 7
-	VisualShaderNodeCompareCtypeMax        VisualShaderNodeCompareComparisonType = 8
+	/*A 2D vector type.*/
+	VisualShaderNodeCompareCtypeVector2d VisualShaderNodeCompareComparisonType = 3
+	/*A 3D vector type.*/
+	VisualShaderNodeCompareCtypeVector3d VisualShaderNodeCompareComparisonType = 4
+	/*A 4D vector type.*/
+	VisualShaderNodeCompareCtypeVector4d VisualShaderNodeCompareComparisonType = 5
+	/*A boolean type.*/
+	VisualShaderNodeCompareCtypeBoolean VisualShaderNodeCompareComparisonType = 6
+	/*A transform ([code]mat4[/code]) type.*/
+	VisualShaderNodeCompareCtypeTransform VisualShaderNodeCompareComparisonType = 7
+	/*Represents the size of the [enum ComparisonType] enum.*/
+	VisualShaderNodeCompareCtypeMax VisualShaderNodeCompareComparisonType = 8
 )
 
 type VisualShaderNodeCompareFunction = classdb.VisualShaderNodeCompareFunction
 
 const (
-	VisualShaderNodeCompareFuncEqual            VisualShaderNodeCompareFunction = 0
-	VisualShaderNodeCompareFuncNotEqual         VisualShaderNodeCompareFunction = 1
-	VisualShaderNodeCompareFuncGreaterThan      VisualShaderNodeCompareFunction = 2
+	/*Comparison for equality ([code]a == b[/code]).*/
+	VisualShaderNodeCompareFuncEqual VisualShaderNodeCompareFunction = 0
+	/*Comparison for inequality ([code]a != b[/code]).*/
+	VisualShaderNodeCompareFuncNotEqual VisualShaderNodeCompareFunction = 1
+	/*Comparison for greater than ([code]a > b[/code]). Cannot be used if [member type] set to [constant CTYPE_BOOLEAN] or [constant CTYPE_TRANSFORM].*/
+	VisualShaderNodeCompareFuncGreaterThan VisualShaderNodeCompareFunction = 2
+	/*Comparison for greater than or equal ([code]a >= b[/code]). Cannot be used if [member type] set to [constant CTYPE_BOOLEAN] or [constant CTYPE_TRANSFORM].*/
 	VisualShaderNodeCompareFuncGreaterThanEqual VisualShaderNodeCompareFunction = 3
-	VisualShaderNodeCompareFuncLessThan         VisualShaderNodeCompareFunction = 4
-	VisualShaderNodeCompareFuncLessThanEqual    VisualShaderNodeCompareFunction = 5
-	VisualShaderNodeCompareFuncMax              VisualShaderNodeCompareFunction = 6
+	/*Comparison for less than ([code]a < b[/code]). Cannot be used if [member type] set to [constant CTYPE_BOOLEAN] or [constant CTYPE_TRANSFORM].*/
+	VisualShaderNodeCompareFuncLessThan VisualShaderNodeCompareFunction = 4
+	/*Comparison for less than or equal ([code]a <= b[/code]). Cannot be used if [member type] set to [constant CTYPE_BOOLEAN] or [constant CTYPE_TRANSFORM].*/
+	VisualShaderNodeCompareFuncLessThanEqual VisualShaderNodeCompareFunction = 5
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeCompareFuncMax VisualShaderNodeCompareFunction = 6
 )
 
 type VisualShaderNodeCompareCondition = classdb.VisualShaderNodeCompareCondition
 
 const (
+	/*The result will be true if all of component in vector satisfy the comparison condition.*/
 	VisualShaderNodeCompareCondAll VisualShaderNodeCompareCondition = 0
+	/*The result will be true if any of component in vector satisfy the comparison condition.*/
 	VisualShaderNodeCompareCondAny VisualShaderNodeCompareCondition = 1
+	/*Represents the size of the [enum Condition] enum.*/
 	VisualShaderNodeCompareCondMax VisualShaderNodeCompareCondition = 2
 )
 
 type VisualShaderNodeCubemapSource = classdb.VisualShaderNodeCubemapSource
 
 const (
+	/*Use the [Cubemap] set via [member cube_map]. If this is set to [member source], the [code]samplerCube[/code] port is ignored.*/
 	VisualShaderNodeCubemapSourceTexture VisualShaderNodeCubemapSource = 0
-	VisualShaderNodeCubemapSourcePort    VisualShaderNodeCubemapSource = 1
-	VisualShaderNodeCubemapSourceMax     VisualShaderNodeCubemapSource = 2
+	/*Use the [Cubemap] sampler reference passed via the [code]samplerCube[/code] port. If this is set to [member source], the [member cube_map] texture is ignored.*/
+	VisualShaderNodeCubemapSourcePort VisualShaderNodeCubemapSource = 1
+	/*Represents the size of the [enum Source] enum.*/
+	VisualShaderNodeCubemapSourceMax VisualShaderNodeCubemapSource = 2
 )
 
 type VisualShaderNodeCubemapTextureType = classdb.VisualShaderNodeCubemapTextureType
 
 const (
-	VisualShaderNodeCubemapTypeData      VisualShaderNodeCubemapTextureType = 0
-	VisualShaderNodeCubemapTypeColor     VisualShaderNodeCubemapTextureType = 1
+	/*No hints are added to the uniform declaration.*/
+	VisualShaderNodeCubemapTypeData VisualShaderNodeCubemapTextureType = 0
+	/*Adds [code]source_color[/code] as hint to the uniform declaration for proper sRGB to linear conversion.*/
+	VisualShaderNodeCubemapTypeColor VisualShaderNodeCubemapTextureType = 1
+	/*Adds [code]hint_normal[/code] as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.*/
 	VisualShaderNodeCubemapTypeNormalMap VisualShaderNodeCubemapTextureType = 2
-	VisualShaderNodeCubemapTypeMax       VisualShaderNodeCubemapTextureType = 3
+	/*Represents the size of the [enum TextureType] enum.*/
+	VisualShaderNodeCubemapTypeMax VisualShaderNodeCubemapTextureType = 3
 )
 
 type VisualShaderNodeDerivativeFuncOpType = classdb.VisualShaderNodeDerivativeFuncOpType
 
 const (
-	VisualShaderNodeDerivativeFuncOpTypeScalar   VisualShaderNodeDerivativeFuncOpType = 0
+	/*A floating-point scalar.*/
+	VisualShaderNodeDerivativeFuncOpTypeScalar VisualShaderNodeDerivativeFuncOpType = 0
+	/*A 2D vector type.*/
 	VisualShaderNodeDerivativeFuncOpTypeVector2d VisualShaderNodeDerivativeFuncOpType = 1
+	/*A 3D vector type.*/
 	VisualShaderNodeDerivativeFuncOpTypeVector3d VisualShaderNodeDerivativeFuncOpType = 2
+	/*A 4D vector type.*/
 	VisualShaderNodeDerivativeFuncOpTypeVector4d VisualShaderNodeDerivativeFuncOpType = 3
-	VisualShaderNodeDerivativeFuncOpTypeMax      VisualShaderNodeDerivativeFuncOpType = 4
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeDerivativeFuncOpTypeMax VisualShaderNodeDerivativeFuncOpType = 4
 )
 
 type VisualShaderNodeDerivativeFuncFunction = classdb.VisualShaderNodeDerivativeFuncFunction
 
 const (
+	/*Sum of absolute derivative in [code]x[/code] and [code]y[/code].*/
 	VisualShaderNodeDerivativeFuncFuncSum VisualShaderNodeDerivativeFuncFunction = 0
-	VisualShaderNodeDerivativeFuncFuncX   VisualShaderNodeDerivativeFuncFunction = 1
-	VisualShaderNodeDerivativeFuncFuncY   VisualShaderNodeDerivativeFuncFunction = 2
+	/*Derivative in [code]x[/code] using local differencing.*/
+	VisualShaderNodeDerivativeFuncFuncX VisualShaderNodeDerivativeFuncFunction = 1
+	/*Derivative in [code]y[/code] using local differencing.*/
+	VisualShaderNodeDerivativeFuncFuncY VisualShaderNodeDerivativeFuncFunction = 2
+	/*Represents the size of the [enum Function] enum.*/
 	VisualShaderNodeDerivativeFuncFuncMax VisualShaderNodeDerivativeFuncFunction = 3
 )
 
 type VisualShaderNodeDerivativeFuncPrecision = classdb.VisualShaderNodeDerivativeFuncPrecision
 
 const (
-	VisualShaderNodeDerivativeFuncPrecisionNone   VisualShaderNodeDerivativeFuncPrecision = 0
+	/*No precision is specified, the GPU driver is allowed to use whatever level of precision it chooses. This is the default option and is equivalent to using [code]dFdx()[/code] or [code]dFdy()[/code] in text shaders.*/
+	VisualShaderNodeDerivativeFuncPrecisionNone VisualShaderNodeDerivativeFuncPrecision = 0
+	/*The derivative will be calculated using the current fragment's neighbors (which may not include the current fragment). This tends to be faster than using [constant PRECISION_FINE], but may not be suitable when more precision is needed. This is equivalent to using [code]dFdxCoarse()[/code] or [code]dFdyCoarse()[/code] in text shaders.*/
 	VisualShaderNodeDerivativeFuncPrecisionCoarse VisualShaderNodeDerivativeFuncPrecision = 1
-	VisualShaderNodeDerivativeFuncPrecisionFine   VisualShaderNodeDerivativeFuncPrecision = 2
-	VisualShaderNodeDerivativeFuncPrecisionMax    VisualShaderNodeDerivativeFuncPrecision = 3
+	/*The derivative will be calculated using the current fragment and its immediate neighbors. This tends to be slower than using [constant PRECISION_COARSE], but may be necessary when more precision is needed. This is equivalent to using [code]dFdxFine()[/code] or [code]dFdyFine()[/code] in text shaders.*/
+	VisualShaderNodeDerivativeFuncPrecisionFine VisualShaderNodeDerivativeFuncPrecision = 2
+	/*Represents the size of the [enum Precision] enum.*/
+	VisualShaderNodeDerivativeFuncPrecisionMax VisualShaderNodeDerivativeFuncPrecision = 3
 )
 
 type VisualShaderNodeFloatFuncFunction = classdb.VisualShaderNodeFloatFuncFunction
 
 const (
-	VisualShaderNodeFloatFuncFuncSin         VisualShaderNodeFloatFuncFunction = 0
-	VisualShaderNodeFloatFuncFuncCos         VisualShaderNodeFloatFuncFunction = 1
-	VisualShaderNodeFloatFuncFuncTan         VisualShaderNodeFloatFuncFunction = 2
-	VisualShaderNodeFloatFuncFuncAsin        VisualShaderNodeFloatFuncFunction = 3
-	VisualShaderNodeFloatFuncFuncAcos        VisualShaderNodeFloatFuncFunction = 4
-	VisualShaderNodeFloatFuncFuncAtan        VisualShaderNodeFloatFuncFunction = 5
-	VisualShaderNodeFloatFuncFuncSinh        VisualShaderNodeFloatFuncFunction = 6
-	VisualShaderNodeFloatFuncFuncCosh        VisualShaderNodeFloatFuncFunction = 7
-	VisualShaderNodeFloatFuncFuncTanh        VisualShaderNodeFloatFuncFunction = 8
-	VisualShaderNodeFloatFuncFuncLog         VisualShaderNodeFloatFuncFunction = 9
-	VisualShaderNodeFloatFuncFuncExp         VisualShaderNodeFloatFuncFunction = 10
-	VisualShaderNodeFloatFuncFuncSqrt        VisualShaderNodeFloatFuncFunction = 11
-	VisualShaderNodeFloatFuncFuncAbs         VisualShaderNodeFloatFuncFunction = 12
-	VisualShaderNodeFloatFuncFuncSign        VisualShaderNodeFloatFuncFunction = 13
-	VisualShaderNodeFloatFuncFuncFloor       VisualShaderNodeFloatFuncFunction = 14
-	VisualShaderNodeFloatFuncFuncRound       VisualShaderNodeFloatFuncFunction = 15
-	VisualShaderNodeFloatFuncFuncCeil        VisualShaderNodeFloatFuncFunction = 16
-	VisualShaderNodeFloatFuncFuncFract       VisualShaderNodeFloatFuncFunction = 17
-	VisualShaderNodeFloatFuncFuncSaturate    VisualShaderNodeFloatFuncFunction = 18
-	VisualShaderNodeFloatFuncFuncNegate      VisualShaderNodeFloatFuncFunction = 19
-	VisualShaderNodeFloatFuncFuncAcosh       VisualShaderNodeFloatFuncFunction = 20
-	VisualShaderNodeFloatFuncFuncAsinh       VisualShaderNodeFloatFuncFunction = 21
-	VisualShaderNodeFloatFuncFuncAtanh       VisualShaderNodeFloatFuncFunction = 22
-	VisualShaderNodeFloatFuncFuncDegrees     VisualShaderNodeFloatFuncFunction = 23
-	VisualShaderNodeFloatFuncFuncExp2        VisualShaderNodeFloatFuncFunction = 24
+	/*Returns the sine of the parameter. Translates to [code]sin(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncSin VisualShaderNodeFloatFuncFunction = 0
+	/*Returns the cosine of the parameter. Translates to [code]cos(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncCos VisualShaderNodeFloatFuncFunction = 1
+	/*Returns the tangent of the parameter. Translates to [code]tan(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncTan VisualShaderNodeFloatFuncFunction = 2
+	/*Returns the arc-sine of the parameter. Translates to [code]asin(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAsin VisualShaderNodeFloatFuncFunction = 3
+	/*Returns the arc-cosine of the parameter. Translates to [code]acos(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAcos VisualShaderNodeFloatFuncFunction = 4
+	/*Returns the arc-tangent of the parameter. Translates to [code]atan(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAtan VisualShaderNodeFloatFuncFunction = 5
+	/*Returns the hyperbolic sine of the parameter. Translates to [code]sinh(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncSinh VisualShaderNodeFloatFuncFunction = 6
+	/*Returns the hyperbolic cosine of the parameter. Translates to [code]cosh(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncCosh VisualShaderNodeFloatFuncFunction = 7
+	/*Returns the hyperbolic tangent of the parameter. Translates to [code]tanh(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncTanh VisualShaderNodeFloatFuncFunction = 8
+	/*Returns the natural logarithm of the parameter. Translates to [code]log(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncLog VisualShaderNodeFloatFuncFunction = 9
+	/*Returns the natural exponentiation of the parameter. Translates to [code]exp(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncExp VisualShaderNodeFloatFuncFunction = 10
+	/*Returns the square root of the parameter. Translates to [code]sqrt(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncSqrt VisualShaderNodeFloatFuncFunction = 11
+	/*Returns the absolute value of the parameter. Translates to [code]abs(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAbs VisualShaderNodeFloatFuncFunction = 12
+	/*Extracts the sign of the parameter. Translates to [code]sign(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncSign VisualShaderNodeFloatFuncFunction = 13
+	/*Finds the nearest integer less than or equal to the parameter. Translates to [code]floor(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncFloor VisualShaderNodeFloatFuncFunction = 14
+	/*Finds the nearest integer to the parameter. Translates to [code]round(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncRound VisualShaderNodeFloatFuncFunction = 15
+	/*Finds the nearest integer that is greater than or equal to the parameter. Translates to [code]ceil(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncCeil VisualShaderNodeFloatFuncFunction = 16
+	/*Computes the fractional part of the argument. Translates to [code]fract(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncFract VisualShaderNodeFloatFuncFunction = 17
+	/*Clamps the value between [code]0.0[/code] and [code]1.0[/code] using [code]min(max(x, 0.0), 1.0)[/code].*/
+	VisualShaderNodeFloatFuncFuncSaturate VisualShaderNodeFloatFuncFunction = 18
+	/*Negates the [code]x[/code] using [code]-(x)[/code].*/
+	VisualShaderNodeFloatFuncFuncNegate VisualShaderNodeFloatFuncFunction = 19
+	/*Returns the arc-hyperbolic-cosine of the parameter. Translates to [code]acosh(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAcosh VisualShaderNodeFloatFuncFunction = 20
+	/*Returns the arc-hyperbolic-sine of the parameter. Translates to [code]asinh(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAsinh VisualShaderNodeFloatFuncFunction = 21
+	/*Returns the arc-hyperbolic-tangent of the parameter. Translates to [code]atanh(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncAtanh VisualShaderNodeFloatFuncFunction = 22
+	/*Convert a quantity in radians to degrees. Translates to [code]degrees(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncDegrees VisualShaderNodeFloatFuncFunction = 23
+	/*Returns 2 raised by the power of the parameter. Translates to [code]exp2(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncExp2 VisualShaderNodeFloatFuncFunction = 24
+	/*Returns the inverse of the square root of the parameter. Translates to [code]inversesqrt(x)[/code] in the Godot Shader Language.*/
 	VisualShaderNodeFloatFuncFuncInverseSqrt VisualShaderNodeFloatFuncFunction = 25
-	VisualShaderNodeFloatFuncFuncLog2        VisualShaderNodeFloatFuncFunction = 26
-	VisualShaderNodeFloatFuncFuncRadians     VisualShaderNodeFloatFuncFunction = 27
-	VisualShaderNodeFloatFuncFuncReciprocal  VisualShaderNodeFloatFuncFunction = 28
-	VisualShaderNodeFloatFuncFuncRoundeven   VisualShaderNodeFloatFuncFunction = 29
-	VisualShaderNodeFloatFuncFuncTrunc       VisualShaderNodeFloatFuncFunction = 30
-	VisualShaderNodeFloatFuncFuncOneminus    VisualShaderNodeFloatFuncFunction = 31
-	VisualShaderNodeFloatFuncFuncMax         VisualShaderNodeFloatFuncFunction = 32
+	/*Returns the base 2 logarithm of the parameter. Translates to [code]log2(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncLog2 VisualShaderNodeFloatFuncFunction = 26
+	/*Convert a quantity in degrees to radians. Translates to [code]radians(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncRadians VisualShaderNodeFloatFuncFunction = 27
+	/*Finds reciprocal value of dividing 1 by [code]x[/code] (i.e. [code]1 / x[/code]).*/
+	VisualShaderNodeFloatFuncFuncReciprocal VisualShaderNodeFloatFuncFunction = 28
+	/*Finds the nearest even integer to the parameter. Translates to [code]roundEven(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncRoundeven VisualShaderNodeFloatFuncFunction = 29
+	/*Returns a value equal to the nearest integer to [code]x[/code] whose absolute value is not larger than the absolute value of [code]x[/code]. Translates to [code]trunc(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatFuncFuncTrunc VisualShaderNodeFloatFuncFunction = 30
+	/*Subtracts scalar [code]x[/code] from 1 (i.e. [code]1 - x[/code]).*/
+	VisualShaderNodeFloatFuncFuncOneminus VisualShaderNodeFloatFuncFunction = 31
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeFloatFuncFuncMax VisualShaderNodeFloatFuncFunction = 32
 )
 
 type VisualShaderNodeFloatOpOperator = classdb.VisualShaderNodeFloatOpOperator
 
 const (
-	VisualShaderNodeFloatOpOpAdd      VisualShaderNodeFloatOpOperator = 0
-	VisualShaderNodeFloatOpOpSub      VisualShaderNodeFloatOpOperator = 1
-	VisualShaderNodeFloatOpOpMul      VisualShaderNodeFloatOpOperator = 2
-	VisualShaderNodeFloatOpOpDiv      VisualShaderNodeFloatOpOperator = 3
-	VisualShaderNodeFloatOpOpMod      VisualShaderNodeFloatOpOperator = 4
-	VisualShaderNodeFloatOpOpPow      VisualShaderNodeFloatOpOperator = 5
-	VisualShaderNodeFloatOpOpMax      VisualShaderNodeFloatOpOperator = 6
-	VisualShaderNodeFloatOpOpMin      VisualShaderNodeFloatOpOperator = 7
-	VisualShaderNodeFloatOpOpAtan2    VisualShaderNodeFloatOpOperator = 8
-	VisualShaderNodeFloatOpOpStep     VisualShaderNodeFloatOpOperator = 9
+	/*Sums two numbers using [code]a + b[/code].*/
+	VisualShaderNodeFloatOpOpAdd VisualShaderNodeFloatOpOperator = 0
+	/*Subtracts two numbers using [code]a - b[/code].*/
+	VisualShaderNodeFloatOpOpSub VisualShaderNodeFloatOpOperator = 1
+	/*Multiplies two numbers using [code]a * b[/code].*/
+	VisualShaderNodeFloatOpOpMul VisualShaderNodeFloatOpOperator = 2
+	/*Divides two numbers using [code]a / b[/code].*/
+	VisualShaderNodeFloatOpOpDiv VisualShaderNodeFloatOpOperator = 3
+	/*Calculates the remainder of two numbers. Translates to [code]mod(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatOpOpMod VisualShaderNodeFloatOpOperator = 4
+	/*Raises the [code]a[/code] to the power of [code]b[/code]. Translates to [code]pow(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatOpOpPow VisualShaderNodeFloatOpOperator = 5
+	/*Returns the greater of two numbers. Translates to [code]max(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatOpOpMax VisualShaderNodeFloatOpOperator = 6
+	/*Returns the lesser of two numbers. Translates to [code]min(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatOpOpMin VisualShaderNodeFloatOpOperator = 7
+	/*Returns the arc-tangent of the parameters. Translates to [code]atan(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatOpOpAtan2 VisualShaderNodeFloatOpOperator = 8
+	/*Generates a step function by comparing [code]b[/code](x) to [code]a[/code](edge). Returns 0.0 if [code]x[/code] is smaller than [code]edge[/code] and otherwise 1.0. Translates to [code]step(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeFloatOpOpStep VisualShaderNodeFloatOpOperator = 9
+	/*Represents the size of the [enum Operator] enum.*/
 	VisualShaderNodeFloatOpOpEnumSize VisualShaderNodeFloatOpOperator = 10
 )
 
 type VisualShaderNodeFloatParameterHint = classdb.VisualShaderNodeFloatParameterHint
 
 const (
-	VisualShaderNodeFloatParameterHintNone      VisualShaderNodeFloatParameterHint = 0
-	VisualShaderNodeFloatParameterHintRange     VisualShaderNodeFloatParameterHint = 1
+	/*No hint used.*/
+	VisualShaderNodeFloatParameterHintNone VisualShaderNodeFloatParameterHint = 0
+	/*A range hint for scalar value, which limits possible input values between [member min] and [member max]. Translated to [code]hint_range(min, max)[/code] in shader code.*/
+	VisualShaderNodeFloatParameterHintRange VisualShaderNodeFloatParameterHint = 1
+	/*A range hint for scalar value with step, which limits possible input values between [member min] and [member max], with a step (increment) of [member step]). Translated to [code]hint_range(min, max, step)[/code] in shader code.*/
 	VisualShaderNodeFloatParameterHintRangeStep VisualShaderNodeFloatParameterHint = 2
-	VisualShaderNodeFloatParameterHintMax       VisualShaderNodeFloatParameterHint = 3
+	/*Represents the size of the [enum Hint] enum.*/
+	VisualShaderNodeFloatParameterHintMax VisualShaderNodeFloatParameterHint = 3
 )
 
 type VisualShaderNodeIntFuncFunction = classdb.VisualShaderNodeIntFuncFunction
 
 const (
-	VisualShaderNodeIntFuncFuncAbs        VisualShaderNodeIntFuncFunction = 0
-	VisualShaderNodeIntFuncFuncNegate     VisualShaderNodeIntFuncFunction = 1
-	VisualShaderNodeIntFuncFuncSign       VisualShaderNodeIntFuncFunction = 2
+	/*Returns the absolute value of the parameter. Translates to [code]abs(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntFuncFuncAbs VisualShaderNodeIntFuncFunction = 0
+	/*Negates the [code]x[/code] using [code]-(x)[/code].*/
+	VisualShaderNodeIntFuncFuncNegate VisualShaderNodeIntFuncFunction = 1
+	/*Extracts the sign of the parameter. Translates to [code]sign(x)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntFuncFuncSign VisualShaderNodeIntFuncFunction = 2
+	/*Returns the result of bitwise [code]NOT[/code] operation on the integer. Translates to [code]~a[/code] in the Godot Shader Language.*/
 	VisualShaderNodeIntFuncFuncBitwiseNot VisualShaderNodeIntFuncFunction = 3
-	VisualShaderNodeIntFuncFuncMax        VisualShaderNodeIntFuncFunction = 4
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeIntFuncFuncMax VisualShaderNodeIntFuncFunction = 4
 )
 
 type VisualShaderNodeIntOpOperator = classdb.VisualShaderNodeIntOpOperator
 
 const (
-	VisualShaderNodeIntOpOpAdd               VisualShaderNodeIntOpOperator = 0
-	VisualShaderNodeIntOpOpSub               VisualShaderNodeIntOpOperator = 1
-	VisualShaderNodeIntOpOpMul               VisualShaderNodeIntOpOperator = 2
-	VisualShaderNodeIntOpOpDiv               VisualShaderNodeIntOpOperator = 3
-	VisualShaderNodeIntOpOpMod               VisualShaderNodeIntOpOperator = 4
-	VisualShaderNodeIntOpOpMax               VisualShaderNodeIntOpOperator = 5
-	VisualShaderNodeIntOpOpMin               VisualShaderNodeIntOpOperator = 6
-	VisualShaderNodeIntOpOpBitwiseAnd        VisualShaderNodeIntOpOperator = 7
-	VisualShaderNodeIntOpOpBitwiseOr         VisualShaderNodeIntOpOperator = 8
-	VisualShaderNodeIntOpOpBitwiseXor        VisualShaderNodeIntOpOperator = 9
-	VisualShaderNodeIntOpOpBitwiseLeftShift  VisualShaderNodeIntOpOperator = 10
+	/*Sums two numbers using [code]a + b[/code].*/
+	VisualShaderNodeIntOpOpAdd VisualShaderNodeIntOpOperator = 0
+	/*Subtracts two numbers using [code]a - b[/code].*/
+	VisualShaderNodeIntOpOpSub VisualShaderNodeIntOpOperator = 1
+	/*Multiplies two numbers using [code]a * b[/code].*/
+	VisualShaderNodeIntOpOpMul VisualShaderNodeIntOpOperator = 2
+	/*Divides two numbers using [code]a / b[/code].*/
+	VisualShaderNodeIntOpOpDiv VisualShaderNodeIntOpOperator = 3
+	/*Calculates the remainder of two numbers using [code]a % b[/code].*/
+	VisualShaderNodeIntOpOpMod VisualShaderNodeIntOpOperator = 4
+	/*Returns the greater of two numbers. Translates to [code]max(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntOpOpMax VisualShaderNodeIntOpOperator = 5
+	/*Returns the lesser of two numbers. Translates to [code]max(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntOpOpMin VisualShaderNodeIntOpOperator = 6
+	/*Returns the result of bitwise [code]AND[/code] operation on the integer. Translates to [code]a & b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntOpOpBitwiseAnd VisualShaderNodeIntOpOperator = 7
+	/*Returns the result of bitwise [code]OR[/code] operation for two integers. Translates to [code]a | b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntOpOpBitwiseOr VisualShaderNodeIntOpOperator = 8
+	/*Returns the result of bitwise [code]XOR[/code] operation for two integers. Translates to [code]a ^ b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntOpOpBitwiseXor VisualShaderNodeIntOpOperator = 9
+	/*Returns the result of bitwise left shift operation on the integer. Translates to [code]a << b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeIntOpOpBitwiseLeftShift VisualShaderNodeIntOpOperator = 10
+	/*Returns the result of bitwise right shift operation on the integer. Translates to [code]a >> b[/code] in the Godot Shader Language.*/
 	VisualShaderNodeIntOpOpBitwiseRightShift VisualShaderNodeIntOpOperator = 11
-	VisualShaderNodeIntOpOpEnumSize          VisualShaderNodeIntOpOperator = 12
+	/*Represents the size of the [enum Operator] enum.*/
+	VisualShaderNodeIntOpOpEnumSize VisualShaderNodeIntOpOperator = 12
 )
 
 type VisualShaderNodeIntParameterHint = classdb.VisualShaderNodeIntParameterHint
 
 const (
-	VisualShaderNodeIntParameterHintNone      VisualShaderNodeIntParameterHint = 0
-	VisualShaderNodeIntParameterHintRange     VisualShaderNodeIntParameterHint = 1
+	/*The parameter will not constrain its value.*/
+	VisualShaderNodeIntParameterHintNone VisualShaderNodeIntParameterHint = 0
+	/*The parameter's value must be within the specified [member min]/[member max] range.*/
+	VisualShaderNodeIntParameterHintRange VisualShaderNodeIntParameterHint = 1
+	/*The parameter's value must be within the specified range, with the given [member step] between values.*/
 	VisualShaderNodeIntParameterHintRangeStep VisualShaderNodeIntParameterHint = 2
-	VisualShaderNodeIntParameterHintMax       VisualShaderNodeIntParameterHint = 3
+	/*Represents the size of the [enum Hint] enum.*/
+	VisualShaderNodeIntParameterHintMax VisualShaderNodeIntParameterHint = 3
 )
 
 type VisualShaderNodeIsFunction = classdb.VisualShaderNodeIsFunction
 
 const (
+	/*Comparison with [code]INF[/code] (Infinity).*/
 	VisualShaderNodeIsFuncIsInf VisualShaderNodeIsFunction = 0
+	/*Comparison with [code]NaN[/code] (Not a Number; denotes invalid numeric results, e.g. division by zero).*/
 	VisualShaderNodeIsFuncIsNan VisualShaderNodeIsFunction = 1
-	VisualShaderNodeIsFuncMax   VisualShaderNodeIsFunction = 2
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeIsFuncMax VisualShaderNodeIsFunction = 2
 )
 
 type VisualShaderNodeMixOpType = classdb.VisualShaderNodeMixOpType
 
 const (
-	VisualShaderNodeMixOpTypeScalar         VisualShaderNodeMixOpType = 0
-	VisualShaderNodeMixOpTypeVector2d       VisualShaderNodeMixOpType = 1
+	/*A floating-point scalar.*/
+	VisualShaderNodeMixOpTypeScalar VisualShaderNodeMixOpType = 0
+	/*A 2D vector type.*/
+	VisualShaderNodeMixOpTypeVector2d VisualShaderNodeMixOpType = 1
+	/*The [code]a[/code] and [code]b[/code] ports use a 2D vector type. The [code]weight[/code] port uses a scalar type.*/
 	VisualShaderNodeMixOpTypeVector2dScalar VisualShaderNodeMixOpType = 2
-	VisualShaderNodeMixOpTypeVector3d       VisualShaderNodeMixOpType = 3
+	/*A 3D vector type.*/
+	VisualShaderNodeMixOpTypeVector3d VisualShaderNodeMixOpType = 3
+	/*The [code]a[/code] and [code]b[/code] ports use a 3D vector type. The [code]weight[/code] port uses a scalar type.*/
 	VisualShaderNodeMixOpTypeVector3dScalar VisualShaderNodeMixOpType = 4
-	VisualShaderNodeMixOpTypeVector4d       VisualShaderNodeMixOpType = 5
+	/*A 4D vector type.*/
+	VisualShaderNodeMixOpTypeVector4d VisualShaderNodeMixOpType = 5
+	/*The [code]a[/code] and [code]b[/code] ports use a 4D vector type. The [code]weight[/code] port uses a scalar type.*/
 	VisualShaderNodeMixOpTypeVector4dScalar VisualShaderNodeMixOpType = 6
-	VisualShaderNodeMixOpTypeMax            VisualShaderNodeMixOpType = 7
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeMixOpTypeMax VisualShaderNodeMixOpType = 7
 )
 
 type VisualShaderNodeMultiplyAddOpType = classdb.VisualShaderNodeMultiplyAddOpType
 
 const (
-	VisualShaderNodeMultiplyAddOpTypeScalar   VisualShaderNodeMultiplyAddOpType = 0
+	/*A floating-point scalar type.*/
+	VisualShaderNodeMultiplyAddOpTypeScalar VisualShaderNodeMultiplyAddOpType = 0
+	/*A 2D vector type.*/
 	VisualShaderNodeMultiplyAddOpTypeVector2d VisualShaderNodeMultiplyAddOpType = 1
+	/*A 3D vector type.*/
 	VisualShaderNodeMultiplyAddOpTypeVector3d VisualShaderNodeMultiplyAddOpType = 2
+	/*A 4D vector type.*/
 	VisualShaderNodeMultiplyAddOpTypeVector4d VisualShaderNodeMultiplyAddOpType = 3
-	VisualShaderNodeMultiplyAddOpTypeMax      VisualShaderNodeMultiplyAddOpType = 4
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeMultiplyAddOpTypeMax VisualShaderNodeMultiplyAddOpType = 4
 )
 
 type VisualShaderNodeParameterQualifier = classdb.VisualShaderNodeParameterQualifier
 
 const (
-	VisualShaderNodeParameterQualNone     VisualShaderNodeParameterQualifier = 0
-	VisualShaderNodeParameterQualGlobal   VisualShaderNodeParameterQualifier = 1
+	/*The parameter will be tied to the [ShaderMaterial] using this shader.*/
+	VisualShaderNodeParameterQualNone VisualShaderNodeParameterQualifier = 0
+	/*The parameter will use a global value, defined in Project Settings.*/
+	VisualShaderNodeParameterQualGlobal VisualShaderNodeParameterQualifier = 1
+	/*The parameter will be tied to the node with attached [ShaderMaterial] using this shader.*/
 	VisualShaderNodeParameterQualInstance VisualShaderNodeParameterQualifier = 2
-	VisualShaderNodeParameterQualMax      VisualShaderNodeParameterQualifier = 3
+	/*Represents the size of the [enum Qualifier] enum.*/
+	VisualShaderNodeParameterQualMax VisualShaderNodeParameterQualifier = 3
 )
 
 type VisualShaderNodeParticleAcceleratorMode = classdb.VisualShaderNodeParticleAcceleratorMode
 
 const (
-	VisualShaderNodeParticleAcceleratorModeLinear     VisualShaderNodeParticleAcceleratorMode = 0
-	VisualShaderNodeParticleAcceleratorModeRadial     VisualShaderNodeParticleAcceleratorMode = 1
+	/*The particles will be accelerated based on their velocity.*/
+	VisualShaderNodeParticleAcceleratorModeLinear VisualShaderNodeParticleAcceleratorMode = 0
+	/*The particles will be accelerated towards or away from the center.*/
+	VisualShaderNodeParticleAcceleratorModeRadial VisualShaderNodeParticleAcceleratorMode = 1
+	/*The particles will be accelerated tangentially to the radius vector from center to their position.*/
 	VisualShaderNodeParticleAcceleratorModeTangential VisualShaderNodeParticleAcceleratorMode = 2
-	VisualShaderNodeParticleAcceleratorModeMax        VisualShaderNodeParticleAcceleratorMode = 3
+	/*Represents the size of the [enum Mode] enum.*/
+	VisualShaderNodeParticleAcceleratorModeMax VisualShaderNodeParticleAcceleratorMode = 3
 )
 
 type VisualShaderNodeParticleEmitEmitFlags = classdb.VisualShaderNodeParticleEmitEmitFlags
 
 const (
+	/*If enabled, the particle starts with the position defined by this node.*/
 	VisualShaderNodeParticleEmitEmitFlagPosition VisualShaderNodeParticleEmitEmitFlags = 1
+	/*If enabled, the particle starts with the rotation and scale defined by this node.*/
 	VisualShaderNodeParticleEmitEmitFlagRotScale VisualShaderNodeParticleEmitEmitFlags = 2
+	/*If enabled,the particle starts with the velocity defined by this node.*/
 	VisualShaderNodeParticleEmitEmitFlagVelocity VisualShaderNodeParticleEmitEmitFlags = 4
-	VisualShaderNodeParticleEmitEmitFlagColor    VisualShaderNodeParticleEmitEmitFlags = 8
-	VisualShaderNodeParticleEmitEmitFlagCustom   VisualShaderNodeParticleEmitEmitFlags = 16
+	/*If enabled, the particle starts with the color defined by this node.*/
+	VisualShaderNodeParticleEmitEmitFlagColor VisualShaderNodeParticleEmitEmitFlags = 8
+	/*If enabled, the particle starts with the [code]CUSTOM[/code] data defined by this node.*/
+	VisualShaderNodeParticleEmitEmitFlagCustom VisualShaderNodeParticleEmitEmitFlags = 16
 )
 
 type VisualShaderNodeParticleRandomnessOpType = classdb.VisualShaderNodeParticleRandomnessOpType
 
 const (
-	VisualShaderNodeParticleRandomnessOpTypeScalar   VisualShaderNodeParticleRandomnessOpType = 0
+	/*A floating-point scalar.*/
+	VisualShaderNodeParticleRandomnessOpTypeScalar VisualShaderNodeParticleRandomnessOpType = 0
+	/*A 2D vector type.*/
 	VisualShaderNodeParticleRandomnessOpTypeVector2d VisualShaderNodeParticleRandomnessOpType = 1
+	/*A 3D vector type.*/
 	VisualShaderNodeParticleRandomnessOpTypeVector3d VisualShaderNodeParticleRandomnessOpType = 2
+	/*A 4D vector type.*/
 	VisualShaderNodeParticleRandomnessOpTypeVector4d VisualShaderNodeParticleRandomnessOpType = 3
-	VisualShaderNodeParticleRandomnessOpTypeMax      VisualShaderNodeParticleRandomnessOpType = 4
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeParticleRandomnessOpTypeMax VisualShaderNodeParticleRandomnessOpType = 4
 )
 
 type VisualShaderNodeSample3DSource = classdb.VisualShaderNodeSample3DSource
 
 const (
+	/*Creates internal uniform and provides a way to assign it within node.*/
 	VisualShaderNodeSample3DSourceTexture VisualShaderNodeSample3DSource = 0
-	VisualShaderNodeSample3DSourcePort    VisualShaderNodeSample3DSource = 1
-	VisualShaderNodeSample3DSourceMax     VisualShaderNodeSample3DSource = 2
+	/*Use the uniform texture from sampler port.*/
+	VisualShaderNodeSample3DSourcePort VisualShaderNodeSample3DSource = 1
+	/*Represents the size of the [enum Source] enum.*/
+	VisualShaderNodeSample3DSourceMax VisualShaderNodeSample3DSource = 2
 )
 
 type VisualShaderNodeSmoothStepOpType = classdb.VisualShaderNodeSmoothStepOpType
 
 const (
-	VisualShaderNodeSmoothStepOpTypeScalar         VisualShaderNodeSmoothStepOpType = 0
-	VisualShaderNodeSmoothStepOpTypeVector2d       VisualShaderNodeSmoothStepOpType = 1
+	/*A floating-point scalar type.*/
+	VisualShaderNodeSmoothStepOpTypeScalar VisualShaderNodeSmoothStepOpType = 0
+	/*A 2D vector type.*/
+	VisualShaderNodeSmoothStepOpTypeVector2d VisualShaderNodeSmoothStepOpType = 1
+	/*The [code]x[/code] port uses a 2D vector type. The first two ports use a floating-point scalar type.*/
 	VisualShaderNodeSmoothStepOpTypeVector2dScalar VisualShaderNodeSmoothStepOpType = 2
-	VisualShaderNodeSmoothStepOpTypeVector3d       VisualShaderNodeSmoothStepOpType = 3
+	/*A 3D vector type.*/
+	VisualShaderNodeSmoothStepOpTypeVector3d VisualShaderNodeSmoothStepOpType = 3
+	/*The [code]x[/code] port uses a 3D vector type. The first two ports use a floating-point scalar type.*/
 	VisualShaderNodeSmoothStepOpTypeVector3dScalar VisualShaderNodeSmoothStepOpType = 4
-	VisualShaderNodeSmoothStepOpTypeVector4d       VisualShaderNodeSmoothStepOpType = 5
+	/*A 4D vector type.*/
+	VisualShaderNodeSmoothStepOpTypeVector4d VisualShaderNodeSmoothStepOpType = 5
+	/*The [code]a[/code] and [code]b[/code] ports use a 4D vector type. The [code]weight[/code] port uses a scalar type.*/
 	VisualShaderNodeSmoothStepOpTypeVector4dScalar VisualShaderNodeSmoothStepOpType = 6
-	VisualShaderNodeSmoothStepOpTypeMax            VisualShaderNodeSmoothStepOpType = 7
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeSmoothStepOpTypeMax VisualShaderNodeSmoothStepOpType = 7
 )
 
 type VisualShaderNodeStepOpType = classdb.VisualShaderNodeStepOpType
 
 const (
-	VisualShaderNodeStepOpTypeScalar         VisualShaderNodeStepOpType = 0
-	VisualShaderNodeStepOpTypeVector2d       VisualShaderNodeStepOpType = 1
+	/*A floating-point scalar type.*/
+	VisualShaderNodeStepOpTypeScalar VisualShaderNodeStepOpType = 0
+	/*A 2D vector type.*/
+	VisualShaderNodeStepOpTypeVector2d VisualShaderNodeStepOpType = 1
+	/*The [code]x[/code] port uses a 2D vector type, while the [code]edge[/code] port uses a floating-point scalar type.*/
 	VisualShaderNodeStepOpTypeVector2dScalar VisualShaderNodeStepOpType = 2
-	VisualShaderNodeStepOpTypeVector3d       VisualShaderNodeStepOpType = 3
+	/*A 3D vector type.*/
+	VisualShaderNodeStepOpTypeVector3d VisualShaderNodeStepOpType = 3
+	/*The [code]x[/code] port uses a 3D vector type, while the [code]edge[/code] port uses a floating-point scalar type.*/
 	VisualShaderNodeStepOpTypeVector3dScalar VisualShaderNodeStepOpType = 4
-	VisualShaderNodeStepOpTypeVector4d       VisualShaderNodeStepOpType = 5
+	/*A 4D vector type.*/
+	VisualShaderNodeStepOpTypeVector4d VisualShaderNodeStepOpType = 5
+	/*The [code]a[/code] and [code]b[/code] ports use a 4D vector type. The [code]weight[/code] port uses a scalar type.*/
 	VisualShaderNodeStepOpTypeVector4dScalar VisualShaderNodeStepOpType = 6
-	VisualShaderNodeStepOpTypeMax            VisualShaderNodeStepOpType = 7
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeStepOpTypeMax VisualShaderNodeStepOpType = 7
 )
 
 type VisualShaderNodeSwitchOpType = classdb.VisualShaderNodeSwitchOpType
 
 const (
-	VisualShaderNodeSwitchOpTypeFloat     VisualShaderNodeSwitchOpType = 0
-	VisualShaderNodeSwitchOpTypeInt       VisualShaderNodeSwitchOpType = 1
-	VisualShaderNodeSwitchOpTypeUint      VisualShaderNodeSwitchOpType = 2
-	VisualShaderNodeSwitchOpTypeVector2d  VisualShaderNodeSwitchOpType = 3
-	VisualShaderNodeSwitchOpTypeVector3d  VisualShaderNodeSwitchOpType = 4
-	VisualShaderNodeSwitchOpTypeVector4d  VisualShaderNodeSwitchOpType = 5
-	VisualShaderNodeSwitchOpTypeBoolean   VisualShaderNodeSwitchOpType = 6
+	/*A floating-point scalar.*/
+	VisualShaderNodeSwitchOpTypeFloat VisualShaderNodeSwitchOpType = 0
+	/*An integer scalar.*/
+	VisualShaderNodeSwitchOpTypeInt VisualShaderNodeSwitchOpType = 1
+	/*An unsigned integer scalar.*/
+	VisualShaderNodeSwitchOpTypeUint VisualShaderNodeSwitchOpType = 2
+	/*A 2D vector type.*/
+	VisualShaderNodeSwitchOpTypeVector2d VisualShaderNodeSwitchOpType = 3
+	/*A 3D vector type.*/
+	VisualShaderNodeSwitchOpTypeVector3d VisualShaderNodeSwitchOpType = 4
+	/*A 4D vector type.*/
+	VisualShaderNodeSwitchOpTypeVector4d VisualShaderNodeSwitchOpType = 5
+	/*A boolean type.*/
+	VisualShaderNodeSwitchOpTypeBoolean VisualShaderNodeSwitchOpType = 6
+	/*A transform type.*/
 	VisualShaderNodeSwitchOpTypeTransform VisualShaderNodeSwitchOpType = 7
-	VisualShaderNodeSwitchOpTypeMax       VisualShaderNodeSwitchOpType = 8
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeSwitchOpTypeMax VisualShaderNodeSwitchOpType = 8
 )
 
 type VisualShaderNodeTextureSource = classdb.VisualShaderNodeTextureSource
 
 const (
-	VisualShaderNodeTextureSourceTexture   VisualShaderNodeTextureSource = 0
-	VisualShaderNodeTextureSourceScreen    VisualShaderNodeTextureSource = 1
+	/*Use the texture given as an argument for this function.*/
+	VisualShaderNodeTextureSourceTexture VisualShaderNodeTextureSource = 0
+	/*Use the current viewport's texture as the source.*/
+	VisualShaderNodeTextureSourceScreen VisualShaderNodeTextureSource = 1
+	/*Use the texture from this shader's texture built-in (e.g. a texture of a [Sprite2D]).*/
 	VisualShaderNodeTextureSource2dTexture VisualShaderNodeTextureSource = 2
-	VisualShaderNodeTextureSource2dNormal  VisualShaderNodeTextureSource = 3
-	VisualShaderNodeTextureSourceDepth     VisualShaderNodeTextureSource = 4
-	VisualShaderNodeTextureSourcePort      VisualShaderNodeTextureSource = 5
-	VisualShaderNodeTextureSource3dNormal  VisualShaderNodeTextureSource = 6
+	/*Use the texture from this shader's normal map built-in.*/
+	VisualShaderNodeTextureSource2dNormal VisualShaderNodeTextureSource = 3
+	/*Use the depth texture captured during the depth prepass. Only available when the depth prepass is used (i.e. in spatial shaders and in the forward_plus or gl_compatibility renderers).*/
+	VisualShaderNodeTextureSourceDepth VisualShaderNodeTextureSource = 4
+	/*Use the texture provided in the input port for this function.*/
+	VisualShaderNodeTextureSourcePort VisualShaderNodeTextureSource = 5
+	/*Use the normal buffer captured during the depth prepass. Only available when the normal-roughness buffer is available (i.e. in spatial shaders and in the forward_plus renderer).*/
+	VisualShaderNodeTextureSource3dNormal VisualShaderNodeTextureSource = 6
+	/*Use the roughness buffer captured during the depth prepass. Only available when the normal-roughness buffer is available (i.e. in spatial shaders and in the forward_plus renderer).*/
 	VisualShaderNodeTextureSourceRoughness VisualShaderNodeTextureSource = 7
-	VisualShaderNodeTextureSourceMax       VisualShaderNodeTextureSource = 8
+	/*Represents the size of the [enum Source] enum.*/
+	VisualShaderNodeTextureSourceMax VisualShaderNodeTextureSource = 8
 )
 
 type VisualShaderNodeTextureTextureType = classdb.VisualShaderNodeTextureTextureType
 
 const (
-	VisualShaderNodeTextureTypeData      VisualShaderNodeTextureTextureType = 0
-	VisualShaderNodeTextureTypeColor     VisualShaderNodeTextureTextureType = 1
+	/*No hints are added to the uniform declaration.*/
+	VisualShaderNodeTextureTypeData VisualShaderNodeTextureTextureType = 0
+	/*Adds [code]source_color[/code] as hint to the uniform declaration for proper sRGB to linear conversion.*/
+	VisualShaderNodeTextureTypeColor VisualShaderNodeTextureTextureType = 1
+	/*Adds [code]hint_normal[/code] as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.*/
 	VisualShaderNodeTextureTypeNormalMap VisualShaderNodeTextureTextureType = 2
-	VisualShaderNodeTextureTypeMax       VisualShaderNodeTextureTextureType = 3
+	/*Represents the size of the [enum TextureType] enum.*/
+	VisualShaderNodeTextureTypeMax VisualShaderNodeTextureTextureType = 3
 )
 
 type VisualShaderNodeTextureParameterTextureType = classdb.VisualShaderNodeTextureParameterTextureType
 
 const (
-	VisualShaderNodeTextureParameterTypeData       VisualShaderNodeTextureParameterTextureType = 0
-	VisualShaderNodeTextureParameterTypeColor      VisualShaderNodeTextureParameterTextureType = 1
-	VisualShaderNodeTextureParameterTypeNormalMap  VisualShaderNodeTextureParameterTextureType = 2
+	/*No hints are added to the uniform declaration.*/
+	VisualShaderNodeTextureParameterTypeData VisualShaderNodeTextureParameterTextureType = 0
+	/*Adds [code]source_color[/code] as hint to the uniform declaration for proper sRGB to linear conversion.*/
+	VisualShaderNodeTextureParameterTypeColor VisualShaderNodeTextureParameterTextureType = 1
+	/*Adds [code]hint_normal[/code] as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.*/
+	VisualShaderNodeTextureParameterTypeNormalMap VisualShaderNodeTextureParameterTextureType = 2
+	/*Adds [code]hint_anisotropy[/code] as hint to the uniform declaration to use for a flowmap.*/
 	VisualShaderNodeTextureParameterTypeAnisotropy VisualShaderNodeTextureParameterTextureType = 3
-	VisualShaderNodeTextureParameterTypeMax        VisualShaderNodeTextureParameterTextureType = 4
+	/*Represents the size of the [enum TextureType] enum.*/
+	VisualShaderNodeTextureParameterTypeMax VisualShaderNodeTextureParameterTextureType = 4
 )
 
 type VisualShaderNodeTextureParameterColorDefault = classdb.VisualShaderNodeTextureParameterColorDefault
 
 const (
-	VisualShaderNodeTextureParameterColorDefaultWhite       VisualShaderNodeTextureParameterColorDefault = 0
-	VisualShaderNodeTextureParameterColorDefaultBlack       VisualShaderNodeTextureParameterColorDefault = 1
+	/*Defaults to fully opaque white color.*/
+	VisualShaderNodeTextureParameterColorDefaultWhite VisualShaderNodeTextureParameterColorDefault = 0
+	/*Defaults to fully opaque black color.*/
+	VisualShaderNodeTextureParameterColorDefaultBlack VisualShaderNodeTextureParameterColorDefault = 1
+	/*Defaults to fully transparent black color.*/
 	VisualShaderNodeTextureParameterColorDefaultTransparent VisualShaderNodeTextureParameterColorDefault = 2
-	VisualShaderNodeTextureParameterColorDefaultMax         VisualShaderNodeTextureParameterColorDefault = 3
+	/*Represents the size of the [enum ColorDefault] enum.*/
+	VisualShaderNodeTextureParameterColorDefaultMax VisualShaderNodeTextureParameterColorDefault = 3
 )
 
 type VisualShaderNodeTextureParameterTextureFilter = classdb.VisualShaderNodeTextureParameterTextureFilter
 
 const (
-	VisualShaderNodeTextureParameterFilterDefault                  VisualShaderNodeTextureParameterTextureFilter = 0
-	VisualShaderNodeTextureParameterFilterNearest                  VisualShaderNodeTextureParameterTextureFilter = 1
-	VisualShaderNodeTextureParameterFilterLinear                   VisualShaderNodeTextureParameterTextureFilter = 2
-	VisualShaderNodeTextureParameterFilterNearestMipmap            VisualShaderNodeTextureParameterTextureFilter = 3
-	VisualShaderNodeTextureParameterFilterLinearMipmap             VisualShaderNodeTextureParameterTextureFilter = 4
+	/*Sample the texture using the filter determined by the node this shader is attached to.*/
+	VisualShaderNodeTextureParameterFilterDefault VisualShaderNodeTextureParameterTextureFilter = 0
+	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	VisualShaderNodeTextureParameterFilterNearest VisualShaderNodeTextureParameterTextureFilter = 1
+	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	VisualShaderNodeTextureParameterFilterLinear VisualShaderNodeTextureParameterTextureFilter = 2
+	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	VisualShaderNodeTextureParameterFilterNearestMipmap VisualShaderNodeTextureParameterTextureFilter = 3
+	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.
+	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	VisualShaderNodeTextureParameterFilterLinearMipmap VisualShaderNodeTextureParameterTextureFilter = 4
+	/*The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
+	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant FILTER_NEAREST_MIPMAP] is usually more appropriate in this case.*/
 	VisualShaderNodeTextureParameterFilterNearestMipmapAnisotropic VisualShaderNodeTextureParameterTextureFilter = 5
-	VisualShaderNodeTextureParameterFilterLinearMipmapAnisotropic  VisualShaderNodeTextureParameterTextureFilter = 6
-	VisualShaderNodeTextureParameterFilterMax                      VisualShaderNodeTextureParameterTextureFilter = 7
+	/*The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
+	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant FILTER_LINEAR_MIPMAP] is usually more appropriate in this case.*/
+	VisualShaderNodeTextureParameterFilterLinearMipmapAnisotropic VisualShaderNodeTextureParameterTextureFilter = 6
+	/*Represents the size of the [enum TextureFilter] enum.*/
+	VisualShaderNodeTextureParameterFilterMax VisualShaderNodeTextureParameterTextureFilter = 7
 )
 
 type VisualShaderNodeTextureParameterTextureRepeat = classdb.VisualShaderNodeTextureParameterTextureRepeat
 
 const (
-	VisualShaderNodeTextureParameterRepeatDefault  VisualShaderNodeTextureParameterTextureRepeat = 0
-	VisualShaderNodeTextureParameterRepeatEnabled  VisualShaderNodeTextureParameterTextureRepeat = 1
+	/*Sample the texture using the repeat mode determined by the node this shader is attached to.*/
+	VisualShaderNodeTextureParameterRepeatDefault VisualShaderNodeTextureParameterTextureRepeat = 0
+	/*Texture will repeat normally.*/
+	VisualShaderNodeTextureParameterRepeatEnabled VisualShaderNodeTextureParameterTextureRepeat = 1
+	/*Texture will not repeat.*/
 	VisualShaderNodeTextureParameterRepeatDisabled VisualShaderNodeTextureParameterTextureRepeat = 2
-	VisualShaderNodeTextureParameterRepeatMax      VisualShaderNodeTextureParameterTextureRepeat = 3
+	/*Represents the size of the [enum TextureRepeat] enum.*/
+	VisualShaderNodeTextureParameterRepeatMax VisualShaderNodeTextureParameterTextureRepeat = 3
 )
 
 type VisualShaderNodeTextureParameterTextureSource = classdb.VisualShaderNodeTextureParameterTextureSource
 
 const (
-	VisualShaderNodeTextureParameterSourceNone            VisualShaderNodeTextureParameterTextureSource = 0
-	VisualShaderNodeTextureParameterSourceScreen          VisualShaderNodeTextureParameterTextureSource = 1
-	VisualShaderNodeTextureParameterSourceDepth           VisualShaderNodeTextureParameterTextureSource = 2
+	/*The texture source is not specified in the shader.*/
+	VisualShaderNodeTextureParameterSourceNone VisualShaderNodeTextureParameterTextureSource = 0
+	/*The texture source is the screen texture which captures all opaque objects drawn this frame.*/
+	VisualShaderNodeTextureParameterSourceScreen VisualShaderNodeTextureParameterTextureSource = 1
+	/*The texture source is the depth texture from the depth prepass.*/
+	VisualShaderNodeTextureParameterSourceDepth VisualShaderNodeTextureParameterTextureSource = 2
+	/*The texture source is the normal-roughness buffer from the depth prepass.*/
 	VisualShaderNodeTextureParameterSourceNormalRoughness VisualShaderNodeTextureParameterTextureSource = 3
-	VisualShaderNodeTextureParameterSourceMax             VisualShaderNodeTextureParameterTextureSource = 4
+	/*Represents the size of the [enum TextureSource] enum.*/
+	VisualShaderNodeTextureParameterSourceMax VisualShaderNodeTextureParameterTextureSource = 4
 )
 
 type VisualShaderNodeTransformFuncFunction = classdb.VisualShaderNodeTransformFuncFunction
 
 const (
-	VisualShaderNodeTransformFuncFuncInverse   VisualShaderNodeTransformFuncFunction = 0
+	/*Perform the inverse operation on the [Transform3D] matrix.*/
+	VisualShaderNodeTransformFuncFuncInverse VisualShaderNodeTransformFuncFunction = 0
+	/*Perform the transpose operation on the [Transform3D] matrix.*/
 	VisualShaderNodeTransformFuncFuncTranspose VisualShaderNodeTransformFuncFunction = 1
-	VisualShaderNodeTransformFuncFuncMax       VisualShaderNodeTransformFuncFunction = 2
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeTransformFuncFuncMax VisualShaderNodeTransformFuncFunction = 2
 )
 
 type VisualShaderNodeTransformOpOperator = classdb.VisualShaderNodeTransformOpOperator
 
 const (
-	VisualShaderNodeTransformOpOpAxb     VisualShaderNodeTransformOpOperator = 0
-	VisualShaderNodeTransformOpOpBxa     VisualShaderNodeTransformOpOperator = 1
+	/*Multiplies transform [code]a[/code] by the transform [code]b[/code].*/
+	VisualShaderNodeTransformOpOpAxb VisualShaderNodeTransformOpOperator = 0
+	/*Multiplies transform [code]b[/code] by the transform [code]a[/code].*/
+	VisualShaderNodeTransformOpOpBxa VisualShaderNodeTransformOpOperator = 1
+	/*Performs a component-wise multiplication of transform [code]a[/code] by the transform [code]b[/code].*/
 	VisualShaderNodeTransformOpOpAxbComp VisualShaderNodeTransformOpOperator = 2
+	/*Performs a component-wise multiplication of transform [code]b[/code] by the transform [code]a[/code].*/
 	VisualShaderNodeTransformOpOpBxaComp VisualShaderNodeTransformOpOperator = 3
-	VisualShaderNodeTransformOpOpAdd     VisualShaderNodeTransformOpOperator = 4
+	/*Adds two transforms.*/
+	VisualShaderNodeTransformOpOpAdd VisualShaderNodeTransformOpOperator = 4
+	/*Subtracts the transform [code]a[/code] from the transform [code]b[/code].*/
 	VisualShaderNodeTransformOpOpAMinusB VisualShaderNodeTransformOpOperator = 5
+	/*Subtracts the transform [code]b[/code] from the transform [code]a[/code].*/
 	VisualShaderNodeTransformOpOpBMinusA VisualShaderNodeTransformOpOperator = 6
-	VisualShaderNodeTransformOpOpADivB   VisualShaderNodeTransformOpOperator = 7
-	VisualShaderNodeTransformOpOpBDivA   VisualShaderNodeTransformOpOperator = 8
-	VisualShaderNodeTransformOpOpMax     VisualShaderNodeTransformOpOperator = 9
+	/*Divides the transform [code]a[/code] by the transform [code]b[/code].*/
+	VisualShaderNodeTransformOpOpADivB VisualShaderNodeTransformOpOperator = 7
+	/*Divides the transform [code]b[/code] by the transform [code]a[/code].*/
+	VisualShaderNodeTransformOpOpBDivA VisualShaderNodeTransformOpOperator = 8
+	/*Represents the size of the [enum Operator] enum.*/
+	VisualShaderNodeTransformOpOpMax VisualShaderNodeTransformOpOperator = 9
 )
 
 type VisualShaderNodeTransformVecMultOperator = classdb.VisualShaderNodeTransformVecMultOperator
 
 const (
-	VisualShaderNodeTransformVecMultOpAxb    VisualShaderNodeTransformVecMultOperator = 0
-	VisualShaderNodeTransformVecMultOpBxa    VisualShaderNodeTransformVecMultOperator = 1
+	/*Multiplies transform [code]a[/code] by the vector [code]b[/code].*/
+	VisualShaderNodeTransformVecMultOpAxb VisualShaderNodeTransformVecMultOperator = 0
+	/*Multiplies vector [code]b[/code] by the transform [code]a[/code].*/
+	VisualShaderNodeTransformVecMultOpBxa VisualShaderNodeTransformVecMultOperator = 1
+	/*Multiplies transform [code]a[/code] by the vector [code]b[/code], skipping the last row and column of the transform.*/
 	VisualShaderNodeTransformVecMultOp3x3Axb VisualShaderNodeTransformVecMultOperator = 2
+	/*Multiplies vector [code]b[/code] by the transform [code]a[/code], skipping the last row and column of the transform.*/
 	VisualShaderNodeTransformVecMultOp3x3Bxa VisualShaderNodeTransformVecMultOperator = 3
-	VisualShaderNodeTransformVecMultOpMax    VisualShaderNodeTransformVecMultOperator = 4
+	/*Represents the size of the [enum Operator] enum.*/
+	VisualShaderNodeTransformVecMultOpMax VisualShaderNodeTransformVecMultOperator = 4
 )
 
 type VisualShaderNodeUIntFuncFunction = classdb.VisualShaderNodeUIntFuncFunction
 
 const (
-	VisualShaderNodeUIntFuncFuncNegate     VisualShaderNodeUIntFuncFunction = 0
+	/*Negates the [code]x[/code] using [code]-(x)[/code].*/
+	VisualShaderNodeUIntFuncFuncNegate VisualShaderNodeUIntFuncFunction = 0
+	/*Returns the result of bitwise [code]NOT[/code] operation on the integer. Translates to [code]~a[/code] in the Godot Shader Language.*/
 	VisualShaderNodeUIntFuncFuncBitwiseNot VisualShaderNodeUIntFuncFunction = 1
-	VisualShaderNodeUIntFuncFuncMax        VisualShaderNodeUIntFuncFunction = 2
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeUIntFuncFuncMax VisualShaderNodeUIntFuncFunction = 2
 )
 
 type VisualShaderNodeUIntOpOperator = classdb.VisualShaderNodeUIntOpOperator
 
 const (
-	VisualShaderNodeUIntOpOpAdd               VisualShaderNodeUIntOpOperator = 0
-	VisualShaderNodeUIntOpOpSub               VisualShaderNodeUIntOpOperator = 1
-	VisualShaderNodeUIntOpOpMul               VisualShaderNodeUIntOpOperator = 2
-	VisualShaderNodeUIntOpOpDiv               VisualShaderNodeUIntOpOperator = 3
-	VisualShaderNodeUIntOpOpMod               VisualShaderNodeUIntOpOperator = 4
-	VisualShaderNodeUIntOpOpMax               VisualShaderNodeUIntOpOperator = 5
-	VisualShaderNodeUIntOpOpMin               VisualShaderNodeUIntOpOperator = 6
-	VisualShaderNodeUIntOpOpBitwiseAnd        VisualShaderNodeUIntOpOperator = 7
-	VisualShaderNodeUIntOpOpBitwiseOr         VisualShaderNodeUIntOpOperator = 8
-	VisualShaderNodeUIntOpOpBitwiseXor        VisualShaderNodeUIntOpOperator = 9
-	VisualShaderNodeUIntOpOpBitwiseLeftShift  VisualShaderNodeUIntOpOperator = 10
+	/*Sums two numbers using [code]a + b[/code].*/
+	VisualShaderNodeUIntOpOpAdd VisualShaderNodeUIntOpOperator = 0
+	/*Subtracts two numbers using [code]a - b[/code].*/
+	VisualShaderNodeUIntOpOpSub VisualShaderNodeUIntOpOperator = 1
+	/*Multiplies two numbers using [code]a * b[/code].*/
+	VisualShaderNodeUIntOpOpMul VisualShaderNodeUIntOpOperator = 2
+	/*Divides two numbers using [code]a / b[/code].*/
+	VisualShaderNodeUIntOpOpDiv VisualShaderNodeUIntOpOperator = 3
+	/*Calculates the remainder of two numbers using [code]a % b[/code].*/
+	VisualShaderNodeUIntOpOpMod VisualShaderNodeUIntOpOperator = 4
+	/*Returns the greater of two numbers. Translates to [code]max(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeUIntOpOpMax VisualShaderNodeUIntOpOperator = 5
+	/*Returns the lesser of two numbers. Translates to [code]max(a, b)[/code] in the Godot Shader Language.*/
+	VisualShaderNodeUIntOpOpMin VisualShaderNodeUIntOpOperator = 6
+	/*Returns the result of bitwise [code]AND[/code] operation on the integer. Translates to [code]a & b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeUIntOpOpBitwiseAnd VisualShaderNodeUIntOpOperator = 7
+	/*Returns the result of bitwise [code]OR[/code] operation for two integers. Translates to [code]a | b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeUIntOpOpBitwiseOr VisualShaderNodeUIntOpOperator = 8
+	/*Returns the result of bitwise [code]XOR[/code] operation for two integers. Translates to [code]a ^ b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeUIntOpOpBitwiseXor VisualShaderNodeUIntOpOperator = 9
+	/*Returns the result of bitwise left shift operation on the integer. Translates to [code]a << b[/code] in the Godot Shader Language.*/
+	VisualShaderNodeUIntOpOpBitwiseLeftShift VisualShaderNodeUIntOpOperator = 10
+	/*Returns the result of bitwise right shift operation on the integer. Translates to [code]a >> b[/code] in the Godot Shader Language.*/
 	VisualShaderNodeUIntOpOpBitwiseRightShift VisualShaderNodeUIntOpOperator = 11
-	VisualShaderNodeUIntOpOpEnumSize          VisualShaderNodeUIntOpOperator = 12
+	/*Represents the size of the [enum Operator] enum.*/
+	VisualShaderNodeUIntOpOpEnumSize VisualShaderNodeUIntOpOperator = 12
 )
 
 type VisualShaderNodeUVFuncFunction = classdb.VisualShaderNodeUVFuncFunction
 
 const (
+	/*Translates [code]uv[/code] by using [code]scale[/code] and [code]offset[/code] values using the following formula: [code]uv = uv + offset * scale[/code]. [code]uv[/code] port is connected to [code]UV[/code] built-in by default.*/
 	VisualShaderNodeUVFuncFuncPanning VisualShaderNodeUVFuncFunction = 0
+	/*Scales [code]uv[/code] by using [code]scale[/code] and [code]pivot[/code] values using the following formula: [code]uv = (uv - pivot) * scale + pivot[/code]. [code]uv[/code] port is connected to [code]UV[/code] built-in by default.*/
 	VisualShaderNodeUVFuncFuncScaling VisualShaderNodeUVFuncFunction = 1
-	VisualShaderNodeUVFuncFuncMax     VisualShaderNodeUVFuncFunction = 2
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeUVFuncFuncMax VisualShaderNodeUVFuncFunction = 2
 )
 
 type VisualShaderNodeVectorBaseOpType = classdb.VisualShaderNodeVectorBaseOpType
 
 const (
+	/*A 2D vector type.*/
 	VisualShaderNodeVectorBaseOpTypeVector2d VisualShaderNodeVectorBaseOpType = 0
+	/*A 3D vector type.*/
 	VisualShaderNodeVectorBaseOpTypeVector3d VisualShaderNodeVectorBaseOpType = 1
+	/*A 4D vector type.*/
 	VisualShaderNodeVectorBaseOpTypeVector4d VisualShaderNodeVectorBaseOpType = 2
-	VisualShaderNodeVectorBaseOpTypeMax      VisualShaderNodeVectorBaseOpType = 3
+	/*Represents the size of the [enum OpType] enum.*/
+	VisualShaderNodeVectorBaseOpTypeMax VisualShaderNodeVectorBaseOpType = 3
 )
 
 type VisualShaderNodeVectorFuncFunction = classdb.VisualShaderNodeVectorFuncFunction
 
 const (
-	VisualShaderNodeVectorFuncFuncNormalize   VisualShaderNodeVectorFuncFunction = 0
-	VisualShaderNodeVectorFuncFuncSaturate    VisualShaderNodeVectorFuncFunction = 1
-	VisualShaderNodeVectorFuncFuncNegate      VisualShaderNodeVectorFuncFunction = 2
-	VisualShaderNodeVectorFuncFuncReciprocal  VisualShaderNodeVectorFuncFunction = 3
-	VisualShaderNodeVectorFuncFuncAbs         VisualShaderNodeVectorFuncFunction = 4
-	VisualShaderNodeVectorFuncFuncAcos        VisualShaderNodeVectorFuncFunction = 5
-	VisualShaderNodeVectorFuncFuncAcosh       VisualShaderNodeVectorFuncFunction = 6
-	VisualShaderNodeVectorFuncFuncAsin        VisualShaderNodeVectorFuncFunction = 7
-	VisualShaderNodeVectorFuncFuncAsinh       VisualShaderNodeVectorFuncFunction = 8
-	VisualShaderNodeVectorFuncFuncAtan        VisualShaderNodeVectorFuncFunction = 9
-	VisualShaderNodeVectorFuncFuncAtanh       VisualShaderNodeVectorFuncFunction = 10
-	VisualShaderNodeVectorFuncFuncCeil        VisualShaderNodeVectorFuncFunction = 11
-	VisualShaderNodeVectorFuncFuncCos         VisualShaderNodeVectorFuncFunction = 12
-	VisualShaderNodeVectorFuncFuncCosh        VisualShaderNodeVectorFuncFunction = 13
-	VisualShaderNodeVectorFuncFuncDegrees     VisualShaderNodeVectorFuncFunction = 14
-	VisualShaderNodeVectorFuncFuncExp         VisualShaderNodeVectorFuncFunction = 15
-	VisualShaderNodeVectorFuncFuncExp2        VisualShaderNodeVectorFuncFunction = 16
-	VisualShaderNodeVectorFuncFuncFloor       VisualShaderNodeVectorFuncFunction = 17
-	VisualShaderNodeVectorFuncFuncFract       VisualShaderNodeVectorFuncFunction = 18
+	/*Normalizes the vector so that it has a length of [code]1[/code] but points in the same direction.*/
+	VisualShaderNodeVectorFuncFuncNormalize VisualShaderNodeVectorFuncFunction = 0
+	/*Clamps the value between [code]0.0[/code] and [code]1.0[/code].*/
+	VisualShaderNodeVectorFuncFuncSaturate VisualShaderNodeVectorFuncFunction = 1
+	/*Returns the opposite value of the parameter.*/
+	VisualShaderNodeVectorFuncFuncNegate VisualShaderNodeVectorFuncFunction = 2
+	/*Returns [code]1/vector[/code].*/
+	VisualShaderNodeVectorFuncFuncReciprocal VisualShaderNodeVectorFuncFunction = 3
+	/*Returns the absolute value of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAbs VisualShaderNodeVectorFuncFunction = 4
+	/*Returns the arc-cosine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAcos VisualShaderNodeVectorFuncFunction = 5
+	/*Returns the inverse hyperbolic cosine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAcosh VisualShaderNodeVectorFuncFunction = 6
+	/*Returns the arc-sine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAsin VisualShaderNodeVectorFuncFunction = 7
+	/*Returns the inverse hyperbolic sine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAsinh VisualShaderNodeVectorFuncFunction = 8
+	/*Returns the arc-tangent of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAtan VisualShaderNodeVectorFuncFunction = 9
+	/*Returns the inverse hyperbolic tangent of the parameter.*/
+	VisualShaderNodeVectorFuncFuncAtanh VisualShaderNodeVectorFuncFunction = 10
+	/*Finds the nearest integer that is greater than or equal to the parameter.*/
+	VisualShaderNodeVectorFuncFuncCeil VisualShaderNodeVectorFuncFunction = 11
+	/*Returns the cosine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncCos VisualShaderNodeVectorFuncFunction = 12
+	/*Returns the hyperbolic cosine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncCosh VisualShaderNodeVectorFuncFunction = 13
+	/*Converts a quantity in radians to degrees.*/
+	VisualShaderNodeVectorFuncFuncDegrees VisualShaderNodeVectorFuncFunction = 14
+	/*Base-e Exponential.*/
+	VisualShaderNodeVectorFuncFuncExp VisualShaderNodeVectorFuncFunction = 15
+	/*Base-2 Exponential.*/
+	VisualShaderNodeVectorFuncFuncExp2 VisualShaderNodeVectorFuncFunction = 16
+	/*Finds the nearest integer less than or equal to the parameter.*/
+	VisualShaderNodeVectorFuncFuncFloor VisualShaderNodeVectorFuncFunction = 17
+	/*Computes the fractional part of the argument.*/
+	VisualShaderNodeVectorFuncFuncFract VisualShaderNodeVectorFuncFunction = 18
+	/*Returns the inverse of the square root of the parameter.*/
 	VisualShaderNodeVectorFuncFuncInverseSqrt VisualShaderNodeVectorFuncFunction = 19
-	VisualShaderNodeVectorFuncFuncLog         VisualShaderNodeVectorFuncFunction = 20
-	VisualShaderNodeVectorFuncFuncLog2        VisualShaderNodeVectorFuncFunction = 21
-	VisualShaderNodeVectorFuncFuncRadians     VisualShaderNodeVectorFuncFunction = 22
-	VisualShaderNodeVectorFuncFuncRound       VisualShaderNodeVectorFuncFunction = 23
-	VisualShaderNodeVectorFuncFuncRoundeven   VisualShaderNodeVectorFuncFunction = 24
-	VisualShaderNodeVectorFuncFuncSign        VisualShaderNodeVectorFuncFunction = 25
-	VisualShaderNodeVectorFuncFuncSin         VisualShaderNodeVectorFuncFunction = 26
-	VisualShaderNodeVectorFuncFuncSinh        VisualShaderNodeVectorFuncFunction = 27
-	VisualShaderNodeVectorFuncFuncSqrt        VisualShaderNodeVectorFuncFunction = 28
-	VisualShaderNodeVectorFuncFuncTan         VisualShaderNodeVectorFuncFunction = 29
-	VisualShaderNodeVectorFuncFuncTanh        VisualShaderNodeVectorFuncFunction = 30
-	VisualShaderNodeVectorFuncFuncTrunc       VisualShaderNodeVectorFuncFunction = 31
-	VisualShaderNodeVectorFuncFuncOneminus    VisualShaderNodeVectorFuncFunction = 32
-	VisualShaderNodeVectorFuncFuncMax         VisualShaderNodeVectorFuncFunction = 33
+	/*Natural logarithm.*/
+	VisualShaderNodeVectorFuncFuncLog VisualShaderNodeVectorFuncFunction = 20
+	/*Base-2 logarithm.*/
+	VisualShaderNodeVectorFuncFuncLog2 VisualShaderNodeVectorFuncFunction = 21
+	/*Converts a quantity in degrees to radians.*/
+	VisualShaderNodeVectorFuncFuncRadians VisualShaderNodeVectorFuncFunction = 22
+	/*Finds the nearest integer to the parameter.*/
+	VisualShaderNodeVectorFuncFuncRound VisualShaderNodeVectorFuncFunction = 23
+	/*Finds the nearest even integer to the parameter.*/
+	VisualShaderNodeVectorFuncFuncRoundeven VisualShaderNodeVectorFuncFunction = 24
+	/*Extracts the sign of the parameter, i.e. returns [code]-1[/code] if the parameter is negative, [code]1[/code] if it's positive and [code]0[/code] otherwise.*/
+	VisualShaderNodeVectorFuncFuncSign VisualShaderNodeVectorFuncFunction = 25
+	/*Returns the sine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncSin VisualShaderNodeVectorFuncFunction = 26
+	/*Returns the hyperbolic sine of the parameter.*/
+	VisualShaderNodeVectorFuncFuncSinh VisualShaderNodeVectorFuncFunction = 27
+	/*Returns the square root of the parameter.*/
+	VisualShaderNodeVectorFuncFuncSqrt VisualShaderNodeVectorFuncFunction = 28
+	/*Returns the tangent of the parameter.*/
+	VisualShaderNodeVectorFuncFuncTan VisualShaderNodeVectorFuncFunction = 29
+	/*Returns the hyperbolic tangent of the parameter.*/
+	VisualShaderNodeVectorFuncFuncTanh VisualShaderNodeVectorFuncFunction = 30
+	/*Returns a value equal to the nearest integer to the parameter whose absolute value is not larger than the absolute value of the parameter.*/
+	VisualShaderNodeVectorFuncFuncTrunc VisualShaderNodeVectorFuncFunction = 31
+	/*Returns [code]1.0 - vector[/code].*/
+	VisualShaderNodeVectorFuncFuncOneminus VisualShaderNodeVectorFuncFunction = 32
+	/*Represents the size of the [enum Function] enum.*/
+	VisualShaderNodeVectorFuncFuncMax VisualShaderNodeVectorFuncFunction = 33
 )
 
 type VisualShaderNodeVectorOpOperator = classdb.VisualShaderNodeVectorOpOperator
 
 const (
-	VisualShaderNodeVectorOpOpAdd      VisualShaderNodeVectorOpOperator = 0
-	VisualShaderNodeVectorOpOpSub      VisualShaderNodeVectorOpOperator = 1
-	VisualShaderNodeVectorOpOpMul      VisualShaderNodeVectorOpOperator = 2
-	VisualShaderNodeVectorOpOpDiv      VisualShaderNodeVectorOpOperator = 3
-	VisualShaderNodeVectorOpOpMod      VisualShaderNodeVectorOpOperator = 4
-	VisualShaderNodeVectorOpOpPow      VisualShaderNodeVectorOpOperator = 5
-	VisualShaderNodeVectorOpOpMax      VisualShaderNodeVectorOpOperator = 6
-	VisualShaderNodeVectorOpOpMin      VisualShaderNodeVectorOpOperator = 7
-	VisualShaderNodeVectorOpOpCross    VisualShaderNodeVectorOpOperator = 8
-	VisualShaderNodeVectorOpOpAtan2    VisualShaderNodeVectorOpOperator = 9
-	VisualShaderNodeVectorOpOpReflect  VisualShaderNodeVectorOpOperator = 10
-	VisualShaderNodeVectorOpOpStep     VisualShaderNodeVectorOpOperator = 11
+	/*Adds two vectors.*/
+	VisualShaderNodeVectorOpOpAdd VisualShaderNodeVectorOpOperator = 0
+	/*Subtracts a vector from a vector.*/
+	VisualShaderNodeVectorOpOpSub VisualShaderNodeVectorOpOperator = 1
+	/*Multiplies two vectors.*/
+	VisualShaderNodeVectorOpOpMul VisualShaderNodeVectorOpOperator = 2
+	/*Divides vector by vector.*/
+	VisualShaderNodeVectorOpOpDiv VisualShaderNodeVectorOpOperator = 3
+	/*Returns the remainder of the two vectors.*/
+	VisualShaderNodeVectorOpOpMod VisualShaderNodeVectorOpOperator = 4
+	/*Returns the value of the first parameter raised to the power of the second, for each component of the vectors.*/
+	VisualShaderNodeVectorOpOpPow VisualShaderNodeVectorOpOperator = 5
+	/*Returns the greater of two values, for each component of the vectors.*/
+	VisualShaderNodeVectorOpOpMax VisualShaderNodeVectorOpOperator = 6
+	/*Returns the lesser of two values, for each component of the vectors.*/
+	VisualShaderNodeVectorOpOpMin VisualShaderNodeVectorOpOperator = 7
+	/*Calculates the cross product of two vectors.*/
+	VisualShaderNodeVectorOpOpCross VisualShaderNodeVectorOpOperator = 8
+	/*Returns the arc-tangent of the parameters.*/
+	VisualShaderNodeVectorOpOpAtan2 VisualShaderNodeVectorOpOperator = 9
+	/*Returns the vector that points in the direction of reflection. [code]a[/code] is incident vector and [code]b[/code] is the normal vector.*/
+	VisualShaderNodeVectorOpOpReflect VisualShaderNodeVectorOpOperator = 10
+	/*Vector step operator. Returns [code]0.0[/code] if [code]a[/code] is smaller than [code]b[/code] and [code]1.0[/code] otherwise.*/
+	VisualShaderNodeVectorOpOpStep VisualShaderNodeVectorOpOperator = 11
+	/*Represents the size of the [enum Operator] enum.*/
 	VisualShaderNodeVectorOpOpEnumSize VisualShaderNodeVectorOpOperator = 12
 )
 
 type VoxelGISubdiv = classdb.VoxelGISubdiv
 
 const (
-	VoxelGISubdiv64  VoxelGISubdiv = 0
+	/*Use 64 subdivisions. This is the lowest quality setting, but the fastest. Use it if you can, but especially use it on lower-end hardware.*/
+	VoxelGISubdiv64 VoxelGISubdiv = 0
+	/*Use 128 subdivisions. This is the default quality setting.*/
 	VoxelGISubdiv128 VoxelGISubdiv = 1
+	/*Use 256 subdivisions.*/
 	VoxelGISubdiv256 VoxelGISubdiv = 2
+	/*Use 512 subdivisions. This is the highest quality setting, but the slowest. On lower-end hardware, this could cause the GPU to stall.*/
 	VoxelGISubdiv512 VoxelGISubdiv = 3
+	/*Represents the size of the [enum Subdiv] enum.*/
 	VoxelGISubdivMax VoxelGISubdiv = 4
 )
 
 type WebRTCDataChannelWriteMode = classdb.WebRTCDataChannelWriteMode
 
 const (
-	WebRTCDataChannelWriteModeText   WebRTCDataChannelWriteMode = 0
+	/*Tells the channel to send data over this channel as text. An external peer (non-Godot) would receive this as a string.*/
+	WebRTCDataChannelWriteModeText WebRTCDataChannelWriteMode = 0
+	/*Tells the channel to send data over this channel as binary. An external peer (non-Godot) would receive this as array buffer or blob.*/
 	WebRTCDataChannelWriteModeBinary WebRTCDataChannelWriteMode = 1
 )
 
 type WebRTCDataChannelChannelState = classdb.WebRTCDataChannelChannelState
 
 const (
+	/*The channel was created, but it's still trying to connect.*/
 	WebRTCDataChannelStateConnecting WebRTCDataChannelChannelState = 0
-	WebRTCDataChannelStateOpen       WebRTCDataChannelChannelState = 1
-	WebRTCDataChannelStateClosing    WebRTCDataChannelChannelState = 2
-	WebRTCDataChannelStateClosed     WebRTCDataChannelChannelState = 3
+	/*The channel is currently open, and data can flow over it.*/
+	WebRTCDataChannelStateOpen WebRTCDataChannelChannelState = 1
+	/*The channel is being closed, no new messages will be accepted, but those already in queue will be flushed.*/
+	WebRTCDataChannelStateClosing WebRTCDataChannelChannelState = 2
+	/*The channel was closed, or connection failed.*/
+	WebRTCDataChannelStateClosed WebRTCDataChannelChannelState = 3
 )
 
 type WebRTCPeerConnectionConnectionState = classdb.WebRTCPeerConnectionConnectionState
 
 const (
-	WebRTCPeerConnectionStateNew          WebRTCPeerConnectionConnectionState = 0
-	WebRTCPeerConnectionStateConnecting   WebRTCPeerConnectionConnectionState = 1
-	WebRTCPeerConnectionStateConnected    WebRTCPeerConnectionConnectionState = 2
+	/*The connection is new, data channels and an offer can be created in this state.*/
+	WebRTCPeerConnectionStateNew WebRTCPeerConnectionConnectionState = 0
+	/*The peer is connecting, ICE is in progress, none of the transports has failed.*/
+	WebRTCPeerConnectionStateConnecting WebRTCPeerConnectionConnectionState = 1
+	/*The peer is connected, all ICE transports are connected.*/
+	WebRTCPeerConnectionStateConnected WebRTCPeerConnectionConnectionState = 2
+	/*At least one ICE transport is disconnected.*/
 	WebRTCPeerConnectionStateDisconnected WebRTCPeerConnectionConnectionState = 3
-	WebRTCPeerConnectionStateFailed       WebRTCPeerConnectionConnectionState = 4
-	WebRTCPeerConnectionStateClosed       WebRTCPeerConnectionConnectionState = 5
+	/*One or more of the ICE transports failed.*/
+	WebRTCPeerConnectionStateFailed WebRTCPeerConnectionConnectionState = 4
+	/*The peer connection is closed (after calling [method close] for example).*/
+	WebRTCPeerConnectionStateClosed WebRTCPeerConnectionConnectionState = 5
 )
 
 type WebRTCPeerConnectionGatheringState = classdb.WebRTCPeerConnectionGatheringState
 
 const (
-	WebRTCPeerConnectionGatheringStateNew       WebRTCPeerConnectionGatheringState = 0
+	/*The peer connection was just created and hasn't done any networking yet.*/
+	WebRTCPeerConnectionGatheringStateNew WebRTCPeerConnectionGatheringState = 0
+	/*The ICE agent is in the process of gathering candidates for the connection.*/
 	WebRTCPeerConnectionGatheringStateGathering WebRTCPeerConnectionGatheringState = 1
-	WebRTCPeerConnectionGatheringStateComplete  WebRTCPeerConnectionGatheringState = 2
+	/*The ICE agent has finished gathering candidates. If something happens that requires collecting new candidates, such as a new interface being added or the addition of a new ICE server, the state will revert to gathering to gather those candidates.*/
+	WebRTCPeerConnectionGatheringStateComplete WebRTCPeerConnectionGatheringState = 2
 )
 
 type WebRTCPeerConnectionSignalingState = classdb.WebRTCPeerConnectionSignalingState
 
 const (
-	WebRTCPeerConnectionSignalingStateStable             WebRTCPeerConnectionSignalingState = 0
-	WebRTCPeerConnectionSignalingStateHaveLocalOffer     WebRTCPeerConnectionSignalingState = 1
-	WebRTCPeerConnectionSignalingStateHaveRemoteOffer    WebRTCPeerConnectionSignalingState = 2
-	WebRTCPeerConnectionSignalingStateHaveLocalPranswer  WebRTCPeerConnectionSignalingState = 3
+	/*There is no ongoing exchange of offer and answer underway. This may mean that the [WebRTCPeerConnection] is new ([constant STATE_NEW]) or that negotiation is complete and a connection has been established ([constant STATE_CONNECTED]).*/
+	WebRTCPeerConnectionSignalingStateStable WebRTCPeerConnectionSignalingState = 0
+	/*The local peer has called [method set_local_description], passing in SDP representing an offer (usually created by calling [method create_offer]), and the offer has been applied successfully.*/
+	WebRTCPeerConnectionSignalingStateHaveLocalOffer WebRTCPeerConnectionSignalingState = 1
+	/*The remote peer has created an offer and used the signaling server to deliver it to the local peer, which has set the offer as the remote description by calling [method set_remote_description].*/
+	WebRTCPeerConnectionSignalingStateHaveRemoteOffer WebRTCPeerConnectionSignalingState = 2
+	/*The offer sent by the remote peer has been applied and an answer has been created and applied by calling [method set_local_description]. This provisional answer describes the supported media formats and so forth, but may not have a complete set of ICE candidates included. Further candidates will be delivered separately later.*/
+	WebRTCPeerConnectionSignalingStateHaveLocalPranswer WebRTCPeerConnectionSignalingState = 3
+	/*A provisional answer has been received and successfully applied in response to an offer previously sent and established by calling [method set_local_description].*/
 	WebRTCPeerConnectionSignalingStateHaveRemotePranswer WebRTCPeerConnectionSignalingState = 4
-	WebRTCPeerConnectionSignalingStateClosed             WebRTCPeerConnectionSignalingState = 5
+	/*The [WebRTCPeerConnection] has been closed.*/
+	WebRTCPeerConnectionSignalingStateClosed WebRTCPeerConnectionSignalingState = 5
 )
 
 type WebSocketPeerWriteMode = classdb.WebSocketPeerWriteMode
 
 const (
-	WebSocketPeerWriteModeText   WebSocketPeerWriteMode = 0
+	/*Specifies that WebSockets messages should be transferred as text payload (only valid UTF-8 is allowed).*/
+	WebSocketPeerWriteModeText WebSocketPeerWriteMode = 0
+	/*Specifies that WebSockets messages should be transferred as binary payload (any byte combination is allowed).*/
 	WebSocketPeerWriteModeBinary WebSocketPeerWriteMode = 1
 )
 
 type WebSocketPeerState = classdb.WebSocketPeerState
 
 const (
+	/*Socket has been created. The connection is not yet open.*/
 	WebSocketPeerStateConnecting WebSocketPeerState = 0
-	WebSocketPeerStateOpen       WebSocketPeerState = 1
-	WebSocketPeerStateClosing    WebSocketPeerState = 2
-	WebSocketPeerStateClosed     WebSocketPeerState = 3
+	/*The connection is open and ready to communicate.*/
+	WebSocketPeerStateOpen WebSocketPeerState = 1
+	/*The connection is in the process of closing. This means a close request has been sent to the remote peer but confirmation has not been received.*/
+	WebSocketPeerStateClosing WebSocketPeerState = 2
+	/*The connection is closed or couldn't be opened.*/
+	WebSocketPeerStateClosed WebSocketPeerState = 3
 )
 
 type WebXRInterfaceTargetRayMode = classdb.WebXRInterfaceTargetRayMode
 
 const (
-	WebXRInterfaceTargetRayModeUnknown        WebXRInterfaceTargetRayMode = 0
-	WebXRInterfaceTargetRayModeGaze           WebXRInterfaceTargetRayMode = 1
+	/*We don't know the the target ray mode.*/
+	WebXRInterfaceTargetRayModeUnknown WebXRInterfaceTargetRayMode = 0
+	/*Target ray originates at the viewer's eyes and points in the direction they are looking.*/
+	WebXRInterfaceTargetRayModeGaze WebXRInterfaceTargetRayMode = 1
+	/*Target ray from a handheld pointer, most likely a VR touch controller.*/
 	WebXRInterfaceTargetRayModeTrackedPointer WebXRInterfaceTargetRayMode = 2
-	WebXRInterfaceTargetRayModeScreen         WebXRInterfaceTargetRayMode = 3
+	/*Target ray from touch screen, mouse or other tactile input device.*/
+	WebXRInterfaceTargetRayModeScreen WebXRInterfaceTargetRayMode = 3
 )
 
 type WindowMode = classdb.WindowMode
 
 const (
-	WindowModeWindowed            WindowMode = 0
-	WindowModeMinimized           WindowMode = 1
-	WindowModeMaximized           WindowMode = 2
-	WindowModeFullscreen          WindowMode = 3
+	/*Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).*/
+	WindowModeWindowed WindowMode = 0
+	/*Minimized window mode, i.e. [Window] is not visible and available on window manager's window list. Normally happens when the minimize button is pressed.*/
+	WindowModeMinimized WindowMode = 1
+	/*Maximized window mode, i.e. [Window] will occupy whole screen area except task bar and still display its borders. Normally happens when the maximize button is pressed.*/
+	WindowModeMaximized WindowMode = 2
+	/*Full screen mode with full multi-window support.
+	  Full screen window covers the entire display area of a screen and has no decorations. The display's video mode is not changed.
+	  [b]On Windows:[/b] Multi-window full-screen mode has a 1px border of the [member ProjectSettings.rendering/environment/defaults/default_clear_color] color.
+	  [b]On macOS:[/b] A new desktop is used to display the running project.
+	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
+	WindowModeFullscreen WindowMode = 3
+	/*A single window full screen mode. This mode has less overhead, but only one window can be open on a given screen at a time (opening a child window or application switching will trigger a full screen transition).
+	  Full screen window covers the entire display area of a screen and has no border or decorations. The display's video mode is not changed.
+	  [b]On Windows:[/b] Depending on video driver, full screen transition might cause screens to go black for a moment.
+	  [b]On macOS:[/b] A new desktop is used to display the running project. Exclusive full screen mode prevents Dock and Menu from showing up when the mouse pointer is hovering the edge of the screen.
+	  [b]On Linux (X11):[/b] Exclusive full screen mode bypasses compositor.
+	  [b]Note:[/b] Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]multiple resolutions[/url] when enabling full screen mode.*/
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
 type WindowFlags = classdb.WindowFlags
 
 const (
-	WindowFlagResizeDisabled   WindowFlags = 0
-	WindowFlagBorderless       WindowFlags = 1
-	WindowFlagAlwaysOnTop      WindowFlags = 2
-	WindowFlagTransparent      WindowFlags = 3
-	WindowFlagNoFocus          WindowFlags = 4
-	WindowFlagPopup            WindowFlags = 5
-	WindowFlagExtendToTitle    WindowFlags = 6
+	/*The window can't be resized by dragging its resize grip. It's still possible to resize the window using [member size]. This flag is ignored for full screen windows. Set with [member unresizable].*/
+	WindowFlagResizeDisabled WindowFlags = 0
+	/*The window do not have native title bar and other decorations. This flag is ignored for full-screen windows. Set with [member borderless].*/
+	WindowFlagBorderless WindowFlags = 1
+	/*The window is floating on top of all other windows. This flag is ignored for full-screen windows. Set with [member always_on_top].*/
+	WindowFlagAlwaysOnTop WindowFlags = 2
+	/*The window background can be transparent. Set with [member transparent].
+	  [b]Note:[/b] This flag has no effect if either [member ProjectSettings.display/window/per_pixel_transparency/allowed], or the window's [member Viewport.transparent_bg] is set to [code]false[/code].*/
+	WindowFlagTransparent WindowFlags = 3
+	/*The window can't be focused. No-focus window will ignore all input, except mouse clicks. Set with [member unfocusable].*/
+	WindowFlagNoFocus WindowFlags = 4
+	/*Window is part of menu or [OptionButton] dropdown. This flag can't be changed when the window is visible. An active popup window will exclusively receive all input, without stealing focus from its parent. Popup windows are automatically closed when uses click outside it, or when an application is switched. Popup window must have transient parent set (see [member transient]).
+	  [b]Note:[/b] This flag has no effect in embedded windows (unless said window is a [Popup]).*/
+	WindowFlagPopup WindowFlags = 5
+	/*Window content is expanded to the full size of the window. Unlike borderless window, the frame is left intact and can be used to resize the window, title bar is transparent, but have minimize/maximize/close buttons. Set with [member extend_to_title].
+	  [b]Note:[/b] This flag is implemented only on macOS.
+	  [b]Note:[/b] This flag has no effect in embedded windows.*/
+	WindowFlagExtendToTitle WindowFlags = 6
+	/*All mouse events are passed to the underlying window of the same application.
+	  [b]Note:[/b] This flag has no effect in embedded windows.*/
 	WindowFlagMousePassthrough WindowFlags = 7
-	WindowFlagMax              WindowFlags = 8
+	/*Max value of the [enum Flags].*/
+	WindowFlagMax WindowFlags = 8
 )
 
 type WindowContentScaleMode = classdb.WindowContentScaleMode
 
 const (
-	WindowContentScaleModeDisabled    WindowContentScaleMode = 0
+	/*The content will not be scaled to match the [Window]'s size.*/
+	WindowContentScaleModeDisabled WindowContentScaleMode = 0
+	/*The content will be rendered at the target size. This is more performance-expensive than [constant CONTENT_SCALE_MODE_VIEWPORT], but provides better results.*/
 	WindowContentScaleModeCanvasItems WindowContentScaleMode = 1
-	WindowContentScaleModeViewport    WindowContentScaleMode = 2
+	/*The content will be rendered at the base size and then scaled to the target size. More performant than [constant CONTENT_SCALE_MODE_CANVAS_ITEMS], but results in pixelated image.*/
+	WindowContentScaleModeViewport WindowContentScaleMode = 2
 )
 
 type WindowContentScaleAspect = classdb.WindowContentScaleAspect
 
 const (
-	WindowContentScaleAspectIgnore     WindowContentScaleAspect = 0
-	WindowContentScaleAspectKeep       WindowContentScaleAspect = 1
-	WindowContentScaleAspectKeepWidth  WindowContentScaleAspect = 2
+	/*The aspect will be ignored. Scaling will simply stretch the content to fit the target size.*/
+	WindowContentScaleAspectIgnore WindowContentScaleAspect = 0
+	/*The content's aspect will be preserved. If the target size has different aspect from the base one, the image will be centered and black bars will appear on left and right sides.*/
+	WindowContentScaleAspectKeep WindowContentScaleAspect = 1
+	/*The content can be expanded vertically. Scaling horizontally will result in keeping the width ratio and then black bars on left and right sides.*/
+	WindowContentScaleAspectKeepWidth WindowContentScaleAspect = 2
+	/*The content can be expanded horizontally. Scaling vertically will result in keeping the height ratio and then black bars on top and bottom sides.*/
 	WindowContentScaleAspectKeepHeight WindowContentScaleAspect = 3
-	WindowContentScaleAspectExpand     WindowContentScaleAspect = 4
+	/*The content's aspect will be preserved. If the target size has different aspect from the base one, the content will stay in the top-left corner and add an extra visible area in the stretched space.*/
+	WindowContentScaleAspectExpand WindowContentScaleAspect = 4
 )
 
 type WindowContentScaleStretch = classdb.WindowContentScaleStretch
 
 const (
+	/*The content will be stretched according to a fractional factor. This fills all the space available in the window, but allows "pixel wobble" to occur due to uneven pixel scaling.*/
 	WindowContentScaleStretchFractional WindowContentScaleStretch = 0
-	WindowContentScaleStretchInteger    WindowContentScaleStretch = 1
+	/*The content will be stretched only according to an integer factor, preserving sharp pixels. This may leave a black background visible on the window's edges depending on the window size.*/
+	WindowContentScaleStretchInteger WindowContentScaleStretch = 1
 )
 
 type WindowLayoutDirection = classdb.WindowLayoutDirection
 
 const (
+	/*Automatic layout direction, determined from the parent window layout direction.*/
 	WindowLayoutDirectionInherited WindowLayoutDirection = 0
-	WindowLayoutDirectionLocale    WindowLayoutDirection = 1
-	WindowLayoutDirectionLtr       WindowLayoutDirection = 2
-	WindowLayoutDirectionRtl       WindowLayoutDirection = 3
+	/*Automatic layout direction, determined from the current locale.*/
+	WindowLayoutDirectionLocale WindowLayoutDirection = 1
+	/*Left-to-right layout direction.*/
+	WindowLayoutDirectionLtr WindowLayoutDirection = 2
+	/*Right-to-left layout direction.*/
+	WindowLayoutDirectionRtl WindowLayoutDirection = 3
 )
 
 type WindowWindowInitialPosition = classdb.WindowWindowInitialPosition
 
 const (
-	WindowWindowInitialPositionAbsolute                      WindowWindowInitialPosition = 0
-	WindowWindowInitialPositionCenterPrimaryScreen           WindowWindowInitialPosition = 1
-	WindowWindowInitialPositionCenterMainWindowScreen        WindowWindowInitialPosition = 2
-	WindowWindowInitialPositionCenterOtherScreen             WindowWindowInitialPosition = 3
-	WindowWindowInitialPositionCenterScreenWithMouseFocus    WindowWindowInitialPosition = 4
+	/*Initial window position is determined by [member position].*/
+	WindowWindowInitialPositionAbsolute WindowWindowInitialPosition = 0
+	/*Initial window position is the center of the primary screen.*/
+	WindowWindowInitialPositionCenterPrimaryScreen WindowWindowInitialPosition = 1
+	/*Initial window position is the center of the main window screen.*/
+	WindowWindowInitialPositionCenterMainWindowScreen WindowWindowInitialPosition = 2
+	/*Initial window position is the center of [member current_screen] screen.*/
+	WindowWindowInitialPositionCenterOtherScreen WindowWindowInitialPosition = 3
+	/*Initial window position is the center of the screen containing the mouse pointer.*/
+	WindowWindowInitialPositionCenterScreenWithMouseFocus WindowWindowInitialPosition = 4
+	/*Initial window position is the center of the screen containing the window with the keyboard focus.*/
 	WindowWindowInitialPositionCenterScreenWithKeyboardFocus WindowWindowInitialPosition = 5
 )
 
 type XMLParserNodeType = classdb.XMLParserNodeType
 
 const (
-	XMLParserNodeNone       XMLParserNodeType = 0
-	XMLParserNodeElement    XMLParserNodeType = 1
+	/*There's no node (no file or buffer opened).*/
+	XMLParserNodeNone XMLParserNodeType = 0
+	/*An element node type, also known as a tag, e.g. [code]<title>[/code].*/
+	XMLParserNodeElement XMLParserNodeType = 1
+	/*An end of element node type, e.g. [code]</title>[/code].*/
 	XMLParserNodeElementEnd XMLParserNodeType = 2
-	XMLParserNodeText       XMLParserNodeType = 3
-	XMLParserNodeComment    XMLParserNodeType = 4
-	XMLParserNodeCdata      XMLParserNodeType = 5
-	XMLParserNodeUnknown    XMLParserNodeType = 6
+	/*A text node type, i.e. text that is not inside an element. This includes whitespace.*/
+	XMLParserNodeText XMLParserNodeType = 3
+	/*A comment node type, e.g. [code]<!--A comment-->[/code].*/
+	XMLParserNodeComment XMLParserNodeType = 4
+	/*A node type for CDATA (Character Data) sections, e.g. [code]<![CDATA[CDATA section]]>[/code].*/
+	XMLParserNodeCdata XMLParserNodeType = 5
+	/*An unknown node type.*/
+	XMLParserNodeUnknown XMLParserNodeType = 6
 )
 
 type XRInterfaceCapabilities = classdb.XRInterfaceCapabilities
 
 const (
-	XRInterfaceXrNone     XRInterfaceCapabilities = 0
-	XRInterfaceXrMono     XRInterfaceCapabilities = 1
-	XRInterfaceXrStereo   XRInterfaceCapabilities = 2
-	XRInterfaceXrQuad     XRInterfaceCapabilities = 4
-	XRInterfaceXrVr       XRInterfaceCapabilities = 8
-	XRInterfaceXrAr       XRInterfaceCapabilities = 16
+	/*No XR capabilities.*/
+	XRInterfaceXrNone XRInterfaceCapabilities = 0
+	/*This interface can work with normal rendering output (non-HMD based AR).*/
+	XRInterfaceXrMono XRInterfaceCapabilities = 1
+	/*This interface supports stereoscopic rendering.*/
+	XRInterfaceXrStereo XRInterfaceCapabilities = 2
+	/*This interface supports quad rendering (not yet supported by Godot).*/
+	XRInterfaceXrQuad XRInterfaceCapabilities = 4
+	/*This interface supports VR.*/
+	XRInterfaceXrVr XRInterfaceCapabilities = 8
+	/*This interface supports AR (video background and real world tracking).*/
+	XRInterfaceXrAr XRInterfaceCapabilities = 16
+	/*This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [method get_render_target_size]). Using a separate viewport node frees up the main viewport for other purposes.*/
 	XRInterfaceXrExternal XRInterfaceCapabilities = 32
 )
 
 type XRInterfaceTrackingStatus = classdb.XRInterfaceTrackingStatus
 
 const (
-	XRInterfaceXrNormalTracking       XRInterfaceTrackingStatus = 0
-	XRInterfaceXrExcessiveMotion      XRInterfaceTrackingStatus = 1
+	/*Tracking is behaving as expected.*/
+	XRInterfaceXrNormalTracking XRInterfaceTrackingStatus = 0
+	/*Tracking is hindered by excessive motion (the player is moving faster than tracking can keep up).*/
+	XRInterfaceXrExcessiveMotion XRInterfaceTrackingStatus = 1
+	/*Tracking is hindered by insufficient features, it's too dark (for camera-based tracking), player is blocked, etc.*/
 	XRInterfaceXrInsufficientFeatures XRInterfaceTrackingStatus = 2
-	XRInterfaceXrUnknownTracking      XRInterfaceTrackingStatus = 3
-	XRInterfaceXrNotTracking          XRInterfaceTrackingStatus = 4
+	/*We don't know the status of the tracking or this interface does not provide feedback.*/
+	XRInterfaceXrUnknownTracking XRInterfaceTrackingStatus = 3
+	/*Tracking is not functional (camera not plugged in or obscured, lighthouses turned off, etc.).*/
+	XRInterfaceXrNotTracking XRInterfaceTrackingStatus = 4
 )
 
 type XRInterfacePlayAreaMode = classdb.XRInterfacePlayAreaMode
 
 const (
-	XRInterfaceXrPlayAreaUnknown   XRInterfacePlayAreaMode = 0
-	XRInterfaceXrPlayArea3dof      XRInterfacePlayAreaMode = 1
-	XRInterfaceXrPlayAreaSitting   XRInterfacePlayAreaMode = 2
+	/*Play area mode not set or not available.*/
+	XRInterfaceXrPlayAreaUnknown XRInterfacePlayAreaMode = 0
+	/*Play area only supports orientation tracking, no positional tracking, area will center around player.*/
+	XRInterfaceXrPlayArea3dof XRInterfacePlayAreaMode = 1
+	/*Player is in seated position, limited positional tracking, fixed guardian around player.*/
+	XRInterfaceXrPlayAreaSitting XRInterfacePlayAreaMode = 2
+	/*Player is free to move around, full positional tracking.*/
 	XRInterfaceXrPlayAreaRoomscale XRInterfacePlayAreaMode = 3
-	XRInterfaceXrPlayAreaStage     XRInterfacePlayAreaMode = 4
+	/*Same as [constant XR_PLAY_AREA_ROOMSCALE] but origin point is fixed to the center of the physical space, [method XRServer.center_on_hmd] disabled.*/
+	XRInterfaceXrPlayAreaStage XRInterfacePlayAreaMode = 4
 )
 
 type XRInterfaceEnvironmentBlendMode = classdb.XRInterfaceEnvironmentBlendMode
 
 const (
-	XRInterfaceXrEnvBlendModeOpaque     XRInterfaceEnvironmentBlendMode = 0
-	XRInterfaceXrEnvBlendModeAdditive   XRInterfaceEnvironmentBlendMode = 1
+	/*Opaque blend mode. This is typically used for VR devices.*/
+	XRInterfaceXrEnvBlendModeOpaque XRInterfaceEnvironmentBlendMode = 0
+	/*Additive blend mode. This is typically used for AR devices or VR devices with passthrough.*/
+	XRInterfaceXrEnvBlendModeAdditive XRInterfaceEnvironmentBlendMode = 1
+	/*Alpha blend mode. This is typically used for AR or VR devices with passthrough capabilities. The alpha channel controls how much of the passthrough is visible. Alpha of 0.0 means the passthrough is visible and this pixel works in ADDITIVE mode. Alpha of 1.0 means that the passthrough is not visible and this pixel works in OPAQUE mode.*/
 	XRInterfaceXrEnvBlendModeAlphaBlend XRInterfaceEnvironmentBlendMode = 2
 )
 
 type XRPoseTrackingConfidence = classdb.XRPoseTrackingConfidence
 
 const (
+	/*No tracking information is available for this pose.*/
 	XRPoseXrTrackingConfidenceNone XRPoseTrackingConfidence = 0
-	XRPoseXrTrackingConfidenceLow  XRPoseTrackingConfidence = 1
+	/*Tracking information may be inaccurate or estimated. For example, with inside out tracking this would indicate a controller may be (partially) obscured.*/
+	XRPoseXrTrackingConfidenceLow XRPoseTrackingConfidence = 1
+	/*Tracking information is deemed accurate and up to date.*/
 	XRPoseXrTrackingConfidenceHigh XRPoseTrackingConfidence = 2
 )
 
 type XRPositionalTrackerTrackerHand = classdb.XRPositionalTrackerTrackerHand
 
 const (
+	/*The hand this tracker is held in is unknown or not applicable.*/
 	XRPositionalTrackerTrackerHandUnknown XRPositionalTrackerTrackerHand = 0
-	XRPositionalTrackerTrackerHandLeft    XRPositionalTrackerTrackerHand = 1
-	XRPositionalTrackerTrackerHandRight   XRPositionalTrackerTrackerHand = 2
+	/*This tracker is the left hand controller.*/
+	XRPositionalTrackerTrackerHandLeft XRPositionalTrackerTrackerHand = 1
+	/*This tracker is the right hand controller.*/
+	XRPositionalTrackerTrackerHandRight XRPositionalTrackerTrackerHand = 2
 )
 
 type XRServerTrackerType = classdb.XRServerTrackerType
 
 const (
-	XRServerTrackerHead        XRServerTrackerType = 1
-	XRServerTrackerController  XRServerTrackerType = 2
+	/*The tracker tracks the location of the players head. This is usually a location centered between the players eyes. Note that for handheld AR devices this can be the current location of the device.*/
+	XRServerTrackerHead XRServerTrackerType = 1
+	/*The tracker tracks the location of a controller.*/
+	XRServerTrackerController XRServerTrackerType = 2
+	/*The tracker tracks the location of a base station.*/
 	XRServerTrackerBasestation XRServerTrackerType = 4
-	XRServerTrackerAnchor      XRServerTrackerType = 8
-	XRServerTrackerAnyKnown    XRServerTrackerType = 127
-	XRServerTrackerUnknown     XRServerTrackerType = 128
-	XRServerTrackerAny         XRServerTrackerType = 255
+	/*The tracker tracks the location and size of an AR anchor.*/
+	XRServerTrackerAnchor XRServerTrackerType = 8
+	/*Used internally to filter trackers of any known type.*/
+	XRServerTrackerAnyKnown XRServerTrackerType = 127
+	/*Used internally if we haven't set the tracker type yet.*/
+	XRServerTrackerUnknown XRServerTrackerType = 128
+	/*Used internally to select all trackers.*/
+	XRServerTrackerAny XRServerTrackerType = 255
 )
 
 type XRServerRotationMode = classdb.XRServerRotationMode
 
 const (
+	/*Fully reset the orientation of the HMD. Regardless of what direction the user is looking to in the real world. The user will look dead ahead in the virtual world.*/
 	XRServerResetFullRotation XRServerRotationMode = 0
-	XRServerResetButKeepTilt  XRServerRotationMode = 1
+	/*Resets the orientation but keeps the tilt of the device. So if we're looking down, we keep looking down but heading will be reset.*/
+	XRServerResetButKeepTilt XRServerRotationMode = 1
+	/*Does not reset the orientation of the HMD, only the position of the player gets centered.*/
 	XRServerDontResetRotation XRServerRotationMode = 2
 )
 
 type ZIPPackerZipAppend = classdb.ZIPPackerZipAppend
 
 const (
-	ZIPPackerAppendCreate      ZIPPackerZipAppend = 0
+	/*Create a new zip archive at the given path.*/
+	ZIPPackerAppendCreate ZIPPackerZipAppend = 0
+	/*Append a new zip archive to the end of the already existing file at the given path.*/
 	ZIPPackerAppendCreateafter ZIPPackerZipAppend = 1
-	ZIPPackerAppendAddinzip    ZIPPackerZipAppend = 2
+	/*Add new files to the existing zip archive at the given path.*/
+	ZIPPackerAppendAddinzip ZIPPackerZipAppend = 2
 )

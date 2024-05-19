@@ -251,6 +251,11 @@ func genEnum(pkg string, decl, code io.Writer, prefix string, enum gdjson.Enum) 
 			if n == name {
 				n += "Default"
 			}
+			if value.Description != "" {
+				fmt.Fprint(code, "/*")
+				fmt.Fprint(code, value.Description)
+				fmt.Fprintln(code, "*/")
+			}
 			fmt.Fprintf(code, "\t%v %v = %v\n", n, name, value.Value)
 		}
 		fmt.Fprintf(code, ")\n")

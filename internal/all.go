@@ -37,55 +37,117 @@ type MIDIMessage int64
 type Error int64
 
 const (
-	Ok                         Error = 0
-	Failed                     Error = 1
-	ErrUnavailable             Error = 2
-	ErrUnconfigured            Error = 3
-	ErrUnauthorized            Error = 4
-	ErrParameterRangeError     Error = 5
-	ErrOutOfMemory             Error = 6
-	ErrFileNotFound            Error = 7
-	ErrFileBadDrive            Error = 8
-	ErrFileBadPath             Error = 9
-	ErrFileNoPermission        Error = 10
-	ErrFileAlreadyInUse        Error = 11
-	ErrFileCantOpen            Error = 12
-	ErrFileCantWrite           Error = 13
-	ErrFileCantRead            Error = 14
-	ErrFileUnrecognized        Error = 15
-	ErrFileCorrupt             Error = 16
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
 	ErrFileMissingDependencies Error = 17
-	ErrFileEof                 Error = 18
-	ErrCantOpen                Error = 19
-	ErrCantCreate              Error = 20
-	ErrQueryFailed             Error = 21
-	ErrAlreadyInUse            Error = 22
-	ErrLocked                  Error = 23
-	ErrTimeout                 Error = 24
-	ErrCantConnect             Error = 25
-	ErrCantResolve             Error = 26
-	ErrConnectionError         Error = 27
-	ErrCantAcquireResource     Error = 28
-	ErrCantFork                Error = 29
-	ErrInvalidData             Error = 30
-	ErrInvalidParameter        Error = 31
-	ErrAlreadyExists           Error = 32
-	ErrDoesNotExist            Error = 33
-	ErrDatabaseCantRead        Error = 34
-	ErrDatabaseCantWrite       Error = 35
-	ErrCompilationFailed       Error = 36
-	ErrMethodNotFound          Error = 37
-	ErrLinkFailed              Error = 38
-	ErrScriptFailed            Error = 39
-	ErrCyclicLink              Error = 40
-	ErrInvalidDeclaration      Error = 41
-	ErrDuplicateSymbol         Error = 42
-	ErrParseError              Error = 43
-	ErrBusy                    Error = 44
-	ErrSkip                    Error = 45
-	ErrHelp                    Error = 46
-	ErrBug                     Error = 47
-	ErrPrinterOnFire           Error = 48
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
 )
 
 type PropertyHint int64
@@ -97,45 +159,84 @@ type MethodFlags int64
 type VariantType int64
 
 const (
-	TypeNil                VariantType = 0
-	TypeBool               VariantType = 1
-	TypeInt                VariantType = 2
-	TypeFloat              VariantType = 3
-	TypeString             VariantType = 4
-	TypeVector2            VariantType = 5
-	TypeVector2i           VariantType = 6
-	TypeRect2              VariantType = 7
-	TypeRect2i             VariantType = 8
-	TypeVector3            VariantType = 9
-	TypeVector3i           VariantType = 10
-	TypeTransform2d        VariantType = 11
-	TypeVector4            VariantType = 12
-	TypeVector4i           VariantType = 13
-	TypePlane              VariantType = 14
-	TypeQuaternion         VariantType = 15
-	TypeAabb               VariantType = 16
-	TypeBasis              VariantType = 17
-	TypeTransform3d        VariantType = 18
-	TypeProjection         VariantType = 19
-	TypeColor              VariantType = 20
-	TypeStringName         VariantType = 21
-	TypeNodePath           VariantType = 22
-	TypeRid                VariantType = 23
-	TypeObject             VariantType = 24
-	TypeCallable           VariantType = 25
-	TypeSignal             VariantType = 26
-	TypeDictionary         VariantType = 27
-	TypeArray              VariantType = 28
-	TypePackedByteArray    VariantType = 29
-	TypePackedInt32Array   VariantType = 30
-	TypePackedInt64Array   VariantType = 31
+	/*Variable is [code]null[/code].*/
+	TypeNil VariantType = 0
+	/*Variable is of type [bool].*/
+	TypeBool VariantType = 1
+	/*Variable is of type [int].*/
+	TypeInt VariantType = 2
+	/*Variable is of type [float].*/
+	TypeFloat VariantType = 3
+	/*Variable is of type [String].*/
+	TypeString VariantType = 4
+	/*Variable is of type [Vector2].*/
+	TypeVector2 VariantType = 5
+	/*Variable is of type [Vector2i].*/
+	TypeVector2i VariantType = 6
+	/*Variable is of type [Rect2].*/
+	TypeRect2 VariantType = 7
+	/*Variable is of type [Rect2i].*/
+	TypeRect2i VariantType = 8
+	/*Variable is of type [Vector3].*/
+	TypeVector3 VariantType = 9
+	/*Variable is of type [Vector3i].*/
+	TypeVector3i VariantType = 10
+	/*Variable is of type [Transform2D].*/
+	TypeTransform2d VariantType = 11
+	/*Variable is of type [Vector4].*/
+	TypeVector4 VariantType = 12
+	/*Variable is of type [Vector4i].*/
+	TypeVector4i VariantType = 13
+	/*Variable is of type [Plane].*/
+	TypePlane VariantType = 14
+	/*Variable is of type [Quaternion].*/
+	TypeQuaternion VariantType = 15
+	/*Variable is of type [AABB].*/
+	TypeAabb VariantType = 16
+	/*Variable is of type [Basis].*/
+	TypeBasis VariantType = 17
+	/*Variable is of type [Transform3D].*/
+	TypeTransform3d VariantType = 18
+	/*Variable is of type [Projection].*/
+	TypeProjection VariantType = 19
+	/*Variable is of type [Color].*/
+	TypeColor VariantType = 20
+	/*Variable is of type [StringName].*/
+	TypeStringName VariantType = 21
+	/*Variable is of type [NodePath].*/
+	TypeNodePath VariantType = 22
+	/*Variable is of type [RID].*/
+	TypeRid VariantType = 23
+	/*Variable is of type [Object].*/
+	TypeObject VariantType = 24
+	/*Variable is of type [Callable].*/
+	TypeCallable VariantType = 25
+	/*Variable is of type [Signal].*/
+	TypeSignal VariantType = 26
+	/*Variable is of type [Dictionary].*/
+	TypeDictionary VariantType = 27
+	/*Variable is of type [Array].*/
+	TypeArray VariantType = 28
+	/*Variable is of type [PackedByteArray].*/
+	TypePackedByteArray VariantType = 29
+	/*Variable is of type [PackedInt32Array].*/
+	TypePackedInt32Array VariantType = 30
+	/*Variable is of type [PackedInt64Array].*/
+	TypePackedInt64Array VariantType = 31
+	/*Variable is of type [PackedFloat32Array].*/
 	TypePackedFloat32Array VariantType = 32
+	/*Variable is of type [PackedFloat64Array].*/
 	TypePackedFloat64Array VariantType = 33
-	TypePackedStringArray  VariantType = 34
+	/*Variable is of type [PackedStringArray].*/
+	TypePackedStringArray VariantType = 34
+	/*Variable is of type [PackedVector2Array].*/
 	TypePackedVector2Array VariantType = 35
+	/*Variable is of type [PackedVector3Array].*/
 	TypePackedVector3Array VariantType = 36
-	TypePackedColorArray   VariantType = 37
-	TypeMax                VariantType = 38
+	/*Variable is of type [PackedColorArray].*/
+	TypePackedColorArray VariantType = 37
+	/*Represents the size of the [enum Variant.Type] enum.*/
+	TypeMax VariantType = 38
 )
 
 type VariantOperator int64
