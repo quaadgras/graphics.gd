@@ -1890,7 +1890,7 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	object_cast_to := dlsymGD("object_cast_to")
-	API.Object.CastTo = func(ctx gd.Context, o gd.Object, ct gd.ClassTag) gd.Object {
+	API.Object.CastTo = func(o gd.Object, ct gd.ClassTag) gd.Object {
 		var self = mmm.Get(o.AsPointer())
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
@@ -1909,8 +1909,11 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(self[0]),
 			C.uintptr_t(ct),
 		)
+		if ret == 0 {
+			return gd.Object{}
+		}
 		var obj gd.Object
-		obj.SetPointer(mmm.New[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{uintptr(ret)}))
+		obj.SetPointer(o.AsPointer())
 		return obj
 	}
 	object_get_instance_id := dlsymGD("object_get_instance_id")
@@ -2377,7 +2380,7 @@ func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
 	if !ok {
 		return false
 	}
-	*(*[3]uintptr)(p_value) = mmm.Get(variant)
+	*(*[3]uintptr)(p_value) = mmm.End(variant)
 	return true
 }
 

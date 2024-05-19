@@ -559,7 +559,7 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"child_node": IsTemporaryReference,
 		},
 		"set_owner": {
-			"owner": LifetimeBoundToClass,
+			"owner": MustAssertInstanceID,
 		},
 		"get_owner": {
 			"return value": MustAssertInstanceID,

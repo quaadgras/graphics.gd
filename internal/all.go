@@ -11225,115 +11225,6 @@ func (self Object) HasUserSignal(signal StringName) bool {
 }
 
 /*
-Emits the given [param signal] by name. The signal must exist, so it should be a built-in signal of this class or one of its inherited classes, or a user-defined signal (see [method add_user_signal]). This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
-Returns [constant ERR_UNAVAILABLE] if [param signal] does not exist or the parameters are invalid.
-[codeblocks]
-[gdscript]
-emit_signal("hit", "sword", 100)
-emit_signal("game_over")
-[/gdscript]
-[csharp]
-EmitSignal(SignalName.Hit, "sword", 100);
-EmitSignal(SignalName.GameOver);
-[/csharp]
-[/codeblocks]
-[b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot signals. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
-*/
-//go:nosplit
-func (self Object) EmitSignal(signal StringName, args ...Variant) int64 {
-	var selfPtr = self.AsPointer()
-	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(signal))
-	for _, arg := range args {
-		callframe.Arg(frame, arg)
-	}
-	var r_ret = callframe.Ret[int64](frame)
-	if len(args) > 0 {
-		panic(`varargs not supported for class methods yet`)
-	}
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_emit_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Calls the [param method] on the object and returns the result. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
-[codeblocks]
-[gdscript]
-var node = Node3D.new()
-node.call("rotate", Vector3(1.0, 0.0, 0.0), 1.571)
-[/gdscript]
-[csharp]
-var node = new Node3D();
-node.Call(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
-[/csharp]
-[/codeblocks]
-[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
-*/
-//go:nosplit
-func (self Object) Call(ctx Context, method StringName, args ...Variant) Variant {
-	var selfPtr = self.AsPointer()
-	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(method))
-	for _, arg := range args {
-		callframe.Arg(frame, arg)
-	}
-	var r_ret = callframe.Ret[[3]uintptr](frame)
-	if len(args) > 0 {
-		panic(`varargs not supported for class methods yet`)
-	}
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_call, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
-Calls the [param method] on the object during idle time. Always returns null, [b]not[/b] the method's result.
-Idle time happens mainly at the end of process and physics frames. In it, deferred calls will be run until there are none left, which means you can defer calls from other deferred calls and they'll still be run in the current idle time cycle. This means you should not call a method deferred from itself (or from a method called by it), as this causes infinite recursion the same way as if you had called the method directly.
-This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
-[codeblocks]
-[gdscript]
-var node = Node3D.new()
-node.call_deferred("rotate", Vector3(1.0, 0.0, 0.0), 1.571)
-[/gdscript]
-[csharp]
-var node = new Node3D();
-node.CallDeferred(Node3D.MethodName.Rotate, new Vector3(1f, 0f, 0f), 1.571f);
-[/csharp]
-[/codeblocks]
-See also [method Callable.call_deferred].
-[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
-[b]Note:[/b] If you're looking to delay the function call by a frame, refer to the [signal SceneTree.process_frame] and [signal SceneTree.physics_frame] signals.
-[codeblock]
-var node = Node3D.new()
-# Make a Callable and bind the arguments to the node's rotate() call.
-var callable = node.rotate.bind(Vector3(1.0, 0.0, 0.0), 1.571)
-# Connect the callable to the process_frame signal, so it gets called in the next process frame.
-# CONNECT_ONE_SHOT makes sure it only gets called once instead of every frame.
-get_tree().process_frame.connect(callable, CONNECT_ONE_SHOT)
-[/codeblock]
-*/
-//go:nosplit
-func (self Object) CallDeferred(ctx Context, method StringName, args ...Variant) Variant {
-	var selfPtr = self.AsPointer()
-	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(method))
-	for _, arg := range args {
-		callframe.Arg(frame, arg)
-	}
-	var r_ret = callframe.Ret[[3]uintptr](frame)
-	if len(args) > 0 {
-		panic(`varargs not supported for class methods yet`)
-	}
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_call_deferred, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
 Assigns [param value] to the given [param property], at the end of the current frame. This is equivalent to calling [method set] through [method call_deferred].
 [codeblocks]
 [gdscript]
@@ -11803,6 +11694,9 @@ func (self *RefCounted) SetPointer(ptr Pointer) { self.ptr = ptr }
 
 //go:nosplit
 func (self RefCounted) Super() Object { return *(*Object)(unsafe.Pointer(&self)) }
+
+//go:nosplit
+func (self RefCounted) AsRefCounted() RefCounted { return self }
 
 //go:nosplit
 func (self RefCounted) AsObject() Object { return *(*Object)(unsafe.Pointer(&self)) }

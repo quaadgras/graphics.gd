@@ -15,15 +15,19 @@ import (
 func registerSignals(godot Context, class StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
+		name := field.Name
+		if tag := field.Tag.Get("gd"); tag != "" {
+			name = tag
+		}
 		if field.Type.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
-			var signalName = godot.StringName(field.Name)
+			var signalName = godot.StringName(name)
 			var ftype = field.Type.Field(1).Type
 			if ftype.Kind() != reflect.Func {
 				panic("gdextension.RegisterClass: Signal[T] Emit field must be a function")
 			}
 			if ftype.NumOut() != 0 {
 				panic(fmt.Sprintf("gdextension.RegisterClass: %v.%v must not return any values",
-					rtype.Name(), field.Name))
+					rtype.Name(), name))
 			}
 			var args []gd.PropertyInfo
 			for i := 0; i < ftype.NumIn(); i++ {

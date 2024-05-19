@@ -232,6 +232,8 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 			vtype = TypeObject
 		case rtype.Implements(reflect.TypeOf([0]gd.IsArray{}).Elem()):
 			vtype = TypeArray
+		case rtype.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()):
+			vtype = TypeSignal
 		default:
 			panic("gdextension.RegisterClass: unsupported property type " + rtype.String())
 		}

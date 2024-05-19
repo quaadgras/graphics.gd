@@ -164,9 +164,13 @@ func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd
 		var (
 			rvalue = value.Field(i).Addr()
 		)
+		name := field.Name
+		if tag := field.Tag.Get("gd"); tag != "" {
+			name = tag
+		}
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
 		if setter, ok := rvalue.Interface().(isSignal); ok {
-			signal := ctx.SignalOf(ctx, super, ctx.StringName(field.Name))
+			signal := ctx.SignalOf(ctx, super, ctx.StringName(name))
 			scoped := mmm.Let[gd.Signal](ctx.Lifetime, ctx.API, mmm.End(signal))
 			setter.setSignal(scoped)
 			emit := rvalue.Elem().FieldByName("Emit")
@@ -236,10 +240,14 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if !field.IsValid() {
 		return false
 	}
-	converted := reflect.ValueOf(value.Interface(instance.Context))
+	tmp := gd.NewContext(instance.Context.API)
+	defer tmp.End()
+	val := value.Interface(tmp)
+	converted := reflect.ValueOf(val)
 	if !converted.IsValid() {
 		return false
 	}
+	object, isObject := val.(gd.Object)
 	if converted.Type().ConvertibleTo(field.Type()) {
 		converted = converted.Convert(field.Type())
 	}
@@ -253,6 +261,18 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 				return true
 			}
 		}
+		if field.Type().Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
+			if !isObject {
+				return false
+			}
+			var classtag = instance.Context.API.ClassDB.GetClassTag(tmp.StringName(classNameOf(field.Type())))
+			casted := instance.Context.API.Object.CastTo(object, classtag)
+			if mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
+				field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Context.Lifetime, instance.Context.API, mmm.End(casted.AsPointer())))
+				return true
+			}
+
+		}
 		return false
 	}
 	field.Set(converted)
@@ -265,7 +285,11 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	if !field.IsValid() {
 		return gd.Variant{}, false
 	}
-	return instance.Context.Variant(field.Interface()), true
+	tmp := gd.NewContext(instance.Context.API)
+	variant := tmp.Variant(field.Interface())
+	release := mmm.Let[gd.Variant](mmm.NewLifetime(tmp.API), tmp.API, mmm.End(variant))
+	tmp.End()
+	return release, true
 }
 
 func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.PropertyInfo {
@@ -332,58 +356,11 @@ func (instance *instanceImplementation) ready() {
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
-		var field = rvalue.Type().Field(i)
+		field := rvalue.Type().Field(i)
 		if !field.IsExported() || field.Name == "Class" {
 			continue
 		}
-		var (
-			value  = rvalue.Field(i).Addr().Interface()
-			rvalue = reflect.ValueOf(value)
-		)
-		if rvalue.Elem().Kind() == reflect.Pointer {
-			rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
-			value = rvalue.Elem().Interface()
-		}
-		type isNode interface {
-			gd.PointerToClass
-
-			AsNode() Node
-		}
-		class, ok := value.(isNode)
-		if !ok {
-			continue
-		}
-		path := tmp.String(field.Name).NodePath(tmp)
-		if !parent.HasNode(path) {
-			child := instance.Context.API.ClassDB.ConstructObject(instance.Context, tmp.StringName(classNameOf(field.Type)))
-			native, ok := instance.Context.API.Instances[mmm.Get(child.AsPointer())[0]]
-			if ok {
-				rvalue.Elem().Set(reflect.ValueOf(native))
-				class = native.(isNode)
-			} else {
-				class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.Get(child.AsPointer())))
-			}
-			child.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(child.AsPointer())))
-			var mode NodeInternalMode
-			if !field.IsExported() {
-				mode = NodeInternalModeFront
-			}
-			class.AsNode().SetName(tmp.String(field.Name))
-			parent.AddChild(class.AsNode(), false, mode)
-			class.AsNode().SetOwner(parent)
-			continue
-		}
-		var node = parent.GetNode(tmp, path)
-		if name := node.AsObject().GetClass(tmp).String(); name != classNameOf(field.Type) {
-			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
-		}
-		ref, native := tmp.API.Instances[mmm.Get(node.AsPointer())[0]]
-		if native {
-			rvalue.Elem().Set(reflect.ValueOf(ref))
-			mmm.End(node.AsPointer())
-		} else {
-			class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(node.AsPointer())))
-		}
+		instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent)
 	}
 	if !Engine(tmp).IsEditorHint() {
 		impl, ok := instance.Value.(interface {
@@ -392,5 +369,73 @@ func (instance *instanceImplementation) ready() {
 		if ok {
 			impl.Ready(tmp)
 		}
+	}
+}
+
+func (instance *instanceImplementation) assertChild(tmp Context, value any, field reflect.StructField, parent Node) {
+	var (
+		rvalue = reflect.ValueOf(value)
+	)
+	if rvalue.Elem().Kind() == reflect.Pointer {
+		rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
+		value = rvalue.Elem().Interface()
+	}
+	if rvalue.Elem().Kind() == reflect.Struct {
+		defer func() {
+			rvalue := rvalue.Elem()
+			for i := 0; i < rvalue.NumField(); i++ {
+				field := rvalue.Type().Field(i)
+				if !field.IsExported() || field.Name == "Class" {
+					continue
+				}
+				instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent)
+			}
+		}()
+	}
+	type isNode interface {
+		gd.PointerToClass
+
+		AsNode() Node
+	}
+	class, ok := value.(isNode)
+	if !ok {
+		return
+	}
+	name := field.Name
+	if tag := field.Tag.Get("gd"); tag != "" {
+		name = tag
+	}
+	path := tmp.String(name).NodePath(tmp)
+	if !parent.HasNode(path) {
+		child := instance.Context.API.ClassDB.ConstructObject(instance.Context, tmp.StringName(classNameOf(field.Type)))
+		native, ok := instance.Context.API.Instances[mmm.Get(child.AsPointer())[0]]
+		if ok {
+			rvalue.Elem().Set(reflect.ValueOf(native))
+			class = native.(isNode)
+		} else {
+			class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.Get(child.AsPointer())))
+		}
+		child.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(child.AsPointer())))
+		var mode NodeInternalMode
+		if !field.IsExported() {
+			mode = NodeInternalModeFront
+		}
+		class.AsNode().SetName(tmp.String(field.Name))
+		var adding Node
+		adding.SetPointer(mmm.Pin[gd.Pointer](tmp.Lifetime, tmp.API, class.AsPointer().Pointer()))
+		parent.AddChild(adding, false, mode)
+		class.AsNode().SetOwner(parent)
+		return
+	}
+	var node = parent.GetNode(tmp, path)
+	if name := node.AsObject().GetClass(tmp).String(); name != classNameOf(field.Type) {
+		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
+	}
+	ref, native := tmp.API.Instances[mmm.Get(node.AsPointer())[0]]
+	if native {
+		rvalue.Elem().Set(reflect.ValueOf(ref))
+		mmm.End(node.AsPointer())
+	} else {
+		class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(node.AsPointer())))
 	}
 }

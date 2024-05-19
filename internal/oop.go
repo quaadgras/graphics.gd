@@ -39,8 +39,9 @@ func PointerLifetimeBoundTo(godot Context, obj Object, ptr uintptr) Pointer {
 //go:nosplit
 func (o Object) AsPointer() Pointer { return o.ptr }
 
-//go:nosplit
-func (o *Object) SetPointer(ptr Pointer) { o.ptr = ptr }
+func (o *Object) SetPointer(ptr Pointer) {
+	o.ptr = ptr
+}
 
 func (self Object) AsObject() Object {
 	return self
@@ -100,9 +101,8 @@ func As[T IsClass](godot Context, class IsClass) (T, bool) {
 		rtype = rtype.Elem()
 	}
 	var classtag = godot.API.ClassDB.GetClassTag(godot.StringName(rtype.Name()))
-	casted := godot.API.Object.CastTo(godot, class.AsObject(), classtag)
+	casted := godot.API.Object.CastTo(class.AsObject(), classtag)
 	if mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
-		mmm.End(class.AsPointer()) // lifetime of the class has transferred to the return value.
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	var zero T
@@ -120,6 +120,11 @@ func (ptr Pointer) Pointer() [2]uintptr {
 }
 
 func (ptr Pointer) Free() {
+	if ptr.Pointer()[0] == 0 {
+		mmm.End(ptr)
+		return
+	}
+
 	var obj Object
 	obj.ptr = ptr
 
@@ -130,13 +135,12 @@ func (ptr Pointer) Free() {
 
 	// Important that we don't destroy RefCounted objects, instead
 	// they should be unreferenced instead.
-	ref := API.Object.CastTo(ctx, obj, API.refCountedClassTag)
+	ref := API.Object.CastTo(obj, API.refCountedClassTag)
 	if mmm.Get(ref.AsPointer()) != ([2]uintptr{}) {
 		(*(*RefCounted)(unsafe.Pointer(&ref))).Unreference()
 	} else {
 		API.Object.Destroy(obj)
 	}
-	mmm.End(ref.AsPointer())
 	mmm.End(obj.AsPointer())
 }
 

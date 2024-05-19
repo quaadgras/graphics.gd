@@ -714,6 +714,7 @@ func generate() error {
 			var i = 1
 			super := classDB[class.Inherits]
 			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) Super() %[3]v { return *(*%[3]v)(unsafe.Pointer(&self)) }\n", class.Name, super.Name, classDB.nameOf(pkg, super.Name))
+			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) As%[1]v() %[1]v { return self }\n", class.Name)
 			for super.Name != "" {
 				fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) As%[2]v() %[3]v { return *(*%[3]v)(unsafe.Pointer(&self)) }\n", class.Name, super.Name, classDB.nameOf(pkg, super.Name))
 				i++
@@ -778,6 +779,10 @@ const (
 )
 
 func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, method gdjson.Method, ctype callType) {
+	if ctype == callDefault && method.IsVararg {
+		return
+	}
+
 	switch class.Name {
 	case "Float", "Int", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i",
 		"Transform2D", "Vector4", "Vector4i", "Plane", "Quaternion", "AABB", "Basis", "Transform3D",

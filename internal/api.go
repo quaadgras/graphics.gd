@@ -131,7 +131,7 @@ type API struct {
 		FreeInstanceBinding   func(Object, ExtensionToken)
 		SetInstance           func(Object, StringName, ObjectInterface)
 		GetClassName          func(Context, Object, ExtensionToken) String
-		CastTo                func(Context, Object, ClassTag) Object
+		CastTo                func(Object, ClassTag) Object
 		GetInstanceID         func(Object) ObjectID
 		GetInstanceFromID     func(Context, ObjectID) Object
 	}
