@@ -328,12 +328,13 @@ type ClassInterface interface {
 }
 
 type ObjectInterface interface {
+	Init()
 	Set(StringName, Variant) bool
 	Get(StringName) (Variant, bool)
 	GetPropertyList(Context) []PropertyInfo
 	PropertyCanRevert(StringName) bool
 	PropertyGetRevert(StringName) Variant
-	ValidateProperty(StringName, PropertyInfo) bool
+	ValidateProperty(StringName, *PropertyInfo) bool
 	Notification(int32, bool)
 	ToString() (String, bool)
 	Reference()

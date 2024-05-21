@@ -140,6 +140,7 @@ func (class classImplementation) CreateInstance() Object {
 	instance := class.reloadInstance(ctx, super)
 	class.Godot.Object.SetInstance(super, class.Name, instance)
 	class.Godot.Object.SetInstanceBinding(super, ctx.API.ExtensionToken, nil, nil)
+	instance.Init()
 	return super
 }
 
@@ -234,7 +235,20 @@ type instanceImplementation struct {
 	Value   any
 }
 
+func (instance *instanceImplementation) Init() {
+	if impl, ok := instance.Value.(interface {
+		Init(gd.Context)
+	}); ok {
+		impl.Init(instance.Context)
+	}
+}
+
 func (instance *instanceImplementation) Set(name StringName, value gd.Variant) bool {
+	if impl, ok := instance.Value.(interface {
+		Set(gd.Context, gd.StringName, gd.Variant) gd.Bool
+	}); ok {
+		return bool(impl.Set(instance.Context, name, value))
+	}
 	rvalue := reflect.ValueOf(instance.Value).Elem()
 	field := rvalue.FieldByName(name.String())
 	if !field.IsValid() {
@@ -280,6 +294,11 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 }
 
 func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) {
+	if impl, ok := instance.Value.(interface {
+		Get(gd.Context, StringName) gd.Variant
+	}); ok {
+		return impl.Get(instance.Context, name), true
+	}
 	rvalue := reflect.ValueOf(instance.Value).Elem()
 	field := rvalue.FieldByName(name.String())
 	if !field.IsValid() {
@@ -289,6 +308,11 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 }
 
 func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.PropertyInfo {
+	if impl, ok := instance.Value.(interface {
+		GetPropertyList(gd.Context) []gd.PropertyInfo
+	}); ok {
+		return impl.GetPropertyList(godot)
+	}
 	rtype := reflect.ValueOf(instance.Value).Elem().Type()
 	var list = make([]gd.PropertyInfo, 0, rtype.NumField())
 	for i := 0; i < rtype.NumField(); i++ {
@@ -304,11 +328,35 @@ func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.Prop
 	return list
 }
 
-func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool { return false }
+func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool {
+	if impl, ok := instance.Value.(interface {
+		PropertyCanRevert(gd.Context, gd.StringName) gd.Bool
+	}); ok {
+		tmp := gd.NewContext(instance.Context.API)
+		defer tmp.End()
+		return bool(impl.PropertyCanRevert(tmp, name))
+	}
+	return false
+}
 func (instance *instanceImplementation) PropertyGetRevert(name StringName) gd.Variant {
+	if impl, ok := instance.Value.(interface {
+		PropertyGetRevert(gd.Context, gd.StringName) gd.Variant
+	}); ok {
+		tmp := gd.NewContext(instance.Context.API)
+		defer tmp.End()
+		return impl.PropertyGetRevert(tmp, name)
+	}
 	return gd.Variant{}
 }
-func (instance *instanceImplementation) ValidateProperty(name StringName, info gd.PropertyInfo) bool {
+
+func (instance *instanceImplementation) ValidateProperty(name StringName, info *gd.PropertyInfo) bool {
+	if impl, ok := instance.Value.(interface {
+		ValidateProperty(gd.Context, gd.StringName, *gd.PropertyInfo)
+	}); ok {
+		tmp := gd.NewContext(instance.Context.API)
+		defer tmp.End()
+		impl.ValidateProperty(tmp, name, info)
+	}
 	return true
 }
 
@@ -329,6 +377,13 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 }
 
 func (instance *instanceImplementation) ToString() (String, bool) {
+	if impl, ok := instance.Value.(interface {
+		ToString(gd.Context) gd.String
+	}); ok {
+		tmp := gd.NewContext(instance.Context.API)
+		defer tmp.End()
+		return impl.ToString(tmp), true
+	}
 	return String{}, false
 }
 

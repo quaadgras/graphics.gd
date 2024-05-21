@@ -109,7 +109,6 @@ type (
 	StringName = internal.StringName
 	NodePath   = internal.NodePath
 	RID        = internal.RID
-	Object     = internal.Object
 	Callable   = internal.Callable
 
 	// Signal's T must be a function type that represents the arguments that are required

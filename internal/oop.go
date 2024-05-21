@@ -49,6 +49,8 @@ func (self Object) AsObject() Object {
 	return self
 }
 
+func (self Object) Free() { self.ptr.Free() }
+
 type Class[T, S IsClass] struct {
 	_     [0]*T
 	super S
