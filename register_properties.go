@@ -153,6 +153,10 @@ func classNameOf(rtype reflect.Type) string {
 }
 
 func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
+	switch rtype.Kind() {
+	case reflect.Int32, reflect.Int64, reflect.Int:
+		return TypeInt
+	}
 	switch rtype {
 	case reflect.TypeOf([0]Bool{}).Elem():
 		vtype = TypeBool

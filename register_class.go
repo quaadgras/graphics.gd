@@ -247,7 +247,6 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if !converted.IsValid() {
 		return false
 	}
-	object, isObject := val.(gd.Object)
 	if converted.Type().ConvertibleTo(field.Type()) {
 		converted = converted.Convert(field.Type())
 	}
@@ -266,19 +265,15 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 				return true
 			}
 		}
-		if field.Type().Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
-			if !isObject {
-				return false
-			}
-			var classtag = instance.Context.API.ClassDB.GetClassTag(tmp.StringName(classNameOf(field.Type())))
-			casted := instance.Context.API.Object.CastTo(object, classtag)
-			if mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
-				field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Context.Lifetime, instance.Context.API, mmm.End(casted.AsPointer())))
-				return true
-			}
-
-		}
 		return false
+	}
+	if obj, ok := val.(gd.IsClass); ok {
+		ref, ok := gd.As[gd.RefCounted](instance.Context, obj.AsObject())
+		if ok {
+			ref.Reference()
+		}
+		field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Context.Lifetime, instance.Context.API, mmm.End(obj.AsPointer())))
+		return true
 	}
 	field.Set(converted)
 	return true
@@ -320,6 +315,16 @@ func (instance *instanceImplementation) ValidateProperty(name StringName, info g
 func (instance *instanceImplementation) Notification(what int32, reversed bool) {
 	if what == 13 { // NOTIFICATION_READY
 		instance.ready()
+	}
+	if !Engine(instance.Context).IsEditorHint() {
+		impl, ok := instance.Value.(interface {
+			Notification(gd.Context, gd.NotificationType)
+		})
+		if ok {
+			tmp := gd.NewContext(instance.Context.API)
+			defer tmp.End()
+			impl.Notification(tmp, gd.NotificationType(what))
+		}
 	}
 }
 

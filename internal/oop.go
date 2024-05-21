@@ -14,6 +14,8 @@ type Object struct {
 	ptr Pointer
 }
 
+type NotificationType int32
+
 func PointerWithOwnershipTransferredToGo(godot Context, ptr uintptr) Pointer {
 	return mmm.New[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr})
 }
@@ -100,7 +102,9 @@ func As[T IsClass](godot Context, class IsClass) (T, bool) {
 	if rtype.Kind() == reflect.Pointer {
 		rtype = rtype.Elem()
 	}
-	var classtag = godot.API.ClassDB.GetClassTag(godot.StringName(rtype.Name()))
+	tmp := NewContext(godot.API)
+	defer tmp.End()
+	var classtag = godot.API.ClassDB.GetClassTag(tmp.StringName(rtype.Name()))
 	casted := godot.API.Object.CastTo(class.AsObject(), classtag)
 	if mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
@@ -137,7 +141,9 @@ func (ptr Pointer) Free() {
 	// they should be unreferenced instead.
 	ref := API.Object.CastTo(obj, API.refCountedClassTag)
 	if mmm.Get(ref.AsPointer()) != ([2]uintptr{}) {
-		(*(*RefCounted)(unsafe.Pointer(&ref))).Unreference()
+		if (*(*RefCounted)(unsafe.Pointer(&ref))).Unreference() {
+			API.Object.Destroy(obj)
+		}
 	} else {
 		API.Object.Destroy(obj)
 	}

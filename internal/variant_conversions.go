@@ -5,7 +5,6 @@ package gd
 import (
 	"fmt"
 	"reflect"
-	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
 
@@ -253,16 +252,15 @@ func (variant Variant) Interface(ctx Context) any {
 	case TypeRid:
 		return variantAsValueType[RID](variant, vtype)
 	case TypeObject:
+
 		var obj Object
 		obj.SetPointer(variantAsPointerType[Pointer](ctx, variant, vtype))
 
 		API := ctx.API
-		ref := API.Object.CastTo(obj, API.refCountedClassTag)
-		if mmm.Get(ref.AsPointer()) != ([2]uintptr{}) {
-			(*(*RefCounted)(unsafe.Pointer(&ref))).Reference()
-		}
+
 		tmp := NewContext(API)
 		defer tmp.End()
+
 		return ObjectAs(obj.GetClass(tmp).String(), obj.AsPointer())
 	case TypeCallable:
 		return variantAsPointerType[Callable](ctx, variant, vtype)
