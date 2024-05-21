@@ -255,8 +255,13 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 		if field.Type().Implements(reflect.TypeOf([0]gd.IsArray{}).Elem()) {
 			method, ok := field.Type().MethodByName("Typed")
 			if ok {
+				arr, isArray := val.(gd.Array)
+				if !isArray {
+					return false
+				}
+				arr = mmm.Pin[gd.Array](instance.Context.Lifetime, instance.Context.API, mmm.End(arr))
 				array := reflect.New(method.Type.In(0)).Elem()
-				array.Set(converted.Convert(method.Type.In(0)))
+				array.Set(reflect.ValueOf(arr).Convert(method.Type.In(0)))
 				field.Set(array)
 				return true
 			}
@@ -285,11 +290,7 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	if !field.IsValid() {
 		return gd.Variant{}, false
 	}
-	tmp := gd.NewContext(instance.Context.API)
-	variant := tmp.Variant(field.Interface())
-	release := mmm.Let[gd.Variant](mmm.NewLifetime(tmp.API), tmp.API, mmm.End(variant))
-	tmp.End()
-	return release, true
+	return instance.Context.Variant(field.Interface()), true
 }
 
 func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.PropertyInfo {

@@ -261,8 +261,9 @@ func (variant Variant) Interface(ctx Context) any {
 		if mmm.Get(ref.AsPointer()) != ([2]uintptr{}) {
 			(*(*RefCounted)(unsafe.Pointer(&ref))).Reference()
 		}
-
-		return obj
+		tmp := NewContext(API)
+		defer tmp.End()
+		return ObjectAs(obj.GetClass(tmp).String(), obj.AsPointer())
 	case TypeCallable:
 		return variantAsPointerType[Callable](ctx, variant, vtype)
 	case TypeSignal:
@@ -319,4 +320,10 @@ func LetVariantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.Point
 	var ret = r_ret.Get()
 	frame.Free()
 	return mmm.Let[T](ctx.Lifetime, ctx.API, ret)
+}
+
+var ObjectAs = func(name string, ptr Pointer) any {
+	var obj Object
+	obj.SetPointer(ptr)
+	return obj
 }
