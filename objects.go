@@ -92,7 +92,7 @@ Note: The script is not exposed like most properties. To set or get an object's 
 		// representation as a String.
 		ToString(Context) String
 		// Override this method to customize existing properties. Every property info goes through this method.
-		ValidateProperty(Context, StringName, gd.PropertyInfo)
+		ValidateProperty(Context, StringName, *gd.PropertyInfo)
 	}
 */
 type Object = gd.Object
