@@ -140,7 +140,6 @@ func (class classImplementation) CreateInstance() Object {
 	instance := class.reloadInstance(ctx, super)
 	class.Godot.Object.SetInstance(super, class.Name, instance)
 	class.Godot.Object.SetInstanceBinding(super, ctx.API.ExtensionToken, nil, nil)
-	instance.Init()
 	return super
 }
 
@@ -233,14 +232,6 @@ type instanceImplementation struct {
 	object  uintptr
 	Context Context
 	Value   any
-}
-
-func (instance *instanceImplementation) Init() {
-	if impl, ok := instance.Value.(interface {
-		Init(gd.Context)
-	}); ok {
-		impl.Init(instance.Context)
-	}
 }
 
 func (instance *instanceImplementation) Set(name StringName, value gd.Variant) bool {

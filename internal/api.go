@@ -328,7 +328,6 @@ type ClassInterface interface {
 }
 
 type ObjectInterface interface {
-	Init()
 	Set(StringName, Variant) bool
 	Get(StringName) (Variant, bool)
 	GetPropertyList(Context) []PropertyInfo

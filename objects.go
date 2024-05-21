@@ -65,10 +65,6 @@ Note: The script is not exposed like most properties. To set or get an object's 
 		Get(Context, StringName) Variant
 		// Override this method to customize how script properties should be handled by the engine.
 		GetPropertyList(Context) []gd.PropertyInfo
-		// Called when the object's script is instantiated, oftentimes after the object is initialized in
-		// memory (through [Create]). It can be also defined to take in parameters. This method is similar
-		// to a constructor in most programming languages.
-		Init(Context)
 		// Called when the object receives a notification, which can be identified in what by comparing it
 		// with a constant. See also [Object.Notification].
 		Notification(Context, NotificationType)
