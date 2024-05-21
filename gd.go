@@ -6,7 +6,6 @@ import (
 	"reflect"
 
 	gd "grow.graphics/gd/internal"
-	internal "grow.graphics/gd/internal"
 	"grow.graphics/xy"
 	"runtime.link/mmm"
 )
@@ -81,35 +80,35 @@ type (
 	EulerOrder = xy.EulerOrder
 )
 
-type privateSignal = internal.Signal
+type privateSignal = gd.Signal
 
 type (
-	Bool   = internal.Bool
-	Int    = internal.Int
-	Float  = internal.Float
-	String = internal.String
+	Bool   = gd.Bool
+	Int    = gd.Int
+	Float  = gd.Float
+	String = gd.String
 
-	Vector2     = internal.Vector2
-	Vector2i    = internal.Vector2i
-	Rect2       = internal.Rect2
-	Rect2i      = internal.Rect2i
-	Vector3     = internal.Vector3
-	Vector3i    = internal.Vector3i
-	Transform2D = internal.Transform2D
-	Vector4     = internal.Vector4
-	Vector4i    = internal.Vector4i
-	Plane       = internal.Plane
-	Quaternion  = internal.Quaternion
-	AABB        = internal.AABB
-	Basis       = internal.Basis
-	Transform3D = internal.Transform3D
-	Projection  = internal.Projection
+	Vector2     = gd.Vector2
+	Vector2i    = gd.Vector2i
+	Rect2       = gd.Rect2
+	Rect2i      = gd.Rect2i
+	Vector3     = gd.Vector3
+	Vector3i    = gd.Vector3i
+	Transform2D = gd.Transform2D
+	Vector4     = gd.Vector4
+	Vector4i    = gd.Vector4i
+	Plane       = gd.Plane
+	Quaternion  = gd.Quaternion
+	AABB        = gd.AABB
+	Basis       = gd.Basis
+	Transform3D = gd.Transform3D
+	Projection  = gd.Projection
 
-	Color      = internal.Color
-	StringName = internal.StringName
-	NodePath   = internal.NodePath
-	RID        = internal.RID
-	Callable   = internal.Callable
+	Color      = gd.Color
+	StringName = gd.StringName
+	NodePath   = gd.NodePath
+	RID        = gd.RID
+	Callable   = gd.Callable
 
 	// Signal's T must be a function type that represents the arguments that are required
 	// to be passed to the signal.
@@ -119,32 +118,32 @@ type (
 		Emit T
 	}
 
-	Dictionary = internal.Dictionary
-	Array      = internal.Array
-	Variant    = internal.Variant
+	Dictionary = gd.Dictionary
+	Array      = gd.Array
+	Variant    = gd.Variant
 
-	PackedByteArray    = internal.PackedByteArray
-	PackedInt32Array   = internal.PackedInt32Array
-	PackedInt64Array   = internal.PackedInt64Array
-	PackedFloat32Array = internal.PackedFloat32Array
-	PackedFloat64Array = internal.PackedFloat64Array
-	PackedStringArray  = internal.PackedStringArray
-	PackedVector2Array = internal.PackedVector2Array
-	PackedVector3Array = internal.PackedVector3Array
-	PackedColorArray   = internal.PackedColorArray
+	PackedByteArray    = gd.PackedByteArray
+	PackedInt32Array   = gd.PackedInt32Array
+	PackedInt64Array   = gd.PackedInt64Array
+	PackedFloat32Array = gd.PackedFloat32Array
+	PackedFloat64Array = gd.PackedFloat64Array
+	PackedStringArray  = gd.PackedStringArray
+	PackedVector2Array = gd.PackedVector2Array
+	PackedVector3Array = gd.PackedVector3Array
+	PackedColorArray   = gd.PackedColorArray
 )
 
 type isSignal interface {
-	internal.IsSignal
-	setSignal(internal.Signal)
+	gd.IsSignal
+	setSignal(gd.Signal)
 }
 
-func (s *Signal[T]) setSignal(signal internal.Signal) { s.privateSignal = signal }
+func (s *Signal[T]) setSignal(signal gd.Signal) { s.privateSignal = signal }
 
 func NewArrayOf[T any](godot Context) ArrayOf[T] {
 	array := gd.TypedArray[T](godot.Array())
 	rtype := reflect.TypeOf([0]T{}).Elem()
-	tmp := internal.NewContext(godot.API)
+	tmp := gd.NewContext(godot.API)
 	defer tmp.End()
 	godot.API.Array.SetTyped(Array(array), variantTypeOf(rtype), tmp.StringName(classNameOf(rtype)), Object{})
 	return array
