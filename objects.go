@@ -1,6 +1,6 @@
 package gd
 
-import internal "grow.graphics/gd/internal"
+import gd "grow.graphics/gd/internal"
 
 // NotificationType sent to an Object's notification method.
 type NotificationType int32
@@ -95,4 +95,4 @@ Note: The script is not exposed like most properties. To set or get an object's 
 		ValidateProperty(Context, StringName, gd.PropertyInfo)
 	}
 */
-type Object = internal.Object
+type Object = gd.Object
