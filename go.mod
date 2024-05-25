@@ -4,7 +4,7 @@ go 1.22.0
 
 require (
 	grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4
-	runtime.link v0.0.0-20240519001043-33982d8d5497
+	runtime.link v0.0.0-20240525075419-2bae5ef92c8f
 )
 
 require (
