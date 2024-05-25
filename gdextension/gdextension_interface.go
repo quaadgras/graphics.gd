@@ -353,7 +353,7 @@ extern bool get_func(pointer p_instance, void* p_name, void* r_ret);
 extern GDExtensionPropertyInfo *get_property_list_func(pointer p_instance, uint32_t *r_count);
 extern void free_property_list_func(pointer p_instance, GDExtensionPropertyInfo *p_list);
 extern bool property_can_revert_func(pointer p_instance, void* p_name);
-extern void property_get_revert_func(pointer p_instance, void* p_name, void* r_ret);
+extern bool property_get_revert_func(pointer p_instance, void* p_name, void* r_ret);
 //extern *validate_property_func;
 extern void notification_func(pointer p_instance, int32_t p_notification, bool reversed);
 extern void to_string_func(pointer p_instance, void* valid, void* r_ret);
@@ -1528,12 +1528,12 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return int(length)
 	}
-	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
-	API.PackedColorArray = makePackedFunctions[gd.PackedColorArray, gd.Color]("color_array")
-	API.PackedFloat32Array = makePackedFunctions[gd.PackedFloat32Array, float32]("float32_array")
-	API.PackedFloat64Array = makePackedFunctions[gd.PackedFloat64Array, float64]("float64_array")
-	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
-	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
+	API.PackedByteArray = makePackedFunctions[*gd.PackedByteArray, byte]("byte_array")
+	API.PackedColorArray = makePackedFunctions[*gd.PackedColorArray, gd.Color]("color_array")
+	API.PackedFloat32Array = makePackedFunctions[*gd.PackedFloat32Array, float32]("float32_array")
+	API.PackedFloat64Array = makePackedFunctions[*gd.PackedFloat64Array, float64]("float64_array")
+	API.PackedInt32Array = makePackedFunctions[*gd.PackedInt32Array, int32]("int32_array")
+	API.PackedInt64Array = makePackedFunctions[*gd.PackedInt64Array, int64]("int64_array")
 	packed_string_array_operator_index_const := dlsymGD("packed_string_array_operator_index_const")
 	API.PackedStringArray.Index = func(ctx gd.Context, psa gd.PackedStringArray, i gd.Int) gd.String {
 		var frame = callframe.New()
@@ -1558,8 +1558,8 @@ func linkCGO(API *gd.API) {
 		*(*uintptr)(ptr) = mmm.Get(v)
 		frame.Free()
 	}
-	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
-	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
+	API.PackedVector2Array = makePackedFunctions[*gd.PackedVector2Array, gd.Vector2]("vector2_array")
+	API.PackedVector3Array = makePackedFunctions[*gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	array_operator_index_const := dlsymGD("array_operator_index_const")
 	API.Array.Index = func(ctx gd.Context, a gd.Array, i gd.Int) gd.Variant {
 		var frame = callframe.New()
@@ -2448,12 +2448,13 @@ func property_can_revert_func(p_instance uintptr, p_name unsafe.Pointer) bool {
 }
 
 //export property_get_revert_func
-func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer) {
+func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
 	ctx := gd.NewContext(&godot)
 	defer ctx.End()
 	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
-	variant := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(name)
-	*(*[3]uintptr)(p_value) = mmm.Get(variant)
+	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(ctx, name)
+	*(*[3]uintptr)(p_value) = mmm.End(variant)
+	return ok
 }
 
 //export notification_func

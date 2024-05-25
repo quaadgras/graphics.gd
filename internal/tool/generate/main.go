@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"grow.graphics/gd/internal/gdjson"
+	"grow.graphics/gd/internal/gdtype"
 )
 
 // LoadSpecification, either from a local file or by downloading
@@ -810,6 +811,9 @@ func generate() error {
 
 func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "gd.")
+	if strings.HasPrefix(t, "ArrayOf") {
+		return "uintptr", true
+	}
 	switch t {
 	case "String", "StringName", "NodePath",
 		"Dictionary", "Array":
@@ -889,7 +893,8 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 
 			argPtrKind, argIsPtr := classDB.isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = mmm.Let[%v](ctx.Lifetime, ctx.API, "+prefix+"UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), argType, argPtrKind, i)
+				fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name),
+					gdtype.Name(argType).Let("ctx", fmt.Sprintf(prefix+"UnsafeGet[%v](p_args,%d)", argPtrKind, i)))
 			} else {
 				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
 			}
@@ -908,12 +913,12 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			if _, ok := classDB[result]; ok || result == "gd.Object" {
 				fmt.Fprintf(w, "\t\tmmm.End(ret.AsPointer())\n")
 			} else {
-				fmt.Fprintf(w, "\t\tmmm.End(ret)\n")
+				fmt.Fprintf(w, "\t\t%s\n", gdtype.Name(result).End("ret"))
 			}
 		}
 		fmt.Fprintf(w, "\t\tctx.End()\n")
 		if result != "" {
-			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet[%v](p_back, ret)\n", result)
+			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet[%v](p_back, %s)\n", gdtype.Name(result).Underlying(), gdtype.Name(result).ToUnderlying("ret"))
 		}
 		fmt.Fprintf(w, "\t}\n")
 		fmt.Fprintf(w, "}\n")
@@ -926,7 +931,12 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if !isPtr {
 		context = ""
 	}
-	fmt.Fprintf(w, "//go:nosplit\nfunc (self %v) %v(%s", class.Name, convertName(method.Name), context)
+
+	if ctype == callBuiltin && strings.HasPrefix(class.Name, "Packed") {
+		fmt.Fprintf(w, "//go:nosplit\nfunc (self *%v) %v(%s", class.Name, convertName(method.Name), context)
+	} else {
+		fmt.Fprintf(w, "//go:nosplit\nfunc (self %v) %v(%s", class.Name, convertName(method.Name), context)
+	}
 
 	if method.Name == "select" {
 		method.Name = "select_"
@@ -991,11 +1001,21 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		}
 	}
 	if ctype == callBuiltin {
-		fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
-		if method.IsVararg {
-			fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, len(method.Arguments))
+		if strings.HasPrefix(class.Name, "Packed") {
+			fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
+			if method.IsVararg {
+				fmt.Fprintf(w, "\tmmm.API(*selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, len(method.Arguments))
+			} else {
+				fmt.Fprintf(w, "\tmmm.API(*selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+			}
+			fmt.Fprintf(w, "\tmmm.Set(selfPtr, p_self.Get())\n")
 		} else {
-			fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+			fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
+			if method.IsVararg {
+				fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, len(method.Arguments))
+			} else {
+				fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+			}
 		}
 	} else {
 		if method.IsVararg {
@@ -1021,14 +1041,26 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			}
 
 		} else {
-			fmt.Fprintf(w, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
+			if strings.HasPrefix(result, "ArrayOf") {
+				fmt.Fprint(w, "\tvar ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())\n")
+			} else if strings.HasPrefix(result, "gd.ArrayOf") {
+				fmt.Fprint(w, "\tvar ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())\n")
+			} else {
+				fmt.Fprintf(w, "\tvar ret = mmm.New[%v](ctx.Lifetime, ctx.API, r_ret.Get())\n", result)
+			}
 		}
 	} else if result != "" {
 		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")
 	}
 	fmt.Fprintf(w, "\tframe.Free()\n")
 	if result != "" {
-		fmt.Fprintf(w, "\treturn ret\n")
+		if strings.HasPrefix(result, "ArrayOf") || strings.HasPrefix(result, "gd.ArrayOf") {
+			result = strings.ReplaceAll(result, "gd.ArrayOf", "gd.TypedArray")
+			result = strings.ReplaceAll(result, "ArrayOf", "TypedArray")
+			fmt.Fprintf(w, "\treturn %s(ret)\n", result)
+		} else {
+			fmt.Fprintf(w, "\treturn ret\n")
+		}
 	}
 	/*if result != "" {
 		fmt.Fprintf(w, "\tvar ret %v\n", result)

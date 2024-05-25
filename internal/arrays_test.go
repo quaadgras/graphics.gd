@@ -17,4 +17,11 @@ func TestArrays(t *testing.T) {
 	if numbers.Index(godot, 0) != 1 {
 		t.Error("expected 1")
 	}
+
+	var packed = godot.PackedVector3Array()
+	packed.Append(gd.Vector3{1, 2, 3})
+
+	if packed.Index(0) != (gd.Vector3{1, 2, 3}) {
+		t.Error("expected 1, 2, 3")
+	}
 }

@@ -124,13 +124,17 @@ func propertyOf(godot Context, field reflect.StructField) gd.PropertyInfo {
 			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, elem) // MAKE_RESOURCE_TYPE_HINT
 		}
 	}
+	var usage = PropertyUsageStorage | PropertyUsageEditor
+	if vtype == TypeNil {
+		usage |= PropertyUsageNilIsVariant
+	}
 	return gd.PropertyInfo{
 		Type:       vtype,
 		Name:       godot.StringName(name),
 		ClassName:  godot.StringName(classNameOf(field.Type)),
 		Hint:       hint,
 		HintString: godot.String(hintString),
-		Usage:      PropertyUsageStorage | PropertyUsageEditor,
+		Usage:      usage,
 	}
 }
 
@@ -158,6 +162,8 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 		return TypeInt
 	}
 	switch rtype {
+	case reflect.TypeOf([0]Variant{}).Elem():
+		vtype = TypeNil
 	case reflect.TypeOf([0]Bool{}).Elem():
 		vtype = TypeBool
 	case reflect.TypeOf([0]Int{}).Elem():

@@ -140,6 +140,7 @@ func (class classImplementation) CreateInstance() Object {
 	instance := class.reloadInstance(ctx, super)
 	class.Godot.Object.SetInstance(super, class.Name, instance)
 	class.Godot.Object.SetInstanceBinding(super, ctx.API.ExtensionToken, nil, nil)
+	instance.OnCreate()
 	return super
 }
 
@@ -234,15 +235,47 @@ type instanceImplementation struct {
 	Value   any
 }
 
+func (instance instanceImplementation) OnCreate() {
+	tmp := gd.NewContext(instance.Context.API)
+	defer tmp.End()
+	if impl, ok := instance.Value.(interface {
+		OnCreate(gd.Context)
+	}); ok {
+		impl.OnCreate(tmp)
+	}
+}
+
 func (instance *instanceImplementation) Set(name StringName, value gd.Variant) bool {
 	if impl, ok := instance.Value.(interface {
 		Set(gd.Context, gd.StringName, gd.Variant) gd.Bool
 	}); ok {
-		return bool(impl.Set(instance.Context, name, value))
+		ok := bool(impl.Set(instance.Context, name, value))
+		if ok {
+			if impl, ok := instance.Value.(interface {
+				OnSet(gd.Context, gd.StringName, gd.Variant)
+			}); ok {
+				tmp := gd.NewContext(instance.Context.API)
+				defer tmp.End()
+				impl.OnSet(tmp, name, value)
+			}
+		}
+		return ok
 	}
+	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(name.String())
+	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
+		for i := 0; i < rvalue.NumField(); i++ {
+			if rvalue.Type().Field(i).Tag.Get("gd") == sname {
+				field = rvalue.Field(i)
+				break
+			}
+		}
+		if !field.IsValid() {
+			return false
+		}
+	}
+	if !field.CanSet() {
 		return false
 	}
 	tmp := gd.NewContext(instance.Context.API)
@@ -278,9 +311,14 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 			ref.Reference()
 		}
 		field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Context.Lifetime, instance.Context.API, mmm.End(obj.AsPointer())))
-		return true
+	} else {
+		field.Set(converted)
 	}
-	field.Set(converted)
+	if impl, ok := instance.Value.(interface {
+		OnSet(gd.Context, gd.StringName, gd.Variant)
+	}); ok {
+		impl.OnSet(tmp, name, value)
+	}
 	return true
 }
 
@@ -290,10 +328,19 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	}); ok {
 		return impl.Get(instance.Context, name), true
 	}
+	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(name.String())
+	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
-		return gd.Variant{}, false
+		for i := 0; i < rvalue.NumField(); i++ {
+			if rvalue.Type().Field(i).Tag.Get("gd") == sname {
+				field = rvalue.Field(i)
+				break
+			}
+		}
+		if !field.IsValid() {
+			return gd.Variant{}, false
+		}
 	}
 	return instance.Context.Variant(field.Interface()), true
 }
@@ -327,17 +374,55 @@ func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool 
 		defer tmp.End()
 		return bool(impl.PropertyCanRevert(tmp, name))
 	}
-	return false
+	sname := name.String()
+	rtype := reflect.TypeOf(instance.Value).Elem()
+	field, ok := rtype.FieldByName(sname)
+	if !ok {
+		for i := 0; i < rtype.NumField(); i++ {
+			if rtype.Field(i).Tag.Get("gd") == sname {
+				field = rtype.Field(i)
+				ok = true
+				break
+			}
+		}
+	}
+	if !ok {
+		return false
+	}
+	_, ok = field.Tag.Lookup("default")
+	return ok
 }
-func (instance *instanceImplementation) PropertyGetRevert(name StringName) gd.Variant {
+func (instance *instanceImplementation) PropertyGetRevert(godot Context, name StringName) (gd.Variant, bool) {
+	tmp := gd.NewContext(instance.Context.API)
+	defer tmp.End()
 	if impl, ok := instance.Value.(interface {
-		PropertyGetRevert(gd.Context, gd.StringName) gd.Variant
+		PropertyGetRevert(gd.Context, gd.StringName) (gd.Variant, bool)
 	}); ok {
-		tmp := gd.NewContext(instance.Context.API)
-		defer tmp.End()
 		return impl.PropertyGetRevert(tmp, name)
 	}
-	return gd.Variant{}
+	sname := name.String()
+	rtype := reflect.TypeOf(instance.Value).Elem()
+	field, ok := rtype.FieldByName(sname)
+	if !ok {
+		for i := 0; i < rtype.NumField(); i++ {
+			if rtype.Field(i).Tag.Get("gd") == sname {
+				field = rtype.Field(i)
+				ok = true
+				break
+			}
+		}
+	}
+	if !ok {
+		return gd.Variant{}, false
+	}
+	var value = reflect.New(field.Type)
+	if tag := field.Tag.Get("default"); tag != "" {
+		_, err := fmt.Sscanf(tag, "%v", value.Interface())
+		if err != nil {
+			return gd.Variant{}, false
+		}
+	}
+	return godot.Variant(value.Elem().Interface()), true
 }
 
 func (instance *instanceImplementation) ValidateProperty(name StringName, info *gd.PropertyInfo) bool {
@@ -392,6 +477,12 @@ func (instance *instanceImplementation) GetRID() RID {
 func (instance *instanceImplementation) Free() {
 	delete(instance.Context.API.Instances, instance.object)
 	instance.Context.End()
+	impl, ok := instance.Value.(interface {
+		OnFree(gd.Context)
+	})
+	if ok {
+		impl.OnFree(instance.Context)
+	}
 }
 
 // ready is responsible for asserting the scene tree for struct members that implement
