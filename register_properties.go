@@ -111,7 +111,7 @@ func propertyOf(godot Context, field reflect.StructField) gd.PropertyInfo {
 	if ok {
 		name = tag
 	}
-	var hint = PropertyHintResourceType
+	var hint gd.PropertyHint
 	var hintString = classNameOf(field.Type)
 	vtype := variantTypeOf(field.Type)
 	if vtype == TypeArray {
@@ -124,9 +124,16 @@ func propertyOf(godot Context, field reflect.StructField) gd.PropertyInfo {
 			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, elem) // MAKE_RESOURCE_TYPE_HINT
 		}
 	}
+	if field.Type.Implements(reflect.TypeOf([0]isResource{}).Elem()) {
+		hint |= PropertyHintResourceType
+	}
 	var usage = PropertyUsageStorage | PropertyUsageEditor
 	if vtype == TypeNil {
 		usage |= PropertyUsageNilIsVariant
+	}
+	if rangeHint, ok := field.Tag.Lookup("range"); ok {
+		hint |= PropertyHintRange
+		hintString = rangeHint
 	}
 	return gd.PropertyInfo{
 		Type:       vtype,
