@@ -84,6 +84,8 @@ func useGodot() (string, error) {
 	info, err := os.Stat(gopath + "/bin/godot-4.2.2")
 	if os.IsNotExist(err) {
 		switch runtime.GOOS {
+		case "android":
+			return "echo", nil
 		case "darwin":
 			if _, err := exec.LookPath("brew"); err == nil {
 				fmt.Println("gd: downloading Godot v4.2.2 stable for macOS (via brew)")
@@ -163,26 +165,30 @@ func wrap() error {
 			return err
 		}
 	}
+	graphics := "./graphics"
+	if runtime.GOOS == "android" {
+		graphics = "/sdcard/gd/" + filepath.Base(wd)
+	}
 	setup := func() error {
-		if err := os.MkdirAll("./graphics/.godot", 0755); err != nil {
+		if err := os.MkdirAll(graphics+"/.godot", 0755); err != nil {
 			return err
 		}
-		if err := setupFile(false, "./graphics/main.tscn", main_tscn); err != nil {
+		if err := setupFile(false, graphics+"/main.tscn", main_tscn); err != nil {
 			return err
 		}
-		if err := setupFile(false, "./graphics/project.godot", project_godot, filepath.Base(wd)); err != nil {
+		if err := setupFile(false, graphics+"/project.godot", project_godot, filepath.Base(wd)); err != nil {
 			return err
 		}
-		if err := setupFile(true, "./graphics/library.gdextension", library_gdextension); err != nil {
+		if err := setupFile(true, graphics+"/library.gdextension", library_gdextension); err != nil {
 			return err
 		}
-		if err := setupFile(false, "./graphics/.godot/extension_list.cfg", extension_list_cfg); err != nil {
+		if err := setupFile(false, graphics+"/.godot/extension_list.cfg", extension_list_cfg); err != nil {
 			return err
 		}
-		_, err := os.Stat("./graphics/.godot")
+		_, err := os.Stat(graphics + "/.godot")
 		if os.IsNotExist(err) {
 			godot := exec.Command(godot, "--import", "--headless")
-			godot.Dir = "./graphics"
+			godot.Dir = graphics
 			godot.Stderr = os.Stderr
 			godot.Stdout = os.Stdout
 			godot.Stdin = os.Stdin
@@ -200,7 +206,7 @@ func wrap() error {
 		libraryName += ".so"
 	}
 	if len(os.Args) == 1 {
-		golang := exec.Command("go", "build", "-buildmode=c-shared", "-o", "./graphics/"+libraryName)
+		golang := exec.Command("go", "build", "-buildmode=c-shared", "-o", graphics+"/"+libraryName)
 		golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		golang.Stderr = os.Stderr
 		golang.Stdout = os.Stdout
@@ -212,7 +218,7 @@ func wrap() error {
 			return err
 		}
 		godot := exec.Command(godot, "-e")
-		godot.Dir = "./graphics"
+		godot.Dir = graphics
 		godot.Stderr = os.Stderr
 		godot.Stdout = os.Stdout
 		godot.Stdin = os.Stdin
@@ -223,9 +229,9 @@ func wrap() error {
 	case "run", "build":
 		copy(args, os.Args[1:])
 		args[0] = "build"
-		args = append(args, "-buildmode=c-shared", "-o", "./graphics/"+libraryName)
+		args = append(args, "-buildmode=c-shared", "-o", graphics+"/"+libraryName)
 	case "test":
-		args = []string{"test", "-buildmode=c-shared", "-c", "-o", "./graphics/" + libraryName}
+		args = []string{"test", "-buildmode=c-shared", "-c", "-o", graphics + "/" + libraryName}
 	default:
 		copy(args, os.Args[1:])
 	}
@@ -243,7 +249,7 @@ func wrap() error {
 	switch os.Args[1] {
 	case "run":
 		godot := exec.Command(godot)
-		godot.Dir = "./graphics"
+		godot.Dir = graphics
 		godot.Stderr = os.Stderr
 		godot.Stdout = os.Stdout
 		godot.Stdin = os.Stdin
@@ -266,7 +272,7 @@ func wrap() error {
 			}
 		}
 		godot := exec.Command(godot, args...)
-		godot.Dir = "./graphics"
+		godot.Dir = graphics
 		godot.Stderr = os.Stderr
 		godot.Stdout = os.Stdout
 		godot.Stdin = os.Stdin
