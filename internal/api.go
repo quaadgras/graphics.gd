@@ -364,7 +364,7 @@ const (
 
 type Method struct {
 	Name                StringName
-	Call                func(any, ...Variant) (Variant, error)
+	Call                func(Context, any, ...Variant) (Variant, error)
 	PointerCall         func(any, UnsafeArgs, UnsafeBack)
 	MethodFlags         MethodFlags
 	ReturnValueInfo     *PropertyInfo

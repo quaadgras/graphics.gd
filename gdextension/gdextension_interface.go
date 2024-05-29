@@ -2559,12 +2559,12 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 	for _, elem := range unsafe.Slice((**[3]uintptr)(p_args), int(count)) {
 		variants = append(variants, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *elem))
 	}
-	result, err := method.Call(cgo.Handle(p_instance).Value(), variants...)
+	result, err := method.Call(ctx, cgo.Handle(p_instance).Value(), variants...)
 	if err != nil {
 		issue.error = 7 // TODO no generic error>
 		return
 	}
-	*(*[3]uintptr)(p_ret) = mmm.Get(result)
+	*(*[3]uintptr)(p_ret) = mmm.End(result)
 }
 
 //export method_ptrcall

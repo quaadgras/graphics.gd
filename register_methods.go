@@ -35,24 +35,21 @@ func registerMethods(godot Context, class StringName, rtype reflect.Type) {
 		godot.API.ClassDB.RegisterClassMethod(godot, godot.API.ExtensionToken, class, gd.Method{
 			Name: godot.StringName(method.Name),
 			// FIXME type check and return an error if arguments are invalid.
-			Call: func(instance any, v ...gd.Variant) (gd.Variant, error) {
-				ctx := gd.NewContext(godot.API)
-				defer ctx.End()
-
+			Call: func(godot gd.Context, instance any, v ...gd.Variant) (gd.Variant, error) {
 				var args = make([]reflect.Value, len(v)+1)
-				args[0] = reflect.ValueOf(ctx)
+				args[0] = reflect.ValueOf(godot)
 				for i := 0; i < len(v); i++ {
 					if method.Type.In(i + 2).Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
 						var obj = reflect.New(method.Type.In(i + 2))
-						obj.Interface().(gd.PointerToClass).SetPointer(gd.LetVariantAsPointerType[gd.Pointer](ctx, v[i], TypeObject))
+						obj.Interface().(gd.PointerToClass).SetPointer(gd.LetVariantAsPointerType[gd.Pointer](godot, v[i], TypeObject))
 						args[i+1] = obj.Elem()
 					} else {
-						args[i+1] = reflect.ValueOf(v[i].Interface(ctx))
+						args[i+1] = reflect.ValueOf(v[i].Interface(godot))
 					}
 				}
 				rets := reflect.ValueOf(instance.(*instanceImplementation).Value).Method(i).Call(args)
 				if len(rets) > 0 {
-					return ctx.Variant(rets[0].Interface()), nil
+					return godot.Variant(rets[0].Interface()), nil
 				}
 				return gd.Variant{}, nil
 			},
