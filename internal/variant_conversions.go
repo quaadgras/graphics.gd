@@ -29,6 +29,9 @@ func (godot Context) Variant(v any) Variant {
 	case Int:
 		var arg = callframe.Arg(frame, val)
 		godot.API.variant.FromType[TypeInt](ret, arg.Uintptr())
+	case Error:
+		var arg = callframe.Arg(frame, val)
+		godot.API.variant.FromType[TypeInt](ret, arg.Uintptr())
 	case Float:
 		var arg = callframe.Arg(frame, val)
 		godot.API.variant.FromType[TypeFloat](ret, arg.Uintptr())
