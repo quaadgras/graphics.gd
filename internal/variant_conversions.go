@@ -26,6 +26,9 @@ func (godot Context) Variant(v any) Variant {
 	case bool:
 		var arg = callframe.Arg(frame, val)
 		godot.API.variant.FromType[TypeBool](ret, arg.Uintptr())
+	case Bool:
+		var arg = callframe.Arg(frame, val)
+		godot.API.variant.FromType[TypeBool](ret, arg.Uintptr())
 	case Int:
 		var arg = callframe.Arg(frame, val)
 		godot.API.variant.FromType[TypeInt](ret, arg.Uintptr())
