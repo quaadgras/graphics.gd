@@ -278,9 +278,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if !field.CanSet() {
 		return false
 	}
-	tmp := gd.NewContext(instance.Context.API)
-	defer tmp.End()
-	val := value.Interface(tmp)
+	val := value.Interface(instance.Context)
 	converted := reflect.ValueOf(val)
 	if !converted.IsValid() {
 		return false
@@ -317,6 +315,8 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if impl, ok := instance.Value.(interface {
 		OnSet(gd.Context, gd.StringName, gd.Variant)
 	}); ok {
+		tmp := gd.NewContext(instance.Context.API)
+		defer tmp.End()
 		impl.OnSet(tmp, name, value)
 	}
 	return true
