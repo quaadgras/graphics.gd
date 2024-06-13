@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	gd "grow.graphics/gd/internal"
+	"runtime.link/mmm"
 )
 
 // Class can be embedded inside of a struct to represent a new Class type.
@@ -81,4 +82,16 @@ func Load[T isResource](godot Context, path string) (T, bool) {
 	resource := ResourceLoader(godot).Load(godot,
 		tmp.String(path), tmp.String(hint), ResourceLoaderCacheModeReuse)
 	return As[T](godot, resource)
+}
+
+// AddChild adds a child to the parent node, returning a [NodePath] to the child
+// with the specified lifetime.
+func AddChild(godot Context, parent, child Node) NodePath {
+	tmp := gd.NewContext(godot.API)
+	defer tmp.End()
+	var adding Node
+	adding.SetPointer(mmm.New[gd.Pointer](tmp.Lifetime, godot.API, mmm.Get(child.AsPointer())))
+	parent.AddChild(adding, true, 0)
+	defer mmm.End(child.AsPointer())
+	return child.GetPath(godot)
 }
