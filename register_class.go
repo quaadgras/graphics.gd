@@ -342,6 +342,9 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 			return gd.Variant{}, false
 		}
 	}
+	if reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]isSignal{}).Elem()) {
+		return gd.Variant{}, false
+	}
 	return instance.Context.Variant(field.Interface()), true
 }
 

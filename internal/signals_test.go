@@ -12,7 +12,7 @@ import (
 type CustomSignal struct {
 	gd.Class[CustomSignal, gd.Node2D]
 
-	HealthChanged gd.Signal[func(oldValue, newValue gd.Int)]
+	HealthChanged gd.SignalAs[func(gd.Int, gd.Int)]
 
 	Health gd.Int
 }
@@ -23,7 +23,7 @@ func (c *CustomSignal) Ready() {
 	}
 }
 
-func (c *CustomSignal) TakeDamage(amount gd.Int) {
+func (c *CustomSignal) TakeDamage(godot gd.Context, amount gd.Int) {
 	oldHealth := c.Health
 	c.Health -= amount
 	c.HealthChanged.Emit(oldHealth, c.Health)
@@ -36,5 +36,5 @@ func TestSignals(t *testing.T) {
 	gd.Register[CustomSignal](godot)
 
 	custom := gd.Create(godot, new(CustomSignal))
-	custom.TakeDamage(10)
+	custom.TakeDamage(godot, 10)
 }

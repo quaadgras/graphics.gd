@@ -110,13 +110,7 @@ type (
 	RID        = gd.RID
 	Callable   = gd.Callable
 
-	// Signal's T must be a function type that represents the arguments that are required
-	// to be passed to the signal.
-	Signal[T any] struct {
-		privateSignal // methods are exported but the field is not accessible
-
-		Emit T
-	}
+	Signal = gd.Signal
 
 	Dictionary = gd.Dictionary
 	Array      = gd.Array
@@ -133,12 +127,20 @@ type (
 	PackedColorArray   = gd.PackedColorArray
 )
 
+// SignalAs's T must be a function type that represents the arguments that are required
+// to be passed to the signal.
+type SignalAs[T any] struct {
+	Signal
+
+	Emit T
+}
+
 type isSignal interface {
 	gd.IsSignal
 	setSignal(gd.Signal)
 }
 
-func (s *Signal[T]) setSignal(signal gd.Signal) { s.privateSignal = signal }
+func (s *SignalAs[T]) setSignal(signal gd.Signal) { s.Signal = signal }
 
 func NewArrayOf[T any](godot Context) ArrayOf[T] {
 	array := gd.TypedArray[T](godot.Array())
