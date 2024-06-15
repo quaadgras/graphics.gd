@@ -2453,7 +2453,9 @@ func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer
 	defer ctx.End()
 	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
 	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(ctx, name)
-	*(*[3]uintptr)(p_value) = mmm.End(variant)
+	if ok {
+		*(*[3]uintptr)(p_value) = mmm.End(variant)
+	}
 	return ok
 }
 
