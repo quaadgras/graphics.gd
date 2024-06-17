@@ -178,6 +178,7 @@ func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd
 			fnType := emit.Type()
 			emit.Set(reflect.MakeFunc(fnType, func(args []reflect.Value) (results []reflect.Value) {
 				tmp := gd.NewContext(ctx.API)
+				defer tmp.End()
 				var variants = make([]gd.Variant, 0, len(args))
 				for _, arg := range args {
 					variants = append(variants, tmp.Variant(arg.Interface()))

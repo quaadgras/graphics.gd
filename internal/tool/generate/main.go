@@ -576,7 +576,7 @@ func generate() error {
 		}
 		if utility.IsVararg {
 			fmt.Fprintf(core, "\tfor _, arg := range args {\n")
-			fmt.Fprintf(core, "\t\tcallframe.Arg(frame, arg)\n")
+			fmt.Fprintf(core, "\t\tcallframe.Arg(frame, mmm.Get(arg))\n")
 			fmt.Fprintf(core, "\t}\n")
 		}
 		if isPtr {
@@ -988,7 +988,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	}
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
-		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, arg)\n")
+		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, mmm.Get(arg))\n")
 		fmt.Fprintf(w, "\t}\n")
 	}
 	if isPtr {

@@ -981,7 +981,7 @@ func (ctx Context) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	callframe.Arg(frame, mmm.Get(arg1))
 	callframe.Arg(frame, mmm.Get(arg2))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.max(r_ret.Uintptr(), frame.Array(0), 2)
@@ -1017,7 +1017,7 @@ func (ctx Context) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	callframe.Arg(frame, mmm.Get(arg1))
 	callframe.Arg(frame, mmm.Get(arg2))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	ctx.API.utility.min(r_ret.Uintptr(), frame.Array(0), 2)
@@ -1216,7 +1216,7 @@ func (ctx Context) Str(arg1 Variant, args ...Variant) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret = callframe.Ret[uintptr](frame)
 	ctx.API.utility.str(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1249,7 +1249,7 @@ func (ctx Context) Print(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.print(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1260,7 +1260,7 @@ func (ctx Context) PrintRich(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.print_rich(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1271,7 +1271,7 @@ func (ctx Context) Printerr(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.printerr(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1282,7 +1282,7 @@ func (ctx Context) Printt(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.printt(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1293,7 +1293,7 @@ func (ctx Context) Prints(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.prints(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1304,7 +1304,7 @@ func (ctx Context) Printraw(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.printraw(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1315,7 +1315,7 @@ func (ctx Context) PrintVerbose(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.print_verbose(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1326,7 +1326,7 @@ func (ctx Context) PushError(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.push_error(r_ret.Uintptr(), frame.Array(0), 1)
@@ -1337,7 +1337,7 @@ func (ctx Context) PushWarning(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	ctx.API.utility.push_warning(r_ret.Uintptr(), frame.Array(0), 1)
@@ -5746,7 +5746,7 @@ func (self Callable) Call(ctx Context, args ...Variant) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
@@ -5770,7 +5770,7 @@ func (self Callable) CallDeferred(args ...Variant) {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
@@ -5786,7 +5786,7 @@ func (self Callable) Rpc(args ...Variant) {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
@@ -5803,7 +5803,7 @@ func (self Callable) RpcId(peer_id Int, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
@@ -5820,7 +5820,7 @@ func (self Callable) Bind(ctx Context, args ...Variant) Callable {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
@@ -5972,7 +5972,7 @@ func (self Signal) Emit(args ...Variant) {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
-		callframe.Arg(frame, arg)
+		callframe.Arg(frame, mmm.Get(arg))
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
