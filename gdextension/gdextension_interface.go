@@ -2566,7 +2566,9 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 		issue.error = 7 // TODO no generic error>
 		return
 	}
-	*(*[3]uintptr)(p_ret) = mmm.End(result)
+	if result != (gd.Variant{}) {
+		*(*[3]uintptr)(p_ret) = mmm.End(result)
+	}
 }
 
 //export method_ptrcall
