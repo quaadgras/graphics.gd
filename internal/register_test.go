@@ -32,3 +32,24 @@ func TestRegister(t *testing.T) {
 	}
 	class.Super().AsNode().SetName(godot.String("SimpleClass"))
 }
+
+type MyClassWithConstants struct {
+	gd.Class[MyClassWithConstants, gd.Node2D]
+}
+
+func (*MyClassWithConstants) OnRegister(godot gd.Context) {
+	godot.Register(gd.Enum[MyClassWithConstants, int]{
+		Name: "MyEnum",
+		Values: map[string]int{
+			"Value1": 1,
+			"Value2": 2,
+		},
+	})
+}
+
+func TestRegisterConstants(t *testing.T) {
+	godot := internal.NewContext(API)
+	defer godot.End()
+
+	gd.Register[MyClassWithConstants](godot)
+}

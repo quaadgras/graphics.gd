@@ -46,6 +46,9 @@ the editor as a plugin.
 
 If the Struct extends [MainLoop] or [SceneTree] then it will be
 used as the main loop for the application.
+
+If the Struct implements an OnRegister(Context) method, it will
+be called on a temporary instance when the class is registered.
 */
 func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
@@ -90,6 +93,14 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 		main_loop_type := godot.String("application/run/main_loop_type")
 		ProjectSettings(godot).SetInitialValue(main_loop_type, godot.Variant(className))
 		ProjectSettings(godot).SetSetting(main_loop_type, godot.Variant(className))
+	}
+
+	type onRegister interface {
+		OnRegister(godot Context)
+	}
+	if reflect.PointerTo(classType).Implements(reflect.TypeOf([0]onRegister{}).Elem()) {
+		impl := reflect.New(classType).Interface().(onRegister)
+		impl.OnRegister(godot)
 	}
 }
 

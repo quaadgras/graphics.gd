@@ -18,6 +18,9 @@ func registerMethods(godot Context, class StringName, rtype reflect.Type) {
 		if !method.IsExported() || method.Type.NumIn() < 2 || method.Type.In(1) != reflect.TypeOf(Context{}) {
 			continue
 		}
+		if method.Name == "OnRegister" {
+			continue
+		}
 		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-2)
 		var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, method.Type.NumIn()-2)
 		for i := 2; i < method.Type.NumIn(); i++ {

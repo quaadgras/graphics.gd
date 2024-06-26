@@ -35,6 +35,14 @@ func NewContext(api *API) Context {
 	return newContext(api)
 }
 
+type Registrable interface {
+	Register(Context)
+}
+
+func (godot Context) Register(spec Registrable) {
+	spec.Register(godot)
+}
+
 func newContext(api *API) Context {
 	var ctx Context
 	ctx.Lifetime = mmm.NewLifetime(api)
