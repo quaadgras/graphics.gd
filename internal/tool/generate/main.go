@@ -928,7 +928,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		return
 	}
 	var context = "ctx " + prefix + "Context"
-	if !isPtr {
+	if !isPtr && !method.IsStatic {
 		context = ""
 	}
 
@@ -946,22 +946,24 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	}
 
 	for i, arg := range method.Arguments {
-		if i > 0 || isPtr {
+		if i > 0 || context != "" {
 			fmt.Fprint(w, ", ")
 		}
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
 	}
 	if method.IsVararg {
-		if len(method.Arguments) > 0 || isPtr {
+		if len(method.Arguments) > 0 || context != "" {
 			fmt.Fprint(w, ", ")
 		}
 		fmt.Fprintf(w, "args ..."+prefix+"Variant")
 	}
 	fmt.Fprintf(w, ") %v {\n", result)
-	if ctype == callBuiltin {
-		fmt.Fprintf(w, "\tvar selfPtr = self\n")
-	} else {
-		fmt.Fprintf(w, "\tvar selfPtr = self.AsPointer()\n")
+	if !method.IsStatic {
+		if ctype == callBuiltin {
+			fmt.Fprintf(w, "\tvar selfPtr = self\n")
+		} else {
+			fmt.Fprintf(w, "\tvar selfPtr = self.AsPointer()\n")
+		}
 	}
 	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")
 	for _, arg := range method.Arguments {
@@ -1000,28 +1002,47 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprintf(w, "\tvar r_ret callframe.Nil\n")
 		}
 	}
+
+	var API = "mmm.API(selfPtr)"
+	if method.IsStatic {
+		API = "ctx.API"
+	} else if ctype == callBuiltin {
+		API = "mmm.API(self)"
+		if strings.HasPrefix(class.Name, "Packed") {
+			API = "mmm.API(*self)"
+		}
+	}
+
 	if ctype == callBuiltin {
 		if strings.HasPrefix(class.Name, "Packed") {
-			fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
+			var self = "0"
+			if !method.IsStatic {
+				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
+				self = "p_self.Uintptr()"
+			}
 			if method.IsVararg {
-				fmt.Fprintf(w, "\tmmm.API(*selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, len(method.Arguments))
+				fmt.Fprintf(w, "\t%s.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", API, class.Name, method.Name, self, len(method.Arguments))
 			} else {
-				fmt.Fprintf(w, "\tmmm.API(*selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+				fmt.Fprintf(w, "\t%s.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), %d)\n", API, class.Name, method.Name, self, len(method.Arguments))
 			}
 			fmt.Fprintf(w, "\tmmm.Set(selfPtr, p_self.Get())\n")
 		} else {
-			fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
+			var self = "0"
+			if !method.IsStatic {
+				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, mmm.Get(selfPtr))\n")
+				self = "p_self.Uintptr()"
+			}
 			if method.IsVararg {
-				fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, len(method.Arguments))
+				fmt.Fprintf(w, "\t%s.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", API, class.Name, method.Name, self, len(method.Arguments))
 			} else {
-				fmt.Fprintf(w, "\tmmm.API(selfPtr).builtin.%v.%v(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, len(method.Arguments))
+				fmt.Fprintf(w, "\t%s.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), %d)\n", API, class.Name, method.Name, self, len(method.Arguments))
 			}
 		}
 	} else {
 		if method.IsVararg {
 			fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
 		}
-		fmt.Fprintf(w, "\tmmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
+		fmt.Fprintf(w, "\t%s.Object.MethodBindPointerCall(%[1]s.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", API, class.Name, method.Name)
 	}
 
 	if isPtr {

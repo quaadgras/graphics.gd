@@ -1501,7 +1501,7 @@ func (self String) CasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1519,7 +1519,7 @@ func (self String) NocasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1538,7 +1538,7 @@ func (self String) NaturalcasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1557,7 +1557,7 @@ func (self String) NaturalnocasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1572,7 +1572,7 @@ func (self String) Length() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1589,7 +1589,7 @@ func (self String) Substr(ctx Context, from Int, len Int) String {
 	callframe.Arg(frame, len)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -1611,7 +1611,7 @@ func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -1629,7 +1629,7 @@ func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -1645,7 +1645,7 @@ func (self String) GetSliceCount(delimiter String) Int {
 	callframe.Arg(frame, mmm.Get(delimiter))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1679,7 +1679,7 @@ func (self String) Find(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1697,7 +1697,7 @@ func (self String) Count(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.String.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1715,7 +1715,7 @@ func (self String) Countn(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.String.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1732,7 +1732,7 @@ func (self String) Findn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1749,7 +1749,7 @@ func (self String) Rfind(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1766,7 +1766,7 @@ func (self String) Rfindn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1782,7 +1782,7 @@ func (self String) Match(expr String) bool {
 	callframe.Arg(frame, mmm.Get(expr))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1798,7 +1798,7 @@ func (self String) Matchn(expr String) bool {
 	callframe.Arg(frame, mmm.Get(expr))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1814,7 +1814,7 @@ func (self String) BeginsWith(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1830,7 +1830,7 @@ func (self String) EndsWith(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1854,7 +1854,7 @@ func (self String) IsSubsequenceOf(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1870,7 +1870,7 @@ func (self String) IsSubsequenceOfn(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1888,7 +1888,7 @@ func (self String) Bigrams(ctx Context) PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -1910,7 +1910,7 @@ func (self String) Similarity(text String) Float {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1951,7 +1951,7 @@ func (self String) Format(ctx Context, values Variant, placeholder String) Strin
 	callframe.Arg(frame, mmm.Get(placeholder))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -1968,7 +1968,7 @@ func (self String) Replace(ctx Context, what String, forwhat String) String {
 	callframe.Arg(frame, mmm.Get(forwhat))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -1985,7 +1985,7 @@ func (self String) Replacen(ctx Context, what String, forwhat String) String {
 	callframe.Arg(frame, mmm.Get(forwhat))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2001,7 +2001,7 @@ func (self String) Repeat(ctx Context, count Int) String {
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2016,7 +2016,7 @@ func (self String) Reverse(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2033,7 +2033,7 @@ func (self String) Insert(ctx Context, position Int, what String) String {
 	callframe.Arg(frame, mmm.Get(what))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2050,7 +2050,7 @@ func (self String) Erase(ctx Context, position Int, chars Int) String {
 	callframe.Arg(frame, chars)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2077,7 +2077,7 @@ func (self String) Capitalize(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2092,7 +2092,7 @@ func (self String) ToCamelCase(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2107,7 +2107,7 @@ func (self String) ToPascalCase(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2135,7 +2135,7 @@ func (self String) ToSnakeCase(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2175,7 +2175,7 @@ func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxspl
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.String.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2209,7 +2209,7 @@ func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsp
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.String.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2232,7 +2232,7 @@ func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) 
 	callframe.Arg(frame, allow_empty)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2264,7 +2264,7 @@ func (self String) Join(ctx Context, parts PackedStringArray) String {
 	callframe.Arg(frame, mmm.Get(parts))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2279,7 +2279,7 @@ func (self String) ToUpper(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2294,7 +2294,7 @@ func (self String) ToLower(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2314,7 +2314,7 @@ func (self String) Left(ctx Context, length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2334,7 +2334,7 @@ func (self String) Right(ctx Context, length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2352,7 +2352,7 @@ func (self String) StripEdges(ctx Context, left bool, right bool) String {
 	callframe.Arg(frame, right)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2367,7 +2367,7 @@ func (self String) StripEscapes(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2384,7 +2384,7 @@ func (self String) Lstrip(ctx Context, chars String) String {
 	callframe.Arg(frame, mmm.Get(chars))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2401,7 +2401,7 @@ func (self String) Rstrip(ctx Context, chars String) String {
 	callframe.Arg(frame, mmm.Get(chars))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2427,7 +2427,7 @@ func (self String) GetExtension(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2445,7 +2445,7 @@ func (self String) GetBasename(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2462,7 +2462,7 @@ func (self String) PathJoin(ctx Context, file String) String {
 	callframe.Arg(frame, mmm.Get(file))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2478,7 +2478,7 @@ func (self String) UnicodeAt(at Int) Int {
 	callframe.Arg(frame, at)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2495,7 +2495,7 @@ func (self String) Indent(ctx Context, prefix String) String {
 	callframe.Arg(frame, mmm.Get(prefix))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2510,7 +2510,7 @@ func (self String) Dedent(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2526,7 +2526,7 @@ func (self String) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2541,7 +2541,7 @@ func (self String) Md5Text(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2556,7 +2556,7 @@ func (self String) Sha1Text(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2571,7 +2571,7 @@ func (self String) Sha256Text(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2586,7 +2586,7 @@ func (self String) Md5Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2601,7 +2601,7 @@ func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2616,7 +2616,7 @@ func (self String) Sha256Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2631,7 +2631,7 @@ func (self String) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2659,7 +2659,7 @@ func (self String) Contains(what String) bool {
 	callframe.Arg(frame, mmm.Get(what))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2675,7 +2675,7 @@ func (self String) IsAbsolutePath() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2690,7 +2690,7 @@ func (self String) IsRelativePath() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2709,7 +2709,7 @@ func (self String) SimplifyPath(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2727,7 +2727,7 @@ func (self String) GetBaseDir(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2745,7 +2745,7 @@ func (self String) GetFile(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2761,7 +2761,7 @@ func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2776,7 +2776,7 @@ func (self String) XmlUnescape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2805,7 +2805,7 @@ func (self String) UriEncode(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2830,7 +2830,7 @@ func (self String) UriDecode(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2845,7 +2845,7 @@ func (self String) CEscape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2861,7 +2861,7 @@ func (self String) CUnescape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2876,7 +2876,7 @@ func (self String) JsonEscape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2891,7 +2891,7 @@ func (self String) ValidateNodeName(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2906,7 +2906,7 @@ func (self String) ValidateFilename(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -2927,7 +2927,7 @@ func (self String) IsValidIdentifier() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2949,7 +2949,7 @@ func (self String) IsValidInt() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2970,7 +2970,7 @@ func (self String) IsValidFloat() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2994,7 +2994,7 @@ func (self String) IsValidHexNumber(with_prefix bool) bool {
 	callframe.Arg(frame, with_prefix)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3009,7 +3009,7 @@ func (self String) IsValidHtmlColor() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3024,7 +3024,7 @@ func (self String) IsValidIpAddress() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3039,7 +3039,7 @@ func (self String) IsValidFilename() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3060,7 +3060,7 @@ func (self String) ToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3082,7 +3082,7 @@ func (self String) ToFloat() Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3107,7 +3107,7 @@ func (self String) HexToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3134,7 +3134,7 @@ func (self String) BinToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3151,7 +3151,7 @@ func (self String) Lpad(ctx Context, min_length Int, character String) String {
 	callframe.Arg(frame, mmm.Get(character))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3168,7 +3168,7 @@ func (self String) Rpad(ctx Context, min_length Int, character String) String {
 	callframe.Arg(frame, mmm.Get(character))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.String.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3184,7 +3184,7 @@ func (self String) PadDecimals(ctx Context, digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3200,7 +3200,7 @@ func (self String) PadZeros(ctx Context, digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3216,7 +3216,7 @@ func (self String) TrimPrefix(ctx Context, prefix String) String {
 	callframe.Arg(frame, mmm.Get(prefix))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3232,7 +3232,7 @@ func (self String) TrimSuffix(ctx Context, suffix String) String {
 	callframe.Arg(frame, mmm.Get(suffix))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.String.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3247,7 +3247,7 @@ func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3262,7 +3262,7 @@ func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3277,7 +3277,7 @@ func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3292,7 +3292,7 @@ func (self String) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3319,7 +3319,7 @@ func (self String) HexDecode(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3334,7 +3334,7 @@ func (self String) ToWcharBuffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.String.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3360,12 +3360,10 @@ GD.Print(n.ToString("e1")); // Prints -5.2e+008
 */
 //go:nosplit
 func (self String) NumScientific(ctx Context, number Float) String {
-	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	var r_ret = callframe.Ret[uintptr](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.num_scientific(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	ctx.API.builtin.String.num_scientific(0, frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3392,13 +3390,11 @@ String.num(-10000.0000012345432123454321) # Returns "-10000.0000012345"
 */
 //go:nosplit
 func (self String) Num(ctx Context, number Float, decimals Int) String {
-	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, decimals)
 	var r_ret = callframe.Ret[uintptr](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.num(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	ctx.API.builtin.String.num(0, frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3411,14 +3407,12 @@ If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represe
 */
 //go:nosplit
 func (self String) NumInt64(ctx Context, number Int, base Int, capitalize_hex bool) String {
-	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, capitalize_hex)
 	var r_ret = callframe.Ret[uintptr](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.num_int64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	ctx.API.builtin.String.num_int64(0, frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3431,14 +3425,12 @@ If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represe
 */
 //go:nosplit
 func (self String) NumUint64(ctx Context, number Int, base Int, capitalize_hex bool) String {
-	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, capitalize_hex)
 	var r_ret = callframe.Ret[uintptr](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.num_uint64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	ctx.API.builtin.String.num_uint64(0, frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3453,12 +3445,10 @@ print(String.chr(129302)) # Prints "🤖" (robot face emoji)
 */
 //go:nosplit
 func (self String) Chr(ctx Context, char Int) String {
-	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	var r_ret = callframe.Ret[uintptr](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.chr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	ctx.API.builtin.String.chr(0, frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3470,12 +3460,10 @@ The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]I
 */
 //go:nosplit
 func (self String) HumanizeSize(ctx Context, size Int) String {
-	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[uintptr](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.String.humanize_size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	ctx.API.builtin.String.humanize_size(0, frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3493,7 +3481,7 @@ func (self StringName) CasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3511,7 +3499,7 @@ func (self StringName) NocasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3530,7 +3518,7 @@ func (self StringName) NaturalcasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3549,7 +3537,7 @@ func (self StringName) NaturalnocasecmpTo(to String) Int {
 	callframe.Arg(frame, mmm.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3564,7 +3552,7 @@ func (self StringName) Length() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3581,7 +3569,7 @@ func (self StringName) Substr(ctx Context, from Int, len Int) String {
 	callframe.Arg(frame, len)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3603,7 +3591,7 @@ func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3621,7 +3609,7 @@ func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3637,7 +3625,7 @@ func (self StringName) GetSliceCount(delimiter String) Int {
 	callframe.Arg(frame, mmm.Get(delimiter))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3671,7 +3659,7 @@ func (self StringName) Find(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3689,7 +3677,7 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.StringName.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3707,7 +3695,7 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.StringName.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3724,7 +3712,7 @@ func (self StringName) Findn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3741,7 +3729,7 @@ func (self StringName) Rfind(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3758,7 +3746,7 @@ func (self StringName) Rfindn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3774,7 +3762,7 @@ func (self StringName) Match(expr String) bool {
 	callframe.Arg(frame, mmm.Get(expr))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3790,7 +3778,7 @@ func (self StringName) Matchn(expr String) bool {
 	callframe.Arg(frame, mmm.Get(expr))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3806,7 +3794,7 @@ func (self StringName) BeginsWith(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3822,7 +3810,7 @@ func (self StringName) EndsWith(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3846,7 +3834,7 @@ func (self StringName) IsSubsequenceOf(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3862,7 +3850,7 @@ func (self StringName) IsSubsequenceOfn(text String) bool {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3880,7 +3868,7 @@ func (self StringName) Bigrams(ctx Context) PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3902,7 +3890,7 @@ func (self StringName) Similarity(text String) Float {
 	callframe.Arg(frame, mmm.Get(text))
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3936,7 +3924,7 @@ func (self StringName) Format(ctx Context, values Variant, placeholder String) S
 	callframe.Arg(frame, mmm.Get(placeholder))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3953,7 +3941,7 @@ func (self StringName) Replace(ctx Context, what String, forwhat String) String 
 	callframe.Arg(frame, mmm.Get(forwhat))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3970,7 +3958,7 @@ func (self StringName) Replacen(ctx Context, what String, forwhat String) String
 	callframe.Arg(frame, mmm.Get(forwhat))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -3986,7 +3974,7 @@ func (self StringName) Repeat(ctx Context, count Int) String {
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4001,7 +3989,7 @@ func (self StringName) Reverse(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4018,7 +4006,7 @@ func (self StringName) Insert(ctx Context, position Int, what String) String {
 	callframe.Arg(frame, mmm.Get(what))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4035,7 +4023,7 @@ func (self StringName) Erase(ctx Context, position Int, chars Int) String {
 	callframe.Arg(frame, chars)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4062,7 +4050,7 @@ func (self StringName) Capitalize(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4077,7 +4065,7 @@ func (self StringName) ToCamelCase(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4092,7 +4080,7 @@ func (self StringName) ToPascalCase(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4120,7 +4108,7 @@ func (self StringName) ToSnakeCase(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4160,7 +4148,7 @@ func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, ma
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.StringName.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4194,7 +4182,7 @@ func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, m
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.StringName.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4217,7 +4205,7 @@ func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bo
 	callframe.Arg(frame, allow_empty)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4249,7 +4237,7 @@ func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 	callframe.Arg(frame, mmm.Get(parts))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4264,7 +4252,7 @@ func (self StringName) ToUpper(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4279,7 +4267,7 @@ func (self StringName) ToLower(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4299,7 +4287,7 @@ func (self StringName) Left(ctx Context, length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4319,7 +4307,7 @@ func (self StringName) Right(ctx Context, length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4337,7 +4325,7 @@ func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 	callframe.Arg(frame, right)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4352,7 +4340,7 @@ func (self StringName) StripEscapes(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4369,7 +4357,7 @@ func (self StringName) Lstrip(ctx Context, chars String) String {
 	callframe.Arg(frame, mmm.Get(chars))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4386,7 +4374,7 @@ func (self StringName) Rstrip(ctx Context, chars String) String {
 	callframe.Arg(frame, mmm.Get(chars))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4412,7 +4400,7 @@ func (self StringName) GetExtension(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4430,7 +4418,7 @@ func (self StringName) GetBasename(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4447,7 +4435,7 @@ func (self StringName) PathJoin(ctx Context, file String) String {
 	callframe.Arg(frame, mmm.Get(file))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4463,7 +4451,7 @@ func (self StringName) UnicodeAt(at Int) Int {
 	callframe.Arg(frame, at)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4480,7 +4468,7 @@ func (self StringName) Indent(ctx Context, prefix String) String {
 	callframe.Arg(frame, mmm.Get(prefix))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4495,7 +4483,7 @@ func (self StringName) Dedent(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4510,7 +4498,7 @@ func (self StringName) Md5Text(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4525,7 +4513,7 @@ func (self StringName) Sha1Text(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4540,7 +4528,7 @@ func (self StringName) Sha256Text(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4555,7 +4543,7 @@ func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4570,7 +4558,7 @@ func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4585,7 +4573,7 @@ func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4600,7 +4588,7 @@ func (self StringName) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4628,7 +4616,7 @@ func (self StringName) Contains(what String) bool {
 	callframe.Arg(frame, mmm.Get(what))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4644,7 +4632,7 @@ func (self StringName) IsAbsolutePath() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4659,7 +4647,7 @@ func (self StringName) IsRelativePath() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4678,7 +4666,7 @@ func (self StringName) SimplifyPath(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4696,7 +4684,7 @@ func (self StringName) GetBaseDir(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4714,7 +4702,7 @@ func (self StringName) GetFile(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4730,7 +4718,7 @@ func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4745,7 +4733,7 @@ func (self StringName) XmlUnescape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4774,7 +4762,7 @@ func (self StringName) UriEncode(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4799,7 +4787,7 @@ func (self StringName) UriDecode(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4814,7 +4802,7 @@ func (self StringName) CEscape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4830,7 +4818,7 @@ func (self StringName) CUnescape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4845,7 +4833,7 @@ func (self StringName) JsonEscape(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4860,7 +4848,7 @@ func (self StringName) ValidateNodeName(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4875,7 +4863,7 @@ func (self StringName) ValidateFilename(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -4896,7 +4884,7 @@ func (self StringName) IsValidIdentifier() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4918,7 +4906,7 @@ func (self StringName) IsValidInt() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4939,7 +4927,7 @@ func (self StringName) IsValidFloat() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4963,7 +4951,7 @@ func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	callframe.Arg(frame, with_prefix)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4978,7 +4966,7 @@ func (self StringName) IsValidHtmlColor() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4993,7 +4981,7 @@ func (self StringName) IsValidIpAddress() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5008,7 +4996,7 @@ func (self StringName) IsValidFilename() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5029,7 +5017,7 @@ func (self StringName) ToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5051,7 +5039,7 @@ func (self StringName) ToFloat() Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5076,7 +5064,7 @@ func (self StringName) HexToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5103,7 +5091,7 @@ func (self StringName) BinToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5120,7 +5108,7 @@ func (self StringName) Lpad(ctx Context, min_length Int, character String) Strin
 	callframe.Arg(frame, mmm.Get(character))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5137,7 +5125,7 @@ func (self StringName) Rpad(ctx Context, min_length Int, character String) Strin
 	callframe.Arg(frame, mmm.Get(character))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.StringName.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5153,7 +5141,7 @@ func (self StringName) PadDecimals(ctx Context, digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5169,7 +5157,7 @@ func (self StringName) PadZeros(ctx Context, digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5185,7 +5173,7 @@ func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 	callframe.Arg(frame, mmm.Get(prefix))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5201,7 +5189,7 @@ func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 	callframe.Arg(frame, mmm.Get(suffix))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.StringName.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5216,7 +5204,7 @@ func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5231,7 +5219,7 @@ func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5246,7 +5234,7 @@ func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5261,7 +5249,7 @@ func (self StringName) ToUtf32Buffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5288,7 +5276,7 @@ func (self StringName) HexDecode(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5303,7 +5291,7 @@ func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5319,7 +5307,7 @@ func (self StringName) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.StringName.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.StringName.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5334,7 +5322,7 @@ func (self NodePath) IsAbsolute() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.is_absolute(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.is_absolute(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5350,7 +5338,7 @@ func (self NodePath) GetNameCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_name_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.get_name_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5380,7 +5368,7 @@ func (self NodePath) GetName(ctx Context, idx Int) StringName {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.NodePath.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5396,7 +5384,7 @@ func (self NodePath) GetSubnameCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_subname_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.get_subname_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5411,7 +5399,7 @@ func (self NodePath) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5439,7 +5427,7 @@ func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_subname(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.NodePath.get_subname(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5454,7 +5442,7 @@ func (self NodePath) GetConcatenatedNames(ctx Context) StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_concatenated_names(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.get_concatenated_names(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5479,7 +5467,7 @@ func (self NodePath) GetConcatenatedSubnames(ctx Context) StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_concatenated_subnames(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.get_concatenated_subnames(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5510,7 +5498,7 @@ func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.get_as_property_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.get_as_property_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5525,7 +5513,7 @@ func (self NodePath) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.NodePath.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.NodePath.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5541,7 +5529,7 @@ func (self Callable) Callv(ctx Context, arguments Array) Variant {
 	callframe.Arg(frame, mmm.Get(arguments))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.callv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Callable.callv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5556,7 +5544,7 @@ func (self Callable) IsNull() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5571,7 +5559,7 @@ func (self Callable) IsCustom() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.is_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.is_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5586,7 +5574,7 @@ func (self Callable) IsStandard() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.is_standard(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.is_standard(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5601,7 +5589,7 @@ func (self Callable) IsValid() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.is_valid(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.is_valid(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5616,7 +5604,7 @@ func (self Callable) GetObject(ctx Context) Object {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
 	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx, r_ret.Get()))
 	frame.Free()
@@ -5632,7 +5620,7 @@ func (self Callable) GetObjectId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5647,7 +5635,7 @@ func (self Callable) GetMethod(ctx Context) StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.get_method(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.get_method(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5662,7 +5650,7 @@ func (self Callable) GetBoundArgumentsCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.get_bound_arguments_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.get_bound_arguments_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5677,7 +5665,7 @@ func (self Callable) GetBoundArguments(ctx Context) Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.get_bound_arguments(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.get_bound_arguments(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5693,7 +5681,7 @@ func (self Callable) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Callable.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5710,7 +5698,7 @@ func (self Callable) Bindv(ctx Context, arguments Array) Callable {
 	callframe.Arg(frame, mmm.Get(arguments))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.bindv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Callable.bindv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5732,7 +5720,7 @@ func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 	callframe.Arg(frame, argcount)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.unbind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Callable.unbind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5750,7 +5738,7 @@ func (self Callable) Call(ctx Context, args ...Variant) Variant {
 	}
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	mmm.API(self).builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5774,7 +5762,7 @@ func (self Callable) CallDeferred(args ...Variant) {
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	mmm.API(self).builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5790,7 +5778,7 @@ func (self Callable) Rpc(args ...Variant) {
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	mmm.API(self).builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5807,7 +5795,7 @@ func (self Callable) RpcId(peer_id Int, args ...Variant) {
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+1)
+	mmm.API(self).builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+1)
 	frame.Free()
 }
 
@@ -5824,7 +5812,7 @@ func (self Callable) Bind(ctx Context, args ...Variant) Callable {
 	}
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	mmm.API(self).builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5839,7 +5827,7 @@ func (self Signal) IsNull() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Signal.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5854,7 +5842,7 @@ func (self Signal) GetObject(ctx Context) Object {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
 	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx, r_ret.Get()))
 	frame.Free()
@@ -5870,7 +5858,7 @@ func (self Signal) GetObjectId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Signal.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5885,7 +5873,7 @@ func (self Signal) GetName(ctx Context) StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Signal.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5910,7 +5898,7 @@ func (self Signal) Connect(callable Callable, flags Int) Int {
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.connect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Signal.connect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5926,7 +5914,7 @@ func (self Signal) Disconnect(callable Callable) {
 	callframe.Arg(frame, mmm.Get(callable))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.disconnect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Signal.disconnect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -5940,7 +5928,7 @@ func (self Signal) IsConnected(callable Callable) bool {
 	callframe.Arg(frame, mmm.Get(callable))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.is_connected(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Signal.is_connected(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5958,7 +5946,7 @@ func (self Signal) GetConnections(ctx Context) Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.get_connections(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Signal.get_connections(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -5976,7 +5964,7 @@ func (self Signal) Emit(args ...Variant) {
 	}
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	mmm.API(self).builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5989,7 +5977,7 @@ func (self Dictionary) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6004,7 +5992,7 @@ func (self Dictionary) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6019,7 +6007,7 @@ func (self Dictionary) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -6070,7 +6058,7 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	callframe.Arg(frame, overwrite)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.merge(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Dictionary.merge(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
 
@@ -6113,7 +6101,7 @@ func (self Dictionary) Has(key Variant) bool {
 	callframe.Arg(frame, mmm.Get(key))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Dictionary.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6133,7 +6121,7 @@ func (self Dictionary) HasAll(keys Array) bool {
 	callframe.Arg(frame, mmm.Get(keys))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.has_all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Dictionary.has_all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6150,7 +6138,7 @@ func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.find_key(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Dictionary.find_key(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6167,7 +6155,7 @@ func (self Dictionary) Erase(key Variant) bool {
 	callframe.Arg(frame, mmm.Get(key))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Dictionary.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6199,7 +6187,7 @@ func (self Dictionary) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6214,7 +6202,7 @@ func (self Dictionary) Keys(ctx Context) Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.keys(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.keys(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6229,7 +6217,7 @@ func (self Dictionary) Values(ctx Context) Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.values(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.values(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6245,7 +6233,7 @@ func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Dictionary.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6262,7 +6250,7 @@ func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
 	callframe.Arg(frame, mmm.Get(def))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.get(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Dictionary.get(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6277,7 +6265,7 @@ func (self Dictionary) MakeReadOnly() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -6290,7 +6278,7 @@ func (self Dictionary) IsReadOnly() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Dictionary.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Dictionary.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6305,7 +6293,7 @@ func (self Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6320,7 +6308,7 @@ func (self Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6335,7 +6323,7 @@ func (self Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -6349,7 +6337,7 @@ func (self Array) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6365,7 +6353,7 @@ func (self Array) Assign(array Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.assign(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.assign(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6379,7 +6367,7 @@ func (self Array) PushBack(value Variant) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6394,7 +6382,7 @@ func (self Array) PushFront(value Variant) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.push_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.push_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6408,7 +6396,7 @@ func (self Array) Append(value Variant) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6428,7 +6416,7 @@ func (self Array) AppendArray(array Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6444,7 +6432,7 @@ func (self Array) Resize(size Int) Int {
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6463,7 +6451,7 @@ func (self Array) Insert(position Int, value Variant) Int {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6482,7 +6470,7 @@ func (self Array) RemoveAt(position Int) {
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6509,7 +6497,7 @@ func (self Array) Fill(value Variant) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6526,7 +6514,7 @@ func (self Array) Erase(value Variant) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6540,7 +6528,7 @@ func (self Array) Front(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6556,7 +6544,7 @@ func (self Array) Back(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6581,7 +6569,7 @@ func (self Array) PickRandom(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.pick_random(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.pick_random(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6598,7 +6586,7 @@ func (self Array) Find(what Variant, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6615,7 +6603,7 @@ func (self Array) Rfind(what Variant, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6631,7 +6619,7 @@ func (self Array) Count(value Variant) Int {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6679,7 +6667,7 @@ func (self Array) Has(value Variant) bool {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6694,7 +6682,7 @@ func (self Array) PopBack(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.pop_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.pop_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6710,7 +6698,7 @@ func (self Array) PopFront(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.pop_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.pop_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6727,7 +6715,7 @@ func (self Array) PopAt(ctx Context, position Int) Variant {
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.pop_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.pop_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6762,7 +6750,7 @@ func (self Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -6798,7 +6786,7 @@ func (self Array) SortCustom(fn Callable) {
 	callframe.Arg(frame, mmm.Get(fn))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.sort_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.sort_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
 
@@ -6811,7 +6799,7 @@ func (self Array) Shuffle() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.shuffle(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.shuffle(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -6832,7 +6820,7 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6852,7 +6840,7 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.bsearch_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(self).builtin.Array.bsearch_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6867,7 +6855,7 @@ func (self Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -6882,7 +6870,7 @@ func (self Array) Duplicate(ctx Context, deep bool) Array {
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6906,7 +6894,7 @@ func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Ar
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 4)
+	mmm.API(self).builtin.Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 4)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6932,7 +6920,7 @@ func (self Array) Filter(ctx Context, method Callable) Array {
 	callframe.Arg(frame, mmm.Get(method))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.filter(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.filter(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6958,7 +6946,7 @@ func (self Array) Map(ctx Context, method Callable) Array {
 	callframe.Arg(frame, mmm.Get(method))
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.map_(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.map_(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = mmm.New[Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -6985,7 +6973,7 @@ func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
 	callframe.Arg(frame, mmm.Get(accum))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.reduce(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(self).builtin.Array.reduce(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -7017,7 +7005,7 @@ func (self Array) Any(method Callable) bool {
 	callframe.Arg(frame, mmm.Get(method))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.any(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.any(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7049,7 +7037,7 @@ func (self Array) All(method Callable) bool {
 	callframe.Arg(frame, mmm.Get(method))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7074,7 +7062,7 @@ func (self Array) Max(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.max(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.max(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -7090,7 +7078,7 @@ func (self Array) Min(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.min(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.min(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -7105,7 +7093,7 @@ func (self Array) IsTyped() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.is_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.is_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7121,7 +7109,7 @@ func (self Array) IsSameTyped(array Array) bool {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.is_same_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(self).builtin.Array.is_same_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7136,7 +7124,7 @@ func (self Array) GetTypedBuiltin() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.get_typed_builtin(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.get_typed_builtin(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7151,7 +7139,7 @@ func (self Array) GetTypedClassName(ctx Context) StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.get_typed_class_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.get_typed_class_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -7166,7 +7154,7 @@ func (self Array) GetTypedScript(ctx Context) Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.get_typed_script(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.get_typed_script(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
@@ -7181,7 +7169,7 @@ func (self Array) MakeReadOnly() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
 
@@ -7194,7 +7182,7 @@ func (self Array) IsReadOnly() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(selfPtr).builtin.Array.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(self).builtin.Array.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7209,7 +7197,7 @@ func (self *PackedByteArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7225,7 +7213,7 @@ func (self *PackedByteArray) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7243,7 +7231,7 @@ func (self *PackedByteArray) Set(index Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7258,7 +7246,7 @@ func (self *PackedByteArray) PushBack(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7275,7 +7263,7 @@ func (self *PackedByteArray) Append(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7292,7 +7280,7 @@ func (self *PackedByteArray) AppendArray(array PackedByteArray) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7307,7 +7295,7 @@ func (self *PackedByteArray) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7323,7 +7311,7 @@ func (self *PackedByteArray) Insert(at_index Int, value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7340,7 +7328,7 @@ func (self *PackedByteArray) Fill(value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7355,7 +7343,7 @@ func (self *PackedByteArray) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7371,7 +7359,7 @@ func (self *PackedByteArray) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7386,7 +7374,7 @@ func (self *PackedByteArray) Has(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7402,7 +7390,7 @@ func (self *PackedByteArray) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7420,7 +7408,7 @@ func (self *PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteAr
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7436,7 +7424,7 @@ func (self *PackedByteArray) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7453,7 +7441,7 @@ func (self *PackedByteArray) Bsearch(value Int, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7469,7 +7457,7 @@ func (self *PackedByteArray) Duplicate(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7487,7 +7475,7 @@ func (self *PackedByteArray) Find(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7505,7 +7493,7 @@ func (self *PackedByteArray) Rfind(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7522,7 +7510,7 @@ func (self *PackedByteArray) Count(value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7538,7 +7526,7 @@ func (self *PackedByteArray) GetStringFromAscii(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.get_string_from_ascii(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.get_string_from_ascii(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7554,7 +7542,7 @@ func (self *PackedByteArray) GetStringFromUtf8(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.get_string_from_utf8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.get_string_from_utf8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7570,7 +7558,7 @@ func (self *PackedByteArray) GetStringFromUtf16(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.get_string_from_utf16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.get_string_from_utf16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7586,7 +7574,7 @@ func (self *PackedByteArray) GetStringFromUtf32(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.get_string_from_utf32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.get_string_from_utf32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7602,7 +7590,7 @@ func (self *PackedByteArray) GetStringFromWchar(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.get_string_from_wchar(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.get_string_from_wchar(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7628,7 +7616,7 @@ func (self *PackedByteArray) HexEncode(ctx Context) String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.hex_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.hex_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[String](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7645,7 +7633,7 @@ func (self *PackedByteArray) Compress(ctx Context, compression_mode Int) PackedB
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.compress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.compress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7664,7 +7652,7 @@ func (self *PackedByteArray) Decompress(ctx Context, buffer_size Int, compressio
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decompress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.decompress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7685,7 +7673,7 @@ func (self *PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int,
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decompress_dynamic(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.decompress_dynamic(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7702,7 +7690,7 @@ func (self *PackedByteArray) DecodeU8(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7719,7 +7707,7 @@ func (self *PackedByteArray) DecodeS8(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7736,7 +7724,7 @@ func (self *PackedByteArray) DecodeU16(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7753,7 +7741,7 @@ func (self *PackedByteArray) DecodeS16(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7770,7 +7758,7 @@ func (self *PackedByteArray) DecodeU32(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7787,7 +7775,7 @@ func (self *PackedByteArray) DecodeS32(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7804,7 +7792,7 @@ func (self *PackedByteArray) DecodeU64(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7821,7 +7809,7 @@ func (self *PackedByteArray) DecodeS64(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7838,7 +7826,7 @@ func (self *PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7855,7 +7843,7 @@ func (self *PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7872,7 +7860,7 @@ func (self *PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedByteArray.decode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7890,7 +7878,7 @@ func (self *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) 
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.has_encoded_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.has_encoded_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7908,7 +7896,7 @@ func (self *PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_objec
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.decode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7926,7 +7914,7 @@ func (self *PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) 
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.decode_var_size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.decode_var_size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7944,7 +7932,7 @@ func (self *PackedByteArray) ToInt32Array(ctx Context) PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.to_int32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.to_int32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7962,7 +7950,7 @@ func (self *PackedByteArray) ToInt64Array(ctx Context) PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.to_int64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.to_int64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7980,7 +7968,7 @@ func (self *PackedByteArray) ToFloat32Array(ctx Context) PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.to_float32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.to_float32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -7998,7 +7986,7 @@ func (self *PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.to_float64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedByteArray.to_float64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8016,7 +8004,7 @@ func (self *PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8032,7 +8020,7 @@ func (self *PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8048,7 +8036,7 @@ func (self *PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8064,7 +8052,7 @@ func (self *PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8080,7 +8068,7 @@ func (self *PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8096,7 +8084,7 @@ func (self *PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8112,7 +8100,7 @@ func (self *PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8128,7 +8116,7 @@ func (self *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8144,7 +8132,7 @@ func (self *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8160,7 +8148,7 @@ func (self *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8176,7 +8164,7 @@ func (self *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedByteArray.encode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8193,7 +8181,7 @@ func (self *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_obj
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedByteArray.encode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	mmm.API(*self).builtin.PackedByteArray.encode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8209,7 +8197,7 @@ func (self *PackedInt32Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8225,7 +8213,7 @@ func (self *PackedInt32Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8243,7 +8231,7 @@ func (self *PackedInt32Array) Set(index Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8258,7 +8246,7 @@ func (self *PackedInt32Array) PushBack(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8275,7 +8263,7 @@ func (self *PackedInt32Array) Append(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8292,7 +8280,7 @@ func (self *PackedInt32Array) AppendArray(array PackedInt32Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8307,7 +8295,7 @@ func (self *PackedInt32Array) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8323,7 +8311,7 @@ func (self *PackedInt32Array) Insert(at_index Int, value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8340,7 +8328,7 @@ func (self *PackedInt32Array) Fill(value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8355,7 +8343,7 @@ func (self *PackedInt32Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8371,7 +8359,7 @@ func (self *PackedInt32Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8386,7 +8374,7 @@ func (self *PackedInt32Array) Has(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8402,7 +8390,7 @@ func (self *PackedInt32Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8420,7 +8408,7 @@ func (self *PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8437,7 +8425,7 @@ func (self *PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8453,7 +8441,7 @@ func (self *PackedInt32Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8470,7 +8458,7 @@ func (self *PackedInt32Array) Bsearch(value Int, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8486,7 +8474,7 @@ func (self *PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8504,7 +8492,7 @@ func (self *PackedInt32Array) Find(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8522,7 +8510,7 @@ func (self *PackedInt32Array) Rfind(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8539,7 +8527,7 @@ func (self *PackedInt32Array) Count(value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8555,7 +8543,7 @@ func (self *PackedInt64Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8571,7 +8559,7 @@ func (self *PackedInt64Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8589,7 +8577,7 @@ func (self *PackedInt64Array) Set(index Int, value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8604,7 +8592,7 @@ func (self *PackedInt64Array) PushBack(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8621,7 +8609,7 @@ func (self *PackedInt64Array) Append(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8638,7 +8626,7 @@ func (self *PackedInt64Array) AppendArray(array PackedInt64Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8653,7 +8641,7 @@ func (self *PackedInt64Array) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8669,7 +8657,7 @@ func (self *PackedInt64Array) Insert(at_index Int, value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8686,7 +8674,7 @@ func (self *PackedInt64Array) Fill(value Int) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8701,7 +8689,7 @@ func (self *PackedInt64Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8717,7 +8705,7 @@ func (self *PackedInt64Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8732,7 +8720,7 @@ func (self *PackedInt64Array) Has(value Int) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8748,7 +8736,7 @@ func (self *PackedInt64Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8766,7 +8754,7 @@ func (self *PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8783,7 +8771,7 @@ func (self *PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8799,7 +8787,7 @@ func (self *PackedInt64Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8816,7 +8804,7 @@ func (self *PackedInt64Array) Bsearch(value Int, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8832,7 +8820,7 @@ func (self *PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedInt64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -8850,7 +8838,7 @@ func (self *PackedInt64Array) Find(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8868,7 +8856,7 @@ func (self *PackedInt64Array) Rfind(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedInt64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8885,7 +8873,7 @@ func (self *PackedInt64Array) Count(value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedInt64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedInt64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8901,7 +8889,7 @@ func (self *PackedFloat32Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8917,7 +8905,7 @@ func (self *PackedFloat32Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8935,7 +8923,7 @@ func (self *PackedFloat32Array) Set(index Int, value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8950,7 +8938,7 @@ func (self *PackedFloat32Array) PushBack(value Float) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8967,7 +8955,7 @@ func (self *PackedFloat32Array) Append(value Float) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8984,7 +8972,7 @@ func (self *PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8999,7 +8987,7 @@ func (self *PackedFloat32Array) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9015,7 +9003,7 @@ func (self *PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9032,7 +9020,7 @@ func (self *PackedFloat32Array) Fill(value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9047,7 +9035,7 @@ func (self *PackedFloat32Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9063,7 +9051,7 @@ func (self *PackedFloat32Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9079,7 +9067,7 @@ func (self *PackedFloat32Array) Has(value Float) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9095,7 +9083,7 @@ func (self *PackedFloat32Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9113,7 +9101,7 @@ func (self *PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFlo
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9130,7 +9118,7 @@ func (self *PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9147,7 +9135,7 @@ func (self *PackedFloat32Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9165,7 +9153,7 @@ func (self *PackedFloat32Array) Bsearch(value Float, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9181,7 +9169,7 @@ func (self *PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9200,7 +9188,7 @@ func (self *PackedFloat32Array) Find(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9219,7 +9207,7 @@ func (self *PackedFloat32Array) Rfind(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9237,7 +9225,7 @@ func (self *PackedFloat32Array) Count(value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9253,7 +9241,7 @@ func (self *PackedFloat64Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9269,7 +9257,7 @@ func (self *PackedFloat64Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9287,7 +9275,7 @@ func (self *PackedFloat64Array) Set(index Int, value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9302,7 +9290,7 @@ func (self *PackedFloat64Array) PushBack(value Float) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9319,7 +9307,7 @@ func (self *PackedFloat64Array) Append(value Float) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9336,7 +9324,7 @@ func (self *PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9351,7 +9339,7 @@ func (self *PackedFloat64Array) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9367,7 +9355,7 @@ func (self *PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9384,7 +9372,7 @@ func (self *PackedFloat64Array) Fill(value Float) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9399,7 +9387,7 @@ func (self *PackedFloat64Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9415,7 +9403,7 @@ func (self *PackedFloat64Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9431,7 +9419,7 @@ func (self *PackedFloat64Array) Has(value Float) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9447,7 +9435,7 @@ func (self *PackedFloat64Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9465,7 +9453,7 @@ func (self *PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFlo
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9482,7 +9470,7 @@ func (self *PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9499,7 +9487,7 @@ func (self *PackedFloat64Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9517,7 +9505,7 @@ func (self *PackedFloat64Array) Bsearch(value Float, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9533,7 +9521,7 @@ func (self *PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedFloat64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedFloat64Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9552,7 +9540,7 @@ func (self *PackedFloat64Array) Find(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9571,7 +9559,7 @@ func (self *PackedFloat64Array) Rfind(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedFloat64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9589,7 +9577,7 @@ func (self *PackedFloat64Array) Count(value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedFloat64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedFloat64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9605,7 +9593,7 @@ func (self *PackedStringArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9621,7 +9609,7 @@ func (self *PackedStringArray) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9639,7 +9627,7 @@ func (self *PackedStringArray) Set(index Int, value String) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedStringArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9654,7 +9642,7 @@ func (self *PackedStringArray) PushBack(value String) bool {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9671,7 +9659,7 @@ func (self *PackedStringArray) Append(value String) bool {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9688,7 +9676,7 @@ func (self *PackedStringArray) AppendArray(array PackedStringArray) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9703,7 +9691,7 @@ func (self *PackedStringArray) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9719,7 +9707,7 @@ func (self *PackedStringArray) Insert(at_index Int, value String) Int {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedStringArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9736,7 +9724,7 @@ func (self *PackedStringArray) Fill(value String) {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9751,7 +9739,7 @@ func (self *PackedStringArray) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9767,7 +9755,7 @@ func (self *PackedStringArray) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9782,7 +9770,7 @@ func (self *PackedStringArray) Has(value String) bool {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9798,7 +9786,7 @@ func (self *PackedStringArray) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9816,7 +9804,7 @@ func (self *PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStri
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedStringArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9832,7 +9820,7 @@ func (self *PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9848,7 +9836,7 @@ func (self *PackedStringArray) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9865,7 +9853,7 @@ func (self *PackedStringArray) Bsearch(value String, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedStringArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9881,7 +9869,7 @@ func (self *PackedStringArray) Duplicate(ctx Context) PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedStringArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -9899,7 +9887,7 @@ func (self *PackedStringArray) Find(value String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedStringArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9917,7 +9905,7 @@ func (self *PackedStringArray) Rfind(value String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedStringArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9934,7 +9922,7 @@ func (self *PackedStringArray) Count(value String) Int {
 	callframe.Arg(frame, mmm.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedStringArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedStringArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9950,7 +9938,7 @@ func (self *PackedVector2Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9966,7 +9954,7 @@ func (self *PackedVector2Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9984,7 +9972,7 @@ func (self *PackedVector2Array) Set(index Int, value Vector2) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector2Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9999,7 +9987,7 @@ func (self *PackedVector2Array) PushBack(value Vector2) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10016,7 +10004,7 @@ func (self *PackedVector2Array) Append(value Vector2) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10033,7 +10021,7 @@ func (self *PackedVector2Array) AppendArray(array PackedVector2Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10048,7 +10036,7 @@ func (self *PackedVector2Array) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10064,7 +10052,7 @@ func (self *PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector2Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10081,7 +10069,7 @@ func (self *PackedVector2Array) Fill(value Vector2) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10096,7 +10084,7 @@ func (self *PackedVector2Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10112,7 +10100,7 @@ func (self *PackedVector2Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10128,7 +10116,7 @@ func (self *PackedVector2Array) Has(value Vector2) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10144,7 +10132,7 @@ func (self *PackedVector2Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10162,7 +10150,7 @@ func (self *PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVec
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector2Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10178,7 +10166,7 @@ func (self *PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10195,7 +10183,7 @@ func (self *PackedVector2Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10213,7 +10201,7 @@ func (self *PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector2Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10229,7 +10217,7 @@ func (self *PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector2Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10248,7 +10236,7 @@ func (self *PackedVector2Array) Find(value Vector2, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector2Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10267,7 +10255,7 @@ func (self *PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector2Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10285,7 +10273,7 @@ func (self *PackedVector2Array) Count(value Vector2) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector2Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector2Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10301,7 +10289,7 @@ func (self *PackedVector3Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10317,7 +10305,7 @@ func (self *PackedVector3Array) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10335,7 +10323,7 @@ func (self *PackedVector3Array) Set(index Int, value Vector3) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector3Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10350,7 +10338,7 @@ func (self *PackedVector3Array) PushBack(value Vector3) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10367,7 +10355,7 @@ func (self *PackedVector3Array) Append(value Vector3) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10384,7 +10372,7 @@ func (self *PackedVector3Array) AppendArray(array PackedVector3Array) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10399,7 +10387,7 @@ func (self *PackedVector3Array) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10415,7 +10403,7 @@ func (self *PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector3Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10432,7 +10420,7 @@ func (self *PackedVector3Array) Fill(value Vector3) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10447,7 +10435,7 @@ func (self *PackedVector3Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10463,7 +10451,7 @@ func (self *PackedVector3Array) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10479,7 +10467,7 @@ func (self *PackedVector3Array) Has(value Vector3) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10495,7 +10483,7 @@ func (self *PackedVector3Array) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10513,7 +10501,7 @@ func (self *PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVec
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector3Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedVector3Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10529,7 +10517,7 @@ func (self *PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10546,7 +10534,7 @@ func (self *PackedVector3Array) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10564,7 +10552,7 @@ func (self *PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector3Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10580,7 +10568,7 @@ func (self *PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedVector3Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedVector3Array](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10599,7 +10587,7 @@ func (self *PackedVector3Array) Find(value Vector3, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector3Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10618,7 +10606,7 @@ func (self *PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedVector3Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10636,7 +10624,7 @@ func (self *PackedVector3Array) Count(value Vector3) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedVector3Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedVector3Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10652,7 +10640,7 @@ func (self *PackedColorArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10668,7 +10656,7 @@ func (self *PackedColorArray) IsEmpty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10686,7 +10674,7 @@ func (self *PackedColorArray) Set(index Int, value Color) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedColorArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10701,7 +10689,7 @@ func (self *PackedColorArray) PushBack(value Color) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10718,7 +10706,7 @@ func (self *PackedColorArray) Append(value Color) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10735,7 +10723,7 @@ func (self *PackedColorArray) AppendArray(array PackedColorArray) {
 	callframe.Arg(frame, mmm.Get(array))
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10750,7 +10738,7 @@ func (self *PackedColorArray) RemoveAt(index Int) {
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10766,7 +10754,7 @@ func (self *PackedColorArray) Insert(at_index Int, value Color) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedColorArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10783,7 +10771,7 @@ func (self *PackedColorArray) Fill(value Color) {
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10798,7 +10786,7 @@ func (self *PackedColorArray) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10814,7 +10802,7 @@ func (self *PackedColorArray) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10829,7 +10817,7 @@ func (self *PackedColorArray) Has(value Color) bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10845,7 +10833,7 @@ func (self *PackedColorArray) Reverse() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10863,7 +10851,7 @@ func (self *PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColor
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedColorArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedColorArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10879,7 +10867,7 @@ func (self *PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10895,7 +10883,7 @@ func (self *PackedColorArray) Sort() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10912,7 +10900,7 @@ func (self *PackedColorArray) Bsearch(value Color, before bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedColorArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10928,7 +10916,7 @@ func (self *PackedColorArray) Duplicate(ctx Context) PackedColorArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.API(*self).builtin.PackedColorArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = mmm.New[PackedColorArray](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
@@ -10946,7 +10934,7 @@ func (self *PackedColorArray) Find(value Color, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedColorArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10964,7 +10952,7 @@ func (self *PackedColorArray) Rfind(value Color, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.API(*self).builtin.PackedColorArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10981,7 +10969,7 @@ func (self *PackedColorArray) Count(value Color) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(*selfPtr).builtin.PackedColorArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.API(*self).builtin.PackedColorArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	mmm.Set(selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()

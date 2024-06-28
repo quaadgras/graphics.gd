@@ -1708,6 +1708,16 @@ func linkCGO(API *gd.API) {
 	}
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg callframe.Args, ret uintptr) {
+		if obj == (gd.Object{}) {
+			C.object_method_bind_ptrcall(
+				C.uintptr_t(uintptr(object_method_bind_ptrcall)),
+				C.uintptr_t(method),
+				C.uintptr_t(0),
+				C.uintptr_t(arg.Uintptr()),
+				C.uintptr_t(ret),
+			)
+			return
+		}
 		var self = mmm.Get(obj.AsPointer())
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
