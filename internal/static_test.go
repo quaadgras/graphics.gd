@@ -7,11 +7,6 @@ import (
 	internal "grow.graphics/gd/internal"
 )
 
-func Something[T any]() T {
-	var zero T
-	return zero
-}
-
 func TestStatic(t *testing.T) {
 	var godot = internal.NewContext(API)
 	defer godot.End()

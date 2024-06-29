@@ -140,7 +140,14 @@ func useGodot() (string, error) {
 }
 
 func wrap() error {
-	if runtime.GOARCH != "amd64" && runtime.GOARCH != "arm64" {
+	var GOOS, GOARCH = runtime.GOOS, runtime.GOARCH
+	if os.Getenv("GOOS") != "" {
+		GOOS = os.Getenv("GOOS")
+	}
+	if os.Getenv("GOARCH") != "" {
+		GOARCH = os.Getenv("GOARCH")
+	}
+	if GOARCH != "amd64" && GOARCH != "arm64" {
 		return errors.New("gd requires an amd64, or an arm64 system")
 	}
 	godot, err := useGodot()
@@ -196,8 +203,8 @@ func wrap() error {
 		}
 		return nil
 	}
-	var libraryName = fmt.Sprintf("%v_%v", runtime.GOOS, runtime.GOARCH)
-	switch runtime.GOOS {
+	var libraryName = fmt.Sprintf("%v_%v", GOOS, GOARCH)
+	switch GOOS {
 	case "windows":
 		libraryName += ".dll"
 	case "darwin":
