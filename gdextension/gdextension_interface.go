@@ -2544,14 +2544,14 @@ func get_rid_func(p_instance uintptr) C.uint64_t {
 func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
 	fn := cgo.Handle(p_callable).Value().(func(...gd.Variant) (gd.Variant, error))
 
-	var slice = unsafe.Slice((*[3]uintptr)(p_args), int(count))
+	var slice = unsafe.Slice((**[3]uintptr)(p_args), int(count))
 
 	ctx := gd.NewContext(&godot)
 	defer ctx.End()
 
 	var args = make([]gd.Variant, 0, len(slice))
 	for _, elem := range slice {
-		args = append(args, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, elem))
+		args = append(args, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *elem))
 	}
 	ret, err := fn(args...)
 	if err != nil {

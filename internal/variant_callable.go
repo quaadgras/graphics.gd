@@ -2,7 +2,9 @@
 
 package gd
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // Callable creates a new callable out of the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
@@ -14,8 +16,8 @@ func (godot Context) Callable(fn any) Callable {
 
 		var vargs = make([]reflect.Value, 0, len(args)+1)
 		vargs = append(vargs, reflect.ValueOf(godot))
-		for _, arg := range args {
-			vargs = append(vargs, reflect.ValueOf(arg.Interface(godot)))
+		for i, arg := range args {
+			vargs = append(vargs, reflect.ValueOf(arg.Interface(godot)).Convert(rvalue.Type().In(i+1)))
 		}
 		results := rvalue.Call(vargs)
 		if len(results) == 0 {

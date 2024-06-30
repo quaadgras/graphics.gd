@@ -173,7 +173,7 @@ func wrap() error {
 		}
 	}
 	graphics := "./graphics"
-	if runtime.GOOS == "android" {
+	if GOOS == "android" {
 		graphics = "/sdcard/gd/" + filepath.Base(wd)
 	}
 	setup := func() error {
