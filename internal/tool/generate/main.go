@@ -723,41 +723,43 @@ func generate() error {
 				fmt.Fprintf(classdb, "func %v(godot Context) %[2]v { obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.%[1]v); return *(*%[2]v)(unsafe.Pointer(&obj)) }\n",
 					class.Name, classDB.nameOf("gd", class.Name))
 			} else {
-				if class.Description != "" {
-					fmt.Fprintln(classdb, "/*")
-					fmt.Fprint(classdb, strings.Replace(class.Description, "*/", "", -1))
-					fmt.Fprintln(classdb)
-					var hasVirtual bool
-					for _, method := range class.Methods {
-						if method.IsVirtual {
-							hasVirtual = true
-							break
-						}
-					}
-					if hasVirtual {
-						fmt.Fprintf(classdb, "\t// %s methods that can be overridden by a [Class] that extends it.\n", class.Name)
-						fmt.Fprintf(classdb, "\ttype %s interface {\n", class.Name)
+				if !gdjson.Abstracted[class.Name] {
+					if class.Description != "" {
+						fmt.Fprintln(classdb, "/*")
+						fmt.Fprint(classdb, strings.Replace(class.Description, "*/", "", -1))
+						fmt.Fprintln(classdb)
+						var hasVirtual bool
 						for _, method := range class.Methods {
 							if method.IsVirtual {
-								if method.Description != "" {
-									description := strings.Replace(method.Description, "*/", "", -1)
-									description = strings.TrimSpace(description)
-									description = strings.Replace(description, "\n", "\n\t\t//", -1)
-									fmt.Fprintln(classdb, "\t\t//"+description)
-								}
-								fmt.Fprintf(classdb, "\t\t%s(godot Context", convertName(method.Name))
-								for _, arg := range method.Arguments {
-									fmt.Fprint(classdb, ", ", fixReserved(arg.Name), " ", classDB.convertType(pkg, arg.Meta, arg.Type))
-								}
-								fmt.Fprint(classdb, ") ", classDB.convertType(pkg, method.ReturnValue.Meta, method.ReturnValue.Type))
-								fmt.Fprintln(classdb)
+								hasVirtual = true
+								break
 							}
 						}
-						fmt.Fprintln(classdb, "\t}")
+						if hasVirtual {
+							fmt.Fprintf(classdb, "\t// %s methods that can be overridden by a [Class] that extends it.\n", class.Name)
+							fmt.Fprintf(classdb, "\ttype %s interface {\n", class.Name)
+							for _, method := range class.Methods {
+								if method.IsVirtual {
+									if method.Description != "" {
+										description := strings.Replace(method.Description, "*/", "", -1)
+										description = strings.TrimSpace(description)
+										description = strings.Replace(description, "\n", "\n\t\t//", -1)
+										fmt.Fprintln(classdb, "\t\t//"+description)
+									}
+									fmt.Fprintf(classdb, "\t\t%s(godot Context", convertName(method.Name))
+									for _, arg := range method.Arguments {
+										fmt.Fprint(classdb, ", ", fixReserved(arg.Name), " ", classDB.convertType(pkg, arg.Meta, arg.Type))
+									}
+									fmt.Fprint(classdb, ") ", classDB.convertType(pkg, method.ReturnValue.Meta, method.ReturnValue.Type))
+									fmt.Fprintln(classdb)
+								}
+							}
+							fmt.Fprintln(classdb, "\t}")
+						}
+						fmt.Fprintln(classdb, "\n*/")
 					}
-					fmt.Fprintln(classdb, "\n*/")
+					fmt.Fprintf(classdb, "type %v = %v \n", class.Name, classDB.nameOf("gd", class.Name))
 				}
-				fmt.Fprintf(classdb, "type %v = %v \n", class.Name, classDB.nameOf("gd", class.Name))
 
 				fmt.Fprintf(cnv, "\tcase \"%v\":\n", class.Name)
 				name := class.Name

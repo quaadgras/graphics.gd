@@ -3,6 +3,8 @@
 package gd
 
 import (
+	"unsafe"
+
 	"grow.graphics/gd/internal/callframe"
 
 	"runtime.link/mmm"
@@ -40,6 +42,13 @@ func (s String) Free() {
 func (s *String) Append(ctx Context, other String) {
 	*s = mmm.API(*s).Strings.Append(ctx, *s, other)
 }
+
+func (s String) UnsafePointer() unsafe.Pointer {
+	return mmm.API(s).Strings.UnsafePointer(s)
+}
+
+func (s String) Len() int { return int(s.Length()) }
+func (s String) Cap() int { return int(s.Length()) }
 
 func (s String) String() string {
 	if mmm.Get(s) == 0 {

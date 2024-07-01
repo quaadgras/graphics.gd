@@ -87,6 +87,8 @@ type API struct {
 		Append     func(Context, String, String) String
 		AppendRune func(String, rune)
 		Resize     func(String, Int)
+
+		UnsafePointer func(String) unsafe.Pointer
 	}
 	StringNames struct {
 		New func(Context, string) StringName
@@ -98,19 +100,19 @@ type API struct {
 		StoreBuffer func(Object, []byte)
 		GetBuffer   func(Object, []byte) int
 	}
-	PackedByteArray    PackedFunctionsFor[*PackedByteArray, byte]
-	PackedColorArray   PackedFunctionsFor[*PackedColorArray, Color]
-	PackedFloat32Array PackedFunctionsFor[*PackedFloat32Array, float32]
-	PackedFloat64Array PackedFunctionsFor[*PackedFloat64Array, float64]
-	PackedInt32Array   PackedFunctionsFor[*PackedInt32Array, int32]
-	PackedInt64Array   PackedFunctionsFor[*PackedInt64Array, int64]
+	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
+	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
+	PackedFloat32Array PackedFunctionsFor[PackedFloat32Array, float32]
+	PackedFloat64Array PackedFunctionsFor[PackedFloat64Array, float64]
+	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32]
+	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64]
 	PackedStringArray  struct {
 		Index       func(Context, PackedStringArray, Int) String
 		SetIndex    func(PackedStringArray, Int, String)
 		CopyAsSlice func(Context, PackedStringArray) []String
 	}
-	PackedVector2Array PackedFunctionsFor[*PackedVector2Array, Vector2]
-	PackedVector3Array PackedFunctionsFor[*PackedVector3Array, Vector3]
+	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
+	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
 	Array              struct {
 		Index    func(Context, Array, Int) Variant
 		Set      func(self, from Array)
@@ -179,18 +181,19 @@ type API struct {
 }
 
 type Packed interface {
-	*PackedByteArray | *PackedInt32Array | *PackedInt64Array | *PackedFloat32Array |
-		*PackedFloat64Array | *PackedStringArray | *PackedVector2Array | *PackedVector3Array |
-		*PackedColorArray
+	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
+		PackedFloat64Array | PackedStringArray | PackedVector2Array | PackedVector3Array |
+		PackedColorArray
 
 	mmm.ManagedPointer[[2]uintptr]
-	Size() Int
+	Len() int
 }
 
 type PackedFunctionsFor[T Packed, V any] struct {
-	Index       func(T, Int) V
-	SetIndex    func(T, Int, V)
-	CopyAsSlice func(T) []V
+	Index         func(T, Int) V
+	SetIndex      func(T, Int, V)
+	CopyAsSlice   func(T) []V
+	UnsafePointer func(T) unsafe.Pointer
 }
 
 type (

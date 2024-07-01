@@ -1,6 +1,8 @@
 package gd
 
 import (
+	"errors"
+
 	"grow.graphics/gd/internal/callframe"
 	"runtime.link/mmm"
 )
@@ -90,6 +92,8 @@ type ArrayOf[T any] interface {
 	Slice(ctx Context, begin int64, end int64, step int64, deep bool) ArrayOf[T]
 	Sort()
 	SortCustom(fn Callable)
+
+	UnmarshalInto(any) error
 }
 
 func (godot Context) Array() Array {
@@ -277,3 +281,7 @@ func (a TypedArray[T]) SortCustom(fn Callable) {
 
 }
 func (a TypedArray[T]) end() { Array(a).end() }
+
+func (a TypedArray[T]) UnmarshalInto(val any) error {
+	return errors.New("TypedArray.UnmarshalInto not implemented")
+}

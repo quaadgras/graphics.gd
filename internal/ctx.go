@@ -45,7 +45,7 @@ func (godot Context) Register(spec Registrable) {
 
 func newContext(api *API) Context {
 	var ctx Context
-	ctx.Lifetime = mmm.NewLifetime(api)
+	ctx.Lifetime = mmm.NewLifetime()
 	ctx.API = api
 	return ctx
 }

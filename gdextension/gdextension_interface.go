@@ -1427,6 +1427,17 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return rune(*ret)
 	}
+	API.Strings.UnsafePointer = func(s gd.String) unsafe.Pointer {
+		var frame = callframe.New()
+		var p_self = callframe.Arg(frame, mmm.Get(s))
+		var ret = C.string_operator_index_const(
+			C.uintptr_t(uintptr(string_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(0),
+		)
+		frame.Free()
+		return unsafe.Pointer(ret)
+	}
 	string_operator_plus_eq_string := dlsymGD("string_operator_plus_eq_string")
 	API.Strings.Append = func(ctx gd.Context, s gd.String, other gd.String) gd.String {
 		var frame = callframe.New()
@@ -1528,12 +1539,12 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return int(length)
 	}
-	API.PackedByteArray = makePackedFunctions[*gd.PackedByteArray, byte]("byte_array")
-	API.PackedColorArray = makePackedFunctions[*gd.PackedColorArray, gd.Color]("color_array")
-	API.PackedFloat32Array = makePackedFunctions[*gd.PackedFloat32Array, float32]("float32_array")
-	API.PackedFloat64Array = makePackedFunctions[*gd.PackedFloat64Array, float64]("float64_array")
-	API.PackedInt32Array = makePackedFunctions[*gd.PackedInt32Array, int32]("int32_array")
-	API.PackedInt64Array = makePackedFunctions[*gd.PackedInt64Array, int64]("int64_array")
+	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
+	API.PackedColorArray = makePackedFunctions[gd.PackedColorArray, gd.Color]("color_array")
+	API.PackedFloat32Array = makePackedFunctions[gd.PackedFloat32Array, float32]("float32_array")
+	API.PackedFloat64Array = makePackedFunctions[gd.PackedFloat64Array, float64]("float64_array")
+	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
+	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
 	packed_string_array_operator_index_const := dlsymGD("packed_string_array_operator_index_const")
 	API.PackedStringArray.Index = func(ctx gd.Context, psa gd.PackedStringArray, i gd.Int) gd.String {
 		var frame = callframe.New()
@@ -1558,8 +1569,8 @@ func linkCGO(API *gd.API) {
 		*(*uintptr)(ptr) = mmm.Get(v)
 		frame.Free()
 	}
-	API.PackedVector2Array = makePackedFunctions[*gd.PackedVector2Array, gd.Vector2]("vector2_array")
-	API.PackedVector3Array = makePackedFunctions[*gd.PackedVector3Array, gd.Vector3]("vector3_array")
+	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
+	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	array_operator_index_const := dlsymGD("array_operator_index_const")
 	API.Array.Index = func(ctx gd.Context, a gd.Array, i gd.Int) gd.Variant {
 		var frame = callframe.New()
@@ -2351,7 +2362,7 @@ func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunc
 		return *(*V)(unsafe.Pointer(uintptr(ret)))
 	}
 	API.CopyAsSlice = func(t T) []V {
-		var size = t.Size()
+		var size = t.Len()
 		if size == 0 {
 			return nil
 		}
@@ -2366,6 +2377,17 @@ func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunc
 		copy(slice, unsafe.Slice((*V)(unsafe.Pointer(uintptr(ret))), size))
 		frame.Free()
 		return slice
+	}
+	API.UnsafePointer = func(t T) unsafe.Pointer {
+		var frame = callframe.New()
+		var p_self = callframe.Arg(frame, mmm.Get(t))
+		var ret = C.packed_T_operator_index_const(
+			C.uintptr_t(uintptr(packed_T_operator_index_const)),
+			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionInt(0),
+		)
+		frame.Free()
+		return unsafe.Pointer(uintptr(ret))
 	}
 	return API
 }

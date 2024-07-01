@@ -12,7 +12,7 @@ import (
 	"runtime.link/mmm"
 )
 
-type Bool bool
+type Bool = bool
 
 type (
 	Float       = float64

@@ -205,4 +205,6 @@ type ArrayOf[T any] interface {
 	Slice(ctx Context, begin int64, end int64, step int64, deep bool) gd.ArrayOf[T]
 	Sort()
 	SortCustom(fn Callable)
+
+	UnmarshalInto(any) error
 }

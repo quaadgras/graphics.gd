@@ -112,6 +112,15 @@ of a project. Don't forget to write tests!
 * Godot Singleton        -> gd.{ClassName}(gd.Context) // function returns the singleton, they cannot be stored.
 ```
 
+## Low Level Rendering API
+
+This module exposes an ideomatic implementation of the Godot RenderingDevice API, a low-level driver-agnostic
+rendering API.
+
+```
+gd.RenderingDevice(godot) // Full access to the low level RenderingDevice API (see grow.graphics/rd)
+```
+
 ## Performance
 It's feasible to write high performance code using this module, keep to Godot types where possible and avoid escaping memory to the heap in frequently called functions. 
 

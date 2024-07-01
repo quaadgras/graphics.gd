@@ -7609,15 +7609,6 @@ Buffers are only guaranteed to exist during rendering of the viewport.
 */
 type RenderSceneBuffersRD = classdb.RenderSceneBuffersRD
 
-/*
-[RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
-On startup, Godot creates a global [RenderingDevice] which can be retrieved using [method RenderingServer.get_rendering_device]. This global [RenderingDevice] performs drawing to the screen.
-[b]Local RenderingDevices:[/b] Using [method RenderingServer.create_local_rendering_device], you can create "secondary" rendering devices to perform drawing and GPU compute operations on separate threads.
-[b]Note:[/b] [RenderingDevice] assumes intermediate knowledge of modern graphics APIs such as Vulkan, Direct3D 12, Metal or WebGPU. These graphics APIs are lower-level than OpenGL or Direct3D 11, requiring you to perform what was previously done by the graphics driver itself. If you have difficulty understanding the concepts used in this class, follow the [url=https://vulkan-tutorial.com/]Vulkan Tutorial[/url] or [url=https://vkguide.dev/]Vulkan Guide[/url]. It's recommended to have existing modern OpenGL or Direct3D 11 knowledge before attempting to learn a low-level graphics API.
-[b]Note:[/b] [RenderingDevice] is not available when running in headless mode or when using the Compatibility rendering method.
-*/
-type RenderingDevice = classdb.RenderingDevice
-
 func RenderingServer(godot Context) classdb.RenderingServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.RenderingServer)
 	return *(*classdb.RenderingServer)(unsafe.Pointer(&obj))
