@@ -4,7 +4,7 @@ package gd
 
 import "runtime.link/mmm"
 
-func (variant Variant) evaluateIntoBool(ctx Context, op Operator, other Variant) bool {
+func (variant Variant) evaluateIntoBool(ctx Lifetime, op Operator, other Variant) bool {
 	val, ok := mmm.API(variant).Variants.Evaluate(ctx, op, variant, other)
 	if !ok {
 		panic("variants not comparable")
@@ -14,31 +14,31 @@ func (variant Variant) evaluateIntoBool(ctx Context, op Operator, other Variant)
 	return ret
 }
 
-func (variant Variant) EqualTo(ctx Context, other Variant) bool {
+func (variant Variant) EqualTo(ctx Lifetime, other Variant) bool {
 	return variant.evaluateIntoBool(ctx, Equal, other)
 }
 
-func (variant Variant) NotEqualTo(ctx Context, other Variant) bool {
+func (variant Variant) NotEqualTo(ctx Lifetime, other Variant) bool {
 	return variant.evaluateIntoBool(ctx, NotEqual, other)
 }
 
-func (variant Variant) LessThan(ctx Context, other Variant) bool {
+func (variant Variant) LessThan(ctx Lifetime, other Variant) bool {
 	return variant.evaluateIntoBool(ctx, Less, other)
 }
 
-func (variant Variant) AtMost(ctx Context, other Variant) bool {
+func (variant Variant) AtMost(ctx Lifetime, other Variant) bool {
 	return variant.evaluateIntoBool(ctx, LessEqual, other)
 }
 
-func (variant Variant) MoreThan(ctx Context, other Variant) bool {
+func (variant Variant) MoreThan(ctx Lifetime, other Variant) bool {
 	return variant.evaluateIntoBool(ctx, Greater, other)
 }
 
-func (variant Variant) AtLeast(ctx Context, other Variant) bool {
+func (variant Variant) AtLeast(ctx Lifetime, other Variant) bool {
 	return variant.evaluateIntoBool(ctx, GreaterEqual, other)
 }
 
-func (variant Variant) Add(ctx Context, other Variant) Variant {
+func (variant Variant) Add(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Add, variant, other)
 	if !ok {
 		panic("variants not addable")
@@ -46,7 +46,7 @@ func (variant Variant) Add(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) Subtract(ctx Context, other Variant) Variant {
+func (variant Variant) Subtract(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Subtract, variant, other)
 	if !ok {
 		panic("variants not subtractable")
@@ -54,7 +54,7 @@ func (variant Variant) Subtract(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) Multiply(ctx Context, other Variant) Variant {
+func (variant Variant) Multiply(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Multiply, variant, other)
 	if !ok {
 		panic("variants not multipliable")
@@ -62,7 +62,7 @@ func (variant Variant) Multiply(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) Divide(ctx Context, other Variant) Variant {
+func (variant Variant) Divide(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Divide, variant, other)
 	if !ok {
 		panic("variants not divisible")
@@ -70,7 +70,7 @@ func (variant Variant) Divide(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) Negate(ctx Context) Variant {
+func (variant Variant) Negate(ctx Lifetime) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Negate, variant, mmm.API(variant).Variants.NewNil(ctx))
 	if !ok {
 		panic("variants not negatable")
@@ -78,7 +78,7 @@ func (variant Variant) Negate(ctx Context) Variant {
 	return val
 }
 
-func (variant Variant) Positive(ctx Context) Variant {
+func (variant Variant) Positive(ctx Lifetime) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Positive, variant, mmm.API(variant).Variants.NewNil(ctx))
 	if !ok {
 		panic("variants not positivable")
@@ -86,7 +86,7 @@ func (variant Variant) Positive(ctx Context) Variant {
 	return val
 }
 
-func (variant Variant) Modulo(ctx Context, other Variant) Variant {
+func (variant Variant) Modulo(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Module, variant, other)
 	if !ok {
 		panic("variants not modulable")
@@ -94,7 +94,7 @@ func (variant Variant) Modulo(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) Power(ctx Context, other Variant) Variant {
+func (variant Variant) Power(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, Power, variant, other)
 	if !ok {
 		panic("variants not powerable")
@@ -102,7 +102,7 @@ func (variant Variant) Power(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) ShiftLeft(ctx Context, other Variant) Variant {
+func (variant Variant) ShiftLeft(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, ShiftLeft, variant, other)
 	if !ok {
 		panic("variants not shift leftable")
@@ -110,7 +110,7 @@ func (variant Variant) ShiftLeft(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) ShiftRight(ctx Context, other Variant) Variant {
+func (variant Variant) ShiftRight(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, ShiftRight, variant, other)
 	if !ok {
 		panic("variants not shift rightable")
@@ -118,7 +118,7 @@ func (variant Variant) ShiftRight(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) BitAnd(ctx Context, other Variant) Variant {
+func (variant Variant) BitAnd(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, BitAnd, variant, other)
 	if !ok {
 		panic("variants not bit andable")
@@ -126,7 +126,7 @@ func (variant Variant) BitAnd(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) BitOr(ctx Context, other Variant) Variant {
+func (variant Variant) BitOr(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, BitOr, variant, other)
 	if !ok {
 		panic("variants not bit orable")
@@ -134,7 +134,7 @@ func (variant Variant) BitOr(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) BitXor(ctx Context, other Variant) Variant {
+func (variant Variant) BitXor(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, BitXor, variant, other)
 	if !ok {
 		panic("variants not bit xorable")
@@ -142,7 +142,7 @@ func (variant Variant) BitXor(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) BitNegate(ctx Context) Variant {
+func (variant Variant) BitNegate(ctx Lifetime) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, BitNegate, variant, mmm.API(variant).Variants.NewNil(ctx))
 	if !ok {
 		panic("variants not bit negatable")
@@ -150,7 +150,7 @@ func (variant Variant) BitNegate(ctx Context) Variant {
 	return val
 }
 
-func (variant Variant) LogicalAnd(ctx Context, other Variant) Variant {
+func (variant Variant) LogicalAnd(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, LogicalAnd, variant, other)
 	if !ok {
 		panic("variants not logical andable")
@@ -158,7 +158,7 @@ func (variant Variant) LogicalAnd(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) LogicalOr(ctx Context, other Variant) Variant {
+func (variant Variant) LogicalOr(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, LogicalOr, variant, other)
 	if !ok {
 		panic("variants not logical orable")
@@ -166,7 +166,7 @@ func (variant Variant) LogicalOr(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) LogicalXor(ctx Context, other Variant) Variant {
+func (variant Variant) LogicalXor(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, LogicalXor, variant, other)
 	if !ok {
 		panic("variants not logical xorable")
@@ -174,7 +174,7 @@ func (variant Variant) LogicalXor(ctx Context, other Variant) Variant {
 	return val
 }
 
-func (variant Variant) LogicalNegate(ctx Context) Variant {
+func (variant Variant) LogicalNegate(ctx Lifetime) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, LogicalNegate, variant, mmm.API(variant).Variants.NewNil(ctx))
 	if !ok {
 		panic("variants not logical negatable")
@@ -182,7 +182,7 @@ func (variant Variant) LogicalNegate(ctx Context) Variant {
 	return val
 }
 
-func (variant Variant) In(ctx Context, other Variant) Variant {
+func (variant Variant) In(ctx Lifetime, other Variant) Variant {
 	var val, ok = mmm.API(variant).Variants.Evaluate(ctx, In, variant, other)
 	if !ok {
 		panic("variants not inable")

@@ -20,7 +20,7 @@ func (s Signal) Free() {
 	frame.Free()
 }
 
-func (Godot *Context) SignalOf(ctx Context, object Object, signal StringName) Signal {
+func (Godot *Lifetime) SignalOf(ctx Lifetime, object Object, signal StringName) Signal {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(object.AsPointer()))
 	callframe.Arg(frame, mmm.Get(signal))

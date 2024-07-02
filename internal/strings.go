@@ -12,7 +12,7 @@ import (
 
 type String mmm.Pointer[API, String, uintptr]
 
-func (s String) StringName(ctx Context) StringName {
+func (s String) StringName(ctx Lifetime) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(s))
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -23,7 +23,7 @@ func (s String) StringName(ctx Context) StringName {
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
-func (s String) Copy(ctx Context) String {
+func (s String) Copy(ctx Lifetime) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(s))
 	var ret = callframe.Ret[uintptr](frame)
@@ -39,7 +39,7 @@ func (s String) Free() {
 	frame.Free()
 }
 
-func (s *String) Append(ctx Context, other String) {
+func (s *String) Append(ctx Lifetime, other String) {
 	*s = mmm.API(*s).Strings.Append(ctx, *s, other)
 }
 
@@ -57,7 +57,7 @@ func (s String) String() string {
 	return mmm.API(s).Strings.Get(s)
 }
 
-func (Godot *API) StringFromStringName(ctx Context, s StringName) String {
+func (Godot *API) StringFromStringName(ctx Lifetime, s StringName) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(s))
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -69,7 +69,7 @@ func (Godot *API) StringFromStringName(ctx Context, s StringName) String {
 
 type StringName mmm.Pointer[API, StringName, uintptr]
 
-func (Godot *API) StringNameFromString(ctx Context, s String) StringName {
+func (Godot *API) StringNameFromString(ctx Lifetime, s String) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(s))
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -97,7 +97,7 @@ func (s StringName) String() string {
 
 type NodePath mmm.Pointer[API, NodePath, uintptr]
 
-func (s String) NodePath(ctx Context) NodePath {
+func (s String) NodePath(ctx Lifetime) NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(s))
 	var r_ret = callframe.Ret[uintptr](frame)

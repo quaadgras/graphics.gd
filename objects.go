@@ -48,7 +48,7 @@ is discouraged.
 
 Note: Unlike references to a [RefCounted], references to an object stored in a variable can become invalid
 without being set to null. To check if an object has been deleted, do not compare it against null. Instead,
-se [Context.IsInstanceValid]. It's also recommended to inherit from [RefCounted] for classes storing data
+se [Lifetime.IsInstanceValid]. It's also recommended to inherit from [RefCounted] for classes storing data
 instead of [Object].
 
 Note: The script is not exposed like most properties. To set or get an object's [Script] in code, use

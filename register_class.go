@@ -50,7 +50,7 @@ used as the main loop for the application.
 If the Struct implements an OnRegister(Context) method, it will
 be called on a temporary instance when the class is registered.
 */
-func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
+func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 	var classType = reflect.TypeOf([0]Struct{}).Elem()
 	var superType = reflect.TypeOf([0]Parent{}).Elem()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
@@ -77,7 +77,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 			Super: superName,
 			Godot: godot.API,
 			Type:  classType,
-			Value: reflect.New(classType).Interface().(gd.IsClass),
+			Value: reflect.New(classType).Interface().(gd.ExtensionClass),
 		})
 	unregister := func() {
 		godot.API.ClassDB.UnregisterClass(godot.API.ExtensionToken, className)
@@ -96,7 +96,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Context) {
 	}
 
 	type onRegister interface {
-		OnRegister(godot Context)
+		OnRegister(godot Lifetime)
 	}
 	if reflect.PointerTo(classType).Implements(reflect.TypeOf([0]onRegister{}).Elem()) {
 		impl := reflect.New(classType).Interface().(onRegister)
@@ -127,7 +127,7 @@ type classImplementation struct {
 	Godot *gd.API
 	Type  reflect.Type
 
-	Value gd.IsClass
+	Value gd.ExtensionClass
 }
 
 var _ gd.ClassInterface = classImplementation{}
@@ -159,11 +159,15 @@ func (class classImplementation) ReloadInstance(super Object) gd.ObjectInterface
 	return class.reloadInstance(gd.NewContext(class.Godot), super)
 }
 
-func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd.ObjectInterface {
+func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) gd.ObjectInterface {
 	var value = reflect.New(class.Type)
-	value.Interface().(gd.PointerToClass).SetPointer(
+	extensionClass := value.Interface().(gd.ExtensionClass)
+
+	extensionClass.SetPointer(
 		mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.Get(super.AsPointer())))
-	class.Godot.Instances[mmm.Get(super.AsPointer())[0]] = value.Interface()
+	extensionClass.SetKeepAlive(ctx)
+
+	class.Godot.Instances[mmm.Get(super.AsPointer())[0]] = extensionClass
 
 	value = value.Elem()
 
@@ -200,9 +204,8 @@ func (class classImplementation) reloadInstance(ctx gd.Context, super Object) gd
 		}
 	}
 	return &instanceImplementation{
-		object:  mmm.Get(super.AsPointer())[0],
-		Context: ctx,
-		Value:   value.Addr().Interface(),
+		object: mmm.Get(super.AsPointer())[0],
+		Value:  value.Addr().Interface().(gd.ExtensionClass),
 	}
 }
 
@@ -227,12 +230,34 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	if !ok {
 		return nil
 	}
+	// legacy support for [gd.Context] parameter, which is now optional (and discouraged)
+	// we generate a very slow function for compatibility reasons.
+	if method.Type.NumIn() > 1 {
+		if method.Type.In(1) == reflect.TypeOf(ctx) {
+			var args = []reflect.Type{method.Type.In(0)}
+			for i := 2; i < method.Type.NumIn(); i++ {
+				args = append(args, method.Type.In(i))
+			}
+			var rets = []reflect.Type{}
+			for i := 0; i < method.Type.NumOut(); i++ {
+				rets = append(rets, method.Type.Out(i))
+			}
+			method.Type = reflect.FuncOf(args, rets, method.Type.IsVariadic())
+			var old = method.Func
+			method.Func = reflect.MakeFunc(method.Type, func(args []reflect.Value) (results []reflect.Value) {
+				instance := args[0].Interface().(gd.ExtensionClass)
+				godot := reflect.ValueOf(instance.GetKeepAlive())
+				args = append([]reflect.Value{args[0], godot}, args[1:]...)
+				return old.Call(args)
+			})
+		}
+	}
 	if method.Type.NumIn() != vtype.NumIn() {
-		panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", class.Type.Name(), GoName, virtual.Type().Name(), name))
+		panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
 	}
 	for i := 1; i < method.Type.NumIn(); i++ {
 		if method.Type.In(i) != vtype.In(i) {
-			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s", class.Type.Name(), GoName, virtual.Type().Name(), name))
+			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
 		}
 	}
 	var copy = reflect.New(method.Type)
@@ -242,33 +267,34 @@ func (class classImplementation) GetVirtual(name StringName) any {
 }
 
 type instanceImplementation struct {
-	object  uintptr
-	Context Context
-	Value   any
+	object uintptr
+	Value  gd.ExtensionClass
 }
 
 func (instance instanceImplementation) OnCreate() {
-	tmp := gd.NewContext(instance.Context.API)
+	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
 	defer tmp.End()
 	if impl, ok := instance.Value.(interface {
-		OnCreate(gd.Context)
+		OnCreate()
 	}); ok {
-		impl.OnCreate(tmp)
+		instance.Value.SetTemporary(tmp)
+		impl.OnCreate()
 	}
 }
 
 func (instance *instanceImplementation) Set(name StringName, value gd.Variant) bool {
 	if impl, ok := instance.Value.(interface {
-		Set(gd.Context, gd.StringName, gd.Variant) gd.Bool
+		Set(gd.StringName, gd.Variant) gd.Bool
 	}); ok {
-		ok := bool(impl.Set(instance.Context, name, value))
+		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		defer tmp.End()
+		instance.Value.SetTemporary(tmp)
+		ok := bool(impl.Set(name, value))
 		if ok {
 			if impl, ok := instance.Value.(interface {
-				OnSet(gd.Context, gd.StringName, gd.Variant)
+				OnSet(gd.StringName, gd.Variant)
 			}); ok {
-				tmp := gd.NewContext(instance.Context.API)
-				defer tmp.End()
-				impl.OnSet(tmp, name, value)
+				impl.OnSet(name, value)
 			}
 		}
 		return ok
@@ -290,7 +316,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if !field.CanSet() {
 		return false
 	}
-	val := value.Interface(instance.Context)
+	val := value.Interface(instance.Value.GetKeepAlive())
 	converted := reflect.ValueOf(val)
 	if !converted.IsValid() {
 		return false
@@ -306,7 +332,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 				if !isArray {
 					return false
 				}
-				arr = mmm.Pin[gd.Array](instance.Context.Lifetime, instance.Context.API, mmm.End(arr))
+				arr = mmm.Pin[gd.Array](instance.Value.GetKeepAlive().Lifetime, instance.Value.GetKeepAlive().API, mmm.End(arr))
 				array := reflect.New(method.Type.In(0)).Elem()
 				array.Set(reflect.ValueOf(arr).Convert(method.Type.In(0)))
 				field.Set(array)
@@ -316,29 +342,33 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 		return false
 	}
 	if obj, ok := val.(gd.IsClass); ok {
-		ref, ok := gd.As[gd.RefCounted](instance.Context, obj.AsObject())
+		ref, ok := gd.As[gd.RefCounted](instance.Value.GetKeepAlive(), obj.AsObject())
 		if ok {
 			ref.Reference()
 		}
-		field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Context.Lifetime, instance.Context.API, mmm.End(obj.AsPointer())))
+		field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, instance.Value.GetKeepAlive().API, mmm.End(obj.AsPointer())))
 	} else {
 		field.Set(converted)
 	}
 	if impl, ok := instance.Value.(interface {
-		OnSet(gd.Context, gd.StringName, gd.Variant)
+		OnSet(gd.StringName, gd.Variant)
 	}); ok {
-		tmp := gd.NewContext(instance.Context.API)
+		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
 		defer tmp.End()
-		impl.OnSet(tmp, name, value)
+		instance.Value.SetTemporary(tmp)
+		impl.OnSet(name, value)
 	}
 	return true
 }
 
 func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) {
 	if impl, ok := instance.Value.(interface {
-		Get(gd.Context, StringName) gd.Variant
+		Get(StringName) gd.Variant
 	}); ok {
-		return impl.Get(instance.Context, name), true
+		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		defer tmp.End()
+		instance.Value.SetTemporary(tmp)
+		return impl.Get(name), true
 	}
 	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
@@ -357,14 +387,15 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	if reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]isSignal{}).Elem()) {
 		return gd.Variant{}, false
 	}
-	return instance.Context.Variant(field.Interface()), true
+	return instance.Value.GetKeepAlive().Variant(field.Interface()), true
 }
 
-func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.PropertyInfo {
+func (instance *instanceImplementation) GetPropertyList(godot Lifetime) []gd.PropertyInfo {
 	if impl, ok := instance.Value.(interface {
-		GetPropertyList(gd.Context) []gd.PropertyInfo
+		GetPropertyList() []gd.PropertyInfo
 	}); ok {
-		return impl.GetPropertyList(godot)
+		instance.Value.SetTemporary(godot)
+		return impl.GetPropertyList()
 	}
 	rtype := reflect.ValueOf(instance.Value).Elem().Type()
 	var list = make([]gd.PropertyInfo, 0, rtype.NumField())
@@ -383,11 +414,12 @@ func (instance *instanceImplementation) GetPropertyList(godot Context) []gd.Prop
 
 func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool {
 	if impl, ok := instance.Value.(interface {
-		PropertyCanRevert(gd.Context, gd.StringName) gd.Bool
+		PropertyCanRevert(gd.StringName) gd.Bool
 	}); ok {
-		tmp := gd.NewContext(instance.Context.API)
+		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
 		defer tmp.End()
-		return bool(impl.PropertyCanRevert(tmp, name))
+		instance.Value.SetTemporary(tmp)
+		return bool(impl.PropertyCanRevert(name))
 	}
 	sname := name.String()
 	rtype := reflect.TypeOf(instance.Value).Elem()
@@ -407,13 +439,14 @@ func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool 
 	_, ok = field.Tag.Lookup("default")
 	return ok
 }
-func (instance *instanceImplementation) PropertyGetRevert(godot Context, name StringName) (gd.Variant, bool) {
-	tmp := gd.NewContext(instance.Context.API)
+func (instance *instanceImplementation) PropertyGetRevert(godot Lifetime, name StringName) (gd.Variant, bool) {
+	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
 	defer tmp.End()
 	if impl, ok := instance.Value.(interface {
-		PropertyGetRevert(gd.Context, gd.StringName) (gd.Variant, bool)
+		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
 	}); ok {
-		return impl.PropertyGetRevert(tmp, name)
+		instance.Value.SetTemporary(tmp)
+		return impl.PropertyGetRevert(name)
 	}
 	sname := name.String()
 	rtype := reflect.TypeOf(instance.Value).Elem()
@@ -441,12 +474,18 @@ func (instance *instanceImplementation) PropertyGetRevert(godot Context, name St
 }
 
 func (instance *instanceImplementation) ValidateProperty(name StringName, info *gd.PropertyInfo) bool {
-	if impl, ok := instance.Value.(interface {
-		ValidateProperty(gd.Context, gd.StringName, *gd.PropertyInfo)
-	}); ok {
-		tmp := gd.NewContext(instance.Context.API)
-		defer tmp.End()
-		impl.ValidateProperty(tmp, name, info)
+	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	defer tmp.End()
+	instance.Value.SetTemporary(tmp)
+	switch validate := instance.Value.(type) {
+	case interface {
+		ValidateProperty(gd.StringName, *gd.PropertyInfo) gd.Bool
+	}:
+		return bool(validate.ValidateProperty(name, info))
+	case interface {
+		ValidateProperty(gd.Lifetime, gd.StringName, *gd.PropertyInfo) gd.Bool
+	}:
+		return bool(validate.ValidateProperty(tmp, name, info))
 	}
 	return true
 }
@@ -455,25 +494,30 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 	if what == 13 { // NOTIFICATION_READY
 		instance.ready()
 	}
-	if !Engine(instance.Context).IsEditorHint() {
-		impl, ok := instance.Value.(interface {
-			Notification(gd.Context, gd.NotificationType)
-		})
-		if ok {
-			tmp := gd.NewContext(instance.Context.API)
-			defer tmp.End()
-			impl.Notification(tmp, gd.NotificationType(what))
+	if !Engine(instance.Value.GetKeepAlive()).IsEditorHint() {
+		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		defer tmp.End()
+		instance.Value.SetTemporary(tmp)
+		switch notify := instance.Value.(type) {
+		case interface{ Notification(gd.NotificationType) }:
+			notify.Notification(gd.NotificationType(what))
+		case interface {
+			Notification(gd.Lifetime, gd.NotificationType)
+		}:
+			notify.Notification(tmp, gd.NotificationType(what))
 		}
 	}
 }
 
 func (instance *instanceImplementation) ToString() (String, bool) {
-	if impl, ok := instance.Value.(interface {
-		ToString(gd.Context) gd.String
-	}); ok {
-		tmp := gd.NewContext(instance.Context.API)
-		defer tmp.End()
-		return impl.ToString(tmp), true
+	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	defer tmp.End()
+	instance.Value.SetTemporary(tmp)
+	switch onfree := instance.Value.(type) {
+	case interface{ ToString() gd.String }:
+		return onfree.ToString(), true
+	case interface{ ToString(gd.Lifetime) gd.String }:
+		return onfree.ToString(tmp), true
 	}
 	return String{}, false
 }
@@ -490,14 +534,15 @@ func (instance *instanceImplementation) GetRID() RID {
 }
 
 func (instance *instanceImplementation) Free() {
-	delete(instance.Context.API.Instances, instance.object)
-	instance.Context.End()
-	impl, ok := instance.Value.(interface {
-		OnFree(gd.Context)
-	})
-	if ok {
-		impl.OnFree(instance.Context)
+	delete(instance.Value.GetKeepAlive().API.Instances, instance.object)
+	instance.Value.SetTemporary(instance.Value.GetKeepAlive())
+	switch onfree := instance.Value.(type) {
+	case interface{ OnFree() }:
+		onfree.OnFree()
+	case interface{ OnFree(gd.Lifetime) }:
+		onfree.OnFree(instance.Value.GetKeepAlive())
 	}
+	instance.Value.GetKeepAlive().End()
 }
 
 // ready is responsible for asserting the scene tree for struct members that implement
@@ -506,11 +551,11 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	tmp := gd.NewContext(instance.Context.API)
+	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
 	defer tmp.End()
 
 	var parent Node
-	parent.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, instance.Context.API, [2]uintptr{instance.object}))
+	parent.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, instance.Value.GetKeepAlive().API, [2]uintptr{instance.object}))
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -521,16 +566,17 @@ func (instance *instanceImplementation) ready() {
 		instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent)
 	}
 	if !Engine(tmp).IsEditorHint() {
-		impl, ok := instance.Value.(interface {
-			Ready(Context)
-		})
-		if ok {
-			impl.Ready(tmp)
+		instance.Value.SetTemporary(tmp)
+		switch ready := instance.Value.(type) {
+		case interface{ Ready() }:
+			ready.Ready()
+		case interface{ Ready(gd.Lifetime) }:
+			ready.Ready(tmp)
 		}
 	}
 }
 
-func (instance *instanceImplementation) assertChild(tmp Context, value any, field reflect.StructField, parent Node) {
+func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, field reflect.StructField, parent Node) {
 	var (
 		rvalue = reflect.ValueOf(value)
 	)
@@ -565,15 +611,15 @@ func (instance *instanceImplementation) assertChild(tmp Context, value any, fiel
 	}
 	path := tmp.String(name).NodePath(tmp)
 	if !parent.HasNode(path) {
-		child := instance.Context.API.ClassDB.ConstructObject(instance.Context, tmp.StringName(classNameOf(field.Type)))
-		native, ok := instance.Context.API.Instances[mmm.Get(child.AsPointer())[0]]
+		child := instance.Value.GetKeepAlive().API.ClassDB.ConstructObject(instance.Value.GetKeepAlive(), tmp.StringName(classNameOf(field.Type)))
+		native, ok := instance.Value.GetKeepAlive().API.Instances[mmm.Get(child.AsPointer())[0]]
 		if ok {
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
 		} else {
-			class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.Get(child.AsPointer())))
+			class.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.Get(child.AsPointer())))
 		}
-		child.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(child.AsPointer())))
+		child.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.End(child.AsPointer())))
 		var mode NodeInternalMode
 		if !field.IsExported() {
 			mode = NodeInternalModeFront
@@ -594,6 +640,6 @@ func (instance *instanceImplementation) assertChild(tmp Context, value any, fiel
 		rvalue.Elem().Set(reflect.ValueOf(ref))
 		mmm.End(node.AsPointer())
 	} else {
-		class.SetPointer(mmm.Let[gd.Pointer](instance.Context.Lifetime, tmp.API, mmm.End(node.AsPointer())))
+		class.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.End(node.AsPointer())))
 	}
 }

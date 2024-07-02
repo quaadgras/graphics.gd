@@ -105,7 +105,7 @@ import (
 	frame.Free()
 }*/
 
-func propertyOf(godot Context, field reflect.StructField) gd.PropertyInfo {
+func propertyOf(godot Lifetime, field reflect.StructField) gd.PropertyInfo {
 	var name = field.Name
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {

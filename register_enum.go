@@ -37,7 +37,7 @@ type Enum[Class gd.IsClass, T integer] struct {
 }
 
 // Register the enum with Godot.
-func (enum Enum[Class, T]) Register(godot Context) {
+func (enum Enum[Class, T]) Register(godot Lifetime) {
 	var classType = reflect.TypeOf([0]Class{}).Elem()
 
 	// Support 'gd' tag for renaming the class within Godot.

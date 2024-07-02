@@ -620,7 +620,7 @@ func linkCGO(API *gd.API) {
 		))
 	}
 	variant_new_copy := dlsymGD("variant_new_copy")
-	API.Variants.NewCopy = func(ctx gd.Context, self gd.Variant) gd.Variant {
+	API.Variants.NewCopy = func(ctx gd.Lifetime, self gd.Variant) gd.Variant {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var r_dest = callframe.Ret[[3]uintptr](frame)
@@ -634,7 +634,7 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	variant_new_nil := dlsymGD("variant_new_nil")
-	API.Variants.NewNil = func(ctx gd.Context) gd.Variant {
+	API.Variants.NewNil = func(ctx gd.Lifetime) gd.Variant {
 		var frame = callframe.New()
 		var r_dest = callframe.Ret[[3]uintptr](frame)
 		C.variant_new_nil(
@@ -656,7 +656,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	variant_call := dlsymGD("variant_call")
-	API.Variants.Call = func(ctx gd.Context, self gd.Variant, method gd.StringName, args ...gd.Variant) (gd.Variant, error) {
+	API.Variants.Call = func(ctx gd.Lifetime, self gd.Variant, method gd.StringName, args ...gd.Variant) (gd.Variant, error) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var p_method = callframe.Arg(frame, mmm.Get(method))
@@ -687,7 +687,7 @@ func linkCGO(API *gd.API) {
 		return ret, nil
 	}
 	variant_call_static := dlsymGD("variant_call_static")
-	API.Variants.CallStatic = func(ctx gd.Context, vtype gd.VariantType, method gd.StringName, args ...gd.Variant) (gd.Variant, error) {
+	API.Variants.CallStatic = func(ctx gd.Lifetime, vtype gd.VariantType, method gd.StringName, args ...gd.Variant) (gd.Variant, error) {
 		var frame = callframe.New()
 		var p_method = callframe.Arg(frame, mmm.Get(method))
 		for _, arg := range args {
@@ -717,7 +717,7 @@ func linkCGO(API *gd.API) {
 		return ret, nil
 	}
 	variant_evaluate := dlsymGD("variant_evaluate")
-	API.Variants.Evaluate = func(ctx gd.Context, operator gd.Operator, a, b gd.Variant) (ret gd.Variant, ok bool) {
+	API.Variants.Evaluate = func(ctx gd.Lifetime, operator gd.Operator, a, b gd.Variant) (ret gd.Variant, ok bool) {
 		var frame = callframe.New()
 		var p_a = callframe.Arg(frame, mmm.Get(a))
 		var p_b = callframe.Arg(frame, mmm.Get(b))
@@ -805,7 +805,7 @@ func linkCGO(API *gd.API) {
 		return r_valid.Get(), r_oob.Get()
 	}
 	variant_get := dlsymGD("variant_get")
-	API.Variants.Get = func(ctx gd.Context, self, key gd.Variant) (val gd.Variant, ok bool) {
+	API.Variants.Get = func(ctx gd.Lifetime, self, key gd.Variant) (val gd.Variant, ok bool) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var p_key = callframe.Arg(frame, mmm.Get(key))
@@ -824,7 +824,7 @@ func linkCGO(API *gd.API) {
 		return
 	}
 	variant_get_named := dlsymGD("variant_get_named")
-	API.Variants.GetNamed = func(ctx gd.Context, self gd.Variant, key gd.StringName) (val gd.Variant, ok bool) {
+	API.Variants.GetNamed = func(ctx gd.Lifetime, self gd.Variant, key gd.StringName) (val gd.Variant, ok bool) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var p_key = callframe.Arg(frame, mmm.Get(key))
@@ -843,7 +843,7 @@ func linkCGO(API *gd.API) {
 		return
 	}
 	variant_get_keyed := dlsymGD("variant_get_keyed")
-	API.Variants.GetKeyed = func(ctx gd.Context, self, key gd.Variant) (val gd.Variant, ok bool) {
+	API.Variants.GetKeyed = func(ctx gd.Lifetime, self, key gd.Variant) (val gd.Variant, ok bool) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var p_key = callframe.Arg(frame, mmm.Get(key))
@@ -862,7 +862,7 @@ func linkCGO(API *gd.API) {
 		return
 	}
 	variant_get_indexed := dlsymGD("variant_get_indexed")
-	API.Variants.GetIndexed = func(ctx gd.Context, self gd.Variant, index gd.Int) (gd.Variant, bool, bool) {
+	API.Variants.GetIndexed = func(ctx gd.Lifetime, self gd.Variant, index gd.Int) (gd.Variant, bool, bool) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -880,7 +880,7 @@ func linkCGO(API *gd.API) {
 		return mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get()), r_valid.Get(), r_oob.Get()
 	}
 	variant_iter_init := dlsymGD("variant_iter_init")
-	API.Variants.IteratorInitialize = func(ctx gd.Context, self gd.Variant) (gd.Variant, bool) {
+	API.Variants.IteratorInitialize = func(ctx gd.Lifetime, self gd.Variant) (gd.Variant, bool) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var r_valid = callframe.Ret[bool](frame)
@@ -913,7 +913,7 @@ func linkCGO(API *gd.API) {
 		return ok
 	}
 	variant_iter_get := dlsymGD("variant_iter_get")
-	API.Variants.IteratorGet = func(ctx gd.Context, self, iter gd.Variant) (gd.Variant, bool) {
+	API.Variants.IteratorGet = func(ctx gd.Lifetime, self, iter gd.Variant) (gd.Variant, bool) {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var p_iter = callframe.Arg(frame, mmm.Get(iter))
@@ -979,7 +979,7 @@ func linkCGO(API *gd.API) {
 		return ret != 0
 	}
 	variant_duplicate := dlsymGD("variant_duplicate")
-	API.Variants.Duplicate = func(ctx gd.Context, self gd.Variant, deep bool) gd.Variant {
+	API.Variants.Duplicate = func(ctx gd.Lifetime, self gd.Variant, deep bool) gd.Variant {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -998,7 +998,7 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	variant_stringify := dlsymGD("variant_stringify")
-	API.Variants.Stringify = func(ctx gd.Context, self gd.Variant) gd.String {
+	API.Variants.Stringify = func(ctx gd.Lifetime, self gd.Variant) gd.String {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(self))
 		var r_ret = callframe.Ret[uintptr](frame)
@@ -1068,7 +1068,7 @@ func linkCGO(API *gd.API) {
 		return false, valid
 	}
 	variant_get_type_name := dlsymGD("variant_get_type_name")
-	API.Variants.GetTypeName = func(ctx gd.Context, vtype gd.VariantType) gd.String {
+	API.Variants.GetTypeName = func(ctx gd.Lifetime, vtype gd.VariantType) gd.String {
 		var frame = callframe.New()
 		var r_ret = callframe.Ret[uintptr](frame)
 		C.variant_get_type_name(
@@ -1199,7 +1199,7 @@ func linkCGO(API *gd.API) {
 		}
 	}
 	variant_construct := dlsymGD("variant_construct")
-	API.Variants.Construct = func(ctx gd.Context, t gd.VariantType, args ...gd.Variant) (gd.Variant, error) {
+	API.Variants.Construct = func(ctx gd.Lifetime, t gd.VariantType, args ...gd.Variant) (gd.Variant, error) {
 		var frame = callframe.New()
 		for _, arg := range args {
 			callframe.Arg(frame, mmm.Get(arg))
@@ -1337,7 +1337,7 @@ func linkCGO(API *gd.API) {
 		}
 	}
 	variant_get_constant_value := dlsymGD("variant_get_constant_value")
-	API.Variants.GetConstantValue = func(ctx gd.Context, vt gd.VariantType, sn gd.StringName) gd.Variant {
+	API.Variants.GetConstantValue = func(ctx gd.Lifetime, vt gd.VariantType, sn gd.StringName) gd.Variant {
 		var frame = callframe.New()
 		p_method := callframe.Arg(frame, mmm.Get(sn))
 		var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -1371,7 +1371,7 @@ func linkCGO(API *gd.API) {
 		}
 	}
 	string_new_with_utf8_chars_and_len := dlsymGD("string_new_with_utf8_chars_and_len")
-	API.Strings.New = func(ctx gd.Context, s string) gd.String {
+	API.Strings.New = func(ctx gd.Lifetime, s string) gd.String {
 		var str = C.CString(s)
 		var frame = callframe.New()
 		var r_ret = callframe.Ret[uintptr](frame)
@@ -1439,7 +1439,7 @@ func linkCGO(API *gd.API) {
 		return unsafe.Pointer(ret)
 	}
 	string_operator_plus_eq_string := dlsymGD("string_operator_plus_eq_string")
-	API.Strings.Append = func(ctx gd.Context, s gd.String, other gd.String) gd.String {
+	API.Strings.Append = func(ctx gd.Lifetime, s gd.String, other gd.String) gd.String {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(s))
 		var p_other = callframe.Arg(frame, mmm.Get(other))
@@ -1479,7 +1479,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	string_name_new_with_utf8_chars_and_len := dlsymGD("string_name_new_with_utf8_chars_and_len")
-	API.StringNames.New = func(ctx gd.Context, s string) gd.StringName {
+	API.StringNames.New = func(ctx gd.Lifetime, s string) gd.StringName {
 		var str = C.CString(s)
 		var frame = callframe.New()
 		var r_ret = callframe.Ret[uintptr](frame)
@@ -1546,7 +1546,7 @@ func linkCGO(API *gd.API) {
 	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
 	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
 	packed_string_array_operator_index_const := dlsymGD("packed_string_array_operator_index_const")
-	API.PackedStringArray.Index = func(ctx gd.Context, psa gd.PackedStringArray, i gd.Int) gd.String {
+	API.PackedStringArray.Index = func(ctx gd.Lifetime, psa gd.PackedStringArray, i gd.Int) gd.String {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(psa))
 		var ret = C.packed_T_operator_index_const(
@@ -1572,7 +1572,7 @@ func linkCGO(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	array_operator_index_const := dlsymGD("array_operator_index_const")
-	API.Array.Index = func(ctx gd.Context, a gd.Array, i gd.Int) gd.Variant {
+	API.Array.Index = func(ctx gd.Lifetime, a gd.Array, i gd.Int) gd.Variant {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(a))
 		var r_ret = C.array_operator_index_const(
@@ -1632,7 +1632,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	dictionary_operator_index := dlsymGD("dictionary_operator_index")
-	API.Dictionary.Index = func(ctx gd.Context, d gd.Dictionary, key gd.Variant) gd.Variant {
+	API.Dictionary.Index = func(ctx gd.Lifetime, d gd.Dictionary, key gd.Variant) gd.Variant {
 		var frame = callframe.New()
 		var p_self = callframe.Arg(frame, mmm.Get(d))
 		var p_key = callframe.Arg(frame, mmm.Get(key))
@@ -1666,7 +1666,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	object_get_instance_from_id := dlsymGD("object_get_instance_from_id")
-	API.Object.GetInstanceFromID = func(ctx gd.Context, id gd.ObjectID) gd.Object {
+	API.Object.GetInstanceFromID = func(ctx gd.Lifetime, id gd.ObjectID) gd.Object {
 		var ret = C.object_get_instance_from_id(
 			C.uintptr_t(uintptr(object_get_instance_from_id)),
 			C.uintptr_t(id),
@@ -1676,7 +1676,7 @@ func linkCGO(API *gd.API) {
 		return obj
 	}
 	object_method_bind_call := dlsymGD("object_method_bind_call")
-	API.Object.MethodBindCall = func(ctx gd.Context, method gd.MethodBind, obj gd.Object, arg ...gd.Variant) (gd.Variant, error) {
+	API.Object.MethodBindCall = func(ctx gd.Lifetime, method gd.MethodBind, obj gd.Object, arg ...gd.Variant) (gd.Variant, error) {
 		var self = mmm.Get(obj.AsPointer())
 		if self[0] == 0 {
 			return gd.Variant{}, errors.New("nil gd.Object dereference")
@@ -1771,7 +1771,7 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	global_get_singleton := dlsymGD("global_get_singleton")
-	API.Object.GetSingleton = func(ctx gd.Context, name gd.StringName) gd.Object {
+	API.Object.GetSingleton = func(ctx gd.Lifetime, name gd.StringName) gd.Object {
 		var frame = callframe.New()
 		var p_name = callframe.Arg(frame, mmm.Get(name))
 		var ret = C.global_get_singleton(
@@ -1884,7 +1884,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	object_get_class_name := dlsymGD("object_get_class_name")
-	API.Object.GetClassName = func(ctx gd.Context, o gd.Object, token gd.ExtensionToken) gd.String {
+	API.Object.GetClassName = func(ctx gd.Lifetime, o gd.Object, token gd.ExtensionToken) gd.String {
 		var self = mmm.Get(o.AsPointer())
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
@@ -1958,7 +1958,7 @@ func linkCGO(API *gd.API) {
 		))
 	}
 	ref_get_object := dlsymGD("ref_get_object")
-	API.RefCounted.GetObject = func(ctx gd.Context, rc gd.Object) gd.Object {
+	API.RefCounted.GetObject = func(ctx gd.Lifetime, rc gd.Object) gd.Object {
 		var self = mmm.Get(rc.AsPointer())
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
@@ -1989,7 +1989,7 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	classdb_construct_object := dlsymGD("classdb_construct_object")
-	API.ClassDB.ConstructObject = func(ctx gd.Context, name gd.StringName) gd.Object {
+	API.ClassDB.ConstructObject = func(ctx gd.Lifetime, name gd.StringName) gd.Object {
 		var frame = callframe.New()
 		var obj gd.Object
 		obj.SetPointer(mmm.New[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{uintptr(C.classdb_construct_object(
@@ -2020,7 +2020,7 @@ func linkCGO(API *gd.API) {
 		))
 	}
 	get_library_path := dlsymGD("get_library_path")
-	API.GetLibraryPath = func(ctx gd.Context, et gd.ExtensionToken) gd.String {
+	API.GetLibraryPath = func(ctx gd.Lifetime, et gd.ExtensionToken) gd.String {
 		var frame = callframe.New()
 		var r_ret = callframe.Ret[uintptr](frame)
 		C.get_library_path(
@@ -2034,7 +2034,7 @@ func linkCGO(API *gd.API) {
 	}
 
 	callable_custom_create := dlsymGD("callable_custom_create")
-	API.Callables.Create = func(ctx gd.Context, fn func(...gd.Variant) (gd.Variant, error)) gd.Callable {
+	API.Callables.Create = func(ctx gd.Lifetime, fn func(...gd.Variant) (gd.Variant, error)) gd.Callable {
 		var frame = callframe.New()
 		var r_callable = callframe.Ret[[2]uintptr](frame)
 		var info C.GDExtensionCallableCustomInfo
@@ -2216,7 +2216,7 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	classdb_register_extension_class_method := dlsymGD("classdb_register_extension_class_method")
-	API.ClassDB.RegisterClassMethod = func(ctx gd.Context, library gd.ExtensionToken, class gd.StringName, info gd.Method) {
+	API.ClassDB.RegisterClassMethod = func(ctx gd.Lifetime, library gd.ExtensionToken, class gd.StringName, info gd.Method) {
 		infoHandle := cgo.NewHandle(&info)
 		releaseHandle := infoHandle.Delete
 		mmm.Pin[onFree](ctx.Lifetime, &releaseHandle, [0]uintptr{})
@@ -2416,7 +2416,7 @@ func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
 	return true
 }
 
-var propertyLists = make(map[*C.GDExtensionPropertyInfo]gd.Context)
+var propertyLists = make(map[*C.GDExtensionPropertyInfo]gd.Lifetime)
 
 type onFree mmm.Pointer[func(), onFree, [0]uintptr]
 
@@ -2425,7 +2425,7 @@ func (cb onFree) Free() {
 	mmm.End(cb)
 }
 
-func cPropertyList(ctx gd.Context, list []gd.PropertyInfo) *C.GDExtensionPropertyInfo {
+func cPropertyList(ctx gd.Lifetime, list []gd.PropertyInfo) *C.GDExtensionPropertyInfo {
 	if len(list) == 0 {
 		return nil
 	}

@@ -67,7 +67,7 @@ func (iter Iterator) Next() bool {
 	return mmm.API(iter.self).Variants.IteratorNext(iter.self, iter.iter)
 }
 
-func (iter Iterator) Value(ctx Context) Variant {
+func (iter Iterator) Value(ctx Lifetime) Variant {
 	val, ok := mmm.API(iter.self).Variants.IteratorGet(ctx, iter.self, iter.iter)
 	if !ok {
 		panic("failed to get iterator value")

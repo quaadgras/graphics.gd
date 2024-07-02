@@ -13,7 +13,7 @@ import (
 
 // Variant returns a variant from the given value, which must be one of the
 // basic godot types defined in the gd package.
-func (godot Context) Variant(v any) Variant {
+func (godot Lifetime) Variant(v any) Variant {
 	if v == nil {
 		return godot.API.Variants.NewNil(godot)
 	}
@@ -204,7 +204,7 @@ func (godot Context) Variant(v any) Variant {
 
 // Interface returns the variant's value as one of the the native Godot values
 // (as defined) in the gd package.
-func (variant Variant) Interface(ctx Context) any {
+func (variant Variant) Interface(ctx Lifetime) any {
 	switch vtype := variant.Type(); vtype {
 	case TypeNil:
 		return nil
@@ -305,7 +305,7 @@ func variantAsValueType[T comparable](variant Variant, vtype VariantType) T {
 	return ret
 }
 
-func variantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Context, variant Variant, vtype VariantType) T {
+func variantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Lifetime, variant Variant, vtype VariantType) T {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Size](frame)
 	mmm.API(variant).variant.IntoType[vtype](r_ret.Uintptr(), callframe.Arg(frame, mmm.Get(variant)))
@@ -314,7 +314,7 @@ func variantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerS
 	return mmm.New[T](ctx.Lifetime, ctx.API, ret)
 }
 
-func LetVariantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Context, variant Variant, vtype VariantType) T {
+func LetVariantAsPointerType[T mmm.PointerWithFree[API, T, Size], Size mmm.PointerSize](ctx Lifetime, variant Variant, vtype VariantType) T {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Size](frame)
 	mmm.API(variant).variant.IntoType[vtype](r_ret.Uintptr(), callframe.Arg(frame, mmm.Get(variant)))

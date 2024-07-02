@@ -21,7 +21,7 @@ type HelloWorld struct {
 }
 
 // Initialize implements the Godot MainLoop _initialize interface (virtual function).
-func (h *HelloWorld) Initialize(godot gd.Context) {
+func (h *HelloWorld) Initialize() {
 	fmt.Println("Hello World from Go!")
 }
 
@@ -80,12 +80,11 @@ https://docs.godotengine.org/en/latest/index.html
 ## Semi-Automatic Memory Management
 
 Godot types are preferred over Go types, in order to keep allocations optional. 
-All values are tied to a [gd.Context] type, which is either:
+All values are tied to a [gd.Lifetime] value, each extension class has two lifetimes:
 
-    (a) a function argument and any values associated with it will be freed
-        when the function returns.
-    (b) builtin to the class you are extending, and any values associated 
-        with it will be freed when the class is destroyed by Godot.
+    (a) `Temporary` any values associated with it will be freed when Go returns to Godot.
+    (b) `KeepAlive` values will be associated with the class and will be freed when the 
+	     class is destroyed by Godot.
 
 This module aims to offer memory safety for race-free extensions, if you discover
 a way to unintentionally do something unsafe (like double free, use-after-free or
@@ -106,10 +105,10 @@ of a project. Don't forget to write tests!
 ```
 * Godot Class            -> gd.{ClassName}
 * Godot Class Method     -> gd.{ClassName}.{pascal(MethodName)}
-* Godot Utility Function -> gd.Context.{pascal(UtilityName)} OR gd.{pascal(UtilityName)} (pure)
+* Godot Utility Function -> gd.Lifetime.{pascal(UtilityName)} OR gd.{pascal(UtilityName)} (pure)
 * Godot Enum             -> gd.{EnumName}
 * Godot Enum Value       -> gd.{EnumName}{EnumValueName}
-* Godot Singleton        -> gd.{ClassName}(gd.Context) // function returns the singleton, they cannot be stored.
+* Godot Singleton        -> gd.{ClassName}(gd.Lifetime) // function returns the singleton, they cannot be stored.
 ```
 
 ## Low Level Rendering API
@@ -118,7 +117,7 @@ This module exposes an ideomatic implementation of the Godot RenderingDevice API
 rendering API.
 
 ```
-gd.RenderingDevice(godot) // Full access to the low level RenderingDevice API (see grow.graphics/rd)
+gd.RenderingDevice(gd.Lifetime) // Full access to the low level RenderingDevice API (see grow.graphics/rd)
 ```
 
 ## Performance

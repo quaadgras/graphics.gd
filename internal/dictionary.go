@@ -7,7 +7,7 @@ import (
 
 type Dictionary mmm.Pointer[API, Dictionary, uintptr]
 
-func (d Dictionary) Index(ctx Context, key Variant) Variant {
+func (d Dictionary) Index(ctx Lifetime, key Variant) Variant {
 	return mmm.API(d).Dictionary.Index(ctx, d, key)
 }
 
@@ -21,7 +21,7 @@ func (d Dictionary) Free() {
 	frame.Free()
 }
 
-func (godot Context) Dictionary() Dictionary {
+func (godot Lifetime) Dictionary() Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	godot.API.typeset.creation.Dictionary[0](r_ret.Uintptr(), callframe.Args{})

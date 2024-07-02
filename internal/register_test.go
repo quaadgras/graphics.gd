@@ -37,7 +37,7 @@ type MyClassWithConstants struct {
 	gd.Class[MyClassWithConstants, gd.Node2D]
 }
 
-func (*MyClassWithConstants) OnRegister(godot gd.Context) {
+func (*MyClassWithConstants) OnRegister(godot gd.Lifetime) {
 	godot.Register(gd.Enum[MyClassWithConstants, int]{
 		Name: "MyEnum",
 		Values: map[string]int{

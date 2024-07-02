@@ -23,7 +23,7 @@ func (c *CustomSignal) Ready() {
 	}
 }
 
-func (c *CustomSignal) TakeDamage(godot gd.Context, amount gd.Int) {
+func (c *CustomSignal) TakeDamage(godot gd.Lifetime, amount gd.Int) {
 	oldHealth := c.Health
 	c.Health -= amount
 	c.HealthChanged.Emit(oldHealth, c.Health)

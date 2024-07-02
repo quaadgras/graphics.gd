@@ -538,7 +538,7 @@ func generate() error {
 	for _, utility := range spec.UtilityFunctions {
 		fmt.Fprintf(out, "\t%v func(ret uintptr, args callframe.Args, c int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
 
-		fmt.Fprintf(core, "\nfunc (ctx Context) %v(", convertName(utility.Name))
+		fmt.Fprintf(core, "\nfunc (ctx Lifetime) %v(", convertName(utility.Name))
 		for i, arg := range utility.Arguments {
 			if i > 0 {
 				fmt.Fprintf(core, ", ")
@@ -720,7 +720,7 @@ func generate() error {
 		}
 		if class.Name != "Object" {
 			if singletons[class.Name] {
-				fmt.Fprintf(classdb, "func %v(godot Context) %[2]v { obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.%[1]v); return *(*%[2]v)(unsafe.Pointer(&obj)) }\n",
+				fmt.Fprintf(classdb, "func %v(godot Lifetime) %[2]v { obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.%[1]v); return *(*%[2]v)(unsafe.Pointer(&obj)) }\n",
 					class.Name, classDB.nameOf("gd", class.Name))
 			} else {
 				if !gdjson.Abstracted[class.Name] {
@@ -746,7 +746,7 @@ func generate() error {
 										description = strings.Replace(description, "\n", "\n\t\t//", -1)
 										fmt.Fprintln(classdb, "\t\t//"+description)
 									}
-									fmt.Fprintf(classdb, "\t\t%s(godot Context", convertName(method.Name))
+									fmt.Fprintf(classdb, "\t\t%s(godot Lifetime", convertName(method.Name))
 									for _, arg := range method.Arguments {
 										fmt.Fprint(classdb, ", ", fixReserved(arg.Name), " ", classDB.convertType(pkg, arg.Meta, arg.Type))
 									}
@@ -875,14 +875,15 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	}
 
 	if method.IsVirtual {
-		fmt.Fprintf(w, "func (%s) %s(impl func(ptr unsafe.Pointer, ctx "+prefix+"Context", class.Name, method.Name)
+		fmt.Fprintf(w, "func (%s) %s(impl func(ptr unsafe.Pointer", class.Name, method.Name)
 		for _, arg := range method.Arguments {
 			fmt.Fprint(w, ", ")
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v, api *"+prefix+"API) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
-		fmt.Fprintf(w, "\t\tctx := %vNewContext(api)\n", prefix)
+		fmt.Fprintf(w, "\treturn func(class "+prefix+"ExtensionClass, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
+		fmt.Fprintf(w, "\t\tctx := %vNewLifetime(api)\n", prefix)
+		fmt.Fprintf(w, "\t\tclass.SetTemporary(ctx)\n")
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
 
@@ -905,7 +906,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			fmt.Fprintf(w, "\t\tret := ")
 		}
-		fmt.Fprintf(w, "impl(self,ctx")
+		fmt.Fprintf(w, "impl(self")
 		for _, arg := range method.Arguments {
 			fmt.Fprint(w, ", ")
 			fmt.Fprintf(w, "%v", fixReserved(arg.Name))
@@ -929,7 +930,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
 		return
 	}
-	var context = "ctx " + prefix + "Context"
+	var context = "ctx " + prefix + "Lifetime"
 	if !isPtr && !method.IsStatic {
 		context = ""
 	}

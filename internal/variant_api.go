@@ -5,7 +5,7 @@ package gd
 import "runtime.link/mmm"
 
 // Copy returns a copy of the variant that will belong to the provided context.
-func (variant Variant) Copy(ctx Context) Variant {
+func (variant Variant) Copy(ctx Lifetime) Variant {
 	return mmm.API(variant).Variants.NewCopy(ctx, variant)
 }
 
@@ -17,7 +17,7 @@ func (variant Variant) Type() VariantType {
 
 // Get returns the value specified by the given key variant and a boolean
 // indiciating whether the get operation was valid.
-func (variant Variant) Get(ctx Context, key Variant) (val Variant, ok bool) {
+func (variant Variant) Get(ctx Lifetime, key Variant) (val Variant, ok bool) {
 	return mmm.API(variant).Variants.Get(ctx, variant, key)
 }
 
@@ -28,23 +28,23 @@ func (variant Variant) Set(key, val Variant) bool {
 }
 
 // Call calls a method on the variant dynamically.
-func (variant Variant) Call(ctx Context, method StringName, args ...Variant) (Variant, error) {
+func (variant Variant) Call(ctx Lifetime, method StringName, args ...Variant) (Variant, error) {
 	return mmm.API(variant).Variants.Call(ctx, variant, method, args...)
 }
 
 // Call a static method on a variant type.
-func (variant VariantType) Call(ctx Context, method StringName, args ...Variant) (Variant, error) {
+func (variant VariantType) Call(ctx Lifetime, method StringName, args ...Variant) (Variant, error) {
 	return ctx.API.Variants.CallStatic(ctx, variant, method, args...)
 }
 
 // New calls the variant constructor with the given arguments and returns the
 // result as a variant.
-func (variant VariantType) New(ctx Context, args ...Variant) (Variant, error) {
+func (variant VariantType) New(ctx Lifetime, args ...Variant) (Variant, error) {
 	return ctx.API.Variants.Construct(ctx, variant, args...)
 }
 
 // Iterator returns an iterator for the variant.
-func (variant Variant) Iterator(ctx Context) Iterator {
+func (variant Variant) Iterator(ctx Lifetime) Iterator {
 	iter, ok := ctx.API.Variants.IteratorInitialize(ctx, variant)
 	if !ok {
 		panic("failed to initialize iterator")

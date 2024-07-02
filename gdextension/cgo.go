@@ -37,7 +37,7 @@ var background = internal.NewContext(&godot)
 // Link returns a handle to the [API] and the global [ClassDB].
 // The [bool] return value is [true] if the API has been
 // linked with Godot successfully.
-func Link() (internal.Context, bool) {
+func Link() (internal.Lifetime, bool) {
 	if dlsymGD == nil {
 		return background, false
 	}

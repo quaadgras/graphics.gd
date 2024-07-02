@@ -13,25 +13,33 @@ type Class[T, S gd.IsClass] struct {
 	gd.Class[T, S]
 }
 
-// Context for ownership and a reference to the Godot API, apart from
-// its use as an ordinary [context.Context] to signal cancellation, this
+// Lifetime for ownership and a reference to the Godot API, apart from
+// its use as an ordinary [context.Lifetime] to signal cancellation, this
 // value is not safe to use concurrently. Each goroutine should create
-// its own [Context] and use that instead.
+// its own [Lifetime] and use that instead.
 //
-//	newctx := gd.NewContext(oldctx.API())
+//	newctx := gd.NewLifetime(other_lifetime)
 //
-// When a [Context] is freed, it will free all of the objects that were
-// created using it. A [Context] should not be used after free, as it
+// When a [Lifetime] is freed, it will free all of the objects that were
+// created using it. A [Lifetime] should not be used after free, as it
 // will be recycled and will cause values to be unexpectedly freed.
 //
-// When the context has been passed in as a function argument, always
-// assume that the [Context] will be freed when the function returns.
-// Classes can be moved between contexts using their [KeepAlive] method.
-type Context = gd.Context
+// When the lifetime has been passed in as a function argument, always
+// assume that the [Lifetime] will be freed when the function returns.
+type Lifetime = gd.Lifetime
+
+// Context is deprecated, use [Lifetime] instead.
+type Context = Lifetime
+
+// NewLifetime returns a new [Lifetime] with the given anchor lifetime
+// always defer [Lifetime.Free] unless you know what you are doing.
+func NewLifetime(anchor Lifetime) Lifetime {
+	return gd.NewLifetime(anchor.API)
+}
 
 // Create a new instance of the given class, which should be an uninitialised
 // pointer to a value of that class. T must be a class from this package.
-func Create[T gd.PointerToClass](ctx Context, ptr T) T {
+func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
 	return gd.Create[T](ctx, ptr)
 }
 
@@ -43,7 +51,7 @@ func Const[F func(T) T, T any](constant F) T {
 
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
-func As[T gd.IsClass](godot Context, class gd.IsClass) (T, bool) {
+func As[T gd.IsClass](godot Lifetime, class gd.IsClass) (T, bool) {
 	return gd.As[T](godot, class)
 }
 
@@ -75,7 +83,7 @@ type isResource interface {
 // Note: If ProjectSettings.editor/export/convert_text_resources_to_binary is true, load will not
 // be able to read converted files in an exported project. If you rely on run-time loading of files
 // present within the PCK, set ProjectSettings.editor/export/convert_text_resources_to_binary to false.
-func Load[T isResource](godot Context, path string) (T, bool) {
+func Load[T isResource](godot Lifetime, path string) (T, bool) {
 	tmp := gd.NewContext(godot.API)
 	defer tmp.End()
 	hint := classNameOf(reflect.TypeOf([0]T{}).Elem())
@@ -86,7 +94,7 @@ func Load[T isResource](godot Context, path string) (T, bool) {
 
 // AddChild adds a child to the parent node, returning a [NodePath] to the child
 // with the specified lifetime.
-func AddChild(godot Context, parent, child Node) NodePath {
+func AddChild(godot Lifetime, parent, child Node) NodePath {
 	tmp := gd.NewContext(godot.API)
 	defer tmp.End()
 	var adding Node

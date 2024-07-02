@@ -16,11 +16,11 @@ type Object struct {
 
 type NotificationType int32
 
-func PointerWithOwnershipTransferredToGo(godot Context, ptr uintptr) Pointer {
+func PointerWithOwnershipTransferredToGo(godot Lifetime, ptr uintptr) Pointer {
 	return mmm.New[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr})
 }
 
-func PointerWithOwnershipTransferredToGodot(godot Context, ptr Pointer) uintptr {
+func PointerWithOwnershipTransferredToGodot(godot Lifetime, ptr Pointer) uintptr {
 	raw := mmm.End(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
@@ -28,13 +28,13 @@ func PointerWithOwnershipTransferredToGodot(godot Context, ptr Pointer) uintptr 
 	return raw[0]
 }
 
-func PointerMustAssertInstanceID(godot Context, ptr uintptr) Pointer {
+func PointerMustAssertInstanceID(godot Lifetime, ptr uintptr) Pointer {
 	var obj Object
 	obj.SetPointer(mmm.Let[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, 0}))
 	return mmm.Let[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, uintptr(godot.API.Object.GetInstanceID(obj))})
 }
 
-func PointerLifetimeBoundTo(godot Context, obj Object, ptr uintptr) Pointer {
+func PointerLifetimeBoundTo(godot Lifetime, obj Object, ptr uintptr) Pointer {
 	return mmm.Let[Pointer](mmm.Life(obj.AsPointer()), godot.API, [2]uintptr{ptr, 0})
 }
 
@@ -54,7 +54,21 @@ func (self Object) Free() { self.ptr.Free() }
 type Class[T, S IsClass] struct {
 	_     [0]*T
 	super S
+
+	KeepAlive Lifetime
+	Temporary Lifetime
 }
+
+type ExtensionClass interface {
+	PointerToClass
+	SetKeepAlive(Lifetime)
+	GetKeepAlive() Lifetime
+	SetTemporary(Lifetime)
+}
+
+func (class *Class[T, S]) SetKeepAlive(godot Lifetime) { class.KeepAlive = godot }
+func (class *Class[T, S]) SetTemporary(godot Lifetime) { class.Temporary = godot }
+func (class *Class[T, S]) GetKeepAlive() Lifetime      { return class.KeepAlive }
 
 func (class *Class[T, S]) SetPointer(ptr Pointer) {
 	any(&class.super).(PointerToClass).SetPointer(ptr)
@@ -70,13 +84,8 @@ func (class Class[T, S]) AsObject() Object {
 	return obj
 }
 
-// KeepAlive the class until the end of the specified context.
-func (class Class[T, S]) KeepAlive(lt mmm.Lifetime) {
-	mmm.Copy(class.super.AsPointer(), lt)
-}
-
-func (class Class[T, S]) Pin() Context {
-	return Context{
+func (class Class[T, S]) Pin() Lifetime {
+	return Lifetime{
 		Lifetime: mmm.Life(class.AsPointer()),
 		API:      mmm.API(class.AsPointer()),
 	}
@@ -96,7 +105,7 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
-func As[T IsClass](godot Context, class IsClass) (T, bool) {
+func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	if ref, ok := godot.API.Instances[mmm.Get(class.AsPointer())[0]].(T); ok {
 		return ref, true
 	}
@@ -162,8 +171,8 @@ func (ptr Pointer) AsObject() Object {
 	return obj
 }
 
-func (ptr Pointer) Pin() Context {
-	return Context{
+func (ptr Pointer) Pin() Lifetime {
+	return Lifetime{
 		Lifetime: mmm.Life(ptr),
 		API:      mmm.API(ptr),
 	}

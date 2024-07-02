@@ -141,7 +141,7 @@ func (p PackedStringArray) String() string {
 	return builder.String()
 }
 
-func (p PackedStringArray) Index(ctx Context, idx Int) String {
+func (p PackedStringArray) Index(ctx Lifetime, idx Int) String {
 	return mmm.API(p).PackedStringArray.Index(ctx, p, idx)
 }
 
@@ -149,7 +149,7 @@ func (p PackedStringArray) SetIndex(idx Int, value String) {
 	mmm.API(p).PackedStringArray.SetIndex(p, idx, value)
 }
 
-func (p PackedStringArray) AsSlice(ctx Context) []String {
+func (p PackedStringArray) AsSlice(ctx Lifetime) []String {
 	return mmm.API(p).PackedStringArray.CopyAsSlice(ctx, p)
 }
 
@@ -225,7 +225,7 @@ func (p PackedColorArray) UnsafePointer() unsafe.Pointer {
 	return mmm.API(p).PackedColorArray.UnsafePointer(p)
 }
 
-func (godot Context) PackedByteArray() PackedByteArray {
+func (godot Lifetime) PackedByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedByteArray[0](r_ret.Uintptr(), callframe.Args{})
@@ -234,7 +234,7 @@ func (godot Context) PackedByteArray() PackedByteArray {
 	return mmm.New[PackedByteArray](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedColorArray() PackedColorArray {
+func (godot Lifetime) PackedColorArray() PackedColorArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedColorArray[0](r_ret.Uintptr(), callframe.Args{})
@@ -243,7 +243,7 @@ func (godot Context) PackedColorArray() PackedColorArray {
 	return mmm.New[PackedColorArray](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedFloat32Array() PackedFloat32Array {
+func (godot Lifetime) PackedFloat32Array() PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedFloat32Array[0](r_ret.Uintptr(), callframe.Args{})
@@ -252,7 +252,7 @@ func (godot Context) PackedFloat32Array() PackedFloat32Array {
 	return mmm.New[PackedFloat32Array](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedInt32Array() PackedInt32Array {
+func (godot Lifetime) PackedInt32Array() PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedInt32Array[0](r_ret.Uintptr(), callframe.Args{})
@@ -261,7 +261,7 @@ func (godot Context) PackedInt32Array() PackedInt32Array {
 	return mmm.New[PackedInt32Array](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedStringArray() PackedStringArray {
+func (godot Lifetime) PackedStringArray() PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedStringArray[0](r_ret.Uintptr(), callframe.Args{})
@@ -270,7 +270,7 @@ func (godot Context) PackedStringArray() PackedStringArray {
 	return mmm.New[PackedStringArray](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedVector2Array() PackedVector2Array {
+func (godot Lifetime) PackedVector2Array() PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedVector2Array[0](r_ret.Uintptr(), callframe.Args{})
@@ -279,7 +279,7 @@ func (godot Context) PackedVector2Array() PackedVector2Array {
 	return mmm.New[PackedVector2Array](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedVector3Array() PackedVector3Array {
+func (godot Lifetime) PackedVector3Array() PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedVector3Array[0](r_ret.Uintptr(), callframe.Args{})
@@ -288,7 +288,7 @@ func (godot Context) PackedVector3Array() PackedVector3Array {
 	return mmm.New[PackedVector3Array](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedInt64Array() PackedInt64Array {
+func (godot Lifetime) PackedInt64Array() PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedInt64Array[0](r_ret.Uintptr(), callframe.Args{})
@@ -297,7 +297,7 @@ func (godot Context) PackedInt64Array() PackedInt64Array {
 	return mmm.New[PackedInt64Array](godot.Lifetime, godot.API, raw)
 }
 
-func (godot Context) PackedFloat64Array() PackedFloat64Array {
+func (godot Lifetime) PackedFloat64Array() PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	godot.API.typeset.creation.PackedFloat64Array[0](r_ret.Uintptr(), callframe.Args{})

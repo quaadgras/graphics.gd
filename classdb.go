@@ -94,10 +94,10 @@ See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D
 	type AStar2D interface {
 		//Called when estimating the cost between a point and the path's ending point.
 		//Note that this function is hidden in the default [AStar2D] class.
-		EstimateCost(godot Context, from_id gd.Int, to_id gd.Int) gd.Float
+		EstimateCost(godot Lifetime, from_id gd.Int, to_id gd.Int) gd.Float
 		//Called when computing the cost between two connected points.
 		//Note that this function is hidden in the default [AStar2D] class.
-		ComputeCost(godot Context, from_id gd.Int, to_id gd.Int) gd.Float
+		ComputeCost(godot Lifetime, from_id gd.Int, to_id gd.Int) gd.Float
 	}
 */
 type AStar2D = classdb.AStar2D
@@ -143,10 +143,10 @@ If the default [method _estimate_cost] and [method _compute_cost] methods are us
 	type AStar3D interface {
 		//Called when estimating the cost between a point and the path's ending point.
 		//Note that this function is hidden in the default [AStar3D] class.
-		EstimateCost(godot Context, from_id gd.Int, to_id gd.Int) gd.Float
+		EstimateCost(godot Lifetime, from_id gd.Int, to_id gd.Int) gd.Float
 		//Called when computing the cost between two connected points.
 		//Note that this function is hidden in the default [AStar3D] class.
-		ComputeCost(godot Context, from_id gd.Int, to_id gd.Int) gd.Float
+		ComputeCost(godot Lifetime, from_id gd.Int, to_id gd.Int) gd.Float
 	}
 */
 type AStar3D = classdb.AStar3D
@@ -178,10 +178,10 @@ To remove a point from the pathfinding grid, it must be set as "solid" with [met
 	type AStarGrid2D interface {
 		//Called when estimating the cost between a point and the path's ending point.
 		//Note that this function is hidden in the default [AStarGrid2D] class.
-		EstimateCost(godot Context, from_id gd.Vector2i, to_id gd.Vector2i) gd.Float
+		EstimateCost(godot Lifetime, from_id gd.Vector2i, to_id gd.Vector2i) gd.Float
 		//Called when computing the cost between two connected points.
 		//Note that this function is hidden in the default [AStarGrid2D] class.
-		ComputeCost(godot Context, from_id gd.Vector2i, to_id gd.Vector2i) gd.Float
+		ComputeCost(godot Lifetime, from_id gd.Vector2i, to_id gd.Vector2i) gd.Float
 	}
 */
 type AStarGrid2D = classdb.AStarGrid2D
@@ -264,7 +264,7 @@ After instantiating the playback information data within the extended class, the
 	// AnimationMixer methods that can be overridden by a [Class] that extends it.
 	type AnimationMixer interface {
 		//A virtual function for processing after key getting during playback.
-		PostProcessKeyValue(godot Context, animation Animation, track gd.Int, value gd.Variant, object gd.Object, object_idx gd.Int) gd.Variant
+		PostProcessKeyValue(godot Lifetime, animation Animation, track gd.Int, value gd.Variant, object gd.Object, object_idx gd.Int) gd.Variant
 	}
 */
 type AnimationMixer = classdb.AnimationMixer
@@ -276,23 +276,23 @@ Inherit this when creating animation nodes mainly for use in [AnimationNodeBlend
 	// AnimationNode methods that can be overridden by a [Class] that extends it.
 	type AnimationNode interface {
 		//When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
-		GetChildNodes(godot Context) gd.Dictionary
+		GetChildNodes(godot Lifetime) gd.Dictionary
 		//When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
-		GetParameterList(godot Context) gd.Array
+		GetParameterList(godot Lifetime) gd.Array
 		//When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
-		GetChildByName(godot Context, name gd.StringName) AnimationNode
+		GetChildByName(godot Lifetime, name gd.StringName) AnimationNode
 		//When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-		GetParameterDefaultValue(godot Context, parameter gd.StringName) gd.Variant
+		GetParameterDefaultValue(godot Lifetime, parameter gd.StringName) gd.Variant
 		//When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-		IsParameterReadOnly(godot Context, parameter gd.StringName) bool
+		IsParameterReadOnly(godot Lifetime, parameter gd.StringName) bool
 		//When inheriting from [AnimationRootNode], implement this virtual method to run some code when this animation node is processed. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute.
 		//Here, call the [method blend_input], [method blend_node] or [method blend_animation] functions. You can also use [method get_parameter] and [method set_parameter] to modify local memory.
 		//This function should return the time left for the current animation to finish (if unsure, pass the value from the main blend being called).
-		Process(godot Context, time gd.Float, seek bool, is_external_seeking bool, test_only bool) gd.Float
+		Process(godot Lifetime, time gd.Float, seek bool, is_external_seeking bool, test_only bool) gd.Float
 		//When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
-		GetCaption(godot Context) gd.String
+		GetCaption(godot Lifetime) gd.String
 		//When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
-		HasFilter(godot Context) bool
+		HasFilter(godot Lifetime) bool
 	}
 */
 type AnimationNode = classdb.AnimationNode
@@ -636,7 +636,7 @@ Base resource for audio bus. Applies an audio effect on the bus that the resourc
 
 	// AudioEffect methods that can be overridden by a [Class] that extends it.
 	type AudioEffect interface {
-		Instantiate(godot Context) AudioEffectInstance
+		Instantiate(godot Lifetime) AudioEffectInstance
 	}
 */
 type AudioEffect = classdb.AudioEffect
@@ -836,7 +836,7 @@ Once added to the scene tree and enabled using [method make_current], this node 
 */
 type AudioListener3D = classdb.AudioListener3D
 
-func AudioServer(godot Context) classdb.AudioServer {
+func AudioServer(godot Lifetime) classdb.AudioServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.AudioServer)
 	return *(*classdb.AudioServer)(unsafe.Pointer(&obj))
 }
@@ -847,19 +847,19 @@ Base class for audio streams. Audio streams are used for sound effects and music
 	// AudioStream methods that can be overridden by a [Class] that extends it.
 	type AudioStream interface {
 		//Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
-		InstantiatePlayback(godot Context) AudioStreamPlayback
+		InstantiatePlayback(godot Lifetime) AudioStreamPlayback
 		//Override this method to customize the name assigned to this audio stream. Unused by the engine.
-		GetStreamName(godot Context) gd.String
+		GetStreamName(godot Lifetime) gd.String
 		//Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
-		GetLength(godot Context) gd.Float
+		GetLength(godot Lifetime) gd.Float
 		//Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
-		IsMonophonic(godot Context) bool
+		IsMonophonic(godot Lifetime) bool
 		//Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
 		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
-		GetBpm(godot Context) gd.Float
+		GetBpm(godot Lifetime) gd.Float
 		//Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
 		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
-		GetBeatCount(godot Context) gd.Int
+		GetBeatCount(godot Lifetime) gd.Int
 	}
 */
 type AudioStream = classdb.AudioStream
@@ -958,22 +958,22 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 	// AudioStreamPlayback methods that can be overridden by a [Class] that extends it.
 	type AudioStreamPlayback interface {
 		//Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
-		Start(godot Context, from_pos gd.Float)
+		Start(godot Lifetime, from_pos gd.Float)
 		//Override this method to customize what happens when the playback is stopped, such as by calling [method AudioStreamPlayer.stop].
-		Stop(godot Context)
+		Stop(godot Lifetime)
 		//Overridable method. Should return [code]true[/code] if this playback is active and playing its audio stream.
-		IsPlaying(godot Context) bool
+		IsPlaying(godot Lifetime) bool
 		//Overridable method. Should return how many times this audio stream has looped. Most built-in playbacks always return [code]0[/code].
-		GetLoopCount(godot Context) gd.Int
+		GetLoopCount(godot Lifetime) gd.Int
 		//Overridable method. Should return the current progress along the audio stream, in seconds.
-		GetPlaybackPosition(godot Context) gd.Float
+		GetPlaybackPosition(godot Lifetime) gd.Float
 		//Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
-		Seek(godot Context, position gd.Float)
+		Seek(godot Lifetime, position gd.Float)
 		//Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-		Mix(godot Context, buffer *AudioFrame, rate_scale gd.Float, frames gd.Int) gd.Int
+		Mix(godot Lifetime, buffer *AudioFrame, rate_scale gd.Float, frames gd.Int) gd.Int
 		//Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
-		TagUsedStreams(godot Context)
+		TagUsedStreams(godot Lifetime)
 	}
 */
 type AudioStreamPlayback = classdb.AudioStreamPlayback
@@ -1036,9 +1036,9 @@ type BackBufferCopy = classdb.BackBufferCopy
 	// BaseButton methods that can be overridden by a [Class] that extends it.
 	type BaseButton interface {
 		//Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.
-		Pressed(godot Context)
+		Pressed(godot Lifetime)
 		//Called when the button is toggled (only if [member toggle_mode] is active).
-		Toggled(godot Context, toggled_on bool)
+		Toggled(godot Lifetime, toggled_on bool)
 	}
 */
 type BaseButton = classdb.BaseButton
@@ -1256,7 +1256,7 @@ A camera feed gives you access to a single physical camera attached to your devi
 */
 type CameraFeed = classdb.CameraFeed
 
-func CameraServer(godot Context) classdb.CameraServer {
+func CameraServer(godot Lifetime) classdb.CameraServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.CameraServer)
 	return *(*classdb.CameraServer)(unsafe.Pointer(&obj))
 }
@@ -1301,7 +1301,7 @@ A [CanvasItem] can be hidden, which will also hide its children. By adjusting va
 	type CanvasItem interface {
 		//Called when [CanvasItem] has been requested to redraw (after [method queue_redraw] is called, either manually or by the engine).
 		//Corresponds to the [constant NOTIFICATION_DRAW] notification in [method Object._notification].
-		Draw(godot Context)
+		Draw(godot Lifetime)
 	}
 */
 type CanvasItem = classdb.CanvasItem
@@ -1388,7 +1388,7 @@ A 2D circle shape, intended for use in physics. Usually used to provide a shape 
 */
 type CircleShape2D = classdb.CircleShape2D
 
-func ClassDB(godot Context) classdb.ClassDB {
+func ClassDB(godot Lifetime) classdb.ClassDB {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.ClassDB)
 	return *(*classdb.ClassDB)(unsafe.Pointer(&obj))
 }
@@ -1400,12 +1400,12 @@ CodeEdit is a specialized [TextEdit] designed for editing plain text code files.
 	// CodeEdit methods that can be overridden by a [Class] that extends it.
 	type CodeEdit interface {
 		//Override this method to define how the selected entry should be inserted. If [param replace] is true, any existing text should be replaced.
-		ConfirmCodeCompletion(godot Context, replace bool)
+		ConfirmCodeCompletion(godot Lifetime, replace bool)
 		//Override this method to define what happens when the user requests code completion. If [param force] is true, any checks should be bypassed.
-		RequestCodeCompletion(godot Context, force bool)
+		RequestCodeCompletion(godot Lifetime, force bool)
 		//Override this method to define what items in [param candidates] should be displayed.
 		//Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
-		FilterCodeCompletionCandidates(godot Context, candidates gd.ArrayOf[gd.Dictionary]) gd.ArrayOf[gd.Dictionary]
+		FilterCodeCompletionCandidates(godot Lifetime, candidates gd.ArrayOf[gd.Dictionary]) gd.ArrayOf[gd.Dictionary]
 	}
 */
 type CodeEdit = classdb.CodeEdit
@@ -1423,15 +1423,15 @@ Abstract base class for 2D physics objects. [CollisionObject2D] can hold any num
 	type CollisionObject2D interface {
 		//Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
 		//[b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-		InputEvent(godot Context, viewport Viewport, event InputEvent, shape_idx gd.Int)
+		InputEvent(godot Lifetime, viewport Viewport, event InputEvent, shape_idx gd.Int)
 		//Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
-		MouseEnter(godot Context)
+		MouseEnter(godot Lifetime)
 		//Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
-		MouseExit(godot Context)
+		MouseExit(godot Lifetime)
 		//Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
-		MouseShapeEnter(godot Context, shape_idx gd.Int)
+		MouseShapeEnter(godot Lifetime, shape_idx gd.Int)
 		//Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
-		MouseShapeExit(godot Context, shape_idx gd.Int)
+		MouseShapeExit(godot Lifetime, shape_idx gd.Int)
 	}
 */
 type CollisionObject2D = classdb.CollisionObject2D
@@ -1444,11 +1444,11 @@ Abstract base class for 3D physics objects. [CollisionObject3D] can hold any num
 	type CollisionObject3D interface {
 		//Receives unhandled [InputEvent]s. [param position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
 		//[b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-		InputEvent(godot Context, camera Camera3D, event InputEvent, position gd.Vector3, normal gd.Vector3, shape_idx gd.Int)
+		InputEvent(godot Lifetime, camera Camera3D, event InputEvent, position gd.Vector3, normal gd.Vector3, shape_idx gd.Int)
 		//Called when the mouse pointer enters any of this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
-		MouseEnter(godot Context)
+		MouseEnter(godot Lifetime)
 		//Called when the mouse pointer exits all this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
-		MouseExit(godot Context)
+		MouseExit(godot Lifetime)
 	}
 */
 type CollisionObject3D = classdb.CollisionObject3D
@@ -1695,10 +1695,10 @@ Base class for all GUI containers. A [Container] automatically arranges its chil
 	type Container interface {
 		//Implement to return a list of allowed horizontal [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
 		//[b]Note:[/b] Having no size flags is equal to having [constant Control.SIZE_SHRINK_BEGIN]. As such, this value is always implicitly allowed.
-		GetAllowedSizeFlagsHorizontal(godot Context) gd.PackedInt32Array
+		GetAllowedSizeFlagsHorizontal(godot Lifetime) gd.PackedInt32Array
 		//Implement to return a list of allowed vertical [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
 		//[b]Note:[/b] Having no size flags is equal to having [constant Control.SIZE_SHRINK_BEGIN]. As such, this value is always implicitly allowed.
-		GetAllowedSizeFlagsVertical(godot Context) gd.PackedInt32Array
+		GetAllowedSizeFlagsVertical(godot Lifetime) gd.PackedInt32Array
 	}
 */
 type Container = classdb.Container
@@ -1720,17 +1720,17 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
 		//If not overridden, default behavior is checking if the point is within control's Rect.
 		//[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
-		HasPoint(godot Context, point gd.Vector2) bool
+		HasPoint(godot Lifetime, point gd.Vector2) bool
 		//User defined BiDi algorithm override function.
 		//Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
-		StructuredTextParser(godot Context, args gd.Array, text gd.String) gd.ArrayOf[gd.Vector3i]
+		StructuredTextParser(godot Lifetime, args gd.Array, text gd.String) gd.ArrayOf[gd.Vector3i]
 		//Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [member custom_minimum_size] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
 		//If not overridden, defaults to [constant Vector2.ZERO].
 		//[b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
-		GetMinimumSize(godot Context) gd.Vector2
+		GetMinimumSize(godot Lifetime) gd.Vector2
 		//Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
 		//[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
-		GetTooltip(godot Context, at_position gd.Vector2) gd.String
+		GetTooltip(godot Lifetime, at_position gd.Vector2) gd.String
 		//Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns [code]null[/code] if there is no data to drag. Controls that want to receive drop data should implement [method _can_drop_data] and [method _drop_data]. [param at_position] is local to this control. Drag may be forced with [method force_drag].
 		//A preview that will follow the mouse that should represent the data can be set with [method set_drag_preview]. A good time to set the preview is in this method.
 		//[codeblocks]
@@ -1749,7 +1749,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		GetDragData(godot Context, at_position gd.Vector2) gd.Variant
+		GetDragData(godot Lifetime, at_position gd.Vector2) gd.Variant
 		//Godot calls this method to test if [param data] from a control's [method _get_drag_data] can be dropped at [param at_position]. [param at_position] is local to this control.
 		//This method should only be used to test the data. Process the data in [method _drop_data].
 		//[codeblocks]
@@ -1768,7 +1768,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		CanDropData(godot Context, at_position gd.Vector2, data gd.Variant) bool
+		CanDropData(godot Lifetime, at_position gd.Vector2, data gd.Variant) bool
 		//Godot calls this method to pass you the [param data] from a control's [method _get_drag_data] result. Godot first calls [method _can_drop_data] to test if [param data] is allowed to drop at [param at_position] where [param at_position] is local to this control.
 		//[codeblocks]
 		//[gdscript]
@@ -1790,7 +1790,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		DropData(godot Context, at_position gd.Vector2, data gd.Variant)
+		DropData(godot Lifetime, at_position gd.Vector2, data gd.Variant)
 		//Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
 		//The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
 		//The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
@@ -1830,7 +1830,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		MakeCustomTooltip(godot Context, for_text gd.String) gd.Object
+		MakeCustomTooltip(godot Lifetime, for_text gd.String) gd.Object
 		//Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
 		//[b]Example usage for clicking a control:[/b]
 		//[codeblocks]
@@ -1860,7 +1860,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//* control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
 		//* it happens outside the parent's rectangle and the parent has either [member clip_contents] enabled.
 		//[b]Note:[/b] Event position is relative to the control origin.
-		GuiInput(godot Context, event InputEvent)
+		GuiInput(godot Lifetime, event InputEvent)
 	}
 */
 type Control = classdb.Control
@@ -2265,7 +2265,7 @@ A directional light is a type of [Light3D] node that models an infinite number o
 */
 type DirectionalLight3D = classdb.DirectionalLight3D
 
-func DisplayServer(godot Context) classdb.DisplayServer {
+func DisplayServer(godot Lifetime) classdb.DisplayServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.DisplayServer)
 	return *(*classdb.DisplayServer)(unsafe.Pointer(&obj))
 }
@@ -2356,11 +2356,11 @@ func _exit_tree():
 	// EditorDebuggerPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorDebuggerPlugin interface {
 		//Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).
-		SetupSession(godot Context, session_id gd.Int)
+		SetupSession(godot Lifetime, session_id gd.Int)
 		//Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
-		HasCapture(godot Context, capture gd.String) bool
+		HasCapture(godot Lifetime, capture gd.String) bool
 		//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
-		Capture(godot Context, message gd.String, data gd.Array, session_id gd.Int) bool
+		Capture(godot Lifetime, message gd.String, data gd.Array, session_id gd.Int) bool
 	}
 */
 type EditorDebuggerPlugin = classdb.EditorDebuggerPlugin
@@ -2397,70 +2397,70 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 	type EditorExportPlugin interface {
 		//Virtual method to be overridden by the user. Called for each exported file, providing arguments that can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]) and [param features] is the list of features for the export.
 		//Calling [method skip] inside this callback will make the file not included in the export.
-		ExportFile(godot Context, path gd.String, atype gd.String, features gd.PackedStringArray)
+		ExportFile(godot Lifetime, path gd.String, atype gd.String, features gd.PackedStringArray)
 		//Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. [param features] is the list of features for the export, [param is_debug] is [code]true[/code] for debug builds, [param path] is the target path for the exported project. [param flags] is only used when running a runnable profile, e.g. when using native run on Android.
-		ExportBegin(godot Context, features gd.PackedStringArray, is_debug bool, path gd.String, flags gd.Int)
+		ExportBegin(godot Lifetime, features gd.PackedStringArray, is_debug bool, path gd.String, flags gd.Int)
 		//Virtual method to be overridden by the user. Called when the export is finished.
-		ExportEnd(godot Context)
+		ExportEnd(godot Lifetime)
 		//Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
 		//When enabled, [method _get_customization_configuration_hash], [method _customize_resource] and [method _customize_scene] will be called and must be implemented.
-		BeginCustomizeResources(godot Context, platform EditorExportPlatform, features gd.PackedStringArray) bool
+		BeginCustomizeResources(godot Lifetime, platform EditorExportPlatform, features gd.PackedStringArray) bool
 		//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
 		//The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 		//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
-		CustomizeResource(godot Context, resource Resource, path gd.String) Resource
+		CustomizeResource(godot Lifetime, resource Resource, path gd.String) Resource
 		//Return true if this plugin will customize scenes based on the platform and features used.
-		BeginCustomizeScenes(godot Context, platform EditorExportPlatform, features gd.PackedStringArray) bool
+		BeginCustomizeScenes(godot Lifetime, platform EditorExportPlatform, features gd.PackedStringArray) bool
 		//Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
 		//Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
-		CustomizeScene(godot Context, scene Node, path gd.String) Node
+		CustomizeScene(godot Lifetime, scene Node, path gd.String) Node
 		//Return a hash based on the configuration passed (for both scenes and resources). This helps keep separate caches for separate export configurations.
 		//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
-		GetCustomizationConfigurationHash(godot Context) gd.Int
+		GetCustomizationConfigurationHash(godot Lifetime) gd.Int
 		//This is called when the customization process for scenes ends.
-		EndCustomizeScenes(godot Context)
+		EndCustomizeScenes(godot Lifetime)
 		//This is called when the customization process for resources ends.
-		EndCustomizeResources(godot Context)
+		EndCustomizeResources(godot Lifetime)
 		//Return a list of export options that can be configured for this export plugin.
 		//Each element in the return value is a [Dictionary] with the following keys:
 		//- [code]option[/code]: A dictionary with the structure documented by [method Object.get_property_list], but all keys are optional.
 		//- [code]default_value[/code]: The default value for this option.
 		//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
-		GetExportOptions(godot Context, platform EditorExportPlatform) gd.ArrayOf[gd.Dictionary]
+		GetExportOptions(godot Lifetime, platform EditorExportPlatform) gd.ArrayOf[gd.Dictionary]
 		//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
-		ShouldUpdateExportOptions(godot Context, platform EditorExportPlatform) bool
+		ShouldUpdateExportOptions(godot Lifetime, platform EditorExportPlatform) bool
 		//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
 		//[b]Note:[/b] Use [method get_option] to check the value of the export options.
-		GetExportOptionWarning(godot Context, platform EditorExportPlatform, option gd.String) gd.String
+		GetExportOptionWarning(godot Lifetime, platform EditorExportPlatform, option gd.String) gd.String
 		//Return a [PackedStringArray] of additional features this preset, for the given [param platform], should have.
-		GetExportFeatures(godot Context, platform EditorExportPlatform, debug bool) gd.PackedStringArray
+		GetExportFeatures(godot Lifetime, platform EditorExportPlatform, debug bool) gd.PackedStringArray
 		//Return the name identifier of this plugin (for future identification by the exporter). The plugins are sorted by name before exporting.
 		//Implementing this method is required.
-		GetName(godot Context) gd.String
+		GetName(godot Lifetime) gd.String
 		//Return [code]true[/code] if the plugin supports the given [param platform].
-		SupportsPlatform(godot Context, platform EditorExportPlatform) bool
+		SupportsPlatform(godot Lifetime, platform EditorExportPlatform) bool
 		//Virtual method to be overridden by the user. This is called to retrieve the set of Android dependencies provided by this plugin. Each returned Android dependency should have the format of an Android remote binary dependency: [code]org.godot.example:my-plugin:0.0.0[/code]
 		//For more information see [url=https://developer.android.com/build/dependencies?agpversion=4.1#dependency-types]Android documentation on dependencies[/url].
 		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidDependencies(godot Context, platform EditorExportPlatform, debug bool) gd.PackedStringArray
+		GetAndroidDependencies(godot Lifetime, platform EditorExportPlatform, debug bool) gd.PackedStringArray
 		//Virtual method to be overridden by the user. This is called to retrieve the URLs of Maven repositories for the set of Android dependencies provided by this plugin.
 		//For more information see [url=https://docs.gradle.org/current/userguide/dependency_management.html#sec:maven_repo]Gradle documentation on dependency management[/url].
 		//[b]Note:[/b] Google's Maven repo and the Maven Central repo are already included by default.
 		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidDependenciesMavenRepos(godot Context, platform EditorExportPlatform, debug bool) gd.PackedStringArray
+		GetAndroidDependenciesMavenRepos(godot Lifetime, platform EditorExportPlatform, debug bool) gd.PackedStringArray
 		//Virtual method to be overridden by the user. This is called to retrieve the local paths of the Android libraries archive (AAR) files provided by this plugin.
 		//[b]Note:[/b] Relative paths [b]must[/b] be relative to Godot's [code]res://addons/[/code] directory. For example, an AAR file located under [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] can be returned as an absolute path using [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] or a relative path using [code]hello_world_plugin/HelloWorld.release.aar[/code].
 		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidLibraries(godot Context, platform EditorExportPlatform, debug bool) gd.PackedStringArray
+		GetAndroidLibraries(godot Lifetime, platform EditorExportPlatform, debug bool) gd.PackedStringArray
 		//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]activity[/code] element in the generated Android manifest.
 		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidManifestActivityElementContents(godot Context, platform EditorExportPlatform, debug bool) gd.String
+		GetAndroidManifestActivityElementContents(godot Lifetime, platform EditorExportPlatform, debug bool) gd.String
 		//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]application[/code] element in the generated Android manifest.
 		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidManifestApplicationElementContents(godot Context, platform EditorExportPlatform, debug bool) gd.String
+		GetAndroidManifestApplicationElementContents(godot Lifetime, platform EditorExportPlatform, debug bool) gd.String
 		//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]manifest[/code] element in the generated Android manifest.
 		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidManifestElementContents(godot Context, platform EditorExportPlatform, debug bool) gd.String
+		GetAndroidManifestElementContents(godot Lifetime, platform EditorExportPlatform, debug bool) gd.String
 	}
 */
 type EditorExportPlugin = classdb.EditorExportPlugin
@@ -2493,11 +2493,11 @@ This class is used to query and configure a certain import format. It is used in
 	// EditorFileSystemImportFormatSupportQuery methods that can be overridden by a [Class] that extends it.
 	type EditorFileSystemImportFormatSupportQuery interface {
 		//Return whether this importer is active.
-		IsActive(godot Context) bool
+		IsActive(godot Lifetime) bool
 		//Return the file extensions supported.
-		GetFileExtensions(godot Context) gd.PackedStringArray
+		GetFileExtensions(godot Lifetime) gd.PackedStringArray
 		//Query support. Return false if import must not continue.
-		Query(godot Context) bool
+		Query(godot Lifetime) bool
 	}
 */
 type EditorFileSystemImportFormatSupportQuery = classdb.EditorFileSystemImportFormatSupportQuery
@@ -2630,25 +2630,25 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 	// EditorImportPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorImportPlugin interface {
 		//Gets the unique name of the importer.
-		GetImporterName(godot Context) gd.String
+		GetImporterName(godot Lifetime) gd.String
 		//Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
-		GetVisibleName(godot Context) gd.String
+		GetVisibleName(godot Lifetime) gd.String
 		//Gets the number of initial presets defined by the plugin. Use [method _get_import_options] to get the default options for the preset and [method _get_preset_name] to get the name of the preset.
-		GetPresetCount(godot Context) gd.Int
+		GetPresetCount(godot Lifetime) gd.Int
 		//Gets the name of the options preset at this index.
-		GetPresetName(godot Context, preset_index gd.Int) gd.String
+		GetPresetName(godot Lifetime, preset_index gd.Int) gd.String
 		//Gets the list of file extensions to associate with this loader (case-insensitive). e.g. [code]["obj"][/code].
-		GetRecognizedExtensions(godot Context) gd.PackedStringArray
+		GetRecognizedExtensions(godot Lifetime) gd.PackedStringArray
 		//Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: [code]name[/code], [code]default_value[/code], [code]property_hint[/code] (optional), [code]hint_string[/code] (optional), [code]usage[/code] (optional).
-		GetImportOptions(godot Context, path gd.String, preset_index gd.Int) gd.ArrayOf[gd.Dictionary]
+		GetImportOptions(godot Lifetime, path gd.String, preset_index gd.Int) gd.ArrayOf[gd.Dictionary]
 		//Gets the extension used to save this resource in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
-		GetSaveExtension(godot Context) gd.String
+		GetSaveExtension(godot Lifetime) gd.String
 		//Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
-		GetResourceType(godot Context) gd.String
+		GetResourceType(godot Lifetime) gd.String
 		//Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
-		GetPriority(godot Context) gd.Float
+		GetPriority(godot Lifetime) gd.Float
 		//Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
-		GetImportOrder(godot Context) gd.Int
+		GetImportOrder(godot Lifetime) gd.Int
 		//This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
 		//[codeblocks]
 		//[gdscript]
@@ -2673,10 +2673,10 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 		//[/csharp]
 		//[/codeblocks]
 		//Returns [code]true[/code] to make all options always visible.
-		GetOptionVisibility(godot Context, path gd.String, option_name gd.StringName, options gd.Dictionary) bool
+		GetOptionVisibility(godot Lifetime, path gd.String, option_name gd.StringName, options gd.Dictionary) bool
 		//Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 		//This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
-		Import(godot Context, source_file gd.String, save_path gd.String, options gd.Dictionary, platform_variants gd.ArrayOf[gd.String], gen_files gd.ArrayOf[gd.String]) int64
+		Import(godot Lifetime, source_file gd.String, save_path gd.String, options gd.Dictionary, platform_variants gd.ArrayOf[gd.String], gen_files gd.ArrayOf[gd.String]) int64
 	}
 */
 type EditorImportPlugin = classdb.EditorImportPlugin
@@ -2703,22 +2703,22 @@ To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_i
 	// EditorInspectorPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorInspectorPlugin interface {
 		//Returns [code]true[/code] if this object can be handled by this plugin.
-		CanHandle(godot Context, object gd.Object) bool
+		CanHandle(godot Lifetime, object gd.Object) bool
 		//Called to allow adding controls at the beginning of the property list for [param object].
-		ParseBegin(godot Context, object gd.Object)
+		ParseBegin(godot Lifetime, object gd.Object)
 		//Called to allow adding controls at the beginning of a category in the property list for [param object].
-		ParseCategory(godot Context, object gd.Object, category gd.String)
+		ParseCategory(godot Lifetime, object gd.Object, category gd.String)
 		//Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
-		ParseGroup(godot Context, object gd.Object, group gd.String)
+		ParseGroup(godot Lifetime, object gd.Object, group gd.String)
 		//Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
-		ParseProperty(godot Context, object gd.Object, atype gd.VariantType, name gd.String, hint_type gd.PropertyHint, hint_string gd.String, usage_flags gd.PropertyUsageFlags, wide bool) bool
+		ParseProperty(godot Lifetime, object gd.Object, atype gd.VariantType, name gd.String, hint_type gd.PropertyHint, hint_string gd.String, usage_flags gd.PropertyUsageFlags, wide bool) bool
 		//Called to allow adding controls at the end of the property list for [param object].
-		ParseEnd(godot Context, object gd.Object)
+		ParseEnd(godot Lifetime, object gd.Object)
 	}
 */
 type EditorInspectorPlugin = classdb.EditorInspectorPlugin
 
-func EditorInterface(godot Context) classdb.EditorInterface {
+func EditorInterface(godot Lifetime) classdb.EditorInterface {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.EditorInterface)
 	return *(*classdb.EditorInterface)(unsafe.Pointer(&obj))
 }
@@ -2729,35 +2729,35 @@ Gizmo that is used for providing custom visualization and editing (handles and s
 	// EditorNode3DGizmo methods that can be overridden by a [Class] that extends it.
 	type EditorNode3DGizmo interface {
 		//Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method clear] at the beginning of this method and then add visual elements depending on the node's properties.
-		Redraw(godot Context)
+		Redraw(godot Lifetime)
 		//Override this method to return the name of an edited handle (handles must have been previously added by [method add_handles]). Handles can be named for reference to the user when editing.
 		//The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
-		GetHandleName(godot Context, id gd.Int, secondary bool) gd.String
+		GetHandleName(godot Lifetime, id gd.Int, secondary bool) gd.String
 		//Override this method to return [code]true[/code] whenever the given handle should be highlighted in the editor.
 		//The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
-		IsHandleHighlighted(godot Context, id gd.Int, secondary bool) bool
+		IsHandleHighlighted(godot Lifetime, id gd.Int, secondary bool) bool
 		//Override this method to return the current value of a handle. This value will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_handle].
 		//The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
-		GetHandleValue(godot Context, id gd.Int, secondary bool) gd.Variant
-		BeginHandleAction(godot Context, id gd.Int, secondary bool)
+		GetHandleValue(godot Lifetime, id gd.Int, secondary bool) gd.Variant
+		BeginHandleAction(godot Lifetime, id gd.Int, secondary bool)
 		//Override this method to update the node properties when the user drags a gizmo handle (previously added with [method add_handles]). The provided [param point] is the mouse position in screen coordinates and the [param camera] can be used to convert it to raycasts.
 		//The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
-		SetHandle(godot Context, id gd.Int, secondary bool, camera Camera3D, point gd.Vector2)
+		SetHandle(godot Lifetime, id gd.Int, secondary bool, camera Camera3D, point gd.Vector2)
 		//Override this method to commit a handle being edited (handles must have been previously added by [method add_handles]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the [param restore] argument as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restore] value should be directly set, without any [UndoRedo] action.
 		//The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method add_handles] for more information).
-		CommitHandle(godot Context, id gd.Int, secondary bool, restore gd.Variant, cancel bool)
+		CommitHandle(godot Lifetime, id gd.Int, secondary bool, restore gd.Variant, cancel bool)
 		//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-		SubgizmosIntersectRay(godot Context, camera Camera3D, point gd.Vector2) gd.Int
+		SubgizmosIntersectRay(godot Lifetime, camera Camera3D, point gd.Vector2) gd.Int
 		//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-		SubgizmosIntersectFrustum(godot Context, camera Camera3D, frustum gd.ArrayOf[gd.Plane]) gd.PackedInt32Array
+		SubgizmosIntersectFrustum(godot Lifetime, camera Camera3D, frustum gd.ArrayOf[gd.Plane]) gd.PackedInt32Array
 		//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
-		SetSubgizmoTransform(godot Context, id gd.Int, transform gd.Transform3D)
+		SetSubgizmoTransform(godot Lifetime, id gd.Int, transform gd.Transform3D)
 		//Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
-		GetSubgizmoTransform(godot Context, id gd.Int) gd.Transform3D
+		GetSubgizmoTransform(godot Lifetime, id gd.Int) gd.Transform3D
 		//Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
-		CommitSubgizmos(godot Context, ids gd.PackedInt32Array, restores gd.ArrayOf[gd.Transform3D], cancel bool)
+		CommitSubgizmos(godot Lifetime, ids gd.PackedInt32Array, restores gd.ArrayOf[gd.Transform3D], cancel bool)
 	}
 */
 type EditorNode3DGizmo = classdb.EditorNode3DGizmo
@@ -2769,49 +2769,49 @@ To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add
 	// EditorNode3DGizmoPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorNode3DGizmoPlugin interface {
 		//Override this method to define which Node3D nodes have a gizmo from this plugin. Whenever a [Node3D] node is added to a scene this method is called, if it returns [code]true[/code] the node gets a generic [EditorNode3DGizmo] assigned and is added to this plugin's list of active gizmos.
-		HasGizmo(godot Context, for_node_3d Node3D) bool
+		HasGizmo(godot Lifetime, for_node_3d Node3D) bool
 		//Override this method to return a custom [EditorNode3DGizmo] for the spatial nodes of your choice, return [code]null[/code] for the rest of nodes. See also [method _has_gizmo].
-		CreateGizmo(godot Context, for_node_3d Node3D) EditorNode3DGizmo
+		CreateGizmo(godot Lifetime, for_node_3d Node3D) EditorNode3DGizmo
 		//Override this method to provide the name that will appear in the gizmo visibility menu.
-		GetGizmoName(godot Context) gd.String
+		GetGizmoName(godot Lifetime) gd.String
 		//Override this method to set the gizmo's priority. Gizmos with higher priority will have precedence when processing inputs like handles or subgizmos selection.
 		//All built-in editor gizmos return a priority of [code]-1[/code]. If not overridden, this method will return [code]0[/code], which means custom gizmos will automatically get higher priority than built-in gizmos.
-		GetPriority(godot Context) gd.Int
+		GetPriority(godot Lifetime) gd.Int
 		//Override this method to define whether the gizmos handled by this plugin can be hidden or not. Returns [code]true[/code] if not overridden.
-		CanBeHidden(godot Context) bool
+		CanBeHidden(godot Lifetime) bool
 		//Override this method to define whether Node3D with this gizmo should be selectable even when the gizmo is hidden.
-		IsSelectableWhenHidden(godot Context) bool
+		IsSelectableWhenHidden(godot Lifetime) bool
 		//Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method EditorNode3DGizmo.clear] at the beginning of this method and then add visual elements depending on the node's properties.
-		Redraw(godot Context, gizmo EditorNode3DGizmo)
+		Redraw(godot Lifetime, gizmo EditorNode3DGizmo)
 		//Override this method to provide gizmo's handle names. The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information). Called for this plugin's active gizmos.
-		GetHandleName(godot Context, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool) gd.String
+		GetHandleName(godot Lifetime, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool) gd.String
 		//Override this method to return [code]true[/code] whenever to given handle should be highlighted in the editor. The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information). Called for this plugin's active gizmos.
-		IsHandleHighlighted(godot Context, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool) bool
+		IsHandleHighlighted(godot Lifetime, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool) bool
 		//Override this method to return the current value of a handle. This value will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_handle].
 		//The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information).
 		//Called for this plugin's active gizmos.
-		GetHandleValue(godot Context, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool) gd.Variant
-		BeginHandleAction(godot Context, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool)
+		GetHandleValue(godot Lifetime, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool) gd.Variant
+		BeginHandleAction(godot Lifetime, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool)
 		//Override this method to update the node's properties when the user drags a gizmo handle (previously added with [method EditorNode3DGizmo.add_handles]). The provided [param screen_pos] is the mouse position in screen coordinates and the [param camera] can be used to convert it to raycasts.
 		//The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information).
 		//Called for this plugin's active gizmos.
-		SetHandle(godot Context, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool, camera Camera3D, screen_pos gd.Vector2)
+		SetHandle(godot Lifetime, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool, camera Camera3D, screen_pos gd.Vector2)
 		//Override this method to commit a handle being edited (handles must have been previously added by [method EditorNode3DGizmo.add_handles] during [method _redraw]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the [param restore] argument as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restore] value should be directly set, without any [UndoRedo] action.
 		//The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information).
 		//Called for this plugin's active gizmos.
-		CommitHandle(godot Context, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool, restore gd.Variant, cancel bool)
+		CommitHandle(godot Lifetime, gizmo EditorNode3DGizmo, handle_id gd.Int, secondary bool, restore gd.Variant, cancel bool)
 		//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param screen_pos] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos]. Called for this plugin's active gizmos.
-		SubgizmosIntersectRay(godot Context, gizmo EditorNode3DGizmo, camera Camera3D, screen_pos gd.Vector2) gd.Int
+		SubgizmosIntersectRay(godot Lifetime, gizmo EditorNode3DGizmo, camera Camera3D, screen_pos gd.Vector2) gd.Int
 		//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and [param frustum_planes], this method should return which subgizmos are contained within the frustums. The [param frustum_planes] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, these identifiers can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos]. Called for this plugin's active gizmos.
-		SubgizmosIntersectFrustum(godot Context, gizmo EditorNode3DGizmo, camera Camera3D, frustum_planes gd.ArrayOf[gd.Plane]) gd.PackedInt32Array
+		SubgizmosIntersectFrustum(godot Lifetime, gizmo EditorNode3DGizmo, camera Camera3D, frustum_planes gd.ArrayOf[gd.Plane]) gd.PackedInt32Array
 		//Override this method to return the current transform of a subgizmo. As with all subgizmo methods, the transform should be in local space respect to the gizmo's Node3D. This transform will be requested at the start of an edit and used in the [code]restore[/code] argument in [method _commit_subgizmos]. Called for this plugin's active gizmos.
-		GetSubgizmoTransform(godot Context, gizmo EditorNode3DGizmo, subgizmo_id gd.Int) gd.Transform3D
+		GetSubgizmoTransform(godot Lifetime, gizmo EditorNode3DGizmo, subgizmo_id gd.Int) gd.Transform3D
 		//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the Node3D's local coordinate system. Called for this plugin's active gizmos.
-		SetSubgizmoTransform(godot Context, gizmo EditorNode3DGizmo, subgizmo_id gd.Int, transform gd.Transform3D)
+		SetSubgizmoTransform(godot Lifetime, gizmo EditorNode3DGizmo, subgizmo_id gd.Int, transform gd.Transform3D)
 		//Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action. As with all subgizmo methods, transforms are given in local space respect to the gizmo's Node3D. Called for this plugin's active gizmos.
-		CommitSubgizmos(godot Context, gizmo EditorNode3DGizmo, ids gd.PackedInt32Array, restores gd.ArrayOf[gd.Transform3D], cancel bool)
+		CommitSubgizmos(godot Lifetime, gizmo EditorNode3DGizmo, ids gd.PackedInt32Array, restores gd.ArrayOf[gd.Transform3D], cancel bool)
 	}
 */
 type EditorNode3DGizmoPlugin = classdb.EditorNode3DGizmoPlugin
@@ -2867,7 +2867,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		ForwardCanvasGuiInput(godot Context, event InputEvent) bool
+		ForwardCanvasGuiInput(godot Lifetime, event InputEvent) bool
 		//Called by the engine when the 2D editor's viewport is updated. Use the [code]overlay[/code] [Control] for drawing. You can update the viewport manually by calling [method update_overlays].
 		//[codeblocks]
 		//[gdscript]
@@ -2901,10 +2901,10 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		ForwardCanvasDrawOverViewport(godot Context, viewport_control Control)
+		ForwardCanvasDrawOverViewport(godot Lifetime, viewport_control Control)
 		//This method is the same as [method _forward_canvas_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
 		//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
-		ForwardCanvasForceDrawOverViewport(godot Context, viewport_control Control)
+		ForwardCanvasForceDrawOverViewport(godot Lifetime, viewport_control Control)
 		//Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [enum AfterGUIInput] for options.
 		//[b]Example:[/b]
 		//[codeblocks]
@@ -2937,7 +2937,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		Forward3dGuiInput(godot Context, viewport_camera Camera3D, event InputEvent) gd.Int
+		Forward3dGuiInput(godot Lifetime, viewport_camera Camera3D, event InputEvent) gd.Int
 		//Called by the engine when the 3D editor's viewport is updated. Use the [code]overlay[/code] [Control] for drawing. You can update the viewport manually by calling [method update_overlays].
 		//[codeblocks]
 		//[gdscript]
@@ -2971,13 +2971,13 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		Forward3dDrawOverViewport(godot Context, viewport_control Control)
+		Forward3dDrawOverViewport(godot Lifetime, viewport_control Control)
 		//This method is the same as [method _forward_3d_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
 		//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
-		Forward3dForceDrawOverViewport(godot Context, viewport_control Control)
+		Forward3dForceDrawOverViewport(godot Lifetime, viewport_control Control)
 		//Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 		//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
-		GetPluginName(godot Context) gd.String
+		GetPluginName(godot Lifetime) gd.String
 		//Override this method in your plugin to return a [Texture2D] in order to give it an icon.
 		//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
 		//Ideally, the plugin icon should be white with a transparent background and 16x16 pixels in size.
@@ -2999,7 +2999,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		GetPluginIcon(godot Context) Texture2D
+		GetPluginIcon(godot Lifetime) Texture2D
 		//Returns [code]true[/code] if this is a main screen editor plugin (it goes in the workspace selector together with [b]2D[/b], [b]3D[/b], [b]Script[/b] and [b]AssetLib[/b]).
 		//When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [method EditorInterface.get_base_control] and made visible inside [method _make_visible].
 		//Use [method _get_plugin_name] and [method _get_plugin_icon] to customize the plugin button's appearance.
@@ -3023,16 +3023,16 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//func _get_plugin_icon():
 		//    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
 		//[/codeblock]
-		HasMainScreen(godot Context) bool
+		HasMainScreen(godot Lifetime) bool
 		//This function will be called when the editor is requested to become visible. It is used for plugins that edit a specific object type.
 		//Remember that you have to manage the visibility of all your editor controls manually.
-		MakeVisible(godot Context, visible bool)
+		MakeVisible(godot Lifetime, visible bool)
 		//This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 		//[param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
-		Edit(godot Context, object gd.Object)
+		Edit(godot Lifetime, object gd.Object)
 		//Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
 		//[b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
-		Handles(godot Context, object gd.Object) bool
+		Handles(godot Lifetime, object gd.Object) bool
 		//Override this method to provide a state data you want to be saved, like view position, grid settings, folding, etc. This is used when saving the scene (so state is kept when opening it again) and for switching tabs (so state can be restored when the tab returns). This data is automatically saved for each scene in an [code]editstate[/code] file in the editor metadata folder. If you want to store global (scene-independent) editor data for your plugin, you can use [method _get_window_layout] instead.
 		//Use [method _set_state] to restore your saved state.
 		//[b]Note:[/b] This method should not be used to save important settings that should persist with the project.
@@ -3042,7 +3042,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//    var state = {"zoom": zoom, "preferred_color": my_color}
 		//    return state
 		//[/codeblock]
-		GetState(godot Context) gd.Dictionary
+		GetState(godot Lifetime) gd.Dictionary
 		//Restore the state saved by [method _get_state]. This method is called when the current scene tab is changed in the editor.
 		//[b]Note:[/b] Your plugin must implement [method _get_plugin_name], otherwise it will not be recognized and this method will not be called.
 		//[codeblock]
@@ -3050,9 +3050,9 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//    zoom = data.get("zoom", 1.0)
 		//    preferred_color = data.get("my_color", Color.WHITE)
 		//[/codeblock]
-		SetState(godot Context, state gd.Dictionary)
+		SetState(godot Lifetime, state gd.Dictionary)
 		//Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
-		Clear(godot Context)
+		Clear(godot Lifetime)
 		//Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
 		//When closing a scene, [param for_scene] is the path to the scene being closed. You can use it to handle built-in resources in that scene.
 		//If the user confirms saving, [method _save_external_data] will be called, before closing the editor.
@@ -3075,21 +3075,21 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//    if not for_scene.is_empty():
 		//        return ""
 		//[/codeblock]
-		GetUnsavedStatus(godot Context, for_scene gd.String) gd.String
+		GetUnsavedStatus(godot Lifetime, for_scene gd.String) gd.String
 		//This method is called after the editor saves the project or when it's closed. It asks the plugin to save edited external scenes/resources.
-		SaveExternalData(godot Context)
+		SaveExternalData(godot Lifetime)
 		//This method is called when the editor is about to save the project, switch to another tab, etc. It asks the plugin to apply any pending state changes to ensure consistency.
 		//This is used, for example, in shader editors to let the plugin know that it must apply the shader code being written by the user to the object.
-		ApplyChanges(godot Context)
+		ApplyChanges(godot Lifetime)
 		//This is for editors that edit script-based objects. You can return a list of breakpoints in the format ([code]script:line[/code]), for example: [code]res://path_to_script.gd:25[/code].
-		GetBreakpoints(godot Context) gd.PackedStringArray
+		GetBreakpoints(godot Lifetime) gd.PackedStringArray
 		//Restore the plugin GUI layout and data saved by [method _get_window_layout]. This method is called for every plugin on editor startup. Use the provided [param configuration] file to read your saved data.
 		//[codeblock]
 		//func _set_window_layout(configuration):
 		//    $Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
 		//    $Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
 		//[/codeblock]
-		SetWindowLayout(godot Context, configuration ConfigFile)
+		SetWindowLayout(godot Lifetime, configuration ConfigFile)
 		//Override this method to provide the GUI layout of the plugin or any other data you want to be stored. This is used to save the project's editor layout when [method queue_save_layout] is called or the editor layout was changed (for example changing the position of a dock). The data is stored in the [code]editor_layout.cfg[/code] file in the editor metadata directory.
 		//Use [method _set_window_layout] to restore your saved layout.
 		//[codeblock]
@@ -3097,14 +3097,14 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//    configuration.set_value("MyPlugin", "window_position", $Window.position)
 		//    configuration.set_value("MyPlugin", "icon_color", $Icon.modulate)
 		//[/codeblock]
-		GetWindowLayout(godot Context, configuration ConfigFile)
+		GetWindowLayout(godot Lifetime, configuration ConfigFile)
 		//This method is called when the editor is about to run the project. The plugin can then perform required operations before the project runs.
 		//This method must return a boolean. If this method returns [code]false[/code], the project will not run. The run is aborted immediately, so this also prevents all other plugins' [method _build] methods from running.
-		Build(godot Context) bool
+		Build(godot Lifetime) bool
 		//Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
-		EnablePlugin(godot Context)
+		EnablePlugin(godot Lifetime)
 		//Called by the engine when the user disables the [EditorPlugin] in the Plugin tab of the project settings window.
-		DisablePlugin(godot Context)
+		DisablePlugin(godot Lifetime)
 	}
 */
 type EditorPlugin = classdb.EditorPlugin
@@ -3115,9 +3115,9 @@ A custom control for editing properties that can be added to the [EditorInspecto
 	// EditorProperty methods that can be overridden by a [Class] that extends it.
 	type EditorProperty interface {
 		//When this virtual function is called, you must update your editor.
-		UpdateProperty(godot Context)
+		UpdateProperty(godot Lifetime)
 		//Called when the read-only status of the property is changed. It may be used to change custom controls into a read-only or modifiable state.
-		SetReadOnly(godot Context, read_only bool)
+		SetReadOnly(godot Lifetime, read_only bool)
 	}
 */
 type EditorProperty = classdb.EditorProperty
@@ -3150,11 +3150,11 @@ To use an [EditorResourceConversionPlugin], register it using the [method Editor
 	// EditorResourceConversionPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorResourceConversionPlugin interface {
 		//Returns the class name of the target type of [Resource] that this plugin converts source resources to.
-		ConvertsTo(godot Context) gd.String
+		ConvertsTo(godot Lifetime) gd.String
 		//Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
-		Handles(godot Context, resource Resource) bool
+		Handles(godot Lifetime, resource Resource) bool
 		//Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
-		Convert(godot Context, resource Resource) Resource
+		Convert(godot Lifetime, resource Resource) Resource
 	}
 */
 type EditorResourceConversionPlugin = classdb.EditorResourceConversionPlugin
@@ -3167,9 +3167,9 @@ This [Control] node is used in the editor's Inspector dock to allow editing of [
 	type EditorResourcePicker interface {
 		//This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
 		//[b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
-		SetCreateOptions(godot Context, menu_node gd.Object)
+		SetCreateOptions(godot Lifetime, menu_node gd.Object)
 		//This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
-		HandleMenuSelected(godot Context, id gd.Int) bool
+		HandleMenuSelected(godot Lifetime, id gd.Int) bool
 	}
 */
 type EditorResourcePicker = classdb.EditorResourcePicker
@@ -3186,23 +3186,23 @@ Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[
 	// EditorResourcePreviewGenerator methods that can be overridden by a [Class] that extends it.
 	type EditorResourcePreviewGenerator interface {
 		//Returns [code]true[/code] if your generator supports the resource of type [param type].
-		Handles(godot Context, atype gd.String) bool
+		Handles(godot Lifetime, atype gd.String) bool
 		//Generate a preview from a given resource with the specified size. This must always be implemented.
 		//Returning an empty texture is an OK way to fail and let another generator take care.
 		//Care must be taken because this function is always called from a thread (not the main thread).
 		//[param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
-		Generate(godot Context, resource Resource, size gd.Vector2i, metadata gd.Dictionary) Texture2D
+		Generate(godot Lifetime, resource Resource, size gd.Vector2i, metadata gd.Dictionary) Texture2D
 		//Generate a preview directly from a path with the specified size. Implementing this is optional, as default code will load and call [method _generate].
 		//Returning an empty texture is an OK way to fail and let another generator take care.
 		//Care must be taken because this function is always called from a thread (not the main thread).
 		//[param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
-		GenerateFromPath(godot Context, path gd.String, size gd.Vector2i, metadata gd.Dictionary) Texture2D
+		GenerateFromPath(godot Lifetime, path gd.String, size gd.Vector2i, metadata gd.Dictionary) Texture2D
 		//If this function returns [code]true[/code], the generator will automatically generate the small previews from the normal preview texture generated by the methods [method _generate] or [method _generate_from_path].
 		//By default, it returns [code]false[/code].
-		GenerateSmallPreviewAutomatically(godot Context) bool
+		GenerateSmallPreviewAutomatically(godot Lifetime) bool
 		//If this function returns [code]true[/code], the generator will call [method _generate] or [method _generate_from_path] for small previews as well.
 		//By default, it returns [code]false[/code].
-		CanGenerateSmallPreview(godot Context) bool
+		CanGenerateSmallPreview(godot Lifetime) bool
 	}
 */
 type EditorResourcePreviewGenerator = classdb.EditorResourcePreviewGenerator
@@ -3214,7 +3214,7 @@ A plugin must be first registered with [method FileSystemDock.add_resource_toolt
 	// EditorResourceTooltipPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorResourceTooltipPlugin interface {
 		//Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
-		Handles(godot Context, atype gd.String) bool
+		Handles(godot Lifetime, atype gd.String) bool
 		//Create and return a tooltip that will be displayed when the user hovers a resource under the given [param path] in filesystem dock.
 		//The [param metadata] dictionary is provided by preview generator (see [method EditorResourcePreviewGenerator._generate]).
 		//[param base] is the base default tooltip, which is a [VBoxContainer] with a file name, type and size labels. If another plugin handled the same file type, [param base] will be output from the previous plugin. For best result, make sure the base tooltip is part of the returned [Control].
@@ -3227,7 +3227,7 @@ A plugin must be first registered with [method FileSystemDock.add_resource_toolt
 		//    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
 		//    return base
 		//[/codeblock]
-		MakeTooltipForPath(godot Context, path gd.String, metadata gd.Dictionary, base Control) Control
+		MakeTooltipForPath(godot Lifetime, path gd.String, metadata gd.Dictionary, base Control) Control
 	}
 */
 type EditorResourceTooltipPlugin = classdb.EditorResourceTooltipPlugin
@@ -3238,11 +3238,11 @@ To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.a
 
 	// EditorSceneFormatImporter methods that can be overridden by a [Class] that extends it.
 	type EditorSceneFormatImporter interface {
-		GetImportFlags(godot Context) gd.Int
-		GetExtensions(godot Context) gd.PackedStringArray
-		ImportScene(godot Context, path gd.String, flags gd.Int, options gd.Dictionary) gd.Object
-		GetImportOptions(godot Context, path gd.String)
-		GetOptionVisibility(godot Context, path gd.String, for_animation bool, option gd.String) gd.Variant
+		GetImportFlags(godot Lifetime) gd.Int
+		GetExtensions(godot Lifetime) gd.PackedStringArray
+		ImportScene(godot Lifetime, path gd.String, flags gd.Int, options gd.Dictionary) gd.Object
+		GetImportOptions(godot Lifetime, path gd.String)
+		GetOptionVisibility(godot Lifetime, path gd.String, for_animation bool, option gd.String) gd.Variant
 	}
 */
 type EditorSceneFormatImporter = classdb.EditorSceneFormatImporter
@@ -3323,7 +3323,7 @@ public partial class NodeRenamer : EditorScenePostImport
 	// EditorScenePostImport methods that can be overridden by a [Class] that extends it.
 	type EditorScenePostImport interface {
 		//Called after the scene was imported. This method must return the modified version of the scene.
-		PostImport(godot Context, scene Node) gd.Object
+		PostImport(godot Lifetime, scene Node) gd.Object
 	}
 */
 type EditorScenePostImport = classdb.EditorScenePostImport
@@ -3334,21 +3334,21 @@ This plugin type exists to modify the process of importing scenes, allowing to c
 	// EditorScenePostImportPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorScenePostImportPlugin interface {
 		//Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
-		GetInternalImportOptions(godot Context, category gd.Int)
+		GetInternalImportOptions(godot Lifetime, category gd.Int)
 		//Return true or false whether a given option should be visible. Return null to ignore.
-		GetInternalOptionVisibility(godot Context, category gd.Int, for_animation bool, option gd.String) gd.Variant
+		GetInternalOptionVisibility(godot Lifetime, category gd.Int, for_animation bool, option gd.String) gd.Variant
 		//Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
-		GetInternalOptionUpdateViewRequired(godot Context, category gd.Int, option gd.String) gd.Variant
+		GetInternalOptionUpdateViewRequired(godot Lifetime, category gd.Int, option gd.String) gd.Variant
 		//Process a specific node or resource for a given category.
-		InternalProcess(godot Context, category gd.Int, base_node Node, node Node, resource Resource)
+		InternalProcess(godot Lifetime, category gd.Int, base_node Node, node Node, resource Resource)
 		//Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
-		GetImportOptions(godot Context, path gd.String)
+		GetImportOptions(godot Lifetime, path gd.String)
 		//Return true or false whether a given option should be visible. Return null to ignore.
-		GetOptionVisibility(godot Context, path gd.String, for_animation bool, option gd.String) gd.Variant
+		GetOptionVisibility(godot Lifetime, path gd.String, for_animation bool, option gd.String) gd.Variant
 		//Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
-		PreProcess(godot Context, scene Node)
+		PreProcess(godot Lifetime, scene Node)
 		//Post process the scene. This function is called after the final scene has been configured.
-		PostProcess(godot Context, scene Node)
+		PostProcess(godot Lifetime, scene Node)
 	}
 */
 type EditorScenePostImportPlugin = classdb.EditorScenePostImportPlugin
@@ -3388,7 +3388,7 @@ public partial class HelloEditor : EditorScript
 	// EditorScript methods that can be overridden by a [Class] that extends it.
 	type EditorScript interface {
 		//This method is executed by the Editor when [b]File > Run[/b] is used.
-		Run(godot Context)
+		Run(godot Lifetime)
 	}
 */
 type EditorScript = classdb.EditorScript
@@ -3444,9 +3444,9 @@ Add a syntax highlighter to an individual script by calling [method ScriptEditor
 	// EditorSyntaxHighlighter methods that can be overridden by a [Class] that extends it.
 	type EditorSyntaxHighlighter interface {
 		//Virtual method which can be overridden to return the syntax highlighter name.
-		GetName(godot Context) gd.String
+		GetName(godot Lifetime) gd.String
 		//Virtual method which can be overridden to return the supported language names.
-		GetSupportedLanguages(godot Context) gd.PackedStringArray
+		GetSupportedLanguages(godot Lifetime) gd.PackedStringArray
 	}
 */
 type EditorSyntaxHighlighter = classdb.EditorSyntaxHighlighter
@@ -3559,9 +3559,9 @@ To use [EditorTranslationParserPlugin], register it using the [method EditorPlug
 	// EditorTranslationParserPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorTranslationParserPlugin interface {
 		//Override this method to define a custom parsing logic to extract the translatable strings.
-		ParseFile(godot Context, path gd.String, msgids gd.ArrayOf[gd.String], msgids_context_plural gd.ArrayOf[gd.Array])
+		ParseFile(godot Lifetime, path gd.String, msgids gd.ArrayOf[gd.String], msgids_context_plural gd.ArrayOf[gd.Array])
 		//Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
-		GetRecognizedExtensions(godot Context) gd.PackedStringArray
+		GetRecognizedExtensions(godot Lifetime) gd.PackedStringArray
 	}
 */
 type EditorTranslationParserPlugin = classdb.EditorTranslationParserPlugin
@@ -3584,51 +3584,51 @@ Defines the API that the editor uses to extract information from the underlying 
 	// EditorVCSInterface methods that can be overridden by a [Class] that extends it.
 	type EditorVCSInterface interface {
 		//Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
-		Initialize(godot Context, project_path gd.String) bool
+		Initialize(godot Lifetime, project_path gd.String) bool
 		//Set user credentials in the underlying VCS. [param username] and [param password] are used only during HTTPS authentication unless not already mentioned in the remote URL. [param ssh_public_key_path], [param ssh_private_key_path], and [param ssh_passphrase] are only used during SSH authentication.
-		SetCredentials(godot Context, username gd.String, password gd.String, ssh_public_key_path gd.String, ssh_private_key_path gd.String, ssh_passphrase gd.String)
+		SetCredentials(godot Lifetime, username gd.String, password gd.String, ssh_public_key_path gd.String, ssh_private_key_path gd.String, ssh_passphrase gd.String)
 		//Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
-		GetModifiedFilesData(godot Context) gd.ArrayOf[gd.Dictionary]
+		GetModifiedFilesData(godot Lifetime) gd.ArrayOf[gd.Dictionary]
 		//Stages the file present at [param file_path] to the staged area.
-		StageFile(godot Context, file_path gd.String)
+		StageFile(godot Lifetime, file_path gd.String)
 		//Unstages the file present at [param file_path] from the staged area to the unstaged area.
-		UnstageFile(godot Context, file_path gd.String)
+		UnstageFile(godot Lifetime, file_path gd.String)
 		//Discards the changes made in a file present at [param file_path].
-		DiscardFile(godot Context, file_path gd.String)
+		DiscardFile(godot Lifetime, file_path gd.String)
 		//Commits the currently staged changes and applies the commit [param msg] to the resulting commit.
-		Commit(godot Context, msg gd.String)
+		Commit(godot Lifetime, msg gd.String)
 		//Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
-		GetDiff(godot Context, identifier gd.String, area gd.Int) gd.ArrayOf[gd.Dictionary]
+		GetDiff(godot Lifetime, identifier gd.String, area gd.Int) gd.ArrayOf[gd.Dictionary]
 		//Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
-		ShutDown(godot Context) bool
+		ShutDown(godot Lifetime) bool
 		//Returns the name of the underlying VCS provider.
-		GetVcsName(godot Context) gd.String
+		GetVcsName(godot Lifetime) gd.String
 		//Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
-		GetPreviousCommits(godot Context, max_commits gd.Int) gd.ArrayOf[gd.Dictionary]
+		GetPreviousCommits(godot Lifetime, max_commits gd.Int) gd.ArrayOf[gd.Dictionary]
 		//Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
-		GetBranchList(godot Context) gd.ArrayOf[gd.String]
+		GetBranchList(godot Lifetime) gd.ArrayOf[gd.String]
 		//Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
-		GetRemotes(godot Context) gd.ArrayOf[gd.String]
+		GetRemotes(godot Lifetime) gd.ArrayOf[gd.String]
 		//Creates a new branch named [param branch_name] in the VCS.
-		CreateBranch(godot Context, branch_name gd.String)
+		CreateBranch(godot Lifetime, branch_name gd.String)
 		//Remove a branch from the local VCS.
-		RemoveBranch(godot Context, branch_name gd.String)
+		RemoveBranch(godot Lifetime, branch_name gd.String)
 		//Creates a new remote destination with name [param remote_name] and points it to [param remote_url]. This can be an HTTPS remote or an SSH remote.
-		CreateRemote(godot Context, remote_name gd.String, remote_url gd.String)
+		CreateRemote(godot Lifetime, remote_name gd.String, remote_url gd.String)
 		//Remove a remote from the local VCS.
-		RemoveRemote(godot Context, remote_name gd.String)
+		RemoveRemote(godot Lifetime, remote_name gd.String)
 		//Gets the current branch name defined in the VCS.
-		GetCurrentBranchName(godot Context) gd.String
+		GetCurrentBranchName(godot Lifetime) gd.String
 		//Checks out a [param branch_name] in the VCS.
-		CheckoutBranch(godot Context, branch_name gd.String) bool
+		CheckoutBranch(godot Lifetime, branch_name gd.String) bool
 		//Pulls changes from the remote. This can give rise to merge conflicts.
-		Pull(godot Context, remote gd.String)
+		Pull(godot Lifetime, remote gd.String)
 		//Pushes changes to the [param remote]. If [param force] is [code]true[/code], a force push will override the change history already present on the remote.
-		Push(godot Context, remote gd.String, force bool)
+		Push(godot Lifetime, remote gd.String, force bool)
 		//Fetches new changes from the [param remote], but doesn't write changes to the current working directory. Equivalent to [code]git fetch[/code].
-		Fetch(godot Context, remote gd.String)
+		Fetch(godot Lifetime, remote gd.String)
 		//Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
-		GetLineDiff(godot Context, file_path gd.String, text gd.String) gd.ArrayOf[gd.Dictionary]
+		GetLineDiff(godot Lifetime, file_path gd.String, text gd.String) gd.ArrayOf[gd.Dictionary]
 	}
 */
 type EditorVCSInterface = classdb.EditorVCSInterface
@@ -3639,11 +3639,11 @@ This class is used internally by the editor inspector and script debugger, but c
 */
 type EncodedObjectAsID = classdb.EncodedObjectAsID
 
-func Engine(godot Context) classdb.Engine {
+func Engine(godot Lifetime) classdb.Engine {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Engine)
 	return *(*classdb.Engine)(unsafe.Pointer(&obj))
 }
-func EngineDebugger(godot Context) classdb.EngineDebugger {
+func EngineDebugger(godot Lifetime) classdb.EngineDebugger {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.EngineDebugger)
 	return *(*classdb.EngineDebugger)(unsafe.Pointer(&obj))
 }
@@ -3655,11 +3655,11 @@ See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
 	// EngineProfiler methods that can be overridden by a [Class] that extends it.
 	type EngineProfiler interface {
 		//Called when the profiler is enabled/disabled, along with a set of [param options].
-		Toggle(godot Context, enable bool, options gd.Array)
+		Toggle(godot Lifetime, enable bool, options gd.Array)
 		//Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
-		AddFrame(godot Context, data gd.Array)
+		AddFrame(godot Lifetime, data gd.Array)
 		//Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
-		Tick(godot Context, frame_time gd.Float, process_time gd.Float, physics_time gd.Float, physics_frame_time gd.Float)
+		Tick(godot Lifetime, frame_time gd.Float, process_time gd.Float, physics_time gd.Float, physics_frame_time gd.Float)
 	}
 */
 type EngineProfiler = classdb.EngineProfiler
@@ -3864,7 +3864,7 @@ fv.variation_opentype = { ts.name_to_tag("wght"): 900, ts.name_to_tag("custom_hg
 type FontVariation = classdb.FontVariation
 type GDExtension = classdb.GDExtension
 
-func GDExtensionManager(godot Context) classdb.GDExtensionManager {
+func GDExtensionManager(godot Lifetime) classdb.GDExtensionManager {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.GDExtensionManager)
 	return *(*classdb.GDExtensionManager)(unsafe.Pointer(&obj))
 }
@@ -3900,62 +3900,62 @@ To use, make a new class extending GLTFDocumentExtension, override any methods y
 	type GLTFDocumentExtension interface {
 		//Part of the import process. This method is run first, before all other parts of the import process.
 		//The return value is used to determine if this [GLTFDocumentExtension] instance should be used for importing a given GLTF file. If [constant OK], the import will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
-		ImportPreflight(godot Context, state GLTFState, extensions gd.PackedStringArray) int64
+		ImportPreflight(godot Lifetime, state GLTFState, extensions gd.PackedStringArray) int64
 		//Part of the import process. This method is run after [method _import_preflight] and before [method _parse_node_extensions].
 		//Returns an array of the GLTF extensions supported by this GLTFDocumentExtension class. This is used to validate if a GLTF file with required extensions can be loaded.
-		GetSupportedExtensions(godot Context) gd.PackedStringArray
+		GetSupportedExtensions(godot Lifetime) gd.PackedStringArray
 		//Part of the import process. This method is run after [method _get_supported_extensions] and before [method _import_post_parse].
 		//Runs when parsing the node extensions of a GLTFNode. This method can be used to process the extension JSON data into a format that can be used by [method _generate_scene_node]. The return value should be a member of the [enum Error] enum.
-		ParseNodeExtensions(godot Context, state GLTFState, gltf_node GLTFNode, extensions gd.Dictionary) int64
+		ParseNodeExtensions(godot Lifetime, state GLTFState, gltf_node GLTFNode, extensions gd.Dictionary) int64
 		//Part of the import process. This method is run after [method _parse_node_extensions] and before [method _parse_texture_json].
 		//Runs when parsing image data from a GLTF file. The data could be sourced from a separate file, a URI, or a buffer, and then is passed as a byte array.
-		ParseImageData(godot Context, state GLTFState, image_data gd.PackedByteArray, mime_type gd.String, ret_image Image) int64
+		ParseImageData(godot Lifetime, state GLTFState, image_data gd.PackedByteArray, mime_type gd.String, ret_image Image) int64
 		//Returns the file extension to use for saving image data into, for example, [code]".png"[/code]. If defined, when this extension is used to handle images, and the images are saved to a separate file, the image bytes will be copied to a file with this extension. If this is set, there should be a [ResourceImporter] class able to import the file. If not defined or empty, Godot will save the image into a PNG file.
-		GetImageFileExtension(godot Context) gd.String
+		GetImageFileExtension(godot Lifetime) gd.String
 		//Part of the import process. This method is run after [method _parse_image_data] and before [method _generate_scene_node].
 		//Runs when parsing the texture JSON from the GLTF textures array. This can be used to set the source image index to use as the texture.
-		ParseTextureJson(godot Context, state GLTFState, texture_json gd.Dictionary, ret_gltf_texture GLTFTexture) int64
+		ParseTextureJson(godot Lifetime, state GLTFState, texture_json gd.Dictionary, ret_gltf_texture GLTFTexture) int64
 		//Part of the import process. This method is run after [method _import_post_parse] and before [method _import_node].
 		//Runs when generating a Godot scene node from a GLTFNode. The returned node will be added to the scene tree. Multiple nodes can be generated in this step if they are added as a child of the returned node.
 		//[b]Note:[/b] The [param scene_parent] parameter may be null if this is the single root node.
-		GenerateSceneNode(godot Context, state GLTFState, gltf_node GLTFNode, scene_parent Node) Node3D
+		GenerateSceneNode(godot Lifetime, state GLTFState, gltf_node GLTFNode, scene_parent Node) Node3D
 		//Part of the import process. This method is run after [method _parse_node_extensions] and before [method _generate_scene_node].
 		//This method can be used to modify any of the data imported so far, including any scene nodes, before running the final per-node import step.
-		ImportPostParse(godot Context, state GLTFState) int64
+		ImportPostParse(godot Lifetime, state GLTFState) int64
 		//Part of the import process. This method is run after [method _generate_scene_node] and before [method _import_post].
 		//This method can be used to make modifications to each of the generated Godot scene nodes.
-		ImportNode(godot Context, state GLTFState, gltf_node GLTFNode, json gd.Dictionary, node Node) int64
+		ImportNode(godot Lifetime, state GLTFState, gltf_node GLTFNode, json gd.Dictionary, node Node) int64
 		//Part of the import process. This method is run last, after all other parts of the import process.
 		//This method can be used to modify the final Godot scene generated by the import process.
-		ImportPost(godot Context, state GLTFState, root Node) int64
+		ImportPost(godot Lifetime, state GLTFState, root Node) int64
 		//Part of the export process. This method is run first, before all other parts of the export process.
 		//The return value is used to determine if this [GLTFDocumentExtension] instance should be used for exporting a given GLTF file. If [constant OK], the export will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
-		ExportPreflight(godot Context, state GLTFState, root Node) int64
+		ExportPreflight(godot Lifetime, state GLTFState, root Node) int64
 		//Part of the export process. This method is run after [method _export_preflight] and before [method _export_preserialize].
 		//Runs when converting the data from a Godot scene node. This method can be used to process the Godot scene node data into a format that can be used by [method _export_node].
-		ConvertSceneNode(godot Context, state GLTFState, gltf_node GLTFNode, scene_node Node)
+		ConvertSceneNode(godot Lifetime, state GLTFState, gltf_node GLTFNode, scene_node Node)
 		//Part of the export process. This method is run after [method _convert_scene_node] and before [method _get_saveable_image_formats].
 		//This method can be used to alter the state before performing serialization. It runs every time when generating a buffer with [method GLTFDocument.generate_buffer] or writing to the file system with [method GLTFDocument.write_to_filesystem].
-		ExportPreserialize(godot Context, state GLTFState) int64
+		ExportPreserialize(godot Lifetime, state GLTFState) int64
 		//Part of the export process. This method is run after [method _convert_scene_node] and before [method _export_node].
 		//Returns an array of the image formats that can be saved/exported by this extension. This extension will only be selected as the image exporter if the [GLTFDocument]'s [member GLTFDocument.image_format] is in this array. If this [GLTFDocumentExtension] is selected as the image exporter, one of the [method _save_image_at_path] or [method _serialize_image_to_bytes] methods will run next, otherwise [method _export_node] will run next. If the format name contains [code]"Lossy"[/code], the lossy quality slider will be displayed.
-		GetSaveableImageFormats(godot Context) gd.PackedStringArray
+		GetSaveableImageFormats(godot Lifetime) gd.PackedStringArray
 		//Part of the export process. This method is run after [method _get_saveable_image_formats] and before [method _serialize_texture_json].
 		//This method is run when embedding images in the GLTF file. When images are saved separately, [method _save_image_at_path] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
 		//This method must set the image MIME type in the [param image_dict] with the [code]"mimeType"[/code] key. For example, for a PNG image, it would be set to [code]"image/png"[/code]. The return value must be a [PackedByteArray] containing the image data.
-		SerializeImageToBytes(godot Context, state GLTFState, image Image, image_dict gd.Dictionary, image_format gd.String, lossy_quality gd.Float) gd.PackedByteArray
+		SerializeImageToBytes(godot Lifetime, state GLTFState, image Image, image_dict gd.Dictionary, image_format gd.String, lossy_quality gd.Float) gd.PackedByteArray
 		//Part of the export process. This method is run after [method _get_saveable_image_formats] and before [method _serialize_texture_json].
 		//This method is run when saving images separately from the GLTF file. When images are embedded, [method _serialize_image_to_bytes] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
-		SaveImageAtPath(godot Context, state GLTFState, image Image, file_path gd.String, image_format gd.String, lossy_quality gd.Float) int64
+		SaveImageAtPath(godot Lifetime, state GLTFState, image Image, file_path gd.String, image_format gd.String, lossy_quality gd.Float) int64
 		//Part of the export process. This method is run after [method _save_image_at_path] or [method _serialize_image_to_bytes], and before [method _export_node]. Note that this method only runs when this [GLTFDocumentExtension] is selected as the image exporter.
 		//This method can be used to set up the extensions for the texture JSON by editing [param texture_json]. The extension must also be added as used extension with [method GLTFState.add_used_extension], be sure to set [code]required[/code] to [code]true[/code] if you are not providing a fallback.
-		SerializeTextureJson(godot Context, state GLTFState, texture_json gd.Dictionary, gltf_texture GLTFTexture, image_format gd.String) int64
+		SerializeTextureJson(godot Lifetime, state GLTFState, texture_json gd.Dictionary, gltf_texture GLTFTexture, image_format gd.String) int64
 		//Part of the export process. This method is run after [method _get_saveable_image_formats] and before [method _export_post]. If this [GLTFDocumentExtension] is used for exporting images, this runs after [method _serialize_texture_json].
 		//This method can be used to modify the final JSON of each node.
-		ExportNode(godot Context, state GLTFState, gltf_node GLTFNode, json gd.Dictionary, node Node) int64
+		ExportNode(godot Lifetime, state GLTFState, gltf_node GLTFNode, json gd.Dictionary, node Node) int64
 		//Part of the export process. This method is run last, after all other parts of the export process.
 		//This method can be used to modify the final JSON of the generated GLTF file.
-		ExportPost(godot Context, state GLTFState) int64
+		ExportPost(godot Lifetime, state GLTFState) int64
 	}
 */
 type GLTFDocumentExtension = classdb.GLTFDocumentExtension
@@ -4096,11 +4096,11 @@ The first 3 DOF represent the linear motion of the physics bodies and the last 3
 */
 type Generic6DOFJoint3D = classdb.Generic6DOFJoint3D
 
-func Geometry2D(godot Context) classdb.Geometry2D {
+func Geometry2D(godot Lifetime) classdb.Geometry2D {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Geometry2D)
 	return *(*classdb.Geometry2D)(unsafe.Pointer(&obj))
 }
-func Geometry3D(godot Context) classdb.Geometry3D {
+func Geometry3D(godot Lifetime) classdb.Geometry3D {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Geometry3D)
 	return *(*classdb.Geometry3D)(unsafe.Pointer(&obj))
 }
@@ -4144,7 +4144,7 @@ type GradientTexture2D = classdb.GradientTexture2D
 		//
 		//    return rect.has_point(mouse_position)
 		//[/codeblock]
-		IsInInputHotzone(godot Context, in_node gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool
+		IsInInputHotzone(godot Lifetime, in_node gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool
 		//Returns whether the [param mouse_position] is in the output hot zone. For more information on hot zones, see [method _is_in_input_hotzone].
 		//Below is a sample code to help get started:
 		//[codeblock]
@@ -4155,9 +4155,9 @@ type GradientTexture2D = classdb.GradientTexture2D
 		//
 		//    return rect.has_point(mouse_position)
 		//[/codeblock]
-		IsInOutputHotzone(godot Context, in_node gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool
+		IsInOutputHotzone(godot Lifetime, in_node gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool
 		//Virtual method which can be overridden to customize how connections are drawn.
-		GetConnectionLine(godot Context, from_position gd.Vector2, to_position gd.Vector2) gd.PackedVector2Array
+		GetConnectionLine(godot Lifetime, from_position gd.Vector2, to_position gd.Vector2) gd.PackedVector2Array
 		//This virtual method can be used to insert additional error detection while the user is dragging a connection over a valid port.
 		//Return [code]true[/code] if the connection is indeed valid or return [code]false[/code] if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
 		//In this example a connection to same node is suppressed:
@@ -4173,7 +4173,7 @@ type GradientTexture2D = classdb.GradientTexture2D
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		IsNodeHoverValid(godot Context, from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool
+		IsNodeHoverValid(godot Lifetime, from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool
 	}
 */
 type GraphEdit = classdb.GraphEdit
@@ -4191,7 +4191,7 @@ Slots can be configured in the Inspector dock once you add at least one child [C
 
 	// GraphNode methods that can be overridden by a [Class] that extends it.
 	type GraphNode interface {
-		DrawPort(godot Context, slot_index gd.Int, position gd.Vector2i, left bool, color gd.Color)
+		DrawPort(godot Lifetime, slot_index gd.Int, position gd.Vector2i, left bool, color gd.Color)
 	}
 */
 type GraphNode = classdb.GraphNode
@@ -4544,7 +4544,7 @@ A physics joint that restricts the rotation of a 3D physics body around an axis 
 */
 type HingeJoint3D = classdb.HingeJoint3D
 
-func IP(godot Context) classdb.IP {
+func IP(godot Lifetime) classdb.IP {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.IP)
 	return *(*classdb.IP)(unsafe.Pointer(&obj))
 }
@@ -4568,9 +4568,9 @@ Be sure to respect the documented return types and values. You should create an 
 	// ImageFormatLoaderExtension methods that can be overridden by a [Class] that extends it.
 	type ImageFormatLoaderExtension interface {
 		//Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
-		GetRecognizedExtensions(godot Context) gd.PackedStringArray
+		GetRecognizedExtensions(godot Lifetime) gd.PackedStringArray
 		//Loads the content of [param fileaccess] into the provided [param image].
-		LoadImage(godot Context, image Image, fileaccess FileAccess, flags ImageFormatLoaderLoaderFlags, scale gd.Float) int64
+		LoadImage(godot Lifetime, image Image, fileaccess FileAccess, flags ImageFormatLoaderLoaderFlags, scale gd.Float) int64
 	}
 */
 type ImageFormatLoaderExtension = classdb.ImageFormatLoaderExtension
@@ -4642,7 +4642,7 @@ Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various
 type ImporterMesh = classdb.ImporterMesh
 type ImporterMeshInstance3D = classdb.ImporterMeshInstance3D
 
-func Input(godot Context) classdb.Input {
+func Input(godot Lifetime) classdb.Input {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Input)
 	return *(*classdb.Input)(unsafe.Pointer(&obj))
 }
@@ -4799,7 +4799,7 @@ Stores information about mouse, keyboard, and touch gesture input events. This i
 */
 type InputEventWithModifiers = classdb.InputEventWithModifiers
 
-func InputMap(godot Context) classdb.InputMap {
+func InputMap(godot Lifetime) classdb.InputMap {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.InputMap)
 	return *(*classdb.InputMap)(unsafe.Pointer(&obj))
 }
@@ -4874,11 +4874,11 @@ type JSON = classdb.JSON
 type JSONRPC = classdb.JSONRPC
 type JavaClass = classdb.JavaClass
 
-func JavaClassWrapper(godot Context) classdb.JavaClassWrapper {
+func JavaClassWrapper(godot Lifetime) classdb.JavaClassWrapper {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.JavaClassWrapper)
 	return *(*classdb.JavaClassWrapper)(unsafe.Pointer(&obj))
 }
-func JavaScriptBridge(godot Context) classdb.JavaScriptBridge {
+func JavaScriptBridge(godot Lifetime) classdb.JavaScriptBridge {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.JavaScriptBridge)
 	return *(*classdb.JavaScriptBridge)(unsafe.Pointer(&obj))
 }
@@ -5105,15 +5105,15 @@ public partial class CustomMainLoop : MainLoop
 	// MainLoop methods that can be overridden by a [Class] that extends it.
 	type MainLoop interface {
 		//Called once during initialization.
-		Initialize(godot Context)
+		Initialize(godot Lifetime)
 		//Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
 		//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-		PhysicsProcess(godot Context, delta gd.Float) bool
+		PhysicsProcess(godot Lifetime, delta gd.Float) bool
 		//Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 		//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-		Process(godot Context, delta gd.Float) bool
+		Process(godot Lifetime, delta gd.Float) bool
 		//Called before the program exits.
-		Finalize(godot Context)
+		Finalize(godot Lifetime)
 	}
 */
 type MainLoop = classdb.MainLoop
@@ -5152,7 +5152,7 @@ Generic 3D position hint for editing. It's just like a plain [Node3D], but it di
 */
 type Marker3D = classdb.Marker3D
 
-func Marshalls(godot Context) classdb.Marshalls {
+func Marshalls(godot Lifetime) classdb.Marshalls {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Marshalls)
 	return *(*classdb.Marshalls)(unsafe.Pointer(&obj))
 }
@@ -5164,13 +5164,13 @@ Importantly, you can inherit from [Material] to create your own custom material 
 	// Material methods that can be overridden by a [Class] that extends it.
 	type Material interface {
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
-		GetShaderRid(godot Context) gd.RID
+		GetShaderRid(godot Lifetime) gd.RID
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
-		GetShaderMode(godot Context) ShaderMode
+		GetShaderMode(godot Lifetime) ShaderMode
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member next_pass] should be shown in the editor or not.
-		CanDoNextPass(godot Context) bool
+		CanDoNextPass(godot Lifetime) bool
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member render_priority] should be shown in the editor or not.
-		CanUseRenderPriority(godot Context) bool
+		CanUseRenderPriority(godot Lifetime) bool
 	}
 */
 type Material = classdb.Material
@@ -5192,33 +5192,33 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 	// Mesh methods that can be overridden by a [Class] that extends it.
 	type Mesh interface {
 		//Virtual method to override the surface count for a custom class extending [Mesh].
-		GetSurfaceCount(godot Context) gd.Int
+		GetSurfaceCount(godot Lifetime) gd.Int
 		//Virtual method to override the surface array length for a custom class extending [Mesh].
-		SurfaceGetArrayLen(godot Context, index gd.Int) gd.Int
+		SurfaceGetArrayLen(godot Lifetime, index gd.Int) gd.Int
 		//Virtual method to override the surface array index length for a custom class extending [Mesh].
-		SurfaceGetArrayIndexLen(godot Context, index gd.Int) gd.Int
+		SurfaceGetArrayIndexLen(godot Lifetime, index gd.Int) gd.Int
 		//Virtual method to override the surface arrays for a custom class extending [Mesh].
-		SurfaceGetArrays(godot Context, index gd.Int) gd.Array
+		SurfaceGetArrays(godot Lifetime, index gd.Int) gd.Array
 		//Virtual method to override the blend shape arrays for a custom class extending [Mesh].
-		SurfaceGetBlendShapeArrays(godot Context, index gd.Int) gd.ArrayOf[gd.Array]
+		SurfaceGetBlendShapeArrays(godot Lifetime, index gd.Int) gd.ArrayOf[gd.Array]
 		//Virtual method to override the surface LODs for a custom class extending [Mesh].
-		SurfaceGetLods(godot Context, index gd.Int) gd.Dictionary
+		SurfaceGetLods(godot Lifetime, index gd.Int) gd.Dictionary
 		//Virtual method to override the surface format for a custom class extending [Mesh].
-		SurfaceGetFormat(godot Context, index gd.Int) gd.Int
+		SurfaceGetFormat(godot Lifetime, index gd.Int) gd.Int
 		//Virtual method to override the surface primitive type for a custom class extending [Mesh].
-		SurfaceGetPrimitiveType(godot Context, index gd.Int) gd.Int
+		SurfaceGetPrimitiveType(godot Lifetime, index gd.Int) gd.Int
 		//Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
-		SurfaceSetMaterial(godot Context, index gd.Int, material Material)
+		SurfaceSetMaterial(godot Lifetime, index gd.Int, material Material)
 		//Virtual method to override the surface material for a custom class extending [Mesh].
-		SurfaceGetMaterial(godot Context, index gd.Int) Material
+		SurfaceGetMaterial(godot Lifetime, index gd.Int) Material
 		//Virtual method to override the number of blend shapes for a custom class extending [Mesh].
-		GetBlendShapeCount(godot Context) gd.Int
+		GetBlendShapeCount(godot Lifetime) gd.Int
 		//Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
-		GetBlendShapeName(godot Context, index gd.Int) gd.StringName
+		GetBlendShapeName(godot Lifetime, index gd.Int) gd.StringName
 		//Virtual method to override the names of blend shapes for a custom class extending [Mesh].
-		SetBlendShapeName(godot Context, index gd.Int, name gd.StringName)
+		SetBlendShapeName(godot Lifetime, index gd.Int, name gd.StringName)
 		//Virtual method to override the [AABB] for a custom class extending [Mesh].
-		GetAabb(godot Context) gd.AABB
+		GetAabb(godot Lifetime) gd.AABB
 	}
 */
 type Mesh = classdb.Mesh
@@ -5342,9 +5342,9 @@ If you need to encode to a different format or pipe a stream through third-party
 	// MovieWriter methods that can be overridden by a [Class] that extends it.
 	type MovieWriter interface {
 		//Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
-		GetAudioMixRate(godot Context) gd.Int
+		GetAudioMixRate(godot Lifetime) gd.Int
 		//Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
-		GetAudioSpeakerMode(godot Context) AudioServerSpeakerMode
+		GetAudioSpeakerMode(godot Lifetime) AudioServerSpeakerMode
 		//Called when the engine determines whether this [MovieWriter] is able to handle the file at [param path]. Must return [code]true[/code] if this [MovieWriter] is able to handle the given file path, [code]false[/code] otherwise. Typically, [method _handles_file] is overridden as follows to allow the user to record a file at any path with a given file extension:
 		//[codeblock]
 		//func _handles_file(path):
@@ -5352,14 +5352,14 @@ If you need to encode to a different format or pipe a stream through third-party
 		//    # either in the Project Settings or with the `--write-movie <path>` command line argument.
 		//    return path.get_extension().to_lower() == "mkv"
 		//[/codeblock]
-		HandlesFile(godot Context, path gd.String) bool
+		HandlesFile(godot Lifetime, path gd.String) bool
 		//Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-		WriteBegin(godot Context, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) int64
+		WriteBegin(godot Lifetime, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) int64
 		//Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
-		WriteFrame(godot Context, frame_image Image, audio_frame_block unsafe.Pointer) int64
+		WriteFrame(godot Lifetime, frame_image Image, audio_frame_block unsafe.Pointer) int64
 		//Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [method SceneTree.quit] is called.
 		//[b]Note:[/b] Pressing [kbd]Ctrl + C[/kbd] on the terminal running the editor/project does [i]not[/i] result in [method _write_end] being called.
-		WriteEnd(godot Context)
+		WriteEnd(godot Lifetime)
 	}
 */
 type MovieWriter = classdb.MovieWriter
@@ -5480,23 +5480,23 @@ Native extensions can alternatively use the [method MultiplayerAPI.set_default_i
 	// MultiplayerAPIExtension methods that can be overridden by a [Class] that extends it.
 	type MultiplayerAPIExtension interface {
 		//Callback for [method MultiplayerAPI.poll].
-		Poll(godot Context) int64
+		Poll(godot Lifetime) int64
 		//Called when the [member MultiplayerAPI.multiplayer_peer] is set.
-		SetMultiplayerPeer(godot Context, multiplayer_peer MultiplayerPeer)
+		SetMultiplayerPeer(godot Lifetime, multiplayer_peer MultiplayerPeer)
 		//Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
-		GetMultiplayerPeer(godot Context) MultiplayerPeer
+		GetMultiplayerPeer(godot Lifetime) MultiplayerPeer
 		//Callback for [method MultiplayerAPI.get_unique_id].
-		GetUniqueId(godot Context) gd.Int
+		GetUniqueId(godot Lifetime) gd.Int
 		//Callback for [method MultiplayerAPI.get_peers].
-		GetPeerIds(godot Context) gd.PackedInt32Array
+		GetPeerIds(godot Lifetime) gd.PackedInt32Array
 		//Callback for [method MultiplayerAPI.rpc].
-		Rpc(godot Context, peer gd.Int, object gd.Object, method gd.StringName, args gd.Array) int64
+		Rpc(godot Lifetime, peer gd.Int, object gd.Object, method gd.StringName, args gd.Array) int64
 		//Callback for [method MultiplayerAPI.get_remote_sender_id].
-		GetRemoteSenderId(godot Context) gd.Int
+		GetRemoteSenderId(godot Lifetime) gd.Int
 		//Callback for [method MultiplayerAPI.object_configuration_add].
-		ObjectConfigurationAdd(godot Context, object gd.Object, configuration gd.Variant) int64
+		ObjectConfigurationAdd(godot Lifetime, object gd.Object, configuration gd.Variant) int64
 		//Callback for [method MultiplayerAPI.object_configuration_remove].
-		ObjectConfigurationRemove(godot Context, object gd.Object, configuration gd.Variant) int64
+		ObjectConfigurationRemove(godot Lifetime, object gd.Object, configuration gd.Variant) int64
 	}
 */
 type MultiplayerAPIExtension = classdb.MultiplayerAPIExtension
@@ -5514,51 +5514,51 @@ This class is designed to be inherited from a GDExtension plugin to implement cu
 	// MultiplayerPeerExtension methods that can be overridden by a [Class] that extends it.
 	type MultiplayerPeerExtension interface {
 		//Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
-		GetPacket(godot Context, r_buffer unsafe.Pointer, r_buffer_size *int32) int64
+		GetPacket(godot Lifetime, r_buffer unsafe.Pointer, r_buffer_size *int32) int64
 		//Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
-		PutPacket(godot Context, p_buffer unsafe.Pointer, p_buffer_size gd.Int) int64
+		PutPacket(godot Lifetime, p_buffer unsafe.Pointer, p_buffer_size gd.Int) int64
 		//Called when the available packet count is internally requested by the [MultiplayerAPI].
-		GetAvailablePacketCount(godot Context) gd.Int
+		GetAvailablePacketCount(godot Lifetime) gd.Int
 		//Called when the maximum allowed packet size (in bytes) is requested by the [MultiplayerAPI].
-		GetMaxPacketSize(godot Context) gd.Int
+		GetMaxPacketSize(godot Lifetime) gd.Int
 		//Called when a packet needs to be received by the [MultiplayerAPI], if [method _get_packet] isn't implemented. Use this when extending this class via GDScript.
-		GetPacketScript(godot Context) gd.PackedByteArray
+		GetPacketScript(godot Lifetime) gd.PackedByteArray
 		//Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
-		PutPacketScript(godot Context, p_buffer gd.PackedByteArray) int64
+		PutPacketScript(godot Lifetime, p_buffer gd.PackedByteArray) int64
 		//Called to get the channel over which the next available packet was received. See [method MultiplayerPeer.get_packet_channel].
-		GetPacketChannel(godot Context) gd.Int
+		GetPacketChannel(godot Lifetime) gd.Int
 		//Called to get the [enum MultiplayerPeer.TransferMode] the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
-		GetPacketMode(godot Context) MultiplayerPeerTransferMode
+		GetPacketMode(godot Lifetime) MultiplayerPeerTransferMode
 		//Called when the channel to use is set for this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
-		SetTransferChannel(godot Context, p_channel gd.Int)
+		SetTransferChannel(godot Lifetime, p_channel gd.Int)
 		//Called when the transfer channel to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
-		GetTransferChannel(godot Context) gd.Int
+		GetTransferChannel(godot Lifetime) gd.Int
 		//Called when the transfer mode is set on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
-		SetTransferMode(godot Context, p_mode MultiplayerPeerTransferMode)
+		SetTransferMode(godot Lifetime, p_mode MultiplayerPeerTransferMode)
 		//Called when the transfer mode to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
-		GetTransferMode(godot Context) MultiplayerPeerTransferMode
+		GetTransferMode(godot Lifetime) MultiplayerPeerTransferMode
 		//Called when the target peer to use is set for this [MultiplayerPeer] (see [method MultiplayerPeer.set_target_peer]).
-		SetTargetPeer(godot Context, p_peer gd.Int)
+		SetTargetPeer(godot Lifetime, p_peer gd.Int)
 		//Called when the ID of the [MultiplayerPeer] who sent the most recent packet is requested (see [method MultiplayerPeer.get_packet_peer]).
-		GetPacketPeer(godot Context) gd.Int
+		GetPacketPeer(godot Lifetime) gd.Int
 		//Called when the "is server" status is requested on the [MultiplayerAPI]. See [method MultiplayerAPI.is_server].
-		IsServer(godot Context) bool
+		IsServer(godot Lifetime) bool
 		//Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
-		Poll(godot Context)
+		Poll(godot Lifetime)
 		//Called when the multiplayer peer should be immediately closed (see [method MultiplayerPeer.close]).
-		Close(godot Context)
+		Close(godot Lifetime)
 		//Called when the connected [param p_peer] should be forcibly disconnected (see [method MultiplayerPeer.disconnect_peer]).
-		DisconnectPeer(godot Context, p_peer gd.Int, p_force bool)
+		DisconnectPeer(godot Lifetime, p_peer gd.Int, p_force bool)
 		//Called when the unique ID of this [MultiplayerPeer] is requested (see [method MultiplayerPeer.get_unique_id]). The value must be between [code]1[/code] and [code]2147483647[/code].
-		GetUniqueId(godot Context) gd.Int
+		GetUniqueId(godot Lifetime) gd.Int
 		//Called when the "refuse new connections" status is set on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
-		SetRefuseNewConnections(godot Context, p_enable bool)
+		SetRefuseNewConnections(godot Lifetime, p_enable bool)
 		//Called when the "refuse new connections" status is requested on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
-		IsRefusingNewConnections(godot Context) bool
+		IsRefusingNewConnections(godot Lifetime) bool
 		//Called to check if the server can act as a relay in the current configuration. See [method MultiplayerPeer.is_server_relay_supported].
-		IsServerRelaySupported(godot Context) bool
+		IsServerRelaySupported(godot Lifetime) bool
 		//Called when the connection status is requested on the [MultiplayerPeer] (see [method MultiplayerPeer.get_connection_status]).
-		GetConnectionStatus(godot Context) MultiplayerPeerConnectionStatus
+		GetConnectionStatus(godot Lifetime) MultiplayerPeerConnectionStatus
 	}
 */
 type MultiplayerPeerExtension = classdb.MultiplayerPeerExtension
@@ -5618,7 +5618,7 @@ A navigation mesh is a collection of polygons that define which areas of an envi
 */
 type NavigationMesh = classdb.NavigationMesh
 
-func NavigationMeshGenerator(godot Context) classdb.NavigationMeshGenerator {
+func NavigationMeshGenerator(godot Lifetime) classdb.NavigationMeshGenerator {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.NavigationMeshGenerator)
 	return *(*classdb.NavigationMeshGenerator)(unsafe.Pointer(&obj))
 }
@@ -5732,11 +5732,11 @@ The cost of traveling distances inside this region can be controlled with the [m
 */
 type NavigationRegion3D = classdb.NavigationRegion3D
 
-func NavigationServer2D(godot Context) classdb.NavigationServer2D {
+func NavigationServer2D(godot Lifetime) classdb.NavigationServer2D {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.NavigationServer2D)
 	return *(*classdb.NavigationServer2D)(unsafe.Pointer(&obj))
 }
-func NavigationServer3D(godot Context) classdb.NavigationServer3D {
+func NavigationServer3D(godot Lifetime) classdb.NavigationServer3D {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.NavigationServer3D)
 	return *(*classdb.NavigationServer3D)(unsafe.Pointer(&obj))
 }
@@ -5766,23 +5766,23 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 		//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
 		//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Process(godot Context, delta gd.Float)
+		Process(godot Lifetime, delta gd.Float)
 		//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
 		//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
 		//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		PhysicsProcess(godot Context, delta gd.Float)
+		PhysicsProcess(godot Lifetime, delta gd.Float)
 		//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
 		//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
-		EnterTree(godot Context)
+		EnterTree(godot Lifetime)
 		//Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [method remove_child] in a script). If the node has children, its [method _exit_tree] callback will be called last, after all its children have left the tree.
 		//Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
-		ExitTree(godot Context)
+		ExitTree(godot Lifetime)
 		//Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [method _ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
 		//Corresponds to the [constant NOTIFICATION_READY] notification in [method Object._notification]. See also the [code]@onready[/code] annotation for variables.
 		//Usually used for initialization. For even earlier initialization, [method Object._init] may be used. See also [method _enter_tree].
 		//[b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
-		Ready(godot Context)
+		Ready(godot Lifetime)
 		//The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a [code]tool[/code] script.
 		//Returning an empty array produces no warnings.
 		//Call [method update_configuration_warnings] when the warnings need to be updated for this node.
@@ -5798,32 +5798,32 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 		//    else:
 		//        return []
 		//[/codeblock]
-		GetConfigurationWarnings(godot Context) gd.PackedStringArray
+		GetConfigurationWarnings(godot Lifetime) gd.PackedStringArray
 		//Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Input(godot Context, event InputEvent)
+		Input(godot Lifetime, event InputEvent)
 		//Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [method _input] or any GUI [Control] item. It is called before [method _unhandled_key_input] and [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_shortcut_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
-		ShortcutInput(godot Context, event InputEvent)
+		ShortcutInput(godot Lifetime, event InputEvent)
 		//Called when an [InputEvent] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] and after [method _unhandled_key_input]. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		UnhandledInput(godot Context, event InputEvent)
+		UnhandledInput(godot Lifetime, event InputEvent)
 		//Called when an [InputEventKey] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] but before [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_key_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
 		//For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		UnhandledKeyInput(godot Context, event InputEvent)
+		UnhandledKeyInput(godot Lifetime, event InputEvent)
 	}
 */
 type Node = classdb.Node
@@ -5884,7 +5884,7 @@ ORMMaterial3D's properties are inherited from [BaseMaterial3D]. Unlike [Standard
 */
 type ORMMaterial3D = classdb.ORMMaterial3D
 
-func OS(godot Context) classdb.OS {
+func OS(godot Lifetime) classdb.OS {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.OS)
 	return *(*classdb.OS)(unsafe.Pointer(&obj))
 }
@@ -5964,50 +5964,50 @@ type OpenXRActionSet = classdb.OpenXRActionSet
 		//Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:
 		//- If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
 		//- If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
-		GetRequestedExtensions(godot Context) gd.Dictionary
+		GetRequestedExtensions(godot Lifetime) gd.Dictionary
 		//Adds additional data structures when interogating OpenXR system abilities.
-		SetSystemPropertiesAndGetNextPointer(godot Context, next_pointer unsafe.Pointer) gd.Int
+		SetSystemPropertiesAndGetNextPointer(godot Lifetime, next_pointer unsafe.Pointer) gd.Int
 		//Adds additional data structures when the OpenXR instance is created.
-		SetInstanceCreateInfoAndGetNextPointer(godot Context, next_pointer unsafe.Pointer) gd.Int
+		SetInstanceCreateInfoAndGetNextPointer(godot Lifetime, next_pointer unsafe.Pointer) gd.Int
 		//Adds additional data structures when the OpenXR session is created.
-		SetSessionCreateAndGetNextPointer(godot Context, next_pointer unsafe.Pointer) gd.Int
+		SetSessionCreateAndGetNextPointer(godot Lifetime, next_pointer unsafe.Pointer) gd.Int
 		//Adds additional data structures when creating OpenXR swapchains.
-		SetSwapchainCreateInfoAndGetNextPointer(godot Context, next_pointer unsafe.Pointer) gd.Int
+		SetSwapchainCreateInfoAndGetNextPointer(godot Lifetime, next_pointer unsafe.Pointer) gd.Int
 		//Allows extensions to register additional controller metadata. This function is called even when the OpenXR API is not constructed as the metadata needs to be available to the editor.
 		//Extensions should also provide metadata regardless of whether they are supported on the host system. The controller data is used to setup action maps for users who may have access to the relevant hardware.
-		OnRegisterMetadata(godot Context)
+		OnRegisterMetadata(godot Lifetime)
 		//Called before the OpenXR instance is created.
-		OnBeforeInstanceCreated(godot Context)
+		OnBeforeInstanceCreated(godot Lifetime)
 		//Called right after the OpenXR instance is created.
-		OnInstanceCreated(godot Context, instance gd.Int)
+		OnInstanceCreated(godot Lifetime, instance gd.Int)
 		//Called right before the OpenXR instance is destroyed.
-		OnInstanceDestroyed(godot Context)
+		OnInstanceDestroyed(godot Lifetime)
 		//Called right after the OpenXR session is created.
-		OnSessionCreated(godot Context, session gd.Int)
+		OnSessionCreated(godot Lifetime, session gd.Int)
 		//Called as part of the OpenXR process handling. This happens right before general and physics processing steps of the main loop. During this step controller data is queried and made available to game logic.
-		OnProcess(godot Context)
+		OnProcess(godot Lifetime)
 		//Called right before the XR viewports begin their rendering step.
-		OnPreRender(godot Context)
+		OnPreRender(godot Lifetime)
 		//Called right before the OpenXR session is destroyed.
-		OnSessionDestroyed(godot Context)
+		OnSessionDestroyed(godot Lifetime)
 		//Called when the OpenXR session state is changed to idle.
-		OnStateIdle(godot Context)
+		OnStateIdle(godot Lifetime)
 		//Called when the OpenXR session state is changed to ready. This means OpenXR is ready to set up the session.
-		OnStateReady(godot Context)
+		OnStateReady(godot Lifetime)
 		//Called when the OpenXR session state is changed to synchronized. OpenXR also returns to this state when the application loses focus.
-		OnStateSynchronized(godot Context)
+		OnStateSynchronized(godot Lifetime)
 		//Called when the OpenXR session state is changed to visible. This means OpenXR is now ready to receive frames.
-		OnStateVisible(godot Context)
+		OnStateVisible(godot Lifetime)
 		//Called when the OpenXR session state is changed to focused. This state is the active state when the game runs.
-		OnStateFocused(godot Context)
+		OnStateFocused(godot Lifetime)
 		//Called when the OpenXR session state is changed to stopping.
-		OnStateStopping(godot Context)
+		OnStateStopping(godot Lifetime)
 		//Called when the OpenXR session state is changed to loss pending.
-		OnStateLossPending(godot Context)
+		OnStateLossPending(godot Lifetime)
 		//Called when the OpenXR session state is changed to exiting.
-		OnStateExiting(godot Context)
+		OnStateExiting(godot Lifetime)
 		//Called when there is an OpenXR event to process. When implementing, return [code]true[/code] if the event was handled, return [code]false[/code] otherwise.
-		OnEventPolled(godot Context, event unsafe.Pointer) bool
+		OnEventPolled(godot Lifetime, event unsafe.Pointer) bool
 	}
 */
 type OpenXRExtensionWrapperExtension = classdb.OpenXRExtensionWrapperExtension
@@ -6283,7 +6283,7 @@ It is useful for making other nodes follow a path, without coding the movement p
 */
 type PathFollow3D = classdb.PathFollow3D
 
-func Performance(godot Context) classdb.Performance {
+func Performance(godot Lifetime) classdb.Performance {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Performance)
 	return *(*classdb.Performance)(unsafe.Pointer(&obj))
 }
@@ -6301,7 +6301,7 @@ The [PhysicalBone3D] node is a physics body that can be used to make bones in a 
 	// PhysicalBone3D methods that can be overridden by a [Class] that extends it.
 	type PhysicalBone3D interface {
 		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it works in addition to the usual physics behavior, but the [member custom_integrator] property allows you to disable the default behavior and do fully custom force integration for a body.
-		IntegrateForces(godot Context, state PhysicsDirectBodyState3D)
+		IntegrateForces(godot Lifetime, state PhysicsDirectBodyState3D)
 	}
 */
 type PhysicalBone3D = classdb.PhysicalBone3D
@@ -6336,93 +6336,93 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 	// PhysicsDirectBodyState2DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsDirectBodyState2DExtension interface {
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
-		GetTotalGravity(godot Context) gd.Vector2
+		GetTotalGravity(godot Lifetime) gd.Vector2
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_linear_damp] and its respective getter.
-		GetTotalLinearDamp(godot Context) gd.Float
+		GetTotalLinearDamp(godot Lifetime) gd.Float
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_angular_damp] and its respective getter.
-		GetTotalAngularDamp(godot Context) gd.Float
+		GetTotalAngularDamp(godot Lifetime) gd.Float
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass] and its respective getter.
-		GetCenterOfMass(godot Context) gd.Vector2
+		GetCenterOfMass(godot Lifetime) gd.Vector2
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass_local] and its respective getter.
-		GetCenterOfMassLocal(godot Context) gd.Vector2
+		GetCenterOfMassLocal(godot Lifetime) gd.Vector2
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_mass] and its respective getter.
-		GetInverseMass(godot Context) gd.Float
+		GetInverseMass(godot Lifetime) gd.Float
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_inertia] and its respective getter.
-		GetInverseInertia(godot Context) gd.Float
+		GetInverseInertia(godot Lifetime) gd.Float
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective setter.
-		SetLinearVelocity(godot Context, velocity gd.Vector2)
+		SetLinearVelocity(godot Lifetime, velocity gd.Vector2)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective getter.
-		GetLinearVelocity(godot Context) gd.Vector2
+		GetLinearVelocity(godot Lifetime) gd.Vector2
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective setter.
-		SetAngularVelocity(godot Context, velocity gd.Float)
+		SetAngularVelocity(godot Lifetime, velocity gd.Float)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective getter.
-		GetAngularVelocity(godot Context) gd.Float
+		GetAngularVelocity(godot Lifetime) gd.Float
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective setter.
-		SetTransform(godot Context, transform gd.Transform2D)
+		SetTransform(godot Lifetime, transform gd.Transform2D)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective getter.
-		GetTransform(godot Context) gd.Transform2D
+		GetTransform(godot Lifetime) gd.Transform2D
 		//Overridable version of [method PhysicsDirectBodyState2D.get_velocity_at_local_position].
-		GetVelocityAtLocalPosition(godot Context, local_position gd.Vector2) gd.Vector2
+		GetVelocityAtLocalPosition(godot Lifetime, local_position gd.Vector2) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_central_impulse].
-		ApplyCentralImpulse(godot Context, impulse gd.Vector2)
+		ApplyCentralImpulse(godot Lifetime, impulse gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_impulse].
-		ApplyImpulse(godot Context, impulse gd.Vector2, position gd.Vector2)
+		ApplyImpulse(godot Lifetime, impulse gd.Vector2, position gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_torque_impulse].
-		ApplyTorqueImpulse(godot Context, impulse gd.Float)
+		ApplyTorqueImpulse(godot Lifetime, impulse gd.Float)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_central_force].
-		ApplyCentralForce(godot Context, force gd.Vector2)
+		ApplyCentralForce(godot Lifetime, force gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_force].
-		ApplyForce(godot Context, force gd.Vector2, position gd.Vector2)
+		ApplyForce(godot Lifetime, force gd.Vector2, position gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_torque].
-		ApplyTorque(godot Context, torque gd.Float)
+		ApplyTorque(godot Lifetime, torque gd.Float)
 		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_central_force].
-		AddConstantCentralForce(godot Context, force gd.Vector2)
+		AddConstantCentralForce(godot Lifetime, force gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_force].
-		AddConstantForce(godot Context, force gd.Vector2, position gd.Vector2)
+		AddConstantForce(godot Lifetime, force gd.Vector2, position gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_torque].
-		AddConstantTorque(godot Context, torque gd.Float)
+		AddConstantTorque(godot Lifetime, torque gd.Float)
 		//Overridable version of [method PhysicsDirectBodyState2D.set_constant_force].
-		SetConstantForce(godot Context, force gd.Vector2)
+		SetConstantForce(godot Lifetime, force gd.Vector2)
 		//Overridable version of [method PhysicsDirectBodyState2D.get_constant_force].
-		GetConstantForce(godot Context) gd.Vector2
+		GetConstantForce(godot Lifetime) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.set_constant_torque].
-		SetConstantTorque(godot Context, torque gd.Float)
+		SetConstantTorque(godot Lifetime, torque gd.Float)
 		//Overridable version of [method PhysicsDirectBodyState2D.get_constant_torque].
-		GetConstantTorque(godot Context) gd.Float
+		GetConstantTorque(godot Lifetime) gd.Float
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective setter.
-		SetSleepState(godot Context, enabled bool)
+		SetSleepState(godot Lifetime, enabled bool)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective getter.
-		IsSleeping(godot Context) bool
+		IsSleeping(godot Lifetime) bool
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_count].
-		GetContactCount(godot Context) gd.Int
+		GetContactCount(godot Lifetime) gd.Int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_position].
-		GetContactLocalPosition(godot Context, contact_idx gd.Int) gd.Vector2
+		GetContactLocalPosition(godot Lifetime, contact_idx gd.Int) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_normal].
-		GetContactLocalNormal(godot Context, contact_idx gd.Int) gd.Vector2
+		GetContactLocalNormal(godot Lifetime, contact_idx gd.Int) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_shape].
-		GetContactLocalShape(godot Context, contact_idx gd.Int) gd.Int
+		GetContactLocalShape(godot Lifetime, contact_idx gd.Int) gd.Int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_velocity_at_position].
-		GetContactLocalVelocityAtPosition(godot Context, contact_idx gd.Int) gd.Vector2
+		GetContactLocalVelocityAtPosition(godot Lifetime, contact_idx gd.Int) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
-		GetContactCollider(godot Context, contact_idx gd.Int) gd.RID
+		GetContactCollider(godot Lifetime, contact_idx gd.Int) gd.RID
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_position].
-		GetContactColliderPosition(godot Context, contact_idx gd.Int) gd.Vector2
+		GetContactColliderPosition(godot Lifetime, contact_idx gd.Int) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_id].
-		GetContactColliderId(godot Context, contact_idx gd.Int) gd.Int
+		GetContactColliderId(godot Lifetime, contact_idx gd.Int) gd.Int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_object].
-		GetContactColliderObject(godot Context, contact_idx gd.Int) gd.Object
+		GetContactColliderObject(godot Lifetime, contact_idx gd.Int) gd.Object
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_shape].
-		GetContactColliderShape(godot Context, contact_idx gd.Int) gd.Int
+		GetContactColliderShape(godot Lifetime, contact_idx gd.Int) gd.Int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position].
-		GetContactColliderVelocityAtPosition(godot Context, contact_idx gd.Int) gd.Vector2
+		GetContactColliderVelocityAtPosition(godot Lifetime, contact_idx gd.Int) gd.Vector2
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_impulse].
-		GetContactImpulse(godot Context, contact_idx gd.Int) gd.Vector2
+		GetContactImpulse(godot Lifetime, contact_idx gd.Int) gd.Vector2
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.step] and its respective getter.
-		GetStep(godot Context) gd.Float
+		GetStep(godot Lifetime) gd.Float
 		//Overridable version of [method PhysicsDirectBodyState2D.integrate_forces].
-		IntegrateForces(godot Context)
+		IntegrateForces(godot Lifetime)
 		//Overridable version of [method PhysicsDirectBodyState2D.get_space_state].
-		GetSpaceState(godot Context) PhysicsDirectSpaceState2D
+		GetSpaceState(godot Lifetime) PhysicsDirectSpaceState2D
 	}
 */
 type PhysicsDirectBodyState2DExtension = classdb.PhysicsDirectBodyState2DExtension
@@ -6438,52 +6438,52 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 
 	// PhysicsDirectBodyState3DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsDirectBodyState3DExtension interface {
-		GetTotalGravity(godot Context) gd.Vector3
-		GetTotalLinearDamp(godot Context) gd.Float
-		GetTotalAngularDamp(godot Context) gd.Float
-		GetCenterOfMass(godot Context) gd.Vector3
-		GetCenterOfMassLocal(godot Context) gd.Vector3
-		GetPrincipalInertiaAxes(godot Context) gd.Basis
-		GetInverseMass(godot Context) gd.Float
-		GetInverseInertia(godot Context) gd.Vector3
-		GetInverseInertiaTensor(godot Context) gd.Basis
-		SetLinearVelocity(godot Context, velocity gd.Vector3)
-		GetLinearVelocity(godot Context) gd.Vector3
-		SetAngularVelocity(godot Context, velocity gd.Vector3)
-		GetAngularVelocity(godot Context) gd.Vector3
-		SetTransform(godot Context, transform gd.Transform3D)
-		GetTransform(godot Context) gd.Transform3D
-		GetVelocityAtLocalPosition(godot Context, local_position gd.Vector3) gd.Vector3
-		ApplyCentralImpulse(godot Context, impulse gd.Vector3)
-		ApplyImpulse(godot Context, impulse gd.Vector3, position gd.Vector3)
-		ApplyTorqueImpulse(godot Context, impulse gd.Vector3)
-		ApplyCentralForce(godot Context, force gd.Vector3)
-		ApplyForce(godot Context, force gd.Vector3, position gd.Vector3)
-		ApplyTorque(godot Context, torque gd.Vector3)
-		AddConstantCentralForce(godot Context, force gd.Vector3)
-		AddConstantForce(godot Context, force gd.Vector3, position gd.Vector3)
-		AddConstantTorque(godot Context, torque gd.Vector3)
-		SetConstantForce(godot Context, force gd.Vector3)
-		GetConstantForce(godot Context) gd.Vector3
-		SetConstantTorque(godot Context, torque gd.Vector3)
-		GetConstantTorque(godot Context) gd.Vector3
-		SetSleepState(godot Context, enabled bool)
-		IsSleeping(godot Context) bool
-		GetContactCount(godot Context) gd.Int
-		GetContactLocalPosition(godot Context, contact_idx gd.Int) gd.Vector3
-		GetContactLocalNormal(godot Context, contact_idx gd.Int) gd.Vector3
-		GetContactImpulse(godot Context, contact_idx gd.Int) gd.Vector3
-		GetContactLocalShape(godot Context, contact_idx gd.Int) gd.Int
-		GetContactLocalVelocityAtPosition(godot Context, contact_idx gd.Int) gd.Vector3
-		GetContactCollider(godot Context, contact_idx gd.Int) gd.RID
-		GetContactColliderPosition(godot Context, contact_idx gd.Int) gd.Vector3
-		GetContactColliderId(godot Context, contact_idx gd.Int) gd.Int
-		GetContactColliderObject(godot Context, contact_idx gd.Int) gd.Object
-		GetContactColliderShape(godot Context, contact_idx gd.Int) gd.Int
-		GetContactColliderVelocityAtPosition(godot Context, contact_idx gd.Int) gd.Vector3
-		GetStep(godot Context) gd.Float
-		IntegrateForces(godot Context)
-		GetSpaceState(godot Context) PhysicsDirectSpaceState3D
+		GetTotalGravity(godot Lifetime) gd.Vector3
+		GetTotalLinearDamp(godot Lifetime) gd.Float
+		GetTotalAngularDamp(godot Lifetime) gd.Float
+		GetCenterOfMass(godot Lifetime) gd.Vector3
+		GetCenterOfMassLocal(godot Lifetime) gd.Vector3
+		GetPrincipalInertiaAxes(godot Lifetime) gd.Basis
+		GetInverseMass(godot Lifetime) gd.Float
+		GetInverseInertia(godot Lifetime) gd.Vector3
+		GetInverseInertiaTensor(godot Lifetime) gd.Basis
+		SetLinearVelocity(godot Lifetime, velocity gd.Vector3)
+		GetLinearVelocity(godot Lifetime) gd.Vector3
+		SetAngularVelocity(godot Lifetime, velocity gd.Vector3)
+		GetAngularVelocity(godot Lifetime) gd.Vector3
+		SetTransform(godot Lifetime, transform gd.Transform3D)
+		GetTransform(godot Lifetime) gd.Transform3D
+		GetVelocityAtLocalPosition(godot Lifetime, local_position gd.Vector3) gd.Vector3
+		ApplyCentralImpulse(godot Lifetime, impulse gd.Vector3)
+		ApplyImpulse(godot Lifetime, impulse gd.Vector3, position gd.Vector3)
+		ApplyTorqueImpulse(godot Lifetime, impulse gd.Vector3)
+		ApplyCentralForce(godot Lifetime, force gd.Vector3)
+		ApplyForce(godot Lifetime, force gd.Vector3, position gd.Vector3)
+		ApplyTorque(godot Lifetime, torque gd.Vector3)
+		AddConstantCentralForce(godot Lifetime, force gd.Vector3)
+		AddConstantForce(godot Lifetime, force gd.Vector3, position gd.Vector3)
+		AddConstantTorque(godot Lifetime, torque gd.Vector3)
+		SetConstantForce(godot Lifetime, force gd.Vector3)
+		GetConstantForce(godot Lifetime) gd.Vector3
+		SetConstantTorque(godot Lifetime, torque gd.Vector3)
+		GetConstantTorque(godot Lifetime) gd.Vector3
+		SetSleepState(godot Lifetime, enabled bool)
+		IsSleeping(godot Lifetime) bool
+		GetContactCount(godot Lifetime) gd.Int
+		GetContactLocalPosition(godot Lifetime, contact_idx gd.Int) gd.Vector3
+		GetContactLocalNormal(godot Lifetime, contact_idx gd.Int) gd.Vector3
+		GetContactImpulse(godot Lifetime, contact_idx gd.Int) gd.Vector3
+		GetContactLocalShape(godot Lifetime, contact_idx gd.Int) gd.Int
+		GetContactLocalVelocityAtPosition(godot Lifetime, contact_idx gd.Int) gd.Vector3
+		GetContactCollider(godot Lifetime, contact_idx gd.Int) gd.RID
+		GetContactColliderPosition(godot Lifetime, contact_idx gd.Int) gd.Vector3
+		GetContactColliderId(godot Lifetime, contact_idx gd.Int) gd.Int
+		GetContactColliderObject(godot Lifetime, contact_idx gd.Int) gd.Object
+		GetContactColliderShape(godot Lifetime, contact_idx gd.Int) gd.Int
+		GetContactColliderVelocityAtPosition(godot Lifetime, contact_idx gd.Int) gd.Vector3
+		GetStep(godot Lifetime) gd.Float
+		IntegrateForces(godot Lifetime)
+		GetSpaceState(godot Lifetime) PhysicsDirectSpaceState3D
 	}
 */
 type PhysicsDirectBodyState3DExtension = classdb.PhysicsDirectBodyState3DExtension
@@ -6499,12 +6499,12 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 
 	// PhysicsDirectSpaceState2DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsDirectSpaceState2DExtension interface {
-		IntersectRay(godot Context, from gd.Vector2, to gd.Vector2, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool
-		IntersectPoint(godot Context, position gd.Vector2, canvas_instance_id gd.Int, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results gd.Int) gd.Int
-		IntersectShape(godot Context, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results gd.Int) gd.Int
-		CastMotion(godot Context, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) bool
-		CollideShape(godot Context, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results gd.Int, result_count *int32) bool
-		RestInfo(godot Context, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) bool
+		IntersectRay(godot Lifetime, from gd.Vector2, to gd.Vector2, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool
+		IntersectPoint(godot Lifetime, position gd.Vector2, canvas_instance_id gd.Int, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results gd.Int) gd.Int
+		IntersectShape(godot Lifetime, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results gd.Int) gd.Int
+		CastMotion(godot Lifetime, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) bool
+		CollideShape(godot Lifetime, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results gd.Int, result_count *int32) bool
+		RestInfo(godot Lifetime, shape_rid gd.RID, transform gd.Transform2D, motion gd.Vector2, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) bool
 	}
 */
 type PhysicsDirectSpaceState2DExtension = classdb.PhysicsDirectSpaceState2DExtension
@@ -6520,13 +6520,13 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 
 	// PhysicsDirectSpaceState3DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsDirectSpaceState3DExtension interface {
-		IntersectRay(godot Context, from gd.Vector3, to gd.Vector3, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *PhysicsServer3DExtensionRayResult) bool
-		IntersectPoint(godot Context, position gd.Vector3, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results gd.Int) gd.Int
-		IntersectShape(godot Context, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results gd.Int) gd.Int
-		CastMotion(godot Context, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) bool
-		CollideShape(godot Context, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results gd.Int, result_count *int32) bool
-		RestInfo(godot Context, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) bool
-		GetClosestPointToObjectVolume(godot Context, object gd.RID, point gd.Vector3) gd.Vector3
+		IntersectRay(godot Lifetime, from gd.Vector3, to gd.Vector3, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *PhysicsServer3DExtensionRayResult) bool
+		IntersectPoint(godot Lifetime, position gd.Vector3, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results gd.Int) gd.Int
+		IntersectShape(godot Lifetime, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results gd.Int) gd.Int
+		CastMotion(godot Lifetime, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) bool
+		CollideShape(godot Lifetime, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results gd.Int, result_count *int32) bool
+		RestInfo(godot Lifetime, shape_rid gd.RID, transform gd.Transform3D, motion gd.Vector3, margin gd.Float, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) bool
+		GetClosestPointToObjectVolume(godot Lifetime, object gd.RID, point gd.Vector3) gd.Vector3
 	}
 */
 type PhysicsDirectSpaceState3DExtension = classdb.PhysicsDirectSpaceState3DExtension
@@ -6556,7 +6556,7 @@ By changing various properties of this object, such as the ray position, you can
 */
 type PhysicsRayQueryParameters3D = classdb.PhysicsRayQueryParameters3D
 
-func PhysicsServer2D(godot Context) classdb.PhysicsServer2D {
+func PhysicsServer2D(godot Lifetime) classdb.PhysicsServer2D {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.PhysicsServer2D)
 	return *(*classdb.PhysicsServer2D)(unsafe.Pointer(&obj))
 }
@@ -6568,310 +6568,310 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 	// PhysicsServer2DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsServer2DExtension interface {
 		//Overridable version of [method PhysicsServer2D.world_boundary_shape_create].
-		WorldBoundaryShapeCreate(godot Context) gd.RID
+		WorldBoundaryShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.separation_ray_shape_create].
-		SeparationRayShapeCreate(godot Context) gd.RID
+		SeparationRayShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.segment_shape_create].
-		SegmentShapeCreate(godot Context) gd.RID
+		SegmentShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.circle_shape_create].
-		CircleShapeCreate(godot Context) gd.RID
+		CircleShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.rectangle_shape_create].
-		RectangleShapeCreate(godot Context) gd.RID
+		RectangleShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.capsule_shape_create].
-		CapsuleShapeCreate(godot Context) gd.RID
+		CapsuleShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.convex_polygon_shape_create].
-		ConvexPolygonShapeCreate(godot Context) gd.RID
+		ConvexPolygonShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.concave_polygon_shape_create].
-		ConcavePolygonShapeCreate(godot Context) gd.RID
+		ConcavePolygonShapeCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.shape_set_data].
-		ShapeSetData(godot Context, shape gd.RID, data gd.Variant)
+		ShapeSetData(godot Lifetime, shape gd.RID, data gd.Variant)
 		//Should set the custom solver bias for the given [param shape]. It defines how much bodies are forced to separate on contact.
 		//Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
-		ShapeSetCustomSolverBias(godot Context, shape gd.RID, bias gd.Float)
+		ShapeSetCustomSolverBias(godot Lifetime, shape gd.RID, bias gd.Float)
 		//Overridable version of [method PhysicsServer2D.shape_get_type].
-		ShapeGetType(godot Context, shape gd.RID) PhysicsServer2DShapeType
+		ShapeGetType(godot Lifetime, shape gd.RID) PhysicsServer2DShapeType
 		//Overridable version of [method PhysicsServer2D.shape_get_data].
-		ShapeGetData(godot Context, shape gd.RID) gd.Variant
+		ShapeGetData(godot Lifetime, shape gd.RID) gd.Variant
 		//Should return the custom solver bias of the given [param shape], which defines how much bodies are forced to separate on contact when this shape is involved.
 		//Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
-		ShapeGetCustomSolverBias(godot Context, shape gd.RID) gd.Float
+		ShapeGetCustomSolverBias(godot Lifetime, shape gd.RID) gd.Float
 		//Given two shapes and their parameters, should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
 		//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
-		ShapeCollide(godot Context, shape_A gd.RID, xform_A gd.Transform2D, motion_A gd.Vector2, shape_B gd.RID, xform_B gd.Transform2D, motion_B gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool
+		ShapeCollide(godot Lifetime, shape_A gd.RID, xform_A gd.Transform2D, motion_A gd.Vector2, shape_B gd.RID, xform_B gd.Transform2D, motion_B gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool
 		//Overridable version of [method PhysicsServer2D.space_create].
-		SpaceCreate(godot Context) gd.RID
+		SpaceCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.space_set_active].
-		SpaceSetActive(godot Context, space gd.RID, active bool)
+		SpaceSetActive(godot Lifetime, space gd.RID, active bool)
 		//Overridable version of [method PhysicsServer2D.space_is_active].
-		SpaceIsActive(godot Context, space gd.RID) bool
+		SpaceIsActive(godot Lifetime, space gd.RID) bool
 		//Overridable version of [method PhysicsServer2D.space_set_param].
-		SpaceSetParam(godot Context, space gd.RID, param PhysicsServer2DSpaceParameter, value gd.Float)
+		SpaceSetParam(godot Lifetime, space gd.RID, param PhysicsServer2DSpaceParameter, value gd.Float)
 		//Overridable version of [method PhysicsServer2D.space_get_param].
-		SpaceGetParam(godot Context, space gd.RID, param PhysicsServer2DSpaceParameter) gd.Float
+		SpaceGetParam(godot Lifetime, space gd.RID, param PhysicsServer2DSpaceParameter) gd.Float
 		//Overridable version of [method PhysicsServer2D.space_get_direct_state].
-		SpaceGetDirectState(godot Context, space gd.RID) PhysicsDirectSpaceState2D
+		SpaceGetDirectState(godot Lifetime, space gd.RID) PhysicsDirectSpaceState2D
 		//Used internally to allow the given [param space] to store contact points, up to [param max_contacts]. This is automatically set for the main [World2D]'s space when [member SceneTree.debug_collisions_hint] is [code]true[/code], or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
 		//Overridable version of [PhysicsServer2D]'s internal [code]space_set_debug_contacts[/code] method.
-		SpaceSetDebugContacts(godot Context, space gd.RID, max_contacts gd.Int)
+		SpaceSetDebugContacts(godot Lifetime, space gd.RID, max_contacts gd.Int)
 		//Should return the positions of all contacts that have occurred during the last physics step in the given [param space]. See also [method _space_get_contact_count] and [method _space_set_debug_contacts].
 		//Overridable version of [PhysicsServer2D]'s internal [code]space_get_contacts[/code] method.
-		SpaceGetContacts(godot Context, space gd.RID) gd.PackedVector2Array
+		SpaceGetContacts(godot Lifetime, space gd.RID) gd.PackedVector2Array
 		//Should return how many contacts have occurred during the last physics step in the given [param space]. See also [method _space_get_contacts] and [method _space_set_debug_contacts].
 		//Overridable version of [PhysicsServer2D]'s internal [code]space_get_contact_count[/code] method.
-		SpaceGetContactCount(godot Context, space gd.RID) gd.Int
+		SpaceGetContactCount(godot Lifetime, space gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.area_create].
-		AreaCreate(godot Context) gd.RID
+		AreaCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.area_set_space].
-		AreaSetSpace(godot Context, area gd.RID, space gd.RID)
+		AreaSetSpace(godot Lifetime, area gd.RID, space gd.RID)
 		//Overridable version of [method PhysicsServer2D.area_get_space].
-		AreaGetSpace(godot Context, area gd.RID) gd.RID
+		AreaGetSpace(godot Lifetime, area gd.RID) gd.RID
 		//Overridable version of [method PhysicsServer2D.area_add_shape].
-		AreaAddShape(godot Context, area gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool)
+		AreaAddShape(godot Lifetime, area gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool)
 		//Overridable version of [method PhysicsServer2D.area_set_shape].
-		AreaSetShape(godot Context, area gd.RID, shape_idx gd.Int, shape gd.RID)
+		AreaSetShape(godot Lifetime, area gd.RID, shape_idx gd.Int, shape gd.RID)
 		//Overridable version of [method PhysicsServer2D.area_set_shape_transform].
-		AreaSetShapeTransform(godot Context, area gd.RID, shape_idx gd.Int, transform gd.Transform2D)
+		AreaSetShapeTransform(godot Lifetime, area gd.RID, shape_idx gd.Int, transform gd.Transform2D)
 		//Overridable version of [method PhysicsServer2D.area_set_shape_disabled].
-		AreaSetShapeDisabled(godot Context, area gd.RID, shape_idx gd.Int, disabled bool)
+		AreaSetShapeDisabled(godot Lifetime, area gd.RID, shape_idx gd.Int, disabled bool)
 		//Overridable version of [method PhysicsServer2D.area_get_shape_count].
-		AreaGetShapeCount(godot Context, area gd.RID) gd.Int
+		AreaGetShapeCount(godot Lifetime, area gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.area_get_shape].
-		AreaGetShape(godot Context, area gd.RID, shape_idx gd.Int) gd.RID
+		AreaGetShape(godot Lifetime, area gd.RID, shape_idx gd.Int) gd.RID
 		//Overridable version of [method PhysicsServer2D.area_get_shape_transform].
-		AreaGetShapeTransform(godot Context, area gd.RID, shape_idx gd.Int) gd.Transform2D
+		AreaGetShapeTransform(godot Lifetime, area gd.RID, shape_idx gd.Int) gd.Transform2D
 		//Overridable version of [method PhysicsServer2D.area_remove_shape].
-		AreaRemoveShape(godot Context, area gd.RID, shape_idx gd.Int)
+		AreaRemoveShape(godot Lifetime, area gd.RID, shape_idx gd.Int)
 		//Overridable version of [method PhysicsServer2D.area_clear_shapes].
-		AreaClearShapes(godot Context, area gd.RID)
+		AreaClearShapes(godot Lifetime, area gd.RID)
 		//Overridable version of [method PhysicsServer2D.area_attach_object_instance_id].
-		AreaAttachObjectInstanceId(godot Context, area gd.RID, id gd.Int)
+		AreaAttachObjectInstanceId(godot Lifetime, area gd.RID, id gd.Int)
 		//Overridable version of [method PhysicsServer2D.area_get_object_instance_id].
-		AreaGetObjectInstanceId(godot Context, area gd.RID) gd.Int
+		AreaGetObjectInstanceId(godot Lifetime, area gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.area_attach_canvas_instance_id].
-		AreaAttachCanvasInstanceId(godot Context, area gd.RID, id gd.Int)
+		AreaAttachCanvasInstanceId(godot Lifetime, area gd.RID, id gd.Int)
 		//Overridable version of [method PhysicsServer2D.area_get_canvas_instance_id].
-		AreaGetCanvasInstanceId(godot Context, area gd.RID) gd.Int
+		AreaGetCanvasInstanceId(godot Lifetime, area gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.area_set_param].
-		AreaSetParam(godot Context, area gd.RID, param PhysicsServer2DAreaParameter, value gd.Variant)
+		AreaSetParam(godot Lifetime, area gd.RID, param PhysicsServer2DAreaParameter, value gd.Variant)
 		//Overridable version of [method PhysicsServer2D.area_set_transform].
-		AreaSetTransform(godot Context, area gd.RID, transform gd.Transform2D)
+		AreaSetTransform(godot Lifetime, area gd.RID, transform gd.Transform2D)
 		//Overridable version of [method PhysicsServer2D.area_get_param].
-		AreaGetParam(godot Context, area gd.RID, param PhysicsServer2DAreaParameter) gd.Variant
+		AreaGetParam(godot Lifetime, area gd.RID, param PhysicsServer2DAreaParameter) gd.Variant
 		//Overridable version of [method PhysicsServer2D.area_get_transform].
-		AreaGetTransform(godot Context, area gd.RID) gd.Transform2D
+		AreaGetTransform(godot Lifetime, area gd.RID) gd.Transform2D
 		//Overridable version of [method PhysicsServer2D.area_set_collision_layer].
-		AreaSetCollisionLayer(godot Context, area gd.RID, layer gd.Int)
+		AreaSetCollisionLayer(godot Lifetime, area gd.RID, layer gd.Int)
 		//Overridable version of [method PhysicsServer2D.area_get_collision_layer].
-		AreaGetCollisionLayer(godot Context, area gd.RID) gd.Int
+		AreaGetCollisionLayer(godot Lifetime, area gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.area_set_collision_mask].
-		AreaSetCollisionMask(godot Context, area gd.RID, mask gd.Int)
+		AreaSetCollisionMask(godot Lifetime, area gd.RID, mask gd.Int)
 		//Overridable version of [method PhysicsServer2D.area_get_collision_mask].
-		AreaGetCollisionMask(godot Context, area gd.RID) gd.Int
+		AreaGetCollisionMask(godot Lifetime, area gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.area_set_monitorable].
-		AreaSetMonitorable(godot Context, area gd.RID, monitorable bool)
+		AreaSetMonitorable(godot Lifetime, area gd.RID, monitorable bool)
 		//If set to [code]true[/code], allows the area with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
 		//Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member PhysicsBody2D.input_pickable].
-		AreaSetPickable(godot Context, area gd.RID, pickable bool)
+		AreaSetPickable(godot Lifetime, area gd.RID, pickable bool)
 		//Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
-		AreaSetMonitorCallback(godot Context, area gd.RID, callback gd.Callable)
+		AreaSetMonitorCallback(godot Lifetime, area gd.RID, callback gd.Callable)
 		//Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
-		AreaSetAreaMonitorCallback(godot Context, area gd.RID, callback gd.Callable)
+		AreaSetAreaMonitorCallback(godot Lifetime, area gd.RID, callback gd.Callable)
 		//Overridable version of [method PhysicsServer2D.body_create].
-		BodyCreate(godot Context) gd.RID
+		BodyCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.body_set_space].
-		BodySetSpace(godot Context, body gd.RID, space gd.RID)
+		BodySetSpace(godot Lifetime, body gd.RID, space gd.RID)
 		//Overridable version of [method PhysicsServer2D.body_get_space].
-		BodyGetSpace(godot Context, body gd.RID) gd.RID
+		BodyGetSpace(godot Lifetime, body gd.RID) gd.RID
 		//Overridable version of [method PhysicsServer2D.body_set_mode].
-		BodySetMode(godot Context, body gd.RID, mode PhysicsServer2DBodyMode)
+		BodySetMode(godot Lifetime, body gd.RID, mode PhysicsServer2DBodyMode)
 		//Overridable version of [method PhysicsServer2D.body_get_mode].
-		BodyGetMode(godot Context, body gd.RID) PhysicsServer2DBodyMode
+		BodyGetMode(godot Lifetime, body gd.RID) PhysicsServer2DBodyMode
 		//Overridable version of [method PhysicsServer2D.body_add_shape].
-		BodyAddShape(godot Context, body gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool)
+		BodyAddShape(godot Lifetime, body gd.RID, shape gd.RID, transform gd.Transform2D, disabled bool)
 		//Overridable version of [method PhysicsServer2D.body_set_shape].
-		BodySetShape(godot Context, body gd.RID, shape_idx gd.Int, shape gd.RID)
+		BodySetShape(godot Lifetime, body gd.RID, shape_idx gd.Int, shape gd.RID)
 		//Overridable version of [method PhysicsServer2D.body_set_shape_transform].
-		BodySetShapeTransform(godot Context, body gd.RID, shape_idx gd.Int, transform gd.Transform2D)
+		BodySetShapeTransform(godot Lifetime, body gd.RID, shape_idx gd.Int, transform gd.Transform2D)
 		//Overridable version of [method PhysicsServer2D.body_get_shape_count].
-		BodyGetShapeCount(godot Context, body gd.RID) gd.Int
+		BodyGetShapeCount(godot Lifetime, body gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.body_get_shape].
-		BodyGetShape(godot Context, body gd.RID, shape_idx gd.Int) gd.RID
+		BodyGetShape(godot Lifetime, body gd.RID, shape_idx gd.Int) gd.RID
 		//Overridable version of [method PhysicsServer2D.body_get_shape_transform].
-		BodyGetShapeTransform(godot Context, body gd.RID, shape_idx gd.Int) gd.Transform2D
+		BodyGetShapeTransform(godot Lifetime, body gd.RID, shape_idx gd.Int) gd.Transform2D
 		//Overridable version of [method PhysicsServer2D.body_set_shape_disabled].
-		BodySetShapeDisabled(godot Context, body gd.RID, shape_idx gd.Int, disabled bool)
+		BodySetShapeDisabled(godot Lifetime, body gd.RID, shape_idx gd.Int, disabled bool)
 		//Overridable version of [method PhysicsServer2D.body_set_shape_as_one_way_collision].
-		BodySetShapeAsOneWayCollision(godot Context, body gd.RID, shape_idx gd.Int, enable bool, margin gd.Float)
+		BodySetShapeAsOneWayCollision(godot Lifetime, body gd.RID, shape_idx gd.Int, enable bool, margin gd.Float)
 		//Overridable version of [method PhysicsServer2D.body_remove_shape].
-		BodyRemoveShape(godot Context, body gd.RID, shape_idx gd.Int)
+		BodyRemoveShape(godot Lifetime, body gd.RID, shape_idx gd.Int)
 		//Overridable version of [method PhysicsServer2D.body_clear_shapes].
-		BodyClearShapes(godot Context, body gd.RID)
+		BodyClearShapes(godot Lifetime, body gd.RID)
 		//Overridable version of [method PhysicsServer2D.body_attach_object_instance_id].
-		BodyAttachObjectInstanceId(godot Context, body gd.RID, id gd.Int)
+		BodyAttachObjectInstanceId(godot Lifetime, body gd.RID, id gd.Int)
 		//Overridable version of [method PhysicsServer2D.body_get_object_instance_id].
-		BodyGetObjectInstanceId(godot Context, body gd.RID) gd.Int
+		BodyGetObjectInstanceId(godot Lifetime, body gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.body_attach_canvas_instance_id].
-		BodyAttachCanvasInstanceId(godot Context, body gd.RID, id gd.Int)
+		BodyAttachCanvasInstanceId(godot Lifetime, body gd.RID, id gd.Int)
 		//Overridable version of [method PhysicsServer2D.body_get_canvas_instance_id].
-		BodyGetCanvasInstanceId(godot Context, body gd.RID) gd.Int
+		BodyGetCanvasInstanceId(godot Lifetime, body gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.body_set_continuous_collision_detection_mode].
-		BodySetContinuousCollisionDetectionMode(godot Context, body gd.RID, mode PhysicsServer2DCCDMode)
+		BodySetContinuousCollisionDetectionMode(godot Lifetime, body gd.RID, mode PhysicsServer2DCCDMode)
 		//Overridable version of [method PhysicsServer2D.body_get_continuous_collision_detection_mode].
-		BodyGetContinuousCollisionDetectionMode(godot Context, body gd.RID) PhysicsServer2DCCDMode
+		BodyGetContinuousCollisionDetectionMode(godot Lifetime, body gd.RID) PhysicsServer2DCCDMode
 		//Overridable version of [method PhysicsServer2D.body_set_collision_layer].
-		BodySetCollisionLayer(godot Context, body gd.RID, layer gd.Int)
+		BodySetCollisionLayer(godot Lifetime, body gd.RID, layer gd.Int)
 		//Overridable version of [method PhysicsServer2D.body_get_collision_layer].
-		BodyGetCollisionLayer(godot Context, body gd.RID) gd.Int
+		BodyGetCollisionLayer(godot Lifetime, body gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.body_set_collision_mask].
-		BodySetCollisionMask(godot Context, body gd.RID, mask gd.Int)
+		BodySetCollisionMask(godot Lifetime, body gd.RID, mask gd.Int)
 		//Overridable version of [method PhysicsServer2D.body_get_collision_mask].
-		BodyGetCollisionMask(godot Context, body gd.RID) gd.Int
+		BodyGetCollisionMask(godot Lifetime, body gd.RID) gd.Int
 		//Overridable version of [method PhysicsServer2D.body_set_collision_priority].
-		BodySetCollisionPriority(godot Context, body gd.RID, priority gd.Float)
+		BodySetCollisionPriority(godot Lifetime, body gd.RID, priority gd.Float)
 		//Overridable version of [method PhysicsServer2D.body_get_collision_priority].
-		BodyGetCollisionPriority(godot Context, body gd.RID) gd.Float
+		BodyGetCollisionPriority(godot Lifetime, body gd.RID) gd.Float
 		//Overridable version of [method PhysicsServer2D.body_set_param].
-		BodySetParam(godot Context, body gd.RID, param PhysicsServer2DBodyParameter, value gd.Variant)
+		BodySetParam(godot Lifetime, body gd.RID, param PhysicsServer2DBodyParameter, value gd.Variant)
 		//Overridable version of [method PhysicsServer2D.body_get_param].
-		BodyGetParam(godot Context, body gd.RID, param PhysicsServer2DBodyParameter) gd.Variant
+		BodyGetParam(godot Lifetime, body gd.RID, param PhysicsServer2DBodyParameter) gd.Variant
 		//Overridable version of [method PhysicsServer2D.body_reset_mass_properties].
-		BodyResetMassProperties(godot Context, body gd.RID)
+		BodyResetMassProperties(godot Lifetime, body gd.RID)
 		//Overridable version of [method PhysicsServer2D.body_set_state].
-		BodySetState(godot Context, body gd.RID, state PhysicsServer2DBodyState, value gd.Variant)
+		BodySetState(godot Lifetime, body gd.RID, state PhysicsServer2DBodyState, value gd.Variant)
 		//Overridable version of [method PhysicsServer2D.body_get_state].
-		BodyGetState(godot Context, body gd.RID, state PhysicsServer2DBodyState) gd.Variant
+		BodyGetState(godot Lifetime, body gd.RID, state PhysicsServer2DBodyState) gd.Variant
 		//Overridable version of [method PhysicsServer2D.body_apply_central_impulse].
-		BodyApplyCentralImpulse(godot Context, body gd.RID, impulse gd.Vector2)
+		BodyApplyCentralImpulse(godot Lifetime, body gd.RID, impulse gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_apply_torque_impulse].
-		BodyApplyTorqueImpulse(godot Context, body gd.RID, impulse gd.Float)
+		BodyApplyTorqueImpulse(godot Lifetime, body gd.RID, impulse gd.Float)
 		//Overridable version of [method PhysicsServer2D.body_apply_impulse].
-		BodyApplyImpulse(godot Context, body gd.RID, impulse gd.Vector2, position gd.Vector2)
+		BodyApplyImpulse(godot Lifetime, body gd.RID, impulse gd.Vector2, position gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_apply_central_force].
-		BodyApplyCentralForce(godot Context, body gd.RID, force gd.Vector2)
+		BodyApplyCentralForce(godot Lifetime, body gd.RID, force gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_apply_force].
-		BodyApplyForce(godot Context, body gd.RID, force gd.Vector2, position gd.Vector2)
+		BodyApplyForce(godot Lifetime, body gd.RID, force gd.Vector2, position gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_apply_torque].
-		BodyApplyTorque(godot Context, body gd.RID, torque gd.Float)
+		BodyApplyTorque(godot Lifetime, body gd.RID, torque gd.Float)
 		//Overridable version of [method PhysicsServer2D.body_add_constant_central_force].
-		BodyAddConstantCentralForce(godot Context, body gd.RID, force gd.Vector2)
+		BodyAddConstantCentralForce(godot Lifetime, body gd.RID, force gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_add_constant_force].
-		BodyAddConstantForce(godot Context, body gd.RID, force gd.Vector2, position gd.Vector2)
+		BodyAddConstantForce(godot Lifetime, body gd.RID, force gd.Vector2, position gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_add_constant_torque].
-		BodyAddConstantTorque(godot Context, body gd.RID, torque gd.Float)
+		BodyAddConstantTorque(godot Lifetime, body gd.RID, torque gd.Float)
 		//Overridable version of [method PhysicsServer2D.body_set_constant_force].
-		BodySetConstantForce(godot Context, body gd.RID, force gd.Vector2)
+		BodySetConstantForce(godot Lifetime, body gd.RID, force gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_get_constant_force].
-		BodyGetConstantForce(godot Context, body gd.RID) gd.Vector2
+		BodyGetConstantForce(godot Lifetime, body gd.RID) gd.Vector2
 		//Overridable version of [method PhysicsServer2D.body_set_constant_torque].
-		BodySetConstantTorque(godot Context, body gd.RID, torque gd.Float)
+		BodySetConstantTorque(godot Lifetime, body gd.RID, torque gd.Float)
 		//Overridable version of [method PhysicsServer2D.body_get_constant_torque].
-		BodyGetConstantTorque(godot Context, body gd.RID) gd.Float
+		BodyGetConstantTorque(godot Lifetime, body gd.RID) gd.Float
 		//Overridable version of [method PhysicsServer2D.body_set_axis_velocity].
-		BodySetAxisVelocity(godot Context, body gd.RID, axis_velocity gd.Vector2)
+		BodySetAxisVelocity(godot Lifetime, body gd.RID, axis_velocity gd.Vector2)
 		//Overridable version of [method PhysicsServer2D.body_add_collision_exception].
-		BodyAddCollisionException(godot Context, body gd.RID, excepted_body gd.RID)
+		BodyAddCollisionException(godot Lifetime, body gd.RID, excepted_body gd.RID)
 		//Overridable version of [method PhysicsServer2D.body_remove_collision_exception].
-		BodyRemoveCollisionException(godot Context, body gd.RID, excepted_body gd.RID)
+		BodyRemoveCollisionException(godot Lifetime, body gd.RID, excepted_body gd.RID)
 		//Returns the [RID]s of all bodies added as collision exceptions for the given [param body]. See also [method _body_add_collision_exception] and [method _body_remove_collision_exception].
 		//Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exceptions[/code] method. Corresponds to [method PhysicsBody2D.get_collision_exceptions].
-		BodyGetCollisionExceptions(godot Context, body gd.RID) gd.ArrayOf[gd.RID]
+		BodyGetCollisionExceptions(godot Lifetime, body gd.RID) gd.ArrayOf[gd.RID]
 		//Overridable version of [method PhysicsServer2D.body_set_max_contacts_reported].
-		BodySetMaxContactsReported(godot Context, body gd.RID, amount gd.Int)
+		BodySetMaxContactsReported(godot Lifetime, body gd.RID, amount gd.Int)
 		//Overridable version of [method PhysicsServer2D.body_get_max_contacts_reported].
-		BodyGetMaxContactsReported(godot Context, body gd.RID) gd.Int
+		BodyGetMaxContactsReported(godot Lifetime, body gd.RID) gd.Int
 		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_contacts_reported_depth_threshold[/code] method.
 		//[b]Note:[/b] This method is currently unused by Godot's default physics implementation.
-		BodySetContactsReportedDepthThreshold(godot Context, body gd.RID, threshold gd.Float)
+		BodySetContactsReportedDepthThreshold(godot Lifetime, body gd.RID, threshold gd.Float)
 		//Overridable version of [PhysicsServer2D]'s internal [code]body_get_contacts_reported_depth_threshold[/code] method.
 		//[b]Note:[/b] This method is currently unused by Godot's default physics implementation.
-		BodyGetContactsReportedDepthThreshold(godot Context, body gd.RID) gd.Float
+		BodyGetContactsReportedDepthThreshold(godot Lifetime, body gd.RID) gd.Float
 		//Overridable version of [method PhysicsServer2D.body_set_omit_force_integration].
-		BodySetOmitForceIntegration(godot Context, body gd.RID, enable bool)
+		BodySetOmitForceIntegration(godot Lifetime, body gd.RID, enable bool)
 		//Overridable version of [method PhysicsServer2D.body_is_omitting_force_integration].
-		BodyIsOmittingForceIntegration(godot Context, body gd.RID) bool
+		BodyIsOmittingForceIntegration(godot Lifetime, body gd.RID) bool
 		//Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
 		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_state_sync_callback[/code] method.
-		BodySetStateSyncCallback(godot Context, body gd.RID, callable gd.Callable)
+		BodySetStateSyncCallback(godot Lifetime, body gd.RID, callable gd.Callable)
 		//Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
-		BodySetForceIntegrationCallback(godot Context, body gd.RID, callable gd.Callable, userdata gd.Variant)
+		BodySetForceIntegrationCallback(godot Lifetime, body gd.RID, callable gd.Callable, userdata gd.Variant)
 		//Given a [param body], a [param shape], and their respective parameters, this method should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
 		//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
-		BodyCollideShape(godot Context, body gd.RID, body_shape gd.Int, shape gd.RID, shape_xform gd.Transform2D, motion gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool
+		BodyCollideShape(godot Lifetime, body gd.RID, body_shape gd.Int, shape gd.RID, shape_xform gd.Transform2D, motion gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool
 		//If set to [code]true[/code], allows the body with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
 		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member PhysicsBody2D.input_pickable].
-		BodySetPickable(godot Context, body gd.RID, pickable bool)
+		BodySetPickable(godot Lifetime, body gd.RID, pickable bool)
 		//Overridable version of [method PhysicsServer2D.body_get_direct_state].
-		BodyGetDirectState(godot Context, body gd.RID) PhysicsDirectBodyState2D
+		BodyGetDirectState(godot Lifetime, body gd.RID) PhysicsDirectBodyState2D
 		//Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
-		BodyTestMotion(godot Context, body gd.RID, from gd.Transform2D, motion gd.Vector2, margin gd.Float, collide_separation_ray bool, recovery_as_collision bool, result *PhysicsServer2DExtensionMotionResult) bool
+		BodyTestMotion(godot Lifetime, body gd.RID, from gd.Transform2D, motion gd.Vector2, margin gd.Float, collide_separation_ray bool, recovery_as_collision bool, result *PhysicsServer2DExtensionMotionResult) bool
 		//Overridable version of [method PhysicsServer2D.joint_create].
-		JointCreate(godot Context) gd.RID
+		JointCreate(godot Lifetime) gd.RID
 		//Overridable version of [method PhysicsServer2D.joint_clear].
-		JointClear(godot Context, joint gd.RID)
+		JointClear(godot Lifetime, joint gd.RID)
 		//Overridable version of [method PhysicsServer2D.joint_set_param].
-		JointSetParam(godot Context, joint gd.RID, param PhysicsServer2DJointParam, value gd.Float)
+		JointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer2DJointParam, value gd.Float)
 		//Overridable version of [method PhysicsServer2D.joint_get_param].
-		JointGetParam(godot Context, joint gd.RID, param PhysicsServer2DJointParam) gd.Float
+		JointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer2DJointParam) gd.Float
 		//Overridable version of [method PhysicsServer2D.joint_disable_collisions_between_bodies].
-		JointDisableCollisionsBetweenBodies(godot Context, joint gd.RID, disable bool)
+		JointDisableCollisionsBetweenBodies(godot Lifetime, joint gd.RID, disable bool)
 		//Overridable version of [method PhysicsServer2D.joint_is_disabled_collisions_between_bodies].
-		JointIsDisabledCollisionsBetweenBodies(godot Context, joint gd.RID) bool
+		JointIsDisabledCollisionsBetweenBodies(godot Lifetime, joint gd.RID) bool
 		//Overridable version of [method PhysicsServer2D.joint_make_pin].
-		JointMakePin(godot Context, joint gd.RID, anchor gd.Vector2, body_a gd.RID, body_b gd.RID)
+		JointMakePin(godot Lifetime, joint gd.RID, anchor gd.Vector2, body_a gd.RID, body_b gd.RID)
 		//Overridable version of [method PhysicsServer2D.joint_make_groove].
-		JointMakeGroove(godot Context, joint gd.RID, a_groove1 gd.Vector2, a_groove2 gd.Vector2, b_anchor gd.Vector2, body_a gd.RID, body_b gd.RID)
+		JointMakeGroove(godot Lifetime, joint gd.RID, a_groove1 gd.Vector2, a_groove2 gd.Vector2, b_anchor gd.Vector2, body_a gd.RID, body_b gd.RID)
 		//Overridable version of [method PhysicsServer2D.joint_make_damped_spring].
-		JointMakeDampedSpring(godot Context, joint gd.RID, anchor_a gd.Vector2, anchor_b gd.Vector2, body_a gd.RID, body_b gd.RID)
+		JointMakeDampedSpring(godot Lifetime, joint gd.RID, anchor_a gd.Vector2, anchor_b gd.Vector2, body_a gd.RID, body_b gd.RID)
 		//Overridable version of [method PhysicsServer2D.pin_joint_set_flag].
-		PinJointSetFlag(godot Context, joint gd.RID, flag PhysicsServer2DPinJointFlag, enabled bool)
+		PinJointSetFlag(godot Lifetime, joint gd.RID, flag PhysicsServer2DPinJointFlag, enabled bool)
 		//Overridable version of [method PhysicsServer2D.pin_joint_get_flag].
-		PinJointGetFlag(godot Context, joint gd.RID, flag PhysicsServer2DPinJointFlag) bool
+		PinJointGetFlag(godot Lifetime, joint gd.RID, flag PhysicsServer2DPinJointFlag) bool
 		//Overridable version of [method PhysicsServer2D.pin_joint_set_param].
-		PinJointSetParam(godot Context, joint gd.RID, param PhysicsServer2DPinJointParam, value gd.Float)
+		PinJointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer2DPinJointParam, value gd.Float)
 		//Overridable version of [method PhysicsServer2D.pin_joint_get_param].
-		PinJointGetParam(godot Context, joint gd.RID, param PhysicsServer2DPinJointParam) gd.Float
+		PinJointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer2DPinJointParam) gd.Float
 		//Overridable version of [method PhysicsServer2D.damped_spring_joint_set_param].
-		DampedSpringJointSetParam(godot Context, joint gd.RID, param PhysicsServer2DDampedSpringParam, value gd.Float)
+		DampedSpringJointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer2DDampedSpringParam, value gd.Float)
 		//Overridable version of [method PhysicsServer2D.damped_spring_joint_get_param].
-		DampedSpringJointGetParam(godot Context, joint gd.RID, param PhysicsServer2DDampedSpringParam) gd.Float
+		DampedSpringJointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer2DDampedSpringParam) gd.Float
 		//Overridable version of [method PhysicsServer2D.joint_get_type].
-		JointGetType(godot Context, joint gd.RID) PhysicsServer2DJointType
+		JointGetType(godot Lifetime, joint gd.RID) PhysicsServer2DJointType
 		//Overridable version of [method PhysicsServer2D.free_rid].
-		FreeRid(godot Context, rid gd.RID)
+		FreeRid(godot Lifetime, rid gd.RID)
 		//Overridable version of [method PhysicsServer2D.set_active].
-		SetActive(godot Context, active bool)
+		SetActive(godot Lifetime, active bool)
 		//Called when the main loop is initialized and creates a new instance of this physics server. See also [method MainLoop._initialize] and [method _finish].
 		//Overridable version of [PhysicsServer2D]'s internal [code]init[/code] method.
-		Init(godot Context)
+		Init(godot Lifetime)
 		//Called every physics step to process the physics simulation. [param step] is the time elapsed since the last physics step, in seconds. It is usually the same as [method Node.get_physics_process_delta_time].
 		//Overridable version of [PhysicsServer2D]'s internal [code skip-lint]step[/code] method.
-		Step(godot Context, step gd.Float)
+		Step(godot Lifetime, step gd.Float)
 		//Called to indicate that the physics server is synchronizing and cannot access physics states if running on a separate thread. See also [method _end_sync].
 		//Overridable version of [PhysicsServer2D]'s internal [code]sync[/code] method.
-		Sync(godot Context)
+		Sync(godot Lifetime)
 		//Called every physics step before [method _step] to process all remaining queries.
 		//Overridable version of [PhysicsServer2D]'s internal [code]flush_queries[/code] method.
-		FlushQueries(godot Context)
+		FlushQueries(godot Lifetime)
 		//Called to indicate that the physics server has stopped synchronizing. It is in the loop's iteration/physics phase, and can access physics objects even if running on a separate thread. See also [method _sync].
 		//Overridable version of [PhysicsServer2D]'s internal [code]end_sync[/code] method.
-		EndSync(godot Context)
+		EndSync(godot Lifetime)
 		//Called when the main loop finalizes to shut down the physics server. See also [method MainLoop._finalize] and [method _init].
 		//Overridable version of [PhysicsServer2D]'s internal [code]finish[/code] method.
-		Finish(godot Context)
+		Finish(godot Lifetime)
 		//Overridable method that should return [code]true[/code] when the physics server is processing queries. See also [method _flush_queries].
 		//Overridable version of [PhysicsServer2D]'s internal [code]is_flushing_queries[/code] method.
-		IsFlushingQueries(godot Context) bool
+		IsFlushingQueries(godot Lifetime) bool
 		//Overridable version of [method PhysicsServer2D.get_process_info].
-		GetProcessInfo(godot Context, process_info PhysicsServer2DProcessInfo) gd.Int
+		GetProcessInfo(godot Lifetime, process_info PhysicsServer2DProcessInfo) gd.Int
 	}
 */
 type PhysicsServer2DExtension = classdb.PhysicsServer2DExtension
 
-func PhysicsServer2DManager(godot Context) classdb.PhysicsServer2DManager {
+func PhysicsServer2DManager(godot Lifetime) classdb.PhysicsServer2DManager {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.PhysicsServer2DManager)
 	return *(*classdb.PhysicsServer2DManager)(unsafe.Pointer(&obj))
 }
-func PhysicsServer3D(godot Context) classdb.PhysicsServer3D {
+func PhysicsServer3D(godot Lifetime) classdb.PhysicsServer3D {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.PhysicsServer3D)
 	return *(*classdb.PhysicsServer3D)(unsafe.Pointer(&obj))
 }
@@ -6882,199 +6882,199 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 
 	// PhysicsServer3DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsServer3DExtension interface {
-		WorldBoundaryShapeCreate(godot Context) gd.RID
-		SeparationRayShapeCreate(godot Context) gd.RID
-		SphereShapeCreate(godot Context) gd.RID
-		BoxShapeCreate(godot Context) gd.RID
-		CapsuleShapeCreate(godot Context) gd.RID
-		CylinderShapeCreate(godot Context) gd.RID
-		ConvexPolygonShapeCreate(godot Context) gd.RID
-		ConcavePolygonShapeCreate(godot Context) gd.RID
-		HeightmapShapeCreate(godot Context) gd.RID
-		CustomShapeCreate(godot Context) gd.RID
-		ShapeSetData(godot Context, shape gd.RID, data gd.Variant)
-		ShapeSetCustomSolverBias(godot Context, shape gd.RID, bias gd.Float)
-		ShapeSetMargin(godot Context, shape gd.RID, margin gd.Float)
-		ShapeGetMargin(godot Context, shape gd.RID) gd.Float
-		ShapeGetType(godot Context, shape gd.RID) PhysicsServer3DShapeType
-		ShapeGetData(godot Context, shape gd.RID) gd.Variant
-		ShapeGetCustomSolverBias(godot Context, shape gd.RID) gd.Float
-		SpaceCreate(godot Context) gd.RID
-		SpaceSetActive(godot Context, space gd.RID, active bool)
-		SpaceIsActive(godot Context, space gd.RID) bool
-		SpaceSetParam(godot Context, space gd.RID, param PhysicsServer3DSpaceParameter, value gd.Float)
-		SpaceGetParam(godot Context, space gd.RID, param PhysicsServer3DSpaceParameter) gd.Float
-		SpaceGetDirectState(godot Context, space gd.RID) PhysicsDirectSpaceState3D
-		SpaceSetDebugContacts(godot Context, space gd.RID, max_contacts gd.Int)
-		SpaceGetContacts(godot Context, space gd.RID) gd.PackedVector3Array
-		SpaceGetContactCount(godot Context, space gd.RID) gd.Int
-		AreaCreate(godot Context) gd.RID
-		AreaSetSpace(godot Context, area gd.RID, space gd.RID)
-		AreaGetSpace(godot Context, area gd.RID) gd.RID
-		AreaAddShape(godot Context, area gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool)
-		AreaSetShape(godot Context, area gd.RID, shape_idx gd.Int, shape gd.RID)
-		AreaSetShapeTransform(godot Context, area gd.RID, shape_idx gd.Int, transform gd.Transform3D)
-		AreaSetShapeDisabled(godot Context, area gd.RID, shape_idx gd.Int, disabled bool)
-		AreaGetShapeCount(godot Context, area gd.RID) gd.Int
-		AreaGetShape(godot Context, area gd.RID, shape_idx gd.Int) gd.RID
-		AreaGetShapeTransform(godot Context, area gd.RID, shape_idx gd.Int) gd.Transform3D
-		AreaRemoveShape(godot Context, area gd.RID, shape_idx gd.Int)
-		AreaClearShapes(godot Context, area gd.RID)
-		AreaAttachObjectInstanceId(godot Context, area gd.RID, id gd.Int)
-		AreaGetObjectInstanceId(godot Context, area gd.RID) gd.Int
-		AreaSetParam(godot Context, area gd.RID, param PhysicsServer3DAreaParameter, value gd.Variant)
-		AreaSetTransform(godot Context, area gd.RID, transform gd.Transform3D)
-		AreaGetParam(godot Context, area gd.RID, param PhysicsServer3DAreaParameter) gd.Variant
-		AreaGetTransform(godot Context, area gd.RID) gd.Transform3D
-		AreaSetCollisionLayer(godot Context, area gd.RID, layer gd.Int)
-		AreaGetCollisionLayer(godot Context, area gd.RID) gd.Int
-		AreaSetCollisionMask(godot Context, area gd.RID, mask gd.Int)
-		AreaGetCollisionMask(godot Context, area gd.RID) gd.Int
-		AreaSetMonitorable(godot Context, area gd.RID, monitorable bool)
-		AreaSetRayPickable(godot Context, area gd.RID, enable bool)
-		AreaSetMonitorCallback(godot Context, area gd.RID, callback gd.Callable)
-		AreaSetAreaMonitorCallback(godot Context, area gd.RID, callback gd.Callable)
-		BodyCreate(godot Context) gd.RID
-		BodySetSpace(godot Context, body gd.RID, space gd.RID)
-		BodyGetSpace(godot Context, body gd.RID) gd.RID
-		BodySetMode(godot Context, body gd.RID, mode PhysicsServer3DBodyMode)
-		BodyGetMode(godot Context, body gd.RID) PhysicsServer3DBodyMode
-		BodyAddShape(godot Context, body gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool)
-		BodySetShape(godot Context, body gd.RID, shape_idx gd.Int, shape gd.RID)
-		BodySetShapeTransform(godot Context, body gd.RID, shape_idx gd.Int, transform gd.Transform3D)
-		BodySetShapeDisabled(godot Context, body gd.RID, shape_idx gd.Int, disabled bool)
-		BodyGetShapeCount(godot Context, body gd.RID) gd.Int
-		BodyGetShape(godot Context, body gd.RID, shape_idx gd.Int) gd.RID
-		BodyGetShapeTransform(godot Context, body gd.RID, shape_idx gd.Int) gd.Transform3D
-		BodyRemoveShape(godot Context, body gd.RID, shape_idx gd.Int)
-		BodyClearShapes(godot Context, body gd.RID)
-		BodyAttachObjectInstanceId(godot Context, body gd.RID, id gd.Int)
-		BodyGetObjectInstanceId(godot Context, body gd.RID) gd.Int
-		BodySetEnableContinuousCollisionDetection(godot Context, body gd.RID, enable bool)
-		BodyIsContinuousCollisionDetectionEnabled(godot Context, body gd.RID) bool
-		BodySetCollisionLayer(godot Context, body gd.RID, layer gd.Int)
-		BodyGetCollisionLayer(godot Context, body gd.RID) gd.Int
-		BodySetCollisionMask(godot Context, body gd.RID, mask gd.Int)
-		BodyGetCollisionMask(godot Context, body gd.RID) gd.Int
-		BodySetCollisionPriority(godot Context, body gd.RID, priority gd.Float)
-		BodyGetCollisionPriority(godot Context, body gd.RID) gd.Float
-		BodySetUserFlags(godot Context, body gd.RID, flags gd.Int)
-		BodyGetUserFlags(godot Context, body gd.RID) gd.Int
-		BodySetParam(godot Context, body gd.RID, param PhysicsServer3DBodyParameter, value gd.Variant)
-		BodyGetParam(godot Context, body gd.RID, param PhysicsServer3DBodyParameter) gd.Variant
-		BodyResetMassProperties(godot Context, body gd.RID)
-		BodySetState(godot Context, body gd.RID, state PhysicsServer3DBodyState, value gd.Variant)
-		BodyGetState(godot Context, body gd.RID, state PhysicsServer3DBodyState) gd.Variant
-		BodyApplyCentralImpulse(godot Context, body gd.RID, impulse gd.Vector3)
-		BodyApplyImpulse(godot Context, body gd.RID, impulse gd.Vector3, position gd.Vector3)
-		BodyApplyTorqueImpulse(godot Context, body gd.RID, impulse gd.Vector3)
-		BodyApplyCentralForce(godot Context, body gd.RID, force gd.Vector3)
-		BodyApplyForce(godot Context, body gd.RID, force gd.Vector3, position gd.Vector3)
-		BodyApplyTorque(godot Context, body gd.RID, torque gd.Vector3)
-		BodyAddConstantCentralForce(godot Context, body gd.RID, force gd.Vector3)
-		BodyAddConstantForce(godot Context, body gd.RID, force gd.Vector3, position gd.Vector3)
-		BodyAddConstantTorque(godot Context, body gd.RID, torque gd.Vector3)
-		BodySetConstantForce(godot Context, body gd.RID, force gd.Vector3)
-		BodyGetConstantForce(godot Context, body gd.RID) gd.Vector3
-		BodySetConstantTorque(godot Context, body gd.RID, torque gd.Vector3)
-		BodyGetConstantTorque(godot Context, body gd.RID) gd.Vector3
-		BodySetAxisVelocity(godot Context, body gd.RID, axis_velocity gd.Vector3)
-		BodySetAxisLock(godot Context, body gd.RID, axis PhysicsServer3DBodyAxis, lock bool)
-		BodyIsAxisLocked(godot Context, body gd.RID, axis PhysicsServer3DBodyAxis) bool
-		BodyAddCollisionException(godot Context, body gd.RID, excepted_body gd.RID)
-		BodyRemoveCollisionException(godot Context, body gd.RID, excepted_body gd.RID)
-		BodyGetCollisionExceptions(godot Context, body gd.RID) gd.ArrayOf[gd.RID]
-		BodySetMaxContactsReported(godot Context, body gd.RID, amount gd.Int)
-		BodyGetMaxContactsReported(godot Context, body gd.RID) gd.Int
-		BodySetContactsReportedDepthThreshold(godot Context, body gd.RID, threshold gd.Float)
-		BodyGetContactsReportedDepthThreshold(godot Context, body gd.RID) gd.Float
-		BodySetOmitForceIntegration(godot Context, body gd.RID, enable bool)
-		BodyIsOmittingForceIntegration(godot Context, body gd.RID) bool
-		BodySetStateSyncCallback(godot Context, body gd.RID, callable gd.Callable)
-		BodySetForceIntegrationCallback(godot Context, body gd.RID, callable gd.Callable, userdata gd.Variant)
-		BodySetRayPickable(godot Context, body gd.RID, enable bool)
-		BodyTestMotion(godot Context, body gd.RID, from gd.Transform3D, motion gd.Vector3, margin gd.Float, max_collisions gd.Int, collide_separation_ray bool, recovery_as_collision bool, result *PhysicsServer3DExtensionMotionResult) bool
-		BodyGetDirectState(godot Context, body gd.RID) PhysicsDirectBodyState3D
-		SoftBodyCreate(godot Context) gd.RID
-		SoftBodyUpdateRenderingServer(godot Context, body gd.RID, rendering_server_handler PhysicsServer3DRenderingServerHandler)
-		SoftBodySetSpace(godot Context, body gd.RID, space gd.RID)
-		SoftBodyGetSpace(godot Context, body gd.RID) gd.RID
-		SoftBodySetRayPickable(godot Context, body gd.RID, enable bool)
-		SoftBodySetCollisionLayer(godot Context, body gd.RID, layer gd.Int)
-		SoftBodyGetCollisionLayer(godot Context, body gd.RID) gd.Int
-		SoftBodySetCollisionMask(godot Context, body gd.RID, mask gd.Int)
-		SoftBodyGetCollisionMask(godot Context, body gd.RID) gd.Int
-		SoftBodyAddCollisionException(godot Context, body gd.RID, body_b gd.RID)
-		SoftBodyRemoveCollisionException(godot Context, body gd.RID, body_b gd.RID)
-		SoftBodyGetCollisionExceptions(godot Context, body gd.RID) gd.ArrayOf[gd.RID]
-		SoftBodySetState(godot Context, body gd.RID, state PhysicsServer3DBodyState, variant gd.Variant)
-		SoftBodyGetState(godot Context, body gd.RID, state PhysicsServer3DBodyState) gd.Variant
-		SoftBodySetTransform(godot Context, body gd.RID, transform gd.Transform3D)
-		SoftBodySetSimulationPrecision(godot Context, body gd.RID, simulation_precision gd.Int)
-		SoftBodyGetSimulationPrecision(godot Context, body gd.RID) gd.Int
-		SoftBodySetTotalMass(godot Context, body gd.RID, total_mass gd.Float)
-		SoftBodyGetTotalMass(godot Context, body gd.RID) gd.Float
-		SoftBodySetLinearStiffness(godot Context, body gd.RID, linear_stiffness gd.Float)
-		SoftBodyGetLinearStiffness(godot Context, body gd.RID) gd.Float
-		SoftBodySetPressureCoefficient(godot Context, body gd.RID, pressure_coefficient gd.Float)
-		SoftBodyGetPressureCoefficient(godot Context, body gd.RID) gd.Float
-		SoftBodySetDampingCoefficient(godot Context, body gd.RID, damping_coefficient gd.Float)
-		SoftBodyGetDampingCoefficient(godot Context, body gd.RID) gd.Float
-		SoftBodySetDragCoefficient(godot Context, body gd.RID, drag_coefficient gd.Float)
-		SoftBodyGetDragCoefficient(godot Context, body gd.RID) gd.Float
-		SoftBodySetMesh(godot Context, body gd.RID, mesh gd.RID)
-		SoftBodyGetBounds(godot Context, body gd.RID) gd.AABB
-		SoftBodyMovePoint(godot Context, body gd.RID, point_index gd.Int, global_position gd.Vector3)
-		SoftBodyGetPointGlobalPosition(godot Context, body gd.RID, point_index gd.Int) gd.Vector3
-		SoftBodyRemoveAllPinnedPoints(godot Context, body gd.RID)
-		SoftBodyPinPoint(godot Context, body gd.RID, point_index gd.Int, pin bool)
-		SoftBodyIsPointPinned(godot Context, body gd.RID, point_index gd.Int) bool
-		JointCreate(godot Context) gd.RID
-		JointClear(godot Context, joint gd.RID)
-		JointMakePin(godot Context, joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3)
-		PinJointSetParam(godot Context, joint gd.RID, param PhysicsServer3DPinJointParam, value gd.Float)
-		PinJointGetParam(godot Context, joint gd.RID, param PhysicsServer3DPinJointParam) gd.Float
-		PinJointSetLocalA(godot Context, joint gd.RID, local_A gd.Vector3)
-		PinJointGetLocalA(godot Context, joint gd.RID) gd.Vector3
-		PinJointSetLocalB(godot Context, joint gd.RID, local_B gd.Vector3)
-		PinJointGetLocalB(godot Context, joint gd.RID) gd.Vector3
-		JointMakeHinge(godot Context, joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D)
-		JointMakeHingeSimple(godot Context, joint gd.RID, body_A gd.RID, pivot_A gd.Vector3, axis_A gd.Vector3, body_B gd.RID, pivot_B gd.Vector3, axis_B gd.Vector3)
-		HingeJointSetParam(godot Context, joint gd.RID, param PhysicsServer3DHingeJointParam, value gd.Float)
-		HingeJointGetParam(godot Context, joint gd.RID, param PhysicsServer3DHingeJointParam) gd.Float
-		HingeJointSetFlag(godot Context, joint gd.RID, flag PhysicsServer3DHingeJointFlag, enabled bool)
-		HingeJointGetFlag(godot Context, joint gd.RID, flag PhysicsServer3DHingeJointFlag) bool
-		JointMakeSlider(godot Context, joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)
-		SliderJointSetParam(godot Context, joint gd.RID, param PhysicsServer3DSliderJointParam, value gd.Float)
-		SliderJointGetParam(godot Context, joint gd.RID, param PhysicsServer3DSliderJointParam) gd.Float
-		JointMakeConeTwist(godot Context, joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)
-		ConeTwistJointSetParam(godot Context, joint gd.RID, param PhysicsServer3DConeTwistJointParam, value gd.Float)
-		ConeTwistJointGetParam(godot Context, joint gd.RID, param PhysicsServer3DConeTwistJointParam) gd.Float
-		JointMakeGeneric6dof(godot Context, joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)
-		Generic6dofJointSetParam(godot Context, joint gd.RID, axis gd.Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam, value gd.Float)
-		Generic6dofJointGetParam(godot Context, joint gd.RID, axis gd.Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam) gd.Float
-		Generic6dofJointSetFlag(godot Context, joint gd.RID, axis gd.Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag, enable bool)
-		Generic6dofJointGetFlag(godot Context, joint gd.RID, axis gd.Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag) bool
-		JointGetType(godot Context, joint gd.RID) PhysicsServer3DJointType
-		JointSetSolverPriority(godot Context, joint gd.RID, priority gd.Int)
-		JointGetSolverPriority(godot Context, joint gd.RID) gd.Int
-		JointDisableCollisionsBetweenBodies(godot Context, joint gd.RID, disable bool)
-		JointIsDisabledCollisionsBetweenBodies(godot Context, joint gd.RID) bool
-		FreeRid(godot Context, rid gd.RID)
-		SetActive(godot Context, active bool)
-		Init(godot Context)
-		Step(godot Context, step gd.Float)
-		Sync(godot Context)
-		FlushQueries(godot Context)
-		EndSync(godot Context)
-		Finish(godot Context)
-		IsFlushingQueries(godot Context) bool
-		GetProcessInfo(godot Context, process_info PhysicsServer3DProcessInfo) gd.Int
+		WorldBoundaryShapeCreate(godot Lifetime) gd.RID
+		SeparationRayShapeCreate(godot Lifetime) gd.RID
+		SphereShapeCreate(godot Lifetime) gd.RID
+		BoxShapeCreate(godot Lifetime) gd.RID
+		CapsuleShapeCreate(godot Lifetime) gd.RID
+		CylinderShapeCreate(godot Lifetime) gd.RID
+		ConvexPolygonShapeCreate(godot Lifetime) gd.RID
+		ConcavePolygonShapeCreate(godot Lifetime) gd.RID
+		HeightmapShapeCreate(godot Lifetime) gd.RID
+		CustomShapeCreate(godot Lifetime) gd.RID
+		ShapeSetData(godot Lifetime, shape gd.RID, data gd.Variant)
+		ShapeSetCustomSolverBias(godot Lifetime, shape gd.RID, bias gd.Float)
+		ShapeSetMargin(godot Lifetime, shape gd.RID, margin gd.Float)
+		ShapeGetMargin(godot Lifetime, shape gd.RID) gd.Float
+		ShapeGetType(godot Lifetime, shape gd.RID) PhysicsServer3DShapeType
+		ShapeGetData(godot Lifetime, shape gd.RID) gd.Variant
+		ShapeGetCustomSolverBias(godot Lifetime, shape gd.RID) gd.Float
+		SpaceCreate(godot Lifetime) gd.RID
+		SpaceSetActive(godot Lifetime, space gd.RID, active bool)
+		SpaceIsActive(godot Lifetime, space gd.RID) bool
+		SpaceSetParam(godot Lifetime, space gd.RID, param PhysicsServer3DSpaceParameter, value gd.Float)
+		SpaceGetParam(godot Lifetime, space gd.RID, param PhysicsServer3DSpaceParameter) gd.Float
+		SpaceGetDirectState(godot Lifetime, space gd.RID) PhysicsDirectSpaceState3D
+		SpaceSetDebugContacts(godot Lifetime, space gd.RID, max_contacts gd.Int)
+		SpaceGetContacts(godot Lifetime, space gd.RID) gd.PackedVector3Array
+		SpaceGetContactCount(godot Lifetime, space gd.RID) gd.Int
+		AreaCreate(godot Lifetime) gd.RID
+		AreaSetSpace(godot Lifetime, area gd.RID, space gd.RID)
+		AreaGetSpace(godot Lifetime, area gd.RID) gd.RID
+		AreaAddShape(godot Lifetime, area gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool)
+		AreaSetShape(godot Lifetime, area gd.RID, shape_idx gd.Int, shape gd.RID)
+		AreaSetShapeTransform(godot Lifetime, area gd.RID, shape_idx gd.Int, transform gd.Transform3D)
+		AreaSetShapeDisabled(godot Lifetime, area gd.RID, shape_idx gd.Int, disabled bool)
+		AreaGetShapeCount(godot Lifetime, area gd.RID) gd.Int
+		AreaGetShape(godot Lifetime, area gd.RID, shape_idx gd.Int) gd.RID
+		AreaGetShapeTransform(godot Lifetime, area gd.RID, shape_idx gd.Int) gd.Transform3D
+		AreaRemoveShape(godot Lifetime, area gd.RID, shape_idx gd.Int)
+		AreaClearShapes(godot Lifetime, area gd.RID)
+		AreaAttachObjectInstanceId(godot Lifetime, area gd.RID, id gd.Int)
+		AreaGetObjectInstanceId(godot Lifetime, area gd.RID) gd.Int
+		AreaSetParam(godot Lifetime, area gd.RID, param PhysicsServer3DAreaParameter, value gd.Variant)
+		AreaSetTransform(godot Lifetime, area gd.RID, transform gd.Transform3D)
+		AreaGetParam(godot Lifetime, area gd.RID, param PhysicsServer3DAreaParameter) gd.Variant
+		AreaGetTransform(godot Lifetime, area gd.RID) gd.Transform3D
+		AreaSetCollisionLayer(godot Lifetime, area gd.RID, layer gd.Int)
+		AreaGetCollisionLayer(godot Lifetime, area gd.RID) gd.Int
+		AreaSetCollisionMask(godot Lifetime, area gd.RID, mask gd.Int)
+		AreaGetCollisionMask(godot Lifetime, area gd.RID) gd.Int
+		AreaSetMonitorable(godot Lifetime, area gd.RID, monitorable bool)
+		AreaSetRayPickable(godot Lifetime, area gd.RID, enable bool)
+		AreaSetMonitorCallback(godot Lifetime, area gd.RID, callback gd.Callable)
+		AreaSetAreaMonitorCallback(godot Lifetime, area gd.RID, callback gd.Callable)
+		BodyCreate(godot Lifetime) gd.RID
+		BodySetSpace(godot Lifetime, body gd.RID, space gd.RID)
+		BodyGetSpace(godot Lifetime, body gd.RID) gd.RID
+		BodySetMode(godot Lifetime, body gd.RID, mode PhysicsServer3DBodyMode)
+		BodyGetMode(godot Lifetime, body gd.RID) PhysicsServer3DBodyMode
+		BodyAddShape(godot Lifetime, body gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool)
+		BodySetShape(godot Lifetime, body gd.RID, shape_idx gd.Int, shape gd.RID)
+		BodySetShapeTransform(godot Lifetime, body gd.RID, shape_idx gd.Int, transform gd.Transform3D)
+		BodySetShapeDisabled(godot Lifetime, body gd.RID, shape_idx gd.Int, disabled bool)
+		BodyGetShapeCount(godot Lifetime, body gd.RID) gd.Int
+		BodyGetShape(godot Lifetime, body gd.RID, shape_idx gd.Int) gd.RID
+		BodyGetShapeTransform(godot Lifetime, body gd.RID, shape_idx gd.Int) gd.Transform3D
+		BodyRemoveShape(godot Lifetime, body gd.RID, shape_idx gd.Int)
+		BodyClearShapes(godot Lifetime, body gd.RID)
+		BodyAttachObjectInstanceId(godot Lifetime, body gd.RID, id gd.Int)
+		BodyGetObjectInstanceId(godot Lifetime, body gd.RID) gd.Int
+		BodySetEnableContinuousCollisionDetection(godot Lifetime, body gd.RID, enable bool)
+		BodyIsContinuousCollisionDetectionEnabled(godot Lifetime, body gd.RID) bool
+		BodySetCollisionLayer(godot Lifetime, body gd.RID, layer gd.Int)
+		BodyGetCollisionLayer(godot Lifetime, body gd.RID) gd.Int
+		BodySetCollisionMask(godot Lifetime, body gd.RID, mask gd.Int)
+		BodyGetCollisionMask(godot Lifetime, body gd.RID) gd.Int
+		BodySetCollisionPriority(godot Lifetime, body gd.RID, priority gd.Float)
+		BodyGetCollisionPriority(godot Lifetime, body gd.RID) gd.Float
+		BodySetUserFlags(godot Lifetime, body gd.RID, flags gd.Int)
+		BodyGetUserFlags(godot Lifetime, body gd.RID) gd.Int
+		BodySetParam(godot Lifetime, body gd.RID, param PhysicsServer3DBodyParameter, value gd.Variant)
+		BodyGetParam(godot Lifetime, body gd.RID, param PhysicsServer3DBodyParameter) gd.Variant
+		BodyResetMassProperties(godot Lifetime, body gd.RID)
+		BodySetState(godot Lifetime, body gd.RID, state PhysicsServer3DBodyState, value gd.Variant)
+		BodyGetState(godot Lifetime, body gd.RID, state PhysicsServer3DBodyState) gd.Variant
+		BodyApplyCentralImpulse(godot Lifetime, body gd.RID, impulse gd.Vector3)
+		BodyApplyImpulse(godot Lifetime, body gd.RID, impulse gd.Vector3, position gd.Vector3)
+		BodyApplyTorqueImpulse(godot Lifetime, body gd.RID, impulse gd.Vector3)
+		BodyApplyCentralForce(godot Lifetime, body gd.RID, force gd.Vector3)
+		BodyApplyForce(godot Lifetime, body gd.RID, force gd.Vector3, position gd.Vector3)
+		BodyApplyTorque(godot Lifetime, body gd.RID, torque gd.Vector3)
+		BodyAddConstantCentralForce(godot Lifetime, body gd.RID, force gd.Vector3)
+		BodyAddConstantForce(godot Lifetime, body gd.RID, force gd.Vector3, position gd.Vector3)
+		BodyAddConstantTorque(godot Lifetime, body gd.RID, torque gd.Vector3)
+		BodySetConstantForce(godot Lifetime, body gd.RID, force gd.Vector3)
+		BodyGetConstantForce(godot Lifetime, body gd.RID) gd.Vector3
+		BodySetConstantTorque(godot Lifetime, body gd.RID, torque gd.Vector3)
+		BodyGetConstantTorque(godot Lifetime, body gd.RID) gd.Vector3
+		BodySetAxisVelocity(godot Lifetime, body gd.RID, axis_velocity gd.Vector3)
+		BodySetAxisLock(godot Lifetime, body gd.RID, axis PhysicsServer3DBodyAxis, lock bool)
+		BodyIsAxisLocked(godot Lifetime, body gd.RID, axis PhysicsServer3DBodyAxis) bool
+		BodyAddCollisionException(godot Lifetime, body gd.RID, excepted_body gd.RID)
+		BodyRemoveCollisionException(godot Lifetime, body gd.RID, excepted_body gd.RID)
+		BodyGetCollisionExceptions(godot Lifetime, body gd.RID) gd.ArrayOf[gd.RID]
+		BodySetMaxContactsReported(godot Lifetime, body gd.RID, amount gd.Int)
+		BodyGetMaxContactsReported(godot Lifetime, body gd.RID) gd.Int
+		BodySetContactsReportedDepthThreshold(godot Lifetime, body gd.RID, threshold gd.Float)
+		BodyGetContactsReportedDepthThreshold(godot Lifetime, body gd.RID) gd.Float
+		BodySetOmitForceIntegration(godot Lifetime, body gd.RID, enable bool)
+		BodyIsOmittingForceIntegration(godot Lifetime, body gd.RID) bool
+		BodySetStateSyncCallback(godot Lifetime, body gd.RID, callable gd.Callable)
+		BodySetForceIntegrationCallback(godot Lifetime, body gd.RID, callable gd.Callable, userdata gd.Variant)
+		BodySetRayPickable(godot Lifetime, body gd.RID, enable bool)
+		BodyTestMotion(godot Lifetime, body gd.RID, from gd.Transform3D, motion gd.Vector3, margin gd.Float, max_collisions gd.Int, collide_separation_ray bool, recovery_as_collision bool, result *PhysicsServer3DExtensionMotionResult) bool
+		BodyGetDirectState(godot Lifetime, body gd.RID) PhysicsDirectBodyState3D
+		SoftBodyCreate(godot Lifetime) gd.RID
+		SoftBodyUpdateRenderingServer(godot Lifetime, body gd.RID, rendering_server_handler PhysicsServer3DRenderingServerHandler)
+		SoftBodySetSpace(godot Lifetime, body gd.RID, space gd.RID)
+		SoftBodyGetSpace(godot Lifetime, body gd.RID) gd.RID
+		SoftBodySetRayPickable(godot Lifetime, body gd.RID, enable bool)
+		SoftBodySetCollisionLayer(godot Lifetime, body gd.RID, layer gd.Int)
+		SoftBodyGetCollisionLayer(godot Lifetime, body gd.RID) gd.Int
+		SoftBodySetCollisionMask(godot Lifetime, body gd.RID, mask gd.Int)
+		SoftBodyGetCollisionMask(godot Lifetime, body gd.RID) gd.Int
+		SoftBodyAddCollisionException(godot Lifetime, body gd.RID, body_b gd.RID)
+		SoftBodyRemoveCollisionException(godot Lifetime, body gd.RID, body_b gd.RID)
+		SoftBodyGetCollisionExceptions(godot Lifetime, body gd.RID) gd.ArrayOf[gd.RID]
+		SoftBodySetState(godot Lifetime, body gd.RID, state PhysicsServer3DBodyState, variant gd.Variant)
+		SoftBodyGetState(godot Lifetime, body gd.RID, state PhysicsServer3DBodyState) gd.Variant
+		SoftBodySetTransform(godot Lifetime, body gd.RID, transform gd.Transform3D)
+		SoftBodySetSimulationPrecision(godot Lifetime, body gd.RID, simulation_precision gd.Int)
+		SoftBodyGetSimulationPrecision(godot Lifetime, body gd.RID) gd.Int
+		SoftBodySetTotalMass(godot Lifetime, body gd.RID, total_mass gd.Float)
+		SoftBodyGetTotalMass(godot Lifetime, body gd.RID) gd.Float
+		SoftBodySetLinearStiffness(godot Lifetime, body gd.RID, linear_stiffness gd.Float)
+		SoftBodyGetLinearStiffness(godot Lifetime, body gd.RID) gd.Float
+		SoftBodySetPressureCoefficient(godot Lifetime, body gd.RID, pressure_coefficient gd.Float)
+		SoftBodyGetPressureCoefficient(godot Lifetime, body gd.RID) gd.Float
+		SoftBodySetDampingCoefficient(godot Lifetime, body gd.RID, damping_coefficient gd.Float)
+		SoftBodyGetDampingCoefficient(godot Lifetime, body gd.RID) gd.Float
+		SoftBodySetDragCoefficient(godot Lifetime, body gd.RID, drag_coefficient gd.Float)
+		SoftBodyGetDragCoefficient(godot Lifetime, body gd.RID) gd.Float
+		SoftBodySetMesh(godot Lifetime, body gd.RID, mesh gd.RID)
+		SoftBodyGetBounds(godot Lifetime, body gd.RID) gd.AABB
+		SoftBodyMovePoint(godot Lifetime, body gd.RID, point_index gd.Int, global_position gd.Vector3)
+		SoftBodyGetPointGlobalPosition(godot Lifetime, body gd.RID, point_index gd.Int) gd.Vector3
+		SoftBodyRemoveAllPinnedPoints(godot Lifetime, body gd.RID)
+		SoftBodyPinPoint(godot Lifetime, body gd.RID, point_index gd.Int, pin bool)
+		SoftBodyIsPointPinned(godot Lifetime, body gd.RID, point_index gd.Int) bool
+		JointCreate(godot Lifetime) gd.RID
+		JointClear(godot Lifetime, joint gd.RID)
+		JointMakePin(godot Lifetime, joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3)
+		PinJointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DPinJointParam, value gd.Float)
+		PinJointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DPinJointParam) gd.Float
+		PinJointSetLocalA(godot Lifetime, joint gd.RID, local_A gd.Vector3)
+		PinJointGetLocalA(godot Lifetime, joint gd.RID) gd.Vector3
+		PinJointSetLocalB(godot Lifetime, joint gd.RID, local_B gd.Vector3)
+		PinJointGetLocalB(godot Lifetime, joint gd.RID) gd.Vector3
+		JointMakeHinge(godot Lifetime, joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D)
+		JointMakeHingeSimple(godot Lifetime, joint gd.RID, body_A gd.RID, pivot_A gd.Vector3, axis_A gd.Vector3, body_B gd.RID, pivot_B gd.Vector3, axis_B gd.Vector3)
+		HingeJointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DHingeJointParam, value gd.Float)
+		HingeJointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DHingeJointParam) gd.Float
+		HingeJointSetFlag(godot Lifetime, joint gd.RID, flag PhysicsServer3DHingeJointFlag, enabled bool)
+		HingeJointGetFlag(godot Lifetime, joint gd.RID, flag PhysicsServer3DHingeJointFlag) bool
+		JointMakeSlider(godot Lifetime, joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)
+		SliderJointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DSliderJointParam, value gd.Float)
+		SliderJointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DSliderJointParam) gd.Float
+		JointMakeConeTwist(godot Lifetime, joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)
+		ConeTwistJointSetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DConeTwistJointParam, value gd.Float)
+		ConeTwistJointGetParam(godot Lifetime, joint gd.RID, param PhysicsServer3DConeTwistJointParam) gd.Float
+		JointMakeGeneric6dof(godot Lifetime, joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)
+		Generic6dofJointSetParam(godot Lifetime, joint gd.RID, axis gd.Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam, value gd.Float)
+		Generic6dofJointGetParam(godot Lifetime, joint gd.RID, axis gd.Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam) gd.Float
+		Generic6dofJointSetFlag(godot Lifetime, joint gd.RID, axis gd.Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag, enable bool)
+		Generic6dofJointGetFlag(godot Lifetime, joint gd.RID, axis gd.Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag) bool
+		JointGetType(godot Lifetime, joint gd.RID) PhysicsServer3DJointType
+		JointSetSolverPriority(godot Lifetime, joint gd.RID, priority gd.Int)
+		JointGetSolverPriority(godot Lifetime, joint gd.RID) gd.Int
+		JointDisableCollisionsBetweenBodies(godot Lifetime, joint gd.RID, disable bool)
+		JointIsDisabledCollisionsBetweenBodies(godot Lifetime, joint gd.RID) bool
+		FreeRid(godot Lifetime, rid gd.RID)
+		SetActive(godot Lifetime, active bool)
+		Init(godot Lifetime)
+		Step(godot Lifetime, step gd.Float)
+		Sync(godot Lifetime)
+		FlushQueries(godot Lifetime)
+		EndSync(godot Lifetime)
+		Finish(godot Lifetime)
+		IsFlushingQueries(godot Lifetime) bool
+		GetProcessInfo(godot Lifetime, process_info PhysicsServer3DProcessInfo) gd.Int
 	}
 */
 type PhysicsServer3DExtension = classdb.PhysicsServer3DExtension
 
-func PhysicsServer3DManager(godot Context) classdb.PhysicsServer3DManager {
+func PhysicsServer3DManager(godot Lifetime) classdb.PhysicsServer3DManager {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.PhysicsServer3DManager)
 	return *(*classdb.PhysicsServer3DManager)(unsafe.Pointer(&obj))
 }
@@ -7247,7 +7247,7 @@ Base class for all primitive meshes. Handles applying a [Material] to a primitiv
 	// PrimitiveMesh methods that can be overridden by a [Class] that extends it.
 	type PrimitiveMesh interface {
 		//Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
-		CreateMeshArray(godot Context) gd.Array
+		CreateMeshArray(godot Lifetime) gd.Array
 	}
 */
 type PrimitiveMesh = classdb.PrimitiveMesh
@@ -7269,7 +7269,7 @@ A control used for visual representation of a percentage. Shows fill percentage 
 */
 type ProgressBar = classdb.ProgressBar
 
-func ProjectSettings(godot Context) classdb.ProjectSettings {
+func ProjectSettings(godot Lifetime) classdb.ProjectSettings {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.ProjectSettings)
 	return *(*classdb.ProjectSettings)(unsafe.Pointer(&obj))
 }
@@ -7453,7 +7453,7 @@ Range is an abstract base class for controls that represent a number within a ra
 	// Range methods that can be overridden by a [Class] that extends it.
 	type Range interface {
 		//Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
-		ValueChanged(godot Context, new_value gd.Float)
+		ValueChanged(godot Lifetime, new_value gd.Float)
 	}
 */
 type Range = classdb.Range
@@ -7590,13 +7590,13 @@ This class allows for a RenderSceneBuffer implementation to be made in GDExtensi
 	// RenderSceneBuffersExtension methods that can be overridden by a [Class] that extends it.
 	type RenderSceneBuffersExtension interface {
 		//Implement this in GDExtension to handle the (re)sizing of a viewport.
-		Configure(godot Context, config RenderSceneBuffersConfiguration)
+		Configure(godot Lifetime, config RenderSceneBuffersConfiguration)
 		//Implement this in GDExtension to record a new FSR sharpness value.
-		SetFsrSharpness(godot Context, fsr_sharpness gd.Float)
+		SetFsrSharpness(godot Lifetime, fsr_sharpness gd.Float)
 		//Implement this in GDExtension to change the texture mipmap bias.
-		SetTextureMipmapBias(godot Context, texture_mipmap_bias gd.Float)
+		SetTextureMipmapBias(godot Lifetime, texture_mipmap_bias gd.Float)
 		//Implement this in GDExtension to react to the debanding flag changing.
-		SetUseDebanding(godot Context, use_debanding bool)
+		SetUseDebanding(godot Lifetime, use_debanding bool)
 	}
 */
 type RenderSceneBuffersExtension = classdb.RenderSceneBuffersExtension
@@ -7609,7 +7609,7 @@ Buffers are only guaranteed to exist during rendering of the viewport.
 */
 type RenderSceneBuffersRD = classdb.RenderSceneBuffersRD
 
-func RenderingServer(godot Context) classdb.RenderingServer {
+func RenderingServer(godot Lifetime) classdb.RenderingServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.RenderingServer)
 	return *(*classdb.RenderingServer)(unsafe.Pointer(&obj))
 }
@@ -7631,7 +7631,7 @@ In GDScript, resources can loaded from disk by their [member resource_path] usin
 		//func _setup_local_to_scene():
 		//    damage = randi_range(10, 40)
 		//[/codeblock]
-		SetupLocalToScene(godot Context)
+		SetupLocalToScene(godot Lifetime)
 	}
 */
 type Resource = classdb.Resource
@@ -7644,30 +7644,30 @@ Extending this class allows you to define your own loader. Be sure to respect th
 	// ResourceFormatLoader methods that can be overridden by a [Class] that extends it.
 	type ResourceFormatLoader interface {
 		//Gets the list of extensions for files this loader is able to read.
-		GetRecognizedExtensions(godot Context) gd.PackedStringArray
+		GetRecognizedExtensions(godot Lifetime) gd.PackedStringArray
 		//Tells whether or not this loader should load a resource from its resource path for a given type.
 		//If it is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions], and if the type is within the ones provided by [method _get_resource_type].
-		RecognizePath(godot Context, path gd.String, atype gd.StringName) bool
+		RecognizePath(godot Lifetime, path gd.String, atype gd.StringName) bool
 		//Tells which resource class this loader can load.
 		//[b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just handle [code]"Resource"[/code] for them.
-		HandlesType(godot Context, atype gd.StringName) bool
+		HandlesType(godot Lifetime, atype gd.StringName) bool
 		//Gets the class name of the resource associated with the given path. If the loader cannot handle it, it should return [code]""[/code].
 		//[b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
-		GetResourceType(godot Context, path gd.String) gd.String
+		GetResourceType(godot Lifetime, path gd.String) gd.String
 		//Returns the script class name associated with the [Resource] under the given [param path]. If the resource has no script or the script isn't a named class, it should return [code]""[/code].
-		GetResourceScriptClass(godot Context, path gd.String) gd.String
-		GetResourceUid(godot Context, path gd.String) gd.Int
+		GetResourceScriptClass(godot Lifetime, path gd.String) gd.String
+		GetResourceUid(godot Lifetime, path gd.String) gd.Int
 		//If implemented, gets the dependencies of a given resource. If [param add_types] is [code]true[/code], paths should be appended [code]::TypeName[/code], where [code]TypeName[/code] is the class name of the dependency.
 		//[b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
-		GetDependencies(godot Context, path gd.String, add_types bool) gd.PackedStringArray
+		GetDependencies(godot Lifetime, path gd.String, add_types bool) gd.PackedStringArray
 		//If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 		//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-		RenameDependencies(godot Context, path gd.String, renames gd.Dictionary) int64
-		Exists(godot Context, path gd.String) bool
-		GetClassesUsed(godot Context, path gd.String) gd.PackedStringArray
+		RenameDependencies(godot Lifetime, path gd.String, renames gd.Dictionary) int64
+		Exists(godot Lifetime, path gd.String) bool
+		GetClassesUsed(godot Lifetime, path gd.String) gd.PackedStringArray
 		//Loads a resource when the engine finds this loader to be compatible. If the loaded resource is the result of an import, [param original_path] will target the source file. Returns a [Resource] object on success, or an [enum Error] constant in case of failure.
 		//The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
-		Load(godot Context, path gd.String, original_path gd.String, use_sub_threads bool, cache_mode gd.Int) gd.Variant
+		Load(godot Lifetime, path gd.String, original_path gd.String, use_sub_threads bool, cache_mode gd.Int) gd.Variant
 	}
 */
 type ResourceFormatLoader = classdb.ResourceFormatLoader
@@ -7680,16 +7680,16 @@ By default, Godot saves resources as [code].tres[/code] (text-based), [code].res
 	type ResourceFormatSaver interface {
 		//Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
 		//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-		Save(godot Context, resource Resource, path gd.String, flags gd.Int) int64
+		Save(godot Lifetime, resource Resource, path gd.String, flags gd.Int) int64
 		//Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-		SetUid(godot Context, path gd.String, uid gd.Int) int64
+		SetUid(godot Lifetime, path gd.String, uid gd.Int) int64
 		//Returns whether the given resource object can be saved by this saver.
-		Recognize(godot Context, resource Resource) bool
+		Recognize(godot Lifetime, resource Resource) bool
 		//Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
-		GetRecognizedExtensions(godot Context, resource Resource) gd.PackedStringArray
+		GetRecognizedExtensions(godot Lifetime, resource Resource) gd.PackedStringArray
 		//Returns [code]true[/code] if this saver handles a given save path and [code]false[/code] otherwise.
 		//If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
-		RecognizePath(godot Context, resource Resource, path gd.String) bool
+		RecognizePath(godot Lifetime, resource Resource, path gd.String) bool
 	}
 */
 type ResourceFormatSaver = classdb.ResourceFormatSaver
@@ -7795,7 +7795,7 @@ WAV is an uncompressed format, which can provide higher quality compared to Ogg 
 */
 type ResourceImporterWAV = classdb.ResourceImporterWAV
 
-func ResourceLoader(godot Context) classdb.ResourceLoader {
+func ResourceLoader(godot Lifetime) classdb.ResourceLoader {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.ResourceLoader)
 	return *(*classdb.ResourceLoader)(unsafe.Pointer(&obj))
 }
@@ -7806,11 +7806,11 @@ GDScript has a simplified [method @GDScript.preload] built-in method which can b
 */
 type ResourcePreloader = classdb.ResourcePreloader
 
-func ResourceSaver(godot Context) classdb.ResourceSaver {
+func ResourceSaver(godot Lifetime) classdb.ResourceSaver {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.ResourceSaver)
 	return *(*classdb.ResourceSaver)(unsafe.Pointer(&obj))
 }
-func ResourceUID(godot Context) classdb.ResourceUID {
+func ResourceUID(godot Lifetime) classdb.ResourceUID {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.ResourceUID)
 	return *(*classdb.ResourceUID)(unsafe.Pointer(&obj))
 }
@@ -7839,7 +7839,7 @@ string bbcode = "example";
 	// RichTextEffect methods that can be overridden by a [Class] that extends it.
 	type RichTextEffect interface {
 		//Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
-		ProcessCustomFx(godot Context, char_fx CharFXTransform) bool
+		ProcessCustomFx(godot Lifetime, char_fx CharFXTransform) bool
 	}
 */
 type RichTextEffect = classdb.RichTextEffect
@@ -7863,7 +7863,7 @@ If you need to override the default physics behavior, you can write a custom for
 	// RigidBody2D methods that can be overridden by a [Class] that extends it.
 	type RigidBody2D interface {
 		//Allows you to read and safely modify the simulation state for the object. Use this instead of [method Node._physics_process] if you need to directly change the body's [code]position[/code] or other physics properties. By default, it works in addition to the usual physics behavior, but [member custom_integrator] allows you to disable the default behavior and write custom force integration for a body.
-		IntegrateForces(godot Context, state PhysicsDirectBodyState2D)
+		IntegrateForces(godot Lifetime, state PhysicsDirectBodyState2D)
 	}
 */
 type RigidBody2D = classdb.RigidBody2D
@@ -7878,7 +7878,7 @@ If you need to override the default physics behavior, you can write a custom for
 	// RigidBody3D methods that can be overridden by a [Class] that extends it.
 	type RigidBody3D interface {
 		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it works in addition to the usual physics behavior, but the [member custom_integrator] property allows you to disable the default behavior and do fully custom force integration for a body.
-		IntegrateForces(godot Context, state PhysicsDirectBodyState3D)
+		IntegrateForces(godot Lifetime, state PhysicsDirectBodyState3D)
 	}
 */
 type RigidBody3D = classdb.RigidBody3D
@@ -8129,12 +8129,12 @@ This is used to provide Godot with a flexible and powerful Inverse Kinematics so
 	// SkeletonModification2D methods that can be overridden by a [Class] that extends it.
 	type SkeletonModification2D interface {
 		//Executes the given modification. This is where the modification performs whatever function it is designed to do.
-		Execute(godot Context, delta gd.Float)
+		Execute(godot Lifetime, delta gd.Float)
 		//Called when the modification is setup. This is where the modification performs initialization.
-		SetupModification(godot Context, modification_stack SkeletonModificationStack2D)
+		SetupModification(godot Lifetime, modification_stack SkeletonModificationStack2D)
 		//Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
 		//[b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
-		DrawEditorGizmo(godot Context)
+		DrawEditorGizmo(godot Lifetime)
 	}
 */
 type SkeletonModification2D = classdb.SkeletonModification2D
@@ -8364,11 +8364,11 @@ type StreamPeerTLS = classdb.StreamPeerTLS
 
 	// StyleBox methods that can be overridden by a [Class] that extends it.
 	type StyleBox interface {
-		Draw(godot Context, to_canvas_item gd.RID, rect gd.Rect2)
-		GetDrawRect(godot Context, rect gd.Rect2) gd.Rect2
+		Draw(godot Lifetime, to_canvas_item gd.RID, rect gd.Rect2)
+		GetDrawRect(godot Lifetime, rect gd.Rect2) gd.Rect2
 		//Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
-		GetMinimumSize(godot Context) gd.Vector2
-		TestMask(godot Context, point gd.Vector2, rect gd.Rect2) bool
+		GetMinimumSize(godot Lifetime) gd.Vector2
+		TestMask(godot Lifetime, point gd.Vector2, rect gd.Rect2) bool
 	}
 */
 type StyleBox = classdb.StyleBox
@@ -8419,7 +8419,7 @@ A container that displays the contents of underlying [SubViewport] child nodes. 
 	// SubViewportContainer methods that can be overridden by a [Class] that extends it.
 	type SubViewportContainer interface {
 		//Virtual method to be implemented by the user. If it returns [code]true[/code], the [param event] is propagated to [SubViewport] children. Propagation doesn't happen if it returns [code]false[/code]. If the function is not implemented, all events are propagated to SubViewports.
-		PropagateInputEvent(godot Context, event InputEvent) bool
+		PropagateInputEvent(godot Lifetime, event InputEvent) bool
 	}
 */
 type SubViewportContainer = classdb.SubViewportContainer
@@ -8458,11 +8458,11 @@ Base class for syntax highlighters. Provides syntax highlighting data to a [Text
 	type SyntaxHighlighter interface {
 		//Virtual method which can be overridden to return syntax highlighting data.
 		//See [method get_line_syntax_highlighting] for more details.
-		GetLineSyntaxHighlighting(godot Context, line gd.Int) gd.Dictionary
+		GetLineSyntaxHighlighting(godot Lifetime, line gd.Int) gd.Dictionary
 		//Virtual method which can be overridden to clear any local caches.
-		ClearHighlightingCache(godot Context)
+		ClearHighlightingCache(godot Lifetime)
 		//Virtual method which can be overridden to update any local caches.
-		UpdateCache(godot Context)
+		UpdateCache(godot Lifetime)
 	}
 */
 type SyntaxHighlighter = classdb.SyntaxHighlighter
@@ -8519,18 +8519,18 @@ A multiline text editor. It also has limited facilities for editing code, such a
 	// TextEdit methods that can be overridden by a [Class] that extends it.
 	type TextEdit interface {
 		//Override this method to define what happens when the user types in the provided key [param unicode_char].
-		HandleUnicodeInput(godot Context, unicode_char gd.Int, caret_index gd.Int)
+		HandleUnicodeInput(godot Lifetime, unicode_char gd.Int, caret_index gd.Int)
 		//Override this method to define what happens when the user presses the backspace key.
-		Backspace(godot Context, caret_index gd.Int)
+		Backspace(godot Lifetime, caret_index gd.Int)
 		//Override this method to define what happens when the user performs a cut operation.
-		Cut(godot Context, caret_index gd.Int)
+		Cut(godot Lifetime, caret_index gd.Int)
 		//Override this method to define what happens when the user performs a copy operation.
-		Copy(godot Context, caret_index gd.Int)
+		Copy(godot Lifetime, caret_index gd.Int)
 		//Override this method to define what happens when the user performs a paste operation.
-		Paste(godot Context, caret_index gd.Int)
+		Paste(godot Lifetime, caret_index gd.Int)
 		//Override this method to define what happens when the user performs a paste operation with middle mouse button.
 		//[b]Note:[/b] This method is only implemented on Linux.
-		PastePrimaryClipboard(godot Context, caret_index gd.Int)
+		PastePrimaryClipboard(godot Lifetime, caret_index gd.Int)
 	}
 */
 type TextEdit = classdb.TextEdit
@@ -8586,217 +8586,217 @@ External [TextServer] implementations should inherit from this class.
 
 	// TextServerExtension methods that can be overridden by a [Class] that extends it.
 	type TextServerExtension interface {
-		HasFeature(godot Context, feature TextServerFeature) bool
-		GetName(godot Context) gd.String
-		GetFeatures(godot Context) gd.Int
-		FreeRid(godot Context, rid gd.RID)
-		Has(godot Context, rid gd.RID) bool
-		LoadSupportData(godot Context, filename gd.String) bool
-		GetSupportDataFilename(godot Context) gd.String
-		GetSupportDataInfo(godot Context) gd.String
-		SaveSupportData(godot Context, filename gd.String) bool
-		IsLocaleRightToLeft(godot Context, locale gd.String) bool
-		NameToTag(godot Context, name gd.String) gd.Int
-		TagToName(godot Context, tag gd.Int) gd.String
-		CreateFont(godot Context) gd.RID
-		CreateFontLinkedVariation(godot Context, font_rid gd.RID) gd.RID
-		FontSetData(godot Context, font_rid gd.RID, data gd.PackedByteArray)
-		FontSetDataPtr(godot Context, font_rid gd.RID, data_ptr unsafe.Pointer, data_size gd.Int)
-		FontSetFaceIndex(godot Context, font_rid gd.RID, face_index gd.Int)
-		FontGetFaceIndex(godot Context, font_rid gd.RID) gd.Int
-		FontGetFaceCount(godot Context, font_rid gd.RID) gd.Int
-		FontSetStyle(godot Context, font_rid gd.RID, style TextServerFontStyle)
-		FontGetStyle(godot Context, font_rid gd.RID) TextServerFontStyle
-		FontSetName(godot Context, font_rid gd.RID, name gd.String)
-		FontGetName(godot Context, font_rid gd.RID) gd.String
-		FontGetOtNameStrings(godot Context, font_rid gd.RID) gd.Dictionary
-		FontSetStyleName(godot Context, font_rid gd.RID, name_style gd.String)
-		FontGetStyleName(godot Context, font_rid gd.RID) gd.String
-		FontSetWeight(godot Context, font_rid gd.RID, weight gd.Int)
-		FontGetWeight(godot Context, font_rid gd.RID) gd.Int
-		FontSetStretch(godot Context, font_rid gd.RID, stretch gd.Int)
-		FontGetStretch(godot Context, font_rid gd.RID) gd.Int
-		FontSetAntialiasing(godot Context, font_rid gd.RID, antialiasing TextServerFontAntialiasing)
-		FontGetAntialiasing(godot Context, font_rid gd.RID) TextServerFontAntialiasing
-		FontSetGenerateMipmaps(godot Context, font_rid gd.RID, generate_mipmaps bool)
-		FontGetGenerateMipmaps(godot Context, font_rid gd.RID) bool
-		FontSetMultichannelSignedDistanceField(godot Context, font_rid gd.RID, msdf bool)
-		FontIsMultichannelSignedDistanceField(godot Context, font_rid gd.RID) bool
-		FontSetMsdfPixelRange(godot Context, font_rid gd.RID, msdf_pixel_range gd.Int)
-		FontGetMsdfPixelRange(godot Context, font_rid gd.RID) gd.Int
-		FontSetMsdfSize(godot Context, font_rid gd.RID, msdf_size gd.Int)
-		FontGetMsdfSize(godot Context, font_rid gd.RID) gd.Int
-		FontSetFixedSize(godot Context, font_rid gd.RID, fixed_size gd.Int)
-		FontGetFixedSize(godot Context, font_rid gd.RID) gd.Int
-		FontSetFixedSizeScaleMode(godot Context, font_rid gd.RID, fixed_size_scale_mode TextServerFixedSizeScaleMode)
-		FontGetFixedSizeScaleMode(godot Context, font_rid gd.RID) TextServerFixedSizeScaleMode
-		FontSetAllowSystemFallback(godot Context, font_rid gd.RID, allow_system_fallback bool)
-		FontIsAllowSystemFallback(godot Context, font_rid gd.RID) bool
-		FontSetForceAutohinter(godot Context, font_rid gd.RID, force_autohinter bool)
-		FontIsForceAutohinter(godot Context, font_rid gd.RID) bool
-		FontSetHinting(godot Context, font_rid gd.RID, hinting TextServerHinting)
-		FontGetHinting(godot Context, font_rid gd.RID) TextServerHinting
-		FontSetSubpixelPositioning(godot Context, font_rid gd.RID, subpixel_positioning TextServerSubpixelPositioning)
-		FontGetSubpixelPositioning(godot Context, font_rid gd.RID) TextServerSubpixelPositioning
-		FontSetEmbolden(godot Context, font_rid gd.RID, strength gd.Float)
-		FontGetEmbolden(godot Context, font_rid gd.RID) gd.Float
-		FontSetSpacing(godot Context, font_rid gd.RID, spacing TextServerSpacingType, value gd.Int)
-		FontGetSpacing(godot Context, font_rid gd.RID, spacing TextServerSpacingType) gd.Int
-		FontSetTransform(godot Context, font_rid gd.RID, transform gd.Transform2D)
-		FontGetTransform(godot Context, font_rid gd.RID) gd.Transform2D
-		FontSetVariationCoordinates(godot Context, font_rid gd.RID, variation_coordinates gd.Dictionary)
-		FontGetVariationCoordinates(godot Context, font_rid gd.RID) gd.Dictionary
-		FontSetOversampling(godot Context, font_rid gd.RID, oversampling gd.Float)
-		FontGetOversampling(godot Context, font_rid gd.RID) gd.Float
-		FontGetSizeCacheList(godot Context, font_rid gd.RID) gd.ArrayOf[gd.Vector2i]
-		FontClearSizeCache(godot Context, font_rid gd.RID)
-		FontRemoveSizeCache(godot Context, font_rid gd.RID, size gd.Vector2i)
-		FontSetAscent(godot Context, font_rid gd.RID, size gd.Int, ascent gd.Float)
-		FontGetAscent(godot Context, font_rid gd.RID, size gd.Int) gd.Float
-		FontSetDescent(godot Context, font_rid gd.RID, size gd.Int, descent gd.Float)
-		FontGetDescent(godot Context, font_rid gd.RID, size gd.Int) gd.Float
-		FontSetUnderlinePosition(godot Context, font_rid gd.RID, size gd.Int, underline_position gd.Float)
-		FontGetUnderlinePosition(godot Context, font_rid gd.RID, size gd.Int) gd.Float
-		FontSetUnderlineThickness(godot Context, font_rid gd.RID, size gd.Int, underline_thickness gd.Float)
-		FontGetUnderlineThickness(godot Context, font_rid gd.RID, size gd.Int) gd.Float
-		FontSetScale(godot Context, font_rid gd.RID, size gd.Int, scale gd.Float)
-		FontGetScale(godot Context, font_rid gd.RID, size gd.Int) gd.Float
-		FontGetTextureCount(godot Context, font_rid gd.RID, size gd.Vector2i) gd.Int
-		FontClearTextures(godot Context, font_rid gd.RID, size gd.Vector2i)
-		FontRemoveTexture(godot Context, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int)
-		FontSetTextureImage(godot Context, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, image Image)
-		FontGetTextureImage(godot Context, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) Image
-		FontSetTextureOffsets(godot Context, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset gd.PackedInt32Array)
-		FontGetTextureOffsets(godot Context, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) gd.PackedInt32Array
-		FontGetGlyphList(godot Context, font_rid gd.RID, size gd.Vector2i) gd.PackedInt32Array
-		FontClearGlyphs(godot Context, font_rid gd.RID, size gd.Vector2i)
-		FontRemoveGlyph(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int)
-		FontGetGlyphAdvance(godot Context, font_rid gd.RID, size gd.Int, glyph gd.Int) gd.Vector2
-		FontSetGlyphAdvance(godot Context, font_rid gd.RID, size gd.Int, glyph gd.Int, advance gd.Vector2)
-		FontGetGlyphOffset(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
-		FontSetGlyphOffset(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, offset gd.Vector2)
-		FontGetGlyphSize(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
-		FontSetGlyphSize(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, gl_size gd.Vector2)
-		FontGetGlyphUvRect(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Rect2
-		FontSetGlyphUvRect(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, uv_rect gd.Rect2)
-		FontGetGlyphTextureIdx(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Int
-		FontSetGlyphTextureIdx(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, texture_idx gd.Int)
-		FontGetGlyphTextureRid(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.RID
-		FontGetGlyphTextureSize(godot Context, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
-		FontGetGlyphContours(godot Context, font_rid gd.RID, size gd.Int, index gd.Int) gd.Dictionary
-		FontGetKerningList(godot Context, font_rid gd.RID, size gd.Int) gd.ArrayOf[gd.Vector2i]
-		FontClearKerningMap(godot Context, font_rid gd.RID, size gd.Int)
-		FontRemoveKerning(godot Context, font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i)
-		FontSetKerning(godot Context, font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i, kerning gd.Vector2)
-		FontGetKerning(godot Context, font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i) gd.Vector2
-		FontGetGlyphIndex(godot Context, font_rid gd.RID, size gd.Int, char gd.Int, variation_selector gd.Int) gd.Int
-		FontGetCharFromGlyphIndex(godot Context, font_rid gd.RID, size gd.Int, glyph_index gd.Int) gd.Int
-		FontHasChar(godot Context, font_rid gd.RID, char gd.Int) bool
-		FontGetSupportedChars(godot Context, font_rid gd.RID) gd.String
-		FontRenderRange(godot Context, font_rid gd.RID, size gd.Vector2i, start gd.Int, end gd.Int)
-		FontRenderGlyph(godot Context, font_rid gd.RID, size gd.Vector2i, index gd.Int)
-		FontDrawGlyph(godot Context, font_rid gd.RID, canvas gd.RID, size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
-		FontDrawGlyphOutline(godot Context, font_rid gd.RID, canvas gd.RID, size gd.Int, outline_size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
-		FontIsLanguageSupported(godot Context, font_rid gd.RID, language gd.String) bool
-		FontSetLanguageSupportOverride(godot Context, font_rid gd.RID, language gd.String, supported bool)
-		FontGetLanguageSupportOverride(godot Context, font_rid gd.RID, language gd.String) bool
-		FontRemoveLanguageSupportOverride(godot Context, font_rid gd.RID, language gd.String)
-		FontGetLanguageSupportOverrides(godot Context, font_rid gd.RID) gd.PackedStringArray
-		FontIsScriptSupported(godot Context, font_rid gd.RID, script gd.String) bool
-		FontSetScriptSupportOverride(godot Context, font_rid gd.RID, script gd.String, supported bool)
-		FontGetScriptSupportOverride(godot Context, font_rid gd.RID, script gd.String) bool
-		FontRemoveScriptSupportOverride(godot Context, font_rid gd.RID, script gd.String)
-		FontGetScriptSupportOverrides(godot Context, font_rid gd.RID) gd.PackedStringArray
-		FontSetOpentypeFeatureOverrides(godot Context, font_rid gd.RID, overrides gd.Dictionary)
-		FontGetOpentypeFeatureOverrides(godot Context, font_rid gd.RID) gd.Dictionary
-		FontSupportedFeatureList(godot Context, font_rid gd.RID) gd.Dictionary
-		FontSupportedVariationList(godot Context, font_rid gd.RID) gd.Dictionary
-		FontGetGlobalOversampling(godot Context) gd.Float
-		FontSetGlobalOversampling(godot Context, oversampling gd.Float)
-		GetHexCodeBoxSize(godot Context, size gd.Int, index gd.Int) gd.Vector2
-		DrawHexCodeBox(godot Context, canvas gd.RID, size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
-		CreateShapedText(godot Context, direction TextServerDirection, orientation TextServerOrientation) gd.RID
-		ShapedTextClear(godot Context, shaped gd.RID)
-		ShapedTextSetDirection(godot Context, shaped gd.RID, direction TextServerDirection)
-		ShapedTextGetDirection(godot Context, shaped gd.RID) TextServerDirection
-		ShapedTextGetInferredDirection(godot Context, shaped gd.RID) TextServerDirection
-		ShapedTextSetBidiOverride(godot Context, shaped gd.RID, override gd.Array)
-		ShapedTextSetCustomPunctuation(godot Context, shaped gd.RID, punct gd.String)
-		ShapedTextGetCustomPunctuation(godot Context, shaped gd.RID) gd.String
-		ShapedTextSetOrientation(godot Context, shaped gd.RID, orientation TextServerOrientation)
-		ShapedTextGetOrientation(godot Context, shaped gd.RID) TextServerOrientation
-		ShapedTextSetPreserveInvalid(godot Context, shaped gd.RID, enabled bool)
-		ShapedTextGetPreserveInvalid(godot Context, shaped gd.RID) bool
-		ShapedTextSetPreserveControl(godot Context, shaped gd.RID, enabled bool)
-		ShapedTextGetPreserveControl(godot Context, shaped gd.RID) bool
-		ShapedTextSetSpacing(godot Context, shaped gd.RID, spacing TextServerSpacingType, value gd.Int)
-		ShapedTextGetSpacing(godot Context, shaped gd.RID, spacing TextServerSpacingType) gd.Int
-		ShapedTextAddString(godot Context, shaped gd.RID, text gd.String, fonts gd.ArrayOf[gd.RID], size gd.Int, opentype_features gd.Dictionary, language gd.String, meta gd.Variant) bool
-		ShapedTextAddObject(godot Context, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, length gd.Int, baseline gd.Float) bool
-		ShapedTextResizeObject(godot Context, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, baseline gd.Float) bool
-		ShapedGetSpanCount(godot Context, shaped gd.RID) gd.Int
-		ShapedGetSpanMeta(godot Context, shaped gd.RID, index gd.Int) gd.Variant
-		ShapedSetSpanUpdateFont(godot Context, shaped gd.RID, index gd.Int, fonts gd.ArrayOf[gd.RID], size gd.Int, opentype_features gd.Dictionary)
-		ShapedTextSubstr(godot Context, shaped gd.RID, start gd.Int, length gd.Int) gd.RID
-		ShapedTextGetParent(godot Context, shaped gd.RID) gd.RID
-		ShapedTextFitToWidth(godot Context, shaped gd.RID, width gd.Float, justification_flags TextServerJustificationFlag) gd.Float
-		ShapedTextTabAlign(godot Context, shaped gd.RID, tab_stops gd.PackedFloat32Array) gd.Float
-		ShapedTextShape(godot Context, shaped gd.RID) bool
-		ShapedTextUpdateBreaks(godot Context, shaped gd.RID) bool
-		ShapedTextUpdateJustificationOps(godot Context, shaped gd.RID) bool
-		ShapedTextIsReady(godot Context, shaped gd.RID) bool
-		ShapedTextGetGlyphs(godot Context, shaped gd.RID) * Glyph
-		ShapedTextSortLogical(godot Context, shaped gd.RID) * Glyph
-		ShapedTextGetGlyphCount(godot Context, shaped gd.RID) gd.Int
-		ShapedTextGetRange(godot Context, shaped gd.RID) gd.Vector2i
-		ShapedTextGetLineBreaksAdv(godot Context, shaped gd.RID, width gd.PackedFloat32Array, start gd.Int, once bool, break_flags TextServerLineBreakFlag) gd.PackedInt32Array
-		ShapedTextGetLineBreaks(godot Context, shaped gd.RID, width gd.Float, start gd.Int, break_flags TextServerLineBreakFlag) gd.PackedInt32Array
-		ShapedTextGetWordBreaks(godot Context, shaped gd.RID, grapheme_flags TextServerGraphemeFlag) gd.PackedInt32Array
-		ShapedTextGetTrimPos(godot Context, shaped gd.RID) gd.Int
-		ShapedTextGetEllipsisPos(godot Context, shaped gd.RID) gd.Int
-		ShapedTextGetEllipsisGlyphCount(godot Context, shaped gd.RID) gd.Int
-		ShapedTextGetEllipsisGlyphs(godot Context, shaped gd.RID) * Glyph
-		ShapedTextOverrunTrimToWidth(godot Context, shaped gd.RID, width gd.Float, trim_flags TextServerTextOverrunFlag)
-		ShapedTextGetObjects(godot Context, shaped gd.RID) gd.Array
-		ShapedTextGetObjectRect(godot Context, shaped gd.RID, key gd.Variant) gd.Rect2
-		ShapedTextGetSize(godot Context, shaped gd.RID) gd.Vector2
-		ShapedTextGetAscent(godot Context, shaped gd.RID) gd.Float
-		ShapedTextGetDescent(godot Context, shaped gd.RID) gd.Float
-		ShapedTextGetWidth(godot Context, shaped gd.RID) gd.Float
-		ShapedTextGetUnderlinePosition(godot Context, shaped gd.RID) gd.Float
-		ShapedTextGetUnderlineThickness(godot Context, shaped gd.RID) gd.Float
-		ShapedTextGetDominantDirectionInRange(godot Context, shaped gd.RID, start gd.Int, end gd.Int) gd.Int
-		ShapedTextGetCarets(godot Context, shaped gd.RID, position gd.Int, caret *CaretInfo)
-		ShapedTextGetSelection(godot Context, shaped gd.RID, start gd.Int, end gd.Int) gd.PackedVector2Array
-		ShapedTextHitTestGrapheme(godot Context, shaped gd.RID, coord gd.Float) gd.Int
-		ShapedTextHitTestPosition(godot Context, shaped gd.RID, coord gd.Float) gd.Int
-		ShapedTextDraw(godot Context, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l gd.Float, clip_r gd.Float, color gd.Color)
-		ShapedTextDrawOutline(godot Context, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l gd.Float, clip_r gd.Float, outline_size gd.Int, color gd.Color)
-		ShapedTextGetGraphemeBounds(godot Context, shaped gd.RID, pos gd.Int) gd.Vector2
-		ShapedTextNextGraphemePos(godot Context, shaped gd.RID, pos gd.Int) gd.Int
-		ShapedTextPrevGraphemePos(godot Context, shaped gd.RID, pos gd.Int) gd.Int
-		ShapedTextGetCharacterBreaks(godot Context, shaped gd.RID) gd.PackedInt32Array
-		ShapedTextNextCharacterPos(godot Context, shaped gd.RID, pos gd.Int) gd.Int
-		ShapedTextPrevCharacterPos(godot Context, shaped gd.RID, pos gd.Int) gd.Int
-		ShapedTextClosestCharacterPos(godot Context, shaped gd.RID, pos gd.Int) gd.Int
-		FormatNumber(godot Context, s gd.String, language gd.String) gd.String
-		ParseNumber(godot Context, s gd.String, language gd.String) gd.String
-		PercentSign(godot Context, language gd.String) gd.String
-		StripDiacritics(godot Context, s gd.String) gd.String
-		IsValidIdentifier(godot Context, s gd.String) bool
-		StringGetWordBreaks(godot Context, s gd.String, language gd.String, chars_per_line gd.Int) gd.PackedInt32Array
-		StringGetCharacterBreaks(godot Context, s gd.String, language gd.String) gd.PackedInt32Array
-		IsConfusable(godot Context, s gd.String, dict gd.PackedStringArray) gd.Int
-		SpoofCheck(godot Context, s gd.String) bool
-		StringToUpper(godot Context, s gd.String, language gd.String) gd.String
-		StringToLower(godot Context, s gd.String, language gd.String) gd.String
-		ParseStructuredText(godot Context, parser_type TextServerStructuredTextParser, args gd.Array, text gd.String) gd.ArrayOf[gd.Vector3i]
-		Cleanup(godot Context)
+		HasFeature(godot Lifetime, feature TextServerFeature) bool
+		GetName(godot Lifetime) gd.String
+		GetFeatures(godot Lifetime) gd.Int
+		FreeRid(godot Lifetime, rid gd.RID)
+		Has(godot Lifetime, rid gd.RID) bool
+		LoadSupportData(godot Lifetime, filename gd.String) bool
+		GetSupportDataFilename(godot Lifetime) gd.String
+		GetSupportDataInfo(godot Lifetime) gd.String
+		SaveSupportData(godot Lifetime, filename gd.String) bool
+		IsLocaleRightToLeft(godot Lifetime, locale gd.String) bool
+		NameToTag(godot Lifetime, name gd.String) gd.Int
+		TagToName(godot Lifetime, tag gd.Int) gd.String
+		CreateFont(godot Lifetime) gd.RID
+		CreateFontLinkedVariation(godot Lifetime, font_rid gd.RID) gd.RID
+		FontSetData(godot Lifetime, font_rid gd.RID, data gd.PackedByteArray)
+		FontSetDataPtr(godot Lifetime, font_rid gd.RID, data_ptr unsafe.Pointer, data_size gd.Int)
+		FontSetFaceIndex(godot Lifetime, font_rid gd.RID, face_index gd.Int)
+		FontGetFaceIndex(godot Lifetime, font_rid gd.RID) gd.Int
+		FontGetFaceCount(godot Lifetime, font_rid gd.RID) gd.Int
+		FontSetStyle(godot Lifetime, font_rid gd.RID, style TextServerFontStyle)
+		FontGetStyle(godot Lifetime, font_rid gd.RID) TextServerFontStyle
+		FontSetName(godot Lifetime, font_rid gd.RID, name gd.String)
+		FontGetName(godot Lifetime, font_rid gd.RID) gd.String
+		FontGetOtNameStrings(godot Lifetime, font_rid gd.RID) gd.Dictionary
+		FontSetStyleName(godot Lifetime, font_rid gd.RID, name_style gd.String)
+		FontGetStyleName(godot Lifetime, font_rid gd.RID) gd.String
+		FontSetWeight(godot Lifetime, font_rid gd.RID, weight gd.Int)
+		FontGetWeight(godot Lifetime, font_rid gd.RID) gd.Int
+		FontSetStretch(godot Lifetime, font_rid gd.RID, stretch gd.Int)
+		FontGetStretch(godot Lifetime, font_rid gd.RID) gd.Int
+		FontSetAntialiasing(godot Lifetime, font_rid gd.RID, antialiasing TextServerFontAntialiasing)
+		FontGetAntialiasing(godot Lifetime, font_rid gd.RID) TextServerFontAntialiasing
+		FontSetGenerateMipmaps(godot Lifetime, font_rid gd.RID, generate_mipmaps bool)
+		FontGetGenerateMipmaps(godot Lifetime, font_rid gd.RID) bool
+		FontSetMultichannelSignedDistanceField(godot Lifetime, font_rid gd.RID, msdf bool)
+		FontIsMultichannelSignedDistanceField(godot Lifetime, font_rid gd.RID) bool
+		FontSetMsdfPixelRange(godot Lifetime, font_rid gd.RID, msdf_pixel_range gd.Int)
+		FontGetMsdfPixelRange(godot Lifetime, font_rid gd.RID) gd.Int
+		FontSetMsdfSize(godot Lifetime, font_rid gd.RID, msdf_size gd.Int)
+		FontGetMsdfSize(godot Lifetime, font_rid gd.RID) gd.Int
+		FontSetFixedSize(godot Lifetime, font_rid gd.RID, fixed_size gd.Int)
+		FontGetFixedSize(godot Lifetime, font_rid gd.RID) gd.Int
+		FontSetFixedSizeScaleMode(godot Lifetime, font_rid gd.RID, fixed_size_scale_mode TextServerFixedSizeScaleMode)
+		FontGetFixedSizeScaleMode(godot Lifetime, font_rid gd.RID) TextServerFixedSizeScaleMode
+		FontSetAllowSystemFallback(godot Lifetime, font_rid gd.RID, allow_system_fallback bool)
+		FontIsAllowSystemFallback(godot Lifetime, font_rid gd.RID) bool
+		FontSetForceAutohinter(godot Lifetime, font_rid gd.RID, force_autohinter bool)
+		FontIsForceAutohinter(godot Lifetime, font_rid gd.RID) bool
+		FontSetHinting(godot Lifetime, font_rid gd.RID, hinting TextServerHinting)
+		FontGetHinting(godot Lifetime, font_rid gd.RID) TextServerHinting
+		FontSetSubpixelPositioning(godot Lifetime, font_rid gd.RID, subpixel_positioning TextServerSubpixelPositioning)
+		FontGetSubpixelPositioning(godot Lifetime, font_rid gd.RID) TextServerSubpixelPositioning
+		FontSetEmbolden(godot Lifetime, font_rid gd.RID, strength gd.Float)
+		FontGetEmbolden(godot Lifetime, font_rid gd.RID) gd.Float
+		FontSetSpacing(godot Lifetime, font_rid gd.RID, spacing TextServerSpacingType, value gd.Int)
+		FontGetSpacing(godot Lifetime, font_rid gd.RID, spacing TextServerSpacingType) gd.Int
+		FontSetTransform(godot Lifetime, font_rid gd.RID, transform gd.Transform2D)
+		FontGetTransform(godot Lifetime, font_rid gd.RID) gd.Transform2D
+		FontSetVariationCoordinates(godot Lifetime, font_rid gd.RID, variation_coordinates gd.Dictionary)
+		FontGetVariationCoordinates(godot Lifetime, font_rid gd.RID) gd.Dictionary
+		FontSetOversampling(godot Lifetime, font_rid gd.RID, oversampling gd.Float)
+		FontGetOversampling(godot Lifetime, font_rid gd.RID) gd.Float
+		FontGetSizeCacheList(godot Lifetime, font_rid gd.RID) gd.ArrayOf[gd.Vector2i]
+		FontClearSizeCache(godot Lifetime, font_rid gd.RID)
+		FontRemoveSizeCache(godot Lifetime, font_rid gd.RID, size gd.Vector2i)
+		FontSetAscent(godot Lifetime, font_rid gd.RID, size gd.Int, ascent gd.Float)
+		FontGetAscent(godot Lifetime, font_rid gd.RID, size gd.Int) gd.Float
+		FontSetDescent(godot Lifetime, font_rid gd.RID, size gd.Int, descent gd.Float)
+		FontGetDescent(godot Lifetime, font_rid gd.RID, size gd.Int) gd.Float
+		FontSetUnderlinePosition(godot Lifetime, font_rid gd.RID, size gd.Int, underline_position gd.Float)
+		FontGetUnderlinePosition(godot Lifetime, font_rid gd.RID, size gd.Int) gd.Float
+		FontSetUnderlineThickness(godot Lifetime, font_rid gd.RID, size gd.Int, underline_thickness gd.Float)
+		FontGetUnderlineThickness(godot Lifetime, font_rid gd.RID, size gd.Int) gd.Float
+		FontSetScale(godot Lifetime, font_rid gd.RID, size gd.Int, scale gd.Float)
+		FontGetScale(godot Lifetime, font_rid gd.RID, size gd.Int) gd.Float
+		FontGetTextureCount(godot Lifetime, font_rid gd.RID, size gd.Vector2i) gd.Int
+		FontClearTextures(godot Lifetime, font_rid gd.RID, size gd.Vector2i)
+		FontRemoveTexture(godot Lifetime, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int)
+		FontSetTextureImage(godot Lifetime, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, image Image)
+		FontGetTextureImage(godot Lifetime, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) Image
+		FontSetTextureOffsets(godot Lifetime, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset gd.PackedInt32Array)
+		FontGetTextureOffsets(godot Lifetime, font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) gd.PackedInt32Array
+		FontGetGlyphList(godot Lifetime, font_rid gd.RID, size gd.Vector2i) gd.PackedInt32Array
+		FontClearGlyphs(godot Lifetime, font_rid gd.RID, size gd.Vector2i)
+		FontRemoveGlyph(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int)
+		FontGetGlyphAdvance(godot Lifetime, font_rid gd.RID, size gd.Int, glyph gd.Int) gd.Vector2
+		FontSetGlyphAdvance(godot Lifetime, font_rid gd.RID, size gd.Int, glyph gd.Int, advance gd.Vector2)
+		FontGetGlyphOffset(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
+		FontSetGlyphOffset(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, offset gd.Vector2)
+		FontGetGlyphSize(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
+		FontSetGlyphSize(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, gl_size gd.Vector2)
+		FontGetGlyphUvRect(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Rect2
+		FontSetGlyphUvRect(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, uv_rect gd.Rect2)
+		FontGetGlyphTextureIdx(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Int
+		FontSetGlyphTextureIdx(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int, texture_idx gd.Int)
+		FontGetGlyphTextureRid(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.RID
+		FontGetGlyphTextureSize(godot Lifetime, font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
+		FontGetGlyphContours(godot Lifetime, font_rid gd.RID, size gd.Int, index gd.Int) gd.Dictionary
+		FontGetKerningList(godot Lifetime, font_rid gd.RID, size gd.Int) gd.ArrayOf[gd.Vector2i]
+		FontClearKerningMap(godot Lifetime, font_rid gd.RID, size gd.Int)
+		FontRemoveKerning(godot Lifetime, font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i)
+		FontSetKerning(godot Lifetime, font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i, kerning gd.Vector2)
+		FontGetKerning(godot Lifetime, font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i) gd.Vector2
+		FontGetGlyphIndex(godot Lifetime, font_rid gd.RID, size gd.Int, char gd.Int, variation_selector gd.Int) gd.Int
+		FontGetCharFromGlyphIndex(godot Lifetime, font_rid gd.RID, size gd.Int, glyph_index gd.Int) gd.Int
+		FontHasChar(godot Lifetime, font_rid gd.RID, char gd.Int) bool
+		FontGetSupportedChars(godot Lifetime, font_rid gd.RID) gd.String
+		FontRenderRange(godot Lifetime, font_rid gd.RID, size gd.Vector2i, start gd.Int, end gd.Int)
+		FontRenderGlyph(godot Lifetime, font_rid gd.RID, size gd.Vector2i, index gd.Int)
+		FontDrawGlyph(godot Lifetime, font_rid gd.RID, canvas gd.RID, size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
+		FontDrawGlyphOutline(godot Lifetime, font_rid gd.RID, canvas gd.RID, size gd.Int, outline_size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
+		FontIsLanguageSupported(godot Lifetime, font_rid gd.RID, language gd.String) bool
+		FontSetLanguageSupportOverride(godot Lifetime, font_rid gd.RID, language gd.String, supported bool)
+		FontGetLanguageSupportOverride(godot Lifetime, font_rid gd.RID, language gd.String) bool
+		FontRemoveLanguageSupportOverride(godot Lifetime, font_rid gd.RID, language gd.String)
+		FontGetLanguageSupportOverrides(godot Lifetime, font_rid gd.RID) gd.PackedStringArray
+		FontIsScriptSupported(godot Lifetime, font_rid gd.RID, script gd.String) bool
+		FontSetScriptSupportOverride(godot Lifetime, font_rid gd.RID, script gd.String, supported bool)
+		FontGetScriptSupportOverride(godot Lifetime, font_rid gd.RID, script gd.String) bool
+		FontRemoveScriptSupportOverride(godot Lifetime, font_rid gd.RID, script gd.String)
+		FontGetScriptSupportOverrides(godot Lifetime, font_rid gd.RID) gd.PackedStringArray
+		FontSetOpentypeFeatureOverrides(godot Lifetime, font_rid gd.RID, overrides gd.Dictionary)
+		FontGetOpentypeFeatureOverrides(godot Lifetime, font_rid gd.RID) gd.Dictionary
+		FontSupportedFeatureList(godot Lifetime, font_rid gd.RID) gd.Dictionary
+		FontSupportedVariationList(godot Lifetime, font_rid gd.RID) gd.Dictionary
+		FontGetGlobalOversampling(godot Lifetime) gd.Float
+		FontSetGlobalOversampling(godot Lifetime, oversampling gd.Float)
+		GetHexCodeBoxSize(godot Lifetime, size gd.Int, index gd.Int) gd.Vector2
+		DrawHexCodeBox(godot Lifetime, canvas gd.RID, size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
+		CreateShapedText(godot Lifetime, direction TextServerDirection, orientation TextServerOrientation) gd.RID
+		ShapedTextClear(godot Lifetime, shaped gd.RID)
+		ShapedTextSetDirection(godot Lifetime, shaped gd.RID, direction TextServerDirection)
+		ShapedTextGetDirection(godot Lifetime, shaped gd.RID) TextServerDirection
+		ShapedTextGetInferredDirection(godot Lifetime, shaped gd.RID) TextServerDirection
+		ShapedTextSetBidiOverride(godot Lifetime, shaped gd.RID, override gd.Array)
+		ShapedTextSetCustomPunctuation(godot Lifetime, shaped gd.RID, punct gd.String)
+		ShapedTextGetCustomPunctuation(godot Lifetime, shaped gd.RID) gd.String
+		ShapedTextSetOrientation(godot Lifetime, shaped gd.RID, orientation TextServerOrientation)
+		ShapedTextGetOrientation(godot Lifetime, shaped gd.RID) TextServerOrientation
+		ShapedTextSetPreserveInvalid(godot Lifetime, shaped gd.RID, enabled bool)
+		ShapedTextGetPreserveInvalid(godot Lifetime, shaped gd.RID) bool
+		ShapedTextSetPreserveControl(godot Lifetime, shaped gd.RID, enabled bool)
+		ShapedTextGetPreserveControl(godot Lifetime, shaped gd.RID) bool
+		ShapedTextSetSpacing(godot Lifetime, shaped gd.RID, spacing TextServerSpacingType, value gd.Int)
+		ShapedTextGetSpacing(godot Lifetime, shaped gd.RID, spacing TextServerSpacingType) gd.Int
+		ShapedTextAddString(godot Lifetime, shaped gd.RID, text gd.String, fonts gd.ArrayOf[gd.RID], size gd.Int, opentype_features gd.Dictionary, language gd.String, meta gd.Variant) bool
+		ShapedTextAddObject(godot Lifetime, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, length gd.Int, baseline gd.Float) bool
+		ShapedTextResizeObject(godot Lifetime, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, baseline gd.Float) bool
+		ShapedGetSpanCount(godot Lifetime, shaped gd.RID) gd.Int
+		ShapedGetSpanMeta(godot Lifetime, shaped gd.RID, index gd.Int) gd.Variant
+		ShapedSetSpanUpdateFont(godot Lifetime, shaped gd.RID, index gd.Int, fonts gd.ArrayOf[gd.RID], size gd.Int, opentype_features gd.Dictionary)
+		ShapedTextSubstr(godot Lifetime, shaped gd.RID, start gd.Int, length gd.Int) gd.RID
+		ShapedTextGetParent(godot Lifetime, shaped gd.RID) gd.RID
+		ShapedTextFitToWidth(godot Lifetime, shaped gd.RID, width gd.Float, justification_flags TextServerJustificationFlag) gd.Float
+		ShapedTextTabAlign(godot Lifetime, shaped gd.RID, tab_stops gd.PackedFloat32Array) gd.Float
+		ShapedTextShape(godot Lifetime, shaped gd.RID) bool
+		ShapedTextUpdateBreaks(godot Lifetime, shaped gd.RID) bool
+		ShapedTextUpdateJustificationOps(godot Lifetime, shaped gd.RID) bool
+		ShapedTextIsReady(godot Lifetime, shaped gd.RID) bool
+		ShapedTextGetGlyphs(godot Lifetime, shaped gd.RID) * Glyph
+		ShapedTextSortLogical(godot Lifetime, shaped gd.RID) * Glyph
+		ShapedTextGetGlyphCount(godot Lifetime, shaped gd.RID) gd.Int
+		ShapedTextGetRange(godot Lifetime, shaped gd.RID) gd.Vector2i
+		ShapedTextGetLineBreaksAdv(godot Lifetime, shaped gd.RID, width gd.PackedFloat32Array, start gd.Int, once bool, break_flags TextServerLineBreakFlag) gd.PackedInt32Array
+		ShapedTextGetLineBreaks(godot Lifetime, shaped gd.RID, width gd.Float, start gd.Int, break_flags TextServerLineBreakFlag) gd.PackedInt32Array
+		ShapedTextGetWordBreaks(godot Lifetime, shaped gd.RID, grapheme_flags TextServerGraphemeFlag) gd.PackedInt32Array
+		ShapedTextGetTrimPos(godot Lifetime, shaped gd.RID) gd.Int
+		ShapedTextGetEllipsisPos(godot Lifetime, shaped gd.RID) gd.Int
+		ShapedTextGetEllipsisGlyphCount(godot Lifetime, shaped gd.RID) gd.Int
+		ShapedTextGetEllipsisGlyphs(godot Lifetime, shaped gd.RID) * Glyph
+		ShapedTextOverrunTrimToWidth(godot Lifetime, shaped gd.RID, width gd.Float, trim_flags TextServerTextOverrunFlag)
+		ShapedTextGetObjects(godot Lifetime, shaped gd.RID) gd.Array
+		ShapedTextGetObjectRect(godot Lifetime, shaped gd.RID, key gd.Variant) gd.Rect2
+		ShapedTextGetSize(godot Lifetime, shaped gd.RID) gd.Vector2
+		ShapedTextGetAscent(godot Lifetime, shaped gd.RID) gd.Float
+		ShapedTextGetDescent(godot Lifetime, shaped gd.RID) gd.Float
+		ShapedTextGetWidth(godot Lifetime, shaped gd.RID) gd.Float
+		ShapedTextGetUnderlinePosition(godot Lifetime, shaped gd.RID) gd.Float
+		ShapedTextGetUnderlineThickness(godot Lifetime, shaped gd.RID) gd.Float
+		ShapedTextGetDominantDirectionInRange(godot Lifetime, shaped gd.RID, start gd.Int, end gd.Int) gd.Int
+		ShapedTextGetCarets(godot Lifetime, shaped gd.RID, position gd.Int, caret *CaretInfo)
+		ShapedTextGetSelection(godot Lifetime, shaped gd.RID, start gd.Int, end gd.Int) gd.PackedVector2Array
+		ShapedTextHitTestGrapheme(godot Lifetime, shaped gd.RID, coord gd.Float) gd.Int
+		ShapedTextHitTestPosition(godot Lifetime, shaped gd.RID, coord gd.Float) gd.Int
+		ShapedTextDraw(godot Lifetime, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l gd.Float, clip_r gd.Float, color gd.Color)
+		ShapedTextDrawOutline(godot Lifetime, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l gd.Float, clip_r gd.Float, outline_size gd.Int, color gd.Color)
+		ShapedTextGetGraphemeBounds(godot Lifetime, shaped gd.RID, pos gd.Int) gd.Vector2
+		ShapedTextNextGraphemePos(godot Lifetime, shaped gd.RID, pos gd.Int) gd.Int
+		ShapedTextPrevGraphemePos(godot Lifetime, shaped gd.RID, pos gd.Int) gd.Int
+		ShapedTextGetCharacterBreaks(godot Lifetime, shaped gd.RID) gd.PackedInt32Array
+		ShapedTextNextCharacterPos(godot Lifetime, shaped gd.RID, pos gd.Int) gd.Int
+		ShapedTextPrevCharacterPos(godot Lifetime, shaped gd.RID, pos gd.Int) gd.Int
+		ShapedTextClosestCharacterPos(godot Lifetime, shaped gd.RID, pos gd.Int) gd.Int
+		FormatNumber(godot Lifetime, s gd.String, language gd.String) gd.String
+		ParseNumber(godot Lifetime, s gd.String, language gd.String) gd.String
+		PercentSign(godot Lifetime, language gd.String) gd.String
+		StripDiacritics(godot Lifetime, s gd.String) gd.String
+		IsValidIdentifier(godot Lifetime, s gd.String) bool
+		StringGetWordBreaks(godot Lifetime, s gd.String, language gd.String, chars_per_line gd.Int) gd.PackedInt32Array
+		StringGetCharacterBreaks(godot Lifetime, s gd.String, language gd.String) gd.PackedInt32Array
+		IsConfusable(godot Lifetime, s gd.String, dict gd.PackedStringArray) gd.Int
+		SpoofCheck(godot Lifetime, s gd.String) bool
+		StringToUpper(godot Lifetime, s gd.String, language gd.String) gd.String
+		StringToLower(godot Lifetime, s gd.String, language gd.String) gd.String
+		ParseStructuredText(godot Lifetime, parser_type TextServerStructuredTextParser, args gd.Array, text gd.String) gd.ArrayOf[gd.Vector3i]
+		Cleanup(godot Lifetime)
 	}
 */
 type TextServerExtension = classdb.TextServerExtension
 
-func TextServerManager(godot Context) classdb.TextServerManager {
+func TextServerManager(godot Lifetime) classdb.TextServerManager {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.TextServerManager)
 	return *(*classdb.TextServerManager)(unsafe.Pointer(&obj))
 }
@@ -8815,22 +8815,22 @@ Textures are often created by loading them from a file. See [method @GDScript.lo
 	// Texture2D methods that can be overridden by a [Class] that extends it.
 	type Texture2D interface {
 		//Called when the [Texture2D]'s width is queried.
-		GetWidth(godot Context) gd.Int
+		GetWidth(godot Lifetime) gd.Int
 		//Called when the [Texture2D]'s height is queried.
-		GetHeight(godot Context) gd.Int
+		GetHeight(godot Lifetime) gd.Int
 		//Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
-		IsPixelOpaque(godot Context, x gd.Int, y gd.Int) bool
+		IsPixelOpaque(godot Lifetime, x gd.Int, y gd.Int) bool
 		//Called when the presence of an alpha channel in the [Texture2D] is queried.
-		HasAlpha(godot Context) bool
+		HasAlpha(godot Lifetime) bool
 		//Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 		//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-		Draw(godot Context, to_canvas_item gd.RID, pos gd.Vector2, modulate gd.Color, transpose bool)
+		Draw(godot Lifetime, to_canvas_item gd.RID, pos gd.Vector2, modulate gd.Color, transpose bool)
 		//Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 		//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-		DrawRect(godot Context, to_canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool)
+		DrawRect(godot Lifetime, to_canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool)
 		//Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 		//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-		DrawRectRegion(godot Context, to_canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool)
+		DrawRectRegion(godot Lifetime, to_canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool)
 	}
 */
 type Texture2D = classdb.Texture2D
@@ -8860,17 +8860,17 @@ To create such a texture file yourself, reimport your image files using the Godo
 	// Texture3D methods that can be overridden by a [Class] that extends it.
 	type Texture3D interface {
 		//Called when the [Texture3D]'s format is queried.
-		GetFormat(godot Context) ImageFormat
+		GetFormat(godot Lifetime) ImageFormat
 		//Called when the [Texture3D]'s width is queried.
-		GetWidth(godot Context) gd.Int
+		GetWidth(godot Lifetime) gd.Int
 		//Called when the [Texture3D]'s height is queried.
-		GetHeight(godot Context) gd.Int
+		GetHeight(godot Lifetime) gd.Int
 		//Called when the [Texture3D]'s depth is queried.
-		GetDepth(godot Context) gd.Int
+		GetDepth(godot Lifetime) gd.Int
 		//Called when the presence of mipmaps in the [Texture3D] is queried.
-		HasMipmaps(godot Context) bool
+		HasMipmaps(godot Lifetime) bool
 		//Called when the [Texture3D]'s data is queried.
-		GetData(godot Context) gd.ArrayOf[Image]
+		GetData(godot Lifetime) gd.ArrayOf[Image]
 	}
 */
 type Texture3D = classdb.Texture3D
@@ -8907,19 +8907,19 @@ Internally, Godot maps these files to their respective counterparts in the targe
 	// TextureLayered methods that can be overridden by a [Class] that extends it.
 	type TextureLayered interface {
 		//Called when the [TextureLayered]'s format is queried.
-		GetFormat(godot Context) ImageFormat
+		GetFormat(godot Lifetime) ImageFormat
 		//Called when the layers' type in the [TextureLayered] is queried.
-		GetLayeredType(godot Context) gd.Int
+		GetLayeredType(godot Lifetime) gd.Int
 		//Called when the [TextureLayered]'s width queried.
-		GetWidth(godot Context) gd.Int
+		GetWidth(godot Lifetime) gd.Int
 		//Called when the [TextureLayered]'s height is queried.
-		GetHeight(godot Context) gd.Int
+		GetHeight(godot Lifetime) gd.Int
 		//Called when the number of layers in the [TextureLayered] is queried.
-		GetLayers(godot Context) gd.Int
+		GetLayers(godot Lifetime) gd.Int
 		//Called when the presence of mipmaps in the [TextureLayered] is queried.
-		HasMipmaps(godot Context) bool
+		HasMipmaps(godot Lifetime) bool
 		//Called when the data for a layer in the [TextureLayered] is queried.
-		GetLayerData(godot Context, layer_index gd.Int) Image
+		GetLayerData(godot Lifetime, layer_index gd.Int) Image
 	}
 */
 type TextureLayered = classdb.TextureLayered
@@ -8946,7 +8946,7 @@ Use [member Control.theme] of any control node to set up a theme that will be av
 */
 type Theme = classdb.Theme
 
-func ThemeDB(godot Context) classdb.ThemeDB {
+func ThemeDB(godot Lifetime) classdb.ThemeDB {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.ThemeDB)
 	return *(*classdb.ThemeDB)(unsafe.Pointer(&obj))
 }
@@ -8976,12 +8976,12 @@ To force an update earlier on, call [method update_internals].
 		//Should return [code]true[/code] if the tile at coordinates [param coords] on layer [param layer] requires a runtime update.
 		//[b]Warning:[/b] Make sure this function only return [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
 		//[b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-		UseTileDataRuntimeUpdate(godot Context, layer gd.Int, coords gd.Vector2i) bool
+		UseTileDataRuntimeUpdate(godot Lifetime, layer gd.Int, coords gd.Vector2i) bool
 		//Called with a TileData object about to be used internally by the TileMap, allowing its modification at runtime.
 		//This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords] and [param layer].
 		//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
 		//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-		TileDataRuntimeUpdate(godot Context, layer gd.Int, coords gd.Vector2i, tile_data TileData)
+		TileDataRuntimeUpdate(godot Lifetime, layer gd.Int, coords gd.Vector2i, tile_data TileData)
 	}
 */
 type TileMap = classdb.TileMap
@@ -9026,7 +9026,7 @@ You can iterate over all tiles exposed by a TileSetSource by first iterating ove
 */
 type TileSetSource = classdb.TileSetSource
 
-func Time(godot Context) classdb.Time {
+func Time(godot Lifetime) classdb.Time {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.Time)
 	return *(*classdb.Time)(unsafe.Pointer(&obj))
 }
@@ -9056,14 +9056,14 @@ type TouchScreenButton = classdb.TouchScreenButton
 	// Translation methods that can be overridden by a [Class] that extends it.
 	type Translation interface {
 		//Virtual method to override [method get_plural_message].
-		GetPluralMessage(godot Context, src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName
+		GetPluralMessage(godot Lifetime, src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName
 		//Virtual method to override [method get_message].
-		GetMessage(godot Context, src_message gd.StringName, context gd.StringName) gd.StringName
+		GetMessage(godot Lifetime, src_message gd.StringName, context gd.StringName) gd.StringName
 	}
 */
 type Translation = classdb.Translation
 
-func TranslationServer(godot Context) classdb.TranslationServer {
+func TranslationServer(godot Lifetime) classdb.TranslationServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.TranslationServer)
 	return *(*classdb.TranslationServer)(unsafe.Pointer(&obj))
 }
@@ -9567,7 +9567,7 @@ Base resource type for all video streams. Classes that derive from [VideoStream]
 	// VideoStream methods that can be overridden by a [Class] that extends it.
 	type VideoStream interface {
 		//Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
-		InstantiatePlayback(godot Context) VideoStreamPlayback
+		InstantiatePlayback(godot Lifetime) VideoStreamPlayback
 	}
 */
 type VideoStream = classdb.VideoStream
@@ -9578,31 +9578,31 @@ This class is intended to be overridden by video decoder extensions with custom 
 	// VideoStreamPlayback methods that can be overridden by a [Class] that extends it.
 	type VideoStreamPlayback interface {
 		//Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
-		Stop(godot Context)
+		Stop(godot Lifetime)
 		//Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return true once playing.
-		Play(godot Context)
+		Play(godot Lifetime)
 		//Returns the playback state, as determined by calls to [method _play] and [method _stop].
-		IsPlaying(godot Context) bool
+		IsPlaying(godot Lifetime) bool
 		//Set the paused status of video playback. [method _is_paused] must return [param paused]. Called in response to the [member VideoStreamPlayer.paused] setter.
-		SetPaused(godot Context, paused bool)
+		SetPaused(godot Lifetime, paused bool)
 		//Returns the paused status, as set by [method _set_paused].
-		IsPaused(godot Context) bool
+		IsPaused(godot Lifetime) bool
 		//Returns the video duration in seconds, if known, or 0 if unknown.
-		GetLength(godot Context) gd.Float
+		GetLength(godot Lifetime) gd.Float
 		//Return the current playback timestamp. Called in response to the [member VideoStreamPlayer.stream_position] getter.
-		GetPlaybackPosition(godot Context) gd.Float
+		GetPlaybackPosition(godot Lifetime) gd.Float
 		//Seeks to [param time] seconds. Called in response to the [member VideoStreamPlayer.stream_position] setter.
-		Seek(godot Context, time gd.Float)
+		Seek(godot Lifetime, time gd.Float)
 		//Select the audio track [param idx]. Called when playback starts, and in response to the [member VideoStreamPlayer.audio_track] setter.
-		SetAudioTrack(godot Context, idx gd.Int)
+		SetAudioTrack(godot Lifetime, idx gd.Int)
 		//Allocates a [Texture2D] in which decoded video frames will be drawn.
-		GetTexture(godot Context) Texture2D
+		GetTexture(godot Lifetime) Texture2D
 		//Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
-		Update(godot Context, delta gd.Float)
+		Update(godot Lifetime, delta gd.Float)
 		//Returns the number of audio channels.
-		GetChannels(godot Context) gd.Int
+		GetChannels(godot Lifetime) gd.Int
 		//Returns the audio sample rate used for mixing.
-		GetMixRate(godot Context) gd.Int
+		GetMixRate(godot Lifetime) gd.Int
 	}
 */
 type VideoStreamPlayback = classdb.VideoStreamPlayback
@@ -9669,7 +9669,7 @@ The [VisualInstance3D] is used to connect a resource to a visual representation.
 
 	// VisualInstance3D methods that can be overridden by a [Class] that extends it.
 	type VisualInstance3D interface {
-		GetAabb(godot Context) gd.AABB
+		GetAabb(godot Lifetime) gd.AABB
 	}
 */
 type VisualInstance3D = classdb.VisualInstance3D
@@ -9774,74 +9774,74 @@ class_name VisualShaderNodeNoise
 	type VisualShaderNodeCustom interface {
 		//Override this method to define the name of the associated custom node in the Visual Shader Editor's members dialog and graph.
 		//Defining this method is [b]optional[/b], but recommended. If not overridden, the node will be named as "Unnamed".
-		GetName(godot Context) gd.String
+		GetName(godot Lifetime) gd.String
 		//Override this method to define the description of the associated custom node in the Visual Shader Editor's members dialog.
 		//Defining this method is [b]optional[/b].
-		GetDescription(godot Context) gd.String
+		GetDescription(godot Lifetime) gd.String
 		//Override this method to define the path to the associated custom node in the Visual Shader Editor's members dialog. The path may look like [code]"MyGame/MyFunctions/Noise"[/code].
 		//Defining this method is [b]optional[/b]. If not overridden, the node will be filed under the "Addons" category.
-		GetCategory(godot Context) gd.String
+		GetCategory(godot Lifetime) gd.String
 		//Override this method to define the return icon of the associated custom node in the Visual Shader Editor's members dialog.
 		//Defining this method is [b]optional[/b]. If not overridden, no return icon is shown.
-		GetReturnIconType(godot Context) VisualShaderNodePortType
+		GetReturnIconType(godot Lifetime) VisualShaderNodePortType
 		//Override this method to define the number of input ports of the associated custom node.
 		//Defining this method is [b]required[/b]. If not overridden, the node has no input ports.
-		GetInputPortCount(godot Context) gd.Int
+		GetInputPortCount(godot Lifetime) gd.Int
 		//Override this method to define the returned type of each input port of the associated custom node (see [enum VisualShaderNode.PortType] for possible types).
 		//Defining this method is [b]optional[/b], but recommended. If not overridden, input ports will return the [constant VisualShaderNode.PORT_TYPE_SCALAR] type.
-		GetInputPortType(godot Context, port gd.Int) VisualShaderNodePortType
+		GetInputPortType(godot Lifetime, port gd.Int) VisualShaderNodePortType
 		//Override this method to define the names of input ports of the associated custom node. The names are used both for the input slots in the editor and as identifiers in the shader code, and are passed in the [code]input_vars[/code] array in [method _get_code].
 		//Defining this method is [b]optional[/b], but recommended. If not overridden, input ports are named as [code]"in" + str(port)[/code].
-		GetInputPortName(godot Context, port gd.Int) gd.String
+		GetInputPortName(godot Lifetime, port gd.Int) gd.String
 		//Override this method to define the default value for the specified input port. Prefer use this over [method VisualShaderNode.set_input_port_default_value].
 		//Defining this method is [b]required[/b]. If not overridden, the node has no default values for their input ports.
-		GetInputPortDefaultValue(godot Context, port gd.Int) gd.Variant
+		GetInputPortDefaultValue(godot Lifetime, port gd.Int) gd.Variant
 		//Override this method to define the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
 		//Defining this method is [b]optional[/b]. If not overridden, the connection will be created to the first valid port.
-		GetDefaultInputPort(godot Context, atype VisualShaderNodePortType) gd.Int
+		GetDefaultInputPort(godot Lifetime, atype VisualShaderNodePortType) gd.Int
 		//Override this method to define the number of output ports of the associated custom node.
 		//Defining this method is [b]required[/b]. If not overridden, the node has no output ports.
-		GetOutputPortCount(godot Context) gd.Int
+		GetOutputPortCount(godot Lifetime) gd.Int
 		//Override this method to define the returned type of each output port of the associated custom node (see [enum VisualShaderNode.PortType] for possible types).
 		//Defining this method is [b]optional[/b], but recommended. If not overridden, output ports will return the [constant VisualShaderNode.PORT_TYPE_SCALAR] type.
-		GetOutputPortType(godot Context, port gd.Int) VisualShaderNodePortType
+		GetOutputPortType(godot Lifetime, port gd.Int) VisualShaderNodePortType
 		//Override this method to define the names of output ports of the associated custom node. The names are used both for the output slots in the editor and as identifiers in the shader code, and are passed in the [code]output_vars[/code] array in [method _get_code].
 		//Defining this method is [b]optional[/b], but recommended. If not overridden, output ports are named as [code]"out" + str(port)[/code].
-		GetOutputPortName(godot Context, port gd.Int) gd.String
+		GetOutputPortName(godot Lifetime, port gd.Int) gd.String
 		//Override this method to define the number of the properties.
 		//Defining this method is [b]optional[/b].
-		GetPropertyCount(godot Context) gd.Int
+		GetPropertyCount(godot Lifetime) gd.Int
 		//Override this method to define the names of the property of the associated custom node.
 		//Defining this method is [b]optional[/b].
-		GetPropertyName(godot Context, index gd.Int) gd.String
+		GetPropertyName(godot Lifetime, index gd.Int) gd.String
 		//Override this method to define the default index of the property of the associated custom node.
 		//Defining this method is [b]optional[/b].
-		GetPropertyDefaultIndex(godot Context, index gd.Int) gd.Int
+		GetPropertyDefaultIndex(godot Lifetime, index gd.Int) gd.Int
 		//Override this method to define the options inside the drop-down list property of the associated custom node.
 		//Defining this method is [b]optional[/b].
-		GetPropertyOptions(godot Context, index gd.Int) gd.PackedStringArray
+		GetPropertyOptions(godot Lifetime, index gd.Int) gd.PackedStringArray
 		//Override this method to define the actual shader code of the associated custom node. The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
 		//The [param input_vars] and [param output_vars] arrays contain the string names of the various input and output variables, as defined by [code]_get_input_*[/code] and [code]_get_output_*[/code] virtual methods in this class.
 		//The output ports can be assigned values in the shader code. For example, [code]return output_vars[0] + " = " + input_vars[0] + ";"[/code].
 		//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 		//Defining this method is [b]required[/b].
-		GetCode(godot Context, input_vars gd.ArrayOf[gd.String], output_vars gd.ArrayOf[gd.String], mode ShaderMode, atype VisualShaderType) gd.String
+		GetCode(godot Lifetime, input_vars gd.ArrayOf[gd.String], output_vars gd.ArrayOf[gd.String], mode ShaderMode, atype VisualShaderType) gd.String
 		//Override this method to add a shader code to the beginning of each shader function (once). The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
 		//If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
 		//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 		//Defining this method is [b]optional[/b].
-		GetFuncCode(godot Context, mode ShaderMode, atype VisualShaderType) gd.String
+		GetFuncCode(godot Lifetime, mode ShaderMode, atype VisualShaderType) gd.String
 		//Override this method to add shader code on top of the global shader, to define your own standard library of reusable methods, varyings, constants, uniforms, etc. The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
 		//Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
 		//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]).
 		//Defining this method is [b]optional[/b].
-		GetGlobalCode(godot Context, mode ShaderMode) gd.String
+		GetGlobalCode(godot Lifetime, mode ShaderMode) gd.String
 		//Override this method to enable high-end mark in the Visual Shader Editor's members dialog.
 		//Defining this method is [b]optional[/b]. If not overridden, it's [code]false[/code].
-		IsHighend(godot Context) bool
+		IsHighend(godot Lifetime) bool
 		//Override this method to prevent the node to be visible in the member dialog for the certain [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 		//Defining this method is [b]optional[/b]. If not overridden, it's [code]true[/code].
-		IsAvailable(godot Context, mode ShaderMode, atype VisualShaderType) bool
+		IsAvailable(godot Lifetime, mode ShaderMode, atype VisualShaderType) bool
 	}
 */
 type VisualShaderNodeCustom = classdb.VisualShaderNodeCustom
@@ -10495,12 +10495,12 @@ At runtime, [Window]s will not close automatically when requested. You need to h
 	// Window methods that can be overridden by a [Class] that extends it.
 	type Window interface {
 		//Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
-		GetContentsMinimumSize(godot Context) gd.Vector2
+		GetContentsMinimumSize(godot Lifetime) gd.Vector2
 	}
 */
 type Window = classdb.Window
 
-func WorkerThreadPool(godot Context) classdb.WorkerThreadPool {
+func WorkerThreadPool(godot Lifetime) classdb.WorkerThreadPool {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.WorkerThreadPool)
 	return *(*classdb.WorkerThreadPool)(unsafe.Pointer(&obj))
 }
@@ -10612,66 +10612,66 @@ External XR interface plugins should inherit from this class.
 	// XRInterfaceExtension methods that can be overridden by a [Class] that extends it.
 	type XRInterfaceExtension interface {
 		//Returns the name of this interface.
-		GetName(godot Context) gd.StringName
+		GetName(godot Lifetime) gd.StringName
 		//Returns the capabilities of this interface.
-		GetCapabilities(godot Context) gd.Int
+		GetCapabilities(godot Lifetime) gd.Int
 		//Returns [code]true[/code] if this interface has been initialized.
-		IsInitialized(godot Context) bool
+		IsInitialized(godot Lifetime) bool
 		//Initializes the interface, returns [code]true[/code] on success.
-		Initialize(godot Context) bool
+		Initialize(godot Lifetime) bool
 		//Uninitialize the interface.
-		Uninitialize(godot Context)
+		Uninitialize(godot Lifetime)
 		//Returns a [Dictionary] with system information related to this interface.
-		GetSystemInfo(godot Context) gd.Dictionary
+		GetSystemInfo(godot Lifetime) gd.Dictionary
 		//Returns [code]true[/code] if this interface supports this play area mode.
-		SupportsPlayAreaMode(godot Context, mode XRInterfacePlayAreaMode) bool
+		SupportsPlayAreaMode(godot Lifetime, mode XRInterfacePlayAreaMode) bool
 		//Returns the [enum XRInterface.PlayAreaMode] that sets up our play area.
-		GetPlayAreaMode(godot Context) XRInterfacePlayAreaMode
+		GetPlayAreaMode(godot Lifetime) XRInterfacePlayAreaMode
 		//Set the play area mode for this interface.
-		SetPlayAreaMode(godot Context, mode XRInterfacePlayAreaMode) bool
+		SetPlayAreaMode(godot Lifetime, mode XRInterfacePlayAreaMode) bool
 		//Returns an [PackedVector3Array] that denotes the play areas boundaries (if applicable).
-		GetPlayArea(godot Context) gd.PackedVector3Array
+		GetPlayArea(godot Lifetime) gd.PackedVector3Array
 		//Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
-		GetRenderTargetSize(godot Context) gd.Vector2
+		GetRenderTargetSize(godot Lifetime) gd.Vector2
 		//Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
-		GetViewCount(godot Context) gd.Int
+		GetViewCount(godot Lifetime) gd.Int
 		//Returns the [Transform3D] that positions the [XRCamera3D] in the world.
-		GetCameraTransform(godot Context) gd.Transform3D
+		GetCameraTransform(godot Lifetime) gd.Transform3D
 		//Returns a [Transform3D] for a given view.
-		GetTransformForView(godot Context, view gd.Int, cam_transform gd.Transform3D) gd.Transform3D
+		GetTransformForView(godot Lifetime, view gd.Int, cam_transform gd.Transform3D) gd.Transform3D
 		//Returns the projection matrix for the given view as a [PackedFloat64Array].
-		GetProjectionForView(godot Context, view gd.Int, aspect gd.Float, z_near gd.Float, z_far gd.Float) gd.PackedFloat64Array
-		GetVrsTexture(godot Context) gd.RID
+		GetProjectionForView(godot Lifetime, view gd.Int, aspect gd.Float, z_near gd.Float, z_far gd.Float) gd.PackedFloat64Array
+		GetVrsTexture(godot Lifetime) gd.RID
 		//Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
-		Process(godot Context)
+		Process(godot Lifetime)
 		//Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
-		PreRender(godot Context)
+		PreRender(godot Lifetime)
 		//Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
-		PreDrawViewport(godot Context, render_target gd.RID) bool
+		PreDrawViewport(godot Lifetime, render_target gd.RID) bool
 		//Called after the XR [Viewport] draw logic has completed.
-		PostDrawViewport(godot Context, render_target gd.RID, screen_rect gd.Rect2)
+		PostDrawViewport(godot Lifetime, render_target gd.RID, screen_rect gd.Rect2)
 		//Called if interface is active and queues have been submitted.
-		EndFrame(godot Context)
+		EndFrame(godot Lifetime)
 		//Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
-		GetSuggestedTrackerNames(godot Context) gd.PackedStringArray
+		GetSuggestedTrackerNames(godot Lifetime) gd.PackedStringArray
 		//Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
-		GetSuggestedPoseNames(godot Context, tracker_name gd.StringName) gd.PackedStringArray
+		GetSuggestedPoseNames(godot Lifetime, tracker_name gd.StringName) gd.PackedStringArray
 		//Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
-		GetTrackingStatus(godot Context) XRInterfaceTrackingStatus
+		GetTrackingStatus(godot Lifetime) XRInterfaceTrackingStatus
 		//Triggers a haptic pulse to be emitted on the specified tracker.
-		TriggerHapticPulse(godot Context, action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)
+		TriggerHapticPulse(godot Lifetime, action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)
 		//Return [code]true[/code] if anchor detection is enabled for this interface.
-		GetAnchorDetectionIsEnabled(godot Context) bool
+		GetAnchorDetectionIsEnabled(godot Lifetime) bool
 		//Enables anchor detection on this interface if supported.
-		SetAnchorDetectionIsEnabled(godot Context, enabled bool)
+		SetAnchorDetectionIsEnabled(godot Lifetime, enabled bool)
 		//Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
-		GetCameraFeedId(godot Context) gd.Int
+		GetCameraFeedId(godot Lifetime) gd.Int
 		//Return color texture into which to render (if applicable).
-		GetColorTexture(godot Context) gd.RID
+		GetColorTexture(godot Lifetime) gd.RID
 		//Return depth texture into which to render (if applicable).
-		GetDepthTexture(godot Context) gd.RID
+		GetDepthTexture(godot Lifetime) gd.RID
 		//Return velocity texture into which to render (if applicable).
-		GetVelocityTexture(godot Context) gd.RID
+		GetVelocityTexture(godot Lifetime) gd.RID
 	}
 */
 type XRInterfaceExtension = classdb.XRInterfaceExtension
@@ -10702,7 +10702,7 @@ The [XRController3D] and [XRAnchor3D] both consume objects of this type and shou
 */
 type XRPositionalTracker = classdb.XRPositionalTracker
 
-func XRServer(godot Context) classdb.XRServer {
+func XRServer(godot Lifetime) classdb.XRServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.XRServer)
 	return *(*classdb.XRServer)(unsafe.Pointer(&obj))
 }

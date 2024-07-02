@@ -13,7 +13,7 @@ import (
 )
 
 // RenderingDevice returns a new [rd.Interface] implementation via Godot.
-func RenderingDevice(godot Context) rd.Interface {
+func RenderingDevice(godot Lifetime) rd.Interface {
 	var device = renderingDevice{
 		godot: godot.API,
 		class: RenderingServer(godot).GetRenderingDevice(godot),
@@ -29,14 +29,14 @@ type renderingDevice struct {
 	value *rd.Interface
 }
 
-func (gpu renderingDevice) scope(lifetime mmm.Lifetime) Context {
-	return gd.Context{
+func (gpu renderingDevice) scope(lifetime mmm.Lifetime) Lifetime {
+	return gd.Lifetime{
 		Lifetime: lifetime,
 		API:      gpu.godot,
 	}
 }
 
-func (gpu renderingDevice) bytes(godot Context, data ffi.Bytes) gd.PackedByteArray {
+func (gpu renderingDevice) bytes(godot Lifetime, data ffi.Bytes) gd.PackedByteArray {
 	packed, ok := data.Interface.(gd.PackedByteArray)
 	if ok {
 		return packed
@@ -50,7 +50,7 @@ func (gpu renderingDevice) bytes(godot Context, data ffi.Bytes) gd.PackedByteArr
 	return copy
 }
 
-func (gpu renderingDevice) string(godot Context, data ffi.Bytes) gd.String {
+func (gpu renderingDevice) string(godot Lifetime, data ffi.Bytes) gd.String {
 	packed, ok := data.Interface.(gd.String)
 	if ok {
 		return packed
@@ -64,7 +64,7 @@ func (gpu renderingDevice) string(godot Context, data ffi.Bytes) gd.String {
 	return copy.GetStringFromUtf8(godot)
 }
 
-func (gpu renderingDevice) colors(godot Context, data ffi.Slice[uc.Color]) gd.PackedColorArray {
+func (gpu renderingDevice) colors(godot Lifetime, data ffi.Slice[uc.Color]) gd.PackedColorArray {
 	packed, ok := data.Interface.(gd.PackedColorArray)
 	if ok {
 		return packed
@@ -78,7 +78,7 @@ func (gpu renderingDevice) colors(godot Context, data ffi.Slice[uc.Color]) gd.Pa
 	return copy
 }
 
-func (gpu renderingDevice) int32s(godot Context, data ffi.Slice[int32]) gd.PackedInt32Array {
+func (gpu renderingDevice) int32s(godot Lifetime, data ffi.Slice[int32]) gd.PackedInt32Array {
 	packed, ok := data.Interface.(gd.PackedInt32Array)
 	if ok {
 		return packed
@@ -92,7 +92,7 @@ func (gpu renderingDevice) int32s(godot Context, data ffi.Slice[int32]) gd.Packe
 	return copy
 }
 
-func (gpu renderingDevice) int64s(godot Context, data ffi.Slice[int64]) gd.PackedInt64Array {
+func (gpu renderingDevice) int64s(godot Lifetime, data ffi.Slice[int64]) gd.PackedInt64Array {
 	packed, ok := data.Interface.(gd.PackedInt64Array)
 	if ok {
 		return packed

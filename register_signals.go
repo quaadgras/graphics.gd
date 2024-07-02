@@ -12,7 +12,7 @@ import (
 // registerSignals registers [Signal[T]] fields as signals emittable by the class,
 // when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
-func registerSignals(godot Context, class StringName, rtype reflect.Type) {
+func registerSignals(godot Lifetime, class StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
 		name := field.Name

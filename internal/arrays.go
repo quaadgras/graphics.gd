@@ -9,7 +9,7 @@ import (
 
 type Array mmm.Pointer[API, Array, uintptr]
 
-func (a Array) Index(ctx Context, index Int) Variant {
+func (a Array) Index(ctx Lifetime, index Int) Variant {
 	return mmm.API(a).Array.Index(ctx, a, index)
 }
 
@@ -48,40 +48,40 @@ type ArrayOf[T any] interface {
 	Append(value T)
 	AppendArray(array ArrayOf[T])
 	Assign(array ArrayOf[T])
-	Back(ctx Context) T
+	Back(ctx Lifetime) T
 	Bsearch(value T, before bool) int64
 	BsearchCustom(value T, fn Callable, before bool) int64
 	Clear()
 	Count(value T) int64
-	Duplicate(ctx Context, deep bool) ArrayOf[T]
+	Duplicate(ctx Lifetime, deep bool) ArrayOf[T]
 	Erase(value T)
 	Fill(value T)
-	Filter(ctx Context, method Callable) ArrayOf[T]
+	Filter(ctx Lifetime, method Callable) ArrayOf[T]
 	Find(what T, from int64) int64
 	Free()
-	Front(ctx Context) T
+	Front(ctx Lifetime) T
 	GetTypedBuiltin() int64
-	GetTypedClassName(ctx Context) StringName
-	GetTypedScript(ctx Context) Variant
+	GetTypedClassName(ctx Lifetime) StringName
+	GetTypedScript(ctx Lifetime) Variant
 	Has(value T) bool
 	Hash() int64
-	Index(ctx Context, index int64) T
+	Index(ctx Lifetime, index int64) T
 	Insert(position int64, value T) int64
 	IsEmpty() bool
 	IsReadOnly() bool
 	IsSameTyped(array Array) bool
 	IsTyped() bool
 	MakeReadOnly()
-	Map(ctx Context, method Callable) ArrayOf[T]
-	Max(ctx Context) T
-	Min(ctx Context) T
-	PickRandom(ctx Context) T
-	PopAt(ctx Context, position int64) T
-	PopBack(ctx Context) T
-	PopFront(ctx Context) T
+	Map(ctx Lifetime, method Callable) ArrayOf[T]
+	Max(ctx Lifetime) T
+	Min(ctx Lifetime) T
+	PickRandom(ctx Lifetime) T
+	PopAt(ctx Lifetime, position int64) T
+	PopBack(ctx Lifetime) T
+	PopFront(ctx Lifetime) T
 	PushBack(value T)
 	PushFront(value T)
-	Reduce(ctx Context, method Callable, accum T) T
+	Reduce(ctx Lifetime, method Callable, accum T) T
 	RemoveAt(position int64)
 	Resize(size int64) int64
 	Reverse()
@@ -89,14 +89,14 @@ type ArrayOf[T any] interface {
 	SetIndex(index int64, value T)
 	Shuffle()
 	Size() int64
-	Slice(ctx Context, begin int64, end int64, step int64, deep bool) ArrayOf[T]
+	Slice(ctx Lifetime, begin int64, end int64, step int64, deep bool) ArrayOf[T]
 	Sort()
 	SortCustom(fn Callable)
 
 	UnmarshalInto(any) error
 }
 
-func (godot Context) Array() Array {
+func (godot Lifetime) Array() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	godot.API.typeset.creation.Array[0](r_ret.Uintptr(), callframe.Args{})
@@ -124,7 +124,7 @@ func (a TypedArray[T]) AppendArray(array ArrayOf[T]) {
 func (a TypedArray[T]) Assign(array ArrayOf[T]) {
 	Array(a).Assign(Array(array.(TypedArray[T])))
 }
-func (a TypedArray[T]) Back(godot Context) T {
+func (a TypedArray[T]) Back(godot Lifetime) T {
 	return Array(a).Back(godot).Interface(godot).(T)
 }
 func (a TypedArray[T]) Bsearch(value T, before bool) int64 {
@@ -143,7 +143,7 @@ func (a TypedArray[T]) Count(value T) int64 {
 	defer godot.End()
 	return Array(a).Count(godot.Variant(value))
 }
-func (a TypedArray[T]) Duplicate(ctx Context, deep bool) ArrayOf[T] {
+func (a TypedArray[T]) Duplicate(ctx Lifetime, deep bool) ArrayOf[T] {
 	return TypedArray[T](Array(a).Duplicate(ctx, deep))
 }
 func (a TypedArray[T]) Erase(value T) {
@@ -156,7 +156,7 @@ func (a TypedArray[T]) Fill(value T) {
 	defer godot.End()
 	Array(a).Fill(godot.Variant(value))
 }
-func (a TypedArray[T]) Filter(ctx Context, method Callable) ArrayOf[T] {
+func (a TypedArray[T]) Filter(ctx Lifetime, method Callable) ArrayOf[T] {
 	return TypedArray[T](Array(a).Filter(ctx, method))
 }
 func (a TypedArray[T]) Find(what T, from int64) int64 {
@@ -167,16 +167,16 @@ func (a TypedArray[T]) Find(what T, from int64) int64 {
 func (a TypedArray[T]) Free() {
 	Array(a).Free()
 }
-func (a TypedArray[T]) Front(ctx Context) T {
+func (a TypedArray[T]) Front(ctx Lifetime) T {
 	return Array(a).Front(ctx).Interface(ctx).(T)
 }
 func (a TypedArray[T]) GetTypedBuiltin() int64 {
 	return Array(a).GetTypedBuiltin()
 }
-func (a TypedArray[T]) GetTypedClassName(ctx Context) StringName {
+func (a TypedArray[T]) GetTypedClassName(ctx Lifetime) StringName {
 	return Array(a).GetTypedClassName(ctx)
 }
-func (a TypedArray[T]) GetTypedScript(ctx Context) Variant {
+func (a TypedArray[T]) GetTypedScript(ctx Lifetime) Variant {
 	return Array(a).GetTypedScript(ctx)
 }
 func (a TypedArray[T]) Has(value T) bool {
@@ -187,7 +187,7 @@ func (a TypedArray[T]) Has(value T) bool {
 func (a TypedArray[T]) Hash() int64 {
 	return Array(a).Hash()
 }
-func (a TypedArray[T]) Index(ctx Context, index int64) T {
+func (a TypedArray[T]) Index(ctx Lifetime, index int64) T {
 	return Array(a).Index(ctx, index).Interface(ctx).(T)
 }
 func (a TypedArray[T]) Insert(position int64, value T) int64 {
@@ -210,25 +210,25 @@ func (a TypedArray[T]) IsTyped() bool {
 func (a TypedArray[T]) MakeReadOnly() {
 	Array(a).MakeReadOnly()
 }
-func (a TypedArray[T]) Map(ctx Context, method Callable) ArrayOf[T] {
+func (a TypedArray[T]) Map(ctx Lifetime, method Callable) ArrayOf[T] {
 	return TypedArray[T](Array(a).Map(ctx, method))
 }
-func (a TypedArray[T]) Max(ctx Context) T {
+func (a TypedArray[T]) Max(ctx Lifetime) T {
 	return Array(a).Max(ctx).Interface(ctx).(T)
 }
-func (a TypedArray[T]) Min(ctx Context) T {
+func (a TypedArray[T]) Min(ctx Lifetime) T {
 	return Array(a).Min(ctx).Interface(ctx).(T)
 }
-func (a TypedArray[T]) PickRandom(ctx Context) T {
+func (a TypedArray[T]) PickRandom(ctx Lifetime) T {
 	return Array(a).PickRandom(ctx).Interface(ctx).(T)
 }
-func (a TypedArray[T]) PopAt(ctx Context, position int64) T {
+func (a TypedArray[T]) PopAt(ctx Lifetime, position int64) T {
 	return Array(a).PopAt(ctx, position).Interface(ctx).(T)
 }
-func (a TypedArray[T]) PopBack(ctx Context) T {
+func (a TypedArray[T]) PopBack(ctx Lifetime) T {
 	return Array(a).PopBack(ctx).Interface(ctx).(T)
 }
-func (a TypedArray[T]) PopFront(ctx Context) T {
+func (a TypedArray[T]) PopFront(ctx Lifetime) T {
 	return Array(a).PopFront(ctx).Interface(ctx).(T)
 }
 func (a TypedArray[T]) PushBack(value T) {
@@ -241,7 +241,7 @@ func (a TypedArray[T]) PushFront(value T) {
 	defer godot.End()
 	Array(a).PushFront(godot.Variant(value))
 }
-func (a TypedArray[T]) Reduce(ctx Context, method Callable, accum T) T {
+func (a TypedArray[T]) Reduce(ctx Lifetime, method Callable, accum T) T {
 	return Array(a).Reduce(ctx, method, ctx.Variant(accum)).Interface(ctx).(T)
 }
 func (a TypedArray[T]) RemoveAt(position int64) {
@@ -269,7 +269,7 @@ func (a TypedArray[T]) Shuffle() {
 func (a TypedArray[T]) Size() int64 {
 	return Array(a).Size()
 }
-func (a TypedArray[T]) Slice(ctx Context, begin int64, end int64, step int64, deep bool) ArrayOf[T] {
+func (a TypedArray[T]) Slice(ctx Lifetime, begin int64, end int64, step int64, deep bool) ArrayOf[T] {
 	return TypedArray[T](Array(a).Slice(ctx, begin, end, step, deep))
 }
 func (a TypedArray[T]) Sort() {

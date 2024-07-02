@@ -241,7 +241,7 @@ const (
 
 type VariantOperator int64
 
-func (ctx Context) Sin(angle_rad Float) Float {
+func (ctx Lifetime) Sin(angle_rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
 	var r_ret = callframe.Ret[Float](frame)
@@ -251,7 +251,7 @@ func (ctx Context) Sin(angle_rad Float) Float {
 	return ret
 }
 
-func (ctx Context) Cos(angle_rad Float) Float {
+func (ctx Lifetime) Cos(angle_rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
 	var r_ret = callframe.Ret[Float](frame)
@@ -261,7 +261,7 @@ func (ctx Context) Cos(angle_rad Float) Float {
 	return ret
 }
 
-func (ctx Context) Tan(angle_rad Float) Float {
+func (ctx Lifetime) Tan(angle_rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
 	var r_ret = callframe.Ret[Float](frame)
@@ -271,7 +271,7 @@ func (ctx Context) Tan(angle_rad Float) Float {
 	return ret
 }
 
-func (ctx Context) Sinh(x Float) Float {
+func (ctx Lifetime) Sinh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -281,7 +281,7 @@ func (ctx Context) Sinh(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Cosh(x Float) Float {
+func (ctx Lifetime) Cosh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -291,7 +291,7 @@ func (ctx Context) Cosh(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Tanh(x Float) Float {
+func (ctx Lifetime) Tanh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -301,7 +301,7 @@ func (ctx Context) Tanh(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Asin(x Float) Float {
+func (ctx Lifetime) Asin(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -311,7 +311,7 @@ func (ctx Context) Asin(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Acos(x Float) Float {
+func (ctx Lifetime) Acos(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -321,7 +321,7 @@ func (ctx Context) Acos(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Atan(x Float) Float {
+func (ctx Lifetime) Atan(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -331,7 +331,7 @@ func (ctx Context) Atan(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Atan2(y Float, x Float) Float {
+func (ctx Lifetime) Atan2(y Float, x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, y)
 	callframe.Arg(frame, x)
@@ -342,7 +342,7 @@ func (ctx Context) Atan2(y Float, x Float) Float {
 	return ret
 }
 
-func (ctx Context) Asinh(x Float) Float {
+func (ctx Lifetime) Asinh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -352,7 +352,7 @@ func (ctx Context) Asinh(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Acosh(x Float) Float {
+func (ctx Lifetime) Acosh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -362,7 +362,7 @@ func (ctx Context) Acosh(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Atanh(x Float) Float {
+func (ctx Lifetime) Atanh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -372,7 +372,7 @@ func (ctx Context) Atanh(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Sqrt(x Float) Float {
+func (ctx Lifetime) Sqrt(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -382,7 +382,7 @@ func (ctx Context) Sqrt(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Fmod(x Float, y Float) Float {
+func (ctx Lifetime) Fmod(x Float, y Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -393,7 +393,7 @@ func (ctx Context) Fmod(x Float, y Float) Float {
 	return ret
 }
 
-func (ctx Context) Fposmod(x Float, y Float) Float {
+func (ctx Lifetime) Fposmod(x Float, y Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -404,7 +404,7 @@ func (ctx Context) Fposmod(x Float, y Float) Float {
 	return ret
 }
 
-func (ctx Context) Posmod(x Int, y Int) Int {
+func (ctx Lifetime) Posmod(x Int, y Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -415,7 +415,7 @@ func (ctx Context) Posmod(x Int, y Int) Int {
 	return ret
 }
 
-func (ctx Context) Floor(x Variant) Variant {
+func (ctx Lifetime) Floor(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(x))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -425,7 +425,7 @@ func (ctx Context) Floor(x Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Floorf(x Float) Float {
+func (ctx Lifetime) Floorf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -435,7 +435,7 @@ func (ctx Context) Floorf(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Floori(x Float) Int {
+func (ctx Lifetime) Floori(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
@@ -445,7 +445,7 @@ func (ctx Context) Floori(x Float) Int {
 	return ret
 }
 
-func (ctx Context) Ceil(x Variant) Variant {
+func (ctx Lifetime) Ceil(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(x))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -455,7 +455,7 @@ func (ctx Context) Ceil(x Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Ceilf(x Float) Float {
+func (ctx Lifetime) Ceilf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -465,7 +465,7 @@ func (ctx Context) Ceilf(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Ceili(x Float) Int {
+func (ctx Lifetime) Ceili(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
@@ -475,7 +475,7 @@ func (ctx Context) Ceili(x Float) Int {
 	return ret
 }
 
-func (ctx Context) Round(x Variant) Variant {
+func (ctx Lifetime) Round(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(x))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -485,7 +485,7 @@ func (ctx Context) Round(x Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Roundf(x Float) Float {
+func (ctx Lifetime) Roundf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -495,7 +495,7 @@ func (ctx Context) Roundf(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Roundi(x Float) Int {
+func (ctx Lifetime) Roundi(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
@@ -505,7 +505,7 @@ func (ctx Context) Roundi(x Float) Int {
 	return ret
 }
 
-func (ctx Context) Abs(x Variant) Variant {
+func (ctx Lifetime) Abs(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(x))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -515,7 +515,7 @@ func (ctx Context) Abs(x Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Absf(x Float) Float {
+func (ctx Lifetime) Absf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -525,7 +525,7 @@ func (ctx Context) Absf(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Absi(x Int) Int {
+func (ctx Lifetime) Absi(x Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
@@ -535,7 +535,7 @@ func (ctx Context) Absi(x Int) Int {
 	return ret
 }
 
-func (ctx Context) Sign(x Variant) Variant {
+func (ctx Lifetime) Sign(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(x))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -545,7 +545,7 @@ func (ctx Context) Sign(x Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Signf(x Float) Float {
+func (ctx Lifetime) Signf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -555,7 +555,7 @@ func (ctx Context) Signf(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Signi(x Int) Int {
+func (ctx Lifetime) Signi(x Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
@@ -565,7 +565,7 @@ func (ctx Context) Signi(x Int) Int {
 	return ret
 }
 
-func (ctx Context) Snapped(x Variant, step Variant) Variant {
+func (ctx Lifetime) Snapped(x Variant, step Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(x))
 	callframe.Arg(frame, mmm.Get(step))
@@ -576,7 +576,7 @@ func (ctx Context) Snapped(x Variant, step Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Snappedf(x Float, step Float) Float {
+func (ctx Lifetime) Snappedf(x Float, step Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, step)
@@ -587,7 +587,7 @@ func (ctx Context) Snappedf(x Float, step Float) Float {
 	return ret
 }
 
-func (ctx Context) Snappedi(x Float, step Int) Int {
+func (ctx Lifetime) Snappedi(x Float, step Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, step)
@@ -598,7 +598,7 @@ func (ctx Context) Snappedi(x Float, step Int) Int {
 	return ret
 }
 
-func (ctx Context) Pow(base Float, exp Float) Float {
+func (ctx Lifetime) Pow(base Float, exp Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, exp)
@@ -609,7 +609,7 @@ func (ctx Context) Pow(base Float, exp Float) Float {
 	return ret
 }
 
-func (ctx Context) Log(x Float) Float {
+func (ctx Lifetime) Log(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -619,7 +619,7 @@ func (ctx Context) Log(x Float) Float {
 	return ret
 }
 
-func (ctx Context) Exp(x Float) Float {
+func (ctx Lifetime) Exp(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
@@ -629,7 +629,7 @@ func (ctx Context) Exp(x Float) Float {
 	return ret
 }
 
-func (ctx Context) IsNan(x Float) bool {
+func (ctx Lifetime) IsNan(x Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[bool](frame)
@@ -639,7 +639,7 @@ func (ctx Context) IsNan(x Float) bool {
 	return ret
 }
 
-func (ctx Context) IsInf(x Float) bool {
+func (ctx Lifetime) IsInf(x Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[bool](frame)
@@ -649,7 +649,7 @@ func (ctx Context) IsInf(x Float) bool {
 	return ret
 }
 
-func (ctx Context) IsEqualApprox(a Float, b Float) bool {
+func (ctx Lifetime) IsEqualApprox(a Float, b Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
@@ -660,7 +660,7 @@ func (ctx Context) IsEqualApprox(a Float, b Float) bool {
 	return ret
 }
 
-func (ctx Context) IsZeroApprox(x Float) bool {
+func (ctx Lifetime) IsZeroApprox(x Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[bool](frame)
@@ -670,7 +670,7 @@ func (ctx Context) IsZeroApprox(x Float) bool {
 	return ret
 }
 
-func (ctx Context) IsFinite(x Float) bool {
+func (ctx Lifetime) IsFinite(x Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[bool](frame)
@@ -680,7 +680,7 @@ func (ctx Context) IsFinite(x Float) bool {
 	return ret
 }
 
-func (ctx Context) Ease(x Float, curve Float) Float {
+func (ctx Lifetime) Ease(x Float, curve Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, curve)
@@ -691,7 +691,7 @@ func (ctx Context) Ease(x Float, curve Float) Float {
 	return ret
 }
 
-func (ctx Context) StepDecimals(x Float) Int {
+func (ctx Lifetime) StepDecimals(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
@@ -701,7 +701,7 @@ func (ctx Context) StepDecimals(x Float) Int {
 	return ret
 }
 
-func (ctx Context) Lerp(from Variant, to Variant, weight Variant) Variant {
+func (ctx Lifetime) Lerp(from Variant, to Variant, weight Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(from))
 	callframe.Arg(frame, mmm.Get(to))
@@ -713,7 +713,7 @@ func (ctx Context) Lerp(from Variant, to Variant, weight Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Lerpf(from Float, to Float, weight Float) Float {
+func (ctx Lifetime) Lerpf(from Float, to Float, weight Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -725,7 +725,7 @@ func (ctx Context) Lerpf(from Float, to Float, weight Float) Float {
 	return ret
 }
 
-func (ctx Context) CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float) Float {
+func (ctx Lifetime) CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -739,7 +739,7 @@ func (ctx Context) CubicInterpolate(from Float, to Float, pre Float, post Float,
 	return ret
 }
 
-func (ctx Context) CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight Float) Float {
+func (ctx Lifetime) CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -753,7 +753,7 @@ func (ctx Context) CubicInterpolateAngle(from Float, to Float, pre Float, post F
 	return ret
 }
 
-func (ctx Context) CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
+func (ctx Lifetime) CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -770,7 +770,7 @@ func (ctx Context) CubicInterpolateInTime(from Float, to Float, pre Float, post 
 	return ret
 }
 
-func (ctx Context) CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
+func (ctx Lifetime) CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, weight Float, to_t Float, pre_t Float, post_t Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -787,7 +787,7 @@ func (ctx Context) CubicInterpolateAngleInTime(from Float, to Float, pre Float, 
 	return ret
 }
 
-func (ctx Context) BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
+func (ctx Lifetime) BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, control_1)
@@ -801,7 +801,7 @@ func (ctx Context) BezierInterpolate(start Float, control_1 Float, control_2 Flo
 	return ret
 }
 
-func (ctx Context) BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
+func (ctx Lifetime) BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, t Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, control_1)
@@ -815,7 +815,7 @@ func (ctx Context) BezierDerivative(start Float, control_1 Float, control_2 Floa
 	return ret
 }
 
-func (ctx Context) AngleDifference(from Float, to Float) Float {
+func (ctx Lifetime) AngleDifference(from Float, to Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -826,7 +826,7 @@ func (ctx Context) AngleDifference(from Float, to Float) Float {
 	return ret
 }
 
-func (ctx Context) LerpAngle(from Float, to Float, weight Float) Float {
+func (ctx Lifetime) LerpAngle(from Float, to Float, weight Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -838,7 +838,7 @@ func (ctx Context) LerpAngle(from Float, to Float, weight Float) Float {
 	return ret
 }
 
-func (ctx Context) InverseLerp(from Float, to Float, weight Float) Float {
+func (ctx Lifetime) InverseLerp(from Float, to Float, weight Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -850,7 +850,7 @@ func (ctx Context) InverseLerp(from Float, to Float, weight Float) Float {
 	return ret
 }
 
-func (ctx Context) Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Float {
+func (ctx Lifetime) Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, istart)
@@ -864,7 +864,7 @@ func (ctx Context) Remap(value Float, istart Float, istop Float, ostart Float, o
 	return ret
 }
 
-func (ctx Context) Smoothstep(from Float, to Float, x Float) Float {
+func (ctx Lifetime) Smoothstep(from Float, to Float, x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -876,7 +876,7 @@ func (ctx Context) Smoothstep(from Float, to Float, x Float) Float {
 	return ret
 }
 
-func (ctx Context) MoveToward(from Float, to Float, delta Float) Float {
+func (ctx Lifetime) MoveToward(from Float, to Float, delta Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -888,7 +888,7 @@ func (ctx Context) MoveToward(from Float, to Float, delta Float) Float {
 	return ret
 }
 
-func (ctx Context) RotateToward(from Float, to Float, delta Float) Float {
+func (ctx Lifetime) RotateToward(from Float, to Float, delta Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -900,7 +900,7 @@ func (ctx Context) RotateToward(from Float, to Float, delta Float) Float {
 	return ret
 }
 
-func (ctx Context) DegToRad(deg Float) Float {
+func (ctx Lifetime) DegToRad(deg Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, deg)
 	var r_ret = callframe.Ret[Float](frame)
@@ -910,7 +910,7 @@ func (ctx Context) DegToRad(deg Float) Float {
 	return ret
 }
 
-func (ctx Context) RadToDeg(rad Float) Float {
+func (ctx Lifetime) RadToDeg(rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, rad)
 	var r_ret = callframe.Ret[Float](frame)
@@ -920,7 +920,7 @@ func (ctx Context) RadToDeg(rad Float) Float {
 	return ret
 }
 
-func (ctx Context) LinearToDb(lin Float) Float {
+func (ctx Lifetime) LinearToDb(lin Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, lin)
 	var r_ret = callframe.Ret[Float](frame)
@@ -930,7 +930,7 @@ func (ctx Context) LinearToDb(lin Float) Float {
 	return ret
 }
 
-func (ctx Context) DbToLinear(db Float) Float {
+func (ctx Lifetime) DbToLinear(db Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Ret[Float](frame)
@@ -940,7 +940,7 @@ func (ctx Context) DbToLinear(db Float) Float {
 	return ret
 }
 
-func (ctx Context) Wrap(value Variant, min Variant, max Variant) Variant {
+func (ctx Lifetime) Wrap(value Variant, min Variant, max Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
 	callframe.Arg(frame, mmm.Get(min))
@@ -952,7 +952,7 @@ func (ctx Context) Wrap(value Variant, min Variant, max Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Wrapi(value Int, min Int, max Int) Int {
+func (ctx Lifetime) Wrapi(value Int, min Int, max Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
@@ -964,7 +964,7 @@ func (ctx Context) Wrapi(value Int, min Int, max Int) Int {
 	return ret
 }
 
-func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
+func (ctx Lifetime) Wrapf(value Float, min Float, max Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
@@ -976,7 +976,7 @@ func (ctx Context) Wrapf(value Float, min Float, max Float) Float {
 	return ret
 }
 
-func (ctx Context) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
+func (ctx Lifetime) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	callframe.Arg(frame, mmm.Get(arg2))
@@ -990,7 +990,7 @@ func (ctx Context) Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Maxi(a Int, b Int) Int {
+func (ctx Lifetime) Maxi(a Int, b Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
@@ -1001,7 +1001,7 @@ func (ctx Context) Maxi(a Int, b Int) Int {
 	return ret
 }
 
-func (ctx Context) Maxf(a Float, b Float) Float {
+func (ctx Lifetime) Maxf(a Float, b Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
@@ -1012,7 +1012,7 @@ func (ctx Context) Maxf(a Float, b Float) Float {
 	return ret
 }
 
-func (ctx Context) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
+func (ctx Lifetime) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	callframe.Arg(frame, mmm.Get(arg2))
@@ -1026,7 +1026,7 @@ func (ctx Context) Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Mini(a Int, b Int) Int {
+func (ctx Lifetime) Mini(a Int, b Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
@@ -1037,7 +1037,7 @@ func (ctx Context) Mini(a Int, b Int) Int {
 	return ret
 }
 
-func (ctx Context) Minf(a Float, b Float) Float {
+func (ctx Lifetime) Minf(a Float, b Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
@@ -1048,7 +1048,7 @@ func (ctx Context) Minf(a Float, b Float) Float {
 	return ret
 }
 
-func (ctx Context) Clamp(value Variant, min Variant, max Variant) Variant {
+func (ctx Lifetime) Clamp(value Variant, min Variant, max Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
 	callframe.Arg(frame, mmm.Get(min))
@@ -1060,7 +1060,7 @@ func (ctx Context) Clamp(value Variant, min Variant, max Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Clampi(value Int, min Int, max Int) Int {
+func (ctx Lifetime) Clampi(value Int, min Int, max Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
@@ -1072,7 +1072,7 @@ func (ctx Context) Clampi(value Int, min Int, max Int) Int {
 	return ret
 }
 
-func (ctx Context) Clampf(value Float, min Float, max Float) Float {
+func (ctx Lifetime) Clampf(value Float, min Float, max Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, min)
@@ -1084,7 +1084,7 @@ func (ctx Context) Clampf(value Float, min Float, max Float) Float {
 	return ret
 }
 
-func (ctx Context) NearestPo2(value Int) Int {
+func (ctx Lifetime) NearestPo2(value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
@@ -1094,7 +1094,7 @@ func (ctx Context) NearestPo2(value Int) Int {
 	return ret
 }
 
-func (ctx Context) Pingpong(value Float, length Float) Float {
+func (ctx Lifetime) Pingpong(value Float, length Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, length)
@@ -1105,14 +1105,14 @@ func (ctx Context) Pingpong(value Float, length Float) Float {
 	return ret
 }
 
-func (ctx Context) Randomize() {
+func (ctx Lifetime) Randomize() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	ctx.API.utility.randomize(r_ret.Uintptr(), frame.Array(0), 0)
 	frame.Free()
 }
 
-func (ctx Context) Randi() Int {
+func (ctx Lifetime) Randi() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.randi(r_ret.Uintptr(), frame.Array(0), 0)
@@ -1121,7 +1121,7 @@ func (ctx Context) Randi() Int {
 	return ret
 }
 
-func (ctx Context) Randf() Float {
+func (ctx Lifetime) Randf() Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Float](frame)
 	ctx.API.utility.randf(r_ret.Uintptr(), frame.Array(0), 0)
@@ -1130,7 +1130,7 @@ func (ctx Context) Randf() Float {
 	return ret
 }
 
-func (ctx Context) RandiRange(from Int, to Int) Int {
+func (ctx Lifetime) RandiRange(from Int, to Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -1141,7 +1141,7 @@ func (ctx Context) RandiRange(from Int, to Int) Int {
 	return ret
 }
 
-func (ctx Context) RandfRange(from Float, to Float) Float {
+func (ctx Lifetime) RandfRange(from Float, to Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -1152,7 +1152,7 @@ func (ctx Context) RandfRange(from Float, to Float) Float {
 	return ret
 }
 
-func (ctx Context) Randfn(mean Float, deviation Float) Float {
+func (ctx Lifetime) Randfn(mean Float, deviation Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, mean)
 	callframe.Arg(frame, deviation)
@@ -1163,7 +1163,7 @@ func (ctx Context) Randfn(mean Float, deviation Float) Float {
 	return ret
 }
 
-func (ctx Context) Seed(base Int) {
+func (ctx Lifetime) Seed(base Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret callframe.Nil
@@ -1171,7 +1171,7 @@ func (ctx Context) Seed(base Int) {
 	frame.Free()
 }
 
-func (ctx Context) RandFromSeed(seed Int) PackedInt64Array {
+func (ctx Lifetime) RandFromSeed(seed Int) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, seed)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -1181,7 +1181,7 @@ func (ctx Context) RandFromSeed(seed Int) PackedInt64Array {
 	return ret
 }
 
-func (ctx Context) Weakref(obj Variant) Variant {
+func (ctx Lifetime) Weakref(obj Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(obj))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -1191,7 +1191,7 @@ func (ctx Context) Weakref(obj Variant) Variant {
 	return ret
 }
 
-func (ctx Context) Typeof(variable Variant) Int {
+func (ctx Lifetime) Typeof(variable Variant) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(variable))
 	var r_ret = callframe.Ret[Int](frame)
@@ -1201,7 +1201,7 @@ func (ctx Context) Typeof(variable Variant) Int {
 	return ret
 }
 
-func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
+func (ctx Lifetime) TypeConvert(variant Variant, atype Int) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(variant))
 	callframe.Arg(frame, atype)
@@ -1212,7 +1212,7 @@ func (ctx Context) TypeConvert(variant Variant, atype Int) Variant {
 	return ret
 }
 
-func (ctx Context) Str(arg1 Variant, args ...Variant) String {
+func (ctx Lifetime) Str(arg1 Variant, args ...Variant) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1225,7 +1225,7 @@ func (ctx Context) Str(arg1 Variant, args ...Variant) String {
 	return ret
 }
 
-func (ctx Context) ErrorString(error Int) String {
+func (ctx Lifetime) ErrorString(error Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, error)
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -1235,7 +1235,7 @@ func (ctx Context) ErrorString(error Int) String {
 	return ret
 }
 
-func (ctx Context) TypeToString(atype Int) String {
+func (ctx Lifetime) TypeToString(atype Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -1245,7 +1245,7 @@ func (ctx Context) TypeToString(atype Int) String {
 	return ret
 }
 
-func (ctx Context) Print(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) Print(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1256,7 +1256,7 @@ func (ctx Context) Print(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) PrintRich(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) PrintRich(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1267,7 +1267,7 @@ func (ctx Context) PrintRich(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) Printerr(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) Printerr(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1278,7 +1278,7 @@ func (ctx Context) Printerr(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) Printt(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) Printt(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1289,7 +1289,7 @@ func (ctx Context) Printt(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) Prints(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) Prints(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1300,7 +1300,7 @@ func (ctx Context) Prints(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) Printraw(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) Printraw(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1311,7 +1311,7 @@ func (ctx Context) Printraw(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) PrintVerbose(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) PrintVerbose(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1322,7 +1322,7 @@ func (ctx Context) PrintVerbose(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) PushError(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) PushError(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1333,7 +1333,7 @@ func (ctx Context) PushError(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) PushWarning(arg1 Variant, args ...Variant) {
+func (ctx Lifetime) PushWarning(arg1 Variant, args ...Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arg1))
 	for _, arg := range args {
@@ -1344,7 +1344,7 @@ func (ctx Context) PushWarning(arg1 Variant, args ...Variant) {
 	frame.Free()
 }
 
-func (ctx Context) VarToStr(variable Variant) String {
+func (ctx Lifetime) VarToStr(variable Variant) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(variable))
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -1354,7 +1354,7 @@ func (ctx Context) VarToStr(variable Variant) String {
 	return ret
 }
 
-func (ctx Context) StrToVar(s String) Variant {
+func (ctx Lifetime) StrToVar(s String) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(s))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -1364,7 +1364,7 @@ func (ctx Context) StrToVar(s String) Variant {
 	return ret
 }
 
-func (ctx Context) VarToBytes(variable Variant) PackedByteArray {
+func (ctx Lifetime) VarToBytes(variable Variant) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(variable))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -1374,7 +1374,7 @@ func (ctx Context) VarToBytes(variable Variant) PackedByteArray {
 	return ret
 }
 
-func (ctx Context) BytesToVar(bytes PackedByteArray) Variant {
+func (ctx Lifetime) BytesToVar(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(bytes))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -1384,7 +1384,7 @@ func (ctx Context) BytesToVar(bytes PackedByteArray) Variant {
 	return ret
 }
 
-func (ctx Context) VarToBytesWithObjects(variable Variant) PackedByteArray {
+func (ctx Lifetime) VarToBytesWithObjects(variable Variant) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(variable))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -1394,7 +1394,7 @@ func (ctx Context) VarToBytesWithObjects(variable Variant) PackedByteArray {
 	return ret
 }
 
-func (ctx Context) BytesToVarWithObjects(bytes PackedByteArray) Variant {
+func (ctx Lifetime) BytesToVarWithObjects(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(bytes))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -1404,7 +1404,7 @@ func (ctx Context) BytesToVarWithObjects(bytes PackedByteArray) Variant {
 	return ret
 }
 
-func (ctx Context) Hash(variable Variant) Int {
+func (ctx Lifetime) Hash(variable Variant) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(variable))
 	var r_ret = callframe.Ret[Int](frame)
@@ -1414,7 +1414,7 @@ func (ctx Context) Hash(variable Variant) Int {
 	return ret
 }
 
-func (ctx Context) InstanceFromId(instance_id Int) Object {
+func (ctx Lifetime) InstanceFromId(instance_id Int) Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance_id)
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -1425,7 +1425,7 @@ func (ctx Context) InstanceFromId(instance_id Int) Object {
 	return ret
 }
 
-func (ctx Context) IsInstanceIdValid(id Int) bool {
+func (ctx Lifetime) IsInstanceIdValid(id Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1435,7 +1435,7 @@ func (ctx Context) IsInstanceIdValid(id Int) bool {
 	return ret
 }
 
-func (ctx Context) IsInstanceValid(instance Variant) bool {
+func (ctx Lifetime) IsInstanceValid(instance Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(instance))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1445,7 +1445,7 @@ func (ctx Context) IsInstanceValid(instance Variant) bool {
 	return ret
 }
 
-func (ctx Context) RidAllocateId() Int {
+func (ctx Lifetime) RidAllocateId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	ctx.API.utility.rid_allocate_id(r_ret.Uintptr(), frame.Array(0), 0)
@@ -1454,7 +1454,7 @@ func (ctx Context) RidAllocateId() Int {
 	return ret
 }
 
-func (ctx Context) RidFromInt64(base Int) RID {
+func (ctx Lifetime) RidFromInt64(base Int) RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret = callframe.Ret[RID](frame)
@@ -1464,7 +1464,7 @@ func (ctx Context) RidFromInt64(base Int) RID {
 	return ret
 }
 
-func (ctx Context) IsSame(a Variant, b Variant) bool {
+func (ctx Lifetime) IsSame(a Variant, b Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(a))
 	callframe.Arg(frame, mmm.Get(b))
@@ -1582,7 +1582,7 @@ func (self String) Length() Int {
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
 //go:nosplit
-func (self String) Substr(ctx Context, from Int, len Int) String {
+func (self String) Substr(ctx Lifetime, from Int, len Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
@@ -1604,7 +1604,7 @@ print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
 */
 //go:nosplit
-func (self String) GetSlice(ctx Context, delimiter String, slice Int) String {
+func (self String) GetSlice(ctx Lifetime, delimiter String, slice Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -1622,7 +1622,7 @@ Splits the string using a Unicode character with code [param delimiter] and retu
 This is faster than [method split], if you only need one substring.
 */
 //go:nosplit
-func (self String) GetSlicec(ctx Context, delimiter Int, slice Int) String {
+func (self String) GetSlicec(ctx Lifetime, delimiter Int, slice Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter)
@@ -1883,7 +1883,7 @@ print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 [/codeblock]
 */
 //go:nosplit
-func (self String) Bigrams(ctx Context) PackedStringArray {
+func (self String) Bigrams(ctx Lifetime) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -1944,7 +1944,7 @@ print("{foo} {bar}".format({"bar": "baz", "foo": "{bar}"})) # Prints "{bar} baz"
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
 //go:nosplit
-func (self String) Format(ctx Context, values Variant, placeholder String) String {
+func (self String) Format(ctx Lifetime, values Variant, placeholder String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(values))
@@ -1961,7 +1961,7 @@ func (self String) Format(ctx Context, values Variant, placeholder String) Strin
 Replaces all occurrences of [param what] inside the string with the given [param forwhat].
 */
 //go:nosplit
-func (self String) Replace(ctx Context, what String, forwhat String) String {
+func (self String) Replace(ctx Lifetime, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(what))
@@ -1978,7 +1978,7 @@ func (self String) Replace(ctx Context, what String, forwhat String) String {
 Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
 */
 //go:nosplit
-func (self String) Replacen(ctx Context, what String, forwhat String) String {
+func (self String) Replacen(ctx Lifetime, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(what))
@@ -1995,7 +1995,7 @@ func (self String) Replacen(ctx Context, what String, forwhat String) String {
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
 //go:nosplit
-func (self String) Repeat(ctx Context, count Int) String {
+func (self String) Repeat(ctx Lifetime, count Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
@@ -2011,7 +2011,7 @@ func (self String) Repeat(ctx Context, count Int) String {
 Returns the copy of this string in reverse order.
 */
 //go:nosplit
-func (self String) Reverse(ctx Context) String {
+func (self String) Reverse(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2026,7 +2026,7 @@ func (self String) Reverse(ctx Context) String {
 Inserts [param what] at the given [param position] in the string.
 */
 //go:nosplit
-func (self String) Insert(ctx Context, position Int, what String) String {
+func (self String) Insert(ctx Lifetime, position Int, what String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
@@ -2043,7 +2043,7 @@ func (self String) Insert(ctx Context, position Int, what String) String {
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
 //go:nosplit
-func (self String) Erase(ctx Context, position Int, chars Int) String {
+func (self String) Erase(ctx Lifetime, position Int, chars Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
@@ -2072,7 +2072,7 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 [/codeblocks]
 */
 //go:nosplit
-func (self String) Capitalize(ctx Context) String {
+func (self String) Capitalize(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2087,7 +2087,7 @@ func (self String) Capitalize(ctx Context) String {
 Returns the string converted to [code]camelCase[/code].
 */
 //go:nosplit
-func (self String) ToCamelCase(ctx Context) String {
+func (self String) ToCamelCase(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2102,7 +2102,7 @@ func (self String) ToCamelCase(ctx Context) String {
 Returns the string converted to [code]PascalCase[/code].
 */
 //go:nosplit
-func (self String) ToPascalCase(ctx Context) String {
+func (self String) ToPascalCase(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2130,7 +2130,7 @@ Returns the string converted to [code]snake_case[/code].
 [/codeblocks]
 */
 //go:nosplit
-func (self String) ToSnakeCase(ctx Context) String {
+func (self String) ToSnakeCase(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2167,7 +2167,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
 //go:nosplit
-func (self String) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self String) Split(ctx Lifetime, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -2201,7 +2201,7 @@ print(some_array[1])     # Prints "Four"
 [/codeblocks]
 */
 //go:nosplit
-func (self String) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self String) Rsplit(ctx Lifetime, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -2225,7 +2225,7 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
 //go:nosplit
-func (self String) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
+func (self String) SplitFloats(ctx Lifetime, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -2258,7 +2258,7 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 [/codeblocks]
 */
 //go:nosplit
-func (self String) Join(ctx Context, parts PackedStringArray) String {
+func (self String) Join(ctx Lifetime, parts PackedStringArray) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(parts))
@@ -2274,7 +2274,7 @@ func (self String) Join(ctx Context, parts PackedStringArray) String {
 Returns the string converted to [code]UPPERCASE[/code].
 */
 //go:nosplit
-func (self String) ToUpper(ctx Context) String {
+func (self String) ToUpper(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2289,7 +2289,7 @@ func (self String) ToUpper(ctx Context) String {
 Returns the string converted to [code]lowercase[/code].
 */
 //go:nosplit
-func (self String) ToLower(ctx Context) String {
+func (self String) ToLower(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2308,7 +2308,7 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 [/codeblock]
 */
 //go:nosplit
-func (self String) Left(ctx Context, length Int) String {
+func (self String) Left(ctx Lifetime, length Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
@@ -2328,7 +2328,7 @@ print("Hello World!".right(-4)) # Prints "o World!"
 [/codeblock]
 */
 //go:nosplit
-func (self String) Right(ctx Context, length Int) String {
+func (self String) Right(ctx Lifetime, length Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
@@ -2345,7 +2345,7 @@ Strips all non-printable characters from the beginning and the end of the string
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
 //go:nosplit
-func (self String) StripEdges(ctx Context, left bool, right bool) String {
+func (self String) StripEdges(ctx Lifetime, left bool, right bool) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
@@ -2362,7 +2362,7 @@ func (self String) StripEdges(ctx Context, left bool, right bool) String {
 Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
 */
 //go:nosplit
-func (self String) StripEscapes(ctx Context) String {
+func (self String) StripEscapes(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2378,7 +2378,7 @@ Removes a set of characters defined in [param chars] from the string's beginning
 [b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
 */
 //go:nosplit
-func (self String) Lstrip(ctx Context, chars String) String {
+func (self String) Lstrip(ctx Lifetime, chars String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(chars))
@@ -2395,7 +2395,7 @@ Removes a set of characters defined in [param chars] from the string's end. See 
 [b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
 */
 //go:nosplit
-func (self String) Rstrip(ctx Context, chars String) String {
+func (self String) Rstrip(ctx Lifetime, chars String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(chars))
@@ -2422,7 +2422,7 @@ var h = "".get_extension()           # h is ""
 [/codeblock]
 */
 //go:nosplit
-func (self String) GetExtension(ctx Context) String {
+func (self String) GetExtension(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2440,7 +2440,7 @@ var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 [/codeblock]
 */
 //go:nosplit
-func (self String) GetBasename(ctx Context) String {
+func (self String) GetBasename(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2456,7 +2456,7 @@ Concatenates [param file] at the end of the string as a subpath, adding [code]/[
 [b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
 */
 //go:nosplit
-func (self String) PathJoin(ctx Context, file String) String {
+func (self String) PathJoin(ctx Lifetime, file String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(file))
@@ -2489,7 +2489,7 @@ Indents every line of the string with the given [param prefix]. Empty lines are 
 For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
 */
 //go:nosplit
-func (self String) Indent(ctx Context, prefix String) String {
+func (self String) Indent(ctx Lifetime, prefix String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(prefix))
@@ -2505,7 +2505,7 @@ func (self String) Indent(ctx Context, prefix String) String {
 Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
 */
 //go:nosplit
-func (self String) Dedent(ctx Context) String {
+func (self String) Dedent(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2536,7 +2536,7 @@ func (self String) Hash() Int {
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
 */
 //go:nosplit
-func (self String) Md5Text(ctx Context) String {
+func (self String) Md5Text(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2551,7 +2551,7 @@ func (self String) Md5Text(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
 */
 //go:nosplit
-func (self String) Sha1Text(ctx Context) String {
+func (self String) Sha1Text(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2566,7 +2566,7 @@ func (self String) Sha1Text(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
 */
 //go:nosplit
-func (self String) Sha256Text(ctx Context) String {
+func (self String) Sha256Text(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2581,7 +2581,7 @@ func (self String) Sha256Text(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
 */
 //go:nosplit
-func (self String) Md5Buffer(ctx Context) PackedByteArray {
+func (self String) Md5Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -2596,7 +2596,7 @@ func (self String) Md5Buffer(ctx Context) PackedByteArray {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
 */
 //go:nosplit
-func (self String) Sha1Buffer(ctx Context) PackedByteArray {
+func (self String) Sha1Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -2611,7 +2611,7 @@ func (self String) Sha1Buffer(ctx Context) PackedByteArray {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
 */
 //go:nosplit
-func (self String) Sha256Buffer(ctx Context) PackedByteArray {
+func (self String) Sha256Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -2704,7 +2704,7 @@ print(simple_path) # Prints "path/file"
 [/codeblock]
 */
 //go:nosplit
-func (self String) SimplifyPath(ctx Context) String {
+func (self String) SimplifyPath(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2722,7 +2722,7 @@ var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 [/codeblock]
 */
 //go:nosplit
-func (self String) GetBaseDir(ctx Context) String {
+func (self String) GetBaseDir(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2740,7 +2740,7 @@ var file = "/path/to/icon.png".get_file() # file is "icon.png"
 [/codeblock]
 */
 //go:nosplit
-func (self String) GetFile(ctx Context) String {
+func (self String) GetFile(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2755,7 +2755,7 @@ func (self String) GetFile(ctx Context) String {
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
 //go:nosplit
-func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
+func (self String) XmlEscape(ctx Lifetime, escape_quotes bool) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
@@ -2771,7 +2771,7 @@ func (self String) XmlEscape(ctx Context, escape_quotes bool) String {
 Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
 */
 //go:nosplit
-func (self String) XmlUnescape(ctx Context) String {
+func (self String) XmlUnescape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2800,7 +2800,7 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 [/codeblocks]
 */
 //go:nosplit
-func (self String) UriEncode(ctx Context) String {
+func (self String) UriEncode(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2825,7 +2825,7 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 [/codeblocks]
 */
 //go:nosplit
-func (self String) UriDecode(ctx Context) String {
+func (self String) UriDecode(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2840,7 +2840,7 @@ func (self String) UriDecode(ctx Context) String {
 Returns a copy of the string with special characters escaped using the C language standard.
 */
 //go:nosplit
-func (self String) CEscape(ctx Context) String {
+func (self String) CEscape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2856,7 +2856,7 @@ Returns a copy of the string with escaped characters replaced by their meanings.
 [b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
 */
 //go:nosplit
-func (self String) CUnescape(ctx Context) String {
+func (self String) CUnescape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2871,7 +2871,7 @@ func (self String) CUnescape(ctx Context) String {
 Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
 */
 //go:nosplit
-func (self String) JsonEscape(ctx Context) String {
+func (self String) JsonEscape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2886,7 +2886,7 @@ func (self String) JsonEscape(ctx Context) String {
 Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
 */
 //go:nosplit
-func (self String) ValidateNodeName(ctx Context) String {
+func (self String) ValidateNodeName(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -2901,7 +2901,7 @@ func (self String) ValidateNodeName(ctx Context) String {
 Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
 */
 //go:nosplit
-func (self String) ValidateFilename(ctx Context) String {
+func (self String) ValidateFilename(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -3144,7 +3144,7 @@ func (self String) BinToInt() Int {
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
 //go:nosplit
-func (self String) Lpad(ctx Context, min_length Int, character String) String {
+func (self String) Lpad(ctx Lifetime, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
@@ -3161,7 +3161,7 @@ func (self String) Lpad(ctx Context, min_length Int, character String) String {
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
 //go:nosplit
-func (self String) Rpad(ctx Context, min_length Int, character String) String {
+func (self String) Rpad(ctx Lifetime, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
@@ -3178,7 +3178,7 @@ func (self String) Rpad(ctx Context, min_length Int, character String) String {
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
 //go:nosplit
-func (self String) PadDecimals(ctx Context, digits Int) String {
+func (self String) PadDecimals(ctx Lifetime, digits Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
@@ -3194,7 +3194,7 @@ func (self String) PadDecimals(ctx Context, digits Int) String {
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
 //go:nosplit
-func (self String) PadZeros(ctx Context, digits Int) String {
+func (self String) PadZeros(ctx Lifetime, digits Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
@@ -3210,7 +3210,7 @@ func (self String) PadZeros(ctx Context, digits Int) String {
 Removes the given [param prefix] from the start of the string, or returns the string unchanged.
 */
 //go:nosplit
-func (self String) TrimPrefix(ctx Context, prefix String) String {
+func (self String) TrimPrefix(ctx Lifetime, prefix String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(prefix))
@@ -3226,7 +3226,7 @@ func (self String) TrimPrefix(ctx Context, prefix String) String {
 Removes the given [param suffix] from the end of the string, or returns the string unchanged.
 */
 //go:nosplit
-func (self String) TrimSuffix(ctx Context, suffix String) String {
+func (self String) TrimSuffix(ctx Lifetime, suffix String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(suffix))
@@ -3242,7 +3242,7 @@ func (self String) TrimSuffix(ctx Context, suffix String) String {
 Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces. This is the inverse of [method PackedByteArray.get_string_from_ascii].
 */
 //go:nosplit
-func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
+func (self String) ToAsciiBuffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3257,7 +3257,7 @@ func (self String) ToAsciiBuffer(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method. This is the inverse of [method PackedByteArray.get_string_from_utf8].
 */
 //go:nosplit
-func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
+func (self String) ToUtf8Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3272,7 +3272,7 @@ func (self String) ToUtf8Buffer(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf16].
 */
 //go:nosplit
-func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
+func (self String) ToUtf16Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3287,7 +3287,7 @@ func (self String) ToUtf16Buffer(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf32].
 */
 //go:nosplit
-func (self String) ToUtf32Buffer(ctx Context) PackedByteArray {
+func (self String) ToUtf32Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3314,7 +3314,7 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 [/codeblocks]
 */
 //go:nosplit
-func (self String) HexDecode(ctx Context) PackedByteArray {
+func (self String) HexDecode(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3329,7 +3329,7 @@ func (self String) HexDecode(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_wchar].
 */
 //go:nosplit
-func (self String) ToWcharBuffer(ctx Context) PackedByteArray {
+func (self String) ToWcharBuffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3359,7 +3359,7 @@ GD.Print(n.ToString("e1")); // Prints -5.2e+008
 [b]Note:[/b] In C#, this method is not implemented. To achieve similar results, see C#'s [url=https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings]Standard numeric format strings[/url]
 */
 //go:nosplit
-func (self String) NumScientific(ctx Context, number Float) String {
+func (self String) NumScientific(ctx Lifetime, number Float) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -3389,7 +3389,7 @@ String.num(-10000.0000012345432123454321) # Returns "-10000.0000012345"
 [/codeblock]
 */
 //go:nosplit
-func (self String) Num(ctx Context, number Float, decimals Int) String {
+func (self String) Num(ctx Lifetime, number Float, decimals Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, decimals)
@@ -3406,7 +3406,7 @@ By default, [param base] is set to decimal ([code]10[/code]). Other common bases
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
 //go:nosplit
-func (self String) NumInt64(ctx Context, number Int, base Int, capitalize_hex bool) String {
+func (self String) NumInt64(ctx Lifetime, number Int, base Int, capitalize_hex bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
@@ -3424,7 +3424,7 @@ By default, [param base] is set to decimal ([code]10[/code]). Other common bases
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
 //go:nosplit
-func (self String) NumUint64(ctx Context, number Int, base Int, capitalize_hex bool) String {
+func (self String) NumUint64(ctx Lifetime, number Int, base Int, capitalize_hex bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
@@ -3444,7 +3444,7 @@ print(String.chr(129302)) # Prints "🤖" (robot face emoji)
 [/codeblock]
 */
 //go:nosplit
-func (self String) Chr(ctx Context, char Int) String {
+func (self String) Chr(ctx Lifetime, char Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -3459,7 +3459,7 @@ Converts [param size] which represents a number of bytes into a human-readable f
 The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]IEC prefix format[/url], which may end in either [code]"B"[/code], [code]"KiB"[/code], [code]"MiB"[/code], [code]"GiB"[/code], [code]"TiB"[/code], [code]"PiB"[/code], or [code]"EiB"[/code].
 */
 //go:nosplit
-func (self String) HumanizeSize(ctx Context, size Int) String {
+func (self String) HumanizeSize(ctx Lifetime, size Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -3562,7 +3562,7 @@ func (self StringName) Length() Int {
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
 //go:nosplit
-func (self StringName) Substr(ctx Context, from Int, len Int) String {
+func (self StringName) Substr(ctx Lifetime, from Int, len Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
@@ -3584,7 +3584,7 @@ print("i/am/example/hi".get_slice("/", 2)) # Prints "example"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) GetSlice(ctx Context, delimiter String, slice Int) String {
+func (self StringName) GetSlice(ctx Lifetime, delimiter String, slice Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -3602,7 +3602,7 @@ Splits the string using a Unicode character with code [param delimiter] and retu
 This is faster than [method split], if you only need one substring.
 */
 //go:nosplit
-func (self StringName) GetSlicec(ctx Context, delimiter Int, slice Int) String {
+func (self StringName) GetSlicec(ctx Lifetime, delimiter Int, slice Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter)
@@ -3863,7 +3863,7 @@ print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) Bigrams(ctx Context) PackedStringArray {
+func (self StringName) Bigrams(ctx Lifetime) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -3917,7 +3917,7 @@ See also the [url=$DOCS_URL/tutorials/scripting/gdscript/gdscript_format_string.
 [b]Note:[/b] In C#, it's recommended to [url=https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated]interpolate strings with "$"[/url], instead.
 */
 //go:nosplit
-func (self StringName) Format(ctx Context, values Variant, placeholder String) String {
+func (self StringName) Format(ctx Lifetime, values Variant, placeholder String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(values))
@@ -3934,7 +3934,7 @@ func (self StringName) Format(ctx Context, values Variant, placeholder String) S
 Replaces all occurrences of [param what] inside the string with the given [param forwhat].
 */
 //go:nosplit
-func (self StringName) Replace(ctx Context, what String, forwhat String) String {
+func (self StringName) Replace(ctx Lifetime, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(what))
@@ -3951,7 +3951,7 @@ func (self StringName) Replace(ctx Context, what String, forwhat String) String 
 Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
 */
 //go:nosplit
-func (self StringName) Replacen(ctx Context, what String, forwhat String) String {
+func (self StringName) Replacen(ctx Lifetime, what String, forwhat String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(what))
@@ -3968,7 +3968,7 @@ func (self StringName) Replacen(ctx Context, what String, forwhat String) String
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
 //go:nosplit
-func (self StringName) Repeat(ctx Context, count Int) String {
+func (self StringName) Repeat(ctx Lifetime, count Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
@@ -3984,7 +3984,7 @@ func (self StringName) Repeat(ctx Context, count Int) String {
 Returns the copy of this string in reverse order.
 */
 //go:nosplit
-func (self StringName) Reverse(ctx Context) String {
+func (self StringName) Reverse(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -3999,7 +3999,7 @@ func (self StringName) Reverse(ctx Context) String {
 Inserts [param what] at the given [param position] in the string.
 */
 //go:nosplit
-func (self StringName) Insert(ctx Context, position Int, what String) String {
+func (self StringName) Insert(ctx Lifetime, position Int, what String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
@@ -4016,7 +4016,7 @@ func (self StringName) Insert(ctx Context, position Int, what String) String {
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
 //go:nosplit
-func (self StringName) Erase(ctx Context, position Int, chars Int) String {
+func (self StringName) Erase(ctx Lifetime, position Int, chars Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
@@ -4045,7 +4045,7 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) Capitalize(ctx Context) String {
+func (self StringName) Capitalize(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4060,7 +4060,7 @@ func (self StringName) Capitalize(ctx Context) String {
 Returns the string converted to [code]camelCase[/code].
 */
 //go:nosplit
-func (self StringName) ToCamelCase(ctx Context) String {
+func (self StringName) ToCamelCase(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4075,7 +4075,7 @@ func (self StringName) ToCamelCase(ctx Context) String {
 Returns the string converted to [code]PascalCase[/code].
 */
 //go:nosplit
-func (self StringName) ToPascalCase(ctx Context) String {
+func (self StringName) ToPascalCase(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4103,7 +4103,7 @@ Returns the string converted to [code]snake_case[/code].
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) ToSnakeCase(ctx Context) String {
+func (self StringName) ToSnakeCase(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4140,7 +4140,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
 //go:nosplit
-func (self StringName) Split(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self StringName) Split(ctx Lifetime, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -4174,7 +4174,7 @@ print(some_array[1])     # Prints "Four"
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) Rsplit(ctx Context, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self StringName) Rsplit(ctx Lifetime, delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -4198,7 +4198,7 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) SplitFloats(ctx Context, delimiter String, allow_empty bool) PackedFloat64Array {
+func (self StringName) SplitFloats(ctx Lifetime, delimiter String, allow_empty bool) PackedFloat64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(delimiter))
@@ -4231,7 +4231,7 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) Join(ctx Context, parts PackedStringArray) String {
+func (self StringName) Join(ctx Lifetime, parts PackedStringArray) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(parts))
@@ -4247,7 +4247,7 @@ func (self StringName) Join(ctx Context, parts PackedStringArray) String {
 Returns the string converted to [code]UPPERCASE[/code].
 */
 //go:nosplit
-func (self StringName) ToUpper(ctx Context) String {
+func (self StringName) ToUpper(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4262,7 +4262,7 @@ func (self StringName) ToUpper(ctx Context) String {
 Returns the string converted to [code]lowercase[/code].
 */
 //go:nosplit
-func (self StringName) ToLower(ctx Context) String {
+func (self StringName) ToLower(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4281,7 +4281,7 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) Left(ctx Context, length Int) String {
+func (self StringName) Left(ctx Lifetime, length Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
@@ -4301,7 +4301,7 @@ print("Hello World!".right(-4)) # Prints "o World!"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) Right(ctx Context, length Int) String {
+func (self StringName) Right(ctx Lifetime, length Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
@@ -4318,7 +4318,7 @@ Strips all non-printable characters from the beginning and the end of the string
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
 //go:nosplit
-func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
+func (self StringName) StripEdges(ctx Lifetime, left bool, right bool) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
@@ -4335,7 +4335,7 @@ func (self StringName) StripEdges(ctx Context, left bool, right bool) String {
 Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
 */
 //go:nosplit
-func (self StringName) StripEscapes(ctx Context) String {
+func (self StringName) StripEscapes(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4351,7 +4351,7 @@ Removes a set of characters defined in [param chars] from the string's beginning
 [b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
 */
 //go:nosplit
-func (self StringName) Lstrip(ctx Context, chars String) String {
+func (self StringName) Lstrip(ctx Lifetime, chars String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(chars))
@@ -4368,7 +4368,7 @@ Removes a set of characters defined in [param chars] from the string's end. See 
 [b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
 */
 //go:nosplit
-func (self StringName) Rstrip(ctx Context, chars String) String {
+func (self StringName) Rstrip(ctx Lifetime, chars String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(chars))
@@ -4395,7 +4395,7 @@ var h = "".get_extension()           # h is ""
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) GetExtension(ctx Context) String {
+func (self StringName) GetExtension(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4413,7 +4413,7 @@ var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) GetBasename(ctx Context) String {
+func (self StringName) GetBasename(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4429,7 +4429,7 @@ Concatenates [param file] at the end of the string as a subpath, adding [code]/[
 [b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
 */
 //go:nosplit
-func (self StringName) PathJoin(ctx Context, file String) String {
+func (self StringName) PathJoin(ctx Lifetime, file String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(file))
@@ -4462,7 +4462,7 @@ Indents every line of the string with the given [param prefix]. Empty lines are 
 For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
 */
 //go:nosplit
-func (self StringName) Indent(ctx Context, prefix String) String {
+func (self StringName) Indent(ctx Lifetime, prefix String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(prefix))
@@ -4478,7 +4478,7 @@ func (self StringName) Indent(ctx Context, prefix String) String {
 Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
 */
 //go:nosplit
-func (self StringName) Dedent(ctx Context) String {
+func (self StringName) Dedent(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4493,7 +4493,7 @@ func (self StringName) Dedent(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
 */
 //go:nosplit
-func (self StringName) Md5Text(ctx Context) String {
+func (self StringName) Md5Text(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4508,7 +4508,7 @@ func (self StringName) Md5Text(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
 */
 //go:nosplit
-func (self StringName) Sha1Text(ctx Context) String {
+func (self StringName) Sha1Text(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4523,7 +4523,7 @@ func (self StringName) Sha1Text(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
 */
 //go:nosplit
-func (self StringName) Sha256Text(ctx Context) String {
+func (self StringName) Sha256Text(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4538,7 +4538,7 @@ func (self StringName) Sha256Text(ctx Context) String {
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
 */
 //go:nosplit
-func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
+func (self StringName) Md5Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -4553,7 +4553,7 @@ func (self StringName) Md5Buffer(ctx Context) PackedByteArray {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
 */
 //go:nosplit
-func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
+func (self StringName) Sha1Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -4568,7 +4568,7 @@ func (self StringName) Sha1Buffer(ctx Context) PackedByteArray {
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
 */
 //go:nosplit
-func (self StringName) Sha256Buffer(ctx Context) PackedByteArray {
+func (self StringName) Sha256Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -4661,7 +4661,7 @@ print(simple_path) # Prints "path/file"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) SimplifyPath(ctx Context) String {
+func (self StringName) SimplifyPath(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4679,7 +4679,7 @@ var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) GetBaseDir(ctx Context) String {
+func (self StringName) GetBaseDir(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4697,7 +4697,7 @@ var file = "/path/to/icon.png".get_file() # file is "icon.png"
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) GetFile(ctx Context) String {
+func (self StringName) GetFile(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4712,7 +4712,7 @@ func (self StringName) GetFile(ctx Context) String {
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
 //go:nosplit
-func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
+func (self StringName) XmlEscape(ctx Lifetime, escape_quotes bool) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
@@ -4728,7 +4728,7 @@ func (self StringName) XmlEscape(ctx Context, escape_quotes bool) String {
 Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
 */
 //go:nosplit
-func (self StringName) XmlUnescape(ctx Context) String {
+func (self StringName) XmlUnescape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4757,7 +4757,7 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) UriEncode(ctx Context) String {
+func (self StringName) UriEncode(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4782,7 +4782,7 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) UriDecode(ctx Context) String {
+func (self StringName) UriDecode(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4797,7 +4797,7 @@ func (self StringName) UriDecode(ctx Context) String {
 Returns a copy of the string with special characters escaped using the C language standard.
 */
 //go:nosplit
-func (self StringName) CEscape(ctx Context) String {
+func (self StringName) CEscape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4813,7 +4813,7 @@ Returns a copy of the string with escaped characters replaced by their meanings.
 [b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
 */
 //go:nosplit
-func (self StringName) CUnescape(ctx Context) String {
+func (self StringName) CUnescape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4828,7 +4828,7 @@ func (self StringName) CUnescape(ctx Context) String {
 Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
 */
 //go:nosplit
-func (self StringName) JsonEscape(ctx Context) String {
+func (self StringName) JsonEscape(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4843,7 +4843,7 @@ func (self StringName) JsonEscape(ctx Context) String {
 Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
 */
 //go:nosplit
-func (self StringName) ValidateNodeName(ctx Context) String {
+func (self StringName) ValidateNodeName(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -4858,7 +4858,7 @@ func (self StringName) ValidateNodeName(ctx Context) String {
 Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
 */
 //go:nosplit
-func (self StringName) ValidateFilename(ctx Context) String {
+func (self StringName) ValidateFilename(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5101,7 +5101,7 @@ func (self StringName) BinToInt() Int {
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
 //go:nosplit
-func (self StringName) Lpad(ctx Context, min_length Int, character String) String {
+func (self StringName) Lpad(ctx Lifetime, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
@@ -5118,7 +5118,7 @@ func (self StringName) Lpad(ctx Context, min_length Int, character String) Strin
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
 //go:nosplit
-func (self StringName) Rpad(ctx Context, min_length Int, character String) String {
+func (self StringName) Rpad(ctx Lifetime, min_length Int, character String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
@@ -5135,7 +5135,7 @@ func (self StringName) Rpad(ctx Context, min_length Int, character String) Strin
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
 //go:nosplit
-func (self StringName) PadDecimals(ctx Context, digits Int) String {
+func (self StringName) PadDecimals(ctx Lifetime, digits Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
@@ -5151,7 +5151,7 @@ func (self StringName) PadDecimals(ctx Context, digits Int) String {
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
 //go:nosplit
-func (self StringName) PadZeros(ctx Context, digits Int) String {
+func (self StringName) PadZeros(ctx Lifetime, digits Int) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
@@ -5167,7 +5167,7 @@ func (self StringName) PadZeros(ctx Context, digits Int) String {
 Removes the given [param prefix] from the start of the string, or returns the string unchanged.
 */
 //go:nosplit
-func (self StringName) TrimPrefix(ctx Context, prefix String) String {
+func (self StringName) TrimPrefix(ctx Lifetime, prefix String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(prefix))
@@ -5183,7 +5183,7 @@ func (self StringName) TrimPrefix(ctx Context, prefix String) String {
 Removes the given [param suffix] from the end of the string, or returns the string unchanged.
 */
 //go:nosplit
-func (self StringName) TrimSuffix(ctx Context, suffix String) String {
+func (self StringName) TrimSuffix(ctx Lifetime, suffix String) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(suffix))
@@ -5199,7 +5199,7 @@ func (self StringName) TrimSuffix(ctx Context, suffix String) String {
 Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces.
 */
 //go:nosplit
-func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
+func (self StringName) ToAsciiBuffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -5214,7 +5214,7 @@ func (self StringName) ToAsciiBuffer(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method.
 */
 //go:nosplit
-func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
+func (self StringName) ToUtf8Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -5229,7 +5229,7 @@ func (self StringName) ToUtf8Buffer(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray].
 */
 //go:nosplit
-func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
+func (self StringName) ToUtf16Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -5244,7 +5244,7 @@ func (self StringName) ToUtf16Buffer(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray].
 */
 //go:nosplit
-func (self StringName) ToUtf32Buffer(ctx Context) PackedByteArray {
+func (self StringName) ToUtf32Buffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -5271,7 +5271,7 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) HexDecode(ctx Context) PackedByteArray {
+func (self StringName) HexDecode(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -5286,7 +5286,7 @@ func (self StringName) HexDecode(ctx Context) PackedByteArray {
 Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray].
 */
 //go:nosplit
-func (self StringName) ToWcharBuffer(ctx Context) PackedByteArray {
+func (self StringName) ToWcharBuffer(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -5362,7 +5362,7 @@ GD.Print(nodePath.GetName(2)); // Sprite
 [/codeblocks]
 */
 //go:nosplit
-func (self NodePath) GetName(ctx Context, idx Int) StringName {
+func (self NodePath) GetName(ctx Lifetime, idx Int) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
@@ -5421,7 +5421,7 @@ GD.Print(nodePath.GetSubname(1)); // load_path
 [/codeblocks]
 */
 //go:nosplit
-func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
+func (self NodePath) GetSubname(ctx Lifetime, idx Int) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
@@ -5437,7 +5437,7 @@ func (self NodePath) GetSubname(ctx Context, idx Int) StringName {
 Returns all paths concatenated with a slash character ([code]/[/code]) as separator without subnames.
 */
 //go:nosplit
-func (self NodePath) GetConcatenatedNames(ctx Context) StringName {
+func (self NodePath) GetConcatenatedNames(ctx Lifetime) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5462,7 +5462,7 @@ GD.Print(nodePath.GetConcatenatedSubnames()); // texture:load_path
 [/codeblocks]
 */
 //go:nosplit
-func (self NodePath) GetConcatenatedSubnames(ctx Context) StringName {
+func (self NodePath) GetConcatenatedSubnames(ctx Lifetime) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5493,7 +5493,7 @@ GD.Print(propertyPath); // :position:x
 [/codeblocks]
 */
 //go:nosplit
-func (self NodePath) GetAsPropertyPath(ctx Context) NodePath {
+func (self NodePath) GetAsPropertyPath(ctx Lifetime) NodePath {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5523,7 +5523,7 @@ func (self NodePath) IsEmpty() bool {
 Calls the method represented by this [Callable]. Unlike [method call], this method expects all arguments to be contained inside the [param arguments] [Array].
 */
 //go:nosplit
-func (self Callable) Callv(ctx Context, arguments Array) Variant {
+func (self Callable) Callv(ctx Lifetime, arguments Array) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arguments))
@@ -5599,7 +5599,7 @@ func (self Callable) IsValid() bool {
 Returns the object on which this [Callable] is called.
 */
 //go:nosplit
-func (self Callable) GetObject(ctx Context) Object {
+func (self Callable) GetObject(ctx Lifetime) Object {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5630,7 +5630,7 @@ func (self Callable) GetObjectId() Int {
 Returns the name of the method represented by this [Callable]. If the callable is a GDScript lambda function, returns the function's name or [code]"<anonymous lambda>"[/code].
 */
 //go:nosplit
-func (self Callable) GetMethod(ctx Context) StringName {
+func (self Callable) GetMethod(ctx Lifetime) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5660,7 +5660,7 @@ func (self Callable) GetBoundArgumentsCount() Int {
 Return the bound arguments (as long as [method get_bound_arguments_count] is greater than zero), or empty (if [method get_bound_arguments_count] is less than or equal to zero).
 */
 //go:nosplit
-func (self Callable) GetBoundArguments(ctx Context) Array {
+func (self Callable) GetBoundArguments(ctx Lifetime) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5692,7 +5692,7 @@ Returns a copy of this [Callable] with one or more arguments bound, reading them
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
 */
 //go:nosplit
-func (self Callable) Bindv(ctx Context, arguments Array) Callable {
+func (self Callable) Bindv(ctx Lifetime, arguments Array) Callable {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(arguments))
@@ -5714,7 +5714,7 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self Callable) Unbind(ctx Context, argcount Int) Callable {
+func (self Callable) Unbind(ctx Lifetime, argcount Int) Callable {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, argcount)
@@ -5730,7 +5730,7 @@ func (self Callable) Unbind(ctx Context, argcount Int) Callable {
 Calls the method represented by this [Callable]. Arguments can be passed and should match the method's signature.
 */
 //go:nosplit
-func (self Callable) Call(ctx Context, args ...Variant) Variant {
+func (self Callable) Call(ctx Lifetime, args ...Variant) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
@@ -5804,7 +5804,7 @@ Returns a copy of this [Callable] with one or more arguments bound. When called,
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
 */
 //go:nosplit
-func (self Callable) Bind(ctx Context, args ...Variant) Callable {
+func (self Callable) Bind(ctx Lifetime, args ...Variant) Callable {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
@@ -5837,7 +5837,7 @@ func (self Signal) IsNull() bool {
 Returns the object emitting this signal.
 */
 //go:nosplit
-func (self Signal) GetObject(ctx Context) Object {
+func (self Signal) GetObject(ctx Lifetime) Object {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5868,7 +5868,7 @@ func (self Signal) GetObjectId() Int {
 Returns the name of this signal.
 */
 //go:nosplit
-func (self Signal) GetName(ctx Context) StringName {
+func (self Signal) GetName(ctx Lifetime) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -5941,7 +5941,7 @@ Returns an [Array] of connections for this signal. Each connection is represente
 - [code]flags[/code] is a combination of [enum Object.ConnectFlags].
 */
 //go:nosplit
-func (self Signal) GetConnections(ctx Context) Array {
+func (self Signal) GetConnections(ctx Lifetime) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -6132,7 +6132,7 @@ Finds and returns the first key whose associated value is equal to [param value]
 [b]Note:[/b] [code]null[/code] is also a valid key. If inside the dictionary, [method find_key] may give misleading results.
 */
 //go:nosplit
-func (self Dictionary) FindKey(ctx Context, value Variant) Variant {
+func (self Dictionary) FindKey(ctx Lifetime, value Variant) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -6197,7 +6197,7 @@ func (self Dictionary) Hash() Int {
 Returns the list of keys in the dictionary.
 */
 //go:nosplit
-func (self Dictionary) Keys(ctx Context) Array {
+func (self Dictionary) Keys(ctx Lifetime) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -6212,7 +6212,7 @@ func (self Dictionary) Keys(ctx Context) Array {
 Returns the list of values in this dictionary.
 */
 //go:nosplit
-func (self Dictionary) Values(ctx Context) Array {
+func (self Dictionary) Values(ctx Lifetime) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -6227,7 +6227,7 @@ func (self Dictionary) Values(ctx Context) Array {
 Creates and returns a new copy of the dictionary. If [param deep] is [code]true[/code], inner [Dictionary] and [Array] keys and values are also copied, recursively.
 */
 //go:nosplit
-func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
+func (self Dictionary) Duplicate(ctx Lifetime, deep bool) Dictionary {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
@@ -6243,7 +6243,7 @@ func (self Dictionary) Duplicate(ctx Context, deep bool) Dictionary {
 Returns the corresponding value for the given [param key] in the dictionary. If the [param key] does not exist, returns [param default], or [code]null[/code] if the parameter is omitted.
 */
 //go:nosplit
-func (self Dictionary) Get(ctx Context, key Variant, def Variant) Variant {
+func (self Dictionary) Get(ctx Lifetime, key Variant, def Variant) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(key))
@@ -6523,7 +6523,7 @@ Returns the first element of the array. Prints an error and returns [code]null[/
 [b]Note:[/b] Calling this function is not the same as writing [code]array[0][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
 */
 //go:nosplit
-func (self Array) Front(ctx Context) Variant {
+func (self Array) Front(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -6539,7 +6539,7 @@ Returns the last element of the array. Prints an error and returns [code]null[/c
 [b]Note:[/b] Calling this function is not the same as writing [code]array[-1][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
 */
 //go:nosplit
-func (self Array) Back(ctx Context) Variant {
+func (self Array) Back(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -6564,7 +6564,7 @@ GD.Print(array.PickRandom()); // Prints either of the four numbers.
 [/codeblocks]
 */
 //go:nosplit
-func (self Array) PickRandom(ctx Context) Variant {
+func (self Array) PickRandom(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -6677,7 +6677,7 @@ func (self Array) Has(value Variant) bool {
 Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_front].
 */
 //go:nosplit
-func (self Array) PopBack(ctx Context) Variant {
+func (self Array) PopBack(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -6693,7 +6693,7 @@ Removes and returns the first element of the array. Returns [code]null[/code] if
 [b]Note:[/b] On large arrays, this method is much slower than [method pop_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method pop_front] will be.
 */
 //go:nosplit
-func (self Array) PopFront(ctx Context) Variant {
+func (self Array) PopFront(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -6709,7 +6709,7 @@ Removes and returns the element of the array at index [param position]. If negat
 [b]Note:[/b] On large arrays, this method can be slower than [method pop_back] as it will reindex the array's elements that are located after the removed element. The larger the array and the lower the index of the removed element, the slower [method pop_at] will be.
 */
 //go:nosplit
-func (self Array) PopAt(ctx Context, position Int) Variant {
+func (self Array) PopAt(ctx Lifetime, position Int) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
@@ -6864,7 +6864,7 @@ Returns a copy of the array.
 If [param deep] is [code]true[/code], a deep copy is performed: all nested arrays and dictionaries are duplicated and will not be shared with the original array. If [code]false[/code], a shallow copy is made and references to the original nested arrays and dictionaries are kept, so that modifying a sub-array or dictionary in the copy will also impact those referenced in the source array. Note that any [Object]-derived elements will be shallow copied regardless of the [param deep] setting.
 */
 //go:nosplit
-func (self Array) Duplicate(ctx Context, deep bool) Array {
+func (self Array) Duplicate(ctx Lifetime, deep bool) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
@@ -6885,7 +6885,7 @@ If [param deep] is true, each element will be copied by value rather than by ref
 [b]Note:[/b] To include the first element when [param step] is negative, use [code]arr.slice(begin, -arr.size() - 1, step)[/code] (i.e. [code][0, 1, 2].slice(1, -4, -1)[/code] returns [code][1, 0][/code]).
 */
 //go:nosplit
-func (self Array) Slice(ctx Context, begin Int, end Int, step Int, deep bool) Array {
+func (self Array) Slice(ctx Lifetime, begin Int, end Int, step Int, deep bool) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -6914,7 +6914,7 @@ func remove_1(number):
 See also [method any], [method all], [method map] and [method reduce].
 */
 //go:nosplit
-func (self Array) Filter(ctx Context, method Callable) Array {
+func (self Array) Filter(ctx Lifetime, method Callable) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(method))
@@ -6940,7 +6940,7 @@ func negate(number):
 See also [method filter], [method reduce], [method any] and [method all].
 */
 //go:nosplit
-func (self Array) Map(ctx Context, method Callable) Array {
+func (self Array) Map(ctx Lifetime, method Callable) Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(method))
@@ -6966,7 +6966,7 @@ func sum(accum, number):
 See also [method map], [method filter], [method any] and [method all].
 */
 //go:nosplit
-func (self Array) Reduce(ctx Context, method Callable, accum Variant) Variant {
+func (self Array) Reduce(ctx Lifetime, method Callable, accum Variant) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(method))
@@ -7057,7 +7057,7 @@ func is_length_greater(a, b):
 [/codeblock]
 */
 //go:nosplit
-func (self Array) Max(ctx Context) Variant {
+func (self Array) Max(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -7073,7 +7073,7 @@ Returns the minimum value contained in the array if all elements are of comparab
 See also [method max] for an example of using a custom comparator.
 */
 //go:nosplit
-func (self Array) Min(ctx Context) Variant {
+func (self Array) Min(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -7134,7 +7134,7 @@ func (self Array) GetTypedBuiltin() Int {
 Returns the [b]native[/b] class name of the typed array if the built-in type is [constant TYPE_OBJECT]. Otherwise, this method returns an empty string.
 */
 //go:nosplit
-func (self Array) GetTypedClassName(ctx Context) StringName {
+func (self Array) GetTypedClassName(ctx Lifetime) StringName {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7149,7 +7149,7 @@ func (self Array) GetTypedClassName(ctx Context) StringName {
 Returns the script associated with the typed array. This method returns a [Script] instance or [code]null[/code].
 */
 //go:nosplit
-func (self Array) GetTypedScript(ctx Context) Variant {
+func (self Array) GetTypedScript(ctx Lifetime) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -7401,7 +7401,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedByteArray) Slice(ctx Context, begin Int, end Int) PackedByteArray {
+func (self *PackedByteArray) Slice(ctx Lifetime, begin Int, end Int) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -7452,7 +7452,7 @@ func (self *PackedByteArray) Bsearch(value Int, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedByteArray) Duplicate(ctx Context) PackedByteArray {
+func (self *PackedByteArray) Duplicate(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -7521,7 +7521,7 @@ func (self *PackedByteArray) Count(value Int) Int {
 Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method get_string_from_utf8] if the content is ASCII/Latin-1 only. Unlike the UTF-8 function this function maps every byte to a character in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use [method get_string_from_utf8]. This is the inverse of [method String.to_ascii_buffer].
 */
 //go:nosplit
-func (self *PackedByteArray) GetStringFromAscii(ctx Context) String {
+func (self *PackedByteArray) GetStringFromAscii(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7537,7 +7537,7 @@ func (self *PackedByteArray) GetStringFromAscii(ctx Context) String {
 Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not valid UTF-8 string. This is the inverse of [method String.to_utf8_buffer].
 */
 //go:nosplit
-func (self *PackedByteArray) GetStringFromUtf8(ctx Context) String {
+func (self *PackedByteArray) GetStringFromUtf8(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7553,7 +7553,7 @@ func (self *PackedByteArray) GetStringFromUtf8(ctx Context) String {
 Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not valid UTF-16 string. This is the inverse of [method String.to_utf16_buffer].
 */
 //go:nosplit
-func (self *PackedByteArray) GetStringFromUtf16(ctx Context) String {
+func (self *PackedByteArray) GetStringFromUtf16(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7569,7 +7569,7 @@ func (self *PackedByteArray) GetStringFromUtf16(ctx Context) String {
 Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns empty string if source array is not valid UTF-32 string. This is the inverse of [method String.to_utf32_buffer].
 */
 //go:nosplit
-func (self *PackedByteArray) GetStringFromUtf32(ctx Context) String {
+func (self *PackedByteArray) GetStringFromUtf32(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7585,7 +7585,7 @@ func (self *PackedByteArray) GetStringFromUtf32(ctx Context) String {
 Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded array to [String]. Returns empty string if source array is not valid wide string. This is the inverse of [method String.to_wchar_buffer].
 */
 //go:nosplit
-func (self *PackedByteArray) GetStringFromWchar(ctx Context) String {
+func (self *PackedByteArray) GetStringFromWchar(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7611,7 +7611,7 @@ GD.Print(array.HexEncode()); // Prints: 0b2eff
 [/codeblocks]
 */
 //go:nosplit
-func (self *PackedByteArray) HexEncode(ctx Context) String {
+func (self *PackedByteArray) HexEncode(ctx Lifetime) String {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -7627,7 +7627,7 @@ func (self *PackedByteArray) HexEncode(ctx Context) String {
 Returns a new [PackedByteArray] with the data compressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 */
 //go:nosplit
-func (self *PackedByteArray) Compress(ctx Context, compression_mode Int) PackedByteArray {
+func (self *PackedByteArray) Compress(ctx Lifetime, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, compression_mode)
@@ -7645,7 +7645,7 @@ Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_si
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
-func (self *PackedByteArray) Decompress(ctx Context, buffer_size Int, compression_mode Int) PackedByteArray {
+func (self *PackedByteArray) Decompress(ctx Lifetime, buffer_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
@@ -7666,7 +7666,7 @@ GZIP has a maximal compression ratio of 1032:1, meaning it's very possible for a
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
 */
 //go:nosplit
-func (self *PackedByteArray) DecompressDynamic(ctx Context, max_output_size Int, compression_mode Int) PackedByteArray {
+func (self *PackedByteArray) DecompressDynamic(ctx Lifetime, max_output_size Int, compression_mode Int) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, max_output_size)
@@ -7889,7 +7889,7 @@ func (self *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) 
 Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (self *PackedByteArray) DecodeVar(ctx Context, byte_offset Int, allow_objects bool) Variant {
+func (self *PackedByteArray) DecodeVar(ctx Lifetime, byte_offset Int, allow_objects bool) Variant {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -7927,7 +7927,7 @@ The size of the input array must be a multiple of 4 (size of 32-bit integer). Th
 If the original data can't be converted to signed 32-bit integers, the resulting data is undefined.
 */
 //go:nosplit
-func (self *PackedByteArray) ToInt32Array(ctx Context) PackedInt32Array {
+func (self *PackedByteArray) ToInt32Array(ctx Lifetime) PackedInt32Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -7945,7 +7945,7 @@ The size of the input array must be a multiple of 8 (size of 64-bit integer). Th
 If the original data can't be converted to signed 64-bit integers, the resulting data is undefined.
 */
 //go:nosplit
-func (self *PackedByteArray) ToInt64Array(ctx Context) PackedInt64Array {
+func (self *PackedByteArray) ToInt64Array(ctx Lifetime) PackedInt64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -7963,7 +7963,7 @@ The size of the input array must be a multiple of 4 (size of 32-bit float). The 
 If the original data can't be converted to 32-bit floats, the resulting data is undefined.
 */
 //go:nosplit
-func (self *PackedByteArray) ToFloat32Array(ctx Context) PackedFloat32Array {
+func (self *PackedByteArray) ToFloat32Array(ctx Lifetime) PackedFloat32Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -7981,7 +7981,7 @@ The size of the input array must be a multiple of 8 (size of 64-bit double). The
 If the original data can't be converted to 64-bit floats, the resulting data is undefined.
 */
 //go:nosplit
-func (self *PackedByteArray) ToFloat64Array(ctx Context) PackedFloat64Array {
+func (self *PackedByteArray) ToFloat64Array(ctx Lifetime) PackedFloat64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -8401,7 +8401,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedInt32Array) Slice(ctx Context, begin Int, end Int) PackedInt32Array {
+func (self *PackedInt32Array) Slice(ctx Lifetime, begin Int, end Int) PackedInt32Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -8420,7 +8420,7 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]int32_array.size() * 4[/code].
 */
 //go:nosplit
-func (self *PackedInt32Array) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedInt32Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -8469,7 +8469,7 @@ func (self *PackedInt32Array) Bsearch(value Int, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedInt32Array) Duplicate(ctx Context) PackedInt32Array {
+func (self *PackedInt32Array) Duplicate(ctx Lifetime) PackedInt32Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -8747,7 +8747,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedInt64Array) Slice(ctx Context, begin Int, end Int) PackedInt64Array {
+func (self *PackedInt64Array) Slice(ctx Lifetime, begin Int, end Int) PackedInt64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -8766,7 +8766,7 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]int64_array.size() * 8[/code].
 */
 //go:nosplit
-func (self *PackedInt64Array) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedInt64Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -8815,7 +8815,7 @@ func (self *PackedInt64Array) Bsearch(value Int, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedInt64Array) Duplicate(ctx Context) PackedInt64Array {
+func (self *PackedInt64Array) Duplicate(ctx Lifetime) PackedInt64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -9094,7 +9094,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedFloat32Array) Slice(ctx Context, begin Int, end Int) PackedFloat32Array {
+func (self *PackedFloat32Array) Slice(ctx Lifetime, begin Int, end Int) PackedFloat32Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -9113,7 +9113,7 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]float32_array.size() * 4[/code].
 */
 //go:nosplit
-func (self *PackedFloat32Array) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedFloat32Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -9164,7 +9164,7 @@ func (self *PackedFloat32Array) Bsearch(value Float, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedFloat32Array) Duplicate(ctx Context) PackedFloat32Array {
+func (self *PackedFloat32Array) Duplicate(ctx Lifetime) PackedFloat32Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -9446,7 +9446,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedFloat64Array) Slice(ctx Context, begin Int, end Int) PackedFloat64Array {
+func (self *PackedFloat64Array) Slice(ctx Lifetime, begin Int, end Int) PackedFloat64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -9465,7 +9465,7 @@ Returns a copy of the data converted to a [PackedByteArray], where each element 
 The size of the new array will be [code]float64_array.size() * 8[/code].
 */
 //go:nosplit
-func (self *PackedFloat64Array) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedFloat64Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -9516,7 +9516,7 @@ func (self *PackedFloat64Array) Bsearch(value Float, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedFloat64Array) Duplicate(ctx Context) PackedFloat64Array {
+func (self *PackedFloat64Array) Duplicate(ctx Lifetime) PackedFloat64Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -9797,7 +9797,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStringArray {
+func (self *PackedStringArray) Slice(ctx Lifetime, begin Int, end Int) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -9815,7 +9815,7 @@ func (self *PackedStringArray) Slice(ctx Context, begin Int, end Int) PackedStri
 Returns a [PackedByteArray] with each string encoded as bytes.
 */
 //go:nosplit
-func (self *PackedStringArray) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedStringArray) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -9864,7 +9864,7 @@ func (self *PackedStringArray) Bsearch(value String, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedStringArray) Duplicate(ctx Context) PackedStringArray {
+func (self *PackedStringArray) Duplicate(ctx Lifetime) PackedStringArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10143,7 +10143,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVector2Array {
+func (self *PackedVector2Array) Slice(ctx Lifetime, begin Int, end Int) PackedVector2Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -10161,7 +10161,7 @@ func (self *PackedVector2Array) Slice(ctx Context, begin Int, end Int) PackedVec
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
 //go:nosplit
-func (self *PackedVector2Array) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedVector2Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10212,7 +10212,7 @@ func (self *PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedVector2Array) Duplicate(ctx Context) PackedVector2Array {
+func (self *PackedVector2Array) Duplicate(ctx Lifetime) PackedVector2Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10494,7 +10494,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVector3Array {
+func (self *PackedVector3Array) Slice(ctx Lifetime, begin Int, end Int) PackedVector3Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -10512,7 +10512,7 @@ func (self *PackedVector3Array) Slice(ctx Context, begin Int, end Int) PackedVec
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
 //go:nosplit
-func (self *PackedVector3Array) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedVector3Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10563,7 +10563,7 @@ func (self *PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedVector3Array) Duplicate(ctx Context) PackedVector3Array {
+func (self *PackedVector3Array) Duplicate(ctx Lifetime) PackedVector3Array {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10844,7 +10844,7 @@ The absolute value of [param begin] and [param end] will be clamped to the array
 If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
 */
 //go:nosplit
-func (self *PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColorArray {
+func (self *PackedColorArray) Slice(ctx Lifetime, begin Int, end Int) PackedColorArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
@@ -10862,7 +10862,7 @@ func (self *PackedColorArray) Slice(ctx Context, begin Int, end Int) PackedColor
 Returns a [PackedByteArray] with each color encoded as bytes.
 */
 //go:nosplit
-func (self *PackedColorArray) ToByteArray(ctx Context) PackedByteArray {
+func (self *PackedColorArray) ToByteArray(ctx Lifetime) PackedByteArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10911,7 +10911,7 @@ func (self *PackedColorArray) Bsearch(value Color, before bool) Int {
 Creates a copy of the array, and returns it.
 */
 //go:nosplit
-func (self *PackedColorArray) Duplicate(ctx Context) PackedColorArray {
+func (self *PackedColorArray) Duplicate(ctx Lifetime) PackedColorArray {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -10983,7 +10983,7 @@ Returns the object's built-in class name, as a [String]. See also [method is_cla
 [b]Note:[/b] This method ignores [code]class_name[/code] declarations. If this object's script has defined a [code]class_name[/code], the base, built-in class name is returned instead.
 */
 //go:nosplit
-func (self Object) GetClass(ctx Context) String {
+func (self Object) GetClass(ctx Lifetime) String {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11067,7 +11067,7 @@ var a = node.Get(Node2D.PropertyName.Rotation); // a is 1.5
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) Get(ctx Context, property StringName) Variant {
+func (self Object) Get(ctx Lifetime, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(property))
@@ -11128,7 +11128,7 @@ var b = node.GetIndexed("position:y"); // b is -10
 [b]Note:[/b] This method does not support actual paths to nodes in the [SceneTree], only sub-property paths. In the context of nodes, use [method Node.get_node_and_resource] instead.
 */
 //go:nosplit
-func (self Object) GetIndexed(ctx Context, property_path NodePath) Variant {
+func (self Object) GetIndexed(ctx Lifetime, property_path NodePath) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(property_path))
@@ -11150,7 +11150,7 @@ Returns the object's property list as an [Array] of dictionaries. Each [Dictiona
 [b]Note:[/b] In GDScript, all class members are treated as properties. In C# and GDExtension, it may be necessary to explicitly mark class members as Godot properties using decorators or attributes.
 */
 //go:nosplit
-func (self Object) GetPropertyList(ctx Context) ArrayOf[Dictionary] {
+func (self Object) GetPropertyList(ctx Lifetime) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11171,7 +11171,7 @@ Returns this object's methods and their signatures as an [Array] of dictionaries
 [b]Note:[/b] The dictionaries of [code]args[/code] and [code]return[/code] are formatted identically to the results of [method get_property_list], although not all entries are used.
 */
 //go:nosplit
-func (self Object) GetMethodList(ctx Context) ArrayOf[Dictionary] {
+func (self Object) GetMethodList(ctx Lifetime) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11202,7 +11202,7 @@ Returns the custom default value of the given [param property]. Use [method prop
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_get_revert] to customize the default value. If [method _property_get_revert] is not implemented, this method returns [code]null[/code].
 */
 //go:nosplit
-func (self Object) PropertyGetRevert(ctx Context, property StringName) Variant {
+func (self Object) PropertyGetRevert(ctx Lifetime, property StringName) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(property))
@@ -11254,7 +11254,7 @@ func (self Object) Notification(what Int, reversed bool) {
 Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[/code]. Override [method _to_string] to customize the string representation of the object.
 */
 //go:nosplit
-func (self Object) ToString(ctx Context) String {
+func (self Object) ToString(ctx Lifetime) String {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11296,7 +11296,7 @@ func (self Object) SetScript(script Variant) {
 Returns the object's [Script] instance, or [code]null[/code] if no script is attached.
 */
 //go:nosplit
-func (self Object) GetScript(ctx Context) Variant {
+func (self Object) GetScript(ctx Lifetime) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -11344,7 +11344,7 @@ Returns the object's metadata value for the given entry [param name]. If the ent
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
 //go:nosplit
-func (self Object) GetMeta(ctx Context, name StringName, def Variant) Variant {
+func (self Object) GetMeta(ctx Lifetime, name StringName, def Variant) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(name))
@@ -11377,7 +11377,7 @@ func (self Object) HasMeta(name StringName) bool {
 Returns the object's metadata entry names as a [PackedStringArray].
 */
 //go:nosplit
-func (self Object) GetMetaList(ctx Context) ArrayOf[StringName] {
+func (self Object) GetMetaList(ctx Lifetime) ArrayOf[StringName] {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11491,7 +11491,7 @@ node.Callv(Node3D.MethodName.Rotate, new Godot.Collections.Array { new Vector3(1
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) Callv(ctx Context, method StringName, arg_array Array) Variant {
+func (self Object) Callv(ctx Lifetime, method StringName, arg_array Array) Variant {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(method))
@@ -11540,7 +11540,7 @@ Returns the list of existing signals as an [Array] of dictionaries.
 [b]Note:[/b] Due of the implementation, each [Dictionary] is formatted very similarly to the returned values of [method get_method_list].
 */
 //go:nosplit
-func (self Object) GetSignalList(ctx Context) ArrayOf[Dictionary] {
+func (self Object) GetSignalList(ctx Lifetime) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11557,7 +11557,7 @@ Returns an [Array] of connections for the given [param signal] name. Each connec
 - [code]flags[/code] is a combination of [enum ConnectFlags].
 */
 //go:nosplit
-func (self Object) GetSignalConnectionList(ctx Context, signal StringName) ArrayOf[Dictionary] {
+func (self Object) GetSignalConnectionList(ctx Lifetime, signal StringName) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(signal))
@@ -11575,7 +11575,7 @@ Returns an [Array] of signal connections received by this object. Each connectio
 - [code]flags[/code] is a combination of [enum ConnectFlags].
 */
 //go:nosplit
-func (self Object) GetIncomingConnections(ctx Context) ArrayOf[Dictionary] {
+func (self Object) GetIncomingConnections(ctx Lifetime) ArrayOf[Dictionary] {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
@@ -11830,7 +11830,7 @@ If [method can_translate_messages] is [code]false[/code], or no translation is a
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 //go:nosplit
-func (self Object) Tr(ctx Context, message StringName, context StringName) String {
+func (self Object) Tr(ctx Lifetime, message StringName, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(message))
@@ -11850,7 +11850,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended handling these cases with [method tr].
 */
 //go:nosplit
-func (self Object) TrN(ctx Context, message StringName, plural_message StringName, n Int, context StringName) String {
+func (self Object) TrN(ctx Lifetime, message StringName, plural_message StringName, n Int, context StringName) String {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(message))
