@@ -746,9 +746,12 @@ func generate() error {
 										description = strings.Replace(description, "\n", "\n\t\t//", -1)
 										fmt.Fprintln(classdb, "\t\t//"+description)
 									}
-									fmt.Fprintf(classdb, "\t\t%s(godot Lifetime", convertName(method.Name))
-									for _, arg := range method.Arguments {
-										fmt.Fprint(classdb, ", ", fixReserved(arg.Name), " ", classDB.convertType(pkg, arg.Meta, arg.Type))
+									fmt.Fprintf(classdb, "\t\t%s(", convertName(method.Name))
+									for i, arg := range method.Arguments {
+										if i > 0 {
+											fmt.Fprint(classdb, ", ")
+										}
+										fmt.Fprint(classdb, fixReserved(arg.Name), " ", classDB.convertType(pkg, arg.Meta, arg.Type))
 									}
 									fmt.Fprint(classdb, ") ", classDB.convertType(pkg, method.ReturnValue.Meta, method.ReturnValue.Type))
 									fmt.Fprintln(classdb)
