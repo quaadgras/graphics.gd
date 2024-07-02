@@ -260,10 +260,9 @@ func slowCall(hasContext bool, ctx Lifetime, method reflect.Value, p_args gd.Uns
 			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val.AsPointer())[0])
 			instance, ok := godot.Instances[mmm.Get(val.AsPointer())[0]]
 			if ok {
-				tmp := gd.NewContext(godot)
+				tmp := instance.GetKeepAlive()
 				ptr := mmm.End(val.AsPointer())
 				instance.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, tmp.API, ptr))
-				instance.SetKeepAlive(tmp)
 			} else {
 				mmm.End(val.AsPointer())
 			}

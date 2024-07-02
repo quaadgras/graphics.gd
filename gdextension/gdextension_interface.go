@@ -2599,6 +2599,14 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 		return
 	}
 	if result != (gd.Variant{}) {
+		if result.Type() == gd.TypeObject {
+			ptr := mmm.End(result.Interface(ctx).(gd.Object).AsPointer())
+			instance, ok := godot.Instances[ptr[0]]
+			if ok {
+				tmp := instance.GetKeepAlive()
+				instance.SetPointer(mmm.Let[gd.Pointer, gd.API, [2]uintptr](tmp.Lifetime, tmp.API, ptr))
+			}
+		}
 		*(*[3]uintptr)(p_ret) = mmm.End(result)
 	}
 }
