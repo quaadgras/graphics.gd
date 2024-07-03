@@ -4,7 +4,7 @@ go 1.22.3
 
 require (
 	grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4
-	runtime.link v0.0.0-20240701115931-4e64a1336202
+	runtime.link v0.0.0-20240703051215-df8d9e173c4e
 )
 
 require (
@@ -12,4 +12,4 @@ require (
 	grow.graphics/xy v0.0.0-20240603021049-7427233fc3a9
 )
 
-require grow.graphics/rd v0.0.0-20240701120228-0b457a30999c // indirect
+require grow.graphics/rd v0.0.0-20240703051251-3d049610e0d7 // indirect

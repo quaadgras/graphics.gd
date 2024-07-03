@@ -652,7 +652,7 @@ func (gpu renderingDevice) ShaderCompileBinaryFromSPIRV(span mmm.Lifetime, shade
 	return ffi.Bytes{Interface: gpu.class.ShaderCompileBinaryFromSpirv(gpu.scope(span), spirv, tmp.String(name))}
 }
 
-func (gpu renderingDevice) ShaderCompileSourceIntoSPIRV(span mmm.Lifetime, shader ffi.Managed[rd.ShaderSource], allow_cache bool) ffi.Managed[rd.ShaderSPIRV] {
+func (gpu renderingDevice) ShaderCompileSourceIntoSPIRV(span mmm.Lifetime, shader ffi.Managed[rd.ShaderSource], allow_cache bool) rd.ShaderSPIRV {
 	src, ok := shader.Interface().(classdb.RDShaderSource)
 	if !ok {
 		value := shader.Value()
@@ -667,9 +667,14 @@ func (gpu renderingDevice) ShaderCompileSourceIntoSPIRV(span mmm.Lifetime, shade
 	}
 	tmp := gd.NewContext(gpu.godot)
 	defer tmp.End()
-	var spirv ffi.Managed[rd.ShaderSPIRV]
-	spirv.Cache(gpu.class.ShaderCompileSpirvFromSource(gpu.scope(span), src, allow_cache))
-	return spirv
+	var spirv = gpu.class.ShaderCompileSpirvFromSource(gpu.scope(span), src, allow_cache)
+	return rd.ShaderSPIRV{
+		Compute:               ffi.Bytes{Interface: spirv.GetStageBytecode(gpu.scope(span), RenderingDeviceShaderStageCompute)},
+		Fragment:              ffi.Bytes{Interface: spirv.GetStageBytecode(gpu.scope(span), RenderingDeviceShaderStageFragment)},
+		TesselationControl:    ffi.Bytes{Interface: spirv.GetStageBytecode(gpu.scope(span), RenderingDeviceShaderStageTesselationControl)},
+		TesselationEvaluation: ffi.Bytes{Interface: spirv.GetStageBytecode(gpu.scope(span), RenderingDeviceShaderStageTesselationEvaluation)},
+		Vertex:                ffi.Bytes{Interface: spirv.GetStageBytecode(gpu.scope(span), RenderingDeviceShaderStageVertex)},
+	}
 }
 
 func (gpu renderingDevice) ShaderCreateFromBytecode(span mmm.Lifetime, code ffi.Bytes, id rd.ShaderPlaceholder) rd.Shader {
