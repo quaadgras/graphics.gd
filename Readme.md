@@ -161,7 +161,7 @@ To run the go tests for this module `cd internal && gd test`.
 
 * [Our pure Go zero-dependencies port of Godot's Color Class](https://github.com/grow-graphics/uc)
 * [Our pure Go zero-dependencies port of Godot's Math Variants](https://github.com/grow-graphics/xy)
-* [Our pure Go zero-dependencies representation of Godot's RenderingDevice API](https://github.com/grow-graphics/xy)
+* [Our pure Go representation of Godot's RenderingDevice API](https://github.com/grow-graphics/rd)
 * [godot-go](https://github.com/godot-go/godot-go) (Another project aiming to support Go + Godot integration)
 
 ## Licensing
