@@ -113,7 +113,7 @@ of a project. Don't forget to write tests!
 
 ## Low Level Rendering API
 
-This module exposes an ideomatic implementation of the Godot RenderingDevice API, a low-level driver-agnostic
+This module exposes an idiomatic implementation of the Godot RenderingDevice API, a low-level driver-agnostic
 rendering API.
 
 ```
