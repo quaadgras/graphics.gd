@@ -172,6 +172,8 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 	value = value.Elem()
 
 	// TODO cache this check
+	var signals []signalChan
+	var thread = gd.NewLifetime(ctx.API)
 	for i := 0; i < value.NumField(); i++ {
 		var field = value.Type().Field(i)
 		if !field.IsExported() || field.Name == "Class" {
@@ -202,10 +204,24 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 				return nil
 			}))
 		}
+		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
+			signal := ctx.SignalOf(ctx, super, ctx.StringName(name))
+			scoped := mmm.Let[gd.Signal](thread.Lifetime, thread.API, mmm.End(signal))
+			ch := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, field.Type.Elem()), 0)
+			rvalue.Elem().Set(ch)
+			signals = append(signals, signalChan{
+				signal: scoped,
+				rvalue: ch,
+			})
+		}
+	}
+	if len(signals) > 0 {
+		go manageSignals(thread, super.AsObject().GetInstanceId(), signals)
 	}
 	return &instanceImplementation{
-		object: mmm.Get(super.AsPointer())[0],
-		Value:  value.Addr().Interface().(gd.ExtensionClass),
+		object:  mmm.Get(super.AsPointer())[0],
+		Value:   value.Addr().Interface().(gd.ExtensionClass),
+		signals: signals,
 	}
 }
 
@@ -267,8 +283,9 @@ func (class classImplementation) GetVirtual(name StringName) any {
 }
 
 type instanceImplementation struct {
-	object uintptr
-	Value  gd.ExtensionClass
+	object  uintptr
+	Value   gd.ExtensionClass
+	signals []signalChan
 }
 
 func (instance instanceImplementation) OnCreate() {
@@ -534,6 +551,9 @@ func (instance *instanceImplementation) GetRID() RID {
 }
 
 func (instance *instanceImplementation) Free() {
+	for _, signal := range instance.signals {
+		signal.rvalue.Close()
+	}
 	delete(instance.Value.GetKeepAlive().API.Instances, instance.object)
 	instance.Value.SetTemporary(instance.Value.GetKeepAlive())
 	switch onfree := instance.Value.(type) {

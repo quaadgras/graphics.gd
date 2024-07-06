@@ -1671,6 +1671,9 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(uintptr(object_get_instance_from_id)),
 			C.uintptr_t(id),
 		)
+		if ret == 0 {
+			return gd.Object{}
+		}
 		var obj gd.Object
 		obj.SetPointer(gd.PointerMustAssertInstanceID(ctx, uintptr(ret)))
 		return obj
