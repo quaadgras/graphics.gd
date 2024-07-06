@@ -9,7 +9,7 @@ import (
 )
 
 func BenchmarkMethodBindPointerCall(B *testing.B) {
-	godot := gd.NewContext(API)
+	godot := gd.NewLifetime(API)
 	defer godot.End()
 
 	s := godot.String("Hello, World!")

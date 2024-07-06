@@ -30,7 +30,7 @@ func (c *CustomSignal) TakeDamage(godot gd.Lifetime, amount gd.Int) {
 }
 
 func TestSignals(t *testing.T) {
-	godot := internal.NewContext(API)
+	godot := internal.NewLifetime(API)
 	defer godot.End()
 
 	gd.Register[CustomSignal](godot)

@@ -9,7 +9,7 @@ import (
 )
 
 func TestStrings(t *testing.T) {
-	godot := gd.NewContext(API)
+	godot := gd.NewLifetime(API)
 	defer godot.End()
 
 	var str = godot.String("Hello, World!")

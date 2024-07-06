@@ -113,7 +113,7 @@ func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	if rtype.Kind() == reflect.Pointer {
 		rtype = rtype.Elem()
 	}
-	tmp := NewContext(godot.API)
+	tmp := NewLifetime(godot.API)
 	defer tmp.End()
 	var classtag = godot.API.ClassDB.GetClassTag(tmp.StringName(rtype.Name()))
 	casted := godot.API.Object.CastTo(class.AsObject(), classtag)

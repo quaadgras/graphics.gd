@@ -14,7 +14,7 @@ import (
 // value is not safe to use concurrently. Each goroutine should create
 // its own [Lifetime] and use that instead.
 //
-//	newctx := gd.NewContext(oldctx.API())
+//	newctx := gd.NewLifetime(oldctx.API())
 //
 // When a [Lifetime] is freed, it will free all of the objects that were
 // created using it. A [Lifetime] should not be used after free, as it

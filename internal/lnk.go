@@ -42,7 +42,7 @@ func (Godot *API) linkSingletons(static Lifetime) {
 // linkUtility, each field of cache.utility is a function value that
 // needs to be loaded in dynamically.
 func (Godot *API) linkUtility() {
-	ctx := NewContext(Godot)
+	ctx := NewLifetime(Godot)
 	defer ctx.End()
 
 	rvalue := reflect.ValueOf(&Godot.utility).Elem()
@@ -61,7 +61,7 @@ func (Godot *API) linkUtility() {
 // linkBuiltin is very similar to [Godot.linkMethods], except it loads in methods for the
 // builtin Godot classes.
 func (Godot *API) linkBuiltin() {
-	ctx := NewContext(Godot)
+	ctx := NewLifetime(Godot)
 	defer ctx.End()
 
 	rvalue := reflect.ValueOf(&Godot.builtin).Elem()
@@ -87,7 +87,7 @@ func (Godot *API) linkBuiltin() {
 // the class it represents. Each field of that struct needs to be
 // filled in with a [MethodBind].
 func (Godot *API) linkMethods(editor bool) {
-	ctx := NewContext(Godot)
+	ctx := NewLifetime(Godot)
 	defer ctx.End()
 
 	rvalue := reflect.ValueOf(&Godot.Methods).Elem()
@@ -129,7 +129,7 @@ func (Godot *API) linkMethods(editor bool) {
 }
 
 func (Godot *API) linkTypeset() {
-	tmp := newContext(Godot)
+	tmp := NewLifetime(Godot)
 	defer tmp.End()
 
 	Godot.refCountedClassTag = Godot.ClassDB.GetClassTag(tmp.StringName("RefCounted"))

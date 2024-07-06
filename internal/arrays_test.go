@@ -8,7 +8,7 @@ import (
 )
 
 func TestArrays(t *testing.T) {
-	godot := internal.NewContext(API)
+	godot := internal.NewLifetime(API)
 	defer godot.End()
 
 	var numbers = gd.NewArrayOf[gd.Int](godot)

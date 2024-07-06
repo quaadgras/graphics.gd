@@ -81,7 +81,7 @@ func registerMethods(godot Lifetime, class StringName, rtype reflect.Type) {
 				return gd.Variant{}, nil
 			},
 			PointerCall: func(instance any, args gd.UnsafeArgs, ret gd.UnsafeBack) {
-				var tmp = gd.NewContext(godot.API)
+				var tmp = gd.NewLifetime(godot.API)
 				defer tmp.End()
 				extensionInstance := instance.(*instanceImplementation).Value
 				extensionInstance.SetTemporary(tmp)

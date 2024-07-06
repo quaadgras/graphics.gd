@@ -47,7 +47,7 @@ the editor as a plugin.
 If the Struct extends [MainLoop] or [SceneTree] then it will be
 used as the main loop for the application.
 
-If the Struct implements an OnRegister(Context) method, it will
+If the Struct implements an OnRegister(Lifetime) method, it will
 be called on a temporary instance when the class is registered.
 */
 func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
@@ -145,7 +145,7 @@ func (class classImplementation) IsExposed() bool {
 }
 
 func (class classImplementation) CreateInstance() Object {
-	ctx := gd.NewContext(class.Godot)
+	ctx := gd.NewLifetime(class.Godot)
 	var super = class.Godot.ClassDB.ConstructObject(ctx, class.Super)
 	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, mmm.End(super.AsPointer())))
 	instance := class.reloadInstance(ctx, super)
@@ -156,7 +156,7 @@ func (class classImplementation) CreateInstance() Object {
 }
 
 func (class classImplementation) ReloadInstance(super Object) gd.ObjectInterface {
-	return class.reloadInstance(gd.NewContext(class.Godot), super)
+	return class.reloadInstance(gd.NewLifetime(class.Godot), super)
 }
 
 func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) gd.ObjectInterface {
@@ -194,7 +194,7 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 			emit := rvalue.Elem().FieldByName("Emit")
 			fnType := emit.Type()
 			emit.Set(reflect.MakeFunc(fnType, func(args []reflect.Value) (results []reflect.Value) {
-				tmp := gd.NewContext(ctx.API)
+				tmp := gd.NewLifetime(ctx.API)
 				defer tmp.End()
 				var variants = make([]gd.Variant, 0, len(args))
 				for _, arg := range args {
@@ -226,7 +226,7 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 }
 
 func (class classImplementation) GetVirtual(name StringName) any {
-	ctx := gd.NewContext(class.Godot)
+	ctx := gd.NewLifetime(class.Godot)
 	defer ctx.End()
 
 	if Engine(ctx).IsEditorHint() {
@@ -289,7 +289,7 @@ type instanceImplementation struct {
 }
 
 func (instance instanceImplementation) OnCreate() {
-	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 	if impl, ok := instance.Value.(interface {
 		OnCreate()
@@ -303,7 +303,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if impl, ok := instance.Value.(interface {
 		Set(gd.StringName, gd.Variant) gd.Bool
 	}); ok {
-		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
 		instance.Value.SetTemporary(tmp)
 		ok := bool(impl.Set(name, value))
@@ -370,7 +370,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	if impl, ok := instance.Value.(interface {
 		OnSet(gd.StringName, gd.Variant)
 	}); ok {
-		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
 		instance.Value.SetTemporary(tmp)
 		impl.OnSet(name, value)
@@ -382,7 +382,7 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	if impl, ok := instance.Value.(interface {
 		Get(StringName) gd.Variant
 	}); ok {
-		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
 		instance.Value.SetTemporary(tmp)
 		return impl.Get(name), true
@@ -433,7 +433,7 @@ func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool 
 	if impl, ok := instance.Value.(interface {
 		PropertyCanRevert(gd.StringName) gd.Bool
 	}); ok {
-		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
 		instance.Value.SetTemporary(tmp)
 		return bool(impl.PropertyCanRevert(name))
@@ -457,7 +457,7 @@ func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool 
 	return ok
 }
 func (instance *instanceImplementation) PropertyGetRevert(godot Lifetime, name StringName) (gd.Variant, bool) {
-	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 	if impl, ok := instance.Value.(interface {
 		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
@@ -491,7 +491,7 @@ func (instance *instanceImplementation) PropertyGetRevert(godot Lifetime, name S
 }
 
 func (instance *instanceImplementation) ValidateProperty(name StringName, info *gd.PropertyInfo) bool {
-	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 	instance.Value.SetTemporary(tmp)
 	switch validate := instance.Value.(type) {
@@ -512,7 +512,7 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 		instance.ready()
 	}
 	if !Engine(instance.Value.GetKeepAlive()).IsEditorHint() {
-		tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
 		instance.Value.SetTemporary(tmp)
 		switch notify := instance.Value.(type) {
@@ -527,7 +527,7 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 }
 
 func (instance *instanceImplementation) ToString() (String, bool) {
-	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 	instance.Value.SetTemporary(tmp)
 	switch onfree := instance.Value.(type) {
@@ -571,7 +571,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	tmp := gd.NewContext(instance.Value.GetKeepAlive().API)
+	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 
 	var parent Node

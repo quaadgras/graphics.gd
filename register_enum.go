@@ -14,7 +14,7 @@ type integer interface {
 //
 // Example:
 //
-//	func (*MyClass) OnRegister(godot gd.Context) {
+//	func (*MyClass) OnRegister(godot gd.Lifetime) {
 //		godot.Register(gd.Enum[MyClass, int]{
 //			Name: "MyEnum",
 //			Values: map[string]int{
@@ -52,7 +52,7 @@ func (enum Enum[Class, T]) Register(godot Lifetime) {
 	}
 	var className = godot.StringName(rename)
 
-	tmp := gd.NewContext(godot.API)
+	tmp := gd.NewLifetime(godot.API)
 	defer tmp.End()
 
 	enumName := tmp.StringName(enum.Name)

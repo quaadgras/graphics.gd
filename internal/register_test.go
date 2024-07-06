@@ -10,7 +10,7 @@ import (
 )
 
 func TestRegister(t *testing.T) {
-	godot := internal.NewContext(API)
+	godot := internal.NewLifetime(API)
 	defer godot.End()
 
 	type SimpleClass struct {
@@ -48,7 +48,7 @@ func (*MyClassWithConstants) OnRegister(godot gd.Lifetime) {
 }
 
 func TestRegisterConstants(t *testing.T) {
-	godot := internal.NewContext(API)
+	godot := internal.NewLifetime(API)
 	defer godot.End()
 
 	gd.Register[MyClassWithConstants](godot)

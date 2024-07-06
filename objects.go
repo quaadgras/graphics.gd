@@ -62,20 +62,20 @@ Note: The script is not exposed like most properties. To set or get an object's 
 		// Combined with Set and GetPropertyList, this method allows defining custom properties, which is
 		// particularly useful for editor plugins. Note that a property must be present in GetPropertyList,
 		// otherwise this method will not be called.
-		Get(Context, StringName) Variant
+		Get(StringName) Variant
 		// Override this method to customize how script properties should be handled by the engine.
-		GetPropertyList(Context) []gd.PropertyInfo
+		GetPropertyList() []gd.PropertyInfo
 		// Called when the object receives a notification, which can be identified in what by comparing it
 		// with a constant. See also [Object.Notification].
-		Notification(Context, NotificationType)
+		Notification(NotificationType)
 		// Override this method to customize the given property's revert behavior. Should return true if the
 		// property can be reverted in the Inspector dock. Use PropertyGetRevert to specify the property's
 		// default value.
-		PropertyCanRevert(Context, StringName) Bool
+		PropertyCanRevert(StringName) Bool
 		// Override this method to customize the given property's revert behavior. Should return the default
 		// value for the property. If the default value differs from the property's current value, a revert
 		// icon is displayed in the Inspector dock.
-		PropertyGetRevert(Context, StringName) Variant
+		PropertyGetRevert(StringName) Variant
 		// Override this method to customize the behavior of set. Should set the property to value and return
 		// true, or false if the property should be handled normally. The exact way to set the property is up
 		// to this method's implementation.
@@ -83,12 +83,12 @@ Note: The script is not exposed like most properties. To set or get an object's 
 		// Combined with Get and GetPropertyList, this method allows defining custom properties, which is
 		// particularly useful for editor plugins. Note that a property must be present in GetPropertyList,
 		// otherwise this method will not be called.
-		Set(Context, StringName, Variant) Bool
+		Set(StringName, Variant) Bool
 		// Override this method to customize the return value of [Object.ToString], and therefore the object's
 		// representation as a String.
-		ToString(Context) String
+		ToString() String
 		// Override this method to customize existing properties. Every property info goes through this method.
-		ValidateProperty(Context, StringName, *gd.PropertyInfo)
+		ValidateProperty(StringName, *gd.PropertyInfo)
 	}
 */
 type Object = gd.Object

@@ -261,7 +261,7 @@ func (variant Variant) Interface(ctx Lifetime) any {
 
 		API := ctx.API
 
-		tmp := NewContext(API)
+		tmp := NewLifetime(API)
 		defer tmp.End()
 
 		return ObjectAs(obj.GetClass(tmp).String(), obj.AsPointer())

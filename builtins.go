@@ -13,12 +13,12 @@ type Class[T, S gd.IsClass] struct {
 	gd.Class[T, S]
 }
 
-// Lifetime for ownership and a reference to the Godot API, apart from
-// its use as an ordinary [context.Lifetime] to signal cancellation, this
+// Lifetime for ownership and a reference to the Godot API, this
 // value is not safe to use concurrently. Each goroutine should create
 // its own [Lifetime] and use that instead.
 //
 //	newctx := gd.NewLifetime(other_lifetime)
+//	defer newctx.End()
 //
 // When a [Lifetime] is freed, it will free all of the objects that were
 // created using it. A [Lifetime] should not be used after free, as it
@@ -84,7 +84,7 @@ type isResource interface {
 // be able to read converted files in an exported project. If you rely on run-time loading of files
 // present within the PCK, set ProjectSettings.editor/export/convert_text_resources_to_binary to false.
 func Load[T isResource](godot Lifetime, path string) (T, bool) {
-	tmp := gd.NewContext(godot.API)
+	tmp := NewLifetime(godot)
 	defer tmp.End()
 	hint := classNameOf(reflect.TypeOf([0]T{}).Elem())
 	resource := ResourceLoader(godot).Load(godot,
@@ -95,7 +95,7 @@ func Load[T isResource](godot Lifetime, path string) (T, bool) {
 // AddChild adds a child to the parent node, returning a [NodePath] to the child
 // with the specified lifetime.
 func AddChild(godot Lifetime, parent, child Node) NodePath {
-	tmp := gd.NewContext(godot.API)
+	tmp := NewLifetime(godot)
 	defer tmp.End()
 	var adding Node
 	adding.SetPointer(mmm.New[gd.Pointer](tmp.Lifetime, godot.API, mmm.Get(child.AsPointer())))

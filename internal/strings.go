@@ -89,7 +89,7 @@ func (s StringName) String() string {
 	if mmm.Get(s) == 0 {
 		return ""
 	}
-	ctx := NewContext(mmm.API(s))
+	ctx := NewLifetime(mmm.API(s))
 	var tmp = mmm.API(s).StringFromStringName(ctx, s)
 	defer ctx.End()
 	return tmp.String()

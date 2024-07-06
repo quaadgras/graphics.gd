@@ -114,7 +114,7 @@ func (a TypedArray[T]) Array() Array        { return Array(a) }
 func (a TypedArray[T]) All(method Callable) bool { return Array(a).All(method) }
 func (a TypedArray[T]) Any(method Callable) bool { return Array(a).Any(method) }
 func (a TypedArray[T]) Append(value T) {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	Array(a).Append(godot.Variant(value))
 }
@@ -128,18 +128,18 @@ func (a TypedArray[T]) Back(godot Lifetime) T {
 	return Array(a).Back(godot).Interface(godot).(T)
 }
 func (a TypedArray[T]) Bsearch(value T, before bool) int64 {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).Bsearch(godot.Variant(value), before)
 }
 func (a TypedArray[T]) BsearchCustom(value T, fn Callable, before bool) int64 {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).BsearchCustom(godot.Variant(value), fn, before)
 }
 func (a TypedArray[T]) Clear() { Array(a).Clear() }
 func (a TypedArray[T]) Count(value T) int64 {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).Count(godot.Variant(value))
 }
@@ -147,12 +147,12 @@ func (a TypedArray[T]) Duplicate(ctx Lifetime, deep bool) ArrayOf[T] {
 	return TypedArray[T](Array(a).Duplicate(ctx, deep))
 }
 func (a TypedArray[T]) Erase(value T) {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	Array(a).Erase(godot.Variant(value))
 }
 func (a TypedArray[T]) Fill(value T) {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	Array(a).Fill(godot.Variant(value))
 }
@@ -160,7 +160,7 @@ func (a TypedArray[T]) Filter(ctx Lifetime, method Callable) ArrayOf[T] {
 	return TypedArray[T](Array(a).Filter(ctx, method))
 }
 func (a TypedArray[T]) Find(what T, from int64) int64 {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).Find(godot.Variant(what), from)
 }
@@ -180,7 +180,7 @@ func (a TypedArray[T]) GetTypedScript(ctx Lifetime) Variant {
 	return Array(a).GetTypedScript(ctx)
 }
 func (a TypedArray[T]) Has(value T) bool {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).Has(godot.Variant(value))
 }
@@ -191,7 +191,7 @@ func (a TypedArray[T]) Index(ctx Lifetime, index int64) T {
 	return Array(a).Index(ctx, index).Interface(ctx).(T)
 }
 func (a TypedArray[T]) Insert(position int64, value T) int64 {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).Insert(position, godot.Variant(value))
 }
@@ -232,12 +232,12 @@ func (a TypedArray[T]) PopFront(ctx Lifetime) T {
 	return Array(a).PopFront(ctx).Interface(ctx).(T)
 }
 func (a TypedArray[T]) PushBack(value T) {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	Array(a).PushBack(godot.Variant(value))
 }
 func (a TypedArray[T]) PushFront(value T) {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	Array(a).PushFront(godot.Variant(value))
 }
@@ -254,12 +254,12 @@ func (a TypedArray[T]) Reverse() {
 	Array(a).Reverse()
 }
 func (a TypedArray[T]) Rfind(what T, from int64) int64 {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	return Array(a).Rfind(godot.Variant(what), from)
 }
 func (a TypedArray[T]) SetIndex(index int64, value T) {
-	godot := NewContext(mmm.API(Array(a)))
+	godot := NewLifetime(mmm.API(Array(a)))
 	defer godot.End()
 	Array(a).SetIndex(index, godot.Variant(value))
 }

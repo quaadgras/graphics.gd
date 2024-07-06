@@ -39,7 +39,7 @@ func TestGetGodotVersion(t *testing.T) {
 }
 
 func TestNativeStructSize(t *testing.T) {
-	godot := gd.NewContext(API)
+	godot := gd.NewLifetime(API)
 	defer godot.End()
 	for name, expectation := range map[string]uintptr{
 		"ObjectID":                                unsafe.Sizeof(gd.ObjectID(0)),
@@ -64,7 +64,7 @@ func TestNativeStructSize(t *testing.T) {
 }
 
 func TestGetLibraryPath(t *testing.T) {
-	godot := gd.NewContext(API)
+	godot := gd.NewLifetime(API)
 	defer godot.End()
 	fmt.Println(godot.GetLibraryPath())
 }

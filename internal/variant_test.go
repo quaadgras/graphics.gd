@@ -8,7 +8,7 @@ import (
 )
 
 func TestVariants(t *testing.T) {
-	var godot = internal.NewContext(API)
+	var godot = internal.NewLifetime(API)
 	defer godot.End()
 
 	var f = godot.Variant(gd.Float(3.14))

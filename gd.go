@@ -145,7 +145,7 @@ func (s *SignalAs[T]) setSignal(signal gd.Signal) { s.Signal = signal }
 func NewArrayOf[T any](godot Lifetime) ArrayOf[T] {
 	array := gd.TypedArray[T](godot.Array())
 	rtype := reflect.TypeOf([0]T{}).Elem()
-	tmp := gd.NewContext(godot.API)
+	tmp := NewLifetime(godot)
 	defer tmp.End()
 	godot.API.Array.SetTyped(Array(array), variantTypeOf(rtype), tmp.StringName(classNameOf(rtype)), Object{})
 	return array

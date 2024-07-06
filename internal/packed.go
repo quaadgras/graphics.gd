@@ -137,7 +137,7 @@ func (p PackedStringArray) String() string {
 	var builder strings.Builder
 	builder.WriteString("[")
 	size := int(p.Size())
-	ctx := NewContext(mmm.API(p))
+	ctx := NewLifetime(mmm.API(p))
 	defer ctx.End()
 	for i := 0; i < size; i++ {
 		builder.WriteString(p.Index(ctx, Int(i)).String())
