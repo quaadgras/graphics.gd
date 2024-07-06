@@ -17,3 +17,4 @@ example/bin/
 /.vscode/launch.json
 *.wasm
 /gdextension/internal
+/go.work.sum

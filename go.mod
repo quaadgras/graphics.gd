@@ -12,4 +12,4 @@ require (
 	grow.graphics/xy v0.0.0-20240603021049-7427233fc3a9
 )
 
-require grow.graphics/rd v0.0.0-20240703051251-3d049610e0d7 // indirect
+require grow.graphics/rd v0.0.0-20240706094613-3d9dff8fad7a // indirect

@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
+	"grow.graphics/uc"
 	"runtime.link/mmm"
 )
 
@@ -20,6 +21,13 @@ func (p PackedByteArray) SetIndex(idx Int, value byte) {
 
 func (p PackedByteArray) UnsafePointer() unsafe.Pointer {
 	return mmm.API(p).PackedByteArray.UnsafePointer(p)
+}
+
+// Bytes returns a copy of the byte array as a byte slice.
+func (p PackedByteArray) Bytes() []byte {
+	var bytes = make([]byte, p.Size())
+	copy(bytes, unsafe.Slice((*byte)(p.UnsafePointer()), len(bytes)))
+	return bytes
 }
 
 func (p PackedByteArray) Len() int { return int(p.Size()) }
@@ -234,6 +242,14 @@ func (godot Lifetime) PackedByteArray() PackedByteArray {
 	return mmm.New[PackedByteArray](godot.Lifetime, godot.API, raw)
 }
 
+// PackedByteSlice returns a [PackedByteArray] from a byte slice.
+func (godot Lifetime) PackedByteSlice(data []byte) PackedByteArray {
+	var array = godot.PackedByteArray()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*byte)(array.UnsafePointer()), len(data)), data)
+	return array
+}
+
 func (godot Lifetime) PackedColorArray() PackedColorArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -241,6 +257,13 @@ func (godot Lifetime) PackedColorArray() PackedColorArray {
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[PackedColorArray](godot.Lifetime, godot.API, raw)
+}
+
+func (godot Lifetime) PackedColorSlice(data []uc.Color) PackedColorArray {
+	var array = godot.PackedColorArray()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*uc.Color)(array.UnsafePointer()), len(data)), data)
+	return array
 }
 
 func (godot Lifetime) PackedFloat32Array() PackedFloat32Array {
@@ -252,6 +275,13 @@ func (godot Lifetime) PackedFloat32Array() PackedFloat32Array {
 	return mmm.New[PackedFloat32Array](godot.Lifetime, godot.API, raw)
 }
 
+func (godot Lifetime) PackedFloat32Slice(data []float32) PackedFloat32Array {
+	var array = godot.PackedFloat32Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*float32)(array.UnsafePointer()), len(data)), data)
+	return array
+}
+
 func (godot Lifetime) PackedInt32Array() PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -259,6 +289,13 @@ func (godot Lifetime) PackedInt32Array() PackedInt32Array {
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[PackedInt32Array](godot.Lifetime, godot.API, raw)
+}
+
+func (godot Lifetime) PackedInt32Slice(data []int32) PackedInt32Array {
+	var array = godot.PackedInt32Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*int32)(array.UnsafePointer()), len(data)), data)
+	return array
 }
 
 func (godot Lifetime) PackedStringArray() PackedStringArray {
@@ -279,6 +316,13 @@ func (godot Lifetime) PackedVector2Array() PackedVector2Array {
 	return mmm.New[PackedVector2Array](godot.Lifetime, godot.API, raw)
 }
 
+func (godot Lifetime) PackedVector2Slice(data []Vector2) PackedVector2Array {
+	var array = godot.PackedVector2Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*Vector2)(array.UnsafePointer()), len(data)), data)
+	return array
+}
+
 func (godot Lifetime) PackedVector3Array() PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -286,6 +330,13 @@ func (godot Lifetime) PackedVector3Array() PackedVector3Array {
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[PackedVector3Array](godot.Lifetime, godot.API, raw)
+}
+
+func (godot Lifetime) PackedVector3Slice(data []Vector3) PackedVector3Array {
+	var array = godot.PackedVector3Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*Vector3)(array.UnsafePointer()), len(data)), data)
+	return array
 }
 
 func (godot Lifetime) PackedInt64Array() PackedInt64Array {
@@ -297,6 +348,13 @@ func (godot Lifetime) PackedInt64Array() PackedInt64Array {
 	return mmm.New[PackedInt64Array](godot.Lifetime, godot.API, raw)
 }
 
+func (godot Lifetime) PackedInt64Slice(data []int64) PackedInt64Array {
+	var array = godot.PackedInt64Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*int64)(array.UnsafePointer()), len(data)), data)
+	return array
+}
+
 func (godot Lifetime) PackedFloat64Array() PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
@@ -304,4 +362,11 @@ func (godot Lifetime) PackedFloat64Array() PackedFloat64Array {
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[PackedFloat64Array](godot.Lifetime, godot.API, raw)
+}
+
+func (godot Lifetime) PackedFloat64Slice(data []float64) PackedFloat64Array {
+	var array = godot.PackedFloat64Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*float64)(array.UnsafePointer()), len(data)), data)
+	return array
 }
