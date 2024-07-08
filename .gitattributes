@@ -1,0 +1,3 @@
+# Use LF for Go files. This lets the code generator run reproducibly on Windows
+# even with autocrlf enabled (default).
+*.go text eol=lf
