@@ -117,7 +117,7 @@ func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	defer tmp.End()
 	var classtag = godot.API.ClassDB.GetClassTag(tmp.StringName(rtype.Name()))
 	casted := godot.API.Object.CastTo(class.AsObject(), classtag)
-	if mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
+	if casted != (Object{}) && mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	var zero T
