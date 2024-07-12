@@ -135,7 +135,7 @@ func (gpu rdShader) Variables(variables map[int]rd.Variable) rd.Variables {
 	defer tmp.End()
 	array := NewArrayOf[classdb.RDUniform](tmp)
 	for binding, variable := range variables {
-		var uniform = *gd.Create(tmp, new(classdb.RDUniform))
+		var uniform = *Create(tmp, new(classdb.RDUniform))
 		uniform.SetBinding(Int(binding))
 		switch variable := variable.(type) {
 		case rdSampler:
@@ -180,7 +180,7 @@ func (gpu *rdInterface) CompileSPIRV(name string, spirv rd.SPIRV) []byte {
 	defer tmp.End()
 	already, ok := spirv.(rdSPIRV)
 	if !ok {
-		converted := *gd.Create(tmp, new(classdb.RDShaderSPIRV))
+		converted := *Create(tmp, new(classdb.RDShaderSPIRV))
 		converted.SetStageBytecode(RenderingDeviceShaderStageCompute, tmp.PackedByteSlice(spirv.Compute()))
 		converted.SetStageBytecode(RenderingDeviceShaderStageFragment, tmp.PackedByteSlice(spirv.Fragment()))
 		converted.SetStageBytecode(RenderingDeviceShaderStageTesselationControl, tmp.PackedByteSlice(spirv.TesselationControl()))
@@ -194,7 +194,7 @@ func (gpu *rdInterface) CompileSPIRV(name string, spirv rd.SPIRV) []byte {
 func (gpu *rdInterface) CompileSource(cache bool, source rd.ShaderSource) rd.SPIRV {
 	tmp := NewLifetime(gpu.godot)
 	defer tmp.End()
-	converted := *gd.Create(tmp, new(classdb.RDShaderSource))
+	converted := *Create(tmp, new(classdb.RDShaderSource))
 	converted.SetLanguage(RenderingDeviceShaderLanguage(source.Language))
 	converted.SetStageSource(RenderingDeviceShaderStageCompute, tmp.String(string(source.Compute)))
 	converted.SetStageSource(RenderingDeviceShaderStageFragment, tmp.String(string(source.Fragment)))
@@ -541,7 +541,7 @@ func (fmt *rdFramebufferFormat) Framebuffer(textures []rd.Texture) rd.Framebuffe
 	}
 	array2 := NewArrayOf[classdb.RDFramebufferPass](tmp)
 	for _, pass := range fmt.passes {
-		var converted = *gd.Create(tmp, new(classdb.RDFramebufferPass))
+		var converted = *Create(tmp, new(classdb.RDFramebufferPass))
 		converted.SetColorAttachments(tmp.PackedInt32Slice(pass.ColorAttachments))
 		converted.SetDepthAttachment(Int(pass.DepthAttachment))
 		converted.SetInputAttachments(tmp.PackedInt32Slice(pass.InputAttachments))
@@ -572,7 +572,7 @@ func (gpu *rdInterface) FramebufferFormat(eyes int, attachments []rd.AttachmentF
 	defer tmp.End()
 	array1 := NewArrayOf[classdb.RDAttachmentFormat](tmp)
 	for _, attachment := range attachments {
-		var converted = *gd.Create(tmp, new(classdb.RDAttachmentFormat))
+		var converted = *Create(tmp, new(classdb.RDAttachmentFormat))
 		converted.SetFormat(RenderingDeviceDataFormat(attachment.Format))
 		converted.SetSamples(RenderingDeviceTextureSamples(attachment.Samples))
 		converted.SetUsageFlags(int64(attachment.Usage))
@@ -580,7 +580,7 @@ func (gpu *rdInterface) FramebufferFormat(eyes int, attachments []rd.AttachmentF
 	}
 	array2 := NewArrayOf[classdb.RDFramebufferPass](tmp)
 	for _, pass := range passes {
-		var converted = *gd.Create(tmp, new(classdb.RDFramebufferPass))
+		var converted = *Create(tmp, new(classdb.RDFramebufferPass))
 		converted.SetColorAttachments(tmp.PackedInt32Slice(pass.ColorAttachments))
 		converted.SetDepthAttachment(Int(pass.DepthAttachment))
 		converted.SetInputAttachments(tmp.PackedInt32Slice(pass.InputAttachments))
@@ -652,7 +652,7 @@ func (gpu rdInterface) Processor(shader rd.Shader, defines []any) rd.Processor {
 	defer tmp.End()
 	array := NewArrayOf[classdb.RDPipelineSpecializationConstant](tmp)
 	for i, define := range defines {
-		var converted = *gd.Create(tmp, new(classdb.RDPipelineSpecializationConstant))
+		var converted = *Create(tmp, new(classdb.RDPipelineSpecializationConstant))
 		converted.SetConstantId(Int(i))
 		rvalue := reflect.ValueOf(define)
 		switch reflect.TypeOf(define).Kind() {
@@ -731,7 +731,7 @@ func (gpu rdInterface) Renderer(shader rd.Shader, options rd.RenderingOptions) r
 	colorblending.SetLogicOp(RenderingDeviceLogicOperation(options.ColorBlending.LogicOperation))
 	attachments := NewArrayOf[classdb.RDPipelineColorBlendStateAttachment](tmp)
 	for _, attachment := range options.ColorBlending.Attachments {
-		var converted = *gd.Create(tmp, new(classdb.RDPipelineColorBlendStateAttachment))
+		var converted = *Create(tmp, new(classdb.RDPipelineColorBlendStateAttachment))
 		converted.SetEnableBlend(Bool(attachment.EnableBlend))
 
 		toBlendOperation := func(op Int) RenderingDeviceBlendOperation {
@@ -790,7 +790,7 @@ func (gpu rdInterface) Renderer(shader rd.Shader, options rd.RenderingOptions) r
 
 	constants := NewArrayOf[classdb.RDPipelineSpecializationConstant](tmp)
 	for i, define := range options.ShaderDefines {
-		var converted = *gd.Create(tmp, new(classdb.RDPipelineSpecializationConstant))
+		var converted = *Create(tmp, new(classdb.RDPipelineSpecializationConstant))
 		converted.SetConstantId(Int(i))
 		rvalue := reflect.ValueOf(define)
 		switch reflect.TypeOf(define).Kind() {
@@ -841,7 +841,7 @@ func (gpu rdLocal) Sync()   { gpu.class.Sync() }
 func (gpu rdInterface) Sampler(state rd.SamplerState) rd.Sampler {
 	tmp := NewLifetime(gpu.godot)
 	defer tmp.End()
-	converted := *gd.Create(tmp, new(classdb.RDSamplerState))
+	converted := *Create(tmp, new(classdb.RDSamplerState))
 	converted.SetAnisotropyMax(state.AnisotropyMax)
 	converted.SetBorderColor(RenderingDeviceSamplerBorderColor(state.BorderColor))
 	converted.SetCompareOp(RenderingDeviceCompareOperator(state.Comparison))
@@ -884,7 +884,7 @@ func (gpu *rdInterface) SharedTexture(view rd.TextureView, with rd.Texture) rd.T
 	tmp := NewLifetime(gpu.godot)
 	defer tmp.End()
 
-	converted := *gd.Create(tmp, new(classdb.RDTextureView))
+	converted := *Create(tmp, new(classdb.RDTextureView))
 	converted.SetFormatOverride(RenderingDeviceDataFormat(view.FormatOverride))
 	converted.SetSwizzleA(RenderingDeviceTextureSwizzle(view.SwizzleAlpha))
 	converted.SetSwizzleB(RenderingDeviceTextureSwizzle(view.SwizzleBlue))
@@ -910,7 +910,7 @@ func (gpu *rdInterface) Texture(format rd.TextureFormat, view rd.TextureView, da
 	tmp := NewLifetime(gpu.godot)
 	defer tmp.End()
 
-	texture_format := *gd.Create(tmp, new(classdb.RDTextureFormat))
+	texture_format := *Create(tmp, new(classdb.RDTextureFormat))
 	texture_format.SetArrayLayers(Int(format.ArrayLayers))
 	texture_format.SetDepth(Int(format.Depth))
 	texture_format.SetFormat(RenderingDeviceDataFormat(format.Format))
@@ -924,7 +924,7 @@ func (gpu *rdInterface) Texture(format rd.TextureFormat, view rd.TextureView, da
 		texture_format.AddShareableFormat(RenderingDeviceDataFormat(share))
 	}
 
-	converted := *gd.Create(tmp, new(classdb.RDTextureView))
+	converted := *Create(tmp, new(classdb.RDTextureView))
 	converted.SetFormatOverride(RenderingDeviceDataFormat(view.FormatOverride))
 	converted.SetSwizzleA(RenderingDeviceTextureSwizzle(view.SwizzleAlpha))
 	converted.SetSwizzleB(RenderingDeviceTextureSwizzle(view.SwizzleBlue))
@@ -1021,7 +1021,7 @@ func (gpu *rdInterface) VertexFormat(attributes []rd.VertexAttribute) rd.VertexF
 	defer tmp.End()
 	array := NewArrayOf[classdb.RDVertexAttribute](tmp)
 	for _, attribute := range attributes {
-		var converted = *gd.Create(tmp, new(classdb.RDVertexAttribute))
+		var converted = *Create(tmp, new(classdb.RDVertexAttribute))
 		converted.SetFormat(RenderingDeviceDataFormat(attribute.Format))
 		converted.SetFrequency(RenderingDeviceVertexFrequency(attribute.Frequency))
 		converted.SetLocation(Int(attribute.Location))

@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"unsafe"
 
 	gd "grow.graphics/gd/internal"
+	classdb "grow.graphics/gd/internal/classdb"
 )
 
 func propertyOf(godot Lifetime, field reflect.StructField) gd.PropertyInfo {
@@ -63,7 +65,7 @@ func classNameOf(rtype reflect.Type) string {
 		if rtype.Name() == "" && rtype.Field(0).Anonymous {
 			return rtype.Field(0).Name
 		}
-		return rtype.Name()
+		return strings.TrimPrefix(rtype.Name(), "class")
 	}
 	return ""
 }
@@ -148,6 +150,10 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 		vtype = TypePackedVector3Array
 	case reflect.TypeOf([0]PackedColorArray{}).Elem():
 		vtype = TypePackedColorArray
+	case reflect.TypeOf([0]unsafe.Pointer{}).Elem():
+		vtype = TypeNil
+	case reflect.TypeOf([0]*classdb.ScriptLanguageExtensionProfilingInfo{}).Elem():
+		vtype = TypeNil
 	default:
 		switch {
 		case rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()):

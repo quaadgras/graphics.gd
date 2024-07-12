@@ -58,14 +58,14 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 	}
 
 	// Support 'gd' tag for renaming the class within Godot.
-	var rename = classType.Name()
-	for i := 0; i < classType.NumField(); i++ {
-		field := classType.Field(i)
-		if field.Name == "Class" {
-			if val := field.Tag.Get("gd"); val != "" {
-				rename = val
-			}
-		}
+	var rename = classNameOf(classType)
+
+	var tool = false
+	switch {
+	case superType.Implements(reflect.TypeOf([0]interface{ AsScript() Script }{}).Elem()),
+		superType.Implements(reflect.TypeOf([0]interface{ AsEditorPlugin() EditorPlugin }{}).Elem()),
+		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() ScriptLanguage }{}).Elem()):
+		tool = true
 	}
 
 	var className = godot.StringName(rename)
@@ -77,6 +77,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 			Super: superName,
 			Godot: godot.API,
 			Type:  classType,
+			Tool:  tool,
 			Value: reflect.New(classType).Interface().(gd.ExtensionClass),
 		})
 	unregister := func() {
@@ -123,6 +124,8 @@ func convertName(fnName string) string {
 type classImplementation struct {
 	Name  StringName
 	Super StringName
+
+	Tool bool
 
 	Godot *gd.API
 	Type  reflect.Type
@@ -229,7 +232,7 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	ctx := gd.NewLifetime(class.Godot)
 	defer ctx.End()
 
-	if Engine(ctx).IsEditorHint() {
+	if !class.Tool && Engine(ctx).IsEditorHint() {
 		return nil
 	}
 

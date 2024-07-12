@@ -3,9 +3,6 @@
 package gd
 
 import (
-	"reflect"
-	"strings"
-
 	"runtime.link/mmm"
 )
 
@@ -56,17 +53,6 @@ func newContext(api *API) Lifetime {
 	ctx.Lifetime = mmm.NewLifetime()
 	ctx.API = api
 	return ctx
-}
-
-func Create[T PointerToClass](ctx Lifetime, ptr T) T {
-	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(strings.TrimPrefix(reflect.TypeOf(ptr).Elem().Name(), "class")))
-	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
-		cast := native.(T)
-		cast.SetPointer(object.AsPointer())
-		return cast
-	}
-	ptr.SetPointer(object.AsPointer())
-	return ptr
 }
 
 // Version returns the version of the Godot API that we are linked in to.

@@ -40,7 +40,14 @@ func NewLifetime(anchor Lifetime) Lifetime {
 // Create a new instance of the given class, which should be an uninitialised
 // pointer to a value of that class. T must be a class from this package.
 func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
-	return gd.Create[T](ctx, ptr)
+	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(classNameOf(reflect.TypeOf(ptr).Elem())))
+	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
+		cast := native.(T)
+		cast.SetPointer(object.AsPointer())
+		return cast
+	}
+	ptr.SetPointer(object.AsPointer())
+	return ptr
 }
 
 // Const can be used to retrieve a 'constant' value from a structured type.

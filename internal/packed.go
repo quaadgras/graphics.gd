@@ -307,6 +307,15 @@ func (godot Lifetime) PackedStringArray() PackedStringArray {
 	return mmm.New[PackedStringArray](godot.Lifetime, godot.API, raw)
 }
 
+func (godot Lifetime) PackedStringSlice(data []string) PackedStringArray {
+	var array = godot.PackedStringArray()
+	array.Resize(Int(len(data)))
+	for i, str := range data {
+		array.SetIndex(Int(i), godot.String(str))
+	}
+	return array
+}
+
 func (godot Lifetime) PackedVector2Array() PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)

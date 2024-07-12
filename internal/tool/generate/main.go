@@ -915,17 +915,19 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprintf(w, "%v", fixReserved(arg.Name))
 		}
 		fmt.Fprintf(w, ")\n")
-		if isPtr {
-			if _, ok := classDB[result]; ok || result == "gd.Object" {
-				fmt.Fprintf(w, "\t\tmmm.End(ret.AsPointer())\n")
-			} else {
-				fmt.Fprintf(w, "\t\t%s\n", gdtype.Name(result).End("ret"))
+		if result != "" {
+			ret := gdtype.Name(result).ToUnderlying("ret")
+			if isPtr {
+				_, ok := classDB[result]
+				if ok || result == "gd.Object" {
+					ret = fmt.Sprintf("mmm.End(%s.AsPointer())", ret)
+				} else {
+					ret = fmt.Sprintf("mmm.End(%s)", ret)
+				}
 			}
+			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
 		}
 		fmt.Fprintf(w, "\t\tctx.End()\n")
-		if result != "" {
-			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet[%v](p_back, %s)\n", gdtype.Name(result).Underlying(), gdtype.Name(result).ToUnderlying("ret"))
-		}
 		fmt.Fprintf(w, "\t}\n")
 		fmt.Fprintf(w, "}\n")
 		return
