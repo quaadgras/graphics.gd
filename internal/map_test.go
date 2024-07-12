@@ -8,7 +8,6 @@ import (
 
 func TestMap(t *testing.T) {
 	lt := gd.NewLifetime(godot)
-	defer lt.End()
 
 	var ages = gd.NewMap[gd.String, gd.Int](lt)
 	ages.Set(lt.String("John"), gd.Int(32))
@@ -23,4 +22,20 @@ func TestMap(t *testing.T) {
 	if ages.Len() != 2 {
 		t.Error("expected 2")
 	}
+
+	var resources = gd.NewMap[gd.String, gd.Resource](lt)
+	tmp := gd.NewLifetime(lt)
+	res := *gd.Create(tmp, new(gd.Resource))
+	res.SetName(tmp.String("res1"))
+	resources.Set(lt.String("res1"), res)
+	tmp.End()
+
+	if !resources.Has(lt.String("res1")) {
+		t.Error("expected res1")
+	}
+	res = resources.Get(lt, lt.String("res1"))
+	if res.GetName(lt).String() != "res1" {
+		t.Error("expected res1")
+	}
+	lt.End()
 }

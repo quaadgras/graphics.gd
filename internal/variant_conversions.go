@@ -5,6 +5,7 @@ package gd
 import (
 	"fmt"
 	"reflect"
+	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
 
@@ -190,6 +191,11 @@ func (godot Lifetime) Variant(v any) Variant {
 		if ok {
 			if reflect.ValueOf(v).IsZero() {
 				return godot.API.Variants.NewNil(godot)
+			}
+			obj := class.AsObject()
+			ref := godot.API.Object.CastTo(obj, godot.API.refCountedClassTag)
+			if mmm.Get(ref.AsPointer()) != ([2]uintptr{}) {
+				(*(*RefCounted)(unsafe.Pointer(&ref))).Reference()
 			}
 			var arg = callframe.Arg(frame, class.AsPointer().Pointer())
 			godot.API.variant.FromType[TypeObject](ret, arg.Uintptr())
