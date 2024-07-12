@@ -583,7 +583,7 @@ func (instance *instanceImplementation) ready() {
 		if !field.IsExported() || field.Name == "Class" {
 			continue
 		}
-		instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent)
+		instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent, parent)
 	}
 	if !Engine(tmp).IsEditorHint() {
 		instance.Value.SetTemporary(tmp)
@@ -596,25 +596,13 @@ func (instance *instanceImplementation) ready() {
 	}
 }
 
-func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, field reflect.StructField, parent Node) {
+func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, field reflect.StructField, parent, owner Node) {
 	var (
 		rvalue = reflect.ValueOf(value)
 	)
 	if rvalue.Elem().Kind() == reflect.Pointer {
 		rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
 		value = rvalue.Elem().Interface()
-	}
-	if rvalue.Elem().Kind() == reflect.Struct {
-		defer func() {
-			rvalue := rvalue.Elem()
-			for i := 0; i < rvalue.NumField(); i++ {
-				field := rvalue.Type().Field(i)
-				if !field.IsExported() || field.Name == "Class" {
-					continue
-				}
-				instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent)
-			}
-		}()
 	}
 	type isNode interface {
 		gd.PointerToClass
@@ -624,6 +612,18 @@ func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, fie
 	class, ok := value.(isNode)
 	if !ok {
 		return
+	}
+	if rvalue.Elem().Kind() == reflect.Struct {
+		defer func() {
+			rvalue := rvalue.Elem()
+			for i := 0; i < rvalue.NumField(); i++ {
+				field := rvalue.Type().Field(i)
+				if !field.IsExported() || field.Name == "Class" || field.Anonymous {
+					continue
+				}
+				instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, class.AsNode(), owner)
+			}
+		}()
 	}
 	name := field.Name
 	if tag := field.Tag.Get("gd"); tag != "" {
@@ -640,15 +640,15 @@ func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, fie
 			class.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.Get(child.AsPointer())))
 		}
 		child.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.End(child.AsPointer())))
-		var mode NodeInternalMode
+		var mode NodeInternalMode = NodeInternalModeDisabled
 		if !field.IsExported() {
 			mode = NodeInternalModeFront
 		}
 		class.AsNode().SetName(tmp.String(field.Name))
 		var adding Node
 		adding.SetPointer(mmm.Pin[gd.Pointer](tmp.Lifetime, tmp.API, class.AsPointer().Pointer()))
-		parent.AddChild(adding, false, mode)
-		class.AsNode().SetOwner(parent)
+		parent.AddChild(adding, true, mode)
+		class.AsNode().SetOwner(owner)
 		return
 	}
 	var node = parent.GetNode(tmp, path)
