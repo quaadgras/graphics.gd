@@ -156,6 +156,8 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 			vtype = TypeArray
 		case rtype.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()):
 			vtype = TypeSignal
+		case rtype.ConvertibleTo(reflect.TypeOf(Dictionary{})):
+			vtype = TypeDictionary
 		default:
 			panic("gdextension.RegisterClass: unsupported property type " + rtype.String())
 		}

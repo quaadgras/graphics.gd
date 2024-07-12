@@ -16,6 +16,11 @@ func NewMap[K, V any](lt Lifetime) Map[K, V] {
 	return Map[K, V](lt.Dictionary())
 }
 
+// Variant returns the map as a Variant.
+func (m Map[K, V]) Variant(lt Lifetime) gd.Variant {
+	return lt.Variant(Dictionary(m))
+}
+
 // Clear clears the map, removing all entries from it.
 func (m Map[K, V]) Clear() { Dictionary(m).Clear() }
 

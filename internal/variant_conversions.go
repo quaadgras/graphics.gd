@@ -186,6 +186,8 @@ func (godot Lifetime) Variant(v any) Variant {
 		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypeArray](ret, arg.Uintptr())
+	case interface{ Variant(Lifetime) Variant }:
+		return val.Variant(godot)
 	default:
 		class, ok := v.(IsClass)
 		if ok {
