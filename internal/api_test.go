@@ -14,8 +14,11 @@ import (
 
 var API *gd.API
 
+var godot gd.Lifetime
+
 func TestMain(M *testing.M) {
-	godot, ok := gdextension.Link()
+	var ok bool
+	godot, ok = gdextension.Link()
 	if ok {
 		API = godot.API
 		os.Exit(M.Run())
