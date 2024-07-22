@@ -49,7 +49,7 @@ func setupFile(force bool, name, embed string, args ...any) error {
 		if len(args) > 0 {
 			embed = fmt.Sprintf(embed, args...)
 		}
-		if err := os.WriteFile(name, []byte(embed), 0644); err != nil {
+		if err := os.WriteFile(name, []byte(embed), 0o644); err != nil {
 			return err
 		}
 	}
@@ -130,8 +130,8 @@ func useGodot() (string, error) {
 	} else if err != nil {
 		return "", err
 	} else {
-		if info.Mode()&0111 == 0 {
-			if err := os.Chmod(gopath+"/bin/godot-4.2.2", 0755); err != nil {
+		if info.Mode()&0o111 == 0 {
+			if err := os.Chmod(gopath+"/bin/godot-4.2.2", 0o755); err != nil {
 				return "", err
 			}
 		}
@@ -140,7 +140,7 @@ func useGodot() (string, error) {
 }
 
 func wrap() error {
-	var GOOS, GOARCH = runtime.GOOS, runtime.GOARCH
+	GOOS, GOARCH := runtime.GOOS, runtime.GOARCH
 	if os.Getenv("GOOS") != "" {
 		GOOS = os.Getenv("GOOS")
 	}
@@ -177,7 +177,7 @@ func wrap() error {
 		graphics = "/sdcard/gd/" + filepath.Base(wd)
 	}
 	setup := func() error {
-		if err := os.MkdirAll(graphics+"/.godot", 0755); err != nil {
+		if err := os.MkdirAll(graphics+"/.godot", 0o755); err != nil {
 			return err
 		}
 		if err := setupFile(false, graphics+"/main.tscn", main_tscn); err != nil {
@@ -203,7 +203,7 @@ func wrap() error {
 		}
 		return nil
 	}
-	var libraryName = fmt.Sprintf("%v_%v", GOOS, GOARCH)
+	libraryName := fmt.Sprintf("%v_%v", GOOS, GOARCH)
 	switch GOOS {
 	case "windows":
 		libraryName += ".dll"
@@ -231,25 +231,67 @@ func wrap() error {
 		godot.Stdin = os.Stdin
 		return godot.Run()
 	}
-	var args = make([]string, len(os.Args)-1)
+	args := make([]string, len(os.Args)-1)
+
+	commands := [][]string{}
 	switch os.Args[1] {
 	case "run", "build":
 		copy(args, os.Args[1:])
 		args[0] = "build"
+
 		args = append(args, "-buildmode=c-shared", "-o", graphics+"/"+libraryName)
+
 	case "test":
 		args = []string{"test", "-buildmode=c-shared", "-c", "-o", graphics + "/" + libraryName}
 	default:
 		copy(args, os.Args[1:])
 	}
-	golang := exec.Command("go", args...)
-	golang.Env = append(os.Environ(), "CGO_ENABLED=1")
-	golang.Stderr = os.Stderr
-	golang.Stdout = os.Stdout
-	golang.Stdin = os.Stdin
-	if err := golang.Run(); err != nil {
-		return err
+
+	commands = append(commands, args)
+	if runtime.GOOS == "darwin" {
+		// GOARCH possible values = "amd64", "arm64"
+		missingArch := "arm64"
+		if GOARCH == "arm64" {
+			missingArch = "amd64"
+		}
+		missingArgs := make([]string, len(os.Args)-1)
+
+		missingLibraryName := fmt.Sprintf("%v_%v", GOOS, missingArch)
+		missingArgs = append(args, "-buildmode=c-shared", "-o", graphics+"/"+missingLibraryName)
+
+		commands = append(commands, missingArgs)
+
 	}
+
+	for _, commandArgs := range commands {
+		buildCommand := exec.Command("go", commandArgs...)
+		buildCommand.Env = append(os.Environ(), "CGO_ENABLED=1")
+		buildCommand.Stderr = os.Stderr
+		buildCommand.Stdout = os.Stdout
+		buildCommand.Stdin = os.Stdin
+
+		if err := buildCommand.Run(); err != nil {
+			return err
+		}
+	}
+
+	if runtime.GOOS == "darwin" {
+		// check if command is available in the system
+		_, err := exec.LookPath("lipo")
+		if err != nil {
+			return err
+		}
+
+		lipoCommand := exec.Command("lipo", "-create", graphics+"/darwin_amd64.dylib", graphics+"/darwing_arm64.dylib", "-output", graphics+"/universal.dylib")
+
+		lipoCommand.Stderr = os.Stderr
+		lipoCommand.Stdout = os.Stdout
+		lipoCommand.Stdin = os.Stdin
+		if err := lipoCommand.Run(); err != nil {
+			return err
+		}
+	}
+
 	if err := setup(); err != nil {
 		return err
 	}
@@ -262,7 +304,7 @@ func wrap() error {
 		godot.Stdin = os.Stdin
 		return godot.Run()
 	case "test":
-		var args = []string{"--headless"}
+		args := []string{"--headless"}
 		for _, arg := range os.Args[2:] {
 			switch arg {
 			case "-bench", "-benchmem", "-benchtime", "blockprofile",

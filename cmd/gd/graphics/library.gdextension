@@ -9,6 +9,6 @@ reloadable = true
 
 linux.x86_64   = "linux_amd64.so"
 windows.x86_64 = "windows_amd64.dll"
-macos.x86_64   = "darwin_amd64.dylib"
-macos.arm64    = "darwin_arm64.dylib"
+macos.debug = "universal.dylib"
+macos.release = "universal.dylib"
 android.arm64  = "android_arm64.so"
