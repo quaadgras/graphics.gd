@@ -109,9 +109,10 @@ func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	if ref, ok := godot.API.Instances[mmm.Get(class.AsPointer())[0]].(T); ok {
 		return ref, true
 	}
+	var zero T
 	var rtype = reflect.TypeOf([0]T{}).Elem()
 	if rtype.Kind() == reflect.Pointer {
-		rtype = rtype.Elem()
+		return zero, false
 	}
 	tmp := NewLifetime(godot.API)
 	defer tmp.End()
@@ -120,7 +121,6 @@ func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	if casted != (Object{}) && mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
-	var zero T
 	return zero, false
 }
 
