@@ -26,6 +26,8 @@ import (
 	_ "embed"
 )
 
+const version = "4.3"
+
 // These are our initial Godot project template files, we create
 // these automatically when the user runs the 'gd' command. They
 // are minimally setup for including the Go shared library such
@@ -70,32 +72,31 @@ func useGodot() (string, error) {
 	}
 	godot, err := exec.LookPath("godot")
 	if err == nil {
-		version, err := exec.Command(godot, "--version").CombinedOutput()
-		if err == nil {
-			if strings.HasPrefix(string(version), "4.2.2") {
+		if current, err := exec.Command(godot, "--version").CombinedOutput(); err == nil {
+			if strings.HasPrefix(string(current), version+".") {
 				return godot, nil
 			}
 		}
 	}
-	// Use existing godot-4.2.2 if available.
-	if binary, err := exec.LookPath("godot-4.2.2"); err == nil {
+	// Use existing godot if available and the correct version.
+	if binary, err := exec.LookPath("godot-" + version); err == nil {
 		return binary, nil
 	}
-	info, err := os.Stat(gopath + "/bin/godot-4.2.2")
+	info, err := os.Stat(gopath + "/bin/godot-" + version)
 	if os.IsNotExist(err) {
 		switch runtime.GOOS {
 		case "android":
 			return "echo", nil
 		case "darwin":
 			if _, err := exec.LookPath("brew"); err == nil {
-				fmt.Println("gd: downloading Godot v4.2.2 stable for macOS (via brew)")
+				fmt.Println("gd: installing Godot stable for macOS (via brew)")
 				if err := exec.Command("brew", "install", "godot").Run(); err != nil {
 					return "", err
 				}
 			}
 		case "linux":
-			fmt.Println("gd: downloading Godot v4.2.2 stable for linux")
-			resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip")
+			fmt.Println("gd: downloading Godot v" + version + " stable for linux")
+			resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/" + version + "-stable/Godot_v" + version + "-stable_linux.x86_64.zip")
 			if err != nil {
 				return "", err
 			}
@@ -111,12 +112,12 @@ func useGodot() (string, error) {
 			if err != nil {
 				return "", err
 			}
-			inZip, err := archive.Open("Godot_v4.2.2-stable_linux.x86_64")
+			inZip, err := archive.Open("Godot_v" + version + "-stable_linux.x86_64")
 			if err != nil {
 				return "", err
 			}
 			defer inZip.Close()
-			file, err := os.Create(gopath + "/bin/godot-4.2.2")
+			file, err := os.Create(gopath + "/bin/godot-" + version)
 			if err != nil {
 				return "", err
 			}
@@ -131,12 +132,12 @@ func useGodot() (string, error) {
 		return "", err
 	} else {
 		if info.Mode()&0111 == 0 {
-			if err := os.Chmod(gopath+"/bin/godot-4.2.2", 0755); err != nil {
+			if err := os.Chmod(gopath+"/bin/godot-"+version, 0755); err != nil {
 				return "", err
 			}
 		}
 	}
-	return gopath + "/bin/godot-4.2.2", nil
+	return gopath + "/bin/godot-" + version, nil
 }
 
 func wrap() error {
@@ -152,7 +153,7 @@ func wrap() error {
 	}
 	godot, err := useGodot()
 	if err != nil {
-		return fmt.Errorf("gd requires Godot to be installed as a binary at $GOPATH/bin/godot-4.2.2: %w", err)
+		return fmt.Errorf("gd requires Godot v%s to be installed as a binary at $GOPATH/bin/godot-%s: %w", version, err)
 	}
 	wd, err := os.Getwd()
 	if err != nil {

@@ -174,6 +174,12 @@ func (godot Lifetime) Variant(v any) Variant {
 		}
 		var arg = callframe.Arg(frame, mmm.Get(val))
 		godot.API.variant.FromType[TypePackedVector3Array](ret, arg.Uintptr())
+	case PackedVector4Array:
+		if mmm.Get(val) == ([2]uintptr{}) {
+			return godot.API.Variants.NewNil(godot)
+		}
+		var arg = callframe.Arg(frame, mmm.Get(val))
+		godot.API.variant.FromType[TypePackedVector4Array](ret, arg.Uintptr())
 	case PackedColorArray:
 		if mmm.Get(val) == ([2]uintptr{}) {
 			return godot.API.Variants.NewNil(godot)
@@ -297,6 +303,8 @@ func (variant Variant) Interface(ctx Lifetime) any {
 		return variantAsPointerType[PackedVector2Array](ctx, variant, vtype)
 	case TypePackedVector3Array:
 		return variantAsPointerType[PackedVector3Array](ctx, variant, vtype)
+	case TypePackedVector4Array:
+		return variantAsPointerType[PackedVector4Array](ctx, variant, vtype)
 	case TypePackedColorArray:
 		return variantAsPointerType[PackedColorArray](ctx, variant, vtype)
 	default:

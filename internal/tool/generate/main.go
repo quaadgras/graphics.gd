@@ -50,7 +50,7 @@ func hasNative(gdType string) bool {
 	case "int", "float", "String", "bool",
 		"PackedStringArray", "PackedInt32Array", "PackedInt64Array",
 		"PackedFloat32Array", "PackedFloat64Array", "PackedVector2Array",
-		"PackedVector3Array", "PackedColorArray", "Variant":
+		"PackedVector3Array", "PackedVector4Array", "PackedColorArray", "Variant":
 		return true
 	}
 	return false
@@ -83,7 +83,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	case "enum::GDExtensionManager.LoadStatus":
 		return "GDExtensionManagerLoadStatus"
 	case "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
-		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedColorArray", "PackedByteArray",
+		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID", "Object",
 		"Callable", "Signal", "Dictionary", "Array":
@@ -828,6 +828,7 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 		"PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedStringArray",
 		"PackedVector2Array", "PackedVector3Array",
+		"PackedVector4Array",
 		"PackedColorArray":
 		return "[2]uintptr", true
 	case "Variant":

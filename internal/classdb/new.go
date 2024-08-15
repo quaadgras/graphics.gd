@@ -232,6 +232,10 @@ func init() {
 			var obj AudioEffectFilter
 			obj.SetPointer(ptr)
 			return obj
+		case "AudioEffectHardLimiter":
+			var obj AudioEffectHardLimiter
+			obj.SetPointer(ptr)
+			return obj
 		case "AudioEffectHighPassFilter":
 			var obj AudioEffectHighPassFilter
 			obj.SetPointer(ptr)
@@ -300,6 +304,14 @@ func init() {
 			var obj AudioListener3D
 			obj.SetPointer(ptr)
 			return obj
+		case "AudioSample":
+			var obj AudioSample
+			obj.SetPointer(ptr)
+			return obj
+		case "AudioSamplePlayback":
+			var obj AudioSamplePlayback
+			obj.SetPointer(ptr)
+			return obj
 		case "AudioStream":
 			var obj AudioStream
 			obj.SetPointer(ptr)
@@ -310,6 +322,10 @@ func init() {
 			return obj
 		case "AudioStreamGeneratorPlayback":
 			var obj AudioStreamGeneratorPlayback
+			obj.SetPointer(ptr)
+			return obj
+		case "AudioStreamInteractive":
+			var obj AudioStreamInteractive
 			obj.SetPointer(ptr)
 			return obj
 		case "AudioStreamMP3":
@@ -328,8 +344,16 @@ func init() {
 			var obj AudioStreamPlayback
 			obj.SetPointer(ptr)
 			return obj
+		case "AudioStreamPlaybackInteractive":
+			var obj AudioStreamPlaybackInteractive
+			obj.SetPointer(ptr)
+			return obj
 		case "AudioStreamPlaybackOggVorbis":
 			var obj AudioStreamPlaybackOggVorbis
+			obj.SetPointer(ptr)
+			return obj
+		case "AudioStreamPlaybackPlaylist":
+			var obj AudioStreamPlaybackPlaylist
 			obj.SetPointer(ptr)
 			return obj
 		case "AudioStreamPlaybackPolyphonic":
@@ -338,6 +362,10 @@ func init() {
 			return obj
 		case "AudioStreamPlaybackResampled":
 			var obj AudioStreamPlaybackResampled
+			obj.SetPointer(ptr)
+			return obj
+		case "AudioStreamPlaybackSynchronized":
+			var obj AudioStreamPlaybackSynchronized
 			obj.SetPointer(ptr)
 			return obj
 		case "AudioStreamPlayer":
@@ -352,12 +380,20 @@ func init() {
 			var obj AudioStreamPlayer3D
 			obj.SetPointer(ptr)
 			return obj
+		case "AudioStreamPlaylist":
+			var obj AudioStreamPlaylist
+			obj.SetPointer(ptr)
+			return obj
 		case "AudioStreamPolyphonic":
 			var obj AudioStreamPolyphonic
 			obj.SetPointer(ptr)
 			return obj
 		case "AudioStreamRandomizer":
 			var obj AudioStreamRandomizer
+			obj.SetPointer(ptr)
+			return obj
+		case "AudioStreamSynchronized":
+			var obj AudioStreamSynchronized
 			obj.SetPointer(ptr)
 			return obj
 		case "AudioStreamWAV":
@@ -598,6 +634,14 @@ func init() {
 			return obj
 		case "ColorRect":
 			var obj ColorRect
+			obj.SetPointer(ptr)
+			return obj
+		case "Compositor":
+			var obj Compositor
+			obj.SetPointer(ptr)
+			return obj
+		case "CompositorEffect":
+			var obj CompositorEffect
 			obj.SetPointer(ptr)
 			return obj
 		case "CompressedCubemap":
@@ -868,12 +912,16 @@ func init() {
 			var obj EditorSceneFormatImporterBlend
 			obj.SetPointer(ptr)
 			return obj
-		case "EditorSceneFormatImporterFBX":
-			var obj EditorSceneFormatImporterFBX
+		case "EditorSceneFormatImporterFBX2GLTF":
+			var obj EditorSceneFormatImporterFBX2GLTF
 			obj.SetPointer(ptr)
 			return obj
 		case "EditorSceneFormatImporterGLTF":
 			var obj EditorSceneFormatImporterGLTF
+			obj.SetPointer(ptr)
+			return obj
+		case "EditorSceneFormatImporterUFBX":
+			var obj EditorSceneFormatImporterUFBX
 			obj.SetPointer(ptr)
 			return obj
 		case "EditorScenePostImport":
@@ -936,6 +984,14 @@ func init() {
 			var obj Expression
 			obj.SetPointer(ptr)
 			return obj
+		case "FBXDocument":
+			var obj FBXDocument
+			obj.SetPointer(ptr)
+			return obj
+		case "FBXState":
+			var obj FBXState
+			obj.SetPointer(ptr)
+			return obj
 		case "FastNoiseLite":
 			var obj FastNoiseLite
 			obj.SetPointer(ptr)
@@ -974,6 +1030,10 @@ func init() {
 			return obj
 		case "FontVariation":
 			var obj FontVariation
+			obj.SetPointer(ptr)
+			return obj
+		case "FramebufferCacheRD":
+			var obj FramebufferCacheRD
 			obj.SetPointer(ptr)
 			return obj
 		case "GDExtension":
@@ -1126,6 +1186,10 @@ func init() {
 			return obj
 		case "GraphElement":
 			var obj GraphElement
+			obj.SetPointer(ptr)
+			return obj
+		case "GraphFrame":
+			var obj GraphFrame
 			obj.SetPointer(ptr)
 			return obj
 		case "GraphNode":
@@ -1660,6 +1724,22 @@ func init() {
 			var obj OpenXRActionSet
 			obj.SetPointer(ptr)
 			return obj
+		case "OpenXRCompositionLayer":
+			var obj OpenXRCompositionLayer
+			obj.SetPointer(ptr)
+			return obj
+		case "OpenXRCompositionLayerCylinder":
+			var obj OpenXRCompositionLayerCylinder
+			obj.SetPointer(ptr)
+			return obj
+		case "OpenXRCompositionLayerEquirect":
+			var obj OpenXRCompositionLayerEquirect
+			obj.SetPointer(ptr)
+			return obj
+		case "OpenXRCompositionLayerQuad":
+			var obj OpenXRCompositionLayerQuad
+			obj.SetPointer(ptr)
+			return obj
 		case "OpenXRExtensionWrapperExtension":
 			var obj OpenXRExtensionWrapperExtension
 			obj.SetPointer(ptr)
@@ -1740,6 +1820,10 @@ func init() {
 			var obj PanoramaSkyMaterial
 			obj.SetPointer(ptr)
 			return obj
+		case "Parallax2D":
+			var obj Parallax2D
+			obj.SetPointer(ptr)
+			return obj
 		case "ParallaxBackground":
 			var obj ParallaxBackground
 			obj.SetPointer(ptr)
@@ -1774,6 +1858,10 @@ func init() {
 			return obj
 		case "PhysicalBone3D":
 			var obj PhysicalBone3D
+			obj.SetPointer(ptr)
+			return obj
+		case "PhysicalBoneSimulator3D":
+			var obj PhysicalBoneSimulator3D
 			obj.SetPointer(ptr)
 			return obj
 		case "PhysicalSkyMaterial":
@@ -2096,6 +2184,18 @@ func init() {
 			var obj RemoteTransform3D
 			obj.SetPointer(ptr)
 			return obj
+		case "RenderData":
+			var obj RenderData
+			obj.SetPointer(ptr)
+			return obj
+		case "RenderDataExtension":
+			var obj RenderDataExtension
+			obj.SetPointer(ptr)
+			return obj
+		case "RenderDataRD":
+			var obj RenderDataRD
+			obj.SetPointer(ptr)
+			return obj
 		case "RenderSceneBuffers":
 			var obj RenderSceneBuffers
 			obj.SetPointer(ptr)
@@ -2110,6 +2210,18 @@ func init() {
 			return obj
 		case "RenderSceneBuffersRD":
 			var obj RenderSceneBuffersRD
+			obj.SetPointer(ptr)
+			return obj
+		case "RenderSceneData":
+			var obj RenderSceneData
+			obj.SetPointer(ptr)
+			return obj
+		case "RenderSceneDataExtension":
+			var obj RenderSceneDataExtension
+			obj.SetPointer(ptr)
+			return obj
+		case "RenderSceneDataRD":
+			var obj RenderSceneDataRD
 			obj.SetPointer(ptr)
 			return obj
 		case "RenderingDevice":
@@ -2380,6 +2492,10 @@ func init() {
 			var obj SkeletonModificationStack2D
 			obj.SetPointer(ptr)
 			return obj
+		case "SkeletonModifier3D":
+			var obj SkeletonModifier3D
+			obj.SetPointer(ptr)
+			return obj
 		case "SkeletonProfile":
 			var obj SkeletonProfile
 			obj.SetPointer(ptr)
@@ -2466,6 +2582,10 @@ func init() {
 			return obj
 		case "StaticBody3D":
 			var obj StaticBody3D
+			obj.SetPointer(ptr)
+			return obj
+		case "StatusIndicator":
+			var obj StatusIndicator
 			obj.SetPointer(ptr)
 			return obj
 		case "StreamPeer":
@@ -2652,6 +2772,10 @@ func init() {
 			var obj TileMap
 			obj.SetPointer(ptr)
 			return obj
+		case "TileMapLayer":
+			var obj TileMapLayer
+			obj.SetPointer(ptr)
+			return obj
 		case "TileMapPattern":
 			var obj TileMapPattern
 			obj.SetPointer(ptr)
@@ -2726,6 +2850,10 @@ func init() {
 			return obj
 		case "UndoRedo":
 			var obj UndoRedo
+			obj.SetPointer(ptr)
+			return obj
+		case "UniformSetCacheRD":
+			var obj UniformSetCacheRD
 			obj.SetPointer(ptr)
 			return obj
 		case "VBoxContainer":
@@ -2916,6 +3044,10 @@ func init() {
 			var obj VisualShaderNodeFloatParameter
 			obj.SetPointer(ptr)
 			return obj
+		case "VisualShaderNodeFrame":
+			var obj VisualShaderNodeFrame
+			obj.SetPointer(ptr)
+			return obj
 		case "VisualShaderNodeFresnel":
 			var obj VisualShaderNodeFresnel
 			obj.SetPointer(ptr)
@@ -3038,6 +3170,10 @@ func init() {
 			return obj
 		case "VisualShaderNodeRemap":
 			var obj VisualShaderNodeRemap
+			obj.SetPointer(ptr)
+			return obj
+		case "VisualShaderNodeReroute":
+			var obj VisualShaderNodeReroute
 			obj.SetPointer(ptr)
 			return obj
 		case "VisualShaderNodeResizableBase":
@@ -3324,12 +3460,40 @@ func init() {
 			var obj XRAnchor3D
 			obj.SetPointer(ptr)
 			return obj
+		case "XRBodyModifier3D":
+			var obj XRBodyModifier3D
+			obj.SetPointer(ptr)
+			return obj
+		case "XRBodyTracker":
+			var obj XRBodyTracker
+			obj.SetPointer(ptr)
+			return obj
 		case "XRCamera3D":
 			var obj XRCamera3D
 			obj.SetPointer(ptr)
 			return obj
 		case "XRController3D":
 			var obj XRController3D
+			obj.SetPointer(ptr)
+			return obj
+		case "XRControllerTracker":
+			var obj XRControllerTracker
+			obj.SetPointer(ptr)
+			return obj
+		case "XRFaceModifier3D":
+			var obj XRFaceModifier3D
+			obj.SetPointer(ptr)
+			return obj
+		case "XRFaceTracker":
+			var obj XRFaceTracker
+			obj.SetPointer(ptr)
+			return obj
+		case "XRHandModifier3D":
+			var obj XRHandModifier3D
+			obj.SetPointer(ptr)
+			return obj
+		case "XRHandTracker":
+			var obj XRHandTracker
 			obj.SetPointer(ptr)
 			return obj
 		case "XRInterface":
@@ -3354,6 +3518,14 @@ func init() {
 			return obj
 		case "XRPositionalTracker":
 			var obj XRPositionalTracker
+			obj.SetPointer(ptr)
+			return obj
+		case "XRTracker":
+			var obj XRTracker
+			obj.SetPointer(ptr)
+			return obj
+		case "XRVRS":
+			var obj XRVRS
 			obj.SetPointer(ptr)
 			return obj
 		case "ZIPPacker":

@@ -219,7 +219,6 @@ The playback of the animation is controlled by the [member speed_scale] property
 [AnimatedTexture] currently requires all frame textures to have the same size, otherwise the bigger ones will be cropped to match the smallest one.
 [b]Note:[/b] AnimatedTexture doesn't support using [AtlasTexture]s. Each frame needs to be a separate [Texture2D].
 [b]Warning:[/b] The current implementation is not efficient for the modern renderers.
-[i]Deprecated.[/i] This class is deprecated, and might be removed in a future release.
 */
 type AnimatedTexture = classdb.AnimatedTexture
 
@@ -263,8 +262,8 @@ After instantiating the playback information data within the extended class, the
 
 	// AnimationMixer methods that can be overridden by a [Class] that extends it.
 	type AnimationMixer interface {
-		//A virtual function for processing after key getting during playback.
-		PostProcessKeyValue(animation Animation, track gd.Int, value gd.Variant, object gd.Object, object_idx gd.Int) gd.Variant
+		//A virtual function for processing after getting a key during playback.
+		PostProcessKeyValue(animation Animation, track gd.Int, value gd.Variant, object_id gd.Int, object_sub_idx gd.Int) gd.Variant
 	}
 */
 type AnimationMixer = classdb.AnimationMixer
@@ -272,6 +271,13 @@ type AnimationMixer = classdb.AnimationMixer
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
 Inherit this when creating animation nodes mainly for use in [AnimationNodeBlendTree], otherwise [AnimationRootNode] should be used instead.
+You can access the time information as read-only parameter which is processed and stored in the previous frame for all nodes except [AnimationNodeOutput].
+[b]Note:[/b] If multiple inputs exist in the [AnimationNode], which time information takes precedence depends on the type of [AnimationNode].
+[codeblock]
+var current_length = $AnimationTree[parameters/AnimationNodeName/current_length]
+var current_position = $AnimationTree[parameters/AnimationNodeName/current_position]
+var current_delta = $AnimationTree[parameters/AnimationNodeName/current_delta]
+[/codeblock]
 
 	// AnimationNode methods that can be overridden by a [Class] that extends it.
 	type AnimationNode interface {
@@ -287,7 +293,7 @@ Inherit this when creating animation nodes mainly for use in [AnimationNodeBlend
 		IsParameterReadOnly(parameter gd.StringName) bool
 		//When inheriting from [AnimationRootNode], implement this virtual method to run some code when this animation node is processed. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute.
 		//Here, call the [method blend_input], [method blend_node] or [method blend_animation] functions. You can also use [method get_parameter] and [method set_parameter] to modify local memory.
-		//This function should return the time left for the current animation to finish (if unsure, pass the value from the main blend being called).
+		//This function should return the delta.
 		Process(time gd.Float, seek bool, is_external_seeking bool, test_only bool) gd.Float
 		//When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
 		GetCaption() gd.String
@@ -550,12 +556,14 @@ type AnimationTree = classdb.AnimationTree
 /*
 [Area2D] is a region of 2D space defined by one or multiple [CollisionShape2D] or [CollisionPolygon2D] child nodes. It detects when other [CollisionObject2D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
 This node can also locally alter or override physics parameters (gravity, damping) and route audio to custom audio buses.
+[b]Note:[/b] Areas and bodies created with [PhysicsServer2D] might not interact as expected with [Area2D]s, and might not emit signals or track objects correctly.
 */
 type Area2D = classdb.Area2D
 
 /*
 [Area3D] is a region of 3D space defined by one or multiple [CollisionShape3D] or [CollisionPolygon3D] child nodes. It detects when other [CollisionObject3D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
 This node can also locally alter or override physics parameters (gravity, damping) and route audio to custom audio buses.
+[b]Note:[/b] Areas and bodies created with [PhysicsServer3D] might not interact as expected with [Area3D]s, and might not emit signals or track objects correctly.
 [b]Warning:[/b] Using a [ConcavePolygonShape3D] inside a [CollisionShape3D] child of this node (created e.g. by using the [b]Create Trimesh Collision Sibling[/b] option in the [b]Mesh[/b] menu that appears when selecting a [MeshInstance3D] node) may give unexpected results, since this collision shape is hollow. If this is not desired, it has to be split into multiple [ConvexPolygonShape3D]s or primitive shapes like [BoxShape3D], or in some cases it may be replaceable by a [CollisionPolygon3D].
 */
 type Area3D = classdb.Area3D
@@ -632,10 +640,24 @@ Stores position, muting, solo, bypass, effects, effect position, volume, and the
 type AudioBusLayout = classdb.AudioBusLayout
 
 /*
-Base resource for audio bus. Applies an audio effect on the bus that the resource is applied on.
+The base [Resource] for every audio effect. In the editor, an audio effect can be added to the current bus layout through the Audio panel. At run-time, it is also possible to manipulate audio effects through [method AudioServer.add_bus_effect], [method AudioServer.remove_bus_effect], and [method AudioServer.get_bus_effect].
+When applied on a bus, an audio effect creates a corresponding [AudioEffectInstance]. The instance is directly responsible for manipulating the sound, based on the original audio effect's properties.
 
 	// AudioEffect methods that can be overridden by a [Class] that extends it.
 	type AudioEffect interface {
+		//Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [method AudioServer.add_bus_effect].
+		//[codeblock]
+		//extends AudioEffect
+		//
+		//@export var strength = 4.0
+		//
+		//func _instantiate():
+		//    var effect = CustomAudioEffectInstance.new()
+		//    effect.base = self
+		//
+		//    return effect
+		//[/codeblock]
+		//[b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
 		Instantiate() AudioEffectInstance
 	}
 */
@@ -658,8 +680,8 @@ type AudioEffectBandPassFilter = classdb.AudioEffectBandPassFilter
 
 /*
 AudioEffectCapture is an AudioEffect which copies all audio frames from the attached audio effect bus into its internal ring buffer.
-Application code should consume these audio frames from this ring buffer using [method get_buffer] and process it as needed, for example to capture data from an [AudioStreamMicrophone], implement application-defined effects, or to transmit audio over the network. When capturing audio data from a microphone, the format of the samples will be stereo 32-bit floating point PCM.
-[b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
+Application code should consume these audio frames from this ring buffer using [method get_buffer] and process it as needed, for example to capture data from an [AudioStreamMicrophone], implement application-defined effects, or to transmit audio over the network. When capturing audio data from a microphone, the format of the samples will be stereo 32-bit floating-point PCM.
+Unlike [AudioEffectRecord], this effect only returns the raw audio samples instead of encoding them into an [AudioStream].
 */
 type AudioEffectCapture = classdb.AudioEffectCapture
 
@@ -755,6 +777,11 @@ Allows frequencies other than the [member cutoff_hz] to pass.
 type AudioEffectFilter = classdb.AudioEffectFilter
 
 /*
+A limiter is an effect designed to disallow sound from going over a given dB threshold. Hard limiters predict volume peaks, and will smoothly apply gain reduction when a peak crosses the ceiling threshold to prevent clipping and distortion. It preserves the waveform and prevents it from crossing the ceiling threshold. Adding one in the Master bus is recommended as a safety measure to prevent sudden volume peaks from occurring, and to prevent distortion caused by clipping.
+*/
+type AudioEffectHardLimiter = classdb.AudioEffectHardLimiter
+
+/*
 Cuts frequencies lower than the [member AudioEffectFilter.cutoff_hz] and allows higher frequencies to pass.
 */
 type AudioEffectHighPassFilter = classdb.AudioEffectHighPassFilter
@@ -763,6 +790,20 @@ type AudioEffectHighPassFilter = classdb.AudioEffectHighPassFilter
 Reduces all frequencies above the [member AudioEffectFilter.cutoff_hz].
 */
 type AudioEffectHighShelfFilter = classdb.AudioEffectHighShelfFilter
+
+/*
+An audio effect instance manipulates the audio it receives for a given effect. This instance is automatically created by an [AudioEffect] when it is added to a bus, and should usually not be created directly. If necessary, it can be fetched at run-time with [method AudioServer.get_bus_effect_instance].
+
+	// AudioEffectInstance methods that can be overridden by a [Class] that extends it.
+	type AudioEffectInstance interface {
+		//Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
+		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
+		Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int)
+		//Override this method to customize the processing behavior of this effect instance.
+		//Should return [code]true[/code] to force the [AudioServer] to always call [method _process], even if the bus has been muted or cannot otherwise be heard.
+		ProcessSilence() bool
+	}
+*/
 type AudioEffectInstance = classdb.AudioEffectInstance
 
 /*
@@ -802,9 +843,10 @@ Allows modulation of pitch independently of tempo. All frequencies can be increa
 type AudioEffectPitchShift = classdb.AudioEffectPitchShift
 
 /*
-Allows the user to record the sound from an audio bus. This can include all audio output by Godot when used on the "Master" audio bus.
+Allows the user to record the sound from an audio bus into an [AudioStreamWAV]. When used on the "Master" audio bus, this includes all audio output by Godot.
+Unlike [AudioEffectCapture], this effect encodes the recording with the given format (8-bit, 16-bit, or compressed) instead of giving access to the raw audio samples.
 Can be used (with an [AudioStreamMicrophone]) to record from a microphone.
-It sets and gets the format in which the audio file will be recorded (8-bit, 16-bit, or compressed). It checks whether or not the recording is active, and if it is, records the sound. It then returns the recorded sample.
+[b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
 */
 type AudioEffectRecord = classdb.AudioEffectRecord
 
@@ -815,9 +857,15 @@ type AudioEffectReverb = classdb.AudioEffectReverb
 
 /*
 This audio effect does not affect sound output, but can be used for real-time audio visualizations.
+This resource configures an [AudioEffectSpectrumAnalyzerInstance], which performs the actual analysis at runtime. An instance can be acquired with [method AudioServer.get_bus_effect_instance].
 See also [AudioStreamGenerator] for procedurally generating sounds.
 */
 type AudioEffectSpectrumAnalyzer = classdb.AudioEffectSpectrumAnalyzer
+
+/*
+The runtime part of an [AudioEffectSpectrumAnalyzer], which can be used to query the magnitude of a frequency range on its host bus.
+An instance of this class can be acquired with [method AudioServer.get_bus_effect_instance].
+*/
 type AudioEffectSpectrumAnalyzerInstance = classdb.AudioEffectSpectrumAnalyzerInstance
 
 /*
@@ -835,6 +883,16 @@ type AudioListener2D = classdb.AudioListener2D
 Once added to the scene tree and enabled using [method make_current], this node will override the location sounds are heard from. This can be used to listen from a location different from the [Camera3D].
 */
 type AudioListener3D = classdb.AudioListener3D
+
+/*
+Base class for audio samples.
+*/
+type AudioSample = classdb.AudioSample
+
+/*
+Meta class for playing back audio samples.
+*/
+type AudioSamplePlayback = classdb.AudioSamplePlayback
 
 func AudioServer(godot Lifetime) classdb.AudioServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.AudioServer)
@@ -860,6 +918,8 @@ Base class for audio streams. Audio streams are used for sound effects and music
 		//Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
 		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 		GetBeatCount() gd.Int
+		//Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
+		GetParameterList() gd.ArrayOf[gd.Dictionary]
 	}
 */
 type AudioStream = classdb.AudioStream
@@ -937,6 +997,12 @@ This class is meant to be used with [AudioStreamGenerator] to play back the gene
 type AudioStreamGeneratorPlayback = classdb.AudioStreamGeneratorPlayback
 
 /*
+This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and the transition rules via the [method add_transition]. Additionally, this stream export a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
+The way this is used is by filling a number of clips, then configuring the transition table. From there, clips are selected for playback and the music will smoothly go from the current to the new one while using the corresponding transition rule defined in the transition table.
+*/
+type AudioStreamInteractive = classdb.AudioStreamInteractive
+
+/*
 MP3 audio stream driver. See [member data] if you want to load an MP3 file at run-time.
 */
 type AudioStreamMP3 = classdb.AudioStreamMP3
@@ -974,20 +1040,32 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 		Mix(buffer *AudioFrame, rate_scale gd.Float, frames gd.Int) gd.Int
 		//Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
 		TagUsedStreams()
+		//Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
+		SetParameter(name gd.StringName, value gd.Variant)
+		//Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
+		GetParameter(name gd.StringName) gd.Variant
 	}
 */
 type AudioStreamPlayback = classdb.AudioStreamPlayback
+
+/*
+Playback component of [AudioStreamInteractive]. Contains functions to change the currently played clip.
+*/
+type AudioStreamPlaybackInteractive = classdb.AudioStreamPlaybackInteractive
 type AudioStreamPlaybackOggVorbis = classdb.AudioStreamPlaybackOggVorbis
+type AudioStreamPlaybackPlaylist = classdb.AudioStreamPlaybackPlaylist
 
 /*
 Playback instance for [AudioStreamPolyphonic]. After setting the [code]stream[/code] property of [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D], the playback instance can be obtained by calling [method AudioStreamPlayer.get_stream_playback], [method AudioStreamPlayer2D.get_stream_playback] or [method AudioStreamPlayer3D.get_stream_playback] methods.
 */
 type AudioStreamPlaybackPolyphonic = classdb.AudioStreamPlaybackPolyphonic
 type AudioStreamPlaybackResampled = classdb.AudioStreamPlaybackResampled
+type AudioStreamPlaybackSynchronized = classdb.AudioStreamPlaybackSynchronized
 
 /*
-Plays an audio stream non-positionally.
-To play audio positionally, use [AudioStreamPlayer2D] or [AudioStreamPlayer3D] instead of [AudioStreamPlayer].
+The [AudioStreamPlayer] node plays an audio stream non-positionally. It is ideal for user interfaces, menus, or background music.
+To use this node, [member stream] needs to be set to a valid [AudioStream] resource. Playing more than one sound at the same time is also supported, see [member max_polyphony].
+If you need to play audio at a specific position, use [AudioStreamPlayer2D] or [AudioStreamPlayer3D] instead.
 */
 type AudioStreamPlayer = classdb.AudioStreamPlayer
 
@@ -1006,6 +1084,7 @@ See also [AudioStreamPlayer] to play a sound non-positionally.
 [b]Note:[/b] Hiding an [AudioStreamPlayer3D] node does not disable its audio output. To temporarily disable an [AudioStreamPlayer3D]'s audio output, set [member volume_db] to a very low value like [code]-100[/code] (which isn't audible to human hearing).
 */
 type AudioStreamPlayer3D = classdb.AudioStreamPlayer3D
+type AudioStreamPlaylist = classdb.AudioStreamPlaylist
 
 /*
 AudioStream that lets the user play custom streams at any time from code, simultaneously using a single player.
@@ -1017,6 +1096,11 @@ type AudioStreamPolyphonic = classdb.AudioStreamPolyphonic
 Picks a random AudioStream from the pool, depending on the playback mode, and applies random pitch shifting and volume shifting during playback.
 */
 type AudioStreamRandomizer = classdb.AudioStreamRandomizer
+
+/*
+This is a stream that can be fitted with sub-streams, which will be played in-sync. The streams being at exactly the same time when play is pressed, and will end when the last of them ends. If one of the sub-streams loops, then playback will continue.
+*/
+type AudioStreamSynchronized = classdb.AudioStreamSynchronized
 
 /*
 AudioStreamWAV stores sound samples loaded from WAV files. To play the stored sound, use an [AudioStreamPlayer] (for non-positional audio) or [AudioStreamPlayer2D]/[AudioStreamPlayer3D] (for positional audio). The sound can be looped.
@@ -1296,6 +1380,7 @@ Abstract base class for everything in 2D space. Canvas items are laid out in a t
 Any [CanvasItem] can draw. For this, [method queue_redraw] is called by the engine, then [constant NOTIFICATION_DRAW] will be received on idle time to request a redraw. Because of this, canvas items don't need to be redrawn on every frame, improving the performance significantly. Several functions for drawing on the [CanvasItem] are provided (see [code]draw_*[/code] functions). However, they can only be used inside [method _draw], its corresponding [method Object._notification] or methods connected to the [signal draw] signal.
 Canvas items are drawn in tree order on their canvas layer. By default, children are on top of their parents, so a root [CanvasItem] will be drawn behind everything. This behavior can be changed on a per-item basis.
 A [CanvasItem] can be hidden, which will also hide its children. By adjusting various other properties of a [CanvasItem], you can also modulate its color (via [member modulate] or [member self_modulate]), change its Z-index, blend mode, and more.
+Note that properties like transform, modulation, and visibility are only propagated to [i]direct[/i] [CanvasItem] child nodes. If there is a non-[CanvasItem] node in between, like [Node] or [AnimationPlayer], the [CanvasItem] nodes below will have an independent position and [member modulate] chain. See also [member top_level].
 
 	// CanvasItem methods that can be overridden by a [Class] that extends it.
 	type CanvasItem interface {
@@ -1399,9 +1484,9 @@ CodeEdit is a specialized [TextEdit] designed for editing plain text code files.
 
 	// CodeEdit methods that can be overridden by a [Class] that extends it.
 	type CodeEdit interface {
-		//Override this method to define how the selected entry should be inserted. If [param replace] is true, any existing text should be replaced.
+		//Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
 		ConfirmCodeCompletion(replace bool)
-		//Override this method to define what happens when the user requests code completion. If [param force] is true, any checks should be bypassed.
+		//Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
 		RequestCodeCompletion(force bool)
 		//Override this method to define what items in [param candidates] should be displayed.
 		//Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
@@ -1442,9 +1527,9 @@ Abstract base class for 3D physics objects. [CollisionObject3D] can hold any num
 
 	// CollisionObject3D methods that can be overridden by a [Class] that extends it.
 	type CollisionObject3D interface {
-		//Receives unhandled [InputEvent]s. [param position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
+		//Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
 		//[b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-		InputEvent(camera Camera3D, event InputEvent, position gd.Vector3, normal gd.Vector3, shape_idx gd.Int)
+		InputEvent(camera Camera3D, event InputEvent, event_position gd.Vector3, normal gd.Vector3, shape_idx gd.Int)
 		//Called when the mouse pointer enters any of this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
 		MouseEnter()
 		//Called when the mouse pointer exits all this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
@@ -1454,7 +1539,7 @@ Abstract base class for 3D physics objects. [CollisionObject3D] can hold any num
 type CollisionObject3D = classdb.CollisionObject3D
 
 /*
-A node that provides a thickened polygon shape (a prism) to a [CollisionObject2D] parent and allows to edit it. The polygon can be concave or convex. This can give a detection shape to an [Area2D] or turn [PhysicsBody2D] into a solid object.
+A node that provides a polygon shape to a [CollisionObject2D] parent and allows to edit it. The polygon can be concave or convex. This can give a detection shape to an [Area2D], turn [PhysicsBody2D] into a solid object, or give a hollow shape to a [StaticBody2D].
 [b]Warning:[/b] A non-uniformly scaled [CollisionShape2D] will likely not behave as expected. Make sure to keep its scale the same on all axes and adjust its shape resource instead.
 */
 type CollisionPolygon2D = classdb.CollisionPolygon2D
@@ -1493,6 +1578,22 @@ type ColorPickerButton = classdb.ColorPickerButton
 Displays a rectangle filled with a solid [member color]. If you need to display the border alone, consider using a [Panel] instead.
 */
 type ColorRect = classdb.ColorRect
+
+/*
+The compositor resource stores attributes used to customize how a [Viewport] is rendered.
+*/
+type Compositor = classdb.Compositor
+
+/*
+This resource defines a custom rendering effect that can be applied to [Viewport]s through the viewports' [Environment]. You can implement a callback that is called during rendering at a given stage of the rendering pipeline and allows you to insert additional passes. Note that this callback happens on the rendering thread. CompositorEffect is an abstract base class and must be extended to implement specific rendering logic.
+
+	// CompositorEffect methods that can be overridden by a [Class] that extends it.
+	type CompositorEffect interface {
+		//Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
+		RenderCallback(effect_callback_type gd.Int, render_data RenderData)
+	}
+*/
+type CompositorEffect = classdb.CompositorEffect
 
 /*
 A cubemap that is loaded from a [code].ccube[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedCubemap] can use one of 4 compression methods:
@@ -1582,7 +1683,7 @@ type ConeTwistJoint3D = classdb.ConeTwistJoint3D
 
 /*
 This helper class can be used to store [Variant] values on the filesystem using INI-style formatting. The stored values are identified by a section and a key:
-[codeblock]
+[codeblock lang=text]
 [section]
 some_key=42
 string_example="Hello World3D!"
@@ -1679,10 +1780,10 @@ A dialog used for confirmation of actions. This window is similar to [AcceptDial
 To get cancel action, you can use:
 [codeblocks]
 [gdscript]
-get_cancel_button().pressed.connect(self.canceled)
+get_cancel_button().pressed.connect(_on_canceled)
 [/gdscript]
 [csharp]
-GetCancelButton().Pressed += Canceled;
+GetCancelButton().Pressed += OnCanceled;
 [/csharp]
 [/codeblocks]
 */
@@ -1886,70 +1987,67 @@ The Crypto class provides access to advanced cryptographic functionalities.
 Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
 [codeblocks]
 [gdscript]
-extends Node
-
 var crypto = Crypto.new()
-var key = CryptoKey.new()
-var cert = X509Certificate.new()
 
-func _ready():
+# Generate new RSA key.
+var key = crypto.generate_rsa(4096)
 
-	# Generate new RSA key.
-	key = crypto.generate_rsa(4096)
-	# Generate new self-signed certificate with the given key.
-	cert = crypto.generate_self_signed_certificate(key, "CN=mydomain.com,O=My Game Company,C=IT")
-	# Save key and certificate in the user folder.
-	key.save("user://generated.key")
-	cert.save("user://generated.crt")
-	# Encryption
-	var data = "Some data"
-	var encrypted = crypto.encrypt(key, data.to_utf8_buffer())
-	# Decryption
-	var decrypted = crypto.decrypt(key, encrypted)
-	# Signing
-	var signature = crypto.sign(HashingContext.HASH_SHA256, data.sha256_buffer(), key)
-	# Verifying
-	var verified = crypto.verify(HashingContext.HASH_SHA256, data.sha256_buffer(), signature, key)
-	# Checks
-	assert(verified)
-	assert(data.to_utf8_buffer() == decrypted)
+# Generate new self-signed certificate with the given key.
+var cert = crypto.generate_self_signed_certificate(key, "CN=mydomain.com,O=My Game Company,C=IT")
 
+# Save key and certificate in the user folder.
+key.save("user://generated.key")
+cert.save("user://generated.crt")
+
+# Encryption
+var data = "Some data"
+var encrypted = crypto.encrypt(key, data.to_utf8_buffer())
+
+# Decryption
+var decrypted = crypto.decrypt(key, encrypted)
+
+# Signing
+var signature = crypto.sign(HashingContext.HASH_SHA256, data.sha256_buffer(), key)
+
+# Verifying
+var verified = crypto.verify(HashingContext.HASH_SHA256, data.sha256_buffer(), signature, key)
+
+# Checks
+assert(verified)
+assert(data.to_utf8_buffer() == decrypted)
 [/gdscript]
 [csharp]
 using Godot;
 using System.Diagnostics;
 
-public partial class MyNode : Node
+Crypto crypto = new Crypto();
 
-	{
-	    private Crypto _crypto = new Crypto();
-	    private CryptoKey _key = new CryptoKey();
-	    private X509Certificate _cert = new X509Certificate();
+// Generate new RSA key.
+CryptoKey key = crypto.GenerateRsa(4096);
 
-	    public override void _Ready()
-	    {
-	        // Generate new RSA key.
-	        _key = _crypto.GenerateRsa(4096);
-	        // Generate new self-signed certificate with the given key.
-	        _cert = _crypto.GenerateSelfSignedCertificate(_key, "CN=mydomain.com,O=My Game Company,C=IT");
-	        // Save key and certificate in the user folder.
-	        _key.Save("user://generated.key");
-	        _cert.Save("user://generated.crt");
-	        // Encryption
-	        string data = "Some data";
-	        byte[] encrypted = _crypto.Encrypt(_key, data.ToUtf8Buffer());
-	        // Decryption
-	        byte[] decrypted = _crypto.Decrypt(_key, encrypted);
-	        // Signing
-	        byte[] signature = _crypto.Sign(HashingContext.HashType.Sha256, Data.Sha256Buffer(), _key);
-	        // Verifying
-	        bool verified = _crypto.Verify(HashingContext.HashType.Sha256, Data.Sha256Buffer(), signature, _key);
-	        // Checks
-	        Debug.Assert(verified);
-	        Debug.Assert(data.ToUtf8Buffer() == decrypted);
-	    }
-	}
+// Generate new self-signed certificate with the given key.
+X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT");
 
+// Save key and certificate in the user folder.
+key.Save("user://generated.key");
+cert.Save("user://generated.crt");
+
+// Encryption
+string data = "Some data";
+byte[] encrypted = crypto.Encrypt(key, data.ToUtf8Buffer());
+
+// Decryption
+byte[] decrypted = crypto.Decrypt(key, encrypted);
+
+// Signing
+byte[] signature = crypto.Sign(HashingContext.HashType.Sha256, Data.Sha256Buffer(), key);
+
+// Verifying
+bool verified = crypto.Verify(HashingContext.HashType.Sha256, Data.Sha256Buffer(), signature, key);
+
+// Checks
+Debug.Assert(verified);
+Debug.Assert(data.ToUtf8Buffer() == decrypted);
 [/csharp]
 [/codeblocks]
 */
@@ -1970,10 +2068,9 @@ To create such a texture file yourself, reimport your image files using the Godo
 type Cubemap = classdb.Cubemap
 
 /*
-[CubemapArray]s are made of an array of [Cubemap]s. Like [Cubemap]s, they are made of multiple textures, the amount of which must be divisible by 6 (one for each face of the cube). The primary benefit of [CubemapArray]s is that they can be accessed in shader code using a single texture reference. In other words, you can pass multiple [Cubemap]s into a shader using a single [CubemapArray].
-Moreover, [Cubemap]s are allocated in adjacent cache regions on the GPU. This makes [CubemapArray]s the most efficient way to store multiple [Cubemap]s.
-Internally, Godot uses [CubemapArray]s for many effects, including the [Sky] if you set [member ProjectSettings.rendering/reflections/sky_reflections/texture_array_reflections] to [code]true[/code].
-To create such a texture file yourself, reimport your image files using the import presets of the File System dock.
+[CubemapArray]s are made of an array of [Cubemap]s. Like [Cubemap]s, they are made of multiple textures, the amount of which must be divisible by 6 (one for each face of the cube).
+The primary benefit of [CubemapArray]s is that they can be accessed in shader code using a single texture reference. In other words, you can pass multiple [Cubemap]s into a shader using a single [CubemapArray]. [Cubemap]s are allocated in adjacent cache regions on the GPU, which makes [CubemapArray]s the most efficient way to store multiple [Cubemap]s.
+[b]Note:[/b] Godot uses [CubemapArray]s internally for many effects, including the [Sky] if you set [member ProjectSettings.rendering/reflections/sky_reflections/texture_array_reflections] to [code]true[/code]. To create such a texture file yourself, reimport your image files using the import presets of the File System dock.
 [b]Note:[/b] [CubemapArray] is not supported in the OpenGL 3 rendering backend.
 */
 type CubemapArray = classdb.CubemapArray
@@ -2361,6 +2458,12 @@ func _exit_tree():
 		HasCapture(capture gd.String) bool
 		//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
 		Capture(message gd.String, data gd.Array, session_id gd.Int) bool
+		//Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
+		GotoScriptLine(script Script, line gd.Int)
+		//Override this method to be notified when all breakpoints are cleared in the editor.
+		BreakpointsClearedInTree()
+		//Override this method to be notified when a breakpoint is set in the editor.
+		BreakpointSetInTree(script Script, line gd.Int, enabled bool)
 	}
 */
 type EditorDebuggerPlugin = classdb.EditorDebuggerPlugin
@@ -2380,6 +2483,10 @@ type EditorExportPlatformAndroid = classdb.EditorExportPlatformAndroid
 type EditorExportPlatformIOS = classdb.EditorExportPlatformIOS
 type EditorExportPlatformLinuxBSD = classdb.EditorExportPlatformLinuxBSD
 type EditorExportPlatformMacOS = classdb.EditorExportPlatformMacOS
+
+/*
+The base class for the desktop platform exporters. These include Windows and Linux/BSD, but not macOS. See the classes inheriting this one for more details.
+*/
 type EditorExportPlatformPC = classdb.EditorExportPlatformPC
 
 /*
@@ -2387,6 +2494,10 @@ The Web exporter customizes how a web build is handled. In the editor's "Export"
 [b]Note:[/b] Godot on Web is rendered inside a [code]<canvas>[/code] tag. Normally, the canvas cannot be positioned or resized manually, but otherwise acts as the main [Window] of the application.
 */
 type EditorExportPlatformWeb = classdb.EditorExportPlatformWeb
+
+/*
+The Windows exporter customizes how a Windows build is handled. In the editor's "Export" window, it is created when adding a new "Windows" preset.
+*/
 type EditorExportPlatformWindows = classdb.EditorExportPlatformWindows
 
 /*
@@ -2395,7 +2506,7 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 
 	// EditorExportPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorExportPlugin interface {
-		//Virtual method to be overridden by the user. Called for each exported file, providing arguments that can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]) and [param features] is the list of features for the export.
+		//Virtual method to be overridden by the user. Called for each exported file before [method _customize_resource] and [method _customize_scene]. The arguments can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]), and [param features] is the list of features for the export.
 		//Calling [method skip] inside this callback will make the file not included in the export.
 		ExportFile(path gd.String, atype gd.String, features gd.PackedStringArray)
 		//Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. [param features] is the list of features for the export, [param is_debug] is [code]true[/code] for debug builds, [param path] is the target path for the exported project. [param flags] is only used when running a runnable profile, e.g. when using native run on Android.
@@ -2403,13 +2514,14 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 		//Virtual method to be overridden by the user. Called when the export is finished.
 		ExportEnd()
 		//Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
-		//When enabled, [method _get_customization_configuration_hash], [method _customize_resource] and [method _customize_scene] will be called and must be implemented.
+		//When enabled, [method _get_customization_configuration_hash] and [method _customize_resource] will be called and must be implemented.
 		BeginCustomizeResources(platform EditorExportPlatform, features gd.PackedStringArray) bool
 		//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
 		//The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 		//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
 		CustomizeResource(resource Resource, path gd.String) Resource
-		//Return true if this plugin will customize scenes based on the platform and features used.
+		//Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
+		//When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
 		BeginCustomizeScenes(platform EditorExportPlatform, features gd.PackedStringArray) bool
 		//Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
 		//Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
@@ -2427,6 +2539,25 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 		//- [code]default_value[/code]: The default value for this option.
 		//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 		GetExportOptions(platform EditorExportPlatform) gd.ArrayOf[gd.Dictionary]
+		//Return a [Dictionary] of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
+		//[codeblock]
+		//class MyExportPlugin extends EditorExportPlugin:
+		//    func _get_name() -> String:
+		//        return "MyExportPlugin"
+		//
+		//    func _supports_platform(platform) -> bool:
+		//        if platform is EditorExportPlatformPC:
+		//            # Run on all desktop platforms including Windows, MacOS and Linux.
+		//            return true
+		//        return false
+		//
+		//    func _get_export_options_overrides(platform) -> Dictionary:
+		//        # Override "Embed PCK" to always be enabled.
+		//        return {
+		//            "binary_format/embed_pck": true,
+		//        }
+		//[/codeblock]
+		GetExportOptionsOverrides(platform EditorExportPlatform) gd.Dictionary
 		//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
 		ShouldUpdateExportOptions(platform EditorExportPlatform) bool
 		//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
@@ -2608,18 +2739,18 @@ public partial class MySpecialPlugin : EditorImportPlugin
 	        };
 	    }
 
-	    public override int _Import(string sourceFile, string savePath, Godot.Collections.Dictionary options, Godot.Collections.Array<string> platformVariants, Godot.Collections.Array<string> genFiles)
+	    public override Error _Import(string sourceFile, string savePath, Godot.Collections.Dictionary options, Godot.Collections.Array<string> platformVariants, Godot.Collections.Array<string> genFiles)
 	    {
 	        using var file = FileAccess.Open(sourceFile, FileAccess.ModeFlags.Read);
 	        if (file.GetError() != Error.Ok)
 	        {
-	            return (int)Error.Failed;
+	            return Error.Failed;
 	        }
 
 	        var mesh = new ArrayMesh();
 	        // Fill the Mesh with data read in "file", left as an exercise to the reader.
 	        string filename = $"{savePath}.{_GetSaveExtension()}";
-	        return (int)ResourceSaver.Save(mesh, filename);
+	        return ResourceSaver.Save(mesh, filename);
 	    }
 	}
 
@@ -2677,6 +2808,9 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 		//Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 		//This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 		Import(source_file gd.String, save_path gd.String, options gd.Dictionary, platform_variants gd.ArrayOf[gd.String], gen_files gd.ArrayOf[gd.String]) int64
+		//Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
+		//If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
+		CanImportThreaded() bool
 	}
 */
 type EditorImportPlugin = classdb.EditorImportPlugin
@@ -2943,7 +3077,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//[gdscript]
 		//func _forward_3d_draw_over_viewport(overlay):
 		//    # Draw a circle at cursor position.
-		//    overlay.draw_circle(overlay.get_local_mouse_position(), 64)
+		//    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
 		//
 		//func _forward_3d_gui_input(camera, event):
 		//    if event is InputEventMouseMotion:
@@ -2980,7 +3114,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		GetPluginName() gd.String
 		//Override this method in your plugin to return a [Texture2D] in order to give it an icon.
 		//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
-		//Ideally, the plugin icon should be white with a transparent background and 16x16 pixels in size.
+		//Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
 		//[codeblocks]
 		//[gdscript]
 		//func _get_plugin_icon():
@@ -3001,7 +3135,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//[/codeblocks]
 		GetPluginIcon() Texture2D
 		//Returns [code]true[/code] if this is a main screen editor plugin (it goes in the workspace selector together with [b]2D[/b], [b]3D[/b], [b]Script[/b] and [b]AssetLib[/b]).
-		//When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [method EditorInterface.get_base_control] and made visible inside [method _make_visible].
+		//When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [method EditorInterface.get_editor_main_screen] and made visible inside [method _make_visible].
 		//Use [method _get_plugin_name] and [method _get_plugin_icon] to customize the plugin button's appearance.
 		//[codeblock]
 		//var plugin_control
@@ -3249,7 +3383,7 @@ type EditorSceneFormatImporter = classdb.EditorSceneFormatImporter
 
 /*
 Imports Blender scenes in the [code].blend[/code] file format through the glTF 2.0 3D import pipeline. This importer requires Blender to be installed by the user, so that it can be used to export the scene as glTF 2.0.
-The location of the Blender binary is set via the [code]filesystem/import/blender/blender3_path[/code] editor setting.
+The location of the Blender binary is set via the [code]filesystem/import/blender/blender_path[/code] editor setting.
 This importer is only used if [member ProjectSettings.filesystem/import/blender/enabled] is enabled, otherwise [code].blend[/code] files present in the project folder are not imported.
 Blend import requires Blender 3.0.
 Internally, the EditorSceneFormatImporterBlend uses the Blender glTF "Use Original" mode to reference external textures.
@@ -3258,11 +3392,16 @@ type EditorSceneFormatImporterBlend = classdb.EditorSceneFormatImporterBlend
 
 /*
 Imports Autodesk FBX 3D scenes by way of converting them to glTF 2.0 using the FBX2glTF command line tool.
-The location of the FBX2glTF binary is set via the [code]filesystem/import/fbx/fbx2gltf_path[/code] editor setting.
-This importer is only used if [member ProjectSettings.filesystem/import/fbx/enabled] is enabled, otherwise [code].fbx[/code] files present in the project folder are not imported.
+The location of the FBX2glTF binary is set via the [member EditorSettings.filesystem/import/fbx/fbx2gltf_path] editor setting.
+This importer is only used if [member ProjectSettings.filesystem/import/fbx2gltf/enabled] is set to [code]true[/code].
 */
-type EditorSceneFormatImporterFBX = classdb.EditorSceneFormatImporterFBX
+type EditorSceneFormatImporterFBX2GLTF = classdb.EditorSceneFormatImporterFBX2GLTF
 type EditorSceneFormatImporterGLTF = classdb.EditorSceneFormatImporterGLTF
+
+/*
+EditorSceneFormatImporterUFBX is designed to load FBX files and supports both binary and ASCII FBX files from version 3000 onward. This class supports various 3D object types like meshes, skins, blend shapes, materials, and rigging information. The class aims for feature parity with the official FBX SDK and supports FBX 7.4 specifications.
+*/
+type EditorSceneFormatImporterUFBX = classdb.EditorSceneFormatImporterUFBX
 
 /*
 Imported scenes can be automatically modified right after import by setting their [b]Custom Script[/b] Import property to a [code]tool[/code] script that inherits from this class.
@@ -3727,6 +3866,17 @@ private void OnTextEntered(string command)
 type Expression = classdb.Expression
 
 /*
+The FBXDocument handles FBX documents. It provides methods to append data from buffers or files, generate scenes, and register/unregister document extensions.
+When exporting FBX from Blender, use the "FBX Units Scale" option. The "FBX Units Scale" option sets the correct scale factor and avoids manual adjustments when re-importing into Blender, such as through glTF export.
+*/
+type FBXDocument = classdb.FBXDocument
+
+/*
+The FBXState handles the state data imported from FBX files.
+*/
+type FBXState = classdb.FBXState
+
+/*
 This class generates noise using the FastNoiseLite library, which is a collection of several noise algorithms including Cellular, Perlin, Value, and more.
 Most generated noise values are in the range of [code][-1, 1][/code], but not always. Some of the cellular noise algorithms return results above [code]1[/code].
 */
@@ -3737,12 +3887,12 @@ This class can be used to permanently store data in the user device's file syste
 Here's a sample on how to write and read from a file:
 [codeblocks]
 [gdscript]
-func save(content):
+func save_to_file(content):
 
 	var file = FileAccess.open("user://save_game.dat", FileAccess.WRITE)
 	file.store_string(content)
 
-func load():
+func load_from_file():
 
 	var file = FileAccess.open("user://save_game.dat", FileAccess.READ)
 	var content = file.get_as_text()
@@ -3750,14 +3900,14 @@ func load():
 
 [/gdscript]
 [csharp]
-public void Save(string content)
+public void SaveToFile(string content)
 
 	{
 	    using var file = FileAccess.Open("user://save_game.dat", FileAccess.ModeFlags.Write);
 	    file.StoreString(content);
 	}
 
-public string Load()
+public string LoadFromFile()
 
 	{
 	    using var file = FileAccess.Open("user://save_game.dat", FileAccess.ModeFlags.Read);
@@ -3840,8 +3990,8 @@ To use simulated bold font variant:
 [codeblocks]
 [gdscript]
 var fv = FontVariation.new()
-fv.set_base_font(load("res://BarlowCondensed-Regular.ttf"))
-fv.set_variation_embolden(1.2)
+fv.base_font = load("res://BarlowCondensed-Regular.ttf")
+fv.variation_embolden = 1.2
 $Label.add_theme_font_override("font", fv)
 $Label.add_theme_font_size_override("font_size", 64)
 [/gdscript]
@@ -3862,6 +4012,16 @@ fv.variation_opentype = { ts.name_to_tag("wght"): 900, ts.name_to_tag("custom_hg
 [/codeblock]
 */
 type FontVariation = classdb.FontVariation
+
+/*
+Framebuffer cache manager for Rendering Device based renderers. Provides a way to create a framebuffer and reuse it in subsequent calls for as long as the used textures exists. Framebuffers will automatically be cleaned up when dependent objects are freed.
+*/
+type FramebufferCacheRD = classdb.FramebufferCacheRD
+
+/*
+The [GDExtension] resource type represents a [url=https://en.wikipedia.org/wiki/Shared_library]shared library[/url] which can expand the functionality of the engine. The [GDExtensionManager] singleton is responsible for loading, reloading, and unloading [GDExtension] resources.
+[b]Note:[/b] GDExtension itself is not a scripting language and has no relation to [GDScript] resources.
+*/
 type GDExtension = classdb.GDExtension
 
 func GDExtensionManager(godot Lifetime) classdb.GDExtensionManager {
@@ -3875,8 +4035,18 @@ Calling [method new] creates a new instance of the script. [method Object.set_sc
 If you are looking for GDScript's built-in functions, see [@GDScript] instead.
 */
 type GDScript = classdb.GDScript
+
+/*
+GLTFAccessor is a data structure representing GLTF a [code]accessor[/code] that would be found in the [code]"accessors"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer. An accessor is a typed interpretation of the data in a buffer view.
+Most custom data stored in GLTF does not need accessors, only buffer views (see [GLTFBufferView]). Accessors are for more advanced use cases such as interleaved mesh data encoded for the GPU.
+*/
 type GLTFAccessor = classdb.GLTFAccessor
 type GLTFAnimation = classdb.GLTFAnimation
+
+/*
+GLTFBufferView is a data structure representing GLTF a [code]bufferView[/code] that would be found in the [code]"bufferViews"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer that can be used to identify and extract data from the buffer.
+Most custom uses of buffers only need to use the [member buffer], [member byte_length], and [member byte_offset]. The [member byte_stride] and [member indices] properties are for more advanced use cases such as interleaved mesh data encoded for the GPU.
+*/
 type GLTFBufferView = classdb.GLTFBufferView
 
 /*
@@ -3920,7 +4090,7 @@ To use, make a new class extending GLTFDocumentExtension, override any methods y
 		//[b]Note:[/b] The [param scene_parent] parameter may be null if this is the single root node.
 		GenerateSceneNode(state GLTFState, gltf_node GLTFNode, scene_parent Node) Node3D
 		//Part of the import process. This method is run after [method _parse_node_extensions] and before [method _generate_scene_node].
-		//This method can be used to modify any of the data imported so far, including any scene nodes, before running the final per-node import step.
+		//This method can be used to modify any of the data imported so far after parsing, before generating the nodes and then running the final per-node import step.
 		ImportPostParse(state GLTFState) int64
 		//Part of the import process. This method is run after [method _generate_scene_node] and before [method _import_post].
 		//This method can be used to make modifications to each of the generated Godot scene nodes.
@@ -3951,7 +4121,7 @@ To use, make a new class extending GLTFDocumentExtension, override any methods y
 		//This method can be used to set up the extensions for the texture JSON by editing [param texture_json]. The extension must also be added as used extension with [method GLTFState.add_used_extension], be sure to set [code]required[/code] to [code]true[/code] if you are not providing a fallback.
 		SerializeTextureJson(state GLTFState, texture_json gd.Dictionary, gltf_texture GLTFTexture, image_format gd.String) int64
 		//Part of the export process. This method is run after [method _get_saveable_image_formats] and before [method _export_post]. If this [GLTFDocumentExtension] is used for exporting images, this runs after [method _serialize_texture_json].
-		//This method can be used to modify the final JSON of each node.
+		//This method can be used to modify the final JSON of each node. Data should be primarily stored in [param gltf_node] prior to serializing the JSON, but the original Godot [param node] is also provided if available. The node may be null if not available, such as when exporting GLTF data not generated from a Godot scene.
 		ExportNode(state GLTFState, gltf_node GLTFNode, json gd.Dictionary, node Node) int64
 		//Part of the export process. This method is run last, after all other parts of the export process.
 		//This method can be used to modify the final JSON of the generated GLTF file.
@@ -3965,6 +4135,10 @@ type GLTFDocumentExtensionConvertImporterMesh = classdb.GLTFDocumentExtensionCon
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
 */
 type GLTFLight = classdb.GLTFLight
+
+/*
+GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
+*/
 type GLTFMesh = classdb.GLTFMesh
 
 /*
@@ -3974,12 +4148,12 @@ GLTF nodes generally exist inside of [GLTFState] which represents all data of a 
 type GLTFNode = classdb.GLTFNode
 
 /*
-Represents a physics body as defined by the [code]OMI_physics_body[/code] GLTF extension. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
+Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
 */
 type GLTFPhysicsBody = classdb.GLTFPhysicsBody
 
 /*
-Represents a physics shape as defined by the [code]OMI_collider[/code] GLTF extension. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
+Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
 */
 type GLTFPhysicsShape = classdb.GLTFPhysicsShape
 type GLTFSkeleton = classdb.GLTFSkeleton
@@ -4130,6 +4304,7 @@ type GradientTexture2D = classdb.GradientTexture2D
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
 [GraphEdit] by itself is only an empty container, representing an infinite grid where [GraphNode]s can be placed. Each [GraphNode] represents a node in the graph, a single unit of data in the connected scheme. [GraphEdit], in turn, helps to control various interactions with nodes and between nodes. When the user attempts to connect, disconnect, or delete a [GraphNode], a signal is emitted in the [GraphEdit], but no action is taken by default. It is the responsibility of the programmer utilizing this control to implement the necessary logic to determine how each request should be handled.
 [b]Performance:[/b] It is greatly advised to enable low-processor usage mode (see [member OS.low_processor_usage_mode]) when using GraphEdits.
+[b]Note:[/b] Keep in mind that [method Node.get_children] will also return the connection layer node named [code]_connection_layer[/code] due to technical limitations. This behavior may change in future releases.
 
 	// GraphEdit methods that can be overridden by a [Class] that extends it.
 	type GraphEdit interface {
@@ -4182,6 +4357,12 @@ type GraphEdit = classdb.GraphEdit
 [GraphElement] allows to create custom elements for a [GraphEdit] graph. By default such elements can be selected, resized, and repositioned, but they cannot be connected. For a graph element that allows for connections see [GraphNode].
 */
 type GraphElement = classdb.GraphElement
+
+/*
+GraphFrame is a special [GraphElement] to which other [GraphElement]s can be attached. It can be configured to automatically resize to enclose all attached [GraphElement]s. If the frame is moved, all the attached [GraphElement]s inside it will be moved as well.
+A GraphFrame is always kept behind the connection layer and other [GraphElement]s inside a [GraphEdit].
+*/
+type GraphFrame = classdb.GraphFrame
 
 /*
 [GraphNode] allows to create nodes for a [GraphEdit] graph with customizable content based on its child controls. [GraphNode] is derived from [Container] and it is responsible for placing its children on screen. This works similar to [VBoxContainer]. Children, in turn, provide [GraphNode] with so-called slots, each of which can have a connection port on either side.
@@ -4487,14 +4668,15 @@ func hash_file(path):
 	# Check that file exists.
 	if not FileAccess.file_exists(path):
 	    return
-	# Start a SHA-256 context.
+	# Start an SHA-256 context.
 	var ctx = HashingContext.new()
 	ctx.start(HashingContext.HASH_SHA256)
 	# Open the file to hash.
 	var file = FileAccess.open(path, FileAccess.READ)
 	# Update the context after reading each chunk.
-	while not file.eof_reached():
-	    ctx.update(file.get_buffer(CHUNK_SIZE))
+	while file.get_position() < file.get_length():
+	    var remaining = file.get_length() - file.get_position()
+	    ctx.update(file.get_buffer(min(remaining, CHUNK_SIZE)))
 	# Get the computed hash.
 	var res = ctx.finish()
 	# Print the result as hex string and array.
@@ -4512,15 +4694,16 @@ public void HashFile(string path)
 	    {
 	        return;
 	    }
-	    // Start a SHA-256 context.
+	    // Start an SHA-256 context.
 	    var ctx = new HashingContext();
 	    ctx.Start(HashingContext.HashType.Sha256);
 	    // Open the file to hash.
 	    using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 	    // Update the context after reading each chunk.
-	    while (!file.EofReached())
+	    while (file.GetPosition() < file.GetLength())
 	    {
-	        ctx.Update(file.GetBuffer(ChunkSize));
+	        int remaining = (int)(file.GetLength() - file.GetPosition());
+	        ctx.Update(file.GetBuffer(Mathf.Min(remaining, ChunkSize)));
 	    }
 	    // Get the computed hash.
 	    byte[] res = ctx.Finish();
@@ -4536,6 +4719,19 @@ type HashingContext = classdb.HashingContext
 /*
 A 3D heightmap shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. This is useful for terrain, but it is limited as overhangs (such as caves) cannot be stored. Holes in a [HeightMapShape3D] are created by assigning very low values to points in the desired area.
 [b]Performance:[/b] [HeightMapShape3D] is faster to check collisions against than [ConcavePolygonShape3D], but it is significantly slower than primitive shapes like [BoxShape3D].
+A heightmap collision shape can also be build by using an [Image] reference:
+[codeblocks]
+[gdscript]
+var heightmap_texture: Texture = ResourceLoader.load("res://heightmap_image.exr")
+var heightmap_image: Image = heightmap_texture.get_image()
+heightmap_image.convert(Image.FORMAT_RF)
+
+var height_min: float = 0.0
+var height_max: float = 10.0
+
+update_map_data_from_image(heightmap_image, height_min, height_max)
+[/gdscript]
+[/codeblocks]
 */
 type HeightMapShape3D = classdb.HeightMapShape3D
 
@@ -4764,6 +4960,7 @@ type InputEventMouse = classdb.InputEventMouse
 
 /*
 Stores information about mouse click events. See [method Node._input].
+[b]Note:[/b] On Wear OS devices, rotary input is mapped to [constant MOUSE_BUTTON_WHEEL_UP] and [constant MOUSE_BUTTON_WHEEL_DOWN]. This can be changed to [constant MOUSE_BUTTON_WHEEL_LEFT] and [constant MOUSE_BUTTON_WHEEL_RIGHT] with the [member ProjectSettings.input_devices/pointing/android/rotary_input_scroll_axis] setting.
 */
 type InputEventMouseButton = classdb.InputEventMouseButton
 
@@ -4790,7 +4987,7 @@ Stores information about multi-touch press/release input events. Supports touch 
 type InputEventScreenTouch = classdb.InputEventScreenTouch
 
 /*
-InputEventShortcut is a special event that can be received in [method Node._unhandled_key_input]. It is typically sent by the editor's Command Palette to trigger actions, but can also be sent manually using [method Viewport.push_input].
+InputEventShortcut is a special event that can be received in [method Node._input], [method Node._shortcut_input], and [method Node._unhandled_input]. It is typically sent by the editor's Command Palette to trigger actions, but can also be sent manually using [method Viewport.push_input].
 */
 type InputEventShortcut = classdb.InputEventShortcut
 
@@ -4831,7 +5028,7 @@ The JNISingleton is implemented only in the Android export. It's used to call me
 type JNISingleton = classdb.JNISingleton
 
 /*
-The [JSON] enables all data types to be converted to and from a JSON string. This useful for serializing data to save to a file or send over the network.
+The [JSON] class enables all data types to be converted to and from a JSON string. This is useful for serializing data, e.g. to save to a file or send over the network.
 [method stringify] is used to convert any data type into a JSON string.
 [method parse] is used to convert any existing JSON data into a [Variant] that can be used within Godot. If successfully parsed, use [member data] to retrieve the [Variant], and use [code]typeof[/code] to check if the Variant's type is what you expect. JSON Objects are converted into a [Dictionary], but JSON data can be used to store [Array]s, numbers, [String]s and even just a boolean.
 [b]Example[/b]
@@ -4856,7 +5053,7 @@ else:
 	print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
 
 [/codeblock]
-Alternatively, you can parse string using the static [method parse_string] method, but it doesn't allow to handle errors.
+Alternatively, you can parse strings using the static [method parse_string] method, but it doesn't handle errors.
 [codeblock]
 var data = JSON.parse_string(json_string) # Returns null if parsing failed.
 [/codeblock]
@@ -4872,6 +5069,12 @@ type JSON = classdb.JSON
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
 */
 type JSONRPC = classdb.JSONRPC
+
+/*
+Represents an object from the Java Native Interface. It is returned from [method JavaClassWrapper.wrap].
+[b]Note:[/b] This class only works on Android. For any other build, this class does nothing.
+[b]Note:[/b] This class is not to be confused with [JavaScriptObject].
+*/
 type JavaClass = classdb.JavaClass
 
 func JavaClassWrapper(godot Lifetime) classdb.JavaClassWrapper {
@@ -4919,12 +5122,12 @@ func myCallback(args):
 type JavaScriptObject = classdb.JavaScriptObject
 
 /*
-Abstract base class for all joints in 2D physics. 2D joints bind together two physics bodies and apply a constraint.
+Abstract base class for all joints in 2D physics. 2D joints bind together two physics bodies ([member node_a] and [member node_b]) and apply a constraint.
 */
 type Joint2D = classdb.Joint2D
 
 /*
-Abstract base class for all joints in 3D physics. 3D joints bind together two physics bodies and apply a constraint.
+Abstract base class for all joints in 3D physics. 3D joints bind together two physics bodies ([member node_a] and [member node_b]) and apply a constraint. If only one body is defined, it is attached to a fixed [StaticBody3D] without collision shapes.
 */
 type Joint3D = classdb.Joint3D
 
@@ -4976,7 +5179,7 @@ The [LightmapGI] node is used to compute and store baked lightmaps. Lightmaps ar
 [b]Performance:[/b] [LightmapGI] provides the best possible run-time performance for global illumination. It is suitable for low-end hardware including integrated graphics and mobile devices.
 [b]Note:[/b] Due to how lightmaps work, most properties only have a visible effect once lightmaps are baked again.
 [b]Note:[/b] Lightmap baking on [CSGShape3D]s and [PrimitiveMesh]es is not supported, as these cannot store UV2 data required for baking.
-[b]Note:[/b] If no custom lightmappers are installed, [LightmapGI] can only be baked when using the Vulkan backend (Forward+ or Mobile), not OpenGL. Additionally, [LightmapGI] rendering is not currently supported when using the OpenGL backend (Compatibility).
+[b]Note:[/b] If no custom lightmappers are installed, [LightmapGI] can only be baked from devices that support the Forward+ or Mobile rendering backends.
 */
 type LightmapGI = classdb.LightmapGI
 
@@ -4986,8 +5189,9 @@ type LightmapGI = classdb.LightmapGI
 type LightmapGIData = classdb.LightmapGIData
 
 /*
-[LightmapProbe] represents the position of a single manually placed probe for dynamic object lighting with [LightmapGI].
+[LightmapProbe] represents the position of a single manually placed probe for dynamic object lighting with [LightmapGI]. Lightmap probes affect the lighting of [GeometryInstance3D]-derived nodes that have their [member GeometryInstance3D.gi_mode] set to [constant GeometryInstance3D.GI_MODE_DYNAMIC].
 Typically, [LightmapGI] probes are placed automatically by setting [member LightmapGI.generate_probes_subdiv] to a value other than [constant LightmapGI.GENERATE_PROBES_DISABLED]. By creating [LightmapProbe] nodes before baking lightmaps, you can add more probes in specific areas for greater detail, or disable automatic generation and rely only on manually placed probes instead.
+[b]Note:[/b] [LightmapProbe] nodes that are placed after baking lightmaps are ignored by dynamic objects. You must bake lightmaps again after creating or modifying [LightmapProbe]s for the probes to be effective.
 */
 type LightmapProbe = classdb.LightmapProbe
 
@@ -5187,7 +5391,7 @@ See also [BaseButton] which contains common properties and methods associated wi
 type MenuButton = classdb.MenuButton
 
 /*
-Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
+Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
 
 	// Mesh methods that can be overridden by a [Class] that extends it.
 	type Mesh interface {
@@ -5307,12 +5511,14 @@ The tweener will finish automatically if the callback's target object is freed.
 type MethodTweener = classdb.MethodTweener
 
 /*
-This is an internal editor class intended for keeping data of nodes of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in the scene. Ignore it if you don't know what it is.
+This is an internal editor class intended for keeping data of nodes of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in a scene.
+[b]Warning:[/b] Ignore missing nodes unless you know what you are doing. Existing properties on a missing node can be freely modified in code, regardless of the type they are intended to be.
 */
 type MissingNode = classdb.MissingNode
 
 /*
-This is an internal editor class intended for keeping data of resources of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in the scene. Ignore it if you don't know what it is.
+This is an internal editor class intended for keeping data of resources of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in a scene.
+[b]Warning:[/b] Ignore missing resources unless you know what you are doing. Existing properties on a missing resource can be freely modified in code, regardless of the type they are intended to be.
 */
 type MissingResource = classdb.MissingResource
 
@@ -5324,7 +5530,7 @@ You can initialize this interface as follows:
 var interface = XRServer.find_interface("Native mobile")
 if interface and interface.initialize():
 
-	get_viewport().xr = true
+	get_viewport().use_xr = true
 
 [/codeblock]
 */
@@ -5527,7 +5733,7 @@ This class is designed to be inherited from a GDExtension plugin to implement cu
 		PutPacketScript(p_buffer gd.PackedByteArray) int64
 		//Called to get the channel over which the next available packet was received. See [method MultiplayerPeer.get_packet_channel].
 		GetPacketChannel() gd.Int
-		//Called to get the [enum MultiplayerPeer.TransferMode] the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
+		//Called to get the transfer mode the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
 		GetPacketMode() MultiplayerPeerTransferMode
 		//Called when the channel to use is set for this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
 		SetTransferChannel(p_channel gd.Int)
@@ -5589,6 +5795,11 @@ This is a reentrant mutex, meaning that it can be locked multiple times by one t
 */
 type Mutex = classdb.Mutex
 
+func NativeMenu(godot Lifetime) classdb.NativeMenu {
+	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.NativeMenu)
+	return *(*classdb.NativeMenu)(unsafe.Pointer(&obj))
+}
+
 /*
 A 2D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
 Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is computed before physics, so the pathfinding information can be used safely in the physics step.
@@ -5634,18 +5845,16 @@ Container for parsed source geometry data used in navigation mesh baking.
 type NavigationMeshSourceGeometryData3D = classdb.NavigationMeshSourceGeometryData3D
 
 /*
-2D Obstacle used in navigation to constrain avoidance controlled agents outside or inside an area. The obstacle needs a navigation map and outline vertices defined to work correctly.
-If the obstacle's vertices are winded in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Outlines must not cross or overlap.
-Obstacles are [b]not[/b] a replacement for a (re)baked navigation mesh. Obstacles [b]don't[/b] change the resulting path from the pathfinding, obstacles only affect the navigation avoidance agent movement by altering the suggested velocity of the avoidance agent.
-Obstacles using vertices can warp to a new position but should not moved every frame as each move requires a rebuild of the avoidance map.
+An obstacle needs a navigation map and outline [member vertices] defined to work correctly. The outlines can not cross or overlap.
+Obstacles can be included in the navigation mesh baking process when [member affect_navigation_mesh] is enabled. They do not add walkable geometry, instead their role is to discard other source geometry inside the shape. This can be used to prevent navigation mesh from appearing in unwanted places. If [member carve_navigation_mesh] is enabled the baked shape will not be affected by offsets of the navigation mesh baking, e.g. the agent radius.
+With [member avoidance_enabled] the obstacle can constrain the avoidance velocities of avoidance using agents. If the obstacle's vertices are wound in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Obstacles using vertices and avoidance can warp to a new position but should not be moved every single frame as each change requires a rebuild of the avoidance map.
 */
 type NavigationObstacle2D = classdb.NavigationObstacle2D
 
 /*
-3D Obstacle used in navigation to constrain avoidance controlled agents outside or inside an area. The obstacle needs a navigation map and outline vertices defined to work correctly.
-If the obstacle's vertices are winded in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Outlines must not cross or overlap.
-Obstacles are [b]not[/b] a replacement for a (re)baked navigation mesh. Obstacles [b]don't[/b] change the resulting path from the pathfinding, obstacles only affect the navigation avoidance agent movement by altering the suggested velocity of the avoidance agent.
-Obstacles using vertices can warp to a new position but should not moved every frame as each move requires a rebuild of the avoidance map.
+An obstacle needs a navigation map and outline [member vertices] defined to work correctly. The outlines can not cross or overlap and are restricted to a plane projection. This means the y-axis of the vertices is ignored, instead the obstacle's global y-axis position is used for placement. The projected shape is extruded by the obstacles height along the y-axis.
+Obstacles can be included in the navigation mesh baking process when [member affect_navigation_mesh] is enabled. They do not add walkable geometry, instead their role is to discard other source geometry inside the shape. This can be used to prevent navigation mesh from appearing in unwanted places, e.g. inside "solid" geometry or on top of it. If [member carve_navigation_mesh] is enabled the baked shape will not be affected by offsets of the navigation mesh baking, e.g. the agent radius.
+With [member avoidance_enabled] the obstacle can constrain the avoidance velocities of avoidance using agents. If the obstacle's vertices are wound in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Obstacles using vertices and avoidance can warp to a new position but should not be moved every single frame as each change requires a rebuild of the avoidance map.
 */
 type NavigationObstacle3D = classdb.NavigationObstacle3D
 
@@ -5936,7 +6145,7 @@ It also provides methods for querying the status of OpenXR initialization, and h
 type OpenXRAPIExtension = classdb.OpenXRAPIExtension
 
 /*
-This resource defines an OpenXR action. Actions can be used both for inputs (buttons/joystick/trigger/etc) and outputs (haptics).
+This resource defines an OpenXR action. Actions can be used both for inputs (buttons, joysticks, triggers, etc.) and outputs (haptics).
 OpenXR performs automatic conversion between action type and input type whenever possible. An analog trigger bound to a boolean action will thus return [code]false[/code] if the trigger is depressed and [code]true[/code] if pressed fully.
 Actions are not directly bound to specific devices, instead OpenXR recognizes a limited number of top level paths that identify devices by usage. We can restrict which devices an action can be bound to by these top level paths. For instance an action that should only be used for hand held controllers can have the top level paths "/user/hand/left" and "/user/hand/right" associated with them. See the [url=https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-reserved]reserved path section in the OpenXR specification[/url] for more info on the top level paths.
 Note that the name of the resource is used to register the action with.
@@ -5957,6 +6166,27 @@ Action sets can contain the same action with the same name, if such action sets 
 type OpenXRActionSet = classdb.OpenXRActionSet
 
 /*
+Composition layers allow 2D viewports to be displayed inside of the headset by the XR compositor through special projections that retain their quality. This allows for rendering clear text while keeping the layer at a native resolution.
+[b]Note:[/b] If the OpenXR runtime doesn't support the given composition layer type, a fallback mesh can be generated with a [ViewportTexture], in order to emulate the composition layer.
+*/
+type OpenXRCompositionLayer = classdb.OpenXRCompositionLayer
+
+/*
+An OpenXR composition layer that allows rendering a [SubViewport] on an internal slice of a cylinder.
+*/
+type OpenXRCompositionLayerCylinder = classdb.OpenXRCompositionLayerCylinder
+
+/*
+An OpenXR composition layer that allows rendering a [SubViewport] on an internal slice of a sphere.
+*/
+type OpenXRCompositionLayerEquirect = classdb.OpenXRCompositionLayerEquirect
+
+/*
+An OpenXR composition layer that allows rendering a [SubViewport] on a quad.
+*/
+type OpenXRCompositionLayerQuad = classdb.OpenXRCompositionLayerQuad
+
+/*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
 
 	// OpenXRExtensionWrapperExtension methods that can be overridden by a [Class] that extends it.
@@ -5973,6 +6203,19 @@ type OpenXRActionSet = classdb.OpenXRActionSet
 		SetSessionCreateAndGetNextPointer(next_pointer unsafe.Pointer) gd.Int
 		//Adds additional data structures when creating OpenXR swapchains.
 		SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) gd.Int
+		//Adds additional data structures when each hand tracker is created.
+		SetHandJointLocationsAndGetNextPointer(hand_index gd.Int, next_pointer unsafe.Pointer) gd.Int
+		//Returns the number of composition layers this extension wrapper provides via [method _get_composition_layer].
+		//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
+		GetCompositionLayerCount() gd.Int
+		//Returns a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct to provide the given composition layer.
+		//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
+		GetCompositionLayer(index gd.Int) gd.Int
+		//Returns an integer that will be used to sort the given composition layer provided via [method _get_composition_layer]. Lower numbers will move the layer to the front of the list, and higher numbers to the end. The default projection layer has an order of [code]0[/code], so layers provided by this method should probably be above or below (but not exactly) [code]0[/code].
+		//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
+		GetCompositionLayerOrder(index gd.Int) gd.Int
+		//Returns a [PackedStringArray] of positional tracker names that are used within the extension wrapper.
+		GetSuggestedTrackerNames() gd.PackedStringArray
 		//Allows extensions to register additional controller metadata. This function is called even when the OpenXR API is not constructed as the metadata needs to be available to the editor.
 		//Extensions should also provide metadata regardless of whether they are supported on the host system. The controller data is used to setup action maps for users who may have access to the relevant hardware.
 		OnRegisterMetadata()
@@ -5988,6 +6231,8 @@ type OpenXRActionSet = classdb.OpenXRActionSet
 		OnProcess()
 		//Called right before the XR viewports begin their rendering step.
 		OnPreRender()
+		//Called right after the main swapchains are (re)created.
+		OnMainSwapchainsCreated()
 		//Called right before the OpenXR session is destroyed.
 		OnSessionDestroyed()
 		//Called when the OpenXR session state is changed to idle.
@@ -6008,12 +6253,26 @@ type OpenXRActionSet = classdb.OpenXRActionSet
 		OnStateExiting()
 		//Called when there is an OpenXR event to process. When implementing, return [code]true[/code] if the event was handled, return [code]false[/code] otherwise.
 		OnEventPolled(event unsafe.Pointer) bool
+		//Adds additional data structures to composition layers created by [OpenXRCompositionLayer].
+		//[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
+		//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
+		SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values gd.Dictionary, next_pointer unsafe.Pointer) gd.Int
+		//Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
+		GetViewportCompositionLayerExtensionProperties() gd.ArrayOf[gd.Dictionary]
+		//Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
+		GetViewportCompositionLayerExtensionPropertyDefaults() gd.Dictionary
+		//Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
+		//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
+		OnViewportCompositionLayerDestroyed(layer unsafe.Pointer)
 	}
 */
 type OpenXRExtensionWrapperExtension = classdb.OpenXRExtensionWrapperExtension
 
 /*
-This node enables OpenXR's hand tracking functionality. The node should be a child node of an [XROrigin3D] node, tracking will update its position to where the player's actual hand is positioned. This node also updates the skeleton of a properly skinned hand model. The hand mesh should be a child node of this node.
+This node enables OpenXR's hand tracking functionality. The node should be a child node of an [XROrigin3D] node, tracking will update its position to the player's tracked hand Palm joint location (the center of the middle finger's metacarpal bone). This node also updates the skeleton of a properly skinned hand or avatar model.
+If the skeleton is a hand (one of the hand bones is the root node of the skeleton), then the skeleton will be placed relative to the hand palm location and the hand mesh and skeleton should be children of the OpenXRHand node.
+If the hand bones are part of a full skeleton, then the root of the hand will keep its location with the assumption that IK is used to position the hand and arm.
+By default the skeleton hand bones are repositioned to match the size of the tracked hand. To preserve the modeled bone sizes change [member bone_update] to apply rotation only.
 */
 type OpenXRHand = classdb.OpenXRHand
 
@@ -6242,6 +6501,12 @@ You can use [url=https://danilw.github.io/GLSL-howto/cubemap_to_panorama_js/cube
 type PanoramaSkyMaterial = classdb.PanoramaSkyMaterial
 
 /*
+A [Parallax2D] is used to create a parallax effect. It can move at a different speed relative to the camera movement using [member scroll_scale]. This creates an illusion of depth in a 2D game. If manual scrolling is desired, the [Camera2D] position can be ignored with [member ignore_camera_scroll].
+[b]Note:[/b] Any changes to this node's position made after it enters the scene tree will be overridden if [member ignore_camera_scroll] is [code]false[/code] or [member screen_offset] is modified.
+*/
+type Parallax2D = classdb.Parallax2D
+
+/*
 A ParallaxBackground uses one or more [ParallaxLayer] child nodes to create a parallax effect. Each [ParallaxLayer] can move at a different speed using [member ParallaxLayer.motion_offset]. This creates an illusion of depth in a 2D game. If not used with a [Camera2D], you must manually calculate the [member scroll_offset].
 [b]Note:[/b] Each [ParallaxBackground] is drawn on one specific [Viewport] and cannot be shared between multiple [Viewport]s, see [member CanvasLayer.custom_viewport]. When using multiple [Viewport]s, for example in a split-screen game, you need create an individual [ParallaxBackground] for each [Viewport] you want it to be drawn on.
 */
@@ -6297,19 +6562,24 @@ type PhysicalBone2D = classdb.PhysicalBone2D
 
 /*
 The [PhysicalBone3D] node is a physics body that can be used to make bones in a [Skeleton3D] react to physics.
+[b]Note:[/b] In order to detect physical bones with raycasts, the [member SkeletonModifier3D.active] property of the parent [PhysicalBoneSimulator3D] must be [code]true[/code] and the [Skeleton3D]'s bone must be assigned to [PhysicalBone3D] correctly; it means that [method get_bone_id] should return a valid id ([code]>= 0[/code]).
 
 	// PhysicalBone3D methods that can be overridden by a [Class] that extends it.
 	type PhysicalBone3D interface {
-		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it works in addition to the usual physics behavior, but the [member custom_integrator] property allows you to disable the default behavior and do fully custom force integration for a body.
+		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 		IntegrateForces(state PhysicsDirectBodyState3D)
 	}
 */
 type PhysicalBone3D = classdb.PhysicalBone3D
 
 /*
+Node that can be the parent of [PhysicalBone3D] and can apply the simulation results to [Skeleton3D].
+*/
+type PhysicalBoneSimulator3D = classdb.PhysicalBoneSimulator3D
+
+/*
 The [PhysicalSkyMaterial] uses the Preetham analytic daylight model to draw a sky based on physical properties. This results in a substantially more realistic sky than the [ProceduralSkyMaterial], but it is slightly slower and less flexible.
 The [PhysicalSkyMaterial] only supports one sun. The color, energy, and direction of the sun are taken from the first [DirectionalLight3D] in the scene tree.
-As it is based on a daylight model, the sky fades to black as the sunset ends. If you want a full day/night cycle, you will have to add a night sky by converting this to a [ShaderMaterial] and adding a night sky directly into the resulting shader.
 */
 type PhysicalSkyMaterial = classdb.PhysicalSkyMaterial
 
@@ -6670,7 +6940,7 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		//Overridable version of [method PhysicsServer2D.area_set_monitorable].
 		AreaSetMonitorable(area gd.RID, monitorable bool)
 		//If set to [code]true[/code], allows the area with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
-		//Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member PhysicsBody2D.input_pickable].
+		//Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
 		AreaSetPickable(area gd.RID, pickable bool)
 		//Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 		AreaSetMonitorCallback(area gd.RID, callback gd.Callable)
@@ -6790,7 +7060,7 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		//Overridable version of [method PhysicsServer2D.body_is_omitting_force_integration].
 		BodyIsOmittingForceIntegration(body gd.RID) bool
 		//Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
-		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_state_sync_callback[/code] method.
+		//Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 		BodySetStateSyncCallback(body gd.RID, callable gd.Callable)
 		//Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
 		BodySetForceIntegrationCallback(body gd.RID, callable gd.Callable, userdata gd.Variant)
@@ -6798,7 +7068,7 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
 		BodyCollideShape(body gd.RID, body_shape gd.Int, shape gd.RID, shape_xform gd.Transform2D, motion gd.Vector2, results unsafe.Pointer, result_max gd.Int, result_count *int32) bool
 		//If set to [code]true[/code], allows the body with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
-		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member PhysicsBody2D.input_pickable].
+		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
 		BodySetPickable(body gd.RID, pickable bool)
 		//Overridable version of [method PhysicsServer2D.body_get_direct_state].
 		BodyGetDirectState(body gd.RID) PhysicsDirectBodyState2D
@@ -7459,7 +7729,7 @@ Range is an abstract base class for controls that represent a number within a ra
 type Range = classdb.Range
 
 /*
-A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject2D] along its path, if it intersects any. This is useful for a lot of things, such as
+A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject2D] along its path, if it intersects any.
 [RayCast2D] can ignore some objects by adding them to an exception list, by making its detection reporting ignore [Area2D]s ([member collide_with_areas]) or [PhysicsBody2D]s ([member collide_with_bodies]), or by configuring physics layers.
 [RayCast2D] calculates intersection every physics frame, and it holds the result until the next physics frame. For an immediate raycast, or if you want to configure a [RayCast2D] multiple times within the same physics frame, use [method force_raycast_update].
 To sweep over a region of 2D space, you can approximate the region with multiple [RayCast2D]s or use [ShapeCast2D].
@@ -7467,7 +7737,7 @@ To sweep over a region of 2D space, you can approximate the region with multiple
 type RayCast2D = classdb.RayCast2D
 
 /*
-A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject3D] along its path, if it intersects any. This is useful for a lot of things, such as
+A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject3D] along its path, if it intersects any.
 [RayCast3D] can ignore some objects by adding them to an exception list, by making its detection reporting ignore [Area3D]s ([member collide_with_areas]) or [PhysicsBody3D]s ([member collide_with_bodies]), or by configuring physics layers.
 [RayCast3D] calculates intersection every physics frame, and it holds the result until the next physics frame. For an immediate raycast, or if you want to configure a [RayCast3D] multiple times within the same physics frame, use [method force_raycast_update].
 To sweep over a region of 3D space, you can approximate the region with multiple [RayCast3D]s or use [ShapeCast3D].
@@ -7485,7 +7755,7 @@ Base class for any object that keeps a reference count. [Resource] and many othe
 Unlike other [Object] types, [RefCounted]s keep an internal reference counter so that they are automatically released when no longer in use, and only then. [RefCounted]s therefore do not need to be freed manually with [method Object.free].
 [RefCounted] instances caught in a cyclic reference will [b]not[/b] be freed automatically. For example, if a node holds a reference to instance [code]A[/code], which directly or indirectly holds a reference back to [code]A[/code], [code]A[/code]'s reference count will be 2. Destruction of the node will leave [code]A[/code] dangling with a reference count of 1, and there will be a memory leak. To prevent this, one of the references in the cycle can be made weak with [method @GlobalScope.weakref].
 In the vast majority of use cases, instantiating and using [RefCounted]-derived types is all you need to do. The methods provided in this class are only for advanced users, and can cause issues if misused.
-[b]Note:[/b] In C#, reference-counted objects will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free reference-counted objects that are no longer in use. This means that unused ones will linger on for a while before being removed.
+[b]Note:[/b] In C#, reference-counted objects will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free reference-counted objects that are no longer in use. This means that unused ones will remain in memory for a while before being removed.
 */
 type RefCounted = gd.RefCounted
 
@@ -7574,8 +7844,37 @@ It can be set to update another Node's position, rotation and/or scale. It can u
 type RemoteTransform3D = classdb.RemoteTransform3D
 
 /*
+Abstract render data object, exists for the duration of rendering a single viewport.
+[b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
+*/
+type RenderData = classdb.RenderData
+
+/*
+This class allows for a RenderData implementation to be made in GDExtension.
+
+	// RenderDataExtension methods that can be overridden by a [Class] that extends it.
+	type RenderDataExtension interface {
+		//Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
+		GetRenderSceneBuffers() RenderSceneBuffers
+		//Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
+		GetRenderSceneData() RenderSceneData
+		//Implement this in GDExtension to return the [RID] of the implementation's environment object.
+		GetEnvironment() gd.RID
+		//Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
+		GetCameraAttributes() gd.RID
+	}
+*/
+type RenderDataExtension = classdb.RenderDataExtension
+
+/*
+This object manages all render data for the rendering device based renderers.
+[b]Note:[/b] This is an internal rendering server object only exposed for GDExtension plugins.
+*/
+type RenderDataRD = classdb.RenderDataRD
+
+/*
 Abstract scene buffers object, created for each viewport for which 3D rendering is done. It manages any additional buffers used during rendering and will discard buffers when the viewport is resized.
-[b]Note:[/b] this is an internal rendering server object only exposed for GDExtension plugins.
+[b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type RenderSceneBuffers = classdb.RenderSceneBuffers
 
@@ -7605,9 +7904,42 @@ type RenderSceneBuffersExtension = classdb.RenderSceneBuffersExtension
 This object manages all 3D rendering buffers for the rendering device based renderers. An instance of this object is created for every viewport that has 3D rendering enabled.
 All buffers are organized in [b]contexts[/b]. The default context is called [b]render_buffers[/b] and can contain amongst others the color buffer, depth buffer, velocity buffers, VRS density map and MSAA variants of these buffers.
 Buffers are only guaranteed to exist during rendering of the viewport.
-[b]Note:[/b] this is an internal rendering server object only exposed for GDExtension plugins.
+[b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type RenderSceneBuffersRD = classdb.RenderSceneBuffersRD
+
+/*
+Abstract scene data object, exists for the duration of rendering a single viewport.
+[b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
+*/
+type RenderSceneData = classdb.RenderSceneData
+
+/*
+This class allows for a RenderSceneData implementation to be made in GDExtension.
+
+	// RenderSceneDataExtension methods that can be overridden by a [Class] that extends it.
+	type RenderSceneDataExtension interface {
+		//Implement this in GDExtension to return the camera [Transform3D].
+		GetCamTransform() gd.Transform3D
+		//Implement this in GDExtension to return the camera [Projection].
+		GetCamProjection() gd.Projection
+		//Implement this in GDExtension to return the view count.
+		GetViewCount() gd.Int
+		//Implement this in GDExtension to return the eye offset for the given [param view].
+		GetViewEyeOffset(view gd.Int) gd.Vector3
+		//Implement this in GDExtension to return the view [Projection] for the given [param view].
+		GetViewProjection(view gd.Int) gd.Projection
+		//Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
+		GetUniformBuffer() gd.RID
+	}
+*/
+type RenderSceneDataExtension = classdb.RenderSceneDataExtension
+
+/*
+Object holds scene data related to rendering a single frame of a viewport.
+[b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
+*/
+type RenderSceneDataRD = classdb.RenderSceneDataRD
 
 func RenderingServer(godot Lifetime) classdb.RenderingServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.RenderingServer)
@@ -7615,9 +7947,10 @@ func RenderingServer(godot Lifetime) classdb.RenderingServer {
 }
 
 /*
-Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. Once loaded from disk, further attempts to load a resource by [member resource_path] returns the same reference. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
+Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
 In GDScript, resources can loaded from disk by their [member resource_path] using [method @GDScript.load] or [method @GDScript.preload].
-[b]Note:[/b] In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will linger on for a while before being removed.
+The engine keeps a global cache of all loaded resources, referenced by paths (see [method ResourceLoader.has_cached]). A resource will be cached when loaded for the first time and removed from cache once all references are released. When a resource is cached, subsequent loads using its path will return the cached reference.
+[b]Note:[/b] In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will remain in memory for a while before being removed.
 
 	// Resource methods that can be overridden by a [Class] that extends it.
 	type Resource interface {
@@ -7714,7 +8047,7 @@ type ResourceImporterBitMap = classdb.ResourceImporterBitMap
 /*
 Comma-separated values are a plain text table storage format. The format's simplicity makes it easy to edit in any text editor or spreadsheet software. This makes it a common choice for game localization.
 [b]Example CSV file:[/b]
-[codeblock]
+[codeblock lang=text]
 keys,en,es,ja
 GREET,"Hello, friend!","Hola, amigo!",こんにちは
 ASK,How are you?,Cómo está?,元気ですか
@@ -7737,7 +8070,7 @@ This importer imports [Image] resources, as opposed to [CompressedTexture2D]. If
 type ResourceImporterImage = classdb.ResourceImporterImage
 
 /*
-This image-based workflow can be easier to use than [ResourceImporterBMFont], but it requires all glyphs to have the same width and height. This makes [ResourceImporterImageFont] most suited to fixed-width fonts.
+This image-based workflow can be easier to use than [ResourceImporterBMFont], but it requires all glyphs to have the same width and height, glyph advances and drawing offsets can be customized. This makes [ResourceImporterImageFont] most suited to fixed-width fonts.
 See also [ResourceImporterDynamicFont].
 */
 type ResourceImporterImageFont = classdb.ResourceImporterImageFont
@@ -7749,7 +8082,7 @@ type ResourceImporterLayeredTexture = classdb.ResourceImporterLayeredTexture
 
 /*
 MP3 is a lossy audio format, with worse audio quality compared to [ResourceImporterOggVorbis] at a given bitrate.
-In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using a MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
+In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using an MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
 MP3 requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
 */
 type ResourceImporterMP3 = classdb.ResourceImporterMP3
@@ -7762,7 +8095,7 @@ type ResourceImporterOBJ = classdb.ResourceImporterOBJ
 
 /*
 Ogg Vorbis is a lossy audio format, with better audio quality compared to [ResourceImporterMP3] at a given bitrate.
-In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using a MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
+In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using an MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
 Ogg Vorbis requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
 */
 type ResourceImporterOggVorbis = classdb.ResourceImporterOggVorbis
@@ -7862,7 +8195,7 @@ If you need to override the default physics behavior, you can write a custom for
 
 	// RigidBody2D methods that can be overridden by a [Class] that extends it.
 	type RigidBody2D interface {
-		//Allows you to read and safely modify the simulation state for the object. Use this instead of [method Node._physics_process] if you need to directly change the body's [code]position[/code] or other physics properties. By default, it works in addition to the usual physics behavior, but [member custom_integrator] allows you to disable the default behavior and write custom force integration for a body.
+		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 		IntegrateForces(state PhysicsDirectBodyState2D)
 	}
 */
@@ -7877,7 +8210,7 @@ If you need to override the default physics behavior, you can write a custom for
 
 	// RigidBody3D methods that can be overridden by a [Class] that extends it.
 	type RigidBody3D interface {
-		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it works in addition to the usual physics behavior, but the [member custom_integrator] property allows you to disable the default behavior and do fully custom force integration for a body.
+		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 		IntegrateForces(state PhysicsDirectBodyState3D)
 	}
 */
@@ -7906,9 +8239,9 @@ This class cannot be instantiated directly, it is retrieved for a given scene as
 type SceneState = classdb.SceneState
 
 /*
-As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene as well as scenes themselves. Nodes can be added, retrieved and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
-You can also use the [SceneTree] to organize your nodes into groups: every node can be assigned as many groups as you want to create, e.g. an "enemy" group. You can then iterate these groups or even call methods and set properties on all the group's members at once.
-[SceneTree] is the default [MainLoop] implementation used by scenes, and is thus in charge of the game loop.
+As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
+You can also use the [SceneTree] to organize your nodes into [b]groups[/b]: every node can be added to as many groups as you want to create, e.g. an "enemy" group. You can then iterate these groups or even call methods and set properties on all the nodes belonging to any given group.
+[SceneTree] is the default [MainLoop] implementation used by the engine, and is thus in charge of the game loop.
 */
 type SceneTree = classdb.SceneTree
 
@@ -8098,7 +8431,7 @@ Note that "global pose" below refers to the overall transform of the bone with r
 type Skeleton3D = classdb.Skeleton3D
 
 /*
-SkeletonIK3D is used to rotate all bones of a [Skeleton3D] bone chain a way that places the end bone at a desired 3D position. A typical scenario for IK in games is to place a character's feet on the ground or a character's hands on a currently held object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the [Skeleton3D] [code]bones_global_pose_override[/code] property for all affected bones in the chain. If fully applied, this overwrites any bone transform from [Animation]s or bone custom poses set by users. The applied amount can be controlled with the [member interpolation] property.
+SkeletonIK3D is used to rotate all bones of a [Skeleton3D] bone chain a way that places the end bone at a desired 3D position. A typical scenario for IK in games is to place a character's feet on the ground or a character's hands on a currently held object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the [Skeleton3D] [code]bones_global_pose_override[/code] property for all affected bones in the chain. If fully applied, this overwrites any bone transform from [Animation]s or bone custom poses set by users. The applied amount can be controlled with the [member SkeletonModifier3D.influence] property.
 [codeblock]
 # Apply IK effect automatically on every new frame (not the current)
 skeleton_ik_node.start()
@@ -8110,15 +8443,14 @@ skeleton_ik_node.start(true)
 skeleton_ik_node.stop()
 
 # Apply full IK effect
-skeleton_ik_node.set_interpolation(1.0)
+skeleton_ik_node.set_influence(1.0)
 
 # Apply half IK effect
-skeleton_ik_node.set_interpolation(0.5)
+skeleton_ik_node.set_influence(0.5)
 
 # Apply zero IK effect (a value at or below 0.01 also removes bones_global_pose_override on Skeleton)
-skeleton_ik_node.set_interpolation(0.0)
+skeleton_ik_node.set_influence(0.0)
 [/codeblock]
-[i]Deprecated.[/i] This class is deprecated, and might be removed in a future release.
 */
 type SkeletonIK3D = classdb.SkeletonIK3D
 
@@ -8170,7 +8502,6 @@ type SkeletonModification2DLookAt = classdb.SkeletonModification2DLookAt
 
 /*
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
-Experimental. Physical bones may be changed in the future to perform the position update of [Bone2D] on their own.
 */
 type SkeletonModification2DPhysicalBones = classdb.SkeletonModification2DPhysicalBones
 
@@ -8194,6 +8525,20 @@ This resource also controls how strongly all of the modifications are applied to
 type SkeletonModificationStack2D = classdb.SkeletonModificationStack2D
 
 /*
+[SkeletonModifier3D] retrieves a target [Skeleton3D] by having a [Skeleton3D] parent.
+If there is [AnimationMixer], modification always performs after playback process of the [AnimationMixer].
+This node should be used to implement custom IK solvers, constraints, or skeleton physics.
+
+	// SkeletonModifier3D methods that can be overridden by a [Class] that extends it.
+	type SkeletonModifier3D interface {
+		//Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.
+		//[method _process_modification] must not apply [member influence] to bone poses because the [Skeleton3D] automatically applies influence to all bone poses set by the modifier.
+		ProcessModification()
+	}
+*/
+type SkeletonModifier3D = classdb.SkeletonModifier3D
+
+/*
 This resource is used in [EditorScenePostImport]. Some parameters are referring to bones in [Skeleton3D], [Skin], [Animation], and some other nodes are rewritten based on the parameters of [SkeletonProfile].
 [b]Note:[/b] These parameters need to be set only when creating a custom profile. In [SkeletonProfileHumanoid], they are defined internally as read-only values.
 */
@@ -8201,9 +8546,76 @@ type SkeletonProfile = classdb.SkeletonProfile
 
 /*
 A [SkeletonProfile] as a preset that is optimized for the human form. This exists for standardization, so all parameters are read-only.
+A humanoid skeleton profile contains 54 bones divided in 4 groups: [code]"Body"[/code], [code]"Face"[/code], [code]"LeftHand"[/code], and [code]"RightHand"[/code]. It is structured as follows:
+[codeblock lang=text]
+Root
+└─ Hips
+
+	├─ LeftUpperLeg
+	│  └─ LeftLowerLeg
+	│     └─ LeftFoot
+	│        └─ LeftToes
+	├─ RightUpperLeg
+	│  └─ RightLowerLeg
+	│     └─ RightFoot
+	│        └─ RightToes
+	└─ Spine
+	    └─ Chest
+	        └─ UpperChest
+	            ├─ Neck
+	            │   └─ Head
+	            │       ├─ Jaw
+	            │       ├─ LeftEye
+	            │       └─ RightEye
+	            ├─ LeftShoulder
+	            │  └─ LeftUpperArm
+	            │     └─ LeftLowerArm
+	            │        └─ LeftHand
+	            │           ├─ LeftThumbMetacarpal
+	            │           │  └─ LeftThumbProximal
+	            │           ├─ LeftIndexProximal
+	            │           │  └─ LeftIndexIntermediate
+	            │           │    └─ LeftIndexDistal
+	            │           ├─ LeftMiddleProximal
+	            │           │  └─ LeftMiddleIntermediate
+	            │           │    └─ LeftMiddleDistal
+	            │           ├─ LeftRingProximal
+	            │           │  └─ LeftRingIntermediate
+	            │           │    └─ LeftRingDistal
+	            │           └─ LeftLittleProximal
+	            │              └─ LeftLittleIntermediate
+	            │                └─ LeftLittleDistal
+	            └─ RightShoulder
+	               └─ RightUpperArm
+	                  └─ RightLowerArm
+	                     └─ RightHand
+	                        ├─ RightThumbMetacarpal
+	                        │  └─ RightThumbProximal
+	                        ├─ RightIndexProximal
+	                        │  └─ RightIndexIntermediate
+	                        │     └─ RightIndexDistal
+	                        ├─ RightMiddleProximal
+	                        │  └─ RightMiddleIntermediate
+	                        │     └─ RightMiddleDistal
+	                        ├─ RightRingProximal
+	                        │  └─ RightRingIntermediate
+	                        │     └─ RightRingDistal
+	                        └─ RightLittleProximal
+	                           └─ RightLittleIntermediate
+	                             └─ RightLittleDistal
+
+[/codeblock]
 */
 type SkeletonProfileHumanoid = classdb.SkeletonProfileHumanoid
 type Skin = classdb.Skin
+
+/*
+An internal object containing a mapping from a [Skin] used within the context of a particular [MeshInstance3D] to refer to the skeleton's [RID] in the RenderingServer.
+See also [method MeshInstance3D.get_skin_reference] and [method RenderingServer.instance_attach_skeleton].
+Note that despite the similar naming, the skeleton RID used in the [RenderingServer] does not have a direct one-to-one correspondence to a [Skeleton3D] node.
+In particular, a [Skeleton3D] node with no [MeshInstance3D] children may be unknown to the [RenderingServer].
+On the other hand, a [Skeleton3D] with multiple [MeshInstance3D] nodes which each have different [member MeshInstance3D.skin] objects may have multiple SkinReference instances (and hence, multiple skeleton [RID]s).
+*/
 type SkinReference = classdb.SkinReference
 
 /*
@@ -8223,6 +8635,7 @@ type SliderJoint3D = classdb.SliderJoint3D
 
 /*
 A deformable 3D physics mesh. Used to create elastic or deformable objects such as cloth, rubber, or other flexible materials.
+Additionally, [SoftBody3D] is subject to wind forces defined in [Area3D] (see [member Area3D.wind_source_path], [member Area3D.wind_force_magnitude], and [member Area3D.wind_attenuation_factor]).
 [b]Note:[/b] There are many known bugs in [SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
 */
 type SoftBody3D = classdb.SoftBody3D
@@ -8245,7 +8658,7 @@ A 3D sphere shape, intended for use in physics. Usually used to provide a shape 
 type SphereShape3D = classdb.SphereShape3D
 
 /*
-[SpinBox] is a numerical input text field. It allows entering integers and floating point numbers.
+[SpinBox] is a numerical input text field. It allows entering integers and floating-point numbers.
 [b]Example:[/b]
 [codeblocks]
 [gdscript]
@@ -8326,6 +8739,7 @@ When [StaticBody3D] is moved, it is teleported to its new position without affec
 [StaticBody3D] is useful for completely static objects like floors and walls, as well as moving surfaces like conveyor belts and circular revolving platforms (by using [member constant_linear_velocity] and [member constant_angular_velocity]).
 */
 type StaticBody3D = classdb.StaticBody3D
+type StatusIndicator = classdb.StatusIndicator
 
 /*
 StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
@@ -8382,13 +8796,13 @@ type StyleBoxEmpty = classdb.StyleBoxEmpty
 By configuring various properties of this style box, you can achieve many common looks without the need of a texture. This includes optionally rounded borders, antialiasing, shadows, and skew.
 Setting corner radius to high values is allowed. As soon as corners overlap, the stylebox will switch to a relative system.
 [b]Example:[/b]
-[codeblock]
+[codeblock lang=text]
 height = 30
 corner_radius_top_left = 50
 corner_radius_bottom_left = 100
 [/codeblock]
 The relative system now would take the 1:2 ratio of the two left corners to calculate the actual corner width. Both corners added will [b]never[/b] be more than the height. Result:
-[codeblock]
+[codeblock lang=text]
 corner_radius_top_left: 10
 corner_radius_bottom_left: 20
 [/codeblock]
@@ -8513,7 +8927,7 @@ type TabContainer = classdb.TabContainer
 
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
-[b]Note:[/b] Most viewport, caret and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets.
+[b]Note:[/b] Most viewport, caret, and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets in the order they were created.
 [b]Note:[/b] When holding down [kbd]Alt[/kbd], the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
 
 	// TextEdit methods that can be overridden by a [Class] that extends it.
@@ -8554,6 +8968,16 @@ type TextParagraph = classdb.TextParagraph
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
+[b]Note:[/b] This is a low-level API, consider using [TextLine], [TextParagraph], and [Font] classes instead.
+This is an abstract class, so to get the currently active [TextServer] instance, use the following code:
+[codeblocks]
+[gdscript]
+var ts = TextServerManager.get_primary_interface()
+[/gdscript]
+[csharp]
+var ts = TextServerManager.GetPrimaryInterface();
+[/csharp]
+[/codeblocks]
 */
 type TextServer = classdb.TextServer
 
@@ -8586,211 +9010,650 @@ External [TextServer] implementations should inherit from this class.
 
 	// TextServerExtension methods that can be overridden by a [Class] that extends it.
 	type TextServerExtension interface {
+		//[b]Required.[/b]
+		//Returns [code]true[/code] if the server supports a feature.
 		HasFeature(feature TextServerFeature) bool
+		//[b]Required.[/b]
+		//Returns the name of the server interface.
 		GetName() gd.String
+		//[b]Required.[/b]
+		//Returns text server features, see [enum TextServer.Feature].
 		GetFeatures() gd.Int
+		//[b]Required.[/b]
+		//Frees an object created by this [TextServer].
 		FreeRid(rid gd.RID)
+		//[b]Required.[/b]
+		//Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
 		Has(rid gd.RID) bool
+		//[b]Optional.[/b]
+		//Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 		LoadSupportData(filename gd.String) bool
+		//[b]Optional.[/b]
+		//Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
 		GetSupportDataFilename() gd.String
+		//[b]Optional.[/b]
+		//Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
 		GetSupportDataInfo() gd.String
+		//[b]Optional.[/b]
+		//Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
 		SaveSupportData(filename gd.String) bool
+		//[b]Required.[/b]
+		//Returns [code]true[/code] if locale is right-to-left.
 		IsLocaleRightToLeft(locale gd.String) bool
+		//[b]Optional.[/b]
+		//Converts readable feature, variation, script, or language name to OpenType tag.
 		NameToTag(name gd.String) gd.Int
+		//[b]Optional.[/b]
+		//Converts OpenType tag to readable feature, variation, script, or language name.
 		TagToName(tag gd.Int) gd.String
+		//[b]Required.[/b]
+		//Creates a new, empty font cache entry resource.
 		CreateFont() gd.RID
+		//Optional, implement if font supports extra spacing or baseline offset.
+		//Creates a new variation existing font which is reusing the same glyph cache and font data.
 		CreateFontLinkedVariation(font_rid gd.RID) gd.RID
+		//[b]Optional.[/b]
+		//Sets font source data, e.g contents of the dynamic font source file.
 		FontSetData(font_rid gd.RID, data gd.PackedByteArray)
+		//[b]Optional.[/b]
+		//Sets pointer to the font source data, e.g contents of the dynamic font source file.
 		FontSetDataPtr(font_rid gd.RID, data_ptr unsafe.Pointer, data_size gd.Int)
+		//[b]Optional.[/b]
+		//Sets an active face index in the TrueType / OpenType collection.
 		FontSetFaceIndex(font_rid gd.RID, face_index gd.Int)
+		//[b]Optional.[/b]
+		//Returns an active face index in the TrueType / OpenType collection.
 		FontGetFaceIndex(font_rid gd.RID) gd.Int
+		//[b]Optional.[/b]
+		//Returns number of faces in the TrueType / OpenType collection.
 		FontGetFaceCount(font_rid gd.RID) gd.Int
+		//[b]Optional.[/b]
+		//Sets the font style flags, see [enum TextServer.FontStyle].
 		FontSetStyle(font_rid gd.RID, style TextServerFontStyle)
+		//[b]Optional.[/b]
+		//Returns font style flags, see [enum TextServer.FontStyle].
 		FontGetStyle(font_rid gd.RID) TextServerFontStyle
+		//[b]Optional.[/b]
+		//Sets the font family name.
 		FontSetName(font_rid gd.RID, name gd.String)
+		//[b]Optional.[/b]
+		//Returns font family name.
 		FontGetName(font_rid gd.RID) gd.String
+		//[b]Optional.[/b]
+		//Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 		FontGetOtNameStrings(font_rid gd.RID) gd.Dictionary
+		//[b]Optional.[/b]
+		//Sets the font style name.
 		FontSetStyleName(font_rid gd.RID, name_style gd.String)
+		//[b]Optional.[/b]
+		//Returns font style name.
 		FontGetStyleName(font_rid gd.RID) gd.String
+		//[b]Optional.[/b]
+		//Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 		FontSetWeight(font_rid gd.RID, weight gd.Int)
+		//[b]Optional.[/b]
+		//Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 		FontGetWeight(font_rid gd.RID) gd.Int
+		//[b]Optional.[/b]
+		//Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 		FontSetStretch(font_rid gd.RID, stretch gd.Int)
+		//[b]Optional.[/b]
+		//Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 		FontGetStretch(font_rid gd.RID) gd.Int
+		//[b]Optional.[/b]
+		//Sets font anti-aliasing mode.
 		FontSetAntialiasing(font_rid gd.RID, antialiasing TextServerFontAntialiasing)
+		//[b]Optional.[/b]
+		//Returns font anti-aliasing mode.
 		FontGetAntialiasing(font_rid gd.RID) TextServerFontAntialiasing
+		//[b]Optional.[/b]
+		//If set to [code]true[/code], embedded font bitmap loading is disabled.
+		FontSetDisableEmbeddedBitmaps(font_rid gd.RID, disable_embedded_bitmaps bool)
+		//[b]Optional.[/b]
+		//Returns whether the font's embedded bitmap loading is disabled.
+		FontGetDisableEmbeddedBitmaps(font_rid gd.RID) bool
+		//[b]Optional.[/b]
+		//If set to [code]true[/code] font texture mipmap generation is enabled.
 		FontSetGenerateMipmaps(font_rid gd.RID, generate_mipmaps bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if font texture mipmap generation is enabled.
 		FontGetGenerateMipmaps(font_rid gd.RID) bool
+		//[b]Optional.[/b]
+		//If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
 		FontSetMultichannelSignedDistanceField(font_rid gd.RID, msdf bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
 		FontIsMultichannelSignedDistanceField(font_rid gd.RID) bool
+		//[b]Optional.[/b]
+		//Sets the width of the range around the shape between the minimum and maximum representable signed distance.
 		FontSetMsdfPixelRange(font_rid gd.RID, msdf_pixel_range gd.Int)
+		//[b]Optional.[/b]
+		//Returns the width of the range around the shape between the minimum and maximum representable signed distance.
 		FontGetMsdfPixelRange(font_rid gd.RID) gd.Int
+		//[b]Optional.[/b]
+		//Sets source font size used to generate MSDF textures.
 		FontSetMsdfSize(font_rid gd.RID, msdf_size gd.Int)
+		//[b]Optional.[/b]
+		//Returns source font size used to generate MSDF textures.
 		FontGetMsdfSize(font_rid gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
 		FontSetFixedSize(font_rid gd.RID, fixed_size gd.Int)
+		//[b]Required.[/b]
+		//Returns bitmap font fixed size.
 		FontGetFixedSize(font_rid gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 		FontSetFixedSizeScaleMode(font_rid gd.RID, fixed_size_scale_mode TextServerFixedSizeScaleMode)
+		//[b]Required.[/b]
+		//Returns bitmap font scaling mode.
 		FontGetFixedSizeScaleMode(font_rid gd.RID) TextServerFixedSizeScaleMode
+		//[b]Optional.[/b]
+		//If set to [code]true[/code], system fonts can be automatically used as fallbacks.
 		FontSetAllowSystemFallback(font_rid gd.RID, allow_system_fallback bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
 		FontIsAllowSystemFallback(font_rid gd.RID) bool
+		//[b]Optional.[/b]
+		//If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
 		FontSetForceAutohinter(font_rid gd.RID, force_autohinter bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
 		FontIsForceAutohinter(font_rid gd.RID) bool
+		//[b]Optional.[/b]
+		//Sets font hinting mode. Used by dynamic fonts only.
 		FontSetHinting(font_rid gd.RID, hinting TextServerHinting)
+		//[b]Optional.[/b]
+		//Returns the font hinting mode. Used by dynamic fonts only.
 		FontGetHinting(font_rid gd.RID) TextServerHinting
+		//[b]Optional.[/b]
+		//Sets font subpixel glyph positioning mode.
 		FontSetSubpixelPositioning(font_rid gd.RID, subpixel_positioning TextServerSubpixelPositioning)
+		//[b]Optional.[/b]
+		//Returns font subpixel glyph positioning mode.
 		FontGetSubpixelPositioning(font_rid gd.RID) TextServerSubpixelPositioning
+		//Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 		FontSetEmbolden(font_rid gd.RID, strength gd.Float)
+		//[b]Optional.[/b]
+		//Returns font embolden strength.
 		FontGetEmbolden(font_rid gd.RID) gd.Float
+		//[b]Optional.[/b]
+		//Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 		FontSetSpacing(font_rid gd.RID, spacing TextServerSpacingType, value gd.Int)
+		//[b]Optional.[/b]
+		//Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 		FontGetSpacing(font_rid gd.RID, spacing TextServerSpacingType) gd.Int
+		//[b]Optional.[/b]
+		//Sets extra baseline offset (as a fraction of font height).
+		FontSetBaselineOffset(font_rid gd.RID, baseline_offset gd.Float)
+		//[b]Optional.[/b]
+		//Returns extra baseline offset (as a fraction of font height).
+		FontGetBaselineOffset(font_rid gd.RID) gd.Float
+		//[b]Optional.[/b]
+		//Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
 		FontSetTransform(font_rid gd.RID, transform gd.Transform2D)
+		//[b]Optional.[/b]
+		//Returns 2D transform applied to the font outlines.
 		FontGetTransform(font_rid gd.RID) gd.Transform2D
+		//[b]Optional.[/b]
+		//Sets variation coordinates for the specified font cache entry.
 		FontSetVariationCoordinates(font_rid gd.RID, variation_coordinates gd.Dictionary)
+		//[b]Optional.[/b]
+		//Returns variation coordinates for the specified font cache entry.
 		FontGetVariationCoordinates(font_rid gd.RID) gd.Dictionary
+		//[b]Optional.[/b]
+		//Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 		FontSetOversampling(font_rid gd.RID, oversampling gd.Float)
+		//[b]Optional.[/b]
+		//Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 		FontGetOversampling(font_rid gd.RID) gd.Float
+		//[b]Required.[/b]
+		//Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 		FontGetSizeCacheList(font_rid gd.RID) gd.ArrayOf[gd.Vector2i]
+		//[b]Required.[/b]
+		//Removes all font sizes from the cache entry.
 		FontClearSizeCache(font_rid gd.RID)
+		//[b]Required.[/b]
+		//Removes specified font size from the cache entry.
 		FontRemoveSizeCache(font_rid gd.RID, size gd.Vector2i)
+		//[b]Required.[/b]
+		//Sets the font ascent (number of pixels above the baseline).
 		FontSetAscent(font_rid gd.RID, size gd.Int, ascent gd.Float)
+		//[b]Required.[/b]
+		//Returns the font ascent (number of pixels above the baseline).
 		FontGetAscent(font_rid gd.RID, size gd.Int) gd.Float
+		//[b]Required.[/b]
+		//Sets the font descent (number of pixels below the baseline).
 		FontSetDescent(font_rid gd.RID, size gd.Int, descent gd.Float)
+		//[b]Required.[/b]
+		//Returns the font descent (number of pixels below the baseline).
 		FontGetDescent(font_rid gd.RID, size gd.Int) gd.Float
+		//[b]Required.[/b]
+		//Sets pixel offset of the underline below the baseline.
 		FontSetUnderlinePosition(font_rid gd.RID, size gd.Int, underline_position gd.Float)
+		//[b]Required.[/b]
+		//Returns pixel offset of the underline below the baseline.
 		FontGetUnderlinePosition(font_rid gd.RID, size gd.Int) gd.Float
+		//[b]Required.[/b]
+		//Sets thickness of the underline in pixels.
 		FontSetUnderlineThickness(font_rid gd.RID, size gd.Int, underline_thickness gd.Float)
+		//[b]Required.[/b]
+		//Returns thickness of the underline in pixels.
 		FontGetUnderlineThickness(font_rid gd.RID, size gd.Int) gd.Float
+		//[b]Required.[/b]
+		//Sets scaling factor of the color bitmap font.
 		FontSetScale(font_rid gd.RID, size gd.Int, scale gd.Float)
+		//[b]Required.[/b]
+		//Returns scaling factor of the color bitmap font.
 		FontGetScale(font_rid gd.RID, size gd.Int) gd.Float
+		//[b]Required.[/b]
+		//Returns number of textures used by font cache entry.
 		FontGetTextureCount(font_rid gd.RID, size gd.Vector2i) gd.Int
+		//[b]Required.[/b]
+		//Removes all textures from font cache entry.
 		FontClearTextures(font_rid gd.RID, size gd.Vector2i)
+		//[b]Required.[/b]
+		//Removes specified texture from the cache entry.
 		FontRemoveTexture(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int)
+		//[b]Required.[/b]
+		//Sets font cache texture image data.
 		FontSetTextureImage(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, image Image)
+		//[b]Required.[/b]
+		//Returns font cache texture image data.
 		FontGetTextureImage(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) Image
+		//[b]Optional.[/b]
+		//Sets array containing glyph packing data.
 		FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int, offset gd.PackedInt32Array)
+		//[b]Optional.[/b]
+		//Returns array containing glyph packing data.
 		FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index gd.Int) gd.PackedInt32Array
+		//[b]Required.[/b]
+		//Returns list of rendered glyphs in the cache entry.
 		FontGetGlyphList(font_rid gd.RID, size gd.Vector2i) gd.PackedInt32Array
+		//[b]Required.[/b]
+		//Removes all rendered glyph information from the cache entry.
 		FontClearGlyphs(font_rid gd.RID, size gd.Vector2i)
+		//[b]Required.[/b]
+		//Removes specified rendered glyph information from the cache entry.
 		FontRemoveGlyph(font_rid gd.RID, size gd.Vector2i, glyph gd.Int)
+		//[b]Required.[/b]
+		//Returns glyph advance (offset of the next glyph).
 		FontGetGlyphAdvance(font_rid gd.RID, size gd.Int, glyph gd.Int) gd.Vector2
+		//[b]Required.[/b]
+		//Sets glyph advance (offset of the next glyph).
 		FontSetGlyphAdvance(font_rid gd.RID, size gd.Int, glyph gd.Int, advance gd.Vector2)
+		//[b]Required.[/b]
+		//Returns glyph offset from the baseline.
 		FontGetGlyphOffset(font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
+		//[b]Required.[/b]
+		//Sets glyph offset from the baseline.
 		FontSetGlyphOffset(font_rid gd.RID, size gd.Vector2i, glyph gd.Int, offset gd.Vector2)
+		//[b]Required.[/b]
+		//Returns size of the glyph.
 		FontGetGlyphSize(font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
+		//[b]Required.[/b]
+		//Sets size of the glyph.
 		FontSetGlyphSize(font_rid gd.RID, size gd.Vector2i, glyph gd.Int, gl_size gd.Vector2)
+		//[b]Required.[/b]
+		//Returns rectangle in the cache texture containing the glyph.
 		FontGetGlyphUvRect(font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Rect2
+		//[b]Required.[/b]
+		//Sets rectangle in the cache texture containing the glyph.
 		FontSetGlyphUvRect(font_rid gd.RID, size gd.Vector2i, glyph gd.Int, uv_rect gd.Rect2)
+		//[b]Required.[/b]
+		//Returns index of the cache texture containing the glyph.
 		FontGetGlyphTextureIdx(font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Int
+		//[b]Required.[/b]
+		//Sets index of the cache texture containing the glyph.
 		FontSetGlyphTextureIdx(font_rid gd.RID, size gd.Vector2i, glyph gd.Int, texture_idx gd.Int)
+		//[b]Required.[/b]
+		//Returns resource ID of the cache texture containing the glyph.
 		FontGetGlyphTextureRid(font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.RID
+		//[b]Required.[/b]
+		//Returns size of the cache texture containing the glyph.
 		FontGetGlyphTextureSize(font_rid gd.RID, size gd.Vector2i, glyph gd.Int) gd.Vector2
+		//[b]Optional.[/b]
+		//Returns outline contours of the glyph.
 		FontGetGlyphContours(font_rid gd.RID, size gd.Int, index gd.Int) gd.Dictionary
+		//[b]Optional.[/b]
+		//Returns list of the kerning overrides.
 		FontGetKerningList(font_rid gd.RID, size gd.Int) gd.ArrayOf[gd.Vector2i]
+		//[b]Optional.[/b]
+		//Removes all kerning overrides.
 		FontClearKerningMap(font_rid gd.RID, size gd.Int)
+		//[b]Optional.[/b]
+		//Removes kerning override for the pair of glyphs.
 		FontRemoveKerning(font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i)
+		//[b]Optional.[/b]
+		//Sets kerning for the pair of glyphs.
 		FontSetKerning(font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i, kerning gd.Vector2)
+		//[b]Optional.[/b]
+		//Returns kerning for the pair of glyphs.
 		FontGetKerning(font_rid gd.RID, size gd.Int, glyph_pair gd.Vector2i) gd.Vector2
+		//[b]Required.[/b]
+		//Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
 		FontGetGlyphIndex(font_rid gd.RID, size gd.Int, char gd.Int, variation_selector gd.Int) gd.Int
+		//[b]Required.[/b]
+		//Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
 		FontGetCharFromGlyphIndex(font_rid gd.RID, size gd.Int, glyph_index gd.Int) gd.Int
+		//[b]Required.[/b]
+		//Returns [code]true[/code] if a Unicode [param char] is available in the font.
 		FontHasChar(font_rid gd.RID, char gd.Int) bool
+		//[b]Required.[/b]
+		//Returns a string containing all the characters available in the font.
 		FontGetSupportedChars(font_rid gd.RID) gd.String
+		//[b]Optional.[/b]
+		//Renders the range of characters to the font cache texture.
 		FontRenderRange(font_rid gd.RID, size gd.Vector2i, start gd.Int, end gd.Int)
+		//[b]Optional.[/b]
+		//Renders specified glyph to the font cache texture.
 		FontRenderGlyph(font_rid gd.RID, size gd.Vector2i, index gd.Int)
+		//[b]Required.[/b]
+		//Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
 		FontDrawGlyph(font_rid gd.RID, canvas gd.RID, size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
+		//[b]Required.[/b]
+		//Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
 		FontDrawGlyphOutline(font_rid gd.RID, canvas gd.RID, size gd.Int, outline_size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 		FontIsLanguageSupported(font_rid gd.RID, language gd.String) bool
+		//[b]Optional.[/b]
+		//Adds override for [method _font_is_language_supported].
 		FontSetLanguageSupportOverride(font_rid gd.RID, language gd.String, supported bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if support override is enabled for the [param language].
 		FontGetLanguageSupportOverride(font_rid gd.RID, language gd.String) bool
+		//[b]Optional.[/b]
+		//Remove language support override.
 		FontRemoveLanguageSupportOverride(font_rid gd.RID, language gd.String)
+		//[b]Optional.[/b]
+		//Returns list of language support overrides.
 		FontGetLanguageSupportOverrides(font_rid gd.RID) gd.PackedStringArray
+		//[b]Optional.[/b]
+		//Returns [code]true[/code], if font supports given script (ISO 15924 code).
 		FontIsScriptSupported(font_rid gd.RID, script gd.String) bool
+		//[b]Optional.[/b]
+		//Adds override for [method _font_is_script_supported].
 		FontSetScriptSupportOverride(font_rid gd.RID, script gd.String, supported bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if support override is enabled for the [param script].
 		FontGetScriptSupportOverride(font_rid gd.RID, script gd.String) bool
+		//[b]Optional.[/b]
+		//Removes script support override.
 		FontRemoveScriptSupportOverride(font_rid gd.RID, script gd.String)
+		//[b]Optional.[/b]
+		//Returns list of script support overrides.
 		FontGetScriptSupportOverrides(font_rid gd.RID) gd.PackedStringArray
+		//[b]Optional.[/b]
+		//Sets font OpenType feature set override.
 		FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides gd.Dictionary)
+		//[b]Optional.[/b]
+		//Returns font OpenType feature set override.
 		FontGetOpentypeFeatureOverrides(font_rid gd.RID) gd.Dictionary
+		//[b]Optional.[/b]
+		//Returns the dictionary of the supported OpenType features.
 		FontSupportedFeatureList(font_rid gd.RID) gd.Dictionary
+		//[b]Optional.[/b]
+		//Returns the dictionary of the supported OpenType variation coordinates.
 		FontSupportedVariationList(font_rid gd.RID) gd.Dictionary
+		//[b]Optional.[/b]
+		//Returns the font oversampling factor, shared by all fonts in the TextServer.
 		FontGetGlobalOversampling() gd.Float
+		//[b]Optional.[/b]
+		//Sets oversampling factor, shared by all font in the TextServer.
 		FontSetGlobalOversampling(oversampling gd.Float)
+		//[b]Optional.[/b]
+		//Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
 		GetHexCodeBoxSize(size gd.Int, index gd.Int) gd.Vector2
+		//[b]Optional.[/b]
+		//Draws box displaying character hexadecimal code.
 		DrawHexCodeBox(canvas gd.RID, size gd.Int, pos gd.Vector2, index gd.Int, color gd.Color)
+		//[b]Required.[/b]
+		//Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
 		CreateShapedText(direction TextServerDirection, orientation TextServerOrientation) gd.RID
+		//[b]Required.[/b]
+		//Clears text buffer (removes text and inline objects).
 		ShapedTextClear(shaped gd.RID)
+		//[b]Optional.[/b]
+		//Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
 		ShapedTextSetDirection(shaped gd.RID, direction TextServerDirection)
+		//[b]Optional.[/b]
+		//Returns direction of the text.
 		ShapedTextGetDirection(shaped gd.RID) TextServerDirection
+		//[b]Optional.[/b]
+		//Returns direction of the text, inferred by the BiDi algorithm.
 		ShapedTextGetInferredDirection(shaped gd.RID) TextServerDirection
+		//[b]Optional.[/b]
+		//Overrides BiDi for the structured text.
 		ShapedTextSetBidiOverride(shaped gd.RID, override gd.Array)
+		//[b]Optional.[/b]
+		//Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 		ShapedTextSetCustomPunctuation(shaped gd.RID, punct gd.String)
+		//[b]Optional.[/b]
+		//Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 		ShapedTextGetCustomPunctuation(shaped gd.RID) gd.String
+		//[b]Optional.[/b]
+		//Sets ellipsis character used for text clipping.
+		ShapedTextSetCustomEllipsis(shaped gd.RID, char gd.Int)
+		//[b]Optional.[/b]
+		//Returns ellipsis character used for text clipping.
+		ShapedTextGetCustomEllipsis(shaped gd.RID) gd.Int
+		//[b]Optional.[/b]
+		//Sets desired text orientation.
 		ShapedTextSetOrientation(shaped gd.RID, orientation TextServerOrientation)
+		//[b]Optional.[/b]
+		//Returns text orientation.
 		ShapedTextGetOrientation(shaped gd.RID) TextServerOrientation
+		//[b]Optional.[/b]
+		//If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
 		ShapedTextSetPreserveInvalid(shaped gd.RID, enabled bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
 		ShapedTextGetPreserveInvalid(shaped gd.RID) bool
+		//[b]Optional.[/b]
+		//If set to [code]true[/code] text buffer will display control characters.
 		ShapedTextSetPreserveControl(shaped gd.RID, enabled bool)
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if text buffer is configured to display control characters.
 		ShapedTextGetPreserveControl(shaped gd.RID) bool
+		//[b]Optional.[/b]
+		//Sets extra spacing added between glyphs or lines in pixels.
 		ShapedTextSetSpacing(shaped gd.RID, spacing TextServerSpacingType, value gd.Int)
+		//[b]Optional.[/b]
+		//Returns extra spacing added between glyphs or lines in pixels.
 		ShapedTextGetSpacing(shaped gd.RID, spacing TextServerSpacingType) gd.Int
+		//[b]Required.[/b]
+		//Adds text span and font to draw it to the text buffer.
 		ShapedTextAddString(shaped gd.RID, text gd.String, fonts gd.ArrayOf[gd.RID], size gd.Int, opentype_features gd.Dictionary, language gd.String, meta gd.Variant) bool
+		//[b]Required.[/b]
+		//Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 		ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, length gd.Int, baseline gd.Float) bool
+		//[b]Required.[/b]
+		//Sets new size and alignment of embedded object.
 		ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, baseline gd.Float) bool
+		//[b]Required.[/b]
+		//Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
 		ShapedGetSpanCount(shaped gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Returns text span metadata.
 		ShapedGetSpanMeta(shaped gd.RID, index gd.Int) gd.Variant
+		//[b]Required.[/b]
+		//Changes text span font, font size, and OpenType features, without changing the text.
 		ShapedSetSpanUpdateFont(shaped gd.RID, index gd.Int, fonts gd.ArrayOf[gd.RID], size gd.Int, opentype_features gd.Dictionary)
+		//[b]Required.[/b]
+		//Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
 		ShapedTextSubstr(shaped gd.RID, start gd.Int, length gd.Int) gd.RID
+		//[b]Required.[/b]
+		//Returns the parent buffer from which the substring originates.
 		ShapedTextGetParent(shaped gd.RID) gd.RID
+		//[b]Optional.[/b]
+		//Adjusts text width to fit to specified width, returns new text width.
 		ShapedTextFitToWidth(shaped gd.RID, width gd.Float, justification_flags TextServerJustificationFlag) gd.Float
+		//[b]Optional.[/b]
+		//Aligns shaped text to the given tab-stops.
 		ShapedTextTabAlign(shaped gd.RID, tab_stops gd.PackedFloat32Array) gd.Float
+		//[b]Required.[/b]
+		//Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
 		ShapedTextShape(shaped gd.RID) bool
+		//[b]Optional.[/b]
+		//Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
 		ShapedTextUpdateBreaks(shaped gd.RID) bool
+		//[b]Optional.[/b]
+		//Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
 		ShapedTextUpdateJustificationOps(shaped gd.RID) bool
+		//[b]Required.[/b]
+		//Returns [code]true[/code] if buffer is successfully shaped.
 		ShapedTextIsReady(shaped gd.RID) bool
+		//[b]Required.[/b]
+		//Returns an array of glyphs in the visual order.
 		ShapedTextGetGlyphs(shaped gd.RID) * Glyph
+		//[b]Required.[/b]
+		//Returns text glyphs in the logical order.
 		ShapedTextSortLogical(shaped gd.RID) * Glyph
+		//[b]Required.[/b]
+		//Returns number of glyphs in the buffer.
 		ShapedTextGetGlyphCount(shaped gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Returns substring buffer character range in the parent buffer.
 		ShapedTextGetRange(shaped gd.RID) gd.Vector2i
+		//[b]Optional.[/b]
+		//Breaks text to the lines and columns. Returns character ranges for each segment.
 		ShapedTextGetLineBreaksAdv(shaped gd.RID, width gd.PackedFloat32Array, start gd.Int, once bool, break_flags TextServerLineBreakFlag) gd.PackedInt32Array
+		//[b]Optional.[/b]
+		//Breaks text to the lines and returns character ranges for each line.
 		ShapedTextGetLineBreaks(shaped gd.RID, width gd.Float, start gd.Int, break_flags TextServerLineBreakFlag) gd.PackedInt32Array
-		ShapedTextGetWordBreaks(shaped gd.RID, grapheme_flags TextServerGraphemeFlag) gd.PackedInt32Array
+		//[b]Optional.[/b]
+		//Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
+		ShapedTextGetWordBreaks(shaped gd.RID, grapheme_flags TextServerGraphemeFlag, skip_grapheme_flags TextServerGraphemeFlag) gd.PackedInt32Array
+		//[b]Required.[/b]
+		//Returns the position of the overrun trim.
 		ShapedTextGetTrimPos(shaped gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Returns position of the ellipsis.
 		ShapedTextGetEllipsisPos(shaped gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Returns number of glyphs in the ellipsis.
 		ShapedTextGetEllipsisGlyphCount(shaped gd.RID) gd.Int
+		//[b]Required.[/b]
+		//Returns array of the glyphs in the ellipsis.
 		ShapedTextGetEllipsisGlyphs(shaped gd.RID) * Glyph
+		//[b]Optional.[/b]
+		//Trims text if it exceeds the given width.
 		ShapedTextOverrunTrimToWidth(shaped gd.RID, width gd.Float, trim_flags TextServerTextOverrunFlag)
+		//[b]Required.[/b]
+		//Returns array of inline objects.
 		ShapedTextGetObjects(shaped gd.RID) gd.Array
+		//[b]Required.[/b]
+		//Returns bounding rectangle of the inline object.
 		ShapedTextGetObjectRect(shaped gd.RID, key gd.Variant) gd.Rect2
+		//[b]Required.[/b]
+		//Returns the character range of the inline object.
+		ShapedTextGetObjectRange(shaped gd.RID, key gd.Variant) gd.Vector2i
+		//[b]Required.[/b]
+		//Returns the glyph index of the inline object.
+		ShapedTextGetObjectGlyph(shaped gd.RID, key gd.Variant) gd.Int
+		//[b]Required.[/b]
+		//Returns size of the text.
 		ShapedTextGetSize(shaped gd.RID) gd.Vector2
+		//[b]Required.[/b]
+		//Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 		ShapedTextGetAscent(shaped gd.RID) gd.Float
+		//[b]Required.[/b]
+		//Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 		ShapedTextGetDescent(shaped gd.RID) gd.Float
+		//[b]Required.[/b]
+		//Returns width (for horizontal layout) or height (for vertical) of the text.
 		ShapedTextGetWidth(shaped gd.RID) gd.Float
+		//[b]Required.[/b]
+		//Returns pixel offset of the underline below the baseline.
 		ShapedTextGetUnderlinePosition(shaped gd.RID) gd.Float
+		//[b]Required.[/b]
+		//Returns thickness of the underline.
 		ShapedTextGetUnderlineThickness(shaped gd.RID) gd.Float
+		//[b]Optional.[/b]
+		//Returns dominant direction of in the range of text.
 		ShapedTextGetDominantDirectionInRange(shaped gd.RID, start gd.Int, end gd.Int) gd.Int
+		//[b]Optional.[/b]
+		//Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 		ShapedTextGetCarets(shaped gd.RID, position gd.Int, caret *CaretInfo)
+		//[b]Optional.[/b]
+		//Returns selection rectangles for the specified character range.
 		ShapedTextGetSelection(shaped gd.RID, start gd.Int, end gd.Int) gd.PackedVector2Array
+		//[b]Optional.[/b]
+		//Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
 		ShapedTextHitTestGrapheme(shaped gd.RID, coord gd.Float) gd.Int
+		//[b]Optional.[/b]
+		//Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 		ShapedTextHitTestPosition(shaped gd.RID, coord gd.Float) gd.Int
+		//[b]Optional.[/b]
+		//Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 		ShapedTextDraw(shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l gd.Float, clip_r gd.Float, color gd.Color)
+		//[b]Optional.[/b]
+		//Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 		ShapedTextDrawOutline(shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l gd.Float, clip_r gd.Float, outline_size gd.Int, color gd.Color)
+		//[b]Optional.[/b]
+		//Returns composite character's bounds as offsets from the start of the line.
 		ShapedTextGetGraphemeBounds(shaped gd.RID, pos gd.Int) gd.Vector2
+		//[b]Optional.[/b]
+		//Returns grapheme end position closest to the [param pos].
 		ShapedTextNextGraphemePos(shaped gd.RID, pos gd.Int) gd.Int
+		//[b]Optional.[/b]
+		//Returns grapheme start position closest to the [param pos].
 		ShapedTextPrevGraphemePos(shaped gd.RID, pos gd.Int) gd.Int
+		//[b]Optional.[/b]
+		//Returns array of the composite character boundaries.
 		ShapedTextGetCharacterBreaks(shaped gd.RID) gd.PackedInt32Array
+		//[b]Optional.[/b]
+		//Returns composite character end position closest to the [param pos].
 		ShapedTextNextCharacterPos(shaped gd.RID, pos gd.Int) gd.Int
+		//[b]Optional.[/b]
+		//Returns composite character start position closest to the [param pos].
 		ShapedTextPrevCharacterPos(shaped gd.RID, pos gd.Int) gd.Int
+		//[b]Optional.[/b]
+		//Returns composite character position closest to the [param pos].
 		ShapedTextClosestCharacterPos(shaped gd.RID, pos gd.Int) gd.Int
-		FormatNumber(s gd.String, language gd.String) gd.String
-		ParseNumber(s gd.String, language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
+		FormatNumber(number gd.String, language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
+		ParseNumber(number gd.String, language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Returns percent sign used in the [param language].
 		PercentSign(language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Strips diacritics from the string.
 		StripDiacritics(s gd.String) gd.String
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if [param string] is a valid identifier.
 		IsValidIdentifier(s gd.String) bool
+		IsValidLetter(unicode gd.Int) bool
+		//[b]Optional.[/b]
+		//Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 		StringGetWordBreaks(s gd.String, language gd.String, chars_per_line gd.Int) gd.PackedInt32Array
+		//[b]Optional.[/b]
+		//Returns array of the composite character boundaries.
 		StringGetCharacterBreaks(s gd.String, language gd.String) gd.PackedInt32Array
+		//[b]Optional.[/b]
+		//Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
 		IsConfusable(s gd.String, dict gd.PackedStringArray) gd.Int
+		//[b]Optional.[/b]
+		//Returns [code]true[/code] if [param string] is likely to be an attempt at confusing the reader.
 		SpoofCheck(s gd.String) bool
+		//[b]Optional.[/b]
+		//Returns the string converted to uppercase.
 		StringToUpper(s gd.String, language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Returns the string converted to lowercase.
 		StringToLower(s gd.String, language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Returns the string converted to title case.
+		StringToTitle(s gd.String, language gd.String) gd.String
+		//[b]Optional.[/b]
+		//Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
 		ParseStructuredText(parser_type TextServerStructuredTextParser, args gd.Array, text gd.String) gd.ArrayOf[gd.Vector3i]
+		//[b]Optional.[/b]
+		//This method is called before text server is unregistered.
 		Cleanup()
 	}
 */
@@ -8987,6 +9850,26 @@ To force an update earlier on, call [method update_internals].
 type TileMap = classdb.TileMap
 
 /*
+Node for 2D tile-based maps. A [TileMapLayer] uses a [TileSet] which contain a list of tiles which are used to create grid-based maps. Unlike the [TileMap] node, which is deprecated, [TileMapLayer] has only one layer of tiles. You can use several [TileMapLayer] to achieve the same result as a [TileMap] node.
+For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
+To force an update earlier on, call [method update_internals].
+
+	// TileMapLayer methods that can be overridden by a [Class] that extends it.
+	type TileMapLayer interface {
+		//Should return [code]true[/code] if the tile at coordinates [param coords] requires a runtime update.
+		//[b]Warning:[/b] Make sure this function only returns [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
+		//[b]Note:[/b] If the result of this function should change, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
+		UseTileDataRuntimeUpdate(coords gd.Vector2i) bool
+		//Called with a [TileData] object about to be used internally by the [TileMapLayer], allowing its modification at runtime.
+		//This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords].
+		//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
+		//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
+		TileDataRuntimeUpdate(coords gd.Vector2i, tile_data TileData)
+	}
+*/
+type TileMapLayer = classdb.TileMapLayer
+
+/*
 This resource holds a set of cells to help bulk manipulations of [TileMap].
 A pattern always start at the [code](0,0)[/code] coordinates and cannot have cells with negative coordinates.
 */
@@ -9014,6 +9897,36 @@ type TileSetAtlasSource = classdb.TileSetAtlasSource
 /*
 When placed on a [TileMap], tiles from [TileSetScenesCollectionSource] will automatically instantiate an associated scene at the cell's position in the TileMap.
 Scenes are instantiated as children of the [TileMap] when it enters the tree. If you add/remove a scene tile in the [TileMap] that is already inside the tree, the [TileMap] will automatically instantiate/free the scene accordingly.
+[b]Note:[/b] Scene tiles all occupy one tile slot and instead use alternate tile ID to identify scene index. [method TileSetSource.get_tiles_count] will always return [code]1[/code]. Use [method get_scene_tiles_count] to get a number of scenes in a [TileSetScenesCollectionSource].
+Use this code if you want to find the scene path at a given tile in [TileMapLayer]:
+[codeblocks]
+[gdscript]
+var source_id = tile_map_layer.get_cell_source_id(Vector2i(x, y))
+if source_id > -1:
+
+	var scene_source = tile_map_layer.tile_set.get_source(source_id)
+	if scene_source is TileSetScenesCollectionSource:
+	    var alt_id = tile_map_layer.get_cell_alternative_tile(Vector2i(x, y))
+	    # The assigned PackedScene.
+	    var scene = scene_source.get_scene_tile_scene(alt_id)
+
+[/gdscript]
+[csharp]
+int sourceId = tileMapLayer.GetCellSourceId(new Vector2I(x, y));
+if (sourceId > -1)
+
+	{
+	    TileSetSource source = tileMapLayer.TileSet.GetSource(sourceId);
+	    if (source is TileSetScenesCollectionSource sceneSource)
+	    {
+	        int altId = tileMapLayer.GetCellAlternativeTile(new Vector2I(x, y));
+	        // The assigned PackedScene.
+	        PackedScene scene = sceneSource.GetSceneTileScene(altId);
+	    }
+	}
+
+[/csharp]
+[/codeblocks]
 */
 type TileSetScenesCollectionSource = classdb.TileSetScenesCollectionSource
 
@@ -9032,9 +9945,17 @@ func Time(godot Lifetime) classdb.Time {
 }
 
 /*
-Counts down a specified interval and emits a signal on reaching 0. Can be set to repeat or "one-shot" mode.
-[b]Note:[/b] Timers are affected by [member Engine.time_scale], a higher scale means quicker timeouts, and vice versa.
+The [Timer] node is a countdown timer and is the simplest way to handle time-based logic in the engine. When a timer reaches the end of its [member wait_time], it will emit the [signal timeout] signal.
+After a timer enters the tree, it can be manually started with [method start]. A timer node is also started automatically if [member autostart] is [code]true[/code].
+Without requiring much code, a timer node can be added and configured in the editor. The [signal timeout] signal it emits can also be connected through the Node dock in the editor:
+[codeblock]
+func _on_timer_timeout():
+
+	print("Time to attack!")
+
+[/codeblock]
 [b]Note:[/b] To create a one-shot timer without instantiating a node, use [method SceneTree.create_timer].
+[b]Note:[/b] Timers are affected by [member Engine.time_scale]. The higher the time scale, the sooner timers will end. How often a timer processes may depend on the framerate or [member Engine.physics_ticks_per_second].
 */
 type Timer = classdb.Timer
 
@@ -9519,6 +10440,11 @@ _undo_redo.CommitAction();
 type UndoRedo = classdb.UndoRedo
 
 /*
+Uniform set cache manager for Rendering Device based renderers. Provides a way to create a uniform set and reuse it in subsequent calls for as long as the uniform set exists. Uniform set will automatically be cleaned up when dependent objects are freed.
+*/
+type UniformSetCacheRD = classdb.UniformSetCacheRD
+
+/*
 A variant of [BoxContainer] that can only arrange its child controls vertically. Child controls are rearranged automatically when their minimum size changes.
 */
 type VBoxContainer = classdb.VBoxContainer
@@ -9630,9 +10556,10 @@ Finally, viewports can also behave as render targets, in which case they will no
 type Viewport = classdb.Viewport
 
 /*
-Provides the content of a [Viewport] as a dynamic [Texture2D]. This can be used to mix controls, 2D game objects, and 3D game objects in the same scene.
-To create a [ViewportTexture] in code, use the [method Viewport.get_texture] method on the target viewport.
+A [ViewportTexture] provides the content of a [Viewport] as a dynamic [Texture2D]. This can be used to combine the rendering of [Control], [Node2D] and [Node3D] nodes. For example, you can use this texture to display a 3D scene inside a [TextureRect], or a 2D overlay in a [Sprite3D].
+To get a [ViewportTexture] in code, use the [method Viewport.get_texture] method on the target viewport.
 [b]Note:[/b] A [ViewportTexture] is always local to its scene (see [member Resource.resource_local_to_scene]). If the scene root is not ready, it may return incorrect data (see [signal Node.ready]).
+[b]Note:[/b] Instantiating scenes containing a high-resolution [ViewportTexture] may cause noticeable stutter.
 */
 type ViewportTexture = classdb.ViewportTexture
 
@@ -9651,14 +10578,14 @@ See [VisibleOnScreenNotifier3D] if you only want to be notified when the region 
 type VisibleOnScreenEnabler3D = classdb.VisibleOnScreenEnabler3D
 
 /*
-[VisibleOnScreenEnabler2D] represents a rectangular region of 2D space. When any part of this region becomes visible on screen or in a viewport, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
+[VisibleOnScreenNotifier2D] represents a rectangular region of 2D space. When any part of this region becomes visible on screen or in a viewport, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
 If you want a node to be enabled automatically when this region is visible on screen, use [VisibleOnScreenEnabler2D].
 [b]Note:[/b] [VisibleOnScreenNotifier2D] uses the render culling code to determine whether it's visible on screen, so it won't function unless [member CanvasItem.visible] is set to [code]true[/code].
 */
 type VisibleOnScreenNotifier2D = classdb.VisibleOnScreenNotifier2D
 
 /*
-[VisibleOnScreenEnabler3D] represents a box-shaped region of 3D space. When any part of this region becomes visible on screen or in a [Camera3D]'s view, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
+[VisibleOnScreenNotifier3D] represents a box-shaped region of 3D space. When any part of this region becomes visible on screen or in a [Camera3D]'s view, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
 If you want a node to be enabled automatically when this region is visible on screen, use [VisibleOnScreenEnabler3D].
 [b]Note:[/b] [VisibleOnScreenNotifier3D] uses an approximate heuristic that doesn't take walls and other occlusion into account, unless occlusion culling is used. It also won't function unless [member Node3D.visible] is set to [code]true[/code].
 */
@@ -9727,7 +10654,7 @@ Translated to [code]uniform vec4[/code] in the shader language.
 type VisualShaderNodeColorParameter = classdb.VisualShaderNodeColorParameter
 
 /*
-A resizable rectangular area with changeable [member title] and [member description] used for better organizing of other visual shader nodes.
+This node was replaced by [VisualShaderNodeFrame] and only exists to preserve compatibility. In the [VisualShader] editor it behaves exactly like [VisualShaderNodeFrame].
 */
 type VisualShaderNodeComment = classdb.VisualShaderNodeComment
 
@@ -9898,6 +10825,13 @@ Translated to [code]uniform float[/code] in the shader language.
 type VisualShaderNodeFloatParameter = classdb.VisualShaderNodeFloatParameter
 
 /*
+A rectangular frame that can be used to group visual shader nodes together to improve organization.
+Nodes attached to the frame will move with it when it is dragged and it can automatically resize to enclose all attached nodes.
+Its title, description and color can be customized.
+*/
+type VisualShaderNodeFrame = classdb.VisualShaderNodeFrame
+
+/*
 Returns falloff based on the dot product of surface normal and view direction of camera (pass associated inputs to it).
 */
 type VisualShaderNodeFresnel = classdb.VisualShaderNodeFresnel
@@ -9913,7 +10847,10 @@ Currently, has no direct usage, use the derived classes instead.
 type VisualShaderNodeGroupBase = classdb.VisualShaderNodeGroupBase
 
 /*
-This visual shader node has six input ports. Port 1 and 2 provide the two floating point numbers [code]a[/code] and [code]b[/code] that will be compared. Port 3 is the tolerance, which allows similar floating point number to be considered equal. Ports 4 to 6 are the possible outputs, returned if [code]a == b[/code], [code]a > b[/code], or [code]a < b[/code] respectively.
+This visual shader node has six input ports:
+- Port [b]1[/b] and [b]2[/b] provide the two floating-point numbers [code]a[/code] and [code]b[/code] that will be compared.
+- Port [b]3[/b] is the tolerance, which allows similar floating-point numbers to be considered equal.
+- Ports [b]4[/b], [b]5[/b], and [b]6[/b] are the possible outputs, returned if [code]a == b[/code], [code]a > b[/code], or [code]a < b[/code] respectively.
 */
 type VisualShaderNodeIf = classdb.VisualShaderNodeIf
 
@@ -10053,6 +10990,11 @@ Remap will transform the input range into output range, e.g. you can change a [c
 type VisualShaderNodeRemap = classdb.VisualShaderNodeRemap
 
 /*
+Automatically adapts its port type to the type of the incoming connection and ensures valid connections.
+*/
+type VisualShaderNodeReroute = classdb.VisualShaderNodeReroute
+
+/*
 Resizable nodes have a handle that allows the user to adjust their size as needed.
 */
 type VisualShaderNodeResizableBase = classdb.VisualShaderNodeResizableBase
@@ -10155,7 +11097,7 @@ Translates to [code]texture_sdf_normal(sdf_pos)[/code] in the shader language.
 type VisualShaderNodeTextureSDFNormal = classdb.VisualShaderNodeTextureSDFNormal
 
 /*
-Creates a 4x4 transform matrix using four vectors of type [code]vec3[/code]. Each vector is one row in the matrix and the last column is a [code]vec4(0, 0, 0, 1)[/code].
+Creates a 4×4 transform matrix using four vectors of type [code]vec3[/code]. Each vector is one row in the matrix and the last column is a [code]vec4(0, 0, 0, 1)[/code].
 */
 type VisualShaderNodeTransformCompose = classdb.VisualShaderNodeTransformCompose
 
@@ -10165,7 +11107,7 @@ A constant [Transform3D], which can be used as an input node.
 type VisualShaderNodeTransformConstant = classdb.VisualShaderNodeTransformConstant
 
 /*
-Takes a 4x4 transform matrix and decomposes it into four [code]vec3[/code] values, one from each row of the matrix.
+Takes a 4×4 transform matrix and decomposes it into four [code]vec3[/code] values, one from each row of the matrix.
 */
 type VisualShaderNodeTransformDecompose = classdb.VisualShaderNodeTransformDecompose
 
@@ -10175,7 +11117,7 @@ Computes an inverse or transpose function on the provided [Transform3D].
 type VisualShaderNodeTransformFunc = classdb.VisualShaderNodeTransformFunc
 
 /*
-Applies [member operator] to two transform (4x4 matrices) inputs.
+Applies [member operator] to two transform (4×4 matrices) inputs.
 */
 type VisualShaderNodeTransformOp = classdb.VisualShaderNodeTransformOp
 
@@ -10185,7 +11127,7 @@ Translated to [code]uniform mat4[/code] in the shader language.
 type VisualShaderNodeTransformParameter = classdb.VisualShaderNodeTransformParameter
 
 /*
-A multiplication operation on a transform (4x4 matrix) and a vector, with support for different multiplication operators.
+A multiplication operation on a transform (4×4 matrix) and a vector, with support for different multiplication operators.
 */
 type VisualShaderNodeTransformVecMult = classdb.VisualShaderNodeTransformVecMult
 
@@ -10447,9 +11389,10 @@ func _on_button_pressed():
 	# supported.
 	webxr_interface.requested_reference_space_types = 'bounded-floor, local-floor, local'
 	# In order to use 'local-floor' or 'bounded-floor' we must also
-	# mark the features as required or optional.
+	# mark the features as required or optional. By including 'hand-tracking'
+	# as an optional feature, it will be enabled if supported.
 	webxr_interface.required_features = 'local-floor'
-	webxr_interface.optional_features = 'bounded-floor'
+	webxr_interface.optional_features = 'bounded-floor, hand-tracking'
 
 	# This will return false if we're unable to even request the session,
 	# however, it can still fail asynchronously later in the process, so we
@@ -10467,7 +11410,10 @@ func _webxr_session_started():
 	# This will be the reference space type you ultimately got, out of the
 	# types that you requested above. This is useful if you want the game to
 	# work a little differently in 'bounded-floor' versus 'local-floor'.
-	print ("Reference space type: " + webxr_interface.reference_space_type)
+	print("Reference space type: ", webxr_interface.reference_space_type)
+	# This will be the list of features that were successfully enabled
+	# (except on browsers that don't support this property).
+	print("Enabled features: ", webxr_interface.enabled_features)
 
 func _webxr_session_ended():
 
@@ -10541,7 +11487,7 @@ type X509Certificate = classdb.X509Certificate
 /*
 Provides a low-level interface for creating parsers for [url=https://en.wikipedia.org/wiki/XML]XML[/url] files. This class can serve as base to make custom XML parsers.
 To parse XML, you must open a file with the [method open] method or a buffer with the [method open_buffer] method. Then, the [method read] method must be called to parse the next nodes. Most of the methods take into consideration the currently parsed node.
-Here is an example of using [XMLParser] to parse a SVG file (which is based on XML), printing each element and its attributes as a dictionary:
+Here is an example of using [XMLParser] to parse an SVG file (which is based on XML), printing each element and its attributes as a dictionary:
 [codeblocks]
 [gdscript]
 var parser = XMLParser.new()
@@ -10580,11 +11526,24 @@ while (parser.Read() != Error.FileEof)
 type XMLParser = classdb.XMLParser
 
 /*
-The [XRAnchor3D] point is a spatial node that maps a real world location identified by the AR platform to a position within the game world. For example, as long as plane detection in ARKit is on, ARKit will identify and update the position of planes (tables, floors, etc) and create anchors for them.
+The [XRAnchor3D] point is an [XRNode3D] that maps a real world location identified by the AR platform to a position within the game world. For example, as long as plane detection in ARKit is on, ARKit will identify and update the position of planes (tables, floors, etc.) and create anchors for them.
 This node is mapped to one of the anchors through its unique ID. When you receive a signal that a new anchor is available, you should add this node to your scene for that anchor. You can predefine nodes and set the ID; the nodes will simply remain on 0,0,0 until a plane is recognized.
 Keep in mind that, as long as plane detection is enabled, the size, placing and orientation of an anchor will be updated as the detection logic learns more about the real world out there especially if only part of the surface is in view.
 */
 type XRAnchor3D = classdb.XRAnchor3D
+
+/*
+This node uses body tracking data from an [XRBodyTracker] to pose the skeleton of a body mesh.
+Positioning of the body is performed by creating an [XRNode3D] ancestor of the body mesh driven by the same [XRBodyTracker].
+The body tracking position-data is scaled by [member Skeleton3D.motion_scale] when applied to the skeleton, which can be used to adjust the tracked body to match the scale of the body model.
+*/
+type XRBodyModifier3D = classdb.XRBodyModifier3D
+
+/*
+A body tracking system will create an instance of this object and add it to the [XRServer]. This tracking system will then obtain skeleton data, convert it to the Godot Humanoid skeleton and store this data on the [XRBodyTracker] object.
+Use [XRBodyModifier3D] to animate a body mesh using body tracking data.
+*/
+type XRBodyTracker = classdb.XRBodyTracker
 
 /*
 This is a helper spatial node for our camera; note that, if stereoscopic rendering is applicable (VR-HMD), most of the camera properties are ignored, as the HMD information overrides them. The only properties that can be trusted are the near and far planes.
@@ -10599,6 +11558,39 @@ The position of the controller node is automatically updated by the [XRServer]. 
 As many XR runtimes now use a configurable action map all inputs are named.
 */
 type XRController3D = classdb.XRController3D
+
+/*
+An instance of this object represents a controller that is tracked.
+As controllers are turned on and the [XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [XRServer].
+The [XRController3D] consumes objects of this type and should be used in your project.
+*/
+type XRControllerTracker = classdb.XRControllerTracker
+
+/*
+This node applies weights from a [XRFaceTracker] to a mesh with supporting face blend shapes.
+The [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] blend shapes are supported, as well as ARKit and SRanipal blend shapes.
+The node attempts to identify blend shapes based on name matching. Blend shapes should match the names listed in the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Unified Expressions Compatibility[/url] chart.
+*/
+type XRFaceModifier3D = classdb.XRFaceModifier3D
+
+/*
+An instance of this object represents a tracked face and its corresponding blend shapes. The blend shapes come from the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] standard, and contain extended details and visuals for each blend shape. Additionally the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Tracking Standard Comparison[/url] page documents the relationship between Unified Expressions and other standards.
+As face trackers are turned on they are registered with the [XRServer].
+*/
+type XRFaceTracker = classdb.XRFaceTracker
+
+/*
+This node uses hand tracking data from an [XRHandTracker] to pose the skeleton of a hand mesh.
+Positioning of hands is performed by creating an [XRNode3D] ancestor of the hand mesh driven by the same [XRHandTracker].
+The hand tracking position-data is scaled by [member Skeleton3D.motion_scale] when applied to the skeleton, which can be used to adjust the tracked hand to match the scale of the hand model.
+*/
+type XRHandModifier3D = classdb.XRHandModifier3D
+
+/*
+A hand tracking system will create an instance of this object and add it to the [XRServer]. This tracking system will then obtain skeleton data, convert it to the Godot Humanoid hand skeleton and store this data on the [XRHandTracker] object.
+Use [XRHandModifier3D] to animate a hand mesh using hand tracking data.
+*/
+type XRHandTracker = classdb.XRHandTracker
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
@@ -10625,11 +11617,11 @@ External XR interface plugins should inherit from this class.
 		GetSystemInfo() gd.Dictionary
 		//Returns [code]true[/code] if this interface supports this play area mode.
 		SupportsPlayAreaMode(mode XRInterfacePlayAreaMode) bool
-		//Returns the [enum XRInterface.PlayAreaMode] that sets up our play area.
+		//Returns the play area mode that sets up our play area.
 		GetPlayAreaMode() XRInterfacePlayAreaMode
 		//Set the play area mode for this interface.
 		SetPlayAreaMode(mode XRInterfacePlayAreaMode) bool
-		//Returns an [PackedVector3Array] that denotes the play areas boundaries (if applicable).
+		//Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
 		GetPlayArea() gd.PackedVector3Array
 		//Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
 		GetRenderTargetSize() gd.Vector2
@@ -10698,7 +11690,7 @@ type XRPose = classdb.XRPose
 /*
 An instance of this object represents a device that is tracked, such as a controller or anchor point. HMDs aren't represented here as they are handled internally.
 As controllers are turned on and the [XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [XRServer].
-The [XRController3D] and [XRAnchor3D] both consume objects of this type and should be used in your project. The positional trackers are just under-the-hood objects that make this all work. These are mostly exposed so that GDExtension-based interfaces can interact with them.
+The [XRNode3D] and [XRAnchor3D] both consume objects of this type and should be used in your project. The positional trackers are just under-the-hood objects that make this all work. These are mostly exposed so that GDExtension-based interfaces can interact with them.
 */
 type XRPositionalTracker = classdb.XRPositionalTracker
 
@@ -10706,6 +11698,16 @@ func XRServer(godot Lifetime) classdb.XRServer {
 	obj := godot.API.Object.GetSingleton(godot, godot.API.Singletons.XRServer)
 	return *(*classdb.XRServer)(unsafe.Pointer(&obj))
 }
+
+/*
+This object is the base of all XR trackers.
+*/
+type XRTracker = classdb.XRTracker
+
+/*
+This class is used by various XR interfaces to generate VRS textures that can be used to speed up rendering.
+*/
+type XRVRS = classdb.XRVRS
 
 /*
 This class implements a writer that allows storing the multiple blobs in a zip archive.

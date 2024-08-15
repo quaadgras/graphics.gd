@@ -113,6 +113,7 @@ type API struct {
 	}
 	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
+	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
 	Array              struct {
 		Index    func(Lifetime, Array, Int) Variant
 		Set      func(self, from Array)
@@ -182,7 +183,8 @@ type API struct {
 
 type Packed interface {
 	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
-		PackedFloat64Array | PackedStringArray | PackedVector2Array | PackedVector3Array |
+		PackedFloat64Array | PackedStringArray |
+		PackedVector2Array | PackedVector3Array | PackedVector4Array |
 		PackedColorArray
 
 	mmm.ManagedPointer[[2]uintptr]

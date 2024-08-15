@@ -189,10 +189,11 @@ type PhysicsServer3DExtensionMotionResult struct {
 	CollisionCount          int32
 }
 type ScriptLanguageExtensionProfilingInfo struct {
-	Signature  uintptr // StringName.Pointer()
-	Call_count uint64
-	TotalTime  uint64
-	SelfTime   uint64
+	Signature    uintptr // StringName.Pointer()
+	CallCount    uint64
+	TotalTime    uint64
+	SelfTime     uint64
+	InternalTime uint64
 }
 type Glyph struct {
 	Start    int32

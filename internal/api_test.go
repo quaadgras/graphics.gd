@@ -30,10 +30,10 @@ func TestGetGodotVersion(t *testing.T) {
 	if version.Major != 4 {
 		t.Fail()
 	}
-	if version.Minor < 2 {
+	if version.Minor < 3 {
 		t.Fail()
 	}
-	if version.Patch < 1 {
+	if version.Patch < 0 {
 		t.Fail()
 	}
 	if version.String() == "" {

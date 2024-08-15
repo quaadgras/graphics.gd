@@ -251,11 +251,11 @@ func (spirv rdSPIRV) Shader(name string) rd.Shader {
 }
 
 func (gpu *rdInterface) Compute(fn func(rd.Compute)) {
-	list := gpu.class.ComputeListBegin(Bool(false)) // FIXME should this be configurable?
+	list := gpu.class.ComputeListBegin() // FIXME should this be configurable?
 	gpu.compute.list = list
 	gpu.compute.from = gpu
 	fn(&gpu.compute)
-	gpu.class.ComputeListEnd(RenderingDeviceBarrierMaskAllBarriers) // FIXME should this be configurable?
+	gpu.class.ComputeListEnd() // FIXME should this be configurable?
 }
 
 type rdCompute struct {
@@ -298,16 +298,8 @@ func (gpu *rdInterface) DeviceVendor() string {
 func (gpu *rdInterface) Drawing(frame rd.Frame, fn func(rd.Drawing)) {
 	intial_color_action, final_color_action := frame.Color()
 	initial_depth_action, final_depth_action := frame.Depth()
-
 	tmp := NewLifetime(gpu.godot)
 	defer tmp.End()
-
-	storage := NewArrayOf[RID](tmp)
-	storage.Resize(Int(len(frame.Storage)))
-	for i, texture := range frame.Storage {
-		storage.SetIndex(Int(i), texture.(*rdTexture).rid())
-	}
-
 	list := gpu.class.DrawListBegin(
 		frame.Buffer.(*rdFramebuffer).rid(),
 		classdb.RenderingDeviceInitialAction(intial_color_action),
@@ -318,12 +310,11 @@ func (gpu *rdInterface) Drawing(frame rd.Frame, fn func(rd.Drawing)) {
 		frame.Clear.Depth,
 		Int(frame.Clear.Stencil),
 		frame.Region,
-		storage,
 	)
 	gpu.drawing.list = list
 	gpu.drawing.from = gpu
 	fn(&gpu.drawing)
-	gpu.class.DrawListEnd(RenderingDeviceBarrierMaskAllBarriers) // FIXME should this be configurable?
+	gpu.class.DrawListEnd() // FIXME should this be configurable?
 }
 
 type rdFramebuffer struct{ *rdResource }
@@ -336,7 +327,7 @@ type rdTexture struct {
 }
 
 func (tex *rdTexture) Clear(color uc.Color, base_mipmap, mipmap_count, base_layer, layer_count int, barrier rd.Barrier) error {
-	return Error(tex.from.class.TextureClear(tex.rid(), color, Int(base_mipmap), Int(mipmap_count), Int(base_layer), Int(layer_count), RenderingDeviceBarrierMask(barrier)))
+	return Error(tex.from.class.TextureClear(tex.rid(), color, Int(base_mipmap), Int(mipmap_count), Int(base_layer), Int(layer_count)))
 }
 
 func (tex *rdTexture) Format() rd.TextureFormat {
@@ -411,7 +402,7 @@ func (data *rdTextureData) ReadFrom(r io.Reader) (n int64, err error) {
 			break
 		}
 	}
-	err = Error(data.tex.from.class.TextureUpdate(data.tex.rid(), Int(data.layer), packed, RenderingDeviceBarrierMaskAllBarriers))
+	err = Error(data.tex.from.class.TextureUpdate(data.tex.rid(), Int(data.layer), packed))
 	return int64(packed.Size()), err
 }
 
@@ -497,7 +488,7 @@ func (gpu *rdInterface) DrawingOnScreen(screen rd.Screen, clear uc.Color, fn fun
 	gpu.drawing.list = list
 	gpu.drawing.from = gpu
 	fn(&gpu.drawing)
-	gpu.class.DrawListEnd(RenderingDeviceBarrierMaskAllBarriers) // FIXME should this be configurable?
+	gpu.class.DrawListEnd()
 }
 
 type rdScreen struct {
@@ -508,7 +499,7 @@ type rdScreen struct {
 func (sc *rdScreen) FramebufferFormat() rd.FramebufferFormat {
 	return &rdFramebufferFormat{
 		from: sc.from,
-		name: sc.from.class.ScreenGetFramebufferFormat(),
+		name: sc.from.class.ScreenGetFramebufferFormat(sc.name),
 		eyes: 1, // FIXME
 	}
 }
@@ -614,7 +605,7 @@ type rdIndexBuffer struct{ rdBuffer }
 type rdBuffer struct{ rdNameable }
 
 func (buf rdBuffer) Clear() error {
-	return Error(buf.from.class.BufferClear(buf.rid(), 0, 0, RenderingDeviceBarrierMaskAllBarriers))
+	return Error(buf.from.class.BufferClear(buf.rid(), 0, 0))
 }
 
 func (buf rdBuffer) ReadAt(b []byte, off int64) (n int, err error) {
@@ -629,7 +620,7 @@ func (buf rdBuffer) WriteAt(b []byte, off int64) (n int, err error) {
 	tmp := NewLifetime(buf.from.godot)
 	defer tmp.End()
 	data := tmp.PackedByteSlice(b)
-	err = Error(buf.from.class.BufferUpdate(buf.rid(), Int(off), Int(len(b)), data, RenderingDeviceBarrierMaskAllBarriers)) // FIXME can we avoid the copy here?
+	err = Error(buf.from.class.BufferUpdate(buf.rid(), Int(off), Int(len(b)), data)) // FIXME can we avoid the copy here?
 	return int(data.Size()), err
 }
 
@@ -961,7 +952,6 @@ func (gpu *rdInterface) TextureCopy(src, dst rd.Texture, from, into, size xy.Vec
 		Int(dst_mipmp),
 		Int(src_layer),
 		Int(dst_layer),
-		RenderingDeviceBarrierMask(barrier),
 	))
 }
 
@@ -970,7 +960,7 @@ func (gpu *rdInterface) TextureFormatIsSupportedForUsage(format rd.DataFormat, u
 }
 
 func (gpu *rdInterface) TextureResolveMultiSample(from, into rd.Texture, barrier rd.Barrier) error {
-	return Error(gpu.class.TextureResolveMultisample(from.(*rdTexture).rid(), into.(*rdTexture).rid(), RenderingDeviceBarrierMask(barrier)))
+	return Error(gpu.class.TextureResolveMultisample(from.(*rdTexture).rid(), into.(*rdTexture).rid()))
 }
 
 func (gpu *rdInterface) UniformBuffer(data []byte) rd.UniformBuffer {

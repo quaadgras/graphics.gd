@@ -151,6 +151,8 @@ func variantTypeFromName(s string) (VariantType, reflect.Type) {
 		return TypePackedVector2Array, reflect.TypeOf(PackedVector2Array{})
 	case "PackedVector3Array":
 		return TypePackedVector3Array, reflect.TypeOf(PackedVector3Array{})
+	case "PackedVector4Array":
+		return TypePackedVector4Array, reflect.TypeOf(PackedVector4Array{})
 	case "PackedColorArray":
 		return TypePackedColorArray, reflect.TypeOf(PackedColorArray{})
 	default:

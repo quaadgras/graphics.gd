@@ -508,6 +508,18 @@ const (
 	KeyMaskGroupSwitch KeyModifierMask = 1073741824
 )
 
+type KeyLocation = gd.KeyLocation
+
+const (
+	/*Used for keys which only appear once, or when a comparison doesn't need to differentiate the [code]LEFT[/code] and [code]RIGHT[/code] versions.
+	  For example, when using [method InputEvent.is_match], an event which has [constant KEY_LOCATION_UNSPECIFIED] will match any [enum KeyLocation] on the passed event.*/
+	KeyLocationUnspecified KeyLocation = 0
+	/*A key which is to the left of its twin.*/
+	KeyLocationLeft KeyLocation = 1
+	/*A key which is to the right of its twin.*/
+	KeyLocationRight KeyLocation = 2
+)
+
 type MouseButton = gd.MouseButton
 
 const (
@@ -904,8 +916,7 @@ const (
 	  [/csharp]
 	  [/codeblocks]
 	  [b]Note:[/b] The trailing colon is required for properly detecting built-in types.*/
-	PropertyHintTypeString PropertyHint = 23
-	/*[i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
+	PropertyHintTypeString           PropertyHint = 23
 	PropertyHintNodePathToEditedNode PropertyHint = 24
 	/*Hints that an object is too big to be sent via the debugger.*/
 	PropertyHintObjectTooBig PropertyHint = 25
@@ -915,9 +926,7 @@ const (
 	PropertyHintSaveFile PropertyHint = 27
 	/*Hints that a [String] property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the entire filesystem. The hint string can be a set of filters with wildcards like [code]"*.png,*.jpg"[/code]. See also [member FileDialog.filters].*/
 	PropertyHintGlobalSaveFile PropertyHint = 28
-	/*Hints that an [int] property is an object ID.
-	  [i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
-	PropertyHintIntIsObjectid PropertyHint = 29
+	PropertyHintIntIsObjectid  PropertyHint = 29
 	/*Hints that an [int] property is a pointer. Used by GDExtension.*/
 	PropertyHintIntIsPointer PropertyHint = 30
 	/*Hints that a property is an [Array] with the stored type specified in the hint string.*/
@@ -941,9 +950,9 @@ type PropertyUsageFlags = gd.PropertyUsageFlags
 const (
 	/*The property is not stored, and does not display in the editor. This is the default for non-exported properties.*/
 	PropertyUsageNone PropertyUsageFlags = 0
-	/*The property is serialized and saved in the scene file (default).*/
+	/*The property is serialized and saved in the scene file (default for exported properties).*/
 	PropertyUsageStorage PropertyUsageFlags = 2
-	/*The property is shown in the [EditorInspector] (default).*/
+	/*The property is shown in the [EditorInspector] (default for exported properties).*/
 	PropertyUsageEditor PropertyUsageFlags = 4
 	/*The property is excluded from the class reference.*/
 	PropertyUsageInternal PropertyUsageFlags = 8
@@ -969,9 +978,7 @@ const (
 	PropertyUsageStoreIfNull PropertyUsageFlags = 8192
 	/*If this property is modified, all inspector fields will be refreshed.*/
 	PropertyUsageUpdateAllIfModified PropertyUsageFlags = 16384
-	/*Signifies a default value from a placeholder script instance.
-	  [i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
-	PropertyUsageScriptDefaultValue PropertyUsageFlags = 32768
+	PropertyUsageScriptDefaultValue  PropertyUsageFlags = 32768
 	/*The property is an enum, i.e. it only takes named integer constants from its associated enumeration.*/
 	PropertyUsageClassIsEnum PropertyUsageFlags = 65536
 	/*If property has [code]nil[/code] as default value, its type will be [Variant].*/
@@ -989,9 +996,7 @@ const (
 	/*Use when a resource is created on the fly, i.e. the getter will always return a different instance. [ResourceSaver] needs this information to properly save such resources.*/
 	PropertyUsageResourceNotPersistent PropertyUsageFlags = 8388608
 	/*Inserting an animation key frame of this property will automatically increment the value, allowing to easily keyframe multiple values in a row.*/
-	PropertyUsageKeyingIncrements PropertyUsageFlags = 16777216
-	/*When loading, the resource for this property can be set at the end of loading.
-	  [i]Deprecated.[/i] This hint is not used anywhere and will be removed in the future.*/
+	PropertyUsageKeyingIncrements    PropertyUsageFlags = 16777216
 	PropertyUsageDeferredSetResource PropertyUsageFlags = 33554432
 	/*When this property is a [Resource] and base object is a [Node], a resource instance will be automatically created whenever the node is created in the editor.*/
 	PropertyUsageEditorInstantiateObject PropertyUsageFlags = 67108864
@@ -1107,8 +1112,10 @@ const (
 	TypePackedVector3Array VariantType = 36
 	/*Variable is of type [PackedColorArray].*/
 	TypePackedColorArray VariantType = 37
+	/*Variable is of type [PackedVector4Array].*/
+	TypePackedVector4Array VariantType = 38
 	/*Represents the size of the [enum Variant.Type] enum.*/
-	TypeMax VariantType = 38
+	TypeMax VariantType = 39
 )
 
 type VariantOperator = gd.VariantOperator
@@ -1319,6 +1326,19 @@ const (
 	AStarGrid2DDiagonalModeMax AStarGrid2DDiagonalMode = 4
 )
 
+type AStarGrid2DCellShape = classdb.AStarGrid2DCellShape
+
+const (
+	/*Rectangular cell shape.*/
+	AStarGrid2DCellShapeSquare AStarGrid2DCellShape = 0
+	/*Diamond cell shape (for isometric look). Cell coordinates layout where the horizontal axis goes up-right, and the vertical one goes down-right.*/
+	AStarGrid2DCellShapeIsometricRight AStarGrid2DCellShape = 1
+	/*Diamond cell shape (for isometric look). Cell coordinates layout where the horizontal axis goes down-right, and the vertical one goes down-left.*/
+	AStarGrid2DCellShapeIsometricDown AStarGrid2DCellShape = 2
+	/*Represents the size of the [enum CellShape] enum.*/
+	AStarGrid2DCellShapeMax AStarGrid2DCellShape = 3
+)
+
 type AnimationTrackType = classdb.AnimationTrackType
 
 const (
@@ -1366,7 +1386,7 @@ const (
 	AnimationUpdateContinuous AnimationUpdateMode = 0
 	/*Update at the keyframes.*/
 	AnimationUpdateDiscrete AnimationUpdateMode = 1
-	/*Same as linear interpolation, but also interpolates from the current value (i.e. dynamically at runtime) if the first key isn't at 0 seconds.*/
+	/*Same as [constant UPDATE_CONTINUOUS] but works as a flag to capture the value of the current object and perform interpolation in some methods. See also [method AnimationMixer.capture], [member AnimationPlayer.playback_auto_capture], and [method AnimationPlayer.play_with_capture].*/
 	AnimationUpdateCapture AnimationUpdateMode = 2
 )
 
@@ -1421,6 +1441,18 @@ const (
 	AnimationMixerAnimationCallbackModeMethodDeferred AnimationMixerAnimationCallbackModeMethod = 0
 	/*Make method calls immediately when reached in the animation.*/
 	AnimationMixerAnimationCallbackModeMethodImmediate AnimationMixerAnimationCallbackModeMethod = 1
+)
+
+type AnimationMixerAnimationCallbackModeDiscrete = classdb.AnimationMixerAnimationCallbackModeDiscrete
+
+const (
+	/*An [constant Animation.UPDATE_DISCRETE] track value takes precedence when blending [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track values and [constant Animation.UPDATE_DISCRETE] track values.*/
+	AnimationMixerAnimationCallbackModeDiscreteDominant AnimationMixerAnimationCallbackModeDiscrete = 0
+	/*An [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track value takes precedence when blending the [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track values and the [constant Animation.UPDATE_DISCRETE] track values. This is the default behavior for [AnimationPlayer].*/
+	AnimationMixerAnimationCallbackModeDiscreteRecessive AnimationMixerAnimationCallbackModeDiscrete = 1
+	/*Always treat the [constant Animation.UPDATE_DISCRETE] track value as [constant Animation.UPDATE_CONTINUOUS] with [constant Animation.INTERPOLATION_NEAREST]. This is the default behavior for [AnimationTree].
+	  If a value track has non-numeric type key values, it is internally converted to use [constant ANIMATION_CALLBACK_MODE_DISCRETE_RECESSIVE] with [constant Animation.UPDATE_DISCRETE].*/
+	AnimationMixerAnimationCallbackModeDiscreteForceContinuous AnimationMixerAnimationCallbackModeDiscrete = 2
 )
 
 type AnimationNodeFilterAction = classdb.AnimationNodeFilterAction
@@ -1525,32 +1557,24 @@ const (
 type AnimationPlayerAnimationProcessCallback = classdb.AnimationPlayerAnimationProcessCallback
 
 const (
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS].*/
 	AnimationPlayerAnimationProcessPhysics AnimationPlayerAnimationProcessCallback = 0
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE].*/
-	AnimationPlayerAnimationProcessIdle AnimationPlayerAnimationProcessCallback = 1
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL].*/
-	AnimationPlayerAnimationProcessManual AnimationPlayerAnimationProcessCallback = 2
+	AnimationPlayerAnimationProcessIdle    AnimationPlayerAnimationProcessCallback = 1
+	AnimationPlayerAnimationProcessManual  AnimationPlayerAnimationProcessCallback = 2
 )
 
 type AnimationPlayerAnimationMethodCallMode = classdb.AnimationPlayerAnimationMethodCallMode
 
 const (
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_METHOD_DEFERRED].*/
-	AnimationPlayerAnimationMethodCallDeferred AnimationPlayerAnimationMethodCallMode = 0
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_METHOD_IMMEDIATE].*/
+	AnimationPlayerAnimationMethodCallDeferred  AnimationPlayerAnimationMethodCallMode = 0
 	AnimationPlayerAnimationMethodCallImmediate AnimationPlayerAnimationMethodCallMode = 1
 )
 
 type AnimationTreeAnimationProcessCallback = classdb.AnimationTreeAnimationProcessCallback
 
 const (
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS].*/
 	AnimationTreeAnimationProcessPhysics AnimationTreeAnimationProcessCallback = 0
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE].*/
-	AnimationTreeAnimationProcessIdle AnimationTreeAnimationProcessCallback = 1
-	/*For backward compatibility. See [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL].*/
-	AnimationTreeAnimationProcessManual AnimationTreeAnimationProcessCallback = 2
+	AnimationTreeAnimationProcessIdle    AnimationTreeAnimationProcessCallback = 1
+	AnimationTreeAnimationProcessManual  AnimationTreeAnimationProcessCallback = 2
 )
 
 type Area2DSpaceOverride = classdb.Area2DSpaceOverride
@@ -1668,9 +1692,9 @@ const (
 type AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = classdb.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode
 
 const (
-	/*Use the average value as magnitude.*/
+	/*Use the average value across the frequency range as magnitude.*/
 	AudioEffectSpectrumAnalyzerInstanceMagnitudeAverage AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 0
-	/*Use the maximum value as magnitude.*/
+	/*Use the maximum value of the frequency range as magnitude.*/
 	AudioEffectSpectrumAnalyzerInstanceMagnitudeMax AudioEffectSpectrumAnalyzerInstanceMagnitudeMode = 1
 )
 
@@ -1687,10 +1711,73 @@ const (
 	AudioServerSpeakerSurround71 AudioServerSpeakerMode = 3
 )
 
+type AudioServerPlaybackType = classdb.AudioServerPlaybackType
+
+const (
+	/*The playback will be considered of the type declared at [member ProjectSettings.audio/general/default_playback_type].*/
+	AudioServerPlaybackTypeDefault AudioServerPlaybackType = 0
+	/*Force the playback to be considered as a stream.*/
+	AudioServerPlaybackTypeStream AudioServerPlaybackType = 1
+	/*Force the playback to be considered as a sample. This can provide lower latency and more stable playback (with less risk of audio crackling), at the cost of having less flexibility.
+	  [b]Note:[/b] Only currently supported on the web platform.
+	  [b]Note:[/b] [AudioEffect]s are not supported when playback is considered as a sample.*/
+	AudioServerPlaybackTypeSample AudioServerPlaybackType = 2
+	/*Represents the size of the [enum PlaybackType] enum.*/
+	AudioServerPlaybackTypeMax AudioServerPlaybackType = 3
+)
+
+type AudioStreamInteractiveTransitionFromTime = classdb.AudioStreamInteractiveTransitionFromTime
+
+const (
+	/*Start transition as soon as possible, don't wait for any specific time position.*/
+	AudioStreamInteractiveTransitionFromTimeImmediate AudioStreamInteractiveTransitionFromTime = 0
+	/*Transition when the clip playback position reaches the next beat.*/
+	AudioStreamInteractiveTransitionFromTimeNextBeat AudioStreamInteractiveTransitionFromTime = 1
+	/*Transition when the clip playback position reaches the next bar.*/
+	AudioStreamInteractiveTransitionFromTimeNextBar AudioStreamInteractiveTransitionFromTime = 2
+	/*Transition when the current clip finished playing.*/
+	AudioStreamInteractiveTransitionFromTimeEnd AudioStreamInteractiveTransitionFromTime = 3
+)
+
+type AudioStreamInteractiveTransitionToTime = classdb.AudioStreamInteractiveTransitionToTime
+
+const (
+	/*Transition to the same position in the destination clip. This is useful when both clips have exactly the same length and the music should fade between them.*/
+	AudioStreamInteractiveTransitionToTimeSamePosition AudioStreamInteractiveTransitionToTime = 0
+	/*Transition to the start of the destination clip.*/
+	AudioStreamInteractiveTransitionToTimeStart AudioStreamInteractiveTransitionToTime = 1
+)
+
+type AudioStreamInteractiveFadeMode = classdb.AudioStreamInteractiveFadeMode
+
+const (
+	/*Do not use fade for the transition. This is useful when transitioning from a clip-end to clip-beginning, and each clip has their begin/end.*/
+	AudioStreamInteractiveFadeDisabled AudioStreamInteractiveFadeMode = 0
+	/*Use a fade-in in the next clip, let the current clip finish.*/
+	AudioStreamInteractiveFadeIn AudioStreamInteractiveFadeMode = 1
+	/*Use a fade-out in the current clip, the next clip will start by itself.*/
+	AudioStreamInteractiveFadeOut AudioStreamInteractiveFadeMode = 2
+	/*Use a cross-fade between clips.*/
+	AudioStreamInteractiveFadeCross AudioStreamInteractiveFadeMode = 3
+	/*Use automatic fade logic depending on the transition from/to. It is recommended to use this by default.*/
+	AudioStreamInteractiveFadeAutomatic AudioStreamInteractiveFadeMode = 4
+)
+
+type AudioStreamInteractiveAutoAdvanceMode = classdb.AudioStreamInteractiveAutoAdvanceMode
+
+const (
+	/*Disable auto-advance (default).*/
+	AudioStreamInteractiveAutoAdvanceDisabled AudioStreamInteractiveAutoAdvanceMode = 0
+	/*Enable auto-advance, a clip must be specified.*/
+	AudioStreamInteractiveAutoAdvanceEnabled AudioStreamInteractiveAutoAdvanceMode = 1
+	/*Enable auto-advance, but instead of specifying a clip, the playback will return to hold (see [method add_transition]).*/
+	AudioStreamInteractiveAutoAdvanceReturnToHold AudioStreamInteractiveAutoAdvanceMode = 2
+)
+
 type AudioStreamPlayerMixTarget = classdb.AudioStreamPlayerMixTarget
 
 const (
-	/*The audio will be played only on the first channel.*/
+	/*The audio will be played only on the first channel. This is the default.*/
 	AudioStreamPlayerMixTargetStereo AudioStreamPlayerMixTarget = 0
 	/*The audio will be played on all surround channels.*/
 	AudioStreamPlayerMixTargetSurround AudioStreamPlayerMixTarget = 1
@@ -1742,6 +1829,8 @@ const (
 	AudioStreamWAVFormat16Bits AudioStreamWAVFormat = 1
 	/*Audio is compressed using IMA ADPCM.*/
 	AudioStreamWAVFormatImaAdpcm AudioStreamWAVFormat = 2
+	/*Audio is compressed as QOA ([url=https://qoaformat.org/]Quite OK Audio[/url]).*/
+	AudioStreamWAVFormatQoa AudioStreamWAVFormat = 3
 )
 
 type AudioStreamWAVLoopMode = classdb.AudioStreamWAVLoopMode
@@ -1935,6 +2024,8 @@ const (
 	BaseMaterial3DBlendModeSub BaseMaterial3DBlendMode = 2
 	/*The color of the object is multiplied by the background.*/
 	BaseMaterial3DBlendModeMul BaseMaterial3DBlendMode = 3
+	/*The color of the object is added to the background and the alpha channel is used to mask out the background. This is effectively a hybrid of the blend mix and add modes, useful for effects like fire where you want the flame to add but the smoke to mix. By default, this works with unshaded materials using premultiplied textures. For shaded materials, use the [code]PREMUL_ALPHA_FACTOR[/code] built-in so that lighting can be modulated as well.*/
+	BaseMaterial3DBlendModePremultAlpha BaseMaterial3DBlendMode = 4
 )
 
 type BaseMaterial3DAlphaAntiAliasing = classdb.BaseMaterial3DAlphaAntiAliasing
@@ -2421,7 +2512,7 @@ const (
 	CanvasItemTextureRepeatDisabled CanvasItemTextureRepeat = 1
 	/*Texture will repeat normally.*/
 	CanvasItemTextureRepeatEnabled CanvasItemTextureRepeat = 2
-	/*Texture will repeat in a 2x2 tiled mode, where elements at even positions are mirrored.*/
+	/*Texture will repeat in a 2×2 tiled mode, where elements at even positions are mirrored.*/
 	CanvasItemTextureRepeatMirror CanvasItemTextureRepeat = 3
 	/*Represents the size of the [enum TextureRepeat] enum.*/
 	CanvasItemTextureRepeatMax CanvasItemTextureRepeat = 4
@@ -2536,7 +2627,7 @@ type CodeEditCodeCompletionLocation = classdb.CodeEditCodeCompletionLocation
 const (
 	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
 	CodeEditLocationLocal CodeEditCodeCompletionLocation = 0
-	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. 0 for the local class, 1 for the parent, 2 for the grandparent, etc) to store the depth of an option in the class or a parent class.*/
+	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. [code]0[/code] for the local class, [code]1[/code] for the parent, [code]2[/code] for the grandparent, etc.) to store the depth of an option in the class or a parent class.*/
 	CodeEditLocationParentMask CodeEditCodeCompletionLocation = 256
 	/*The option is from user code which is not local and not in a derived class (e.g. Autoload Singletons).*/
 	CodeEditLocationOtherUserCode CodeEditCodeCompletionLocation = 512
@@ -2607,6 +2698,23 @@ const (
 	ColorPickerShapeOkhslCircle ColorPickerPickerShapeType = 3
 	/*The color space shape and the shape select button are hidden. Can't be selected from the shapes popup.*/
 	ColorPickerShapeNone ColorPickerPickerShapeType = 4
+)
+
+type CompositorEffectEffectCallbackType = classdb.CompositorEffectEffectCallbackType
+
+const (
+	/*The callback is called before our opaque rendering pass, but after depth prepass (if applicable).*/
+	CompositorEffectEffectCallbackTypePreOpaque CompositorEffectEffectCallbackType = 0
+	/*The callback is called after our opaque rendering pass, but before our sky is rendered.*/
+	CompositorEffectEffectCallbackTypePostOpaque CompositorEffectEffectCallbackType = 1
+	/*The callback is called after our sky is rendered, but before our back buffers are created (and if enabled, before subsurface scattering and/or screen space reflections).*/
+	CompositorEffectEffectCallbackTypePostSky CompositorEffectEffectCallbackType = 2
+	/*The callback is called before our transparent rendering pass, but after our sky is rendered and we've created our back buffers.*/
+	CompositorEffectEffectCallbackTypePreTransparent CompositorEffectEffectCallbackType = 3
+	/*The callback is called after our transparent rendering pass, but before any build in post effects and output to our render target.*/
+	CompositorEffectEffectCallbackTypePostTransparent CompositorEffectEffectCallbackType = 4
+	/*Represents the size of the [enum EffectCallbackType] enum.*/
+	CompositorEffectEffectCallbackTypeMax CompositorEffectEffectCallbackType = 5
 )
 
 type ConeTwistJoint3DParam = classdb.ConeTwistJoint3DParam
@@ -2873,25 +2981,25 @@ const (
 	DisplayServerFeatureSubwindows DisplayServerFeature = 1
 	/*Display server supports touchscreen input. [b]Windows, Linux (X11), Android, iOS, Web[/b]*/
 	DisplayServerFeatureTouchscreen DisplayServerFeature = 2
-	/*Display server supports mouse input. [b]Windows, macOS, Linux (X11), Android, Web[/b]*/
+	/*Display server supports mouse input. [b]Windows, macOS, Linux (X11/Wayland), Android, Web[/b]*/
 	DisplayServerFeatureMouse DisplayServerFeature = 3
-	/*Display server supports warping mouse coordinates to keep the mouse cursor constrained within an area, but looping when one of the edges is reached. [b]Windows, macOS, Linux (X11)[/b]*/
+	/*Display server supports warping mouse coordinates to keep the mouse cursor constrained within an area, but looping when one of the edges is reached. [b]Windows, macOS, Linux (X11/Wayland)[/b]*/
 	DisplayServerFeatureMouseWarp DisplayServerFeature = 4
-	/*Display server supports setting and getting clipboard data. See also [constant FEATURE_CLIPBOARD_PRIMARY]. [b]Windows, macOS, Linux (X11), Android, iOS, Web[/b]*/
+	/*Display server supports setting and getting clipboard data. See also [constant FEATURE_CLIPBOARD_PRIMARY]. [b]Windows, macOS, Linux (X11/Wayland), Android, iOS, Web[/b]*/
 	DisplayServerFeatureClipboard DisplayServerFeature = 5
 	/*Display server supports popping up a virtual keyboard when requested to input text without a physical keyboard. [b]Android, iOS, Web[/b]*/
 	DisplayServerFeatureVirtualKeyboard DisplayServerFeature = 6
-	/*Display server supports setting the mouse cursor shape to be different from the default. [b]Windows, macOS, Linux (X11), Android, Web[/b]*/
+	/*Display server supports setting the mouse cursor shape to be different from the default. [b]Windows, macOS, Linux (X11/Wayland), Android, Web[/b]*/
 	DisplayServerFeatureCursorShape DisplayServerFeature = 7
-	/*Display server supports setting the mouse cursor shape to a custom image. [b]Windows, macOS, Linux (X11), Web[/b]*/
+	/*Display server supports setting the mouse cursor shape to a custom image. [b]Windows, macOS, Linux (X11/Wayland), Web[/b]*/
 	DisplayServerFeatureCustomCursorShape DisplayServerFeature = 8
-	/*Display server supports spawning dialogs using the operating system's native look-and-feel. [b]Windows, macOS, Linux (X11)[/b]*/
+	/*Display server supports spawning text dialogs using the operating system's native look-and-feel. See [method dialog_show]. [b]Windows, macOS[/b]*/
 	DisplayServerFeatureNativeDialog DisplayServerFeature = 9
 	/*Display server supports [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url], which is commonly used for inputting Chinese/Japanese/Korean text. This is handled by the operating system, rather than by Godot. [b]Windows, macOS, Linux (X11)[/b]*/
 	DisplayServerFeatureIme DisplayServerFeature = 10
-	/*Display server supports windows can use per-pixel transparency to make windows behind them partially or fully visible. [b]Windows, macOS, Linux (X11)[/b]*/
+	/*Display server supports windows can use per-pixel transparency to make windows behind them partially or fully visible. [b]Windows, macOS, Linux (X11/Wayland)[/b]*/
 	DisplayServerFeatureWindowTransparency DisplayServerFeature = 11
-	/*Display server supports querying the operating system's display scale factor. This allows for [i]reliable[/i] automatic hiDPI display detection, as opposed to guessing based on the screen resolution and reported display DPI (which can be unreliable due to broken monitor EDID). [b]Windows, macOS[/b]*/
+	/*Display server supports querying the operating system's display scale factor. This allows for [i]reliable[/i] automatic hiDPI display detection, as opposed to guessing based on the screen resolution and reported display DPI (which can be unreliable due to broken monitor EDID). [b]Windows, Linux (Wayland), macOS[/b]*/
 	DisplayServerFeatureHidpi DisplayServerFeature = 12
 	/*Display server supports changing the window icon (usually displayed in the top-left corner). [b]Windows, macOS, Linux (X11)[/b]*/
 	DisplayServerFeatureIcon DisplayServerFeature = 13
@@ -2899,16 +3007,24 @@ const (
 	DisplayServerFeatureNativeIcon DisplayServerFeature = 14
 	/*Display server supports changing the screen orientation. [b]Android, iOS[/b]*/
 	DisplayServerFeatureOrientation DisplayServerFeature = 15
-	/*Display server supports V-Sync status can be changed from the default (which is forced to be enabled platforms not supporting this feature). [b]Windows, macOS, Linux (X11)[/b]*/
+	/*Display server supports V-Sync status can be changed from the default (which is forced to be enabled platforms not supporting this feature). [b]Windows, macOS, Linux (X11/Wayland)[/b]*/
 	DisplayServerFeatureSwapBuffers DisplayServerFeature = 16
-	/*Display server supports Primary clipboard can be used. This is a different clipboard from [constant FEATURE_CLIPBOARD]. [b]Linux (X11)[/b]*/
+	/*Display server supports Primary clipboard can be used. This is a different clipboard from [constant FEATURE_CLIPBOARD]. [b]Linux (X11/Wayland)[/b]*/
 	DisplayServerFeatureClipboardPrimary DisplayServerFeature = 18
-	/*Display server supports text-to-speech. See [code]tts_*[/code] methods. [b]Windows, macOS, Linux (X11), Android, iOS, Web[/b]*/
+	/*Display server supports text-to-speech. See [code]tts_*[/code] methods. [b]Windows, macOS, Linux (X11/Wayland), Android, iOS, Web[/b]*/
 	DisplayServerFeatureTextToSpeech DisplayServerFeature = 19
 	/*Display server supports expanding window content to the title. See [constant WINDOW_FLAG_EXTEND_TO_TITLE]. [b]macOS[/b]*/
 	DisplayServerFeatureExtendToTitle DisplayServerFeature = 20
 	/*Display server supports reading screen pixels. See [method screen_get_pixel].*/
 	DisplayServerFeatureScreenCapture DisplayServerFeature = 21
+	/*Display server supports application status indicators.*/
+	DisplayServerFeatureStatusIndicator DisplayServerFeature = 22
+	/*Display server supports native help system search callbacks. See [method help_set_search_callbacks].*/
+	DisplayServerFeatureNativeHelp DisplayServerFeature = 23
+	/*Display server supports spawning text input dialogs using the operating system's native look-and-feel. See [method dialog_input_text]. [b]Windows, macOS[/b]*/
+	DisplayServerFeatureNativeDialogInput DisplayServerFeature = 24
+	/*Display server supports spawning dialogs for selecting files or directories using the operating system's native look-and-feel. See [method file_dialog_show] and [method file_dialog_with_options_show]. [b]Windows, macOS, Linux (X11/Wayland)[/b]*/
+	DisplayServerFeatureNativeDialogFile DisplayServerFeature = 25
 )
 
 type DisplayServerMouseMode = classdb.DisplayServerMouseMode
@@ -3058,8 +3174,8 @@ const (
 	/*The window is floating on top of all other windows. This flag is ignored for full-screen windows.*/
 	DisplayServerWindowFlagAlwaysOnTop DisplayServerWindowFlags = 2
 	/*The window background can be transparent.
-	  [b]Note:[/b] This flag has no effect if [member ProjectSettings.display/window/per_pixel_transparency/allowed] is set to [code]false[/code].
-	  [b]Note:[/b] Transparency support is implemented on Linux (X11), macOS and Windows, but availability might vary depending on GPU driver, display manager, and compositor capabilities.*/
+	  [b]Note:[/b] This flag has no effect if [method is_window_transparency_available] returns [code]false[/code].
+	  [b]Note:[/b] Transparency support is implemented on Linux (X11/Wayland), macOS, and Windows, but availability might vary depending on GPU driver, display manager, and compositor capabilities.*/
 	DisplayServerWindowFlagTransparent DisplayServerWindowFlags = 3
 	/*The window can't be focused. No-focus window will ignore all input, except mouse clicks.*/
 	DisplayServerWindowFlagNoFocus DisplayServerWindowFlags = 4
@@ -3135,7 +3251,7 @@ const (
 	DisplayServerWindowView DisplayServerHandleType = 2
 	/*OpenGL context (only with the GL Compatibility renderer):
 	  - Windows: [code]HGLRC[/code] for the window (native GL), or [code]EGLContext[/code] for the window (ANGLE).
-	  - Linux: [code]GLXContext*[/code] for the window.
+	  - Linux (X11): [code]GLXContext*[/code] for the window.
 	  - macOS: [code]NSOpenGLContext*[/code] for the window (native GL), or [code]EGLContext[/code] for the window (ANGLE).
 	  - Android: [code]EGLContext[/code] for the window.*/
 	DisplayServerOpenglContext DisplayServerHandleType = 3
@@ -3500,6 +3616,15 @@ const (
 	EnvironmentGlowBlendModeMix EnvironmentGlowBlendMode = 4
 )
 
+type EnvironmentFogMode = classdb.EnvironmentFogMode
+
+const (
+	/*Use a physically-based fog model defined primarily by fog density.*/
+	EnvironmentFogModeExponential EnvironmentFogMode = 0
+	/*Use a simple fog model defined by start and end positions and a custom curve. While not physically accurate, this model can be useful when you need more artistic control.*/
+	EnvironmentFogModeDepth EnvironmentFogMode = 1
+)
+
 type EnvironmentSDFGIYScale = classdb.EnvironmentSDFGIYScale
 
 const (
@@ -3602,12 +3727,12 @@ const (
 	/*Opens the file for read operations. The cursor is positioned at the beginning of the file.*/
 	FileAccessRead FileAccessModeFlags = 1
 	/*Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
-	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive]).*/
+	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive].*/
 	FileAccessWrite FileAccessModeFlags = 2
 	/*Opens the file for read and write operations. Does not truncate the file. The cursor is positioned at the beginning of the file.*/
 	FileAccessReadWrite FileAccessModeFlags = 3
 	/*Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The cursor is positioned at the beginning of the file.
-	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive]).*/
+	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive].*/
 	FileAccessWriteRead FileAccessModeFlags = 7
 )
 
@@ -3692,23 +3817,64 @@ const (
 	FlowContainerAlignmentEnd FlowContainerAlignmentMode = 2
 )
 
+type FlowContainerLastWrapAlignmentMode = classdb.FlowContainerLastWrapAlignmentMode
+
+const (
+	/*The last partially filled row or column will wrap aligned to the previous row or column in accordance with [member alignment].*/
+	FlowContainerLastWrapAlignmentInherit FlowContainerLastWrapAlignmentMode = 0
+	/*The last partially filled row or column will wrap aligned to the beginning of the previous row or column.*/
+	FlowContainerLastWrapAlignmentBegin FlowContainerLastWrapAlignmentMode = 1
+	/*The last partially filled row or column will wrap aligned to the center of the previous row or column.*/
+	FlowContainerLastWrapAlignmentCenter FlowContainerLastWrapAlignmentMode = 2
+	/*The last partially filled row or column will wrap aligned to the end of the previous row or column.*/
+	FlowContainerLastWrapAlignmentEnd FlowContainerLastWrapAlignmentMode = 3
+)
+
 type GDExtensionInitializationLevel = classdb.GDExtensionInitializationLevel
 
 const (
-	GDExtensionInitializationLevelCore    GDExtensionInitializationLevel = 0
+	/*The library is initialized at the same time as the core features of the engine.*/
+	GDExtensionInitializationLevelCore GDExtensionInitializationLevel = 0
+	/*The library is initialized at the same time as the engine's servers (such as [RenderingServer] or [PhysicsServer3D]).*/
 	GDExtensionInitializationLevelServers GDExtensionInitializationLevel = 1
-	GDExtensionInitializationLevelScene   GDExtensionInitializationLevel = 2
-	GDExtensionInitializationLevelEditor  GDExtensionInitializationLevel = 3
+	/*The library is initialized at the same time as the engine's scene-related classes.*/
+	GDExtensionInitializationLevelScene GDExtensionInitializationLevel = 2
+	/*The library is initialized at the same time as the engine's editor classes. Only happens when loading the GDExtension in the editor.*/
+	GDExtensionInitializationLevelEditor GDExtensionInitializationLevel = 3
 )
 
 type GDExtensionManagerLoadStatus = classdb.GDExtensionManagerLoadStatus
 
 const (
-	GDExtensionManagerLoadStatusOk            GDExtensionManagerLoadStatus = 0
-	GDExtensionManagerLoadStatusFailed        GDExtensionManagerLoadStatus = 1
+	/*The extension has loaded successfully.*/
+	GDExtensionManagerLoadStatusOk GDExtensionManagerLoadStatus = 0
+	/*The extension has failed to load, possibly because it does not exist or has missing dependencies.*/
+	GDExtensionManagerLoadStatusFailed GDExtensionManagerLoadStatus = 1
+	/*The extension has already been loaded.*/
 	GDExtensionManagerLoadStatusAlreadyLoaded GDExtensionManagerLoadStatus = 2
-	GDExtensionManagerLoadStatusNotLoaded     GDExtensionManagerLoadStatus = 3
-	GDExtensionManagerLoadStatusNeedsRestart  GDExtensionManagerLoadStatus = 4
+	/*The extension has not been loaded.*/
+	GDExtensionManagerLoadStatusNotLoaded GDExtensionManagerLoadStatus = 3
+	/*The extension requires the application to restart to fully load.*/
+	GDExtensionManagerLoadStatusNeedsRestart GDExtensionManagerLoadStatus = 4
+)
+
+type GLTFAccessorGLTFAccessorType = classdb.GLTFAccessorGLTFAccessorType
+
+const (
+	/*Accessor type "SCALAR". For the glTF object model, this can be used to map to a single float, int, or bool value, or a float array.*/
+	GLTFAccessorTypeScalar GLTFAccessorGLTFAccessorType = 0
+	/*Accessor type "VEC2". For the glTF object model, this maps to "float2", represented in the glTF JSON as an array of two floats.*/
+	GLTFAccessorTypeVec2 GLTFAccessorGLTFAccessorType = 1
+	/*Accessor type "VEC3". For the glTF object model, this maps to "float3", represented in the glTF JSON as an array of three floats.*/
+	GLTFAccessorTypeVec3 GLTFAccessorGLTFAccessorType = 2
+	/*Accessor type "VEC4". For the glTF object model, this maps to "float4", represented in the glTF JSON as an array of four floats.*/
+	GLTFAccessorTypeVec4 GLTFAccessorGLTFAccessorType = 3
+	/*Accessor type "MAT2". For the glTF object model, this maps to "float2x2", represented in the glTF JSON as an array of four floats.*/
+	GLTFAccessorTypeMat2 GLTFAccessorGLTFAccessorType = 4
+	/*Accessor type "MAT3". For the glTF object model, this maps to "float3x3", represented in the glTF JSON as an array of nine floats.*/
+	GLTFAccessorTypeMat3 GLTFAccessorGLTFAccessorType = 5
+	/*Accessor type "MAT4". For the glTF object model, this maps to "float4x4", represented in the glTF JSON as an array of sixteen floats.*/
+	GLTFAccessorTypeMat4 GLTFAccessorGLTFAccessorType = 6
 )
 
 type GLTFDocumentRootNodeMode = classdb.GLTFDocumentRootNodeMode
@@ -3980,9 +4146,11 @@ type GeometryInstance3DVisibilityRangeFadeMode = classdb.GeometryInstance3DVisib
 const (
 	/*Will not fade itself nor its visibility dependencies, hysteresis will be used instead. This is the fastest approach to manual LOD, but it can result in noticeable LOD transitions depending on how the LOD meshes are authored. See [member visibility_range_begin] and [member Node3D.visibility_parent] for more information.*/
 	GeometryInstance3DVisibilityRangeFadeDisabled GeometryInstance3DVisibilityRangeFadeMode = 0
-	/*Will fade-out itself when reaching the limits of its own visibility range. This is slower than [constant VISIBILITY_RANGE_FADE_DISABLED], but it can provide smoother transitions. The fading range is determined by [member visibility_range_begin_margin] and [member visibility_range_end_margin].*/
+	/*Will fade-out itself when reaching the limits of its own visibility range. This is slower than [constant VISIBILITY_RANGE_FADE_DISABLED], but it can provide smoother transitions. The fading range is determined by [member visibility_range_begin_margin] and [member visibility_range_end_margin].
+	  [b]Note:[/b] Only supported when using the Forward+ rendering method. When using the Mobile or Compatibility rendering method, this mode acts like [constant VISIBILITY_RANGE_FADE_DISABLED] but with hysteresis disabled.*/
 	GeometryInstance3DVisibilityRangeFadeSelf GeometryInstance3DVisibilityRangeFadeMode = 1
-	/*Will fade-in its visibility dependencies (see [member Node3D.visibility_parent]) when reaching the limits of its own visibility range. This is slower than [constant VISIBILITY_RANGE_FADE_DISABLED], but it can provide smoother transitions. The fading range is determined by [member visibility_range_begin_margin] and [member visibility_range_end_margin].*/
+	/*Will fade-in its visibility dependencies (see [member Node3D.visibility_parent]) when reaching the limits of its own visibility range. This is slower than [constant VISIBILITY_RANGE_FADE_DISABLED], but it can provide smoother transitions. The fading range is determined by [member visibility_range_begin_margin] and [member visibility_range_end_margin].
+	  [b]Note:[/b] Only supported when using the Forward+ rendering method. When using the Mobile or Compatibility rendering method, this mode acts like [constant VISIBILITY_RANGE_FADE_DISABLED] but with hysteresis disabled.*/
 	GeometryInstance3DVisibilityRangeFadeDependencies GeometryInstance3DVisibilityRangeFadeMode = 2
 )
 
@@ -4037,6 +4205,15 @@ const (
 	GraphEditScrollZooms GraphEditPanningScheme = 0
 	/*[kbd]Mouse Wheel[/kbd] will move the view, [kbd]Ctrl + Mouse Wheel[/kbd] will zoom.*/
 	GraphEditScrollPans GraphEditPanningScheme = 1
+)
+
+type GraphEditGridPattern = classdb.GraphEditGridPattern
+
+const (
+	/*Draw the grid using solid lines.*/
+	GraphEditGridPatternLines GraphEditGridPattern = 0
+	/*Draw the grid using dots.*/
+	GraphEditGridPatternDots GraphEditGridPattern = 1
 )
 
 type HTTPClientMethod = classdb.HTTPClientMethod
@@ -4128,9 +4305,9 @@ const (
 	HTTPClientResponseSeeOther HTTPClientResponseCode = 303
 	/*HTTP status code [code]304 Not Modified[/code]. A conditional GET or HEAD request has been received and would have resulted in a 200 OK response if it were not for the fact that the condition evaluated to [code]false[/code].*/
 	HTTPClientResponseNotModified HTTPClientResponseCode = 304
-	/*[i]Deprecated.[/i] HTTP status code [code]305 Use Proxy[/code].*/
+	/*HTTP status code [code]305 Use Proxy[/code].*/
 	HTTPClientResponseUseProxy HTTPClientResponseCode = 305
-	/*[i]Deprecated.[/i] HTTP status code [code]306 Switch Proxy[/code].*/
+	/*HTTP status code [code]306 Switch Proxy[/code].*/
 	HTTPClientResponseSwitchProxy HTTPClientResponseCode = 306
 	/*HTTP status code [code]307 Temporary Redirect[/code]. The target resource resides temporarily under a different URI and the user agent MUST NOT change the request method if it performs an automatic redirection to that URI.*/
 	HTTPClientResponseTemporaryRedirect HTTPClientResponseCode = 307
@@ -4399,11 +4576,11 @@ const (
 	ImageFormatEtc2RaAsRg ImageFormat = 33
 	/*The [url=https://en.wikipedia.org/wiki/S3_Texture_Compression]S3TC[/url] texture format also known as Block Compression 3 or BC3, which compresses RA data and interprets it as two channels (red and green). See also [constant FORMAT_DXT5].*/
 	ImageFormatDxt5RaAsRg ImageFormat = 34
-	/*[url=https://en.wikipedia.org/wiki/Adaptive_scalable_texture_compression]Adaptive Scalable Texture Compression[/url]. This implements the 4x4 (high quality) mode.*/
+	/*[url=https://en.wikipedia.org/wiki/Adaptive_scalable_texture_compression]Adaptive Scalable Texture Compression[/url]. This implements the 4×4 (high quality) mode.*/
 	ImageFormatAstc4x4 ImageFormat = 35
 	/*Same format as [constant FORMAT_ASTC_4x4], but with the hint to let the GPU know it is used for HDR.*/
 	ImageFormatAstc4x4Hdr ImageFormat = 36
-	/*[url=https://en.wikipedia.org/wiki/Adaptive_scalable_texture_compression]Adaptive Scalable Texture Compression[/url]. This implements the 8x8 (low quality) mode.*/
+	/*[url=https://en.wikipedia.org/wiki/Adaptive_scalable_texture_compression]Adaptive Scalable Texture Compression[/url]. This implements the 8×8 (low quality) mode.*/
 	ImageFormatAstc8x8 ImageFormat = 37
 	/*Same format as [constant FORMAT_ASTC_8x8], but with the hint to let the GPU know it is used for HDR.*/
 	ImageFormatAstc8x8Hdr ImageFormat = 38
@@ -4489,9 +4666,9 @@ const (
 type ImageASTCFormat = classdb.ImageASTCFormat
 
 const (
-	/*Hint to indicate that the high quality 4x4 ASTC compression format should be used.*/
+	/*Hint to indicate that the high quality 4×4 ASTC compression format should be used.*/
 	ImageAstcFormat4x4 ImageASTCFormat = 0
-	/*Hint to indicate that the low quality 8x8 ASTC compression format should be used.*/
+	/*Hint to indicate that the low quality 8×8 ASTC compression format should be used.*/
 	ImageAstcFormat8x8 ImageASTCFormat = 1
 )
 
@@ -4530,9 +4707,9 @@ const (
 	InputCursorPointingHand InputCursorShape = 2
 	/*Cross cursor. Typically appears over regions in which a drawing operation can be performed or for selections.*/
 	InputCursorCross InputCursorShape = 3
-	/*Wait cursor. Indicates that the application is busy performing an operation. This cursor shape denotes that the application isn't usable during the operation (e.g. something is blocking its main thread).*/
+	/*Wait cursor. Indicates that the application is busy performing an operation, and that it cannot be used during the operation (e.g. something is blocking its main thread).*/
 	InputCursorWait InputCursorShape = 4
-	/*Busy cursor. Indicates that the application is busy performing an operation. This cursor shape denotes that the application is still usable during the operation.*/
+	/*Busy cursor. Indicates that the application is busy performing an operation, and that it is still usable during the operation.*/
 	InputCursorBusy InputCursorShape = 5
 	/*Drag cursor. Usually displayed when dragging something.
 	  [b]Note:[/b] Windows lacks a dragging cursor, so [constant CURSOR_DRAG] is the same as [constant CURSOR_MOVE] for this platform.*/
@@ -4580,12 +4757,16 @@ const (
 type JSONRPCErrorCode = classdb.JSONRPCErrorCode
 
 const (
-	JSONRPCParseError     JSONRPCErrorCode = -32700
+	/*The request could not be parsed as it was not valid by JSON standard ([method JSON.parse] failed).*/
+	JSONRPCParseError JSONRPCErrorCode = -32700
+	/*A method call was requested but the request's format is not valid.*/
 	JSONRPCInvalidRequest JSONRPCErrorCode = -32600
 	/*A method call was requested but no function of that name existed in the JSONRPC subclass.*/
 	JSONRPCMethodNotFound JSONRPCErrorCode = -32601
-	JSONRPCInvalidParams  JSONRPCErrorCode = -32602
-	JSONRPCInternalError  JSONRPCErrorCode = -32603
+	/*A method call was requested but the given method parameters are not valid. Not used by the built-in JSONRPC.*/
+	JSONRPCInvalidParams JSONRPCErrorCode = -32602
+	/*An internal error occurred while processing the request. Not used by the built-in JSONRPC.*/
+	JSONRPCInternalError JSONRPCErrorCode = -32603
 )
 
 type Label3DDrawFlags = classdb.Label3DDrawFlags
@@ -4694,7 +4875,7 @@ type Light3DBakeMode = classdb.Light3DBakeMode
 
 const (
 	/*Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
-	  [b]Note:[/b] Hiding a light does [i]not[/i] affect baking [LightmapGI]. Hiding a light will still affect baking [VoxelGI] and SDFGI (see [member Environment.sdfgi_enabled).*/
+	  [b]Note:[/b] Hiding a light does [i]not[/i] affect baking [LightmapGI]. Hiding a light will still affect baking [VoxelGI] and SDFGI (see [member Environment.sdfgi_enabled]).*/
 	Light3DBakeDisabled Light3DBakeMode = 0
 	/*Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([member Environment.sdfgi_enabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
 	  [b]Note:[/b] The light is not baked in [LightmapGI] if [member editor_only] is [code]true[/code].*/
@@ -4754,6 +4935,10 @@ const (
 	LightmapGIBakeErrorUserAborted LightmapGIBakeError = 8
 	/*Lightmap baking failed as the maximum texture size is too small to fit some of the meshes marked for baking.*/
 	LightmapGIBakeErrorTextureSizeTooSmall LightmapGIBakeError = 9
+	/*Lightmap baking failed as the lightmap is too small.*/
+	LightmapGIBakeErrorLightmapTooSmall LightmapGIBakeError = 10
+	/*Lightmap baking failed as the lightmap was unable to fit into an atlas.*/
+	LightmapGIBakeErrorAtlasTooSmall LightmapGIBakeError = 11
 )
 
 type LightmapGIEnvironmentMode = classdb.LightmapGIEnvironmentMode
@@ -4924,7 +5109,8 @@ type MeshArrayType = classdb.MeshArrayType
 const (
 	/*[PackedVector3Array], [PackedVector2Array], or [Array] of vertex positions.*/
 	MeshArrayVertex MeshArrayType = 0
-	/*[PackedVector3Array] of vertex normals.*/
+	/*[PackedVector3Array] of vertex normals.
+	  [b]Note:[/b] The array has to consist of normal vectors, otherwise they will be normalized by the engine, potentially causing visual discrepancies.*/
 	MeshArrayNormal MeshArrayType = 1
 	/*[PackedFloat32Array] of vertex tangents. Each element in groups of 4 floats, first 3 floats determine the tangent, and the last the binormal direction as -1 or 1.*/
 	MeshArrayTangent MeshArrayType = 2
@@ -5104,6 +5290,38 @@ const (
 	MultiplayerSynchronizerVisibilityProcessPhysics MultiplayerSynchronizerVisibilityUpdateMode = 1
 	/*Visibility filters are not updated automatically, and must be updated manually by calling [method update_visibility].*/
 	MultiplayerSynchronizerVisibilityProcessNone MultiplayerSynchronizerVisibilityUpdateMode = 2
+)
+
+type NativeMenuFeature = classdb.NativeMenuFeature
+
+const (
+	/*[NativeMenu] supports native global main menu.*/
+	NativeMenuFeatureGlobalMenu NativeMenuFeature = 0
+	/*[NativeMenu] supports native popup menus.*/
+	NativeMenuFeaturePopupMenu NativeMenuFeature = 1
+	/*[NativeMenu] supports menu open and close callbacks.*/
+	NativeMenuFeatureOpenCloseCallback NativeMenuFeature = 2
+	/*[NativeMenu] supports menu item hover callback.*/
+	NativeMenuFeatureHoverCallback NativeMenuFeature = 3
+	/*[NativeMenu] supports menu item accelerator/key callback.*/
+	NativeMenuFeatureKeyCallback NativeMenuFeature = 4
+)
+
+type NativeMenuSystemMenus = classdb.NativeMenuSystemMenus
+
+const (
+	/*Invalid special system menu ID.*/
+	NativeMenuInvalidMenuId NativeMenuSystemMenus = 0
+	/*Global main menu ID.*/
+	NativeMenuMainMenuId NativeMenuSystemMenus = 1
+	/*Application (first menu after "Apple" menu on macOS) menu ID.*/
+	NativeMenuApplicationMenuId NativeMenuSystemMenus = 2
+	/*"Window" menu ID (on macOS this menu includes standard window control items and a list of open windows).*/
+	NativeMenuWindowMenuId NativeMenuSystemMenus = 3
+	/*"Help" menu ID (on macOS this menu includes help search bar).*/
+	NativeMenuHelpMenuId NativeMenuSystemMenus = 4
+	/*Dock icon right-click menu ID (on macOS this menu include standard application control items and a list of open windows).*/
+	NativeMenuDockMenuId NativeMenuSystemMenus = 5
 )
 
 type NavigationMeshSamplePartitionType = classdb.NavigationMeshSamplePartitionType
@@ -5289,9 +5507,9 @@ const (
 type NodeProcessMode = classdb.NodeProcessMode
 
 const (
-	/*Inherits [member process_mode] from the node's parent. For the root node, it is equivalent to [constant PROCESS_MODE_PAUSABLE]. This is the default for any newly created node.*/
+	/*Inherits [member process_mode] from the node's parent. This is the default for any newly created node.*/
 	NodeProcessModeInherit NodeProcessMode = 0
-	/*Stops processing when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_WHEN_PAUSED].*/
+	/*Stops processing when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_WHEN_PAUSED], and the default for the root node.*/
 	NodeProcessModePausable NodeProcessMode = 1
 	/*Process [b]only[/b] when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_PAUSABLE].*/
 	NodeProcessModeWhenPaused NodeProcessMode = 2
@@ -5315,9 +5533,23 @@ const (
 type NodeProcessThreadMessages = classdb.NodeProcessThreadMessages
 
 const (
-	NodeFlagProcessThreadMessages        NodeProcessThreadMessages = 1
+	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before [method _process] is called.*/
+	NodeFlagProcessThreadMessages NodeProcessThreadMessages = 1
+	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before [method _physics_process] is called.*/
 	NodeFlagProcessThreadMessagesPhysics NodeProcessThreadMessages = 2
-	NodeFlagProcessThreadMessagesAll     NodeProcessThreadMessages = 3
+	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before either [method _process] or [method _physics_process] are called.*/
+	NodeFlagProcessThreadMessagesAll NodeProcessThreadMessages = 3
+)
+
+type NodePhysicsInterpolationMode = classdb.NodePhysicsInterpolationMode
+
+const (
+	/*Inherits [member physics_interpolation_mode] from the node's parent. This is the default for any newly created node.*/
+	NodePhysicsInterpolationModeInherit NodePhysicsInterpolationMode = 0
+	/*Enables physics interpolation for this node and for children set to [constant PHYSICS_INTERPOLATION_MODE_INHERIT]. This is the default for the root node.*/
+	NodePhysicsInterpolationModeOn NodePhysicsInterpolationMode = 1
+	/*Disables physics interpolation for this node and for children set to [constant PHYSICS_INTERPOLATION_MODE_INHERIT].*/
+	NodePhysicsInterpolationModeOff NodePhysicsInterpolationMode = 2
 )
 
 type NodeDuplicateFlags = classdb.NodeDuplicateFlags
@@ -5327,7 +5559,7 @@ const (
 	NodeDuplicateSignals NodeDuplicateFlags = 1
 	/*Duplicate the node's groups.*/
 	NodeDuplicateGroups NodeDuplicateFlags = 2
-	/*Duplicate the node's script (including the ancestor's script, if combined with [constant DUPLICATE_USE_INSTANTIATION]).*/
+	/*Duplicate the node's script (also overriding the duplicated children's scripts, if combined with [constant DUPLICATE_USE_INSTANTIATION]).*/
 	NodeDuplicateScripts NodeDuplicateFlags = 4
 	/*Duplicate using [method PackedScene.instantiate]. If the node comes from a scene saved on disk, re-uses [method PackedScene.instantiate] as the base for the duplicated node and its children.*/
 	NodeDuplicateUseInstantiation NodeDuplicateFlags = 8
@@ -5342,6 +5574,18 @@ const (
 	NodeInternalModeFront NodeInternalMode = 1
 	/*The node will be placed at the end of the parent's children, after any non-internal sibling.*/
 	NodeInternalModeBack NodeInternalMode = 2
+)
+
+type NodeAutoTranslateMode = classdb.NodeAutoTranslateMode
+
+const (
+	/*Inherits [member auto_translate_mode] from the node's parent. This is the default for any newly created node.*/
+	NodeAutoTranslateModeInherit NodeAutoTranslateMode = 0
+	/*Always automatically translate. This is the inverse of [constant AUTO_TRANSLATE_MODE_DISABLED], and the default for the root node.*/
+	NodeAutoTranslateModeAlways NodeAutoTranslateMode = 1
+	/*Never automatically translate. This is the inverse of [constant AUTO_TRANSLATE_MODE_ALWAYS].
+	  String parsing for POT generation will be skipped for this node and children that are set to [constant AUTO_TRANSLATE_MODE_INHERIT].*/
+	NodeAutoTranslateModeDisabled NodeAutoTranslateMode = 2
 )
 
 type Node3DRotationEditMode = classdb.Node3DRotationEditMode
@@ -5362,26 +5606,28 @@ const (
 	OSRenderingDriverVulkan OSRenderingDriver = 0
 	/*The OpenGL 3 rendering driver. It uses OpenGL 3.3 Core Profile on desktop platforms, OpenGL ES 3.0 on mobile devices, and WebGL 2.0 on Web.*/
 	OSRenderingDriverOpengl3 OSRenderingDriver = 1
+	/*The Direct3D 12 rendering driver.*/
+	OSRenderingDriverD3d12 OSRenderingDriver = 2
 )
 
 type OSSystemDir = classdb.OSSystemDir
 
 const (
-	/*Desktop directory path.*/
+	/*Refers to the Desktop directory path.*/
 	OSSystemDirDesktop OSSystemDir = 0
-	/*DCIM (Digital Camera Images) directory path.*/
+	/*Refers to the DCIM (Digital Camera Images) directory path.*/
 	OSSystemDirDcim OSSystemDir = 1
-	/*Documents directory path.*/
+	/*Refers to the Documents directory path.*/
 	OSSystemDirDocuments OSSystemDir = 2
-	/*Downloads directory path.*/
+	/*Refers to the Downloads directory path.*/
 	OSSystemDirDownloads OSSystemDir = 3
-	/*Movies directory path.*/
+	/*Refers to the Movies (or Videos) directory path.*/
 	OSSystemDirMovies OSSystemDir = 4
-	/*Music directory path.*/
+	/*Refers to the Music directory path.*/
 	OSSystemDirMusic OSSystemDir = 5
-	/*Pictures directory path.*/
+	/*Refers to the Pictures directory path.*/
 	OSSystemDirPictures OSSystemDir = 6
-	/*Ringtones directory path.*/
+	/*Refers to the Ringtones directory path.*/
 	OSSystemDirRingtones OSSystemDir = 7
 )
 
@@ -5418,6 +5664,17 @@ const (
 	OmniLight3DShadowCube OmniLight3DShadowMode = 1
 )
 
+type OpenXRAPIExtensionOpenXRAlphaBlendModeSupport = classdb.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport
+
+const (
+	/*Means that [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] isn't supported at all.*/
+	OpenXRAPIExtensionOpenxrAlphaBlendModeSupportNone OpenXRAPIExtensionOpenXRAlphaBlendModeSupport = 0
+	/*Means that [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is really supported.*/
+	OpenXRAPIExtensionOpenxrAlphaBlendModeSupportReal OpenXRAPIExtensionOpenXRAlphaBlendModeSupport = 1
+	/*Means that [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is emulated.*/
+	OpenXRAPIExtensionOpenxrAlphaBlendModeSupportEmulating OpenXRAPIExtensionOpenXRAlphaBlendModeSupport = 2
+)
+
 type OpenXRActionActionType = classdb.OpenXRActionActionType
 
 const (
@@ -5452,6 +5709,28 @@ const (
 	OpenXRHandMotionRangeMax OpenXRHandMotionRange = 2
 )
 
+type OpenXRHandSkeletonRig = classdb.OpenXRHandSkeletonRig
+
+const (
+	/*An OpenXR compliant skeleton.*/
+	OpenXRHandSkeletonRigOpenxr OpenXRHandSkeletonRig = 0
+	/*A [SkeletonProfileHumanoid] compliant skeleton.*/
+	OpenXRHandSkeletonRigHumanoid OpenXRHandSkeletonRig = 1
+	/*Maximum supported hands.*/
+	OpenXRHandSkeletonRigMax OpenXRHandSkeletonRig = 2
+)
+
+type OpenXRHandBoneUpdate = classdb.OpenXRHandBoneUpdate
+
+const (
+	/*The skeletons bones are fully updated (both position and rotation) to match the tracked bones.*/
+	OpenXRHandBoneUpdateFull OpenXRHandBoneUpdate = 0
+	/*The skeletons bones are only rotated to align with the tracked bones, preserving bone length.*/
+	OpenXRHandBoneUpdateRotationOnly OpenXRHandBoneUpdate = 1
+	/*Maximum supported bone update mode.*/
+	OpenXRHandBoneUpdateMax OpenXRHandBoneUpdate = 2
+)
+
 type OpenXRInterfaceHand = classdb.OpenXRInterfaceHand
 
 const (
@@ -5466,9 +5745,25 @@ const (
 type OpenXRInterfaceHandMotionRange = classdb.OpenXRInterfaceHandMotionRange
 
 const (
-	OpenXRInterfaceHandMotionRangeUnobstructed        OpenXRInterfaceHandMotionRange = 0
+	/*Full hand range, if user closes their hands, we make a full fist.*/
+	OpenXRInterfaceHandMotionRangeUnobstructed OpenXRInterfaceHandMotionRange = 0
+	/*Conform to controller, if user closes their hands, the tracked data conforms to the shape of the controller.*/
 	OpenXRInterfaceHandMotionRangeConformToController OpenXRInterfaceHandMotionRange = 1
-	OpenXRInterfaceHandMotionRangeMax                 OpenXRInterfaceHandMotionRange = 2
+	/*Maximum value for the motion range enum.*/
+	OpenXRInterfaceHandMotionRangeMax OpenXRInterfaceHandMotionRange = 2
+)
+
+type OpenXRInterfaceHandTrackedSource = classdb.OpenXRInterfaceHandTrackedSource
+
+const (
+	/*The source of hand tracking data is unknown (the extension is likely unsupported).*/
+	OpenXRInterfaceHandTrackedSourceUnknown OpenXRInterfaceHandTrackedSource = 0
+	/*The source of hand tracking is unobstructed, this means that an accurate method of hand tracking is used, e.g. optical hand tracking, data gloves, etc.*/
+	OpenXRInterfaceHandTrackedSourceUnobstructed OpenXRInterfaceHandTrackedSource = 1
+	/*The source of hand tracking is a controller, bone positions are inferred from controller inputs.*/
+	OpenXRInterfaceHandTrackedSourceController OpenXRInterfaceHandTrackedSource = 2
+	/*Maximum value for the hand tracked source enum.*/
+	OpenXRInterfaceHandTrackedSourceMax OpenXRInterfaceHandTrackedSource = 3
 )
 
 type OpenXRInterfaceHandJoints = classdb.OpenXRInterfaceHandJoints
@@ -6180,7 +6475,10 @@ const (
 	/*The velocity that the joint's linear motor will attempt to reach.*/
 	PhysicsServer3DG6dofJointLinearMotorTargetVelocity PhysicsServer3DG6DOFJointAxisParam = 5
 	/*The maximum force that the linear motor can apply while trying to reach the target velocity.*/
-	PhysicsServer3DG6dofJointLinearMotorForceLimit PhysicsServer3DG6DOFJointAxisParam = 6
+	PhysicsServer3DG6dofJointLinearMotorForceLimit        PhysicsServer3DG6DOFJointAxisParam = 6
+	PhysicsServer3DG6dofJointLinearSpringStiffness        PhysicsServer3DG6DOFJointAxisParam = 7
+	PhysicsServer3DG6dofJointLinearSpringDamping          PhysicsServer3DG6DOFJointAxisParam = 8
+	PhysicsServer3DG6dofJointLinearSpringEquilibriumPoint PhysicsServer3DG6DOFJointAxisParam = 9
 	/*The minimum rotation in negative direction to break loose and rotate around the axes.*/
 	PhysicsServer3DG6dofJointAngularLowerLimit PhysicsServer3DG6DOFJointAxisParam = 10
 	/*The minimum rotation in positive direction to break loose and rotate around the axes.*/
@@ -6198,7 +6496,12 @@ const (
 	/*Target speed for the motor at the axes.*/
 	PhysicsServer3DG6dofJointAngularMotorTargetVelocity PhysicsServer3DG6DOFJointAxisParam = 17
 	/*Maximum acceleration for the motor at the axes.*/
-	PhysicsServer3DG6dofJointAngularMotorForceLimit PhysicsServer3DG6DOFJointAxisParam = 18
+	PhysicsServer3DG6dofJointAngularMotorForceLimit        PhysicsServer3DG6DOFJointAxisParam = 18
+	PhysicsServer3DG6dofJointAngularSpringStiffness        PhysicsServer3DG6DOFJointAxisParam = 19
+	PhysicsServer3DG6dofJointAngularSpringDamping          PhysicsServer3DG6DOFJointAxisParam = 20
+	PhysicsServer3DG6dofJointAngularSpringEquilibriumPoint PhysicsServer3DG6DOFJointAxisParam = 21
+	/*Represents the size of the [enum G6DOFJointAxisParam] enum.*/
+	PhysicsServer3DG6dofJointMax PhysicsServer3DG6DOFJointAxisParam = 22
 )
 
 type PhysicsServer3DG6DOFJointAxisFlag = classdb.PhysicsServer3DG6DOFJointAxisFlag
@@ -6207,11 +6510,15 @@ const (
 	/*If set, linear motion is possible within the given limits.*/
 	PhysicsServer3DG6dofJointFlagEnableLinearLimit PhysicsServer3DG6DOFJointAxisFlag = 0
 	/*If set, rotational motion is possible.*/
-	PhysicsServer3DG6dofJointFlagEnableAngularLimit PhysicsServer3DG6DOFJointAxisFlag = 1
+	PhysicsServer3DG6dofJointFlagEnableAngularLimit  PhysicsServer3DG6DOFJointAxisFlag = 1
+	PhysicsServer3DG6dofJointFlagEnableAngularSpring PhysicsServer3DG6DOFJointAxisFlag = 2
+	PhysicsServer3DG6dofJointFlagEnableLinearSpring  PhysicsServer3DG6DOFJointAxisFlag = 3
 	/*If set, there is a rotational motor across these axes.*/
 	PhysicsServer3DG6dofJointFlagEnableMotor PhysicsServer3DG6DOFJointAxisFlag = 4
 	/*If set, there is a linear motor on this axis that targets a specific velocity.*/
 	PhysicsServer3DG6dofJointFlagEnableLinearMotor PhysicsServer3DG6DOFJointAxisFlag = 5
+	/*Represents the size of the [enum G6DOFJointAxisFlag] enum.*/
+	PhysicsServer3DG6dofJointFlagMax PhysicsServer3DG6DOFJointAxisFlag = 6
 )
 
 type PhysicsServer3DShapeType = classdb.PhysicsServer3DShapeType
@@ -6265,7 +6572,7 @@ const (
 	PhysicsServer3DAreaParamAngularDamp PhysicsServer3DAreaParameter = 8
 	/*Constant to set/get the priority (order of processing) of an area.*/
 	PhysicsServer3DAreaParamPriority PhysicsServer3DAreaParameter = 9
-	/*Constant to set/get the magnitude of area-specific wind force.*/
+	/*Constant to set/get the magnitude of area-specific wind force. This wind force only applies to [SoftBody3D] nodes. Other physics bodies are currently not affected by wind.*/
 	PhysicsServer3DAreaParamWindForceMagnitude PhysicsServer3DAreaParameter = 10
 	/*Constant to set/get the 3D vector that specifies the origin from which an area-specific wind blows.*/
 	PhysicsServer3DAreaParamWindSource PhysicsServer3DAreaParameter = 11
@@ -6492,32 +6799,53 @@ const (
 type RenderingDeviceDriverResource = classdb.RenderingDeviceDriverResource
 
 const (
-	/*Vulkan device driver resource. This is a "global" resource and ignores the RID passed in*/
-	RenderingDeviceDriverResourceVulkanDevice RenderingDeviceDriverResource = 0
-	/*Physical device (graphics card) driver resource.*/
-	RenderingDeviceDriverResourceVulkanPhysicalDevice RenderingDeviceDriverResource = 1
-	/*Vulkan instance driver resource.*/
-	RenderingDeviceDriverResourceVulkanInstance RenderingDeviceDriverResource = 2
-	/*Vulkan queue driver resource.*/
-	RenderingDeviceDriverResourceVulkanQueue RenderingDeviceDriverResource = 3
-	/*Vulkan queue family index driver resource.*/
-	RenderingDeviceDriverResourceVulkanQueueFamilyIndex RenderingDeviceDriverResource = 4
-	/*Vulkan image driver resource.*/
-	RenderingDeviceDriverResourceVulkanImage RenderingDeviceDriverResource = 5
-	/*Vulkan image view driver resource.*/
-	RenderingDeviceDriverResourceVulkanImageView RenderingDeviceDriverResource = 6
-	/*Vulkan image native texture format driver resource.*/
+	/*Specific device object based on a physical device.
+	  - Vulkan: Vulkan device driver resource ([code]VkDevice[/code]). ([code]rid[/code] argument doesn't apply.)*/
+	RenderingDeviceDriverResourceLogicalDevice RenderingDeviceDriverResource = 0
+	/*Physical device the specific logical device is based on.
+	  - Vulkan: [code]VkDevice[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	RenderingDeviceDriverResourcePhysicalDevice RenderingDeviceDriverResource = 1
+	/*Top-most graphics API entry object.
+	  - Vulkan: [code]VkInstance[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	RenderingDeviceDriverResourceTopmostObject RenderingDeviceDriverResource = 2
+	/*The main graphics-compute command queue.
+	  - Vulkan: [code]VkQueue[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	RenderingDeviceDriverResourceCommandQueue RenderingDeviceDriverResource = 3
+	/*The specific family the main queue belongs to.
+	  - Vulkan: the queue family index, an [code]uint32_t[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	RenderingDeviceDriverResourceQueueFamily RenderingDeviceDriverResource = 4
+	/*- Vulkan: [code]VkImage[/code].*/
+	RenderingDeviceDriverResourceTexture RenderingDeviceDriverResource = 5
+	/*The view of an owned or shared texture.
+	  - Vulkan: [code]VkImageView[/code].*/
+	RenderingDeviceDriverResourceTextureView RenderingDeviceDriverResource = 6
+	/*The native id of the data format of the texture.
+	  - Vulkan: [code]VkFormat[/code].*/
+	RenderingDeviceDriverResourceTextureDataFormat RenderingDeviceDriverResource = 7
+	/*- Vulkan: [code]VkSampler[/code].*/
+	RenderingDeviceDriverResourceSampler RenderingDeviceDriverResource = 8
+	/*- Vulkan: [code]VkDescriptorSet[/code].*/
+	RenderingDeviceDriverResourceUniformSet RenderingDeviceDriverResource = 9
+	/*Buffer of any kind of (storage, vertex, etc.).
+	  - Vulkan: [code]VkBuffer[/code].*/
+	RenderingDeviceDriverResourceBuffer RenderingDeviceDriverResource = 10
+	/*- Vulkan: [code]VkPipeline[/code].*/
+	RenderingDeviceDriverResourceComputePipeline RenderingDeviceDriverResource = 11
+	/*- Vulkan: [code]VkPipeline[/code].*/
+	RenderingDeviceDriverResourceRenderPipeline                 RenderingDeviceDriverResource = 12
+	RenderingDeviceDriverResourceVulkanDevice                   RenderingDeviceDriverResource = 0
+	RenderingDeviceDriverResourceVulkanPhysicalDevice           RenderingDeviceDriverResource = 1
+	RenderingDeviceDriverResourceVulkanInstance                 RenderingDeviceDriverResource = 2
+	RenderingDeviceDriverResourceVulkanQueue                    RenderingDeviceDriverResource = 3
+	RenderingDeviceDriverResourceVulkanQueueFamilyIndex         RenderingDeviceDriverResource = 4
+	RenderingDeviceDriverResourceVulkanImage                    RenderingDeviceDriverResource = 5
+	RenderingDeviceDriverResourceVulkanImageView                RenderingDeviceDriverResource = 6
 	RenderingDeviceDriverResourceVulkanImageNativeTextureFormat RenderingDeviceDriverResource = 7
-	/*Vulkan sampler driver resource.*/
-	RenderingDeviceDriverResourceVulkanSampler RenderingDeviceDriverResource = 8
-	/*Vulkan [url=https://vkguide.dev/docs/chapter-4/descriptors/]descriptor set[/url] driver resource.*/
-	RenderingDeviceDriverResourceVulkanDescriptorSet RenderingDeviceDriverResource = 9
-	/*Vulkan buffer driver resource.*/
-	RenderingDeviceDriverResourceVulkanBuffer RenderingDeviceDriverResource = 10
-	/*Vulkan compute pipeline driver resource.*/
-	RenderingDeviceDriverResourceVulkanComputePipeline RenderingDeviceDriverResource = 11
-	/*Vulkan render pipeline driver resource.*/
-	RenderingDeviceDriverResourceVulkanRenderPipeline RenderingDeviceDriverResource = 12
+	RenderingDeviceDriverResourceVulkanSampler                  RenderingDeviceDriverResource = 8
+	RenderingDeviceDriverResourceVulkanDescriptorSet            RenderingDeviceDriverResource = 9
+	RenderingDeviceDriverResourceVulkanBuffer                   RenderingDeviceDriverResource = 10
+	RenderingDeviceDriverResourceVulkanComputePipeline          RenderingDeviceDriverResource = 11
+	RenderingDeviceDriverResourceVulkanRenderPipeline           RenderingDeviceDriverResource = 12
 )
 
 type RenderingDeviceDataFormat = classdb.RenderingDeviceDataFormat
@@ -6808,9 +7136,9 @@ const (
 	RenderingDeviceDataFormatBc5UnormBlock RenderingDeviceDataFormat = 140
 	/*VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).*/
 	RenderingDeviceDataFormatBc5SnormBlock RenderingDeviceDataFormat = 141
-	/*VRAM-compressed unsigned red/green/blue channel data format with the floating-point value stored as-is. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC6H texture compression (also known as BPTC HDR).*/
+	/*VRAM-compressed unsigned red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 10 and 13 bits for the red/green/blue channels. Using BC6H texture compression (also known as BPTC HDR).*/
 	RenderingDeviceDataFormatBc6hUfloatBlock RenderingDeviceDataFormat = 142
-	/*VRAM-compressed signed red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Using BC7 texture compression (also known as BPTC HDR).*/
+	/*VRAM-compressed signed red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 10 and 13 bits for the red/green/blue channels. Using BC6H texture compression (also known as BPTC HDR).*/
 	RenderingDeviceDataFormatBc6hSfloatBlock RenderingDeviceDataFormat = 143
 	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.*/
 	RenderingDeviceDataFormatBc7UnormBlock RenderingDeviceDataFormat = 144
@@ -6830,11 +7158,11 @@ const (
 	RenderingDeviceDataFormatEtc2R8g8b8a8SrgbBlock RenderingDeviceDataFormat = 151
 	/*11-bit VRAM-compressed unsigned red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
 	RenderingDeviceDataFormatEacR11UnormBlock RenderingDeviceDataFormat = 152
-	/*11-bit VRAM-compressed signed red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	/*11-bit VRAM-compressed signed red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. Using ETC2 texture compression.*/
 	RenderingDeviceDataFormatEacR11SnormBlock RenderingDeviceDataFormat = 153
 	/*11-bit VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
 	RenderingDeviceDataFormatEacR11g11UnormBlock RenderingDeviceDataFormat = 154
-	/*11-bit VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	/*11-bit VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. Using ETC2 texture compression.*/
 	RenderingDeviceDataFormatEacR11g11SnormBlock RenderingDeviceDataFormat = 155
 	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 4×4 blocks (highest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
 	RenderingDeviceDataFormatAstc4x4UnormBlock RenderingDeviceDataFormat = 156
@@ -7382,7 +7710,9 @@ const (
 type RenderingDevicePipelineDynamicStateFlags = classdb.RenderingDevicePipelineDynamicStateFlags
 
 const (
-	RenderingDeviceDynamicStateLineWidth          RenderingDevicePipelineDynamicStateFlags = 1
+	/*Allows dynamically changing the width of rendering lines.*/
+	RenderingDeviceDynamicStateLineWidth RenderingDevicePipelineDynamicStateFlags = 1
+	/*Allows dynamically changing the depth bias.*/
 	RenderingDeviceDynamicStateDepthBias          RenderingDevicePipelineDynamicStateFlags = 2
 	RenderingDeviceDynamicStateBlendConstants     RenderingDevicePipelineDynamicStateFlags = 4
 	RenderingDeviceDynamicStateDepthBounds        RenderingDevicePipelineDynamicStateFlags = 8
@@ -7394,33 +7724,32 @@ const (
 type RenderingDeviceInitialAction = classdb.RenderingDeviceInitialAction
 
 const (
-	/*Start rendering and clear the whole framebuffer.*/
-	RenderingDeviceInitialActionClear RenderingDeviceInitialAction = 0
-	/*Start rendering and clear the framebuffer in the specified region.*/
-	RenderingDeviceInitialActionClearRegion RenderingDeviceInitialAction = 1
-	/*Continue rendering and clear the framebuffer in the specified region. Framebuffer must have been left in [constant FINAL_ACTION_CONTINUE] state as the final action previously.*/
-	RenderingDeviceInitialActionClearRegionContinue RenderingDeviceInitialAction = 2
-	/*Start rendering, but keep attached color texture contents. If the framebuffer was previously used to read in a shader, this will automatically insert a layout transition.*/
-	RenderingDeviceInitialActionKeep RenderingDeviceInitialAction = 3
-	/*Start rendering, ignore what is there; write above it. In general, this is the fastest option when you will be writing every single pixel and you don't need a clear color.*/
-	RenderingDeviceInitialActionDrop RenderingDeviceInitialAction = 4
-	/*Continue rendering. Framebuffer must have been left in [constant FINAL_ACTION_CONTINUE] state as the final action previously.*/
-	RenderingDeviceInitialActionContinue RenderingDeviceInitialAction = 5
+	/*Load the previous contents of the framebuffer.*/
+	RenderingDeviceInitialActionLoad RenderingDeviceInitialAction = 0
+	/*Clear the whole framebuffer or its specified region.*/
+	RenderingDeviceInitialActionClear RenderingDeviceInitialAction = 1
+	/*Ignore the previous contents of the framebuffer. This is the fastest option if you'll overwrite all of the pixels and don't need to read any of them.*/
+	RenderingDeviceInitialActionDiscard RenderingDeviceInitialAction = 2
 	/*Represents the size of the [enum InitialAction] enum.*/
-	RenderingDeviceInitialActionMax RenderingDeviceInitialAction = 6
+	RenderingDeviceInitialActionMax                 RenderingDeviceInitialAction = 3
+	RenderingDeviceInitialActionClearRegion         RenderingDeviceInitialAction = 1
+	RenderingDeviceInitialActionClearRegionContinue RenderingDeviceInitialAction = 1
+	RenderingDeviceInitialActionKeep                RenderingDeviceInitialAction = 0
+	RenderingDeviceInitialActionDrop                RenderingDeviceInitialAction = 2
+	RenderingDeviceInitialActionContinue            RenderingDeviceInitialAction = 0
 )
 
 type RenderingDeviceFinalAction = classdb.RenderingDeviceFinalAction
 
 const (
-	/*Store the texture for reading and make it read-only if it has the [constant TEXTURE_USAGE_SAMPLING_BIT] bit (only applies to color, depth and stencil attachments).*/
-	RenderingDeviceFinalActionRead RenderingDeviceFinalAction = 0
-	/*Discard the texture data and make it read-only if it has the [constant TEXTURE_USAGE_SAMPLING_BIT] bit (only applies to color, depth and stencil attachments).*/
+	/*Store the result of the draw list in the framebuffer. This is generally what you want to do.*/
+	RenderingDeviceFinalActionStore RenderingDeviceFinalAction = 0
+	/*Discard the contents of the framebuffer. This is the fastest option if you don't need to use the results of the draw list.*/
 	RenderingDeviceFinalActionDiscard RenderingDeviceFinalAction = 1
-	/*Store the texture and continue for further processing. Similar to [constant FINAL_ACTION_READ], but does not make the texture read-only if it has the [constant TEXTURE_USAGE_SAMPLING_BIT] bit.*/
-	RenderingDeviceFinalActionContinue RenderingDeviceFinalAction = 2
 	/*Represents the size of the [enum FinalAction] enum.*/
-	RenderingDeviceFinalActionMax RenderingDeviceFinalAction = 3
+	RenderingDeviceFinalActionMax      RenderingDeviceFinalAction = 2
+	RenderingDeviceFinalActionRead     RenderingDeviceFinalAction = 0
+	RenderingDeviceFinalActionContinue RenderingDeviceFinalAction = 0
 )
 
 type RenderingDeviceShaderStage = classdb.RenderingDeviceShaderStage
@@ -8166,8 +8495,10 @@ const (
 	RenderingServerViewportRenderInfoTypeVisible RenderingServerViewportRenderInfoType = 0
 	/*Shadow render pass. Objects will be rendered several times depending on the number of amounts of lights with shadows and the number of directional shadow splits.*/
 	RenderingServerViewportRenderInfoTypeShadow RenderingServerViewportRenderInfoType = 1
+	/*Canvas item rendering. This includes all 2D rendering.*/
+	RenderingServerViewportRenderInfoTypeCanvas RenderingServerViewportRenderInfoType = 2
 	/*Represents the size of the [enum ViewportRenderInfoType] enum.*/
-	RenderingServerViewportRenderInfoTypeMax RenderingServerViewportRenderInfoType = 2
+	RenderingServerViewportRenderInfoTypeMax RenderingServerViewportRenderInfoType = 3
 )
 
 type RenderingServerViewportDebugDraw = classdb.RenderingServerViewportDebugDraw
@@ -8239,10 +8570,23 @@ const (
 	RenderingServerViewportVrsDisabled RenderingServerViewportVRSMode = 0
 	/*Variable rate shading uses a texture. Note, for stereoscopic use a texture atlas with a texture for each view.*/
 	RenderingServerViewportVrsTexture RenderingServerViewportVRSMode = 1
-	/*Variable rate shading texture is supplied by the primary [XRInterface].*/
+	/*Variable rate shading texture is supplied by the primary [XRInterface]. Note that this may override the update mode.*/
 	RenderingServerViewportVrsXr RenderingServerViewportVRSMode = 2
 	/*Represents the size of the [enum ViewportVRSMode] enum.*/
 	RenderingServerViewportVrsMax RenderingServerViewportVRSMode = 3
+)
+
+type RenderingServerViewportVRSUpdateMode = classdb.RenderingServerViewportVRSUpdateMode
+
+const (
+	/*The input texture for variable rate shading will not be processed.*/
+	RenderingServerViewportVrsUpdateDisabled RenderingServerViewportVRSUpdateMode = 0
+	/*The input texture for variable rate shading will be processed once.*/
+	RenderingServerViewportVrsUpdateOnce RenderingServerViewportVRSUpdateMode = 1
+	/*The input texture for variable rate shading will be processed each frame.*/
+	RenderingServerViewportVrsUpdateAlways RenderingServerViewportVRSUpdateMode = 2
+	/*Represents the size of the [enum ViewportVRSUpdateMode] enum.*/
+	RenderingServerViewportVrsUpdateMax RenderingServerViewportVRSUpdateMode = 3
 )
 
 type RenderingServerSkyMode = classdb.RenderingServerSkyMode
@@ -8257,6 +8601,37 @@ const (
 	/*Uses the fast filtering algorithm to process the radiance map. In general this results in lower quality, but substantially faster run times. If you need better quality, but still need to update the sky every frame, consider turning on [member ProjectSettings.rendering/reflections/sky_reflections/fast_filter_high_quality].
 	  [b]Note:[/b] The fast filtering algorithm is limited to 256×256 cubemaps, so [method sky_set_radiance_size] must be set to [code]256[/code]. Otherwise, a warning is printed and the overridden radiance size is ignored.*/
 	RenderingServerSkyModeRealtime RenderingServerSkyMode = 3
+)
+
+type RenderingServerCompositorEffectFlags = classdb.RenderingServerCompositorEffectFlags
+
+const (
+	/*The rendering effect requires the color buffer to be resolved if MSAA is enabled.*/
+	RenderingServerCompositorEffectFlagAccessResolvedColor RenderingServerCompositorEffectFlags = 1
+	/*The rendering effect requires the depth buffer to be resolved if MSAA is enabled.*/
+	RenderingServerCompositorEffectFlagAccessResolvedDepth RenderingServerCompositorEffectFlags = 2
+	/*The rendering effect requires motion vectors to be produced.*/
+	RenderingServerCompositorEffectFlagNeedsMotionVectors RenderingServerCompositorEffectFlags = 4
+	/*The rendering effect requires normals and roughness g-buffer to be produced (Forward+ only).*/
+	RenderingServerCompositorEffectFlagNeedsRoughness RenderingServerCompositorEffectFlags = 8
+	/*The rendering effect requires specular data to be separated out (Forward+ only).*/
+	RenderingServerCompositorEffectFlagNeedsSeparateSpecular RenderingServerCompositorEffectFlags = 16
+)
+
+type RenderingServerCompositorEffectCallbackType = classdb.RenderingServerCompositorEffectCallbackType
+
+const (
+	/*The callback is called before our opaque rendering pass, but after depth prepass (if applicable).*/
+	RenderingServerCompositorEffectCallbackTypePreOpaque RenderingServerCompositorEffectCallbackType = 0
+	/*The callback is called after our opaque rendering pass, but before our sky is rendered.*/
+	RenderingServerCompositorEffectCallbackTypePostOpaque RenderingServerCompositorEffectCallbackType = 1
+	/*The callback is called after our sky is rendered, but before our back buffers are created (and if enabled, before subsurface scattering and/or screen space reflections).*/
+	RenderingServerCompositorEffectCallbackTypePostSky RenderingServerCompositorEffectCallbackType = 2
+	/*The callback is called before our transparent rendering pass, but after our sky is rendered and we've created our back buffers.*/
+	RenderingServerCompositorEffectCallbackTypePreTransparent RenderingServerCompositorEffectCallbackType = 3
+	/*The callback is called after our transparent rendering pass, but before any build in post effects and output to our render target.*/
+	RenderingServerCompositorEffectCallbackTypePostTransparent RenderingServerCompositorEffectCallbackType = 4
+	RenderingServerCompositorEffectCallbackTypeAny             RenderingServerCompositorEffectCallbackType = -1
 )
 
 type RenderingServerEnvironmentBG = classdb.RenderingServerEnvironmentBG
@@ -8315,6 +8690,15 @@ const (
 	RenderingServerEnvGlowBlendModeReplace RenderingServerEnvironmentGlowBlendMode = 3
 	/*Mixes the glow with the underlying color to avoid increasing brightness as much while still maintaining a glow effect.*/
 	RenderingServerEnvGlowBlendModeMix RenderingServerEnvironmentGlowBlendMode = 4
+)
+
+type RenderingServerEnvironmentFogMode = classdb.RenderingServerEnvironmentFogMode
+
+const (
+	/*Use a physically-based fog model defined primarily by fog density.*/
+	RenderingServerEnvFogModeExponential RenderingServerEnvironmentFogMode = 0
+	/*Use a simple fog model defined by start and end positions and a custom curve. While not physically accurate, this model can be useful when you need more artistic control.*/
+	RenderingServerEnvFogModeDepth RenderingServerEnvironmentFogMode = 1
 )
 
 type RenderingServerEnvironmentToneMapper = classdb.RenderingServerEnvironmentToneMapper
@@ -8767,18 +9151,23 @@ const (
 type RenderingServerFeatures = classdb.RenderingServerFeatures
 
 const (
-	/*Hardware supports shaders. This enum is currently unused in Godot 3.x.*/
-	RenderingServerFeatureShaders RenderingServerFeatures = 0
-	/*Hardware supports multithreading. This enum is currently unused in Godot 3.x.*/
+	RenderingServerFeatureShaders       RenderingServerFeatures = 0
 	RenderingServerFeatureMultithreaded RenderingServerFeatures = 1
 )
 
 type ResourceFormatLoaderCacheMode = classdb.ResourceFormatLoaderCacheMode
 
 const (
-	ResourceFormatLoaderCacheModeIgnore  ResourceFormatLoaderCacheMode = 0
-	ResourceFormatLoaderCacheModeReuse   ResourceFormatLoaderCacheMode = 1
+	/*Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [constant CACHE_MODE_REUSE].*/
+	ResourceFormatLoaderCacheModeIgnore ResourceFormatLoaderCacheMode = 0
+	/*The main resource (the one requested to be loaded), its subresources, and its dependencies (external resources) are retrieved from cache if present, instead of loaded. Those not cached are loaded and then stored into the cache. The same rules are propagated recursively down the tree of dependencies (external resources).*/
+	ResourceFormatLoaderCacheModeReuse ResourceFormatLoaderCacheMode = 1
+	/*Like [constant CACHE_MODE_REUSE], but the cache is checked for the main resource (the one requested to be loaded) as well as for each of its subresources. Those already in the cache, as long as the loaded and cached types match, have their data refreshed from storage into the already existing instances. Otherwise, they are recreated as completely new objects.*/
 	ResourceFormatLoaderCacheModeReplace ResourceFormatLoaderCacheMode = 2
+	/*Like [constant CACHE_MODE_IGNORE], but propagated recursively down the tree of dependencies (external resources).*/
+	ResourceFormatLoaderCacheModeIgnoreDeep ResourceFormatLoaderCacheMode = 3
+	/*Like [constant CACHE_MODE_REPLACE], but propagated recursively down the tree of dependencies (external resources).*/
+	ResourceFormatLoaderCacheModeReplaceDeep ResourceFormatLoaderCacheMode = 4
 )
 
 type ResourceImporterImportOrder = classdb.ResourceImporterImportOrder
@@ -8806,9 +9195,16 @@ const (
 type ResourceLoaderCacheMode = classdb.ResourceLoaderCacheMode
 
 const (
-	ResourceLoaderCacheModeIgnore  ResourceLoaderCacheMode = 0
-	ResourceLoaderCacheModeReuse   ResourceLoaderCacheMode = 1
+	/*Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [constant CACHE_MODE_REUSE].*/
+	ResourceLoaderCacheModeIgnore ResourceLoaderCacheMode = 0
+	/*The main resource (the one requested to be loaded), its subresources, and its dependencies (external resources) are retrieved from cache if present, instead of loaded. Those not cached are loaded and then stored into the cache. The same rules are propagated recursively down the tree of dependencies (external resources).*/
+	ResourceLoaderCacheModeReuse ResourceLoaderCacheMode = 1
+	/*Like [constant CACHE_MODE_REUSE], but the cache is checked for the main resource (the one requested to be loaded) as well as for each of its subresources. Those already in the cache, as long as the loaded and cached types match, have their data refreshed from storage into the already existing instances. Otherwise, they are recreated as completely new objects.*/
 	ResourceLoaderCacheModeReplace ResourceLoaderCacheMode = 2
+	/*Like [constant CACHE_MODE_IGNORE], but propagated recursively down the tree of dependencies (external resources).*/
+	ResourceLoaderCacheModeIgnoreDeep ResourceLoaderCacheMode = 3
+	/*Like [constant CACHE_MODE_REPLACE], but propagated recursively down the tree of dependencies (external resources).*/
+	ResourceLoaderCacheModeReplaceDeep ResourceLoaderCacheMode = 4
 )
 
 type ResourceSaverSaverFlags = classdb.ResourceSaverSaverFlags
@@ -8863,6 +9259,17 @@ const (
 	RichTextLabelMenuSelectAll RichTextLabelMenuItems = 1
 	/*Represents the size of the [enum MenuItems] enum.*/
 	RichTextLabelMenuMax RichTextLabelMenuItems = 2
+)
+
+type RichTextLabelMetaUnderline = classdb.RichTextLabelMetaUnderline
+
+const (
+	/*Meta tag does not display an underline, even if [member meta_underlined] is [code]true[/code].*/
+	RichTextLabelMetaUnderlineNever RichTextLabelMetaUnderline = 0
+	/*If [member meta_underlined] is [code]true[/code], meta tag always display an underline.*/
+	RichTextLabelMetaUnderlineAlways RichTextLabelMetaUnderline = 1
+	/*If [member meta_underlined] is [code]true[/code], meta tag display an underline when the mouse cursor is over it.*/
+	RichTextLabelMetaUnderlineOnHover RichTextLabelMetaUnderline = 2
 )
 
 type RichTextLabelImageUpdateMask = classdb.RichTextLabelImageUpdateMask
@@ -8981,15 +9388,24 @@ const (
 type SceneTreeGroupCallFlags = classdb.SceneTreeGroupCallFlags
 
 const (
-	/*Call a group with no flags (default).*/
+	/*Call nodes within a group with no special behavior (default).*/
 	SceneTreeGroupCallDefault SceneTreeGroupCallFlags = 0
-	/*Call a group in reverse scene order.*/
+	/*Call nodes within a group in reverse tree hierarchy order (all nested children are called before their respective parent nodes).*/
 	SceneTreeGroupCallReverse SceneTreeGroupCallFlags = 1
-	/*Call a group at the end of the current frame (process or physics).*/
+	/*Call nodes within a group at the end of the current frame (can be either process or physics frame), similar to [method Object.call_deferred].*/
 	SceneTreeGroupCallDeferred SceneTreeGroupCallFlags = 2
-	/*Call a group only once even if the call is executed many times.
-	  [b]Note:[/b] Arguments are not taken into account when deciding whether the call is unique or not. Therefore when the same method is called with different arguments, only the first call will be performed.*/
+	/*Call nodes within a group only once, even if the call is executed many times in the same frame. Must be combined with [constant GROUP_CALL_DEFERRED] to work.
+	  [b]Note:[/b] Different arguments are not taken into account. Therefore, when the same call is executed with different arguments, only the first call will be performed.*/
 	SceneTreeGroupCallUnique SceneTreeGroupCallFlags = 4
+)
+
+type ScriptLanguageScriptNameCasing = classdb.ScriptLanguageScriptNameCasing
+
+const (
+	ScriptLanguageScriptNameCasingAuto       ScriptLanguageScriptNameCasing = 0
+	ScriptLanguageScriptNameCasingPascalCase ScriptLanguageScriptNameCasing = 1
+	ScriptLanguageScriptNameCasingSnakeCase  ScriptLanguageScriptNameCasing = 2
+	ScriptLanguageScriptNameCasingKebabCase  ScriptLanguageScriptNameCasing = 3
 )
 
 type ScriptLanguageExtensionLookupResultType = classdb.ScriptLanguageExtensionLookupResultType
@@ -9012,7 +9428,7 @@ type ScriptLanguageExtensionCodeCompletionLocation = classdb.ScriptLanguageExten
 const (
 	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
 	ScriptLanguageExtensionLocationLocal ScriptLanguageExtensionCodeCompletionLocation = 0
-	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. 0 for the local class, 1 for the parent, 2 for the grandparent, etc) to store the depth of an option in the class or a parent class.*/
+	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. [code]0[/code] for the local class, [code]1[/code] for the parent, [code]2[/code] for the grandparent, etc.) to store the depth of an option in the class or a parent class.*/
 	ScriptLanguageExtensionLocationParentMask ScriptLanguageExtensionCodeCompletionLocation = 256
 	/*The option is from user code which is not local and not in a derived class (e.g. Autoload Singletons).*/
 	ScriptLanguageExtensionLocationOtherUserCode ScriptLanguageExtensionCodeCompletionLocation = 512
@@ -9064,6 +9480,15 @@ const (
 	ShaderModeFog ShaderMode = 4
 )
 
+type Skeleton3DModifierCallbackModeProcess = classdb.Skeleton3DModifierCallbackModeProcess
+
+const (
+	/*Set a flag to process modification during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
+	Skeleton3DModifierCallbackModeProcessPhysics Skeleton3DModifierCallbackModeProcess = 0
+	/*Set a flag to process modification during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	Skeleton3DModifierCallbackModeProcessIdle Skeleton3DModifierCallbackModeProcess = 1
+)
+
 type SkeletonProfileTailDirection = classdb.SkeletonProfileTailDirection
 
 const (
@@ -9113,49 +9538,49 @@ const (
 type SliderJoint3DParam = classdb.SliderJoint3DParam
 
 const (
-	/*The maximum difference between the pivot points on their X axis before damping happens.*/
+	/*Constant for accessing [member linear_limit/upper_distance]. The maximum difference between the pivot points on their X axis before damping happens.*/
 	SliderJoint3DParamLinearLimitUpper SliderJoint3DParam = 0
-	/*The minimum difference between the pivot points on their X axis before damping happens.*/
+	/*Constant for accessing [member linear_limit/lower_distance]. The minimum difference between the pivot points on their X axis before damping happens.*/
 	SliderJoint3DParamLinearLimitLower SliderJoint3DParam = 1
-	/*A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement.*/
+	/*Constant for accessing [member linear_limit/softness]. A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement.*/
 	SliderJoint3DParamLinearLimitSoftness SliderJoint3DParam = 2
-	/*The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost.*/
+	/*Constant for accessing [member linear_limit/restitution]. The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost.*/
 	SliderJoint3DParamLinearLimitRestitution SliderJoint3DParam = 3
-	/*The amount of damping once the slider limits are surpassed.*/
+	/*Constant for accessing [member linear_limit/damping]. The amount of damping once the slider limits are surpassed.*/
 	SliderJoint3DParamLinearLimitDamping SliderJoint3DParam = 4
-	/*A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement.*/
+	/*Constant for accessing [member linear_motion/softness]. A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement.*/
 	SliderJoint3DParamLinearMotionSoftness SliderJoint3DParam = 5
-	/*The amount of restitution inside the slider limits.*/
+	/*Constant for accessing [member linear_motion/restitution]. The amount of restitution inside the slider limits.*/
 	SliderJoint3DParamLinearMotionRestitution SliderJoint3DParam = 6
-	/*The amount of damping inside the slider limits.*/
+	/*Constant for accessing [member linear_motion/damping]. The amount of damping inside the slider limits.*/
 	SliderJoint3DParamLinearMotionDamping SliderJoint3DParam = 7
-	/*A factor applied to the movement across axes orthogonal to the slider.*/
+	/*Constant for accessing [member linear_ortho/softness]. A factor applied to the movement across axes orthogonal to the slider.*/
 	SliderJoint3DParamLinearOrthogonalSoftness SliderJoint3DParam = 8
-	/*The amount of restitution when movement is across axes orthogonal to the slider.*/
+	/*Constant for accessing [member linear_motion/restitution]. The amount of restitution when movement is across axes orthogonal to the slider.*/
 	SliderJoint3DParamLinearOrthogonalRestitution SliderJoint3DParam = 9
-	/*The amount of damping when movement is across axes orthogonal to the slider.*/
+	/*Constant for accessing [member linear_motion/damping]. The amount of damping when movement is across axes orthogonal to the slider.*/
 	SliderJoint3DParamLinearOrthogonalDamping SliderJoint3DParam = 10
-	/*The upper limit of rotation in the slider.*/
+	/*Constant for accessing [member angular_limit/upper_angle]. The upper limit of rotation in the slider.*/
 	SliderJoint3DParamAngularLimitUpper SliderJoint3DParam = 11
-	/*The lower limit of rotation in the slider.*/
+	/*Constant for accessing [member angular_limit/lower_angle]. The lower limit of rotation in the slider.*/
 	SliderJoint3DParamAngularLimitLower SliderJoint3DParam = 12
-	/*A factor applied to the all rotation once the limit is surpassed.*/
+	/*Constant for accessing [member angular_limit/softness]. A factor applied to the all rotation once the limit is surpassed.*/
 	SliderJoint3DParamAngularLimitSoftness SliderJoint3DParam = 13
-	/*The amount of restitution of the rotation when the limit is surpassed.*/
+	/*Constant for accessing [member angular_limit/restitution]. The amount of restitution of the rotation when the limit is surpassed.*/
 	SliderJoint3DParamAngularLimitRestitution SliderJoint3DParam = 14
-	/*The amount of damping of the rotation when the limit is surpassed.*/
+	/*Constant for accessing [member angular_limit/damping]. The amount of damping of the rotation when the limit is surpassed.*/
 	SliderJoint3DParamAngularLimitDamping SliderJoint3DParam = 15
-	/*A factor applied to the all rotation in the limits.*/
+	/*Constant for accessing [member angular_motion/softness]. A factor applied to the all rotation in the limits.*/
 	SliderJoint3DParamAngularMotionSoftness SliderJoint3DParam = 16
-	/*The amount of restitution of the rotation in the limits.*/
+	/*Constant for accessing [member angular_motion/restitution]. The amount of restitution of the rotation in the limits.*/
 	SliderJoint3DParamAngularMotionRestitution SliderJoint3DParam = 17
-	/*The amount of damping of the rotation in the limits.*/
+	/*Constant for accessing [member angular_motion/damping]. The amount of damping of the rotation in the limits.*/
 	SliderJoint3DParamAngularMotionDamping SliderJoint3DParam = 18
-	/*A factor applied to the all rotation across axes orthogonal to the slider.*/
+	/*Constant for accessing [member angular_ortho/softness]. A factor applied to the all rotation across axes orthogonal to the slider.*/
 	SliderJoint3DParamAngularOrthogonalSoftness SliderJoint3DParam = 19
-	/*The amount of restitution of the rotation across axes orthogonal to the slider.*/
+	/*Constant for accessing [member angular_ortho/restitution]. The amount of restitution of the rotation across axes orthogonal to the slider.*/
 	SliderJoint3DParamAngularOrthogonalRestitution SliderJoint3DParam = 20
-	/*The amount of damping of the rotation across axes orthogonal to the slider.*/
+	/*Constant for accessing [member angular_ortho/damping]. The amount of damping of the rotation across axes orthogonal to the slider.*/
 	SliderJoint3DParamAngularOrthogonalDamping SliderJoint3DParam = 21
 	/*Represents the size of the [enum Param] enum.*/
 	SliderJoint3DParamMax SliderJoint3DParam = 22
@@ -9335,6 +9760,17 @@ const (
 	TabBarCloseButtonMax TabBarCloseButtonDisplayPolicy = 3
 )
 
+type TabContainerTabPosition = classdb.TabContainerTabPosition
+
+const (
+	/*Places the tab bar at the top.*/
+	TabContainerPositionTop TabContainerTabPosition = 0
+	/*Places the tab bar at the bottom. The tab bar's [StyleBox] will be flipped vertically.*/
+	TabContainerPositionBottom TabContainerTabPosition = 1
+	/*Represents the size of the [enum TabPosition] enum.*/
+	TabContainerPositionMax TabContainerTabPosition = 2
+)
+
 type TextEditMenuItems = classdb.TextEditMenuItems
 
 const (
@@ -9462,11 +9898,11 @@ const (
 type TextEditGutterType = classdb.TextEditGutterType
 
 const (
-	/*Draw a string.*/
+	/*When a gutter is set to string using [method set_gutter_type], it is used to contain text set via the [method set_line_gutter_text] method.*/
 	TextEditGutterTypeString TextEditGutterType = 0
-	/*Draw an icon.*/
+	/*When a gutter is set to icon using [method set_gutter_type], it is used to contain an icon set via the [method set_line_gutter_icon] method.*/
 	TextEditGutterTypeIcon TextEditGutterType = 1
-	/*Custom draw.*/
+	/*When a gutter is set to custom using [method set_gutter_type], it is used to contain custom visuals controlled by a callback method set via the [method set_gutter_custom_draw] method.*/
 	TextEditGutterTypeCustom TextEditGutterType = 2
 )
 
@@ -9574,6 +10010,8 @@ const (
 	TextServerBreakAdaptive TextServerLineBreakFlag = 8
 	/*Remove edge spaces from the broken line segments.*/
 	TextServerBreakTrimEdgeSpaces TextServerLineBreakFlag = 16
+	/*Subtract first line indentation width from all lines after the first one.*/
+	TextServerBreakTrimIndent TextServerLineBreakFlag = 32
 )
 
 type TextServerVisibleCharactersBehavior = classdb.TextServerVisibleCharactersBehavior
@@ -9652,6 +10090,8 @@ const (
 	TextServerGraphemeIsSafeToInsertTatweel TextServerGraphemeFlag = 2048
 	/*Grapheme is an object replacement character for the embedded object.*/
 	TextServerGraphemeIsEmbeddedObject TextServerGraphemeFlag = 4096
+	/*Grapheme is a soft hyphen.*/
+	TextServerGraphemeIsSoftHyphen TextServerGraphemeFlag = 8192
 )
 
 type TextServerHinting = classdb.TextServerHinting
@@ -9918,6 +10358,17 @@ const (
 	TileMapVisibilityModeForceShow TileMapVisibilityMode = 1
 )
 
+type TileMapLayerDebugVisibilityMode = classdb.TileMapLayerDebugVisibilityMode
+
+const (
+	/*Hide the collisions or navigation debug shapes in the editor, and use the debug settings to determine their visibility in game (i.e. [member SceneTree.debug_collisions_hint] or [member SceneTree.debug_navigation_hint]).*/
+	TileMapLayerDebugVisibilityModeDefault TileMapLayerDebugVisibilityMode = 0
+	/*Always hide the collisions or navigation debug shapes.*/
+	TileMapLayerDebugVisibilityModeForceHide TileMapLayerDebugVisibilityMode = 2
+	/*Always show the collisions or navigation debug shapes.*/
+	TileMapLayerDebugVisibilityModeForceShow TileMapLayerDebugVisibilityMode = 1
+)
+
 type TileSetTileShape = classdb.TileSetTileShape
 
 const (
@@ -10068,9 +10519,9 @@ const (
 type TimerTimerProcessCallback = classdb.TimerTimerProcessCallback
 
 const (
-	/*Update the timer during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
+	/*Update the timer every physics process frame (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	TimerTimerProcessPhysics TimerTimerProcessCallback = 0
-	/*Update the timer during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	/*Update the timer every process (rendered) frame (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
 	TimerTimerProcessIdle TimerTimerProcessCallback = 1
 )
 
@@ -10114,14 +10565,17 @@ const (
 type TreeItemTreeCellMode = classdb.TreeItemTreeCellMode
 
 const (
-	/*Cell contains a string.*/
+	/*Cell shows a string label. When editable, the text can be edited using a [LineEdit], or a [TextEdit] popup if [method set_edit_multiline] is used.*/
 	TreeItemCellModeString TreeItemTreeCellMode = 0
-	/*Cell contains a checkbox.*/
+	/*Cell shows a checkbox, optionally with text. The checkbox can be pressed, released, or indeterminate (via [method set_indeterminate]). The checkbox can't be clicked unless the cell is editable.*/
 	TreeItemCellModeCheck TreeItemTreeCellMode = 1
-	/*Cell contains a range.*/
+	/*Cell shows a numeric range. When editable, it can be edited using a range slider. Use [method set_range] to set the value and [method set_range_config] to configure the range.
+	  This cell can also be used in a text dropdown mode when you assign a text with [method set_text]. Separate options with a comma, e.g. [code]"Option1,Option2,Option3"[/code].*/
 	TreeItemCellModeRange TreeItemTreeCellMode = 2
-	/*Cell contains an icon.*/
-	TreeItemCellModeIcon   TreeItemTreeCellMode = 3
+	/*Cell shows an icon. It can't be edited nor display text.*/
+	TreeItemCellModeIcon TreeItemTreeCellMode = 3
+	/*Cell shows as a clickable button. It will display an arrow similar to [OptionButton], but doesn't feature a dropdown (for that you can use [constant CELL_MODE_RANGE]). Clicking the button emits the [signal Tree.item_edited] signal. The button is flat by default, you can use [method set_custom_as_button] to display it with a [StyleBox].
+	  This mode also supports custom drawing using [method set_custom_draw_callback].*/
 	TreeItemCellModeCustom TreeItemTreeCellMode = 4
 )
 
@@ -10280,9 +10734,9 @@ type UndoRedoMergeMode = classdb.UndoRedoMergeMode
 const (
 	/*Makes "do"/"undo" operations stay in separate actions.*/
 	UndoRedoMergeDisable UndoRedoMergeMode = 0
-	/*Makes so that the action's "undo" operations are from the first action created and the "do" operations are from the last subsequent action with the same name.*/
+	/*Merges this action with the previous one if they have the same name. Keeps only the first action's "undo" operations and the last action's "do" operations. Useful for sequential changes to a single value.*/
 	UndoRedoMergeEnds UndoRedoMergeMode = 1
-	/*Makes subsequent actions with the same name be merged into one.*/
+	/*Merges this action with the previous one if they have the same name.*/
 	UndoRedoMergeAll UndoRedoMergeMode = 2
 )
 
@@ -10362,9 +10816,14 @@ const (
 type ViewportRenderInfoType = classdb.ViewportRenderInfoType
 
 const (
+	/*Visible render pass (excluding shadows).*/
 	ViewportRenderInfoTypeVisible ViewportRenderInfoType = 0
-	ViewportRenderInfoTypeShadow  ViewportRenderInfoType = 1
-	ViewportRenderInfoTypeMax     ViewportRenderInfoType = 2
+	/*Shadow render pass. Objects will be rendered several times depending on the number of amounts of lights with shadows and the number of directional shadow splits.*/
+	ViewportRenderInfoTypeShadow ViewportRenderInfoType = 1
+	/*Canvas item rendering. This includes all 2D rendering.*/
+	ViewportRenderInfoTypeCanvas ViewportRenderInfoType = 2
+	/*Represents the size of the [enum RenderInfoType] enum.*/
+	ViewportRenderInfoTypeMax ViewportRenderInfoType = 3
 )
 
 type ViewportDebugDraw = classdb.ViewportDebugDraw
@@ -10374,11 +10833,13 @@ const (
 	ViewportDebugDrawDisabled ViewportDebugDraw = 0
 	/*Objects are displayed without light information.*/
 	ViewportDebugDrawUnshaded ViewportDebugDraw = 1
+	/*Objects are displayed without textures and only with lighting information.*/
 	ViewportDebugDrawLighting ViewportDebugDraw = 2
 	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw means you are wasting performance on drawing pixels that are being hidden behind others.*/
 	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
-	/*Objects are displayed in wireframe style.*/
-	ViewportDebugDrawWireframe    ViewportDebugDraw = 4
+	/*Objects are displayed as wireframe models.*/
+	ViewportDebugDrawWireframe ViewportDebugDraw = 4
+	/*Objects are displayed without lighting information and their textures replaced by normal mapping.*/
 	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
 	/*Objects are displayed with only the albedo value from [VoxelGI]s.*/
 	ViewportDebugDrawVoxelGiAlbedo ViewportDebugDraw = 6
@@ -10390,7 +10851,8 @@ const (
 	ViewportDebugDrawShadowAtlas ViewportDebugDraw = 9
 	/*Draws the shadow atlas that stores shadows from [DirectionalLight3D]s in the upper left quadrant of the [Viewport].*/
 	ViewportDebugDrawDirectionalShadowAtlas ViewportDebugDraw = 10
-	ViewportDebugDrawSceneLuminance         ViewportDebugDraw = 11
+	/*Draws the scene luminance buffer (if available) in the upper left quadrant of the [Viewport].*/
+	ViewportDebugDrawSceneLuminance ViewportDebugDraw = 11
 	/*Draws the screen-space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [member Environment.ssao_enabled] set in your [WorldEnvironment].*/
 	ViewportDebugDrawSsao ViewportDebugDraw = 12
 	/*Draws the screen-space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [member Environment.ssil_enabled] set in your [WorldEnvironment].*/
@@ -10398,17 +10860,29 @@ const (
 	/*Colors each PSSM split for the [DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order, they will be colored red, green, blue, and yellow.*/
 	ViewportDebugDrawPssmSplits ViewportDebugDraw = 14
 	/*Draws the decal atlas used by [Decal]s and light projector textures in the upper left quadrant of the [Viewport].*/
-	ViewportDebugDrawDecalAtlas              ViewportDebugDraw = 15
-	ViewportDebugDrawSdfgi                   ViewportDebugDraw = 16
-	ViewportDebugDrawSdfgiProbes             ViewportDebugDraw = 17
-	ViewportDebugDrawGiBuffer                ViewportDebugDraw = 18
-	ViewportDebugDrawDisableLod              ViewportDebugDraw = 19
-	ViewportDebugDrawClusterOmniLights       ViewportDebugDraw = 20
-	ViewportDebugDrawClusterSpotLights       ViewportDebugDraw = 21
-	ViewportDebugDrawClusterDecals           ViewportDebugDraw = 22
+	ViewportDebugDrawDecalAtlas ViewportDebugDraw = 15
+	/*Draws the cascades used to render signed distance field global illumination (SDFGI).
+	  Does nothing if the current environment's [member Environment.sdfgi_enabled] is [code]false[/code] or SDFGI is not supported on the platform.*/
+	ViewportDebugDrawSdfgi ViewportDebugDraw = 16
+	/*Draws the probes used for signed distance field global illumination (SDFGI).
+	  Does nothing if the current environment's [member Environment.sdfgi_enabled] is [code]false[/code] or SDFGI is not supported on the platform.*/
+	ViewportDebugDrawSdfgiProbes ViewportDebugDraw = 17
+	/*Draws the buffer used for global illumination (GI).*/
+	ViewportDebugDrawGiBuffer ViewportDebugDraw = 18
+	/*Draws all of the objects at their highest polycount, without low level of detail (LOD).*/
+	ViewportDebugDrawDisableLod ViewportDebugDraw = 19
+	/*Draws the cluster used by [OmniLight3D] nodes to optimize light rendering.*/
+	ViewportDebugDrawClusterOmniLights ViewportDebugDraw = 20
+	/*Draws the cluster used by [SpotLight3D] nodes to optimize light rendering.*/
+	ViewportDebugDrawClusterSpotLights ViewportDebugDraw = 21
+	/*Draws the cluster used by [Decal] nodes to optimize decal rendering.*/
+	ViewportDebugDrawClusterDecals ViewportDebugDraw = 22
+	/*Draws the cluster used by [ReflectionProbe] nodes to optimize decal rendering.*/
 	ViewportDebugDrawClusterReflectionProbes ViewportDebugDraw = 23
-	ViewportDebugDrawOccluders               ViewportDebugDraw = 24
-	ViewportDebugDrawMotionVectors           ViewportDebugDraw = 25
+	/*Draws the buffer used for occlusion culling.*/
+	ViewportDebugDrawOccluders ViewportDebugDraw = 24
+	/*Draws vector lines over the viewport to indicate the movement of pixels between frames.*/
+	ViewportDebugDrawMotionVectors ViewportDebugDraw = 25
 	/*Draws the internal resolution buffer of the scene before post-processing is applied.*/
 	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
 )
@@ -10426,7 +10900,7 @@ const (
 	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.
 	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
 	ViewportDefaultCanvasItemTextureFilterNearestWithMipmaps ViewportDefaultCanvasItemTextureFilter = 3
-	/*Max value for [enum DefaultCanvasItemTextureFilter] enum.*/
+	/*Represents the size of the [enum DefaultCanvasItemTextureFilter] enum.*/
 	ViewportDefaultCanvasItemTextureFilterMax ViewportDefaultCanvasItemTextureFilter = 4
 )
 
@@ -10439,40 +10913,62 @@ const (
 	ViewportDefaultCanvasItemTextureRepeatEnabled ViewportDefaultCanvasItemTextureRepeat = 1
 	/*Flip the texture when repeating so that the edge lines up instead of abruptly changing.*/
 	ViewportDefaultCanvasItemTextureRepeatMirror ViewportDefaultCanvasItemTextureRepeat = 2
-	/*Max value for [enum DefaultCanvasItemTextureRepeat] enum.*/
+	/*Represents the size of the [enum DefaultCanvasItemTextureRepeat] enum.*/
 	ViewportDefaultCanvasItemTextureRepeatMax ViewportDefaultCanvasItemTextureRepeat = 3
 )
 
 type ViewportSDFOversize = classdb.ViewportSDFOversize
 
 const (
+	/*The signed distance field only covers the viewport's own rectangle.*/
 	ViewportSdfOversize100Percent ViewportSDFOversize = 0
+	/*The signed distance field is expanded to cover 20% of the viewport's size around the borders.*/
 	ViewportSdfOversize120Percent ViewportSDFOversize = 1
+	/*The signed distance field is expanded to cover 50% of the viewport's size around the borders.*/
 	ViewportSdfOversize150Percent ViewportSDFOversize = 2
+	/*The signed distance field is expanded to cover 100% (double) of the viewport's size around the borders.*/
 	ViewportSdfOversize200Percent ViewportSDFOversize = 3
-	ViewportSdfOversizeMax        ViewportSDFOversize = 4
+	/*Represents the size of the [enum SDFOversize] enum.*/
+	ViewportSdfOversizeMax ViewportSDFOversize = 4
 )
 
 type ViewportSDFScale = classdb.ViewportSDFScale
 
 const (
+	/*The signed distance field is rendered at full resolution.*/
 	ViewportSdfScale100Percent ViewportSDFScale = 0
-	ViewportSdfScale50Percent  ViewportSDFScale = 1
-	ViewportSdfScale25Percent  ViewportSDFScale = 2
-	ViewportSdfScaleMax        ViewportSDFScale = 3
+	/*The signed distance field is rendered at half the resolution of this viewport.*/
+	ViewportSdfScale50Percent ViewportSDFScale = 1
+	/*The signed distance field is rendered at a quarter the resolution of this viewport.*/
+	ViewportSdfScale25Percent ViewportSDFScale = 2
+	/*Represents the size of the [enum SDFScale] enum.*/
+	ViewportSdfScaleMax ViewportSDFScale = 3
 )
 
 type ViewportVRSMode = classdb.ViewportVRSMode
 
 const (
-	/*VRS is disabled.*/
+	/*Variable Rate Shading is disabled.*/
 	ViewportVrsDisabled ViewportVRSMode = 0
-	/*VRS uses a texture. Note, for stereoscopic use a texture atlas with a texture for each view.*/
+	/*Variable Rate Shading uses a texture. Note, for stereoscopic use a texture atlas with a texture for each view.*/
 	ViewportVrsTexture ViewportVRSMode = 1
-	/*VRS texture is supplied by the primary [XRInterface].*/
+	/*Variable Rate Shading's texture is supplied by the primary [XRInterface].*/
 	ViewportVrsXr ViewportVRSMode = 2
 	/*Represents the size of the [enum VRSMode] enum.*/
 	ViewportVrsMax ViewportVRSMode = 3
+)
+
+type ViewportVRSUpdateMode = classdb.ViewportVRSUpdateMode
+
+const (
+	/*The input texture for variable rate shading will not be processed.*/
+	ViewportVrsUpdateDisabled ViewportVRSUpdateMode = 0
+	/*The input texture for variable rate shading will be processed once.*/
+	ViewportVrsUpdateOnce ViewportVRSUpdateMode = 1
+	/*The input texture for variable rate shading will be processed each frame.*/
+	ViewportVrsUpdateAlways ViewportVRSUpdateMode = 2
+	/*Represents the size of the [enum VRSUpdateMode] enum.*/
+	ViewportVrsUpdateMax ViewportVRSUpdateMode = 3
 )
 
 type VisibleOnScreenEnabler2DEnableMode = classdb.VisibleOnScreenEnabler2DEnableMode
@@ -11015,7 +11511,7 @@ type VisualShaderNodeIsFunction = classdb.VisualShaderNodeIsFunction
 const (
 	/*Comparison with [code]INF[/code] (Infinity).*/
 	VisualShaderNodeIsFuncIsInf VisualShaderNodeIsFunction = 0
-	/*Comparison with [code]NaN[/code] (Not a Number; denotes invalid numeric results, e.g. division by zero).*/
+	/*Comparison with [code]NaN[/code] (Not a Number; indicates invalid numeric results, such as division by zero).*/
 	VisualShaderNodeIsFuncIsNan VisualShaderNodeIsFunction = 1
 	/*Represents the size of the [enum Function] enum.*/
 	VisualShaderNodeIsFuncMax VisualShaderNodeIsFunction = 2
@@ -11780,6 +12276,604 @@ const (
 	XMLParserNodeUnknown XMLParserNodeType = 6
 )
 
+type XRBodyModifier3DBodyUpdate = classdb.XRBodyModifier3DBodyUpdate
+
+const (
+	/*The skeleton's upper body joints are updated.*/
+	XRBodyModifier3DBodyUpdateUpperBody XRBodyModifier3DBodyUpdate = 1
+	/*The skeleton's lower body joints are updated.*/
+	XRBodyModifier3DBodyUpdateLowerBody XRBodyModifier3DBodyUpdate = 2
+	/*The skeleton's hand joints are updated.*/
+	XRBodyModifier3DBodyUpdateHands XRBodyModifier3DBodyUpdate = 4
+)
+
+type XRBodyModifier3DBoneUpdate = classdb.XRBodyModifier3DBoneUpdate
+
+const (
+	/*The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.*/
+	XRBodyModifier3DBoneUpdateFull XRBodyModifier3DBoneUpdate = 0
+	/*The skeleton's bones are only rotated to align with the tracked bones, preserving bone length.*/
+	XRBodyModifier3DBoneUpdateRotationOnly XRBodyModifier3DBoneUpdate = 1
+	/*Represents the size of the [enum BoneUpdate] enum.*/
+	XRBodyModifier3DBoneUpdateMax XRBodyModifier3DBoneUpdate = 2
+)
+
+type XRBodyTrackerBodyFlags = classdb.XRBodyTrackerBodyFlags
+
+const (
+	/*Upper body tracking supported.*/
+	XRBodyTrackerBodyFlagUpperBodySupported XRBodyTrackerBodyFlags = 1
+	/*Lower body tracking supported.*/
+	XRBodyTrackerBodyFlagLowerBodySupported XRBodyTrackerBodyFlags = 2
+	/*Hand tracking supported.*/
+	XRBodyTrackerBodyFlagHandsSupported XRBodyTrackerBodyFlags = 4
+)
+
+type XRBodyTrackerJoint = classdb.XRBodyTrackerJoint
+
+const (
+	/*Root joint.*/
+	XRBodyTrackerJointRoot XRBodyTrackerJoint = 0
+	/*Hips joint.*/
+	XRBodyTrackerJointHips XRBodyTrackerJoint = 1
+	/*Spine joint.*/
+	XRBodyTrackerJointSpine XRBodyTrackerJoint = 2
+	/*Chest joint.*/
+	XRBodyTrackerJointChest XRBodyTrackerJoint = 3
+	/*Upper chest joint.*/
+	XRBodyTrackerJointUpperChest XRBodyTrackerJoint = 4
+	/*Neck joint.*/
+	XRBodyTrackerJointNeck XRBodyTrackerJoint = 5
+	/*Head joint.*/
+	XRBodyTrackerJointHead XRBodyTrackerJoint = 6
+	/*Head tip joint.*/
+	XRBodyTrackerJointHeadTip XRBodyTrackerJoint = 7
+	/*Left shoulder joint.*/
+	XRBodyTrackerJointLeftShoulder XRBodyTrackerJoint = 8
+	/*Left upper arm joint.*/
+	XRBodyTrackerJointLeftUpperArm XRBodyTrackerJoint = 9
+	/*Left lower arm joint.*/
+	XRBodyTrackerJointLeftLowerArm XRBodyTrackerJoint = 10
+	/*Right shoulder joint.*/
+	XRBodyTrackerJointRightShoulder XRBodyTrackerJoint = 11
+	/*Right upper arm joint.*/
+	XRBodyTrackerJointRightUpperArm XRBodyTrackerJoint = 12
+	/*Right lower arm joint.*/
+	XRBodyTrackerJointRightLowerArm XRBodyTrackerJoint = 13
+	/*Left upper leg joint.*/
+	XRBodyTrackerJointLeftUpperLeg XRBodyTrackerJoint = 14
+	/*Left lower leg joint.*/
+	XRBodyTrackerJointLeftLowerLeg XRBodyTrackerJoint = 15
+	/*Left foot joint.*/
+	XRBodyTrackerJointLeftFoot XRBodyTrackerJoint = 16
+	/*Left toes joint.*/
+	XRBodyTrackerJointLeftToes XRBodyTrackerJoint = 17
+	/*Right upper leg joint.*/
+	XRBodyTrackerJointRightUpperLeg XRBodyTrackerJoint = 18
+	/*Right lower leg joint.*/
+	XRBodyTrackerJointRightLowerLeg XRBodyTrackerJoint = 19
+	/*Right foot joint.*/
+	XRBodyTrackerJointRightFoot XRBodyTrackerJoint = 20
+	/*Right toes joint.*/
+	XRBodyTrackerJointRightToes XRBodyTrackerJoint = 21
+	/*Left hand joint.*/
+	XRBodyTrackerJointLeftHand XRBodyTrackerJoint = 22
+	/*Left palm joint.*/
+	XRBodyTrackerJointLeftPalm XRBodyTrackerJoint = 23
+	/*Left wrist joint.*/
+	XRBodyTrackerJointLeftWrist XRBodyTrackerJoint = 24
+	/*Left thumb metacarpal joint.*/
+	XRBodyTrackerJointLeftThumbMetacarpal XRBodyTrackerJoint = 25
+	/*Left thumb phalanx proximal joint.*/
+	XRBodyTrackerJointLeftThumbPhalanxProximal XRBodyTrackerJoint = 26
+	/*Left thumb phalanx distal joint.*/
+	XRBodyTrackerJointLeftThumbPhalanxDistal XRBodyTrackerJoint = 27
+	/*Left thumb tip joint.*/
+	XRBodyTrackerJointLeftThumbTip XRBodyTrackerJoint = 28
+	/*Left index finger metacarpal joint.*/
+	XRBodyTrackerJointLeftIndexFingerMetacarpal XRBodyTrackerJoint = 29
+	/*Left index finger phalanx proximal joint.*/
+	XRBodyTrackerJointLeftIndexFingerPhalanxProximal XRBodyTrackerJoint = 30
+	/*Left index finger phalanx intermediate joint.*/
+	XRBodyTrackerJointLeftIndexFingerPhalanxIntermediate XRBodyTrackerJoint = 31
+	/*Left index finger phalanx distal joint.*/
+	XRBodyTrackerJointLeftIndexFingerPhalanxDistal XRBodyTrackerJoint = 32
+	/*Left index finger tip joint.*/
+	XRBodyTrackerJointLeftIndexFingerTip XRBodyTrackerJoint = 33
+	/*Left middle finger metacarpal joint.*/
+	XRBodyTrackerJointLeftMiddleFingerMetacarpal XRBodyTrackerJoint = 34
+	/*Left middle finger phalanx proximal joint.*/
+	XRBodyTrackerJointLeftMiddleFingerPhalanxProximal XRBodyTrackerJoint = 35
+	/*Left middle finger phalanx intermediate joint.*/
+	XRBodyTrackerJointLeftMiddleFingerPhalanxIntermediate XRBodyTrackerJoint = 36
+	/*Left middle finger phalanx distal joint.*/
+	XRBodyTrackerJointLeftMiddleFingerPhalanxDistal XRBodyTrackerJoint = 37
+	/*Left middle finger tip joint.*/
+	XRBodyTrackerJointLeftMiddleFingerTip XRBodyTrackerJoint = 38
+	/*Left ring finger metacarpal joint.*/
+	XRBodyTrackerJointLeftRingFingerMetacarpal XRBodyTrackerJoint = 39
+	/*Left ring finger phalanx proximal joint.*/
+	XRBodyTrackerJointLeftRingFingerPhalanxProximal XRBodyTrackerJoint = 40
+	/*Left ring finger phalanx intermediate joint.*/
+	XRBodyTrackerJointLeftRingFingerPhalanxIntermediate XRBodyTrackerJoint = 41
+	/*Left ring finger phalanx distal joint.*/
+	XRBodyTrackerJointLeftRingFingerPhalanxDistal XRBodyTrackerJoint = 42
+	/*Left ring finger tip joint.*/
+	XRBodyTrackerJointLeftRingFingerTip XRBodyTrackerJoint = 43
+	/*Left pinky finger metacarpal joint.*/
+	XRBodyTrackerJointLeftPinkyFingerMetacarpal XRBodyTrackerJoint = 44
+	/*Left pinky finger phalanx proximal joint.*/
+	XRBodyTrackerJointLeftPinkyFingerPhalanxProximal XRBodyTrackerJoint = 45
+	/*Left pinky finger phalanx intermediate joint.*/
+	XRBodyTrackerJointLeftPinkyFingerPhalanxIntermediate XRBodyTrackerJoint = 46
+	/*Left pinky finger phalanx distal joint.*/
+	XRBodyTrackerJointLeftPinkyFingerPhalanxDistal XRBodyTrackerJoint = 47
+	/*Left pinky finger tip joint.*/
+	XRBodyTrackerJointLeftPinkyFingerTip XRBodyTrackerJoint = 48
+	/*Right hand joint.*/
+	XRBodyTrackerJointRightHand XRBodyTrackerJoint = 49
+	/*Right palm joint.*/
+	XRBodyTrackerJointRightPalm XRBodyTrackerJoint = 50
+	/*Right wrist joint.*/
+	XRBodyTrackerJointRightWrist XRBodyTrackerJoint = 51
+	/*Right thumb metacarpal joint.*/
+	XRBodyTrackerJointRightThumbMetacarpal XRBodyTrackerJoint = 52
+	/*Right thumb phalanx proximal joint.*/
+	XRBodyTrackerJointRightThumbPhalanxProximal XRBodyTrackerJoint = 53
+	/*Right thumb phalanx distal joint.*/
+	XRBodyTrackerJointRightThumbPhalanxDistal XRBodyTrackerJoint = 54
+	/*Right thumb tip joint.*/
+	XRBodyTrackerJointRightThumbTip XRBodyTrackerJoint = 55
+	/*Right index finger metacarpal joint.*/
+	XRBodyTrackerJointRightIndexFingerMetacarpal XRBodyTrackerJoint = 56
+	/*Right index finger phalanx proximal joint.*/
+	XRBodyTrackerJointRightIndexFingerPhalanxProximal XRBodyTrackerJoint = 57
+	/*Right index finger phalanx intermediate joint.*/
+	XRBodyTrackerJointRightIndexFingerPhalanxIntermediate XRBodyTrackerJoint = 58
+	/*Right index finger phalanx distal joint.*/
+	XRBodyTrackerJointRightIndexFingerPhalanxDistal XRBodyTrackerJoint = 59
+	/*Right index finger tip joint.*/
+	XRBodyTrackerJointRightIndexFingerTip XRBodyTrackerJoint = 60
+	/*Right middle finger metacarpal joint.*/
+	XRBodyTrackerJointRightMiddleFingerMetacarpal XRBodyTrackerJoint = 61
+	/*Right middle finger phalanx proximal joint.*/
+	XRBodyTrackerJointRightMiddleFingerPhalanxProximal XRBodyTrackerJoint = 62
+	/*Right middle finger phalanx intermediate joint.*/
+	XRBodyTrackerJointRightMiddleFingerPhalanxIntermediate XRBodyTrackerJoint = 63
+	/*Right middle finger phalanx distal joint.*/
+	XRBodyTrackerJointRightMiddleFingerPhalanxDistal XRBodyTrackerJoint = 64
+	/*Right middle finger tip joint.*/
+	XRBodyTrackerJointRightMiddleFingerTip XRBodyTrackerJoint = 65
+	/*Right ring finger metacarpal joint.*/
+	XRBodyTrackerJointRightRingFingerMetacarpal XRBodyTrackerJoint = 66
+	/*Right ring finger phalanx proximal joint.*/
+	XRBodyTrackerJointRightRingFingerPhalanxProximal XRBodyTrackerJoint = 67
+	/*Right ring finger phalanx intermediate joint.*/
+	XRBodyTrackerJointRightRingFingerPhalanxIntermediate XRBodyTrackerJoint = 68
+	/*Right ring finger phalanx distal joint.*/
+	XRBodyTrackerJointRightRingFingerPhalanxDistal XRBodyTrackerJoint = 69
+	/*Right ring finger tip joint.*/
+	XRBodyTrackerJointRightRingFingerTip XRBodyTrackerJoint = 70
+	/*Right pinky finger metacarpal joint.*/
+	XRBodyTrackerJointRightPinkyFingerMetacarpal XRBodyTrackerJoint = 71
+	/*Right pinky finger phalanx proximal joint.*/
+	XRBodyTrackerJointRightPinkyFingerPhalanxProximal XRBodyTrackerJoint = 72
+	/*Right pinky finger phalanx intermediate joint.*/
+	XRBodyTrackerJointRightPinkyFingerPhalanxIntermediate XRBodyTrackerJoint = 73
+	/*Right pinky finger phalanx distal joint.*/
+	XRBodyTrackerJointRightPinkyFingerPhalanxDistal XRBodyTrackerJoint = 74
+	/*Right pinky finger tip joint.*/
+	XRBodyTrackerJointRightPinkyFingerTip XRBodyTrackerJoint = 75
+	/*Represents the size of the [enum Joint] enum.*/
+	XRBodyTrackerJointMax XRBodyTrackerJoint = 76
+)
+
+type XRBodyTrackerJointFlags = classdb.XRBodyTrackerJointFlags
+
+const (
+	/*The joint's orientation data is valid.*/
+	XRBodyTrackerJointFlagOrientationValid XRBodyTrackerJointFlags = 1
+	/*The joint's orientation is actively tracked. May not be set if tracking has been temporarily lost.*/
+	XRBodyTrackerJointFlagOrientationTracked XRBodyTrackerJointFlags = 2
+	/*The joint's position data is valid.*/
+	XRBodyTrackerJointFlagPositionValid XRBodyTrackerJointFlags = 4
+	/*The joint's position is actively tracked. May not be set if tracking has been temporarily lost.*/
+	XRBodyTrackerJointFlagPositionTracked XRBodyTrackerJointFlags = 8
+)
+
+type XRFaceTrackerBlendShapeEntry = classdb.XRFaceTrackerBlendShapeEntry
+
+const (
+	/*Right eye looks outwards.*/
+	XRFaceTrackerFtEyeLookOutRight XRFaceTrackerBlendShapeEntry = 0
+	/*Right eye looks inwards.*/
+	XRFaceTrackerFtEyeLookInRight XRFaceTrackerBlendShapeEntry = 1
+	/*Right eye looks upwards.*/
+	XRFaceTrackerFtEyeLookUpRight XRFaceTrackerBlendShapeEntry = 2
+	/*Right eye looks downwards.*/
+	XRFaceTrackerFtEyeLookDownRight XRFaceTrackerBlendShapeEntry = 3
+	/*Left eye looks outwards.*/
+	XRFaceTrackerFtEyeLookOutLeft XRFaceTrackerBlendShapeEntry = 4
+	/*Left eye looks inwards.*/
+	XRFaceTrackerFtEyeLookInLeft XRFaceTrackerBlendShapeEntry = 5
+	/*Left eye looks upwards.*/
+	XRFaceTrackerFtEyeLookUpLeft XRFaceTrackerBlendShapeEntry = 6
+	/*Left eye looks downwards.*/
+	XRFaceTrackerFtEyeLookDownLeft XRFaceTrackerBlendShapeEntry = 7
+	/*Closes the right eyelid.*/
+	XRFaceTrackerFtEyeClosedRight XRFaceTrackerBlendShapeEntry = 8
+	/*Closes the left eyelid.*/
+	XRFaceTrackerFtEyeClosedLeft XRFaceTrackerBlendShapeEntry = 9
+	/*Squeezes the right eye socket muscles.*/
+	XRFaceTrackerFtEyeSquintRight XRFaceTrackerBlendShapeEntry = 10
+	/*Squeezes the left eye socket muscles.*/
+	XRFaceTrackerFtEyeSquintLeft XRFaceTrackerBlendShapeEntry = 11
+	/*Right eyelid widens beyond relaxed.*/
+	XRFaceTrackerFtEyeWideRight XRFaceTrackerBlendShapeEntry = 12
+	/*Left eyelid widens beyond relaxed.*/
+	XRFaceTrackerFtEyeWideLeft XRFaceTrackerBlendShapeEntry = 13
+	/*Dilates the right eye pupil.*/
+	XRFaceTrackerFtEyeDilationRight XRFaceTrackerBlendShapeEntry = 14
+	/*Dilates the left eye pupil.*/
+	XRFaceTrackerFtEyeDilationLeft XRFaceTrackerBlendShapeEntry = 15
+	/*Constricts the right eye pupil.*/
+	XRFaceTrackerFtEyeConstrictRight XRFaceTrackerBlendShapeEntry = 16
+	/*Constricts the left eye pupil.*/
+	XRFaceTrackerFtEyeConstrictLeft XRFaceTrackerBlendShapeEntry = 17
+	/*Right eyebrow pinches in.*/
+	XRFaceTrackerFtBrowPinchRight XRFaceTrackerBlendShapeEntry = 18
+	/*Left eyebrow pinches in.*/
+	XRFaceTrackerFtBrowPinchLeft XRFaceTrackerBlendShapeEntry = 19
+	/*Outer right eyebrow pulls down.*/
+	XRFaceTrackerFtBrowLowererRight XRFaceTrackerBlendShapeEntry = 20
+	/*Outer left eyebrow pulls down.*/
+	XRFaceTrackerFtBrowLowererLeft XRFaceTrackerBlendShapeEntry = 21
+	/*Inner right eyebrow pulls up.*/
+	XRFaceTrackerFtBrowInnerUpRight XRFaceTrackerBlendShapeEntry = 22
+	/*Inner left eyebrow pulls up.*/
+	XRFaceTrackerFtBrowInnerUpLeft XRFaceTrackerBlendShapeEntry = 23
+	/*Outer right eyebrow pulls up.*/
+	XRFaceTrackerFtBrowOuterUpRight XRFaceTrackerBlendShapeEntry = 24
+	/*Outer left eyebrow pulls up.*/
+	XRFaceTrackerFtBrowOuterUpLeft XRFaceTrackerBlendShapeEntry = 25
+	/*Right side face sneers.*/
+	XRFaceTrackerFtNoseSneerRight XRFaceTrackerBlendShapeEntry = 26
+	/*Left side face sneers.*/
+	XRFaceTrackerFtNoseSneerLeft XRFaceTrackerBlendShapeEntry = 27
+	/*Right side nose canal dilates.*/
+	XRFaceTrackerFtNasalDilationRight XRFaceTrackerBlendShapeEntry = 28
+	/*Left side nose canal dilates.*/
+	XRFaceTrackerFtNasalDilationLeft XRFaceTrackerBlendShapeEntry = 29
+	/*Right side nose canal constricts.*/
+	XRFaceTrackerFtNasalConstrictRight XRFaceTrackerBlendShapeEntry = 30
+	/*Left side nose canal constricts.*/
+	XRFaceTrackerFtNasalConstrictLeft XRFaceTrackerBlendShapeEntry = 31
+	/*Raises the right side cheek.*/
+	XRFaceTrackerFtCheekSquintRight XRFaceTrackerBlendShapeEntry = 32
+	/*Raises the left side cheek.*/
+	XRFaceTrackerFtCheekSquintLeft XRFaceTrackerBlendShapeEntry = 33
+	/*Puffs the right side cheek.*/
+	XRFaceTrackerFtCheekPuffRight XRFaceTrackerBlendShapeEntry = 34
+	/*Puffs the left side cheek.*/
+	XRFaceTrackerFtCheekPuffLeft XRFaceTrackerBlendShapeEntry = 35
+	/*Sucks in the right side cheek.*/
+	XRFaceTrackerFtCheekSuckRight XRFaceTrackerBlendShapeEntry = 36
+	/*Sucks in the left side cheek.*/
+	XRFaceTrackerFtCheekSuckLeft XRFaceTrackerBlendShapeEntry = 37
+	/*Opens jawbone.*/
+	XRFaceTrackerFtJawOpen XRFaceTrackerBlendShapeEntry = 38
+	/*Closes the mouth.*/
+	XRFaceTrackerFtMouthClosed XRFaceTrackerBlendShapeEntry = 39
+	/*Pushes jawbone right.*/
+	XRFaceTrackerFtJawRight XRFaceTrackerBlendShapeEntry = 40
+	/*Pushes jawbone left.*/
+	XRFaceTrackerFtJawLeft XRFaceTrackerBlendShapeEntry = 41
+	/*Pushes jawbone forward.*/
+	XRFaceTrackerFtJawForward XRFaceTrackerBlendShapeEntry = 42
+	/*Pushes jawbone backward.*/
+	XRFaceTrackerFtJawBackward XRFaceTrackerBlendShapeEntry = 43
+	/*Flexes jaw muscles.*/
+	XRFaceTrackerFtJawClench XRFaceTrackerBlendShapeEntry = 44
+	/*Raises the jawbone.*/
+	XRFaceTrackerFtJawMandibleRaise XRFaceTrackerBlendShapeEntry = 45
+	/*Upper right lip part tucks in the mouth.*/
+	XRFaceTrackerFtLipSuckUpperRight XRFaceTrackerBlendShapeEntry = 46
+	/*Upper left lip part tucks in the mouth.*/
+	XRFaceTrackerFtLipSuckUpperLeft XRFaceTrackerBlendShapeEntry = 47
+	/*Lower right lip part tucks in the mouth.*/
+	XRFaceTrackerFtLipSuckLowerRight XRFaceTrackerBlendShapeEntry = 48
+	/*Lower left lip part tucks in the mouth.*/
+	XRFaceTrackerFtLipSuckLowerLeft XRFaceTrackerBlendShapeEntry = 49
+	/*Right lip corner folds into the mouth.*/
+	XRFaceTrackerFtLipSuckCornerRight XRFaceTrackerBlendShapeEntry = 50
+	/*Left lip corner folds into the mouth.*/
+	XRFaceTrackerFtLipSuckCornerLeft XRFaceTrackerBlendShapeEntry = 51
+	/*Upper right lip part pushes into a funnel.*/
+	XRFaceTrackerFtLipFunnelUpperRight XRFaceTrackerBlendShapeEntry = 52
+	/*Upper left lip part pushes into a funnel.*/
+	XRFaceTrackerFtLipFunnelUpperLeft XRFaceTrackerBlendShapeEntry = 53
+	/*Lower right lip part pushes into a funnel.*/
+	XRFaceTrackerFtLipFunnelLowerRight XRFaceTrackerBlendShapeEntry = 54
+	/*Lower left lip part pushes into a funnel.*/
+	XRFaceTrackerFtLipFunnelLowerLeft XRFaceTrackerBlendShapeEntry = 55
+	/*Upper right lip part pushes outwards.*/
+	XRFaceTrackerFtLipPuckerUpperRight XRFaceTrackerBlendShapeEntry = 56
+	/*Upper left lip part pushes outwards.*/
+	XRFaceTrackerFtLipPuckerUpperLeft XRFaceTrackerBlendShapeEntry = 57
+	/*Lower right lip part pushes outwards.*/
+	XRFaceTrackerFtLipPuckerLowerRight XRFaceTrackerBlendShapeEntry = 58
+	/*Lower left lip part pushes outwards.*/
+	XRFaceTrackerFtLipPuckerLowerLeft XRFaceTrackerBlendShapeEntry = 59
+	/*Upper right part of the lip pulls up.*/
+	XRFaceTrackerFtMouthUpperUpRight XRFaceTrackerBlendShapeEntry = 60
+	/*Upper left part of the lip pulls up.*/
+	XRFaceTrackerFtMouthUpperUpLeft XRFaceTrackerBlendShapeEntry = 61
+	/*Lower right part of the lip pulls up.*/
+	XRFaceTrackerFtMouthLowerDownRight XRFaceTrackerBlendShapeEntry = 62
+	/*Lower left part of the lip pulls up.*/
+	XRFaceTrackerFtMouthLowerDownLeft XRFaceTrackerBlendShapeEntry = 63
+	/*Upper right lip part pushes in the cheek.*/
+	XRFaceTrackerFtMouthUpperDeepenRight XRFaceTrackerBlendShapeEntry = 64
+	/*Upper left lip part pushes in the cheek.*/
+	XRFaceTrackerFtMouthUpperDeepenLeft XRFaceTrackerBlendShapeEntry = 65
+	/*Moves upper lip right.*/
+	XRFaceTrackerFtMouthUpperRight XRFaceTrackerBlendShapeEntry = 66
+	/*Moves upper lip left.*/
+	XRFaceTrackerFtMouthUpperLeft XRFaceTrackerBlendShapeEntry = 67
+	/*Moves lower lip right.*/
+	XRFaceTrackerFtMouthLowerRight XRFaceTrackerBlendShapeEntry = 68
+	/*Moves lower lip left.*/
+	XRFaceTrackerFtMouthLowerLeft XRFaceTrackerBlendShapeEntry = 69
+	/*Right lip corner pulls diagonally up and out.*/
+	XRFaceTrackerFtMouthCornerPullRight XRFaceTrackerBlendShapeEntry = 70
+	/*Left lip corner pulls diagonally up and out.*/
+	XRFaceTrackerFtMouthCornerPullLeft XRFaceTrackerBlendShapeEntry = 71
+	/*Right corner lip slants up.*/
+	XRFaceTrackerFtMouthCornerSlantRight XRFaceTrackerBlendShapeEntry = 72
+	/*Left corner lip slants up.*/
+	XRFaceTrackerFtMouthCornerSlantLeft XRFaceTrackerBlendShapeEntry = 73
+	/*Right corner lip pulls down.*/
+	XRFaceTrackerFtMouthFrownRight XRFaceTrackerBlendShapeEntry = 74
+	/*Left corner lip pulls down.*/
+	XRFaceTrackerFtMouthFrownLeft XRFaceTrackerBlendShapeEntry = 75
+	/*Mouth corner lip pulls out and down.*/
+	XRFaceTrackerFtMouthStretchRight XRFaceTrackerBlendShapeEntry = 76
+	/*Mouth corner lip pulls out and down.*/
+	XRFaceTrackerFtMouthStretchLeft XRFaceTrackerBlendShapeEntry = 77
+	/*Right lip corner is pushed backwards.*/
+	XRFaceTrackerFtMouthDimpleRight XRFaceTrackerBlendShapeEntry = 78
+	/*Left lip corner is pushed backwards.*/
+	XRFaceTrackerFtMouthDimpleLeft XRFaceTrackerBlendShapeEntry = 79
+	/*Raises and slightly pushes out the upper mouth.*/
+	XRFaceTrackerFtMouthRaiserUpper XRFaceTrackerBlendShapeEntry = 80
+	/*Raises and slightly pushes out the lower mouth.*/
+	XRFaceTrackerFtMouthRaiserLower XRFaceTrackerBlendShapeEntry = 81
+	/*Right side lips press and flatten together vertically.*/
+	XRFaceTrackerFtMouthPressRight XRFaceTrackerBlendShapeEntry = 82
+	/*Left side lips press and flatten together vertically.*/
+	XRFaceTrackerFtMouthPressLeft XRFaceTrackerBlendShapeEntry = 83
+	/*Right side lips squeeze together horizontally.*/
+	XRFaceTrackerFtMouthTightenerRight XRFaceTrackerBlendShapeEntry = 84
+	/*Left side lips squeeze together horizontally.*/
+	XRFaceTrackerFtMouthTightenerLeft XRFaceTrackerBlendShapeEntry = 85
+	/*Tongue visibly sticks out of the mouth.*/
+	XRFaceTrackerFtTongueOut XRFaceTrackerBlendShapeEntry = 86
+	/*Tongue points upwards.*/
+	XRFaceTrackerFtTongueUp XRFaceTrackerBlendShapeEntry = 87
+	/*Tongue points downwards.*/
+	XRFaceTrackerFtTongueDown XRFaceTrackerBlendShapeEntry = 88
+	/*Tongue points right.*/
+	XRFaceTrackerFtTongueRight XRFaceTrackerBlendShapeEntry = 89
+	/*Tongue points left.*/
+	XRFaceTrackerFtTongueLeft XRFaceTrackerBlendShapeEntry = 90
+	/*Sides of the tongue funnel, creating a roll.*/
+	XRFaceTrackerFtTongueRoll XRFaceTrackerBlendShapeEntry = 91
+	/*Tongue arches up then down inside the mouth.*/
+	XRFaceTrackerFtTongueBlendDown XRFaceTrackerBlendShapeEntry = 92
+	/*Tongue arches down then up inside the mouth.*/
+	XRFaceTrackerFtTongueCurlUp XRFaceTrackerBlendShapeEntry = 93
+	/*Tongue squishes together and thickens.*/
+	XRFaceTrackerFtTongueSquish XRFaceTrackerBlendShapeEntry = 94
+	/*Tongue flattens and thins out.*/
+	XRFaceTrackerFtTongueFlat XRFaceTrackerBlendShapeEntry = 95
+	/*Tongue tip rotates clockwise, with the rest following gradually.*/
+	XRFaceTrackerFtTongueTwistRight XRFaceTrackerBlendShapeEntry = 96
+	/*Tongue tip rotates counter-clockwise, with the rest following gradually.*/
+	XRFaceTrackerFtTongueTwistLeft XRFaceTrackerBlendShapeEntry = 97
+	/*Inner mouth throat closes.*/
+	XRFaceTrackerFtSoftPalateClose XRFaceTrackerBlendShapeEntry = 98
+	/*The Adam's apple visibly swallows.*/
+	XRFaceTrackerFtThroatSwallow XRFaceTrackerBlendShapeEntry = 99
+	/*Right side neck visibly flexes.*/
+	XRFaceTrackerFtNeckFlexRight XRFaceTrackerBlendShapeEntry = 100
+	/*Left side neck visibly flexes.*/
+	XRFaceTrackerFtNeckFlexLeft XRFaceTrackerBlendShapeEntry = 101
+	/*Closes both eye lids.*/
+	XRFaceTrackerFtEyeClosed XRFaceTrackerBlendShapeEntry = 102
+	/*Widens both eye lids.*/
+	XRFaceTrackerFtEyeWide XRFaceTrackerBlendShapeEntry = 103
+	/*Squints both eye lids.*/
+	XRFaceTrackerFtEyeSquint XRFaceTrackerBlendShapeEntry = 104
+	/*Dilates both pupils.*/
+	XRFaceTrackerFtEyeDilation XRFaceTrackerBlendShapeEntry = 105
+	/*Constricts both pupils.*/
+	XRFaceTrackerFtEyeConstrict XRFaceTrackerBlendShapeEntry = 106
+	/*Pulls the right eyebrow down and in.*/
+	XRFaceTrackerFtBrowDownRight XRFaceTrackerBlendShapeEntry = 107
+	/*Pulls the left eyebrow down and in.*/
+	XRFaceTrackerFtBrowDownLeft XRFaceTrackerBlendShapeEntry = 108
+	/*Pulls both eyebrows down and in.*/
+	XRFaceTrackerFtBrowDown XRFaceTrackerBlendShapeEntry = 109
+	/*Right brow appears worried.*/
+	XRFaceTrackerFtBrowUpRight XRFaceTrackerBlendShapeEntry = 110
+	/*Left brow appears worried.*/
+	XRFaceTrackerFtBrowUpLeft XRFaceTrackerBlendShapeEntry = 111
+	/*Both brows appear worried.*/
+	XRFaceTrackerFtBrowUp XRFaceTrackerBlendShapeEntry = 112
+	/*Entire face sneers.*/
+	XRFaceTrackerFtNoseSneer XRFaceTrackerBlendShapeEntry = 113
+	/*Both nose canals dilate.*/
+	XRFaceTrackerFtNasalDilation XRFaceTrackerBlendShapeEntry = 114
+	/*Both nose canals constrict.*/
+	XRFaceTrackerFtNasalConstrict XRFaceTrackerBlendShapeEntry = 115
+	/*Puffs both cheeks.*/
+	XRFaceTrackerFtCheekPuff XRFaceTrackerBlendShapeEntry = 116
+	/*Sucks in both cheeks.*/
+	XRFaceTrackerFtCheekSuck XRFaceTrackerBlendShapeEntry = 117
+	/*Raises both cheeks.*/
+	XRFaceTrackerFtCheekSquint XRFaceTrackerBlendShapeEntry = 118
+	/*Tucks in the upper lips.*/
+	XRFaceTrackerFtLipSuckUpper XRFaceTrackerBlendShapeEntry = 119
+	/*Tucks in the lower lips.*/
+	XRFaceTrackerFtLipSuckLower XRFaceTrackerBlendShapeEntry = 120
+	/*Tucks in both lips.*/
+	XRFaceTrackerFtLipSuck XRFaceTrackerBlendShapeEntry = 121
+	/*Funnels in the upper lips.*/
+	XRFaceTrackerFtLipFunnelUpper XRFaceTrackerBlendShapeEntry = 122
+	/*Funnels in the lower lips.*/
+	XRFaceTrackerFtLipFunnelLower XRFaceTrackerBlendShapeEntry = 123
+	/*Funnels in both lips.*/
+	XRFaceTrackerFtLipFunnel XRFaceTrackerBlendShapeEntry = 124
+	/*Upper lip part pushes outwards.*/
+	XRFaceTrackerFtLipPuckerUpper XRFaceTrackerBlendShapeEntry = 125
+	/*Lower lip part pushes outwards.*/
+	XRFaceTrackerFtLipPuckerLower XRFaceTrackerBlendShapeEntry = 126
+	/*Lips push outwards.*/
+	XRFaceTrackerFtLipPucker XRFaceTrackerBlendShapeEntry = 127
+	/*Raises the upper lips.*/
+	XRFaceTrackerFtMouthUpperUp XRFaceTrackerBlendShapeEntry = 128
+	/*Lowers the lower lips.*/
+	XRFaceTrackerFtMouthLowerDown XRFaceTrackerBlendShapeEntry = 129
+	/*Mouth opens, revealing teeth.*/
+	XRFaceTrackerFtMouthOpen XRFaceTrackerBlendShapeEntry = 130
+	/*Moves mouth right.*/
+	XRFaceTrackerFtMouthRight XRFaceTrackerBlendShapeEntry = 131
+	/*Moves mouth left.*/
+	XRFaceTrackerFtMouthLeft XRFaceTrackerBlendShapeEntry = 132
+	/*Right side of the mouth smiles.*/
+	XRFaceTrackerFtMouthSmileRight XRFaceTrackerBlendShapeEntry = 133
+	/*Left side of the mouth smiles.*/
+	XRFaceTrackerFtMouthSmileLeft XRFaceTrackerBlendShapeEntry = 134
+	/*Mouth expresses a smile.*/
+	XRFaceTrackerFtMouthSmile XRFaceTrackerBlendShapeEntry = 135
+	/*Right side of the mouth expresses sadness.*/
+	XRFaceTrackerFtMouthSadRight XRFaceTrackerBlendShapeEntry = 136
+	/*Left side of the mouth expresses sadness.*/
+	XRFaceTrackerFtMouthSadLeft XRFaceTrackerBlendShapeEntry = 137
+	/*Mouth expresses sadness.*/
+	XRFaceTrackerFtMouthSad XRFaceTrackerBlendShapeEntry = 138
+	/*Mouth stretches.*/
+	XRFaceTrackerFtMouthStretch XRFaceTrackerBlendShapeEntry = 139
+	/*Lip corners dimple.*/
+	XRFaceTrackerFtMouthDimple XRFaceTrackerBlendShapeEntry = 140
+	/*Mouth tightens.*/
+	XRFaceTrackerFtMouthTightener XRFaceTrackerBlendShapeEntry = 141
+	/*Mouth presses together.*/
+	XRFaceTrackerFtMouthPress XRFaceTrackerBlendShapeEntry = 142
+	/*Represents the size of the [enum BlendShapeEntry] enum.*/
+	XRFaceTrackerFtMax XRFaceTrackerBlendShapeEntry = 143
+)
+
+type XRHandModifier3DBoneUpdate = classdb.XRHandModifier3DBoneUpdate
+
+const (
+	/*The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.*/
+	XRHandModifier3DBoneUpdateFull XRHandModifier3DBoneUpdate = 0
+	/*The skeleton's bones are only rotated to align with the tracked bones, preserving bone length.*/
+	XRHandModifier3DBoneUpdateRotationOnly XRHandModifier3DBoneUpdate = 1
+	/*Represents the size of the [enum BoneUpdate] enum.*/
+	XRHandModifier3DBoneUpdateMax XRHandModifier3DBoneUpdate = 2
+)
+
+type XRHandTrackerHandTrackingSource = classdb.XRHandTrackerHandTrackingSource
+
+const (
+	/*The source of hand tracking data is unknown.*/
+	XRHandTrackerHandTrackingSourceUnknown XRHandTrackerHandTrackingSource = 0
+	/*The source of hand tracking data is unobstructed, meaning that an accurate method of hand tracking is used. These include optical hand tracking, data gloves, etc.*/
+	XRHandTrackerHandTrackingSourceUnobstructed XRHandTrackerHandTrackingSource = 1
+	/*The source of hand tracking data is a controller, meaning that joint positions are inferred from controller inputs.*/
+	XRHandTrackerHandTrackingSourceController XRHandTrackerHandTrackingSource = 2
+	/*Represents the size of the [enum HandTrackingSource] enum.*/
+	XRHandTrackerHandTrackingSourceMax XRHandTrackerHandTrackingSource = 3
+)
+
+type XRHandTrackerHandJoint = classdb.XRHandTrackerHandJoint
+
+const (
+	/*Palm joint.*/
+	XRHandTrackerHandJointPalm XRHandTrackerHandJoint = 0
+	/*Wrist joint.*/
+	XRHandTrackerHandJointWrist XRHandTrackerHandJoint = 1
+	/*Thumb metacarpal joint.*/
+	XRHandTrackerHandJointThumbMetacarpal XRHandTrackerHandJoint = 2
+	/*Thumb phalanx proximal joint.*/
+	XRHandTrackerHandJointThumbPhalanxProximal XRHandTrackerHandJoint = 3
+	/*Thumb phalanx distal joint.*/
+	XRHandTrackerHandJointThumbPhalanxDistal XRHandTrackerHandJoint = 4
+	/*Thumb tip joint.*/
+	XRHandTrackerHandJointThumbTip XRHandTrackerHandJoint = 5
+	/*Index finger metacarpal joint.*/
+	XRHandTrackerHandJointIndexFingerMetacarpal XRHandTrackerHandJoint = 6
+	/*Index finger phalanx proximal joint.*/
+	XRHandTrackerHandJointIndexFingerPhalanxProximal XRHandTrackerHandJoint = 7
+	/*Index finger phalanx intermediate joint.*/
+	XRHandTrackerHandJointIndexFingerPhalanxIntermediate XRHandTrackerHandJoint = 8
+	/*Index finger phalanx distal joint.*/
+	XRHandTrackerHandJointIndexFingerPhalanxDistal XRHandTrackerHandJoint = 9
+	/*Index finger tip joint.*/
+	XRHandTrackerHandJointIndexFingerTip XRHandTrackerHandJoint = 10
+	/*Middle finger metacarpal joint.*/
+	XRHandTrackerHandJointMiddleFingerMetacarpal XRHandTrackerHandJoint = 11
+	/*Middle finger phalanx proximal joint.*/
+	XRHandTrackerHandJointMiddleFingerPhalanxProximal XRHandTrackerHandJoint = 12
+	/*Middle finger phalanx intermediate joint.*/
+	XRHandTrackerHandJointMiddleFingerPhalanxIntermediate XRHandTrackerHandJoint = 13
+	/*Middle finger phalanx distal joint.*/
+	XRHandTrackerHandJointMiddleFingerPhalanxDistal XRHandTrackerHandJoint = 14
+	/*Middle finger tip joint.*/
+	XRHandTrackerHandJointMiddleFingerTip XRHandTrackerHandJoint = 15
+	/*Ring finger metacarpal joint.*/
+	XRHandTrackerHandJointRingFingerMetacarpal XRHandTrackerHandJoint = 16
+	/*Ring finger phalanx proximal joint.*/
+	XRHandTrackerHandJointRingFingerPhalanxProximal XRHandTrackerHandJoint = 17
+	/*Ring finger phalanx intermediate joint.*/
+	XRHandTrackerHandJointRingFingerPhalanxIntermediate XRHandTrackerHandJoint = 18
+	/*Ring finger phalanx distal joint.*/
+	XRHandTrackerHandJointRingFingerPhalanxDistal XRHandTrackerHandJoint = 19
+	/*Ring finger tip joint.*/
+	XRHandTrackerHandJointRingFingerTip XRHandTrackerHandJoint = 20
+	/*Pinky finger metacarpal joint.*/
+	XRHandTrackerHandJointPinkyFingerMetacarpal XRHandTrackerHandJoint = 21
+	/*Pinky finger phalanx proximal joint.*/
+	XRHandTrackerHandJointPinkyFingerPhalanxProximal XRHandTrackerHandJoint = 22
+	/*Pinky finger phalanx intermediate joint.*/
+	XRHandTrackerHandJointPinkyFingerPhalanxIntermediate XRHandTrackerHandJoint = 23
+	/*Pinky finger phalanx distal joint.*/
+	XRHandTrackerHandJointPinkyFingerPhalanxDistal XRHandTrackerHandJoint = 24
+	/*Pinky finger tip joint.*/
+	XRHandTrackerHandJointPinkyFingerTip XRHandTrackerHandJoint = 25
+	/*Represents the size of the [enum HandJoint] enum.*/
+	XRHandTrackerHandJointMax XRHandTrackerHandJoint = 26
+)
+
+type XRHandTrackerHandJointFlags = classdb.XRHandTrackerHandJointFlags
+
+const (
+	/*The hand joint's orientation data is valid.*/
+	XRHandTrackerHandJointFlagOrientationValid XRHandTrackerHandJointFlags = 1
+	/*The hand joint's orientation is actively tracked. May not be set if tracking has been temporarily lost.*/
+	XRHandTrackerHandJointFlagOrientationTracked XRHandTrackerHandJointFlags = 2
+	/*The hand joint's position data is valid.*/
+	XRHandTrackerHandJointFlagPositionValid XRHandTrackerHandJointFlags = 4
+	/*The hand joint's position is actively tracked. May not be set if tracking has been temporarily lost.*/
+	XRHandTrackerHandJointFlagPositionTracked XRHandTrackerHandJointFlags = 8
+	/*The hand joint's linear velocity data is valid.*/
+	XRHandTrackerHandJointFlagLinearVelocityValid XRHandTrackerHandJointFlags = 16
+	/*The hand joint's angular velocity data is valid.*/
+	XRHandTrackerHandJointFlagAngularVelocityValid XRHandTrackerHandJointFlags = 32
+)
+
 type XRInterfaceCapabilities = classdb.XRInterfaceCapabilities
 
 const (
@@ -11825,7 +12919,7 @@ const (
 	XRInterfaceXrPlayAreaSitting XRInterfacePlayAreaMode = 2
 	/*Player is free to move around, full positional tracking.*/
 	XRInterfaceXrPlayAreaRoomscale XRInterfacePlayAreaMode = 3
-	/*Same as [constant XR_PLAY_AREA_ROOMSCALE] but origin point is fixed to the center of the physical space, [method XRServer.center_on_hmd] disabled.*/
+	/*Same as [constant XR_PLAY_AREA_ROOMSCALE] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [method XRServer.center_on_hmd].*/
 	XRInterfaceXrPlayAreaStage XRInterfacePlayAreaMode = 4
 )
 
@@ -11847,7 +12941,7 @@ const (
 	XRPoseXrTrackingConfidenceNone XRPoseTrackingConfidence = 0
 	/*Tracking information may be inaccurate or estimated. For example, with inside out tracking this would indicate a controller may be (partially) obscured.*/
 	XRPoseXrTrackingConfidenceLow XRPoseTrackingConfidence = 1
-	/*Tracking information is deemed accurate and up to date.*/
+	/*Tracking information is considered accurate and up to date.*/
 	XRPoseXrTrackingConfidenceHigh XRPoseTrackingConfidence = 2
 )
 
@@ -11860,6 +12954,8 @@ const (
 	XRPositionalTrackerTrackerHandLeft XRPositionalTrackerTrackerHand = 1
 	/*This tracker is the right hand controller.*/
 	XRPositionalTrackerTrackerHandRight XRPositionalTrackerTrackerHand = 2
+	/*Represents the size of the [enum TrackerHand] enum.*/
+	XRPositionalTrackerTrackerHandMax XRPositionalTrackerTrackerHand = 3
 )
 
 type XRServerTrackerType = classdb.XRServerTrackerType
@@ -11873,6 +12969,12 @@ const (
 	XRServerTrackerBasestation XRServerTrackerType = 4
 	/*The tracker tracks the location and size of an AR anchor.*/
 	XRServerTrackerAnchor XRServerTrackerType = 8
+	/*The tracker tracks the location and joints of a hand.*/
+	XRServerTrackerHand XRServerTrackerType = 16
+	/*The tracker tracks the location and joints of a body.*/
+	XRServerTrackerBody XRServerTrackerType = 32
+	/*The tracker tracks the expressions of a face.*/
+	XRServerTrackerFace XRServerTrackerType = 64
 	/*Used internally to filter trackers of any known type.*/
 	XRServerTrackerAnyKnown XRServerTrackerType = 127
 	/*Used internally if we haven't set the tracker type yet.*/

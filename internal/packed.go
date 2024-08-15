@@ -211,6 +211,28 @@ func (p PackedVector3Array) UnsafePointer() unsafe.Pointer {
 	return mmm.API(p).PackedVector3Array.UnsafePointer(p)
 }
 
+type PackedVector4Array mmm.Pointer[API, PackedVector4Array, [2]uintptr]
+
+func (p PackedVector4Array) Index(idx Int) Vector4 {
+	return mmm.API(p).PackedVector4Array.Index(p, idx)
+}
+
+func (p PackedVector4Array) SetIndex(idx Int, value Vector4) {
+	mmm.API(p).PackedVector4Array.SetIndex(p, idx, value)
+}
+
+func (p PackedVector4Array) Free() {
+	var frame = callframe.New()
+	mmm.API(p).typeset.destruct.PackedVector4Array(callframe.Arg(frame, mmm.End(p)).Uintptr())
+	frame.Free()
+}
+
+func (p PackedVector4Array) Len() int { return int(p.Size()) }
+func (p PackedVector4Array) Cap() int { return int(p.Size()) }
+func (p PackedVector4Array) UnsafePointer() unsafe.Pointer {
+	return mmm.API(p).PackedVector4Array.UnsafePointer(p)
+}
+
 type PackedColorArray mmm.Pointer[API, PackedColorArray, [2]uintptr]
 
 func (p PackedColorArray) Index(idx Int) Color {
@@ -345,6 +367,22 @@ func (godot Lifetime) PackedVector3Slice(data []Vector3) PackedVector3Array {
 	var array = godot.PackedVector3Array()
 	array.Resize(Int(len(data)))
 	copy(unsafe.Slice((*Vector3)(array.UnsafePointer()), len(data)), data)
+	return array
+}
+
+func (godot Lifetime) PackedVector4Array() PackedVector4Array {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	godot.API.typeset.creation.PackedVector4Array[0](r_ret.Uintptr(), callframe.Args{})
+	var raw = r_ret.Get()
+	frame.Free()
+	return mmm.New[PackedVector4Array](godot.Lifetime, godot.API, raw)
+}
+
+func (godot Lifetime) PackedVector4Slice(data []Vector4) PackedVector4Array {
+	var array = godot.PackedVector4Array()
+	array.Resize(Int(len(data)))
+	copy(unsafe.Slice((*Vector4)(array.UnsafePointer()), len(data)), data)
 	return array
 }
 

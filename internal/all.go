@@ -24,6 +24,8 @@ type Key int64
 
 type KeyModifierMask int64
 
+type KeyLocation int64
+
 type MouseButton int64
 
 type MouseButtonMask int64
@@ -235,8 +237,10 @@ const (
 	TypePackedVector3Array VariantType = 36
 	/*Variable is of type [PackedColorArray].*/
 	TypePackedColorArray VariantType = 37
+	/*Variable is of type [PackedVector4Array].*/
+	TypePackedVector4Array VariantType = 38
 	/*Represents the size of the [enum Variant.Type] enum.*/
-	TypeMax VariantType = 38
+	TypeMax VariantType = 39
 )
 
 type VariantOperator int64
@@ -1492,7 +1496,7 @@ type ProjectionPlanes int64
 /*
 Performs a case-sensitive comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" and "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method filecasecmp_to], and [method naturalcasecmp_to].
 */
 //go:nosplit
 func (self String) CasecmpTo(to String) Int {
@@ -1510,7 +1514,7 @@ func (self String) CasecmpTo(to String) Int {
 /*
 Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method filenocasecmp_to], and [method naturalnocasecmp_to].
 */
 //go:nosplit
 func (self String) NocasecmpTo(to String) Int {
@@ -1529,7 +1533,7 @@ func (self String) NocasecmpTo(to String) Int {
 Performs a [b]case-sensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method filecasecmp_to], and [method nocasecmp_to].
 */
 //go:nosplit
 func (self String) NaturalcasecmpTo(to String) Int {
@@ -1548,7 +1552,7 @@ func (self String) NaturalcasecmpTo(to String) Int {
 Performs a [b]case-insensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method filenocasecmp_to], and [method casecmp_to].
 */
 //go:nosplit
 func (self String) NaturalnocasecmpTo(to String) Int {
@@ -1558,6 +1562,40 @@ func (self String) NaturalnocasecmpTo(to String) Int {
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.String.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Like [method naturalcasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filenocasecmp_to], [method naturalcasecmp_to], and [method casecmp_to].
+*/
+//go:nosplit
+func (self String) FilecasecmpTo(to String) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.String.filecasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Like [method naturalnocasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filecasecmp_to], [method naturalnocasecmp_to], and [method nocasecmp_to].
+*/
+//go:nosplit
+func (self String) FilenocasecmpTo(to String) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.String.filenocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1686,6 +1724,23 @@ func (self String) Find(what String, from Int) Int {
 }
 
 /*
+Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
+*/
+//go:nosplit
+func (self String) Findn(what String, from Int) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.String.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
 //go:nosplit
@@ -1716,23 +1771,6 @@ func (self String) Countn(what String, from Int, to Int) Int {
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.String.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
-*/
-//go:nosplit
-func (self String) Findn(what String, from Int) Int {
-	var selfPtr = self
-	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(what))
-	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(self).builtin.String.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2008,7 +2046,7 @@ func (self String) Repeat(ctx Lifetime, count Int) String {
 }
 
 /*
-Returns the copy of this string in reverse order.
+Returns the copy of this string in reverse order. This operation works on unicode codepoints, rather than sequences of codepoints, and may break things like compound letters or emojis.
 */
 //go:nosplit
 func (self String) Reverse(ctx Lifetime) String {
@@ -2650,7 +2688,7 @@ GD.Print("Node".Contains("de")); // Prints true
 GD.Print("team".Contains("I"));  // Prints false
 [/csharp]
 [/codeblocks]
-If you need to know where [param what] is within the string, use [method find].
+If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
 */
 //go:nosplit
 func (self String) Contains(what String) bool {
@@ -2660,6 +2698,23 @@ func (self String) Contains(what String) bool {
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.String.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the string contains [param what], [b]ignoring case[/b].
+If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
+*/
+//go:nosplit
+func (self String) Containsn(what String) bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.String.containsn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3472,7 +3527,7 @@ func (self String) HumanizeSize(ctx Lifetime, size Int) String {
 /*
 Performs a case-sensitive comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" and "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method nocasecmp_to], [method filecasecmp_to], and [method naturalcasecmp_to].
 */
 //go:nosplit
 func (self StringName) CasecmpTo(to String) Int {
@@ -3490,7 +3545,7 @@ func (self StringName) CasecmpTo(to String) Int {
 /*
 Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method naturalcasecmp_to], and [method naturalnocasecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method casecmp_to], [method filenocasecmp_to], and [method naturalnocasecmp_to].
 */
 //go:nosplit
 func (self StringName) NocasecmpTo(to String) Int {
@@ -3509,7 +3564,7 @@ func (self StringName) NocasecmpTo(to String) Int {
 Performs a [b]case-sensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalnocasecmp_to], [method filecasecmp_to], and [method nocasecmp_to].
 */
 //go:nosplit
 func (self StringName) NaturalcasecmpTo(to String) Int {
@@ -3528,7 +3583,7 @@ func (self StringName) NaturalcasecmpTo(to String) Int {
 Performs a [b]case-insensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
-To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method nocasecmp_to], and [method casecmp_to].
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method naturalcasecmp_to], [method filenocasecmp_to], and [method casecmp_to].
 */
 //go:nosplit
 func (self StringName) NaturalnocasecmpTo(to String) Int {
@@ -3538,6 +3593,40 @@ func (self StringName) NaturalnocasecmpTo(to String) Int {
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.StringName.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Like [method naturalcasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filenocasecmp_to], [method naturalcasecmp_to], and [method casecmp_to].
+*/
+//go:nosplit
+func (self StringName) FilecasecmpTo(to String) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.StringName.filecasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Like [method naturalnocasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
+To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filecasecmp_to], [method naturalnocasecmp_to], and [method nocasecmp_to].
+*/
+//go:nosplit
+func (self StringName) FilenocasecmpTo(to String) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(to))
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.StringName.filenocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3666,6 +3755,23 @@ func (self StringName) Find(what String, from Int) Int {
 }
 
 /*
+Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
+*/
+//go:nosplit
+func (self StringName) Findn(what String, from Int) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.StringName.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
 //go:nosplit
@@ -3696,23 +3802,6 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.StringName.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
-*/
-//go:nosplit
-func (self StringName) Findn(what String, from Int) Int {
-	var selfPtr = self
-	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(what))
-	callframe.Arg(frame, from)
-	var r_ret = callframe.Ret[Int](frame)
-	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
-	mmm.API(self).builtin.StringName.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3981,7 +4070,7 @@ func (self StringName) Repeat(ctx Lifetime, count Int) String {
 }
 
 /*
-Returns the copy of this string in reverse order.
+Returns the copy of this string in reverse order. This operation works on unicode codepoints, rather than sequences of codepoints, and may break things like compound letters or emojis.
 */
 //go:nosplit
 func (self StringName) Reverse(ctx Lifetime) String {
@@ -4607,7 +4696,7 @@ GD.Print("Node".Contains("de")); // Prints true
 GD.Print("team".Contains("I"));  // Prints false
 [/csharp]
 [/codeblocks]
-If you need to know where [param what] is within the string, use [method find].
+If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
 */
 //go:nosplit
 func (self StringName) Contains(what String) bool {
@@ -4617,6 +4706,23 @@ func (self StringName) Contains(what String) bool {
 	var r_ret = callframe.Ret[bool](frame)
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.StringName.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the string contains [param what], [b]ignoring case[/b].
+If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
+*/
+//go:nosplit
+func (self StringName) Containsn(what String) bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(what))
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.StringName.containsn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5314,7 +5420,7 @@ func (self StringName) Hash() Int {
 }
 
 /*
-Returns [code]true[/code] if the node path is absolute (as opposed to relative), which means that it starts with a slash character ([code]/[/code]). Absolute node paths can be used to access the root node ([code]"/root"[/code]) or autoloads (e.g. [code]"/global"[/code] if a "global" autoload was registered).
+Returns [code]true[/code] if the node path is absolute. Unlike a relative path, an absolute path is represented by a leading slash character ([code]/[/code]) and always begins from the [SceneTree]. It can be used to reliably access nodes from the root node (e.g. [code]"/root/Global"[/code] if an autoload named "Global" exists).
 */
 //go:nosplit
 func (self NodePath) IsAbsolute() bool {
@@ -5329,8 +5435,8 @@ func (self NodePath) IsAbsolute() bool {
 }
 
 /*
-Gets the number of node names which make up the path. Subnames (see [method get_subname_count]) are not included.
-For example, [code]"Path2D/PathFollow2D/Sprite2D"[/code] has 3 names.
+Returns the number of node names in the path. Property subnames are not included.
+For example, [code]"../RigidBody2D/Sprite2D:texture"[/code] contains 3 node names.
 */
 //go:nosplit
 func (self NodePath) GetNameCount() Int {
@@ -5345,19 +5451,19 @@ func (self NodePath) GetNameCount() Int {
 }
 
 /*
-Gets the node name indicated by [param idx] (0 to [method get_name_count] - 1).
+Returns the node name indicated by [param idx], starting from 0. If [param idx] is out of bounds, an error is generated. See also [method get_subname_count] and [method get_name_count].
 [codeblocks]
 [gdscript]
-var node_path = NodePath("Path2D/PathFollow2D/Sprite2D")
-print(node_path.get_name(0)) # Path2D
-print(node_path.get_name(1)) # PathFollow2D
-print(node_path.get_name(2)) # Sprite
+var sprite_path = NodePath("../RigidBody2D/Sprite2D")
+print(sprite_path.get_name(0)) # Prints "..".
+print(sprite_path.get_name(1)) # Prints "RigidBody2D".
+print(sprite_path.get_name(2)) # Prints "Sprite".
 [/gdscript]
 [csharp]
-var nodePath = new NodePath("Path2D/PathFollow2D/Sprite2D");
-GD.Print(nodePath.GetName(0)); // Path2D
-GD.Print(nodePath.GetName(1)); // PathFollow2D
-GD.Print(nodePath.GetName(2)); // Sprite
+var spritePath = new NodePath("../RigidBody2D/Sprite2D");
+GD.Print(spritePath.GetName(0)); // Prints "..".
+GD.Print(spritePath.GetName(1)); // Prints "PathFollow2D".
+GD.Print(spritePath.GetName(2)); // Prints "Sprite".
 [/csharp]
 [/codeblocks]
 */
@@ -5375,8 +5481,8 @@ func (self NodePath) GetName(ctx Lifetime, idx Int) StringName {
 }
 
 /*
-Gets the number of resource or property names ("subnames") in the path. Each subname is listed after a colon character ([code]:[/code]) in the node path.
-For example, [code]"Path2D/PathFollow2D/Sprite2D:texture:load_path"[/code] has 2 subnames.
+Returns the number of property names ("subnames") in the path. Each subname in the node path is listed after a colon character ([code]:[/code]).
+For example, [code]"Level/RigidBody2D/Sprite2D:texture:resource_name"[/code] contains 2 subnames.
 */
 //go:nosplit
 func (self NodePath) GetSubnameCount() Int {
@@ -5391,7 +5497,8 @@ func (self NodePath) GetSubnameCount() Int {
 }
 
 /*
-Returns the 32-bit hash value representing the [NodePath]'s contents.
+Returns the 32-bit hash value representing the node path's contents.
+[b]Note:[/b] Node paths with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. Node paths with different hash values are guaranteed to be different.
 */
 //go:nosplit
 func (self NodePath) Hash() Int {
@@ -5406,17 +5513,17 @@ func (self NodePath) Hash() Int {
 }
 
 /*
-Gets the resource or property name indicated by [param idx] (0 to [method get_subname_count] - 1).
+Returns the property name indicated by [param idx], starting from 0. If [param idx] is out of bounds, an error is generated. See also [method get_subname_count].
 [codeblocks]
 [gdscript]
-var node_path = NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path")
-print(node_path.get_subname(0)) # texture
-print(node_path.get_subname(1)) # load_path
+var path_to_name = NodePath("Sprite2D:texture:resource_name")
+print(path_to_name.get_subname(0)) # Prints "texture".
+print(path_to_name.get_subname(1)) # Prints "resource_name".
 [/gdscript]
 [csharp]
-var nodePath = new NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path");
-GD.Print(nodePath.GetSubname(0)); // texture
-GD.Print(nodePath.GetSubname(1)); // load_path
+var pathToName = new NodePath("Sprite2D:texture:resource_name");
+GD.Print(pathToName.GetSubname(0)); // Prints "texture".
+GD.Print(pathToName.GetSubname(1)); // Prints "resource_name".
 [/csharp]
 [/codeblocks]
 */
@@ -5434,7 +5541,7 @@ func (self NodePath) GetSubname(ctx Lifetime, idx Int) StringName {
 }
 
 /*
-Returns all paths concatenated with a slash character ([code]/[/code]) as separator without subnames.
+Returns all node names concatenated with a slash character ([code]/[/code]) as a single [StringName].
 */
 //go:nosplit
 func (self NodePath) GetConcatenatedNames(ctx Lifetime) StringName {
@@ -5449,15 +5556,15 @@ func (self NodePath) GetConcatenatedNames(ctx Lifetime) StringName {
 }
 
 /*
-Returns all subnames concatenated with a colon character ([code]:[/code]) as separator, i.e. the right side of the first colon in a node path.
+Returns all property subnames concatenated with a colon character ([code]:[/code]) as a single [StringName].
 [codeblocks]
 [gdscript]
-var node_path = NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path")
-print(node_path.get_concatenated_subnames()) # texture:load_path
+var node_path = ^"Sprite2D:texture:resource_name"
+print(node_path.get_concatenated_subnames()) # Prints "texture:resource_name".
 [/gdscript]
 [csharp]
-var nodePath = new NodePath("Path2D/PathFollow2D/Sprite2D:texture:load_path");
-GD.Print(nodePath.GetConcatenatedSubnames()); // texture:load_path
+var nodePath = new NodePath("Sprite2D:texture:resource_name");
+GD.Print(nodePath.GetConcatenatedSubnames()); // Prints "texture:resource_name".
 [/csharp]
 [/codeblocks]
 */
@@ -5474,21 +5581,42 @@ func (self NodePath) GetConcatenatedSubnames(ctx Lifetime) StringName {
 }
 
 /*
-Returns a node path with a colon character ([code]:[/code]) prepended, transforming it to a pure property path with no node name (defaults to resolving from the current node).
+Returns the slice of the [NodePath], from [param begin] (inclusive) to [param end] (exclusive), as a new [NodePath].
+The absolute value of [param begin] and [param end] will be clamped to the sum of [method get_name_count] and [method get_subname_count], so the default value for [param end] makes it slice to the end of the [NodePath] by default (i.e. [code]path.slice(1)[/code] is a shorthand for [code]path.slice(1, path.get_name_count() + path.get_subname_count())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the [NodePath] (i.e. [code]path.slice(0, -2)[/code] is a shorthand for [code]path.slice(0, path.get_name_count() + path.get_subname_count() - 2)[/code]).
+*/
+//go:nosplit
+func (self NodePath) Slice(ctx Lifetime, begin Int, end Int) NodePath {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.NodePath.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = mmm.New[NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a copy of this node path with a colon character ([code]:[/code]) prefixed, transforming it to a pure property path with no node names (relative to the current node).
 [codeblocks]
 [gdscript]
-# This will be parsed as a node path to the "x" property in the "position" node.
-var node_path = NodePath("position:x")
-# This will be parsed as a node path to the "x" component of the "position" property in the current node.
+# node_path points to the "x" property of the child node named "position".
+var node_path = ^"position:x"
+
+# property_path points to the "position" in the "x" axis of this node.
 var property_path = node_path.get_as_property_path()
-print(property_path) # :position:x
+print(property_path) # Prints ":position:x"
 [/gdscript]
 [csharp]
-// This will be parsed as a node path to the "x" property in the "position" node.
+// nodePath points to the "x" property of the child node named "position".
 var nodePath = new NodePath("position:x");
-// This will be parsed as a node path to the "x" component of the "position" property in the current node.
+
+// propertyPath points to the "position" in the "x" axis of this node.
 NodePath propertyPath = nodePath.GetAsPropertyPath();
-GD.Print(propertyPath); // :position:x
+GD.Print(propertyPath); // Prints ":position:x".
 [/csharp]
 [/codeblocks]
 */
@@ -5505,7 +5633,7 @@ func (self NodePath) GetAsPropertyPath(ctx Lifetime) NodePath {
 }
 
 /*
-Returns [code]true[/code] if the node path is empty.
+Returns [code]true[/code] if the node path has been constructed from an empty [String] ([code]""[/code]).
 */
 //go:nosplit
 func (self NodePath) IsEmpty() bool {
@@ -5515,6 +5643,22 @@ func (self NodePath) IsEmpty() bool {
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.NodePath.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Creates a new [Callable] for the method named [param method] in the specified [param variant]. To represent a method of a built-in [Variant] type, a custom callable is used (see [method is_custom]). If [param variant] is [Object], then a standard callable will be created instead.
+[b]Note:[/b] This method is always necessary for the [Dictionary] type, as property syntax is used to access its entries. You may also use this method when [param variant]'s type is not known in advance (for polymorphism).
+*/
+//go:nosplit
+func (self Callable) Create(ctx Lifetime, variant Variant, method StringName) Callable {
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(variant))
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	ctx.API.builtin.Callable.create(0, frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = mmm.New[Callable](ctx.Lifetime, ctx.API, r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -5551,7 +5695,11 @@ func (self Callable) IsNull() bool {
 }
 
 /*
-Returns [code]true[/code] if this [Callable] is a custom callable. Custom callables are created from [method bind] or [method unbind]. In GDScript, lambda functions are also custom callables.
+Returns [code]true[/code] if this [Callable] is a custom callable. Custom callables are used:
+- for binding/unbinding arguments (see [method bind] and [method unbind]);
+- for representing methods of built-in [Variant] types (see [method create]);
+- for representing global, lambda, and RPC functions in GDScript;
+- for other purposes in the core, GDExtension, and C#.
 */
 //go:nosplit
 func (self Callable) IsCustom() bool {
@@ -5637,6 +5785,21 @@ func (self Callable) GetMethod(ctx Lifetime) StringName {
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.Callable.get_method(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = mmm.New[StringName](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the total number of arguments this [Callable] should take, including optional arguments. This means that any arguments bound with [method bind] are [i]subtracted[/i] from the result, and any arguments unbound with [method unbind] are [i]added[/i] to the result.
+*/
+//go:nosplit
+func (self Callable) GetArgumentCount() Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.Callable.get_argument_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -5746,10 +5909,18 @@ func (self Callable) Call(ctx Lifetime, args ...Variant) Variant {
 
 /*
 Calls the method represented by this [Callable] in deferred mode, i.e. at the end of the current frame. Arguments can be passed and should match the method's signature.
-[codeblock]
+[codeblocks]
+[gdscript]
 func _ready():
     grab_focus.call_deferred()
-[/codeblock]
+[/gdscript]
+[csharp]
+public override void _Ready()
+{
+    Callable.From(GrabFocus).CallDeferred();
+}
+[/csharp]
+[/codeblocks]
 [b]Note:[/b] Deferred calls are processed at idle time. Idle time happens mainly at the end of process and physics frames. In it, deferred calls will be run until there are none left, which means you can defer calls from other deferred calls and they'll still be run in the current idle time cycle. This means you should not call a method deferred from itself (or from a method called by it), as this causes infinite recursion the same way as if you had called the method directly.
 See also [method Object.call_deferred].
 */
@@ -6063,6 +6234,32 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 }
 
 /*
+Returns a copy of this dictionary merged with the other [param dictionary]. By default, duplicate keys are not copied over, unless [param overwrite] is [code]true[/code]. See also [method merge].
+This method is useful for quickly making dictionaries with default values:
+[codeblock]
+var base = { "fruit": "apple", "vegetable": "potato" }
+var extra = { "fruit": "orange", "dressing": "vinegar" }
+# Prints { "fruit": "orange", "vegetable": "potato", "dressing": "vinegar" }
+print(extra.merged(base))
+# Prints { "fruit": "apple", "vegetable": "potato", "dressing": "vinegar" }
+print(extra.merged(base, true))
+[/codeblock]
+*/
+//go:nosplit
+func (self Dictionary) Merged(ctx Lifetime, dictionary Dictionary, overwrite bool) Dictionary {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(dictionary))
+	callframe.Arg(frame, overwrite)
+	var r_ret = callframe.Ret[uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.Dictionary.merged(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = mmm.New[Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
 Returns [code]true[/code] if the dictionary contains an entry with the given [param key].
 [codeblocks]
 [gdscript]
@@ -6257,6 +6454,23 @@ func (self Dictionary) Get(ctx Lifetime, key Variant, def Variant) Variant {
 }
 
 /*
+Gets a value and ensures the key is set. If the [param key] exists in the dictionary, this behaves like [method get]. Otherwise, the [param default] value is inserted into the dictionary and returned.
+*/
+//go:nosplit
+func (self Dictionary) GetOrAdd(ctx Lifetime, key Variant, def Variant) Variant {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(key))
+	callframe.Arg(frame, mmm.Get(def))
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.Dictionary.get_or_add(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = mmm.New[Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
 Makes the dictionary read-only, i.e. disables modification of the dictionary's contents. Does not apply to nested content, e.g. content of nested dictionaries.
 */
 //go:nosplit
@@ -6285,7 +6499,24 @@ func (self Dictionary) IsReadOnly() bool {
 }
 
 /*
-Returns the number of elements in the array.
+Returns [code]true[/code] if the two dictionaries contain the same keys and values, inner [Dictionary] and [Array] keys and values are compared recursively.
+*/
+//go:nosplit
+func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int) bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(dictionary))
+	callframe.Arg(frame, recursion_count)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(self).builtin.Dictionary.recursive_equal(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the number of elements in the array. Empty arrays ([code][][/code]) always return [code]0[/code]. See also [method is_empty].
 */
 //go:nosplit
 func (self Array) Size() Int {
@@ -6300,7 +6531,7 @@ func (self Array) Size() Int {
 }
 
 /*
-Returns [code]true[/code] if the array is empty.
+Returns [code]true[/code] if the array is empty ([code][][/code]). See also [method size].
 */
 //go:nosplit
 func (self Array) IsEmpty() bool {
@@ -6315,7 +6546,7 @@ func (self Array) IsEmpty() bool {
 }
 
 /*
-Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+Removes all elements from the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
 func (self Array) Clear() {
@@ -6329,7 +6560,7 @@ func (self Array) Clear() {
 
 /*
 Returns a hashed 32-bit integer value representing the array and its contents.
-[b]Note:[/b] [Array]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the arrays are equal, because different arrays can have identical hash values due to hash collisions.
+[b]Note:[/b] Arrays with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, arrays with different hash values are guaranteed to be different.
 */
 //go:nosplit
 func (self Array) Hash() Int {
@@ -6373,7 +6604,7 @@ func (self Array) PushBack(value Variant) {
 
 /*
 Adds an element at the beginning of the array. See also [method push_back].
-[b]Note:[/b] On large arrays, this method is much slower than [method push_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method push_front] will be.
+[b]Note:[/b] This method shifts every other element's index forward, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
 func (self Array) PushFront(value Variant) {
@@ -6387,7 +6618,7 @@ func (self Array) PushFront(value Variant) {
 }
 
 /*
-Appends an element at the end of the array (alias of [method push_back]).
+Appends [param value] at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
 func (self Array) Append(value Variant) {
@@ -6401,12 +6632,12 @@ func (self Array) Append(value Variant) {
 }
 
 /*
-Appends another array at the end of this array.
+Appends another [param array] at the end of this array.
 [codeblock]
-var array1 = [1, 2, 3]
-var array2 = [4, 5, 6]
-array1.append_array(array2)
-print(array1) # Prints [1, 2, 3, 4, 5, 6].
+var numbers = [1, 2, 3]
+var extra = [4, 5, 6]
+numbers.append_array(extra)
+print(nums) # Prints [1, 2, 3, 4, 5, 6]
 [/codeblock]
 */
 //go:nosplit
@@ -6421,9 +6652,9 @@ func (self Array) AppendArray(array Array) {
 }
 
 /*
-Resizes the array to contain a different number of elements. If the array size is smaller, elements are cleared, if bigger, new elements are [code]null[/code]. Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
-Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
-[b]Note:[/b] This method acts in-place and doesn't return a modified array.
+Sets the array's number of elements to [param size]. If [param size] is smaller than the array's current size, the elements at the end are removed. If [param size] is greater, new default elements (usually [code]null[/code]) are added, depending on the array's type.
+Returns [constant OK] on success, or one of the other [enum Error] constants if this method fails.
+[b]Note:[/b] Calling this method once and assigning the new values is faster than calling [method append] for every new element.
 */
 //go:nosplit
 func (self Array) Resize(size Int) Int {
@@ -6439,9 +6670,9 @@ func (self Array) Resize(size Int) Int {
 }
 
 /*
-Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]pos == size()[/code]). Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
-[b]Note:[/b] This method acts in-place and doesn't return a modified array.
-[b]Note:[/b] On large arrays, this method will be slower if the inserted element is close to the beginning of the array (index 0). This is because all elements placed after the newly inserted element have to be reindexed.
+Inserts a new element ([param value]) at a given index ([param position]) in the array. [param position] should be between [code]0[/code] and the array's [method size].
+Returns [constant OK] on success, or one of the other [enum Error] constants if this method fails.
+[b]Note:[/b] Every element's index after [param position] needs to be shifted forward, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
 func (self Array) Insert(position Int, value Variant) Int {
@@ -6458,10 +6689,10 @@ func (self Array) Insert(position Int, value Variant) Int {
 }
 
 /*
-Removes an element from the array by index. If the index does not exist in the array, nothing happens. To remove an element by searching for its value, use [method erase] instead.
-[b]Note:[/b] This method acts in-place and doesn't return a modified array.
-[b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
-[b]Note:[/b] [param position] cannot be negative. To remove an element relative to the end of the array, use [code]arr.remove_at(arr.size() - (i + 1))[/code]. To remove the last element from the array without returning the value, use [code]arr.resize(arr.size() - 1)[/code].
+Removes the element from the array at the given index ([param position]). If the index is out of bounds, this method fails.
+If you need to return the removed element, use [method pop_at]. To remove an element by value, use [method erase] instead.
+[b]Note:[/b] This method shifts every element's index after [param position] back, which may have a noticeable performance cost, especially on larger arrays.
+[b]Note:[/b] The [param position] cannot be negative. To remove an element relative to the end of the array, use [code]arr.remove_at(arr.size() - (i + 1))[/code]. To remove the last element from the array, use [code]arr.resize(arr.size() - 1)[/code].
 */
 //go:nosplit
 func (self Array) RemoveAt(position Int) {
@@ -6475,20 +6706,23 @@ func (self Array) RemoveAt(position Int) {
 }
 
 /*
-Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements:
+Assigns the given [param value] to all elements in the array.
+This method can often be combined with [method resize] to create an array with a given size and initialized elements:
 [codeblocks]
 [gdscript]
 var array = []
-array.resize(10)
-array.fill(0) # Initialize the 10 elements to 0.
+array.resize(5)
+array.fill(2)
+print(array) # Prints [2, 2, 2, 2, 2]
 [/gdscript]
 [csharp]
 var array = new Godot.Collections.Array();
-array.Resize(10);
-array.Fill(0); // Initialize the 10 elements to 0.
+array.Resize(5);
+array.Fill(2);
+GD.Print(array); // Prints [2, 2, 2, 2, 2]
 [/csharp]
 [/codeblocks]
-[b]Note:[/b] If [param value] is of a reference type ([Object]-derived, [Array], [Dictionary], etc.) then the array is filled with the references to the same object, i.e. no duplicates are created.
+[b]Note:[/b] If [param value] is a [Variant] passed by reference ([Object]-derived, [Array], [Dictionary], etc.), the array will be filled with references to the same [param value], which are not duplicates.
 */
 //go:nosplit
 func (self Array) Fill(value Variant) {
@@ -6502,10 +6736,9 @@ func (self Array) Fill(value Variant) {
 }
 
 /*
-Removes the first occurrence of a value from the array. If the value does not exist in the array, nothing happens. To remove an element by index, use [method remove_at] instead.
-[b]Note:[/b] This method acts in-place and doesn't return a modified array.
-[b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
-[b]Note:[/b] Do not erase entries while iterating over the array.
+Finds and removes the first occurrence of [param value] from the array. If [param value] does not exist in the array, nothing happens. To remove an element by index, use [method remove_at] instead.
+[b]Note:[/b] This method shifts every element's index after the removed [param value] back, which may have a noticeable performance cost, especially on larger arrays.
+[b]Note:[/b] Erasing elements while iterating over arrays is [b]not[/b] supported and will result in unpredictable behavior.
 */
 //go:nosplit
 func (self Array) Erase(value Variant) {
@@ -6519,8 +6752,8 @@ func (self Array) Erase(value Variant) {
 }
 
 /*
-Returns the first element of the array. Prints an error and returns [code]null[/code] if the array is empty.
-[b]Note:[/b] Calling this function is not the same as writing [code]array[0][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
+Returns the first element of the array. If the array is empty, fails and returns [code]null[/code]. See also [method back].
+[b]Note:[/b] Unlike with the [code][][/code] operator ([code]array[0][/code]), an error is generated without stopping project execution.
 */
 //go:nosplit
 func (self Array) Front(ctx Lifetime) Variant {
@@ -6535,8 +6768,8 @@ func (self Array) Front(ctx Lifetime) Variant {
 }
 
 /*
-Returns the last element of the array. Prints an error and returns [code]null[/code] if the array is empty.
-[b]Note:[/b] Calling this function is not the same as writing [code]array[-1][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
+Returns the last element of the array. If the array is empty, fails and returns [code]null[/code]. See also [method front].
+[b]Note:[/b] Unlike with the [code][][/code] operator ([code]array[-1][/code]), an error is generated without stopping project execution.
 */
 //go:nosplit
 func (self Array) Back(ctx Lifetime) Variant {
@@ -6551,17 +6784,18 @@ func (self Array) Back(ctx Lifetime) Variant {
 }
 
 /*
-Returns a random value from the target array. Prints an error and returns [code]null[/code] if the array is empty.
+Returns a random element from the array. Generates an error and returns [code]null[/code] if the array is empty.
 [codeblocks]
 [gdscript]
-var array: Array[int] = [1, 2, 3, 4]
-print(array.pick_random())  # Prints either of the four numbers.
+# May print 1, 2, 3.25, or "Hi".
+print([1, 2, 3.25, "Hi"].pick_random())
 [/gdscript]
 [csharp]
-var array = new Godot.Collections.Array { 1, 2, 3, 4 };
-GD.Print(array.PickRandom()); // Prints either of the four numbers.
+var array = new Godot.Collections.Array { 1, 2, 3.25f, "Hi" };
+GD.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
 [/csharp]
 [/codeblocks]
+[b]Note:[/b] Like many similar functions in the engine (such as [method @GlobalScope.randi] or [method shuffle]), this method uses a common, global random seed. To get a predictable outcome from this method, see [method @GlobalScope.seed].
 */
 //go:nosplit
 func (self Array) PickRandom(ctx Lifetime) Variant {
@@ -6576,7 +6810,9 @@ func (self Array) PickRandom(ctx Lifetime) Variant {
 }
 
 /*
-Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+Returns the index of the [b]first[/b] occurrence of [param what] in this array, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the array.
+[b]Note:[/b] If you just want to know whether the array contains [param what], use [method has] ([code]Contains[/code] in C#). In GDScript, you may also use the [code]in[/code] operator.
+[b]Note:[/b] For performance reasons, the search is affected by [param what]'s [enum Variant.Type]. For example, [code]7[/code] ([int]) and [code]7.0[/code] ([float]) are not considered equal for this method.
 */
 //go:nosplit
 func (self Array) Find(what Variant, from Int) Int {
@@ -6593,7 +6829,7 @@ func (self Array) Find(what Variant, from Int) Int {
 }
 
 /*
-Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+Returns the index of the [b]last[/b] occurrence of [param what] in this array, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the array. This method is the reverse of [method find].
 */
 //go:nosplit
 func (self Array) Rfind(what Variant, from Int) Int {
@@ -6626,39 +6862,29 @@ func (self Array) Count(value Variant) Int {
 }
 
 /*
-Returns [code]true[/code] if the array contains the given value.
+Returns [code]true[/code] if the array contains the given [param value].
 [codeblocks]
 [gdscript]
-print(["inside", 7].has("inside")) # True
-print(["inside", 7].has("outside")) # False
-print(["inside", 7].has(7)) # True
-print(["inside", 7].has("7")) # False
+print(["inside", 7].has("inside"))  # Prints true
+print(["inside", 7].has("outside")) # Prints false
+print(["inside", 7].has(7))         # Prints true
+print(["inside", 7].has("7"))       # Prints false
 [/gdscript]
 [csharp]
 var arr = new Godot.Collections.Array { "inside", 7 };
-// has is renamed to Contains
-GD.Print(arr.Contains("inside")); // True
-GD.Print(arr.Contains("outside")); // False
-GD.Print(arr.Contains(7)); // True
-GD.Print(arr.Contains("7")); // False
+// By C# convention, this method is renamed to `Contains`.
+GD.Print(arr.Contains("inside"));  // Prints true
+GD.Print(arr.Contains("outside")); // Prints false
+GD.Print(arr.Contains(7));         // Prints true
+GD.Print(arr.Contains("7"));       // Prints false
 [/csharp]
 [/codeblocks]
-[b]Note:[/b] This is equivalent to using the [code]in[/code] operator as follows:
-[codeblocks]
-[gdscript]
-# Will evaluate to `true`.
-if 2 in [2, 4, 6, 8]:
-    print("Contains!")
-[/gdscript]
-[csharp]
-// As there is no "in" keyword in C#, you have to use Contains
-var array = new Godot.Collections.Array { 2, 4, 6, 8 };
-if (array.Contains(2))
-{
-    GD.Print("Contains!");
-}
-[/csharp]
-[/codeblocks]
+In GDScript, this is equivalent to the [code]in[/code] operator:
+[codeblock]
+if 4 in [2, 4, 6, 8]:
+    print("4 is here!") # Will be printed.
+[/codeblock]
+[b]Note:[/b] For performance reasons, the search is affected by the [param value]'s [enum Variant.Type]. For example, [code]7[/code] ([int]) and [code]7.0[/code] ([float]) are not considered equal for this method.
 */
 //go:nosplit
 func (self Array) Has(value Variant) bool {
@@ -6674,7 +6900,7 @@ func (self Array) Has(value Variant) bool {
 }
 
 /*
-Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_front].
+Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without generating an error. See also [method pop_front].
 */
 //go:nosplit
 func (self Array) PopBack(ctx Lifetime) Variant {
@@ -6689,8 +6915,8 @@ func (self Array) PopBack(ctx Lifetime) Variant {
 }
 
 /*
-Removes and returns the first element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_back].
-[b]Note:[/b] On large arrays, this method is much slower than [method pop_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method pop_front] will be.
+Removes and returns the first element of the array. Returns [code]null[/code] if the array is empty, without generating an error. See also [method pop_back].
+[b]Note:[/b] This method shifts every other element's index back, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
 func (self Array) PopFront(ctx Lifetime) Variant {
@@ -6705,8 +6931,8 @@ func (self Array) PopFront(ctx Lifetime) Variant {
 }
 
 /*
-Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Leaves the array unchanged and returns [code]null[/code] if the array is empty or if it's accessed out of bounds. An error message is printed when the array is accessed out of bounds, but not when the array is empty.
-[b]Note:[/b] On large arrays, this method can be slower than [method pop_back] as it will reindex the array's elements that are located after the removed element. The larger the array and the lower the index of the removed element, the slower [method pop_at] will be.
+Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Returns [code]null[/code] if the array is empty. If [param position] is out of bounds, an error message is also generated.
+[b]Note:[/b] This method shifts every element's index after [param position] back, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
 func (self Array) PopAt(ctx Lifetime, position Int) Variant {
@@ -6722,27 +6948,20 @@ func (self Array) PopAt(ctx Lifetime, position Int) Variant {
 }
 
 /*
-Sorts the array.
-[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that values considered equal may have their order changed when using [method sort].
-[b]Note:[/b] Strings are sorted in alphabetical order (as opposed to natural order). This may lead to unexpected behavior when sorting an array of strings ending with a sequence of numbers. Consider the following example:
+Sorts the array in ascending order. The final order is dependent on the "less than" ([code]<[/code]) comparison between elements.
 [codeblocks]
 [gdscript]
-var strings = ["string1", "string2", "string10", "string11"]
-strings.sort()
-print(strings) # Prints [string1, string10, string11, string2]
+var numbers = [10, 5, 2.5, 8]
+numbers.sort()
+print(numbers) # Prints [2.5, 5, 8, 10]
 [/gdscript]
 [csharp]
-var strings = new Godot.Collections.Array { "string1", "string2", "string10", "string11" };
-strings.Sort();
-GD.Print(strings); // Prints [string1, string10, string11, string2]
+var numbers = new Godot.Collections.Array { 10, 5, 2.5, 8 };
+numbers.Sort();
+GD.Print(numbers); // Prints [2.5, 5, 8, 10]
 [/csharp]
 [/codeblocks]
-To perform natural order sorting, you can use [method sort_custom] with [method String.naturalnocasecmp_to] as follows:
-[codeblock]
-var strings = ["string1", "string2", "string10", "string11"]
-strings.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
-print(strings) # Prints [string1, string2, string10, string11]
-[/codeblock]
+[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that equivalent elements (such as [code]2[/code] and [code]2.0[/code]) may have their order changed when calling [method sort].
 */
 //go:nosplit
 func (self Array) Sort() {
@@ -6755,29 +6974,32 @@ func (self Array) Sort() {
 }
 
 /*
-Sorts the array using a custom method. The custom method receives two arguments (a pair of elements from the array) and must return either [code]true[/code] or [code]false[/code]. For two elements [code]a[/code] and [code]b[/code], if the given method returns [code]true[/code], element [code]b[/code] will be after element [code]a[/code] in the array.
-[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that values considered equal may have their order changed when using [method sort_custom].
-[b]Note:[/b] You cannot randomize the return value as the heapsort algorithm expects a deterministic result. Randomizing the return value will result in unexpected behavior.
-[codeblocks]
-[gdscript]
+Sorts the array using a custom [Callable].
+[param func] is called as many times as necessary, receiving two array elements as arguments. The function should return [code]true[/code] if the first element should be moved [i]behind[/i] the second one, otherwise it should return [code]false[/code].
+[codeblock]
 func sort_ascending(a, b):
-    if a[0] < b[0]:
+    if a[1] < b[1]:
         return true
     return false
 
 func _ready():
-    var my_items = [[5, "Potato"], [9, "Rice"], [4, "Tomato"]]
+    var my_items = [["Tomato", 5], ["Apple", 9], ["Rice", 4]]
     my_items.sort_custom(sort_ascending)
-    print(my_items) # Prints [[4, Tomato], [5, Potato], [9, Rice]].
+    print(my_items) # Prints [["Rice", 4], ["Tomato", 5], ["Apple", 9]]
 
-    # Descending, lambda version.
+    # Sort descending, using a lambda function.
     my_items.sort_custom(func(a, b): return a[0] > b[0])
-    print(my_items) # Prints [[9, Rice], [5, Potato], [4, Tomato]].
-[/gdscript]
-[csharp]
-// There is no custom sort support for Godot.Collections.Array
-[/csharp]
-[/codeblocks]
+    print(my_items) # Prints [["Apple", 9], ["Tomato", 5], ["Rice", 4]]
+[/codeblock]
+It may also be necessary to use this method to sort strings by natural order, with [method String.naturalnocasecmp_to], as in the following example:
+[codeblock]
+var files = ["newfile1", "newfile2", "newfile10", "newfile11"]
+files.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+print(files) # Prints ["newfile1", "newfile2", "newfile10", "newfile11"]
+[/codeblock]
+[b]Note:[/b] In C#, this method is not supported.
+[b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that values considered equal may have their order changed when calling this method.
+[b]Note:[/b] You should not randomize the return value of [param func], as the heapsort algorithm expects a consistent result. Randomizing the return value will result in unexpected behavior.
 */
 //go:nosplit
 func (self Array) SortCustom(fn Callable) {
@@ -6791,7 +7013,8 @@ func (self Array) SortCustom(fn Callable) {
 }
 
 /*
-Shuffles the array such that the items will have a random order. This method uses the global random number generator common to methods such as [method @GlobalScope.randi]. Call [method @GlobalScope.randomize] to ensure that a new seed will be used each time if you want non-reproducible shuffling.
+Shuffles all elements of the array in a random order.
+[b]Note:[/b] Like many similar functions in the engine (such as [method @GlobalScope.randi] or [method pick_random]), this method uses a common, global random seed. To get a predictable outcome from this method, see [method @GlobalScope.seed].
 */
 //go:nosplit
 func (self Array) Shuffle() {
@@ -6804,13 +7027,20 @@ func (self Array) Shuffle() {
 }
 
 /*
-Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+Returns the index of [param value] in the sorted array. If it cannot be found, returns where [param value] should be inserted to keep the array sorted. The algorithm used is [url=https://en.wikipedia.org/wiki/Binary_search_algorithm]binary search[/url].
+If [param before] is [code]true[/code] (as by default), the returned index comes before all existing elements equal to [param value] in the array.
 [codeblock]
-var array = ["a", "b", "c", "c", "d", "e"]
-print(array.bsearch("c", true))  # Prints 2, at the first matching element.
-print(array.bsearch("c", false)) # Prints 4, after the last matching element, pointing to "d".
+var numbers = [2, 4, 8, 10]
+var idx = numbers.bsearch(7)
+
+numbers.insert(idx, 7)
+print(numbers) # Prints [2, 4, 7, 8, 10]
+
+var fruits = ["Apple", "Lemon", "Lemon", "Orange"]
+print(fruits.bsearch("Lemon", true))  # Prints 1, points at the first "Lemon".
+print(fruits.bsearch("Lemon", false)) # Prints 3, points at "Orange".
 [/codeblock]
-[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+[b]Note:[/b] Calling [method bsearch] on an [i]unsorted[/i] array will result in unexpected behavior. Use [method sort] before calling this method.
 */
 //go:nosplit
 func (self Array) Bsearch(value Variant, before bool) Int {
@@ -6827,9 +7057,30 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 }
 
 /*
-Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search and a custom comparison method. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array. The custom method receives two arguments (an element from the array and the value searched for) and must return [code]true[/code] if the first argument is less than the second, and return [code]false[/code] otherwise.
-[b]Note:[/b] The custom method must accept the two arguments in any order, you cannot rely on that the first argument will always be from the array.
-[b]Note:[/b] Calling [method bsearch_custom] on an unsorted array results in unexpected behavior.
+Returns the index of [param value] in the sorted array. If it cannot be found, returns where [param value] should be inserted to keep the array sorted (using [param func] for the comparisons). The algorithm used is [url=https://en.wikipedia.org/wiki/Binary_search_algorithm]binary search[/url].
+Similar to [method sort_custom], [param func] is called as many times as necessary, receiving one array element and [param value] as arguments. The function should return [code]true[/code] if the array element should be [i]behind[/i] [param value], otherwise it should return [code]false[/code].
+If [param before] is [code]true[/code] (as by default), the returned index comes before all existing elements equal to [param value] in the array.
+[codeblock]
+func sort_by_amount(a, b):
+    if a[1] < b[1]:
+        return true
+    return false
+
+func _ready():
+    var my_items = [["Tomato", 2], ["Kiwi", 5], ["Rice", 9]]
+
+    var apple = ["Apple", 5]
+    # "Apple" is inserted before "Kiwi".
+    my_items.insert(my_items.bsearch_custom(apple, sort_by_amount, true), apple)
+
+    var banana = ["Banana", 5]
+    # "Banana" is inserted after "Kiwi".
+    my_items.insert(my_items.bsearch_custom(banana, sort_by_amount, false), banana)
+
+    # Prints [["Tomato", 2], ["Apple", 5], ["Kiwi", 5], ["Banana", 5], ["Rice", 9]]
+    print(my_items)
+[/codeblock]
+[b]Note:[/b] Calling [method bsearch_custom] on an [i]unsorted[/i] array will result in unexpected behavior. Use [method sort_custom] with [param func] before calling this method.
 */
 //go:nosplit
 func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
@@ -6847,7 +7098,7 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 }
 
 /*
-Reverses the order of the elements in the array.
+Reverses the order of all elements in the array.
 */
 //go:nosplit
 func (self Array) Reverse() {
@@ -6860,8 +7111,8 @@ func (self Array) Reverse() {
 }
 
 /*
-Returns a copy of the array.
-If [param deep] is [code]true[/code], a deep copy is performed: all nested arrays and dictionaries are duplicated and will not be shared with the original array. If [code]false[/code], a shallow copy is made and references to the original nested arrays and dictionaries are kept, so that modifying a sub-array or dictionary in the copy will also impact those referenced in the source array. Note that any [Object]-derived elements will be shallow copied regardless of the [param deep] setting.
+Returns a new copy of the array.
+By default, a [b]shallow[/b] copy is returned: all nested [Array] and [Dictionary] elements are shared with the original array. Modifying them in one array will also affect them in the other.[br]If [param deep] is [code]true[/code], a [b]deep[/b] copy is returned: all nested arrays and dictionaries are also duplicated (recursively).
 */
 //go:nosplit
 func (self Array) Duplicate(ctx Lifetime, deep bool) Array {
@@ -6877,12 +7128,20 @@ func (self Array) Duplicate(ctx Lifetime, deep bool) Array {
 }
 
 /*
-Returns the slice of the [Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [Array].
-The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
-If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
-If specified, [param step] is the relative index between source elements. It can be negative, then [param begin] must be higher than [param end]. For example, [code][0, 1, 2, 3, 4, 5].slice(5, 1, -2)[/code] returns [code][5, 3][/code].
-If [param deep] is true, each element will be copied by value rather than by reference.
-[b]Note:[/b] To include the first element when [param step] is negative, use [code]arr.slice(begin, -arr.size() - 1, step)[/code] (i.e. [code][0, 1, 2].slice(1, -4, -1)[/code] returns [code][1, 0][/code]).
+Returns a new [Array] containing this array's elements, from index [param begin] (inclusive) to [param end] (exclusive), every [param step] elements.
+If either [param begin] or [param end] are negative, their value is relative to the end of the array.
+If [param step] is negative, this method iterates through the array in reverse, returning a slice ordered backwards. For this to work, [param begin] must be greater than [param end].
+If [param deep] is [code]true[/code], all nested [Array] and [Dictionary] elements in the slice are duplicated from the original, recursively. See also [method duplicate]).
+[codeblock]
+var letters = ["A", "B", "C", "D", "E", "F"]
+
+print(letters.slice(0, 2))  # Prints ["A", "B"]
+print(letters.slice(2, -2)) # Prints ["C", "D"]
+print(letters.slice(-2, 6)) # Prints ["E", "F"]
+
+print(letters.slice(0, 6, 2))  # Prints ["A", "C", "E"]
+print(letters.slice(4, 1, -1)) # Prints ["E", "D", "C"]
+[/codeblock]
 */
 //go:nosplit
 func (self Array) Slice(ctx Lifetime, begin Int, end Int, step Int, deep bool) Array {
@@ -6901,15 +7160,17 @@ func (self Array) Slice(ctx Lifetime, begin Int, end Int, step Int, deep bool) A
 }
 
 /*
-Calls the provided [Callable] on each element in the array and returns a new array with the elements for which the method returned [code]true[/code].
-The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
+Calls the given [Callable] on each element in the array and returns a new, filtered [Array].
+The [param method] receives one of the array elements as an argument, and should return [code]true[/code] to add the element to the filtered array, or [code]false[/code] to exclude it.
 [codeblock]
-func _ready():
-    print([1, 2, 3].filter(remove_1)) # Prints [2, 3].
-    print([1, 2, 3].filter(func(number): return number != 1)) # Same as above, but using lambda function.
+func is_even(number):
+    return number % 2 == 0
 
-func remove_1(number):
-    return number != 1
+func _ready():
+    print([1, 4, 5, 8].filter(is_even)) # Prints [4, 8]
+
+    # Same as above, but using a lambda function.
+    print([1, 4, 5, 8].filter(func(number): return number % 2 == 0))
 [/codeblock]
 See also [method any], [method all], [method map] and [method reduce].
 */
@@ -6927,15 +7188,17 @@ func (self Array) Filter(ctx Lifetime, method Callable) Array {
 }
 
 /*
-Calls the provided [Callable] for each element in the array and returns a new array filled with values returned by the method.
-The callable's method should take one [Variant] parameter (the current array element) and can return any [Variant].
+Calls the given [Callable] for each element in the array and returns a new array filled with values returned by the [param method].
+The [param method] should take one [Variant] parameter (the current array element) and can return any [Variant].
 [codeblock]
-func _ready():
-    print([1, 2, 3].map(negate)) # Prints [-1, -2, -3].
-    print([1, 2, 3].map(func(number): return -number)) # Same as above, but using lambda function.
+func double(number):
+    return number * 2
 
-func negate(number):
-    return -number
+func _ready():
+    print([1, 2, 3].map(double)) # Prints [2, 4, 6]
+
+    # Same as above, but using a lambda function.
+    print([1, 2, 3].map(func(element): return element * 2))
 [/codeblock]
 See also [method filter], [method reduce], [method any] and [method all].
 */
@@ -6953,15 +7216,29 @@ func (self Array) Map(ctx Lifetime, method Callable) Array {
 }
 
 /*
-Calls the provided [Callable] for each element in array and accumulates the result in [param accum].
-The callable's method takes two arguments: the current value of [param accum] and the current array element. If [param accum] is [code]null[/code] (default value), the iteration will start from the second element, with the first one used as initial value of [param accum].
+Calls the given [Callable] for each element in array, accumulates the result in [param accum], then returns it.
+The [param method] takes two arguments: the current value of [param accum] and the current array element. If [param accum] is [code]null[/code] (as by default), the iteration will start from the second element, with the first one used as initial value of [param accum].
 [codeblock]
-func _ready():
-    print([1, 2, 3].reduce(sum, 10)) # Prints 16.
-    print([1, 2, 3].reduce(func(accum, number): return accum + number, 10)) # Same as above, but using lambda function.
-
 func sum(accum, number):
     return accum + number
+
+func _ready():
+    print([1, 2, 3].reduce(sum, 0))  # Prints 6
+    print([1, 2, 3].reduce(sum, 10)) # Prints 16
+
+    # Same as above, but using a lambda function.
+    print([1, 2, 3].reduce(func(accum, number): return accum + number, 10))
+[/codeblock]
+If [method max] is not desirable, this method may also be used to implement a custom comparator:
+[codeblock]
+func _ready():
+    var arr = [Vector2(5, 0), Vector2(3, 4), Vector2(1, 2)]
+
+    var longest_vec = arr.reduce(func(max, vec): return vec if is_length_greater(vec, max) else max)
+    print(longest_vec) # Prints Vector2(3, 4).
+
+func is_length_greater(a, b):
+    return a.length() > b.length()
 [/codeblock]
 See also [method map], [method filter], [method any] and [method all].
 */
@@ -6980,19 +7257,20 @@ func (self Array) Reduce(ctx Lifetime, method Callable, accum Variant) Variant {
 }
 
 /*
-Calls the provided [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]one or more[/i] elements in the array. If the [Callable] returns [code]false[/code] for all elements in the array, this method returns [code]false[/code].
-The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
+Calls the given [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]one or more[/i] elements in the array. If the [Callable] returns [code]false[/code] for all elements in the array, this method returns [code]false[/code].
+The [param method] should take one [Variant] parameter (the current array element) and return a [bool].
 [codeblock]
-func _ready():
-    print([6, 10, 6].any(greater_than_5))  # Prints True (3 elements evaluate to `true`).
-    print([4, 10, 4].any(greater_than_5))  # Prints True (1 elements evaluate to `true`).
-    print([4, 4, 4].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
-    print([].any(greater_than_5))  # Prints False (0 elements evaluate to `true`).
-
-    print([6, 10, 6].any(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
-
 func greater_than_5(number):
     return number > 5
+
+func _ready():
+    print([6, 10, 6].any(greater_than_5)) # Prints true (3 elements evaluate to true).
+    print([4, 10, 4].any(greater_than_5)) # Prints true (1 elements evaluate to true).
+    print([4, 4, 4].any(greater_than_5))  # Prints false (0 elements evaluate to true).
+    print([].any(greater_than_5))         # Prints false (0 elements evaluate to true).
+
+    # Same as the first line above, but using a lambda function.
+    print([6, 10, 6].any(func(number): return number > 5)) # Prints true
 [/codeblock]
 See also [method all], [method filter], [method map] and [method reduce].
 [b]Note:[/b] Unlike relying on the size of an array returned by [method filter], this method will return as early as possible to improve performance (especially with large arrays).
@@ -7012,20 +7290,44 @@ func (self Array) Any(method Callable) bool {
 }
 
 /*
-Calls the provided [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]all[/i] elements in the array. If the [Callable] returns [code]false[/code] for one array element or more, this method returns [code]false[/code].
-The callable's method should take one [Variant] parameter (the current array element) and return a boolean value.
-[codeblock]
-func _ready():
-    print([6, 10, 6].all(greater_than_5))  # Prints True (3/3 elements evaluate to `true`).
-    print([4, 10, 4].all(greater_than_5))  # Prints False (1/3 elements evaluate to `true`).
-    print([4, 4, 4].all(greater_than_5))  # Prints False (0/3 elements evaluate to `true`).
-    print([].all(greater_than_5))  # Prints True (0/0 elements evaluate to `true`).
-
-    print([6, 10, 6].all(func(number): return number > 5))  # Prints True. Same as the first line above, but using lambda function.
-
+Calls the given [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]all[/i] elements in the array. If the [Callable] returns [code]false[/code] for one array element or more, this method returns [code]false[/code].
+The [param method] should take one [Variant] parameter (the current array element) and return a [bool].
+[codeblocks]
+[gdscript]
 func greater_than_5(number):
     return number > 5
-[/codeblock]
+
+func _ready():
+    print([6, 10, 6].all(greater_than_5)) # Prints true (3/3 elements evaluate to true).
+    print([4, 10, 4].all(greater_than_5)) # Prints false (1/3 elements evaluate to true).
+    print([4, 4, 4].all(greater_than_5))  # Prints false (0/3 elements evaluate to true).
+    print([].all(greater_than_5))         # Prints true (0/0 elements evaluate to true).
+
+    # Same as the first line above, but using a lambda function.
+    print([6, 10, 6].all(func(element): return element > 5)) # Prints true
+[/gdscript]
+[csharp]
+private static bool GreaterThan5(int number)
+{
+    return number > 5;
+}
+
+public override void _Ready()
+{
+    // Prints true (3/3 elements evaluate to true).
+    GD.Print(new Godot.Collections.Array>int< { 6, 10, 6 }.All(GreaterThan5));
+    // Prints false (1/3 elements evaluate to true).
+    GD.Print(new Godot.Collections.Array>int< { 4, 10, 4 }.All(GreaterThan5));
+    // Prints false (0/3 elements evaluate to true).
+    GD.Print(new Godot.Collections.Array>int< { 4, 4, 4 }.All(GreaterThan5));
+    // Prints true (0/0 elements evaluate to true).
+    GD.Print(new Godot.Collections.Array>int< { }.All(GreaterThan5));
+
+    // Same as the first line above, but using a lambda function.
+    GD.Print(new Godot.Collections.Array>int< { 6, 10, 6 }.All(element => element > 5)); // Prints true
+}
+[/csharp]
+[/codeblocks]
 See also [method any], [method filter], [method map] and [method reduce].
 [b]Note:[/b] Unlike relying on the size of an array returned by [method filter], this method will return as early as possible to improve performance (especially with large arrays).
 [b]Note:[/b] For an empty array, this method [url=https://en.wikipedia.org/wiki/Vacuous_truth]always[/url] returns [code]true[/code].
@@ -7044,17 +7346,8 @@ func (self Array) All(method Callable) bool {
 }
 
 /*
-Returns the maximum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
-To find the maximum value using a custom comparator, you can use [method reduce]. In this example every array element is checked and the first maximum value is returned:
-[codeblock]
-func _ready():
-    var arr = [Vector2(0, 1), Vector2(2, 0), Vector2(1, 1), Vector2(1, 0), Vector2(0, 2)]
-    # In this example we compare the lengths.
-    print(arr.reduce(func(max, val): return val if is_length_greater(val, max) else max))
-
-func is_length_greater(a, b):
-    return a.length() > b.length()
-[/codeblock]
+Returns the maximum value contained in the array, if all elements can be compared. Otherwise, returns [code]null[/code]. See also [method min].
+To find the maximum value using a custom comparator, you can use [method reduce].
 */
 //go:nosplit
 func (self Array) Max(ctx Lifetime) Variant {
@@ -7069,8 +7362,7 @@ func (self Array) Max(ctx Lifetime) Variant {
 }
 
 /*
-Returns the minimum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
-See also [method max] for an example of using a custom comparator.
+Returns the minimum value contained in the array, if all elements can be compared. Otherwise, returns [code]null[/code]. See also [method max].
 */
 //go:nosplit
 func (self Array) Min(ctx Lifetime) Variant {
@@ -7085,7 +7377,12 @@ func (self Array) Min(ctx Lifetime) Variant {
 }
 
 /*
-Returns [code]true[/code] if the array is typed. Typed arrays can only store elements of their associated type and provide type safety for the [code][][/code] operator. Methods of typed array still return [Variant].
+Returns [code]true[/code] if the array is typed. Typed arrays can only contain elements of a specific type, as defined by the typed array constructor. The methods of a typed array are still expected to return a generic [Variant].
+In GDScript, it is possible to define a typed array with static typing:
+[codeblock]
+var numbers: Array[float] = [0.2, 4.2, -2.0]
+print(numbers.is_typed()) # Prints true
+[/codeblock]
 */
 //go:nosplit
 func (self Array) IsTyped() bool {
@@ -7100,7 +7397,7 @@ func (self Array) IsTyped() bool {
 }
 
 /*
-Returns [code]true[/code] if the array is typed the same as [param array].
+Returns [code]true[/code] if this array is typed the same as the given [param array]. See also [method is_typed].
 */
 //go:nosplit
 func (self Array) IsSameTyped(array Array) bool {
@@ -7116,7 +7413,7 @@ func (self Array) IsSameTyped(array Array) bool {
 }
 
 /*
-Returns the built-in type of the typed array as a [enum Variant.Type] constant. If the array is not typed, returns [constant TYPE_NIL].
+Returns the built-in [Variant] type of the typed array as a [enum Variant.Type] constant. If the array is not typed, returns [constant TYPE_NIL]. See also [method is_typed].
 */
 //go:nosplit
 func (self Array) GetTypedBuiltin() Int {
@@ -7131,7 +7428,7 @@ func (self Array) GetTypedBuiltin() Int {
 }
 
 /*
-Returns the [b]native[/b] class name of the typed array if the built-in type is [constant TYPE_OBJECT]. Otherwise, this method returns an empty string.
+Returns the [b]built-in[/b] class name of the typed array, if the built-in [Variant] type [constant TYPE_OBJECT]. Otherwise, returns an empty [StringName]. See also [method is_typed] and [method Object.get_class].
 */
 //go:nosplit
 func (self Array) GetTypedClassName(ctx Lifetime) StringName {
@@ -7146,7 +7443,7 @@ func (self Array) GetTypedClassName(ctx Lifetime) StringName {
 }
 
 /*
-Returns the script associated with the typed array. This method returns a [Script] instance or [code]null[/code].
+Returns the [Script] instance associated with this typed array, or [code]null[/code] if it does not exist. See also [method is_typed].
 */
 //go:nosplit
 func (self Array) GetTypedScript(ctx Lifetime) Variant {
@@ -7161,7 +7458,8 @@ func (self Array) GetTypedScript(ctx Lifetime) Variant {
 }
 
 /*
-Makes the array read-only, i.e. disabled modifying of the array's elements. Does not apply to nested content, e.g. content of nested arrays.
+Makes the array read-only. The array's elements cannot be overridden with different values, and their order cannot change. Does not apply to nested elements, such as dictionaries.
+In GDScript, arrays are automatically read-only if declared with the [code]const[/code] keyword.
 */
 //go:nosplit
 func (self Array) MakeReadOnly() {
@@ -7174,7 +7472,8 @@ func (self Array) MakeReadOnly() {
 }
 
 /*
-Returns [code]true[/code] if the array is read-only. See [method make_read_only]. Arrays are automatically read-only if declared with [code]const[/code] keyword.
+Returns [code]true[/code] if the array is read-only. See [method make_read_only].
+In GDScript, arrays are automatically read-only if declared with the [code]const[/code] keyword.
 */
 //go:nosplit
 func (self Array) IsReadOnly() bool {
@@ -7817,7 +8116,7 @@ func (self *PackedByteArray) DecodeS64(byte_offset Int) Int {
 }
 
 /*
-Decodes a 16-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
+Decodes a 16-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
 func (self *PackedByteArray) DecodeHalf(byte_offset Int) Float {
@@ -7834,7 +8133,7 @@ func (self *PackedByteArray) DecodeHalf(byte_offset Int) Float {
 }
 
 /*
-Decodes a 32-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
+Decodes a 32-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
 func (self *PackedByteArray) DecodeFloat(byte_offset Int) Float {
@@ -7851,7 +8150,7 @@ func (self *PackedByteArray) DecodeFloat(byte_offset Int) Float {
 }
 
 /*
-Decodes a 64-bit floating point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
+Decodes a 64-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
 //go:nosplit
 func (self *PackedByteArray) DecodeDouble(byte_offset Int) Float {
@@ -8122,7 +8421,7 @@ func (self *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 }
 
 /*
-Encodes a 16-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
+Encodes a 16-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
 func (self *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
@@ -8138,7 +8437,7 @@ func (self *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 }
 
 /*
-Encodes a 32-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
+Encodes a 32-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
 func (self *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
@@ -8154,7 +8453,7 @@ func (self *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 }
 
 /*
-Encodes a 64-bit floating point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
+Encodes a 64-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
 */
 //go:nosplit
 func (self *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
@@ -10976,6 +11275,357 @@ func (self *PackedColorArray) Count(value Color) Int {
 	return ret
 }
 
+/*
+Returns the number of elements in the array.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Size() Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns [code]true[/code] if the array is empty.
+*/
+//go:nosplit
+func (self *PackedVector4Array) IsEmpty() bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Changes the [Vector4] at the given index.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Set(index Int, value Vector4) {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Inserts a [Vector4] at the end.
+*/
+//go:nosplit
+func (self *PackedVector4Array) PushBack(value Vector4) bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Appends an element at the end of the array (alias of [method push_back]).
+*/
+//go:nosplit
+func (self *PackedVector4Array) Append(value Vector4) bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Appends a [PackedVector4Array] at the end of this array.
+*/
+//go:nosplit
+func (self *PackedVector4Array) AppendArray(array PackedVector4Array) {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(array))
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Removes an element from the array by index.
+*/
+//go:nosplit
+func (self *PackedVector4Array) RemoveAt(index Int) {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, index)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
+*/
+//go:nosplit
+func (self *PackedVector4Array) Insert(at_index Int, value Vector4) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, at_index)
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Fill(value Vector4) {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Resize(new_size Int) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, new_size)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
+*/
+//go:nosplit
+func (self *PackedVector4Array) Clear() {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Returns [code]true[/code] if the array contains [param value].
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Has(value Vector4) bool {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[bool](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Reverses the order of the elements in the array.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Reverse() {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Returns the slice of the [PackedVector4Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedVector4Array].
+The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
+If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
+*/
+//go:nosplit
+func (self *PackedVector4Array) Slice(ctx Lifetime, begin Int, end Int) PackedVector4Array {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, begin)
+	callframe.Arg(frame, end)
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = mmm.New[PackedVector4Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a [PackedByteArray] with each vector encoded as bytes.
+*/
+//go:nosplit
+func (self *PackedVector4Array) ToByteArray(ctx Lifetime) PackedByteArray {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = mmm.New[PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Sorts the elements of the array in ascending order.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Sort() {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	frame.Free()
+}
+
+/*
+Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
+[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Bsearch(value Vector4, before bool) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, before)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Creates a copy of the array, and returns it.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Duplicate(ctx Lifetime) PackedVector4Array {
+	var selfPtr = self
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = mmm.New[PackedVector4Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Find(value Vector4, from Int) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Rfind(value Vector4, from Int) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	callframe.Arg(frame, from)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the number of times an element is in the array.
+[b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
+*/
+//go:nosplit
+func (self *PackedVector4Array) Count(value Vector4) Int {
+	var selfPtr = self
+	var frame = callframe.New()
+	callframe.Arg(frame, value)
+	var r_ret = callframe.Ret[Int](frame)
+	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
+	mmm.API(*self).builtin.PackedVector4Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	mmm.Set(selfPtr, p_self.Get())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 type ObjectConnectFlags int64
 
 /*
@@ -11266,6 +11916,7 @@ func (self Object) ToString(ctx Lifetime) String {
 
 /*
 Returns the object's unique instance ID. This ID can be saved in [EncodedObjectAsID], and can be used to retrieve this object instance with [method @GlobalScope.instance_from_id].
+[b]Note:[/b] This ID is only useful during the current session. It won't correspond to a similar object if the ID is sent over a network, or loaded from a file at a later time.
 */
 //go:nosplit
 func (self Object) GetInstanceId() Int {
@@ -11388,7 +12039,7 @@ func (self Object) GetMetaList(ctx Lifetime) ArrayOf[StringName] {
 }
 
 /*
-Adds a user-defined [param signal]. Optional arguments for the signal can be added as an [Array] of dictionaries, each defining a [code]name[/code] [String] and a [code]type[/code] [int] (see [enum Variant.Type]). See also [method has_user_signal].
+Adds a user-defined [param signal]. Optional arguments for the signal can be added as an [Array] of dictionaries, each defining a [code]name[/code] [String] and a [code]type[/code] [int] (see [enum Variant.Type]). See also [method has_user_signal] and [method remove_user_signal].
 [codeblocks]
 [gdscript]
 add_user_signal("hurt", [
@@ -11425,7 +12076,7 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 }
 
 /*
-Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included.
+Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included. See also [method remove_user_signal].
 */
 //go:nosplit
 func (self Object) HasUserSignal(signal StringName) bool {
@@ -11437,6 +12088,19 @@ func (self Object) HasUserSignal(signal StringName) bool {
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Removes the given user signal [param signal] from the object. See also [method add_user_signal] and [method has_user_signal].
+*/
+//go:nosplit
+func (self Object) RemoveUserSignal(signal StringName) {
+	var selfPtr = self.AsPointer()
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(signal))
+	var r_ret callframe.Nil
+	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_remove_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	frame.Free()
 }
 
 /*
@@ -11514,6 +12178,22 @@ func (self Object) HasMethod(method StringName) bool {
 	callframe.Arg(frame, mmm.Get(method))
 	var r_ret = callframe.Ret[bool](frame)
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_has_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the number of arguments of the given [param method] by name.
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
+//go:nosplit
+func (self Object) GetMethodArgumentCount(method StringName) Int {
+	var selfPtr = self.AsPointer()
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(method))
+	var r_ret = callframe.Ret[Int](frame)
+	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_get_method_argument_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11674,7 +12354,7 @@ private void OnButtonDown()
 While all options have the same outcome ([code]button[/code]'s [signal BaseButton.button_down] signal will be connected to [code]_on_button_down[/code]), [b]option 3[/b] offers the best validation: it will print a compile-time error if either the [code]button_down[/code] [Signal] or the [code]_on_button_down[/code] [Callable] are not defined. On the other hand, [b]option 2[/b] only relies on string names and will only be able to validate either names at runtime: it will print a runtime error if [code]"button_down"[/code] doesn't correspond to a signal, or if [code]"_on_button_down"[/code] is not a registered method in the object [code]self[/code]. The main reason for using options 1, 2, or 4 would be if you actually need to use strings (e.g. to connect signals programmatically based on strings read from a configuration file). Otherwise, option 3 is the recommended (and fastest) method.
 [b]Binding and passing parameters:[/b]
 The syntax to bind parameters is through [method Callable.bind], which returns a copy of the [Callable] with its parameters bound.
-When calling [method emit_signal], the signal parameters can be also passed. The examples below show the relationship between these signal parameters and bound parameters.
+When calling [method emit_signal] or [method Signal.emit], the signal parameters can be also passed. The examples below show the relationship between these signal parameters and bound parameters.
 [codeblocks]
 [gdscript]
 func _ready():
@@ -11684,7 +12364,7 @@ func _ready():
     player.hit.connect(_on_player_hit.bind("sword", 100))
 
     # Parameters added when emitting the signal are passed first.
-    player.emit_signal("hit", "Dark lord", 5)
+    player.hit.emit("Dark lord", 5)
 
 # We pass two arguments when emitting (`hit_by`, `level`),
 # and bind two more arguments when connecting (`weapon_type`, `damage`).
@@ -11825,9 +12505,10 @@ func (self Object) CanTranslateMessages() bool {
 }
 
 /*
-Translates a [param message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation.
+Translates a [param message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
 If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns the [param message] without changes. See [method set_message_translation].
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
+[b]Note:[/b] This method can't be used without an [Object] instance, as it requires the [method can_translate_messages] method. To translate strings in a static context, use [method TranslationServer.translate].
 */
 //go:nosplit
 func (self Object) Tr(ctx Lifetime, message StringName, context StringName) String {
@@ -11847,7 +12528,8 @@ Translates a [param message] or [param plural_message], using the translation ca
 If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns [param message] or [param plural_message], without changes. See [method set_message_translation].
 The [param n] is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
-[b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended handling these cases with [method tr].
+[b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method tr].
+[b]Note:[/b] This method can't be used without an [Object] instance, as it requires the [method can_translate_messages] method. To translate strings in a static context, use [method TranslationServer.translate_plural].
 */
 //go:nosplit
 func (self Object) TrN(ctx Lifetime, message StringName, plural_message StringName, n Int, context StringName) String {

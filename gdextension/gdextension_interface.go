@@ -1571,6 +1571,7 @@ func linkCGO(API *gd.API) {
 	}
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
+	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
 	array_operator_index_const := dlsymGD("array_operator_index_const")
 	API.Array.Index = func(ctx gd.Lifetime, a gd.Array, i gd.Int) gd.Variant {
 		var frame = callframe.New()
