@@ -37,6 +37,10 @@ func NewLifetime(anchor Lifetime) Lifetime {
 	return gd.NewLifetime(anchor.API)
 }
 
+type isRefCounted interface {
+	AsRefCounted() RefCounted
+}
+
 // Create a new instance of the given class, which should be an uninitialised
 // pointer to a value of that class. T must be a class from this package.
 func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
@@ -46,6 +50,9 @@ func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
 		return native.(T)
 	}
 	ptr.SetPointer(object.AsPointer())
+	if rc, ok := any(ptr).(isRefCounted); ok {
+		rc.AsRefCounted().Reference() // resources need to be referenced when we create them, as we will unreference them when they expire.
+	}
 	return ptr
 }
 
