@@ -117,7 +117,8 @@ func useGodot() (string, error) {
 				return "", err
 			}
 			defer inZip.Close()
-			file, err := os.Create(gopath + "/bin/godot-" + version)
+			//executable
+			file, err := os.OpenFile(gopath+"/bin/godot-"+version, os.O_CREATE|os.O_WRONLY, 0755)
 			if err != nil {
 				return "", err
 			}
