@@ -395,7 +395,8 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
 		for i := 0; i < rvalue.NumField(); i++ {
-			if rvalue.Type().Field(i).Tag.Get("gd") == sname {
+			rfield := rvalue.Type().Field(i)
+			if !rfield.Anonymous && rfield.Tag.Get("gd") == sname {
 				field = rvalue.Field(i)
 				break
 			}
