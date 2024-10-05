@@ -3,6 +3,12 @@
 package gd
 
 import (
+	"fmt"
+	"os"
+	"runtime"
+	"runtime/debug"
+	"strings"
+
 	"runtime.link/mmm"
 )
 
@@ -76,5 +82,43 @@ func (godot Lifetime) StringName(s string) StringName {
 }
 
 func (godot Lifetime) Free() {
+	godot.End()
+}
+
+var traceALL = os.Getenv("GOTRACEBACK") == "all" || os.Getenv("GOTRACEBACK") == "1"
+
+func (godot Lifetime) Recover() {
+	if err := recover(); err != nil {
+		godot.recovery(err)
+	}
+}
+
+func (godot Lifetime) recovery(err any) {
+	if traceALL {
+		godot.API.PrintErrorMessage("", fmt.Sprint(err, "\n", string(debug.Stack())), "gdextension.recovery", "err.go", 18, true)
+	} else {
+		name, file, line := "", "", 0
+		var buf [10]uintptr
+		for i := range runtime.Callers(0, buf[:]) {
+			pc := buf[i]
+			if pc == 0 {
+				break
+			}
+			fn := runtime.FuncForPC(pc)
+			name = fn.Name()
+			if strings.HasPrefix(name, "runtime.") || strings.HasPrefix(name, "grow.graphics/gd") {
+				continue
+			}
+			file, line = fn.FileLine(pc)
+			break
+		}
+		godot.API.PrintErrorMessage("", fmt.Sprint(err), name, file, int32(line), true)
+	}
+}
+
+func (godot Lifetime) End() {
 	godot.Lifetime.End()
+	if err := recover(); err != nil {
+		godot.recovery(err)
+	}
 }

@@ -2536,6 +2536,7 @@ func free_instance_func(_, p_instance uintptr) {
 //export recreate_instance_func
 func recreate_instance_func(p_class, p_super uintptr) uintptr {
 	ctx := gd.NewLifetime(&godot)
+	defer ctx.Recover()
 	var super gd.Object
 	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{p_super}))
 	return uintptr(cgo.NewHandle(cgo.Handle(p_class).Value().(gd.ClassInterface).ReloadInstance(super)))
