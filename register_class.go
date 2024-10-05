@@ -527,12 +527,13 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 		defer tmp.End()
 		instance.setupForCall(tmp)
 		switch notify := instance.Value.(type) {
-		case interface{ Notification(gd.NotificationType) }:
-			notify.Notification(gd.NotificationType(what))
+		case interface{ Notification(NotificationType) }:
+			notify.Notification(NotificationType(what))
 		case interface {
-			Notification(gd.Lifetime, gd.NotificationType)
+			Notification(Lifetime, NotificationType)
 		}:
-			notify.Notification(tmp, gd.NotificationType(what))
+			notify.Notification(tmp, NotificationType(what))
+		default:
 		}
 	}
 }
