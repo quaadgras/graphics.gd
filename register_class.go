@@ -291,13 +291,18 @@ type instanceImplementation struct {
 	signals []signalChan
 }
 
+func (instance instanceImplementation) setupForCall(tmp Lifetime) {
+	instance.Value.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, tmp.API, [2]uintptr{instance.object}))
+	instance.Value.SetTemporary(tmp)
+}
+
 func (instance instanceImplementation) OnCreate() {
 	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 	if impl, ok := instance.Value.(interface {
 		OnCreate()
 	}); ok {
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		impl.OnCreate()
 	}
 }
@@ -308,7 +313,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	}); ok {
 		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		ok := bool(impl.Set(name, value))
 		if ok {
 			if impl, ok := instance.Value.(interface {
@@ -375,7 +380,7 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	}); ok {
 		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		impl.OnSet(name, value)
 	}
 	return true
@@ -387,7 +392,7 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 	}); ok {
 		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		return impl.Get(name), true
 	}
 	sname := name.String()
@@ -415,7 +420,9 @@ func (instance *instanceImplementation) GetPropertyList(godot Lifetime) []gd.Pro
 	if impl, ok := instance.Value.(interface {
 		GetPropertyList() []gd.PropertyInfo
 	}); ok {
-		instance.Value.SetTemporary(godot)
+		tmp := NewLifetime(instance.Value.GetKeepAlive())
+		defer tmp.End()
+		instance.setupForCall(tmp)
 		return impl.GetPropertyList()
 	}
 	rtype := reflect.ValueOf(instance.Value).Elem().Type()
@@ -439,7 +446,7 @@ func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool 
 	}); ok {
 		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		return bool(impl.PropertyCanRevert(name))
 	}
 	sname := name.String()
@@ -466,7 +473,7 @@ func (instance *instanceImplementation) PropertyGetRevert(godot Lifetime, name S
 	if impl, ok := instance.Value.(interface {
 		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
 	}); ok {
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		return impl.PropertyGetRevert(name)
 	}
 	sname := name.String()
@@ -497,7 +504,7 @@ func (instance *instanceImplementation) PropertyGetRevert(godot Lifetime, name S
 func (instance *instanceImplementation) ValidateProperty(name StringName, info *gd.PropertyInfo) bool {
 	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
-	instance.Value.SetTemporary(tmp)
+	instance.setupForCall(tmp)
 	switch validate := instance.Value.(type) {
 	case interface {
 		ValidateProperty(gd.StringName, *gd.PropertyInfo) gd.Bool
@@ -518,7 +525,7 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 	if !Engine(instance.Value.GetKeepAlive()).IsEditorHint() {
 		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		switch notify := instance.Value.(type) {
 		case interface{ Notification(gd.NotificationType) }:
 			notify.Notification(gd.NotificationType(what))
@@ -533,7 +540,7 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 func (instance *instanceImplementation) ToString() (String, bool) {
 	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
-	instance.Value.SetTemporary(tmp)
+	instance.setupForCall(tmp)
 	switch onfree := instance.Value.(type) {
 	case interface{ ToString() gd.String }:
 		return onfree.ToString(), true
@@ -547,6 +554,9 @@ func (instance *instanceImplementation) Reference()   {}
 func (instance *instanceImplementation) Unreference() {}
 
 func (instance *instanceImplementation) CallVirtual(name StringName, virtual any, args gd.UnsafeArgs, back gd.UnsafeBack) {
+	tmp := NewLifetime(instance.Value.GetKeepAlive())
+	defer tmp.End()
+	instance.setupForCall(tmp)
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 
@@ -559,7 +569,7 @@ func (instance *instanceImplementation) Free() {
 		signal.rvalue.Close()
 	}
 	delete(instance.Value.GetKeepAlive().API.Instances, instance.object)
-	instance.Value.SetTemporary(instance.Value.GetKeepAlive())
+	instance.setupForCall(instance.Value.GetKeepAlive())
 	switch onfree := instance.Value.(type) {
 	case interface{ OnFree() }:
 		onfree.OnFree()
@@ -590,7 +600,7 @@ func (instance *instanceImplementation) ready() {
 		instance.assertChild(tmp, rvalue.Field(i).Addr().Interface(), field, parent, parent)
 	}
 	if !Engine(tmp).IsEditorHint() {
-		instance.Value.SetTemporary(tmp)
+		instance.setupForCall(tmp)
 		switch ready := instance.Value.(type) {
 		case interface{ Ready() }:
 			ready.Ready()
