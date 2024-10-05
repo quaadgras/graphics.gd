@@ -46,8 +46,7 @@ type isRefCounted interface {
 func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
 	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(classNameOf(reflect.TypeOf(ptr).Elem())))
 	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
-		keepalive := native.GetKeepAlive()
-		native.SetPointer(mmm.Let[gd.Pointer](keepalive.Lifetime, keepalive.API, mmm.End(object.AsPointer())))
+		native.SetPointer(object.AsPointer())
 		return native.(T)
 	}
 	ptr.SetPointer(object.AsPointer())
