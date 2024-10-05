@@ -40,6 +40,7 @@ func (s String) Free() {
 }
 
 func (s *String) Append(ctx Lifetime, other String) {
+	mmm.End(*s)
 	*s = mmm.API(*s).Strings.Append(ctx, *s, other)
 }
 
