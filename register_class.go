@@ -222,9 +222,11 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 		go manageSignals(thread, super.AsObject().GetInstanceId(), signals)
 	}
 	return &instanceImplementation{
-		object:  mmm.Get(super.AsPointer())[0],
-		Value:   value.Addr().Interface().(gd.ExtensionClass),
-		signals: signals,
+		object:   mmm.Get(super.AsPointer())[0],
+		original: super.AsPointer(),
+		Value:    value.Addr().Interface().(gd.ExtensionClass),
+		signals:  signals,
+		isEditor: Engine(ctx).IsEditorHint(),
 	}
 }
 
@@ -286,13 +288,15 @@ func (class classImplementation) GetVirtual(name StringName) any {
 }
 
 type instanceImplementation struct {
-	object  uintptr
-	Value   gd.ExtensionClass
-	signals []signalChan
+	object   uintptr
+	original gd.Pointer
+	Value    gd.ExtensionClass
+	signals  []signalChan
+	isEditor bool
 }
 
 func (instance instanceImplementation) setupForCall(tmp Lifetime) {
-	instance.Value.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, tmp.API, [2]uintptr{instance.object}))
+	instance.Value.SetPointer(instance.original)
 	instance.Value.SetTemporary(tmp)
 }
 
@@ -522,7 +526,7 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 	if what == 13 { // NOTIFICATION_READY
 		instance.ready()
 	}
-	if !Engine(instance.Value.GetKeepAlive()).IsEditorHint() {
+	if !instance.isEditor {
 		tmp := NewLifetime(instance.Value.GetKeepAlive())
 		defer tmp.End()
 		instance.setupForCall(tmp)
