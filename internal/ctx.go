@@ -86,15 +86,19 @@ func (godot Lifetime) Free() {
 }
 
 var traceALL = os.Getenv("GOTRACEBACK") == "all" || os.Getenv("GOTRACEBACK") == "1"
+var traceSystem = os.Getenv("GOTRACEBACK") == "system"
+var traceCrash = os.Getenv("GOTRACEBACK") == "crash"
 
 func (godot Lifetime) Recover() {
-	if err := recover(); err != nil {
-		godot.recovery(err)
+	if !traceCrash {
+		if err := recover(); err != nil {
+			godot.recovery(err)
+		}
 	}
 }
 
 func (godot Lifetime) recovery(err any) {
-	if traceALL {
+	if traceALL || traceSystem {
 		godot.API.PrintErrorMessage("", fmt.Sprint(err, "\n", string(debug.Stack())), "gdextension.recovery", "err.go", 18, true)
 	} else {
 		name, file, line := "", "", 0
@@ -118,7 +122,9 @@ func (godot Lifetime) recovery(err any) {
 
 func (godot Lifetime) End() {
 	godot.Lifetime.End()
-	if err := recover(); err != nil {
-		godot.recovery(err)
+	if !traceCrash {
+		if err := recover(); err != nil {
+			godot.recovery(err)
+		}
 	}
 }
