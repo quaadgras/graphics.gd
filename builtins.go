@@ -47,6 +47,10 @@ func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
 	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(classNameOf(reflect.TypeOf(ptr).Elem())))
 	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
 		native.SetPointer(object.AsPointer())
+		native.SetTemporary(ctx)
+		if rc, ok := As[RefCounted](ctx, object); ok {
+			rc.Reference() // resources need to be referenced when we create them, as we will unreference them when they expire.
+		}
 		return native.(T)
 	}
 	ptr.SetPointer(object.AsPointer())

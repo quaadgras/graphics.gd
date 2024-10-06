@@ -29,6 +29,9 @@ func PointerWithOwnershipTransferredToGodot(godot Lifetime, ptr Pointer) uintptr
 }
 
 func PointerMustAssertInstanceID(godot Lifetime, ptr uintptr) Pointer {
+	if ptr == 0 {
+		return Pointer{}
+	}
 	var obj Object
 	obj.SetPointer(mmm.Let[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, 0}))
 	return mmm.Let[Pointer](godot.Lifetime, godot.API, [2]uintptr{ptr, uintptr(godot.API.Object.GetInstanceID(obj))})
@@ -107,6 +110,9 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 // if the cast was successful.
 func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	if ref, ok := godot.API.Instances[mmm.Get(class.AsPointer())[0]].(T); ok {
+		extension := any(ref).(ExtensionClass)
+		extension.SetPointer(class.AsPointer())
+		extension.SetTemporary(godot)
 		return ref, true
 	}
 	var zero T

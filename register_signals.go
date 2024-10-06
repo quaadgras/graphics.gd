@@ -16,6 +16,9 @@ func registerSignals(godot Lifetime, class StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
 		name := field.Name
+		if !field.IsExported() {
+			continue
+		}
 		if tag := field.Tag.Get("gd"); tag != "" {
 			name = tag
 		}

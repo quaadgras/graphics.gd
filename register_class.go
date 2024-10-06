@@ -618,6 +618,15 @@ func (instance *instanceImplementation) ready() {
 }
 
 func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, field reflect.StructField, parent, owner Node) {
+	type isNode interface {
+		gd.PointerToClass
+
+		AsNode() Node
+	}
+	nodeType := reflect.TypeOf([0]isNode{}).Elem()
+	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
+		return
+	}
 	var (
 		rvalue = reflect.ValueOf(value)
 	)
@@ -625,15 +634,7 @@ func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, fie
 		rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
 		value = rvalue.Elem().Interface()
 	}
-	type isNode interface {
-		gd.PointerToClass
-
-		AsNode() Node
-	}
-	class, ok := value.(isNode)
-	if !ok {
-		return
-	}
+	class := value.(isNode)
 	if rvalue.Elem().Kind() == reflect.Struct {
 		defer func() {
 			rvalue := rvalue.Elem()
