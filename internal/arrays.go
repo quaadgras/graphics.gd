@@ -2,6 +2,7 @@ package gd
 
 import (
 	"errors"
+	"iter"
 
 	"grow.graphics/gd/internal/callframe"
 	"runtime.link/mmm"
@@ -25,6 +26,18 @@ func (a Array) Free() {
 	var frame = callframe.New()
 	mmm.API(a).typeset.destruct.Array(callframe.Arg(frame, mmm.End(a)).Uintptr())
 	frame.Free()
+}
+
+func (a Array) Iter() iter.Seq2[Int, Variant] {
+	return func(yield func(Int, Variant) bool) {
+		tmp := NewLifetime(mmm.API(a))
+		defer tmp.End()
+		for i := Int(0); i < a.Size(); i++ {
+			if !yield(i, a.Index(tmp, i)) {
+				break
+			}
+		}
+	}
 }
 
 type IsArray interface {
@@ -94,6 +107,7 @@ type ArrayOf[T any] interface {
 	SortCustom(fn Callable)
 
 	UnmarshalInto(any) error
+	Iter() iter.Seq2[Int, T]
 }
 
 func (godot Lifetime) Array() Array {
@@ -124,8 +138,8 @@ func (a TypedArray[T]) AppendArray(array ArrayOf[T]) {
 func (a TypedArray[T]) Assign(array ArrayOf[T]) {
 	Array(a).Assign(Array(array.(TypedArray[T])))
 }
-func (a TypedArray[T]) Back(godot Lifetime) T {
-	return Array(a).Back(godot).Interface(godot).(T)
+func (a TypedArray[T]) Back(tmp Lifetime) T {
+	return as[T](tmp, Array(a).Back(tmp))
 }
 func (a TypedArray[T]) Bsearch(value T, before bool) int64 {
 	godot := NewLifetime(mmm.API(Array(a)))
@@ -168,7 +182,7 @@ func (a TypedArray[T]) Free() {
 	Array(a).Free()
 }
 func (a TypedArray[T]) Front(ctx Lifetime) T {
-	return Array(a).Front(ctx).Interface(ctx).(T)
+	return as[T](ctx, Array(a).Front(ctx))
 }
 func (a TypedArray[T]) GetTypedBuiltin() int64 {
 	return Array(a).GetTypedBuiltin()
@@ -188,7 +202,7 @@ func (a TypedArray[T]) Hash() int64 {
 	return Array(a).Hash()
 }
 func (a TypedArray[T]) Index(ctx Lifetime, index int64) T {
-	return Array(a).Index(ctx, index).Interface(ctx).(T)
+	return as[T](ctx, Array(a).Index(ctx, index))
 }
 func (a TypedArray[T]) Insert(position int64, value T) int64 {
 	godot := NewLifetime(mmm.API(Array(a)))
@@ -214,22 +228,22 @@ func (a TypedArray[T]) Map(ctx Lifetime, method Callable) ArrayOf[T] {
 	return TypedArray[T](Array(a).Map(ctx, method))
 }
 func (a TypedArray[T]) Max(ctx Lifetime) T {
-	return Array(a).Max(ctx).Interface(ctx).(T)
+	return as[T](ctx, Array(a).Max(ctx))
 }
 func (a TypedArray[T]) Min(ctx Lifetime) T {
-	return Array(a).Min(ctx).Interface(ctx).(T)
+	return as[T](ctx, Array(a).Min(ctx))
 }
 func (a TypedArray[T]) PickRandom(ctx Lifetime) T {
-	return Array(a).PickRandom(ctx).Interface(ctx).(T)
+	return as[T](ctx, Array(a).PickRandom(ctx))
 }
 func (a TypedArray[T]) PopAt(ctx Lifetime, position int64) T {
-	return Array(a).PopAt(ctx, position).Interface(ctx).(T)
+	return as[T](ctx, Array(a).PopAt(ctx, position))
 }
 func (a TypedArray[T]) PopBack(ctx Lifetime) T {
-	return Array(a).PopBack(ctx).Interface(ctx).(T)
+	return as[T](ctx, Array(a).PopBack(ctx))
 }
 func (a TypedArray[T]) PopFront(ctx Lifetime) T {
-	return Array(a).PopFront(ctx).Interface(ctx).(T)
+	return as[T](ctx, Array(a).PopFront(ctx))
 }
 func (a TypedArray[T]) PushBack(value T) {
 	godot := NewLifetime(mmm.API(Array(a)))
@@ -242,7 +256,7 @@ func (a TypedArray[T]) PushFront(value T) {
 	Array(a).PushFront(godot.Variant(value))
 }
 func (a TypedArray[T]) Reduce(ctx Lifetime, method Callable, accum T) T {
-	return Array(a).Reduce(ctx, method, ctx.Variant(accum)).Interface(ctx).(T)
+	return as[T](ctx, Array(a).Reduce(ctx, method, ctx.Variant(accum)))
 }
 func (a TypedArray[T]) RemoveAt(position int64) {
 	Array(a).RemoveAt(position)
@@ -274,14 +288,23 @@ func (a TypedArray[T]) Slice(ctx Lifetime, begin int64, end int64, step int64, d
 }
 func (a TypedArray[T]) Sort() {
 	Array(a).Sort()
-
 }
 func (a TypedArray[T]) SortCustom(fn Callable) {
 	Array(a).SortCustom(fn)
-
 }
 func (a TypedArray[T]) end() { Array(a).end() }
 
 func (a TypedArray[T]) UnmarshalInto(val any) error {
 	return errors.New("TypedArray.UnmarshalInto not implemented")
+}
+func (a TypedArray[T]) Iter() iter.Seq2[Int, T] {
+	return func(yield func(Int, T) bool) {
+		tmp := NewLifetime(mmm.API(Array(a)))
+		defer tmp.End()
+		for i, v := range Array(a).Iter() {
+			if !yield(i, as[T](tmp, v)) {
+				break
+			}
+		}
+	}
 }

@@ -3,6 +3,7 @@
 package gd
 
 import (
+	"iter"
 	"reflect"
 
 	gd "grow.graphics/gd/internal"
@@ -207,4 +208,5 @@ type ArrayOf[T any] interface {
 	SortCustom(fn Callable)
 
 	UnmarshalInto(any) error
+	Iter() iter.Seq2[Int, T]
 }

@@ -20,6 +20,9 @@ func (cb onFree) Free() {
 	mmm.End(cb)
 }
 
+// Tool can be embedded inside a struct to make it run in the editor.
+type Tool interface{ tool() }
+
 /*
 RegisterClass registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must
@@ -64,7 +67,8 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 	switch {
 	case superType.Implements(reflect.TypeOf([0]interface{ AsScript() Script }{}).Elem()),
 		superType.Implements(reflect.TypeOf([0]interface{ AsEditorPlugin() EditorPlugin }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() ScriptLanguage }{}).Elem()):
+		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() ScriptLanguage }{}).Elem()),
+		classType.Implements(reflect.TypeOf([0]Tool{}).Elem()):
 		tool = true
 	}
 
@@ -225,7 +229,7 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 		object:   mmm.Get(super.AsPointer())[0],
 		Value:    value.Addr().Interface().(gd.ExtensionClass),
 		signals:  signals,
-		isEditor: Engine(ctx).IsEditorHint(),
+		isEditor: !class.Tool && Engine(ctx).IsEditorHint(),
 	}
 }
 

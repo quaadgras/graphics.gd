@@ -1,6 +1,6 @@
 module grow.graphics/gd
 
-go 1.22.3
+go 1.23.2
 
 require (
 	grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4

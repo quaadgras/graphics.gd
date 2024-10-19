@@ -130,6 +130,23 @@ func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	return zero, false
 }
 
+func as[T any](tmp Lifetime, v Variant) T {
+	var zero T
+	val := v.Interface(tmp)
+	if val == nil {
+		return zero
+	}
+	if obj, ok := val.(IsClass); ok {
+		var classtag = tmp.API.ClassDB.GetClassTag(obj.AsObject().GetClass(tmp).StringName(tmp))
+		casted := tmp.API.Object.CastTo(obj.AsObject(), classtag)
+		if casted != (Object{}) && mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
+			any(&zero).(PointerToClass).SetPointer(casted.AsPointer())
+		}
+		return zero
+	}
+	return val.(T)
+}
+
 type Singleton interface {
 	IsSingleton()
 }
