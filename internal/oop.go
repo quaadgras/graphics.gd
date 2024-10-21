@@ -78,12 +78,12 @@ func (class *Class[T, S]) SetPointer(ptr Pointer) {
 }
 
 func (class Class[T, S]) AsPointer() Pointer {
-	return class.super.AsPointer()
+	return class.super.AsObject().AsPointer()
 }
 
 func (class Class[T, S]) AsObject() Object {
 	var obj Object
-	obj.SetPointer(class.super.AsPointer())
+	obj.SetPointer(class.super.AsObject().AsPointer())
 	return obj
 }
 
@@ -109,9 +109,9 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
-	if ref, ok := godot.API.Instances[mmm.Get(class.AsPointer())[0]].(T); ok {
+	if ref, ok := godot.API.Instances[mmm.Get(class.AsObject().AsPointer())[0]].(T); ok {
 		extension := any(ref).(ExtensionClass)
-		extension.SetPointer(class.AsPointer())
+		extension.SetPointer(class.AsObject().AsPointer())
 		extension.SetTemporary(godot)
 		return ref, true
 	}
@@ -215,7 +215,6 @@ type PointerToClass interface {
 }
 
 type IsClass interface {
-	AsPointer() Pointer
 	Virtual(string) reflect.Value
 	AsObject() Object
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"grow.graphics/gd"
+	"grow.graphics/gd/object/Resource"
 )
 
 func TestMap(t *testing.T) {
@@ -23,9 +24,9 @@ func TestMap(t *testing.T) {
 		t.Error("expected 2")
 	}
 
-	var resources = gd.NewMap[gd.String, gd.Resource](lt)
+	var resources = gd.NewMap[gd.String, Resource.Expert](lt)
 	tmp := gd.NewLifetime(lt)
-	res := *gd.Create(tmp, new(gd.Resource))
+	res := *gd.New[Resource.Expert](tmp)
 	res.SetName(tmp.String("res1"))
 	resources.Set(lt.String("res1"), res)
 	tmp.End()

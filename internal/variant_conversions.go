@@ -199,7 +199,7 @@ func (godot Lifetime) Variant(v any) Variant {
 			if reflect.ValueOf(v).IsZero() {
 				return godot.API.Variants.NewNil(godot)
 			}
-			var arg = callframe.Arg(frame, class.AsPointer().Pointer())
+			var arg = callframe.Arg(frame, class.AsObject().AsPointer().Pointer())
 			godot.API.variant.FromType[TypeObject](ret, arg.Uintptr())
 		} else {
 			panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())

@@ -2,8 +2,12 @@ package gd
 
 import (
 	"reflect"
+	"unsafe"
 
 	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/object"
+	"grow.graphics/gd/object/Node"
+	gdResourceLoader "grow.graphics/gd/object/ResourceLoader"
 	"runtime.link/mmm"
 )
 
@@ -41,19 +45,19 @@ type isRefCounted interface {
 	AsRefCounted() RefCounted
 }
 
-// Create a new instance of the given class, which should be an uninitialised
-// pointer to a value of that class. T must be a class from this package.
-func Create[T gd.PointerToClass](ctx Lifetime, ptr T) T {
-	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(classNameOf(reflect.TypeOf(ptr).Elem())))
+// New creates a new instance of the given class.
+func New[T gd.IsClass](ctx Lifetime) *T {
+	object := ctx.API.ClassDB.ConstructObject(ctx, ctx.StringName(classNameOf(reflect.TypeOf([0]T{}).Elem())))
 	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
 		native.SetPointer(object.AsPointer())
 		native.SetTemporary(ctx)
 		if rc, ok := As[RefCounted](ctx, object); ok {
 			rc.Reference() // resources need to be referenced when we create them, as we will unreference them when they expire.
 		}
-		return native.(T)
+		return any(native).(*T)
 	}
-	ptr.SetPointer(object.AsPointer())
+	ptr := new(T)
+	(*(*[1]gd.Object)(unsafe.Pointer(ptr)))[0] = object
 	if rc, ok := any(ptr).(isRefCounted); ok {
 		rc.AsRefCounted().Reference() // resources need to be referenced when we create them, as we will unreference them when they expire.
 	}
@@ -75,7 +79,7 @@ func As[T gd.IsClass](godot Lifetime, class gd.IsClass) (T, bool) {
 type isResource interface {
 	gd.IsClass
 
-	AsResource() Resource
+	AsResource() object.Resource
 }
 
 // Load returns a Resource from the filesystem located at the absolute path. Unless it's already
@@ -104,19 +108,19 @@ func Load[T isResource](godot Lifetime, path string) (T, bool) {
 	tmp := NewLifetime(godot)
 	defer tmp.End()
 	hint := classNameOf(reflect.TypeOf([0]T{}).Elem())
-	resource := ResourceLoader(godot).Load(godot,
-		tmp.String(path), tmp.String(hint), ResourceLoaderCacheModeReuse)
-	return As[T](godot, resource)
+	resource := gdResourceLoader.Expert(ResourceLoader(godot)).Load(godot,
+		tmp.String(path), tmp.String(hint), gdResourceLoader.CacheModeReuse)
+	return As[T](godot, resource[0])
 }
 
 // AddChild adds a child to the parent node, returning a [NodePath] to the child
 // with the specified lifetime.
-func AddChild(godot Lifetime, parent, child Node) NodePath {
+func AddChild(godot Lifetime, parent, child object.Node) NodePath {
 	tmp := NewLifetime(godot)
 	defer tmp.End()
-	var adding Node
-	adding.SetPointer(mmm.New[gd.Pointer](tmp.Lifetime, godot.API, mmm.Get(child.AsPointer())))
-	parent.AddChild(adding, true, 0)
-	defer mmm.End(child.AsPointer())
-	return child.GetPath(godot)
+	var adding object.Node
+	adding[0].SetPointer(mmm.New[gd.Pointer](tmp.Lifetime, godot.API, mmm.Get(child[0].AsPointer())))
+	Node.Expert(parent).AddChild(adding, true, 0)
+	defer mmm.End(child[0].AsPointer())
+	return Node.Expert(child).GetPath(godot)
 }

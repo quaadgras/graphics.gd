@@ -3,10 +3,14 @@
 package gd_test
 
 import (
+	"fmt"
 	"testing"
 
 	"grow.graphics/gd"
 	internal "grow.graphics/gd/internal"
+	"grow.graphics/gd/object/Engine"
+	"grow.graphics/gd/object/Node"
+	"grow.graphics/gd/object/Node2D"
 )
 
 func TestRegister(t *testing.T) {
@@ -14,7 +18,7 @@ func TestRegister(t *testing.T) {
 	defer godot.End()
 
 	type SimpleClass struct {
-		gd.Class[SimpleClass, gd.Node2D]
+		gd.Class[SimpleClass, Node2D.Expert]
 	}
 
 	gd.Register[SimpleClass](godot)
@@ -26,7 +30,7 @@ func TestRegister(t *testing.T) {
 		t.Fail()
 	}
 
-	class := gd.Create(godot, new(SimpleClass))
+	class := gd.New[SimpleClass](godot)
 	if class.AsObject().GetClass(godot).String() != "SimpleClass" {
 		t.Fail()
 	}
@@ -34,7 +38,7 @@ func TestRegister(t *testing.T) {
 }
 
 type MyClassWithConstants struct {
-	gd.Class[MyClassWithConstants, gd.Node2D]
+	gd.Class[MyClassWithConstants, Node2D.Expert]
 }
 
 func (*MyClassWithConstants) OnRegister(godot gd.Lifetime) {
@@ -52,4 +56,21 @@ func TestRegisterConstants(t *testing.T) {
 	defer godot.End()
 
 	gd.Register[MyClassWithConstants](godot)
+}
+
+type Singleton struct {
+	gd.Class[Singleton, Node.Expert]
+}
+
+func (Singleton) Ready() {
+	fmt.Println("Singleton Ready!")
+}
+
+func TestSingleton(t *testing.T) {
+	godot := internal.NewLifetime(API)
+	defer godot.End()
+
+	gd.Register[Singleton](godot)
+
+	Engine.Expert(gd.Engine(godot)).RegisterSingleton(godot.StringName("HelloWorld"), gd.New[Singleton](godot).AsObject())
 }

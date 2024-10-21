@@ -4,146 +4,150 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd"
+
+	"grow.graphics/gd/object/Script"
+	"grow.graphics/gd/object/ScriptExtension"
+	"grow.graphics/gd/object/ScriptLanguage"
 )
 
-type Script struct {
-	gd.Class[Script, gd.ScriptExtension] `gd:"GoScript"`
+type GoScript struct {
+	gd.Class[GoScript, ScriptExtension.Expert] `gd:"GoScript"`
 }
 
-func (script *Script) CanInstantiate() gd.Bool {
+func (script *GoScript) CanInstantiate() gd.Bool {
 	return false
 }
 
-func (script *Script) EditorCanReloadFromFile() gd.Bool {
+func (script *GoScript) EditorCanReloadFromFile() gd.Bool {
 	return true
 }
 
-func (script *Script) GetBaseScript() gd.Script {
+func (script *GoScript) GetBaseScript() Script.Expert {
 	return script.Super().AsScript()
 }
 
-func (script *Script) GetClassIconPath() gd.String {
+func (script *GoScript) GetClassIconPath() gd.String {
 	return script.Temporary.String("res://icon.png")
 }
 
-func (script *Script) GetConstants() gd.Dictionary {
+func (script *GoScript) GetConstants() gd.Dictionary {
 	return script.Temporary.Dictionary()
 }
 
-func (script *Script) GetDocumentation() gd.ArrayOf[gd.Dictionary] {
+func (script *GoScript) GetDocumentation() gd.ArrayOf[gd.Dictionary] {
 	return nil
 }
 
-func (script *Script) GetGlobalName() gd.StringName {
+func (script *GoScript) GetGlobalName() gd.StringName {
 	return script.Temporary.StringName("gdscript")
 }
 
-func (script *Script) GetInstanceBaseType() gd.StringName {
+func (script *GoScript) GetInstanceBaseType() gd.StringName {
 	return script.Temporary.StringName("Node")
 }
 
-func (script *Script) GetLanguage() gd.ScriptLanguage {
-	return gd.ScriptLanguage{}
+func (script *GoScript) GetLanguage() ScriptLanguage.Expert {
+	return ScriptLanguage.Expert{}
 }
 
-func (script *Script) GetMemberLine(member gd.StringName) gd.Int {
+func (script *GoScript) GetMemberLine(member gd.StringName) gd.Int {
 	return 0
 }
 
-func (script *Script) GetMembers() gd.ArrayOf[gd.StringName] {
+func (script *GoScript) GetMembers() gd.ArrayOf[gd.StringName] {
 	return nil
 }
 
-func (script *Script) GetMethodInfo() gd.Dictionary {
+func (script *GoScript) GetMethodInfo() gd.Dictionary {
 	return script.Temporary.Dictionary()
 }
 
-func (script *Script) GetPropertyDefaultValue(property gd.StringName) gd.Variant {
+func (script *GoScript) GetPropertyDefaultValue(property gd.StringName) gd.Variant {
 	return gd.Variant{}
 }
 
-func (script *Script) GetRpcConfig() gd.Variant {
+func (script *GoScript) GetRpcConfig() gd.Variant {
 	return gd.Variant{}
 }
 
-func (script *Script) GetScriptMethodList() gd.ArrayOf[gd.Dictionary] {
+func (script *GoScript) GetScriptMethodList() gd.ArrayOf[gd.Dictionary] {
 	return nil
 }
 
-func (script *Script) GetScriptPropertyList() gd.ArrayOf[gd.Dictionary] {
+func (script *GoScript) GetScriptPropertyList() gd.ArrayOf[gd.Dictionary] {
 	return nil
 }
 
-func (script *Script) GetScriptSignalList() gd.ArrayOf[gd.Dictionary] {
+func (script *GoScript) GetScriptSignalList() gd.ArrayOf[gd.Dictionary] {
 	return nil
 }
 
-func (script *Script) GetSourceCode() gd.String {
+func (script *GoScript) GetSourceCode() gd.String {
 	return script.Temporary.String("")
 }
 
-func (script *Script) HasMethod(method gd.StringName) gd.Bool {
+func (script *GoScript) HasMethod(method gd.StringName) gd.Bool {
 	return false
 }
 
-func (script *Script) HasPropertyDefaultValue(property gd.StringName) gd.Bool {
+func (script *GoScript) HasPropertyDefaultValue(property gd.StringName) gd.Bool {
 	return false
 }
 
-func (script *Script) HasScriptSignal(signal gd.StringName) gd.Bool {
+func (script *GoScript) HasScriptSignal(signal gd.StringName) gd.Bool {
 	return false
 }
 
-func (script *Script) HasSourceCode() gd.Bool {
+func (script *GoScript) HasSourceCode() gd.Bool {
 	return false
 }
 
-func (script *Script) HasStaticMethod(method gd.StringName) gd.Bool {
+func (script *GoScript) HasStaticMethod(method gd.StringName) gd.Bool {
 	return false
 }
 
-func (script *Script) InheritsScript(parent Script) gd.Bool {
+func (script *GoScript) InheritsScript(parent GoScript) gd.Bool {
 	return false
 }
 
-func (script *Script) InstanceCreate(obj gd.Object) unsafe.Pointer {
+func (script *GoScript) InstanceCreate(obj gd.Object) unsafe.Pointer {
 	return nil
 }
 
-func (script *Script) InstanceHas(obj gd.Object) gd.Bool {
+func (script *GoScript) InstanceHas(obj gd.Object) gd.Bool {
 	return false
 }
 
-func (script *Script) IsAbstract() gd.Bool {
+func (script *GoScript) IsAbstract() gd.Bool {
 	return false
 }
 
-func (script *Script) IsPlaceholderFallbackEnabled() gd.Bool {
+func (script *GoScript) IsPlaceholderFallbackEnabled() gd.Bool {
 	return false
 }
 
-func (script *Script) IsTool() gd.Bool {
+func (script *GoScript) IsTool() gd.Bool {
 	return false
 }
 
-func (script *Script) IsValid() gd.Bool {
+func (script *GoScript) IsValid() gd.Bool {
 	return true
 }
 
-func (script *Script) PlaceholderErased(placeholder unsafe.Pointer) unsafe.Pointer {
+func (script *GoScript) PlaceholderErased(placeholder unsafe.Pointer) unsafe.Pointer {
 	return nil
 }
 
-func (script *Script) PlaceholderInstanceCraete(obj gd.Object) unsafe.Pointer {
+func (script *GoScript) PlaceholderInstanceCraete(obj gd.Object) unsafe.Pointer {
 	return nil
 }
 
-func (script *Script) Reload(keep_state bool) gd.Int {
+func (script *GoScript) Reload(keep_state bool) gd.Int {
 	return 0
 }
 
-func (script *Script) SetSourceCode(code gd.String) {
+func (script *GoScript) SetSourceCode(code gd.String) {
 
 }
 
-func (script *Script) UpdateExports() {}
+func (script *GoScript) UpdateExports() {}

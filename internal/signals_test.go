@@ -7,10 +7,11 @@ import (
 
 	"grow.graphics/gd"
 	internal "grow.graphics/gd/internal"
+	"grow.graphics/gd/object/Node2D"
 )
 
 type CustomSignal struct {
-	gd.Class[CustomSignal, gd.Node2D]
+	gd.Class[CustomSignal, Node2D.Expert]
 
 	HealthChanged gd.SignalAs[func(gd.Int, gd.Int)]
 
@@ -35,6 +36,6 @@ func TestSignals(t *testing.T) {
 
 	gd.Register[CustomSignal](godot)
 
-	custom := gd.Create(godot, new(CustomSignal))
+	custom := gd.New[CustomSignal](godot)
 	custom.TakeDamage(godot, 10)
 }

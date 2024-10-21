@@ -111,7 +111,8 @@ type (
 	RID        = gd.RID
 	Callable   = gd.Callable
 
-	Signal = gd.Signal
+	Signal     = gd.Signal
+	RefCounted = gd.RefCounted
 
 	Dictionary = gd.Dictionary
 	Array      = gd.Array

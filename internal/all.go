@@ -8,6 +8,7 @@ import "reflect"
 import "runtime.link/mmm"
 import "grow.graphics/gd/internal/callframe"
 
+
 type Corner int64
 
 type Orientation int64
@@ -39,116 +40,116 @@ type MIDIMessage int64
 type Error int64
 
 const (
-	/*Methods that return [enum Error] return [constant OK] when no error occurred.
-	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
-	  [b]Example:[/b]
-	  [codeblock]
-	  var error = method_that_returns_error()
-	  if error != OK:
-	      printerr("Failure!")
+/*Methods that return [enum Error] return [constant OK] when no error occurred.
+Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+[b]Example:[/b]
+[codeblock]
+var error = method_that_returns_error()
+if error != OK:
+    printerr("Failure!")
 
-	  # Or, alternatively:
-	  if error:
-	      printerr("Still failing!")
-	  [/codeblock]
-	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+# Or, alternatively:
+if error:
+    printerr("Still failing!")
+[/codeblock]
+[b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
 	Ok Error = 0
-	/*Generic error.*/
+/*Generic error.*/
 	Failed Error = 1
-	/*Unavailable error.*/
+/*Unavailable error.*/
 	ErrUnavailable Error = 2
-	/*Unconfigured error.*/
+/*Unconfigured error.*/
 	ErrUnconfigured Error = 3
-	/*Unauthorized error.*/
+/*Unauthorized error.*/
 	ErrUnauthorized Error = 4
-	/*Parameter range error.*/
+/*Parameter range error.*/
 	ErrParameterRangeError Error = 5
-	/*Out of memory (OOM) error.*/
+/*Out of memory (OOM) error.*/
 	ErrOutOfMemory Error = 6
-	/*File: Not found error.*/
+/*File: Not found error.*/
 	ErrFileNotFound Error = 7
-	/*File: Bad drive error.*/
+/*File: Bad drive error.*/
 	ErrFileBadDrive Error = 8
-	/*File: Bad path error.*/
+/*File: Bad path error.*/
 	ErrFileBadPath Error = 9
-	/*File: No permission error.*/
+/*File: No permission error.*/
 	ErrFileNoPermission Error = 10
-	/*File: Already in use error.*/
+/*File: Already in use error.*/
 	ErrFileAlreadyInUse Error = 11
-	/*File: Can't open error.*/
+/*File: Can't open error.*/
 	ErrFileCantOpen Error = 12
-	/*File: Can't write error.*/
+/*File: Can't write error.*/
 	ErrFileCantWrite Error = 13
-	/*File: Can't read error.*/
+/*File: Can't read error.*/
 	ErrFileCantRead Error = 14
-	/*File: Unrecognized error.*/
+/*File: Unrecognized error.*/
 	ErrFileUnrecognized Error = 15
-	/*File: Corrupt error.*/
+/*File: Corrupt error.*/
 	ErrFileCorrupt Error = 16
-	/*File: Missing dependencies error.*/
+/*File: Missing dependencies error.*/
 	ErrFileMissingDependencies Error = 17
-	/*File: End of file (EOF) error.*/
+/*File: End of file (EOF) error.*/
 	ErrFileEof Error = 18
-	/*Can't open error.*/
+/*Can't open error.*/
 	ErrCantOpen Error = 19
-	/*Can't create error.*/
+/*Can't create error.*/
 	ErrCantCreate Error = 20
-	/*Query failed error.*/
+/*Query failed error.*/
 	ErrQueryFailed Error = 21
-	/*Already in use error.*/
+/*Already in use error.*/
 	ErrAlreadyInUse Error = 22
-	/*Locked error.*/
+/*Locked error.*/
 	ErrLocked Error = 23
-	/*Timeout error.*/
+/*Timeout error.*/
 	ErrTimeout Error = 24
-	/*Can't connect error.*/
+/*Can't connect error.*/
 	ErrCantConnect Error = 25
-	/*Can't resolve error.*/
+/*Can't resolve error.*/
 	ErrCantResolve Error = 26
-	/*Connection error.*/
+/*Connection error.*/
 	ErrConnectionError Error = 27
-	/*Can't acquire resource error.*/
+/*Can't acquire resource error.*/
 	ErrCantAcquireResource Error = 28
-	/*Can't fork process error.*/
+/*Can't fork process error.*/
 	ErrCantFork Error = 29
-	/*Invalid data error.*/
+/*Invalid data error.*/
 	ErrInvalidData Error = 30
-	/*Invalid parameter error.*/
+/*Invalid parameter error.*/
 	ErrInvalidParameter Error = 31
-	/*Already exists error.*/
+/*Already exists error.*/
 	ErrAlreadyExists Error = 32
-	/*Does not exist error.*/
+/*Does not exist error.*/
 	ErrDoesNotExist Error = 33
-	/*Database: Read error.*/
+/*Database: Read error.*/
 	ErrDatabaseCantRead Error = 34
-	/*Database: Write error.*/
+/*Database: Write error.*/
 	ErrDatabaseCantWrite Error = 35
-	/*Compilation failed error.*/
+/*Compilation failed error.*/
 	ErrCompilationFailed Error = 36
-	/*Method not found error.*/
+/*Method not found error.*/
 	ErrMethodNotFound Error = 37
-	/*Linking failed error.*/
+/*Linking failed error.*/
 	ErrLinkFailed Error = 38
-	/*Script failed error.*/
+/*Script failed error.*/
 	ErrScriptFailed Error = 39
-	/*Cycling link (import cycle) error.*/
+/*Cycling link (import cycle) error.*/
 	ErrCyclicLink Error = 40
-	/*Invalid declaration error.*/
+/*Invalid declaration error.*/
 	ErrInvalidDeclaration Error = 41
-	/*Duplicate symbol error.*/
+/*Duplicate symbol error.*/
 	ErrDuplicateSymbol Error = 42
-	/*Parse error.*/
+/*Parse error.*/
 	ErrParseError Error = 43
-	/*Busy error.*/
+/*Busy error.*/
 	ErrBusy Error = 44
-	/*Skip error.*/
+/*Skip error.*/
 	ErrSkip Error = 45
-	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
 	ErrHelp Error = 46
-	/*Bug error, caused by an implementation issue in the method.
-	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+/*Bug error, caused by an implementation issue in the method.
+[b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
 	ErrBug Error = 47
-	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
 
@@ -161,85 +162,85 @@ type MethodFlags int64
 type VariantType int64
 
 const (
-	/*Variable is [code]null[/code].*/
+/*Variable is [code]null[/code].*/
 	TypeNil VariantType = 0
-	/*Variable is of type [bool].*/
+/*Variable is of type [bool].*/
 	TypeBool VariantType = 1
-	/*Variable is of type [int].*/
+/*Variable is of type [int].*/
 	TypeInt VariantType = 2
-	/*Variable is of type [float].*/
+/*Variable is of type [float].*/
 	TypeFloat VariantType = 3
-	/*Variable is of type [String].*/
+/*Variable is of type [String].*/
 	TypeString VariantType = 4
-	/*Variable is of type [Vector2].*/
+/*Variable is of type [Vector2].*/
 	TypeVector2 VariantType = 5
-	/*Variable is of type [Vector2i].*/
+/*Variable is of type [Vector2i].*/
 	TypeVector2i VariantType = 6
-	/*Variable is of type [Rect2].*/
+/*Variable is of type [Rect2].*/
 	TypeRect2 VariantType = 7
-	/*Variable is of type [Rect2i].*/
+/*Variable is of type [Rect2i].*/
 	TypeRect2i VariantType = 8
-	/*Variable is of type [Vector3].*/
+/*Variable is of type [Vector3].*/
 	TypeVector3 VariantType = 9
-	/*Variable is of type [Vector3i].*/
+/*Variable is of type [Vector3i].*/
 	TypeVector3i VariantType = 10
-	/*Variable is of type [Transform2D].*/
+/*Variable is of type [Transform2D].*/
 	TypeTransform2d VariantType = 11
-	/*Variable is of type [Vector4].*/
+/*Variable is of type [Vector4].*/
 	TypeVector4 VariantType = 12
-	/*Variable is of type [Vector4i].*/
+/*Variable is of type [Vector4i].*/
 	TypeVector4i VariantType = 13
-	/*Variable is of type [Plane].*/
+/*Variable is of type [Plane].*/
 	TypePlane VariantType = 14
-	/*Variable is of type [Quaternion].*/
+/*Variable is of type [Quaternion].*/
 	TypeQuaternion VariantType = 15
-	/*Variable is of type [AABB].*/
+/*Variable is of type [AABB].*/
 	TypeAabb VariantType = 16
-	/*Variable is of type [Basis].*/
+/*Variable is of type [Basis].*/
 	TypeBasis VariantType = 17
-	/*Variable is of type [Transform3D].*/
+/*Variable is of type [Transform3D].*/
 	TypeTransform3d VariantType = 18
-	/*Variable is of type [Projection].*/
+/*Variable is of type [Projection].*/
 	TypeProjection VariantType = 19
-	/*Variable is of type [Color].*/
+/*Variable is of type [Color].*/
 	TypeColor VariantType = 20
-	/*Variable is of type [StringName].*/
+/*Variable is of type [StringName].*/
 	TypeStringName VariantType = 21
-	/*Variable is of type [NodePath].*/
+/*Variable is of type [NodePath].*/
 	TypeNodePath VariantType = 22
-	/*Variable is of type [RID].*/
+/*Variable is of type [RID].*/
 	TypeRid VariantType = 23
-	/*Variable is of type [Object].*/
+/*Variable is of type [Object].*/
 	TypeObject VariantType = 24
-	/*Variable is of type [Callable].*/
+/*Variable is of type [Callable].*/
 	TypeCallable VariantType = 25
-	/*Variable is of type [Signal].*/
+/*Variable is of type [Signal].*/
 	TypeSignal VariantType = 26
-	/*Variable is of type [Dictionary].*/
+/*Variable is of type [Dictionary].*/
 	TypeDictionary VariantType = 27
-	/*Variable is of type [Array].*/
+/*Variable is of type [Array].*/
 	TypeArray VariantType = 28
-	/*Variable is of type [PackedByteArray].*/
+/*Variable is of type [PackedByteArray].*/
 	TypePackedByteArray VariantType = 29
-	/*Variable is of type [PackedInt32Array].*/
+/*Variable is of type [PackedInt32Array].*/
 	TypePackedInt32Array VariantType = 30
-	/*Variable is of type [PackedInt64Array].*/
+/*Variable is of type [PackedInt64Array].*/
 	TypePackedInt64Array VariantType = 31
-	/*Variable is of type [PackedFloat32Array].*/
+/*Variable is of type [PackedFloat32Array].*/
 	TypePackedFloat32Array VariantType = 32
-	/*Variable is of type [PackedFloat64Array].*/
+/*Variable is of type [PackedFloat64Array].*/
 	TypePackedFloat64Array VariantType = 33
-	/*Variable is of type [PackedStringArray].*/
+/*Variable is of type [PackedStringArray].*/
 	TypePackedStringArray VariantType = 34
-	/*Variable is of type [PackedVector2Array].*/
+/*Variable is of type [PackedVector2Array].*/
 	TypePackedVector2Array VariantType = 35
-	/*Variable is of type [PackedVector3Array].*/
+/*Variable is of type [PackedVector3Array].*/
 	TypePackedVector3Array VariantType = 36
-	/*Variable is of type [PackedColorArray].*/
+/*Variable is of type [PackedColorArray].*/
 	TypePackedColorArray VariantType = 37
-	/*Variable is of type [PackedVector4Array].*/
+/*Variable is of type [PackedVector4Array].*/
 	TypePackedVector4Array VariantType = 38
-	/*Represents the size of the [enum Variant.Type] enum.*/
+/*Represents the size of the [enum Variant.Type] enum.*/
 	TypeMax VariantType = 39
 )
 
@@ -1510,7 +1511,6 @@ func (self String) CasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
@@ -1528,7 +1528,6 @@ func (self String) NocasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a [b]case-sensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
@@ -1547,7 +1546,6 @@ func (self String) NaturalcasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a [b]case-insensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
@@ -1566,7 +1564,6 @@ func (self String) NaturalnocasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Like [method naturalcasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filenocasecmp_to], [method naturalcasecmp_to], and [method casecmp_to].
@@ -1583,7 +1580,6 @@ func (self String) FilecasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Like [method naturalnocasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filecasecmp_to], [method naturalnocasecmp_to], and [method nocasecmp_to].
@@ -1600,7 +1596,6 @@ func (self String) FilenocasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
 */
@@ -1615,7 +1610,6 @@ func (self String) Length() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
@@ -1632,7 +1626,6 @@ func (self String) Substr(ctx Lifetime, from Int, len Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns the original string if [param delimiter] does not occur in the string. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
@@ -1654,7 +1647,6 @@ func (self String) GetSlice(ctx Lifetime, delimiter String, slice Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a Unicode character with code [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
@@ -1672,7 +1664,6 @@ func (self String) GetSlicec(ctx Lifetime, delimiter Int, slice Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
 */
@@ -1688,7 +1679,6 @@ func (self String) GetSliceCount(delimiter String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]first[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the string.
 [codeblocks]
@@ -1722,7 +1712,6 @@ func (self String) Find(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
 */
@@ -1739,7 +1728,6 @@ func (self String) Findn(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
@@ -1757,7 +1745,6 @@ func (self String) Count(what String, from Int, to Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
 */
@@ -1775,7 +1762,6 @@ func (self String) Countn(what String, from Int, to Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
 */
@@ -1792,7 +1778,6 @@ func (self String) Rfind(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
 */
@@ -1809,7 +1794,6 @@ func (self String) Rfindn(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
@@ -1825,7 +1809,6 @@ func (self String) Match(expr String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
@@ -1841,7 +1824,6 @@ func (self String) Matchn(expr String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
@@ -1857,7 +1839,6 @@ func (self String) BeginsWith(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
@@ -1873,7 +1854,6 @@ func (self String) EndsWith(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order.
 [codeblock]
@@ -1897,7 +1877,6 @@ func (self String) IsSubsequenceOf(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
@@ -1913,7 +1892,6 @@ func (self String) IsSubsequenceOfn(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns an array containing the bigrams (pairs of consecutive characters) of this string.
 [codeblock]
@@ -1931,7 +1909,6 @@ func (self String) Bigrams(ctx Lifetime) PackedStringArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sorensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
 [codeblock]
@@ -1953,7 +1930,6 @@ func (self String) Similarity(text String) Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string by replacing all occurrences of [param placeholder] with the elements of [param values].
 [param values] can be a [Dictionary] or an [Array]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
@@ -1994,7 +1970,6 @@ func (self String) Format(ctx Lifetime, values Variant, placeholder String) Stri
 	frame.Free()
 	return ret
 }
-
 /*
 Replaces all occurrences of [param what] inside the string with the given [param forwhat].
 */
@@ -2011,7 +1986,6 @@ func (self String) Replace(ctx Lifetime, what String, forwhat String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
 */
@@ -2028,7 +2002,6 @@ func (self String) Replacen(ctx Lifetime, what String, forwhat String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
@@ -2044,7 +2017,6 @@ func (self String) Repeat(ctx Lifetime, count Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the copy of this string in reverse order. This operation works on unicode codepoints, rather than sequences of codepoints, and may break things like compound letters or emojis.
 */
@@ -2059,7 +2031,6 @@ func (self String) Reverse(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Inserts [param what] at the given [param position] in the string.
 */
@@ -2076,7 +2047,6 @@ func (self String) Insert(ctx Lifetime, position Int, what String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
@@ -2093,7 +2063,6 @@ func (self String) Erase(ctx Lifetime, position Int, chars Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the appearance of the string: replaces underscores ([code]_[/code]) with spaces, adds spaces before uppercase letters in the middle of a word, converts all letters to lowercase, then converts the first one and each one following a space to uppercase.
 [codeblocks]
@@ -2120,7 +2089,6 @@ func (self String) Capitalize(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]camelCase[/code].
 */
@@ -2135,7 +2103,6 @@ func (self String) ToCamelCase(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]PascalCase[/code].
 */
@@ -2150,7 +2117,6 @@ func (self String) ToPascalCase(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]snake_case[/code].
 [b]Note:[/b] Numbers followed by a [i]single[/i] letter are not separated in the conversion to keep some words (such as "2D") together.
@@ -2178,7 +2144,6 @@ func (self String) ToSnakeCase(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a [param delimiter] and returns an array of the substrings. If [param delimiter] is an empty string, each substring will be a single character. This method is the opposite of [method join].
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
@@ -2218,7 +2183,6 @@ func (self String) Split(ctx Lifetime, delimiter String, allow_empty bool, maxsp
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a [param delimiter] and returns an array of the substrings, starting from the end of the string. The splits in the returned array appear in the same order as the original string. If [param delimiter] is an empty string, each substring will be a single character.
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
@@ -2252,7 +2216,6 @@ func (self String) Rsplit(ctx Lifetime, delimiter String, allow_empty bool, maxs
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string into floats by using a [param delimiter] and returns a [PackedFloat64Array].
 If [param allow_empty] is [code]false[/code], empty or invalid [float] conversions between adjacent delimiters are excluded.
@@ -2275,7 +2238,6 @@ func (self String) SplitFloats(ctx Lifetime, delimiter String, allow_empty bool)
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the concatenation of [param parts]' elements, with each element separated by the string calling this method. This method is the opposite of [method split].
 [b]Example:[/b]
@@ -2307,7 +2269,6 @@ func (self String) Join(ctx Lifetime, parts PackedStringArray) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]UPPERCASE[/code].
 */
@@ -2322,7 +2283,6 @@ func (self String) ToUpper(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]lowercase[/code].
 */
@@ -2337,7 +2297,6 @@ func (self String) ToLower(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the first [param length] characters from the beginning of the string. If [param length] is negative, strips the last [param length] characters from the string's end.
 [codeblock]
@@ -2357,7 +2316,6 @@ func (self String) Left(ctx Lifetime, length Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the last [param length] characters from the end of the string. If [param length] is negative, strips the first [param length] characters from the string's beginning.
 [codeblock]
@@ -2377,7 +2335,6 @@ func (self String) Right(ctx Lifetime, length Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Strips all non-printable characters from the beginning and the end of the string. These include spaces, tabulations ([code]\t[/code]), and newlines ([code]\n[/code] [code]\r[/code]).
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
@@ -2395,7 +2352,6 @@ func (self String) StripEdges(ctx Lifetime, left bool, right bool) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
 */
@@ -2410,7 +2366,6 @@ func (self String) StripEscapes(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes a set of characters defined in [param chars] from the string's beginning. See also [method rstrip].
 [b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
@@ -2427,7 +2382,6 @@ func (self String) Lstrip(ctx Lifetime, chars String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes a set of characters defined in [param chars] from the string's end. See also [method lstrip].
 [b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
@@ -2444,7 +2398,6 @@ func (self String) Rstrip(ctx Lifetime, chars String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file name or path, returns the file extension without the leading period ([code].[/code]). Otherwise, returns an empty string.
 [codeblock]
@@ -2470,7 +2423,6 @@ func (self String) GetExtension(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, returns the full file path, without the extension.
 [codeblock]
@@ -2488,7 +2440,6 @@ func (self String) GetBasename(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Concatenates [param file] at the end of the string as a subpath, adding [code]/[/code] if necessary.
 [b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
@@ -2505,7 +2456,6 @@ func (self String) PathJoin(ctx Lifetime, file String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the character code at position [param at].
 */
@@ -2521,7 +2471,6 @@ func (self String) UnicodeAt(at Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Indents every line of the string with the given [param prefix]. Empty lines are not indented. See also [method dedent] to remove indentation.
 For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
@@ -2538,7 +2487,6 @@ func (self String) Indent(ctx Lifetime, prefix String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
 */
@@ -2553,7 +2501,6 @@ func (self String) Dedent(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the 32-bit hash value representing the string's contents.
 [b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the contrary, strings with different hash values are guaranteed to be different.
@@ -2569,7 +2516,6 @@ func (self String) Hash() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
 */
@@ -2584,7 +2530,6 @@ func (self String) Md5Text(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
 */
@@ -2599,7 +2544,6 @@ func (self String) Sha1Text(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
 */
@@ -2614,7 +2558,6 @@ func (self String) Sha256Text(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
 */
@@ -2629,7 +2572,6 @@ func (self String) Md5Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
 */
@@ -2644,7 +2586,6 @@ func (self String) Sha1Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
 */
@@ -2659,7 +2600,6 @@ func (self String) Sha256Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
@@ -2674,7 +2614,6 @@ func (self String) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string contains [param what]. In GDScript, this corresponds to the [code]in[/code] operator.
 [codeblocks]
@@ -2702,7 +2641,6 @@ func (self String) Contains(what String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string contains [param what], [b]ignoring case[/b].
 If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
@@ -2719,7 +2657,6 @@ func (self String) Containsn(what String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string is a path to a file or directory, and its starting point is explicitly defined. This method is the opposite of [method is_relative_path].
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
@@ -2735,7 +2672,6 @@ func (self String) IsAbsolutePath() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
@@ -2750,7 +2686,6 @@ func (self String) IsRelativePath() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, converts the string into a canonical path. This is the shortest possible path, without [code]"./"[/code], and all the unnecessary [code]".."[/code] and [code]"/"[/code].
 [codeblock]
@@ -2769,7 +2704,6 @@ func (self String) SimplifyPath(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, returns the base directory name.
 [codeblock]
@@ -2787,7 +2721,6 @@ func (self String) GetBaseDir(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, returns the file name, including the extension.
 [codeblock]
@@ -2805,7 +2738,6 @@ func (self String) GetFile(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
@@ -2821,7 +2753,6 @@ func (self String) XmlEscape(ctx Lifetime, escape_quotes bool) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
 */
@@ -2836,7 +2767,6 @@ func (self String) XmlUnescape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Encodes the string to URL-friendly format. This method is meant to properly encode the parameters in a URL when sending an HTTP request. See also [method uri_decode].
 [codeblocks]
@@ -2865,7 +2795,6 @@ func (self String) UriEncode(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes the string from its URL-encoded format. This method is meant to properly decode the parameters in a URL when receiving an HTTP request. See also [method uri_encode].
 [codeblocks]
@@ -2890,7 +2819,6 @@ func (self String) UriDecode(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with special characters escaped using the C language standard.
 */
@@ -2905,7 +2833,6 @@ func (self String) CEscape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with escaped characters replaced by their meanings. Supported escape sequences are [code]\'[/code], [code]\"[/code], [code]\\[/code], [code]\a[/code], [code]\b[/code], [code]\f[/code], [code]\n[/code], [code]\r[/code], [code]\t[/code], [code]\v[/code].
 [b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
@@ -2921,7 +2848,6 @@ func (self String) CUnescape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
 */
@@ -2936,7 +2862,6 @@ func (self String) JsonEscape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
 */
@@ -2951,7 +2876,6 @@ func (self String) ValidateNodeName(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
 */
@@ -2966,7 +2890,6 @@ func (self String) ValidateFilename(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string is a valid identifier. A valid identifier may contain only letters, digits and underscores ([code]_[/code]), and the first character may not be a digit.
 [codeblock]
@@ -2987,7 +2910,6 @@ func (self String) IsValidIdentifier() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string represents a valid integer. A valid integer only contains digits, and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. See also [method to_int].
 [codeblock]
@@ -3009,7 +2931,6 @@ func (self String) IsValidInt() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string represents a valid floating-point number. A valid float may contain only digits, one decimal point ([code].[/code]), and the exponent letter ([code]e[/code]). It may also be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. Any valid integer is also a valid float (see [method is_valid_int]). See also [method to_float].
 [codeblock]
@@ -3030,7 +2951,6 @@ func (self String) IsValidFloat() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string is a valid hexadecimal number. A valid hexadecimal number only contains digits or letters [code]A[/code] to [code]F[/code] (either uppercase or lowercase), and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign.
 If [param with_prefix] is [code]true[/code], the hexadecimal number needs to prefixed by [code]"0x"[/code] to be considered valid.
@@ -3054,7 +2974,6 @@ func (self String) IsValidHexNumber(with_prefix bool) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
@@ -3069,7 +2988,6 @@ func (self String) IsValidHtmlColor() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
@@ -3084,7 +3002,6 @@ func (self String) IsValidIpAddress() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
@@ -3099,7 +3016,6 @@ func (self String) IsValidFilename() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing an integer number into an [int]. This method removes any non-number character and stops at the first decimal point ([code].[/code]). See also [method is_valid_int].
 [codeblock]
@@ -3120,7 +3036,6 @@ func (self String) ToInt() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing a decimal number into a [float]. This method stops on the first non-number character, except the first decimal point ([code].[/code]) and the exponent letter ([code]e[/code]). See also [method is_valid_float].
 [codeblock]
@@ -3142,7 +3057,6 @@ func (self String) ToFloat() Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing a hexadecimal number into an [int]. The string may be optionally prefixed with [code]"0x"[/code], and an additional [code]-[/code] prefix for negative numbers.
 [codeblocks]
@@ -3167,7 +3081,6 @@ func (self String) HexToInt() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing a binary number into an [int]. The string may optionally be prefixed with [code]"0b"[/code], and an additional [code]-[/code] prefix for negative numbers.
 [codeblocks]
@@ -3194,7 +3107,6 @@ func (self String) BinToInt() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
@@ -3211,7 +3123,6 @@ func (self String) Lpad(ctx Lifetime, min_length Int, character String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
@@ -3228,7 +3139,6 @@ func (self String) Rpad(ctx Lifetime, min_length Int, character String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
@@ -3244,7 +3154,6 @@ func (self String) PadDecimals(ctx Lifetime, digits Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
@@ -3260,7 +3169,6 @@ func (self String) PadZeros(ctx Lifetime, digits Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the given [param prefix] from the start of the string, or returns the string unchanged.
 */
@@ -3276,7 +3184,6 @@ func (self String) TrimPrefix(ctx Lifetime, prefix String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the given [param suffix] from the end of the string, or returns the string unchanged.
 */
@@ -3292,7 +3199,6 @@ func (self String) TrimSuffix(ctx Lifetime, suffix String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces. This is the inverse of [method PackedByteArray.get_string_from_ascii].
 */
@@ -3307,7 +3213,6 @@ func (self String) ToAsciiBuffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method. This is the inverse of [method PackedByteArray.get_string_from_utf8].
 */
@@ -3322,7 +3227,6 @@ func (self String) ToUtf8Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf16].
 */
@@ -3337,7 +3241,6 @@ func (self String) ToUtf16Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_utf32].
 */
@@ -3352,7 +3255,6 @@ func (self String) ToUtf32Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a hexadecimal string as a [PackedByteArray].
 [codeblocks]
@@ -3379,7 +3281,6 @@ func (self String) HexDecode(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray]. This is the inverse of [method PackedByteArray.get_string_from_wchar].
 */
@@ -3394,7 +3295,6 @@ func (self String) ToWcharBuffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the given [param number] to a string representation, in scientific notation.
 [codeblocks]
@@ -3423,7 +3323,6 @@ func (self String) NumScientific(ctx Lifetime, number Float) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts a [float] to a string representation of a decimal number, with the number of decimal places specified in [param decimals].
 If [param decimals] is [code]-1[/code] as by default, the string representation may only have up to 14 significant digits, with digits before the decimal point having priority over digits after.
@@ -3454,7 +3353,6 @@ func (self String) Num(ctx Lifetime, number Float, decimals Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the given [param number] to a string representation, with the given [param base].
 By default, [param base] is set to decimal ([code]10[/code]). Other common bases in programming include binary ([code]2[/code]), [url=https://en.wikipedia.org/wiki/Octal]octal[/url] ([code]8[/code]), hexadecimal ([code]16[/code]).
@@ -3472,7 +3370,6 @@ func (self String) NumInt64(ctx Lifetime, number Int, base Int, capitalize_hex b
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the given unsigned [int] to a string representation, with the given [param base].
 By default, [param base] is set to decimal ([code]10[/code]). Other common bases in programming include binary ([code]2[/code]), [url=https://en.wikipedia.org/wiki/Octal]octal[/url] ([code]8[/code]), hexadecimal ([code]16[/code]).
@@ -3490,7 +3387,6 @@ func (self String) NumUint64(ctx Lifetime, number Int, base Int, capitalize_hex 
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a single Unicode character from the decimal [param char]. You may use [url=https://unicodelookup.com/]unicodelookup.com[/url] or [url=https://www.unicode.org/charts/]unicode.org[/url] as points of reference.
 [codeblock]
@@ -3508,7 +3404,6 @@ func (self String) Chr(ctx Lifetime, char Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts [param size] which represents a number of bytes into a human-readable form.
 The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]IEC prefix format[/url], which may end in either [code]"B"[/code], [code]"KiB"[/code], [code]"MiB"[/code], [code]"GiB"[/code], [code]"TiB"[/code], [code]"PiB"[/code], or [code]"EiB"[/code].
@@ -3523,7 +3418,6 @@ func (self String) HumanizeSize(ctx Lifetime, size Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a case-sensitive comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" and "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
@@ -3541,7 +3435,6 @@ func (self StringName) CasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a [b]case-insensitive[/b] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 With different string lengths, returns [code]1[/code] if this string is longer than the [param to] string, or [code]-1[/code] if shorter. Note that the length of empty strings is [i]always[/i] [code]0[/code].
@@ -3559,7 +3452,6 @@ func (self StringName) NocasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a [b]case-sensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
@@ -3578,7 +3470,6 @@ func (self StringName) NaturalcasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Performs a [b]case-insensitive[/b], [i]natural order[/i] comparison to another string. Returns [code]-1[/code] if less than, [code]1[/code] if greater than, or [code]0[/code] if equal. "Less than" or "greater than" are determined by the [url=https://en.wikipedia.org/wiki/List_of_Unicode_characters]Unicode code points[/url] of each string, which roughly matches the alphabetical order. Internally, lowercase characters are converted to uppercase for the comparison.
 When used for sorting, natural order comparison orders sequences of numbers by the combined value of each digit as is often expected, instead of the single digit's value. A sorted sequence of numbered strings will be [code]["1", "2", "3", ...][/code], not [code]["1", "10", "2", "3", ...][/code].
@@ -3597,7 +3488,6 @@ func (self StringName) NaturalnocasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Like [method naturalcasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filenocasecmp_to], [method naturalcasecmp_to], and [method casecmp_to].
@@ -3614,7 +3504,6 @@ func (self StringName) FilecasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Like [method naturalnocasecmp_to] but prioritizes strings that begin with periods ([code].[/code]) and underscores ([code]_[/code]) before any other character. Useful when sorting folders or file names.
 To get a [bool] result from a string comparison, use the [code]==[/code] operator instead. See also [method filecasecmp_to], [method naturalnocasecmp_to], and [method nocasecmp_to].
@@ -3631,7 +3520,6 @@ func (self StringName) FilenocasecmpTo(to String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of characters in the string. Empty strings ([code]""[/code]) always return [code]0[/code]. See also [method is_empty].
 */
@@ -3646,7 +3534,6 @@ func (self StringName) Length() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns part of the string from the position [param from] with length [param len]. If [param len] is [code]-1[/code] (as by default), returns the rest of the string starting from the given position.
 */
@@ -3663,7 +3550,6 @@ func (self StringName) Substr(ctx Lifetime, from Int, len Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
@@ -3685,7 +3571,6 @@ func (self StringName) GetSlice(ctx Lifetime, delimiter String, slice Int) Strin
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a Unicode character with code [param delimiter] and returns the substring at index [param slice]. Returns an empty string if the [param slice] does not exist.
 This is faster than [method split], if you only need one substring.
@@ -3703,7 +3588,6 @@ func (self StringName) GetSlicec(ctx Lifetime, delimiter Int, slice Int) String 
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the total number of slices when the string is split with the given [param delimiter] (see [method split]).
 */
@@ -3719,7 +3603,6 @@ func (self StringName) GetSliceCount(delimiter String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]first[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the string.
 [codeblocks]
@@ -3753,7 +3636,6 @@ func (self StringName) Find(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]first[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the end of the string.
 */
@@ -3770,7 +3652,6 @@ func (self StringName) Findn(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions. If [param to] is 0, the search continues until the end of the string.
 */
@@ -3788,7 +3669,6 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of occurrences of the substring [param what] between [param from] and [param to] positions, [b]ignoring case[/b]. If [param to] is 0, the search continues until the end of the string.
 */
@@ -3806,7 +3686,6 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]last[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method find].
 */
@@ -3823,7 +3702,6 @@ func (self StringName) Rfind(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]last[/b] [b]case-insensitive[/b] occurrence of [param what] in this string, or [code]-1[/code] if there are none. The starting search index can be specified with [param from], continuing to the beginning of the string. This method is the reverse of [method findn].
 */
@@ -3840,7 +3718,6 @@ func (self StringName) Rfindn(what String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
@@ -3856,7 +3733,6 @@ func (self StringName) Match(expr String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
@@ -3872,7 +3748,6 @@ func (self StringName) Matchn(expr String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
@@ -3888,7 +3763,6 @@ func (self StringName) BeginsWith(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
@@ -3904,7 +3778,6 @@ func (self StringName) EndsWith(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order.
 [codeblock]
@@ -3928,7 +3801,6 @@ func (self StringName) IsSubsequenceOf(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
@@ -3944,7 +3816,6 @@ func (self StringName) IsSubsequenceOfn(text String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns an array containing the bigrams (pairs of consecutive characters) of this string.
 [codeblock]
@@ -3962,7 +3833,6 @@ func (self StringName) Bigrams(ctx Lifetime) PackedStringArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the similarity index ([url=https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient]Sorensen-Dice coefficient[/url]) of this string compared to another. A result of [code]1.0[/code] means totally similar, while [code]0.0[/code] means totally dissimilar.
 [codeblock]
@@ -3984,7 +3854,6 @@ func (self StringName) Similarity(text String) Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string by replacing all occurrences of [param placeholder] with the elements of [param values].
 [param values] can be a [Dictionary] or an [Array]. Any underscores in [param placeholder] will be replaced with the corresponding keys in advance. Array elements use their index as keys.
@@ -4018,7 +3887,6 @@ func (self StringName) Format(ctx Lifetime, values Variant, placeholder String) 
 	frame.Free()
 	return ret
 }
-
 /*
 Replaces all occurrences of [param what] inside the string with the given [param forwhat].
 */
@@ -4035,7 +3903,6 @@ func (self StringName) Replace(ctx Lifetime, what String, forwhat String) String
 	frame.Free()
 	return ret
 }
-
 /*
 Replaces all [b]case-insensitive[/b] occurrences of [param what] inside the string with the given [param forwhat].
 */
@@ -4052,7 +3919,6 @@ func (self StringName) Replacen(ctx Lifetime, what String, forwhat String) Strin
 	frame.Free()
 	return ret
 }
-
 /*
 Repeats this string a number of times. [param count] needs to be greater than [code]0[/code]. Otherwise, returns an empty string.
 */
@@ -4068,7 +3934,6 @@ func (self StringName) Repeat(ctx Lifetime, count Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the copy of this string in reverse order. This operation works on unicode codepoints, rather than sequences of codepoints, and may break things like compound letters or emojis.
 */
@@ -4083,7 +3948,6 @@ func (self StringName) Reverse(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Inserts [param what] at the given [param position] in the string.
 */
@@ -4100,7 +3964,6 @@ func (self StringName) Insert(ctx Lifetime, position Int, what String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a string with [param chars] characters erased starting from [param position]. If [param chars] goes beyond the string's length given the specified [param position], fewer characters will be erased from the returned string. Returns an empty string if either [param position] or [param chars] is negative. Returns the original string unmodified if [param chars] is [code]0[/code].
 */
@@ -4117,7 +3980,6 @@ func (self StringName) Erase(ctx Lifetime, position Int, chars Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the appearance of the string: replaces underscores ([code]_[/code]) with spaces, adds spaces before uppercase letters in the middle of a word, converts all letters to lowercase, then converts the first one and each one following a space to uppercase.
 [codeblocks]
@@ -4144,7 +4006,6 @@ func (self StringName) Capitalize(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]camelCase[/code].
 */
@@ -4159,7 +4020,6 @@ func (self StringName) ToCamelCase(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]PascalCase[/code].
 */
@@ -4174,7 +4034,6 @@ func (self StringName) ToPascalCase(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]snake_case[/code].
 [b]Note:[/b] Numbers followed by a [i]single[/i] letter are not separated in the conversion to keep some words (such as "2D") together.
@@ -4202,7 +4061,6 @@ func (self StringName) ToSnakeCase(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a [param delimiter] and returns an array of the substrings. If [param delimiter] is an empty string, each substring will be a single character. This method is the opposite of [method join].
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
@@ -4242,7 +4100,6 @@ func (self StringName) Split(ctx Lifetime, delimiter String, allow_empty bool, m
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string using a [param delimiter] and returns an array of the substrings, starting from the end of the string. The splits in the returned array appear in the same order as the original string. If [param delimiter] is an empty string, each substring will be a single character.
 If [param allow_empty] is [code]false[/code], empty strings between adjacent delimiters are excluded from the array.
@@ -4276,7 +4133,6 @@ func (self StringName) Rsplit(ctx Lifetime, delimiter String, allow_empty bool, 
 	frame.Free()
 	return ret
 }
-
 /*
 Splits the string into floats by using a [param delimiter] and returns a [PackedFloat64Array].
 If [param allow_empty] is [code]false[/code], empty or invalid [float] conversions between adjacent delimiters are excluded.
@@ -4299,7 +4155,6 @@ func (self StringName) SplitFloats(ctx Lifetime, delimiter String, allow_empty b
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the concatenation of [param parts]' elements, with each element separated by the string calling this method. This method is the opposite of [method split].
 [b]Example:[/b]
@@ -4331,7 +4186,6 @@ func (self StringName) Join(ctx Lifetime, parts PackedStringArray) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]UPPERCASE[/code].
 */
@@ -4346,7 +4200,6 @@ func (self StringName) ToUpper(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the string converted to [code]lowercase[/code].
 */
@@ -4361,7 +4214,6 @@ func (self StringName) ToLower(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the first [param length] characters from the beginning of the string. If [param length] is negative, strips the last [param length] characters from the string's end.
 [codeblock]
@@ -4381,7 +4233,6 @@ func (self StringName) Left(ctx Lifetime, length Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the last [param length] characters from the end of the string. If [param length] is negative, strips the first [param length] characters from the string's beginning.
 [codeblock]
@@ -4401,7 +4252,6 @@ func (self StringName) Right(ctx Lifetime, length Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Strips all non-printable characters from the beginning and the end of the string. These include spaces, tabulations ([code]\t[/code]), and newlines ([code]\n[/code] [code]\r[/code]).
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
@@ -4419,7 +4269,6 @@ func (self StringName) StripEdges(ctx Lifetime, left bool, right bool) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Strips all escape characters from the string. These include all non-printable control characters of the first page of the ASCII table (values from 0 to 31), such as tabulation ([code]\t[/code]) and newline ([code]\n[/code], [code]\r[/code]) characters, but [i]not[/i] spaces.
 */
@@ -4434,7 +4283,6 @@ func (self StringName) StripEscapes(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes a set of characters defined in [param chars] from the string's beginning. See also [method rstrip].
 [b]Note:[/b] [param chars] is not a prefix. Use [method trim_prefix] to remove a single prefix, rather than a set of characters.
@@ -4451,7 +4299,6 @@ func (self StringName) Lstrip(ctx Lifetime, chars String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes a set of characters defined in [param chars] from the string's end. See also [method lstrip].
 [b]Note:[/b] [param chars] is not a suffix. Use [method trim_suffix] to remove a single suffix, rather than a set of characters.
@@ -4468,7 +4315,6 @@ func (self StringName) Rstrip(ctx Lifetime, chars String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file name or path, returns the file extension without the leading period ([code].[/code]). Otherwise, returns an empty string.
 [codeblock]
@@ -4494,7 +4340,6 @@ func (self StringName) GetExtension(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, returns the full file path, without the extension.
 [codeblock]
@@ -4512,7 +4357,6 @@ func (self StringName) GetBasename(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Concatenates [param file] at the end of the string as a subpath, adding [code]/[/code] if necessary.
 [b]Example:[/b] [code]"this/is".path_join("path") == "this/is/path"[/code].
@@ -4529,7 +4373,6 @@ func (self StringName) PathJoin(ctx Lifetime, file String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the character code at position [param at].
 */
@@ -4545,7 +4388,6 @@ func (self StringName) UnicodeAt(at Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Indents every line of the string with the given [param prefix]. Empty lines are not indented. See also [method dedent] to remove indentation.
 For example, the string can be indented with two tabulations using [code]"\t\t"[/code], or four spaces using [code]"    "[/code].
@@ -4562,7 +4404,6 @@ func (self StringName) Indent(ctx Lifetime, prefix String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with indentation (leading tabs and spaces) removed. See also [method indent] to add indentation.
 */
@@ -4577,7 +4418,6 @@ func (self StringName) Dedent(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as another [String].
 */
@@ -4592,7 +4432,6 @@ func (self StringName) Md5Text(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as another [String].
 */
@@ -4607,7 +4446,6 @@ func (self StringName) Sha1Text(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as another [String].
 */
@@ -4622,7 +4460,6 @@ func (self StringName) Sha256Text(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string as a [PackedByteArray].
 */
@@ -4637,7 +4474,6 @@ func (self StringName) Md5Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the string as a [PackedByteArray].
 */
@@ -4652,7 +4488,6 @@ func (self StringName) Sha1Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the string as a [PackedByteArray].
 */
@@ -4667,7 +4502,6 @@ func (self StringName) Sha256Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
@@ -4682,7 +4516,6 @@ func (self StringName) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string contains [param what]. In GDScript, this corresponds to the [code]in[/code] operator.
 [codeblocks]
@@ -4710,7 +4543,6 @@ func (self StringName) Contains(what String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string contains [param what], [b]ignoring case[/b].
 If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
@@ -4727,7 +4559,6 @@ func (self StringName) Containsn(what String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string is a path to a file or directory, and its starting point is explicitly defined. This method is the opposite of [method is_relative_path].
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
@@ -4743,7 +4574,6 @@ func (self StringName) IsAbsolutePath() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
@@ -4758,7 +4588,6 @@ func (self StringName) IsRelativePath() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, converts the string into a canonical path. This is the shortest possible path, without [code]"./"[/code], and all the unnecessary [code]".."[/code] and [code]"/"[/code].
 [codeblock]
@@ -4777,7 +4606,6 @@ func (self StringName) SimplifyPath(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, returns the base directory name.
 [codeblock]
@@ -4795,7 +4623,6 @@ func (self StringName) GetBaseDir(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 If the string is a valid file path, returns the file name, including the extension.
 [codeblock]
@@ -4813,7 +4640,6 @@ func (self StringName) GetFile(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
@@ -4829,7 +4655,6 @@ func (self StringName) XmlEscape(ctx Lifetime, escape_quotes bool) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with escaped characters replaced by their meanings according to the XML standard.
 */
@@ -4844,7 +4669,6 @@ func (self StringName) XmlUnescape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Encodes the string to URL-friendly format. This method is meant to properly encode the parameters in a URL when sending an HTTP request.
 [codeblocks]
@@ -4873,7 +4697,6 @@ func (self StringName) UriEncode(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes the string from its URL-encoded format. This method is meant to properly decode the parameters in a URL when receiving an HTTP request.
 [codeblocks]
@@ -4898,7 +4721,6 @@ func (self StringName) UriDecode(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with special characters escaped using the C language standard.
 */
@@ -4913,7 +4735,6 @@ func (self StringName) CEscape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with escaped characters replaced by their meanings. Supported escape sequences are [code]\'[/code], [code]\"[/code], [code]\\[/code], [code]\a[/code], [code]\b[/code], [code]\f[/code], [code]\n[/code], [code]\r[/code], [code]\t[/code], [code]\v[/code].
 [b]Note:[/b] Unlike the GDScript parser, this method doesn't support the [code]\uXXXX[/code] escape sequence.
@@ -4929,7 +4750,6 @@ func (self StringName) CUnescape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with special characters escaped using the JSON standard. Because it closely matches the C standard, it is possible to use [method c_unescape] to unescape the string, if necessary.
 */
@@ -4944,7 +4764,6 @@ func (self StringName) JsonEscape(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with all characters that are not allowed in [member Node.name] ([code].[/code] [code]:[/code] [code]@[/code] [code]/[/code] [code]"[/code] [code]%[/code]) replaced with underscores.
 */
@@ -4959,7 +4778,6 @@ func (self StringName) ValidateNodeName(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the string with all characters that are not allowed in [method is_valid_filename] replaced with underscores.
 */
@@ -4974,7 +4792,6 @@ func (self StringName) ValidateFilename(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string is a valid identifier. A valid identifier may contain only letters, digits and underscores ([code]_[/code]), and the first character may not be a digit.
 [codeblock]
@@ -4995,7 +4812,6 @@ func (self StringName) IsValidIdentifier() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string represents a valid integer. A valid integer only contains digits, and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. See also [method to_int].
 [codeblock]
@@ -5017,7 +4833,6 @@ func (self StringName) IsValidInt() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string represents a valid floating-point number. A valid float may contain only digits, one decimal point ([code].[/code]), and the exponent letter ([code]e[/code]). It may also be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign. Any valid integer is also a valid float (see [method is_valid_int]). See also [method to_float].
 [codeblock]
@@ -5038,7 +4853,6 @@ func (self StringName) IsValidFloat() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string is a valid hexadecimal number. A valid hexadecimal number only contains digits or letters [code]A[/code] to [code]F[/code] (either uppercase or lowercase), and may be prefixed with a positive ([code]+[/code]) or negative ([code]-[/code]) sign.
 If [param with_prefix] is [code]true[/code], the hexadecimal number needs to prefixed by [code]"0x"[/code] to be considered valid.
@@ -5062,7 +4876,6 @@ func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
@@ -5077,7 +4890,6 @@ func (self StringName) IsValidHtmlColor() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
@@ -5092,7 +4904,6 @@ func (self StringName) IsValidIpAddress() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
@@ -5107,7 +4918,6 @@ func (self StringName) IsValidFilename() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing an integer number into an [int]. This method removes any non-number character and stops at the first decimal point ([code].[/code]). See also [method is_valid_int].
 [codeblock]
@@ -5128,7 +4938,6 @@ func (self StringName) ToInt() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing a decimal number into a [float]. This method stops on the first non-number character, except the first decimal point ([code].[/code]) and the exponent letter ([code]e[/code]). See also [method is_valid_float].
 [codeblock]
@@ -5150,7 +4959,6 @@ func (self StringName) ToFloat() Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing a hexadecimal number into an [int]. The string may be optionally prefixed with [code]"0x"[/code], and an additional [code]-[/code] prefix for negative numbers.
 [codeblocks]
@@ -5175,7 +4983,6 @@ func (self StringName) HexToInt() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string representing a binary number into an [int]. The string may optionally be prefixed with [code]"0b"[/code], and an additional [code]-[/code] prefix for negative numbers.
 [codeblocks]
@@ -5202,7 +5009,6 @@ func (self StringName) BinToInt() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string to be at least [param min_length] long by adding [param character]s to the left of the string, if necessary. See also [method rpad].
 */
@@ -5219,7 +5025,6 @@ func (self StringName) Lpad(ctx Lifetime, min_length Int, character String) Stri
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string to be at least [param min_length] long, by adding [param character]s to the right of the string, if necessary. See also [method lpad].
 */
@@ -5236,7 +5041,6 @@ func (self StringName) Rpad(ctx Lifetime, min_length Int, character String) Stri
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]after[/i] the decimal point.
 */
@@ -5252,7 +5056,6 @@ func (self StringName) PadDecimals(ctx Lifetime, digits Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Formats the string representing a number to have an exact number of [param digits] [i]before[/i] the decimal point.
 */
@@ -5268,7 +5071,6 @@ func (self StringName) PadZeros(ctx Lifetime, digits Int) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the given [param prefix] from the start of the string, or returns the string unchanged.
 */
@@ -5284,7 +5086,6 @@ func (self StringName) TrimPrefix(ctx Lifetime, prefix String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the given [param suffix] from the end of the string, or returns the string unchanged.
 */
@@ -5300,7 +5101,6 @@ func (self StringName) TrimSuffix(ctx Lifetime, suffix String) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/Latin-1 encoded [PackedByteArray]. This method is slightly faster than [method to_utf8_buffer], but replaces all unsupported characters with spaces.
 */
@@ -5315,7 +5115,6 @@ func (self StringName) ToAsciiBuffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] encoded [PackedByteArray]. This method is slightly slower than [method to_ascii_buffer], but supports all UTF-8 characters. For most cases, prefer using this method.
 */
@@ -5330,7 +5129,6 @@ func (self StringName) ToUtf8Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] encoded [PackedByteArray].
 */
@@ -5345,7 +5143,6 @@ func (self StringName) ToUtf16Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] encoded [PackedByteArray].
 */
@@ -5360,7 +5157,6 @@ func (self StringName) ToUtf32Buffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a hexadecimal string as a [PackedByteArray].
 [codeblocks]
@@ -5387,7 +5183,6 @@ func (self StringName) HexDecode(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide character[/url] ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded [PackedByteArray].
 */
@@ -5402,7 +5197,6 @@ func (self StringName) ToWcharBuffer(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the 32-bit hash value representing the string's contents.
 [b]Note:[/b] Strings with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the contrary, strings with different hash values are guaranteed to be different.
@@ -5418,7 +5212,6 @@ func (self StringName) Hash() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the node path is absolute. Unlike a relative path, an absolute path is represented by a leading slash character ([code]/[/code]) and always begins from the [SceneTree]. It can be used to reliably access nodes from the root node (e.g. [code]"/root/Global"[/code] if an autoload named "Global" exists).
 */
@@ -5433,7 +5226,6 @@ func (self NodePath) IsAbsolute() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of node names in the path. Property subnames are not included.
 For example, [code]"../RigidBody2D/Sprite2D:texture"[/code] contains 3 node names.
@@ -5449,7 +5241,6 @@ func (self NodePath) GetNameCount() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the node name indicated by [param idx], starting from 0. If [param idx] is out of bounds, an error is generated. See also [method get_subname_count] and [method get_name_count].
 [codeblocks]
@@ -5479,7 +5270,6 @@ func (self NodePath) GetName(ctx Lifetime, idx Int) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of property names ("subnames") in the path. Each subname in the node path is listed after a colon character ([code]:[/code]).
 For example, [code]"Level/RigidBody2D/Sprite2D:texture:resource_name"[/code] contains 2 subnames.
@@ -5495,7 +5285,6 @@ func (self NodePath) GetSubnameCount() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the 32-bit hash value representing the node path's contents.
 [b]Note:[/b] Node paths with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. Node paths with different hash values are guaranteed to be different.
@@ -5511,7 +5300,6 @@ func (self NodePath) Hash() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the property name indicated by [param idx], starting from 0. If [param idx] is out of bounds, an error is generated. See also [method get_subname_count].
 [codeblocks]
@@ -5539,7 +5327,6 @@ func (self NodePath) GetSubname(ctx Lifetime, idx Int) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns all node names concatenated with a slash character ([code]/[/code]) as a single [StringName].
 */
@@ -5554,7 +5341,6 @@ func (self NodePath) GetConcatenatedNames(ctx Lifetime) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns all property subnames concatenated with a colon character ([code]:[/code]) as a single [StringName].
 [codeblocks]
@@ -5579,7 +5365,6 @@ func (self NodePath) GetConcatenatedSubnames(ctx Lifetime) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the slice of the [NodePath], from [param begin] (inclusive) to [param end] (exclusive), as a new [NodePath].
 The absolute value of [param begin] and [param end] will be clamped to the sum of [method get_name_count] and [method get_subname_count], so the default value for [param end] makes it slice to the end of the [NodePath] by default (i.e. [code]path.slice(1)[/code] is a shorthand for [code]path.slice(1, path.get_name_count() + path.get_subname_count())[/code]).
@@ -5598,7 +5383,6 @@ func (self NodePath) Slice(ctx Lifetime, begin Int, end Int) NodePath {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of this node path with a colon character ([code]:[/code]) prefixed, transforming it to a pure property path with no node names (relative to the current node).
 [codeblocks]
@@ -5631,7 +5415,6 @@ func (self NodePath) GetAsPropertyPath(ctx Lifetime) NodePath {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the node path has been constructed from an empty [String] ([code]""[/code]).
 */
@@ -5646,7 +5429,6 @@ func (self NodePath) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a new [Callable] for the method named [param method] in the specified [param variant]. To represent a method of a built-in [Variant] type, a custom callable is used (see [method is_custom]). If [param variant] is [Object], then a standard callable will be created instead.
 [b]Note:[/b] This method is always necessary for the [Dictionary] type, as property syntax is used to access its entries. You may also use this method when [param variant]'s type is not known in advance (for polymorphism).
@@ -5662,7 +5444,6 @@ func (self Callable) Create(ctx Lifetime, variant Variant, method StringName) Ca
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the method represented by this [Callable]. Unlike [method call], this method expects all arguments to be contained inside the [param arguments] [Array].
 */
@@ -5678,7 +5459,6 @@ func (self Callable) Callv(ctx Lifetime, arguments Array) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this [Callable] has no target to call the method on.
 */
@@ -5693,7 +5473,6 @@ func (self Callable) IsNull() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this [Callable] is a custom callable. Custom callables are used:
 - for binding/unbinding arguments (see [method bind] and [method unbind]);
@@ -5712,7 +5491,6 @@ func (self Callable) IsCustom() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this [Callable] is a standard callable. This method is the opposite of [method is_custom]. Returns [code]false[/code] if this callable is a lambda function.
 */
@@ -5727,7 +5505,6 @@ func (self Callable) IsStandard() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the callable's object exists and has a valid method name assigned, or is a custom callable.
 */
@@ -5742,7 +5519,6 @@ func (self Callable) IsValid() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the object on which this [Callable] is called.
 */
@@ -5754,11 +5530,10 @@ func (self Callable) GetObject(ctx Lifetime) Object {
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
-	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx, r_ret.Get()))
+	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the ID of this [Callable]'s object (see [method Object.get_instance_id]).
 */
@@ -5773,7 +5548,6 @@ func (self Callable) GetObjectId() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the name of the method represented by this [Callable]. If the callable is a GDScript lambda function, returns the function's name or [code]"<anonymous lambda>"[/code].
 */
@@ -5788,7 +5562,6 @@ func (self Callable) GetMethod(ctx Lifetime) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the total number of arguments this [Callable] should take, including optional arguments. This means that any arguments bound with [method bind] are [i]subtracted[/i] from the result, and any arguments unbound with [method unbind] are [i]added[/i] to the result.
 */
@@ -5803,7 +5576,6 @@ func (self Callable) GetArgumentCount() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the total amount of arguments bound (or unbound) via successive [method bind] or [method unbind] calls. If the amount of arguments unbound is greater than the ones bound, this function returns a value less than zero.
 */
@@ -5818,7 +5590,6 @@ func (self Callable) GetBoundArgumentsCount() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Return the bound arguments (as long as [method get_bound_arguments_count] is greater than zero), or empty (if [method get_bound_arguments_count] is less than or equal to zero).
 */
@@ -5833,7 +5604,6 @@ func (self Callable) GetBoundArguments(ctx Lifetime) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the 32-bit hash value of this [Callable]'s object.
 [b]Note:[/b] [Callable]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the callables are equal, because different callables can have identical hash values due to hash collisions. The engine uses a 32-bit hash algorithm for [method hash].
@@ -5849,7 +5619,6 @@ func (self Callable) Hash() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of this [Callable] with one or more arguments bound, reading them from an array. When called, the bound arguments are passed [i]after[/i] the arguments supplied by [method call]. See also [method unbind].
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
@@ -5866,7 +5635,6 @@ func (self Callable) Bindv(ctx Lifetime, arguments Array) Callable {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of this [Callable] with a number of arguments unbound. In other words, when the new callable is called the last few arguments supplied by the user are ignored, according to [param argcount]. The remaining arguments are passed to the callable. This allows to use the original callable in a context that attempts to pass more arguments than this callable can handle, e.g. a signal with a fixed number of arguments. See also [method bind].
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
@@ -5888,7 +5656,6 @@ func (self Callable) Unbind(ctx Lifetime, argcount Int) Callable {
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the method represented by this [Callable]. Arguments can be passed and should match the method's signature.
 */
@@ -5906,7 +5673,6 @@ func (self Callable) Call(ctx Lifetime, args ...Variant) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the method represented by this [Callable] in deferred mode, i.e. at the end of the current frame. Arguments can be passed and should match the method's signature.
 [codeblocks]
@@ -5925,7 +5691,7 @@ public override void _Ready()
 See also [method Object.call_deferred].
 */
 //go:nosplit
-func (self Callable) CallDeferred(args ...Variant) {
+func (self Callable) CallDeferred(args ...Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
@@ -5936,12 +5702,11 @@ func (self Callable) CallDeferred(args ...Variant) {
 	mmm.API(self).builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
-
 /*
 Perform an RPC (Remote Procedure Call) on all connected peers. This is used for multiplayer and is normally not available, unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc].
 */
 //go:nosplit
-func (self Callable) Rpc(args ...Variant) {
+func (self Callable) Rpc(args ...Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
@@ -5952,12 +5717,11 @@ func (self Callable) Rpc(args ...Variant) {
 	mmm.API(self).builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
-
 /*
 Perform an RPC (Remote Procedure Call) on a specific peer ID (see multiplayer documentation for reference). This is used for multiplayer and is normally not available unless the function being called has been marked as [i]RPC[/i] (using [annotation @GDScript.@rpc] or [method Node.rpc_config]). Calling this method on unsupported functions will result in an error. See [method Node.rpc_id].
 */
 //go:nosplit
-func (self Callable) RpcId(peer_id Int, args ...Variant) {
+func (self Callable) RpcId(peer_id Int, args ...Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
@@ -5969,7 +5733,6 @@ func (self Callable) RpcId(peer_id Int, args ...Variant) {
 	mmm.API(self).builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+1)
 	frame.Free()
 }
-
 /*
 Returns a copy of this [Callable] with one or more arguments bound. When called, the bound arguments are passed [i]after[/i] the arguments supplied by [method call]. See also [method unbind].
 [b]Note:[/b] When this method is chained with other similar methods, the order in which the argument list is modified is read from right to left.
@@ -5988,7 +5751,6 @@ func (self Callable) Bind(ctx Lifetime, args ...Variant) Callable {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the signal's name does not exist in its object, or the object is not valid.
 */
@@ -6003,7 +5765,6 @@ func (self Signal) IsNull() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the object emitting this signal.
 */
@@ -6015,11 +5776,10 @@ func (self Signal) GetObject(ctx Lifetime) Object {
 	var p_self = callframe.Arg(frame, mmm.Get(selfPtr))
 	mmm.API(self).builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object
-	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx, r_ret.Get()))
+	ret.SetPointer(PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the ID of the object emitting this signal (see [method Object.get_instance_id]).
 */
@@ -6034,7 +5794,6 @@ func (self Signal) GetObjectId() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the name of this signal.
 */
@@ -6049,7 +5808,6 @@ func (self Signal) GetName(ctx Lifetime) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Connects this signal to the specified [param callable]. Optional [param flags] can be also added to configure the connection's behavior (see [enum Object.ConnectFlags] constants). You can provide additional arguments to the connected [param callable] by using [method Callable.bind].
 A signal can only be connected once to the same [Callable]. If the signal is already connected, returns [constant ERR_INVALID_PARAMETER] and pushes an error message, unless the signal is connected with [constant Object.CONNECT_REFERENCE_COUNTED]. To prevent this, use [method is_connected] first to check for existing connections.
@@ -6074,12 +5832,11 @@ func (self Signal) Connect(callable Callable, flags Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Disconnects this signal from the specified [Callable]. If the connection does not exist, generates an error. Use [method is_connected] to make sure that the connection exists.
 */
 //go:nosplit
-func (self Signal) Disconnect(callable Callable) {
+func (self Signal) Disconnect(callable Callable)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(callable))
@@ -6088,7 +5845,6 @@ func (self Signal) Disconnect(callable Callable) {
 	mmm.API(self).builtin.Signal.disconnect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the specified [Callable] is connected to this signal.
 */
@@ -6104,7 +5860,6 @@ func (self Signal) IsConnected(callable Callable) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns an [Array] of connections for this signal. Each connection is represented as a [Dictionary] that contains three entries:
 - [code]signal[/code] is a reference to this signal;
@@ -6122,12 +5877,11 @@ func (self Signal) GetConnections(ctx Lifetime) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Emits this signal. All [Callable]s connected to this signal will be triggered. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
 */
 //go:nosplit
-func (self Signal) Emit(args ...Variant) {
+func (self Signal) Emit(args ...Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	for _, arg := range args {
@@ -6138,7 +5892,6 @@ func (self Signal) Emit(args ...Variant) {
 	mmm.API(self).builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	frame.Free()
 }
-
 /*
 Returns the number of entries in the dictionary. Empty dictionaries ([code]{ }[/code]) always return [code]0[/code]. See also [method is_empty].
 */
@@ -6153,7 +5906,6 @@ func (self Dictionary) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the dictionary is empty (its size is [code]0[/code]). See also [method size].
 */
@@ -6168,12 +5920,11 @@ func (self Dictionary) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the dictionary, removing all entries from it.
 */
 //go:nosplit
-func (self Dictionary) Clear() {
+func (self Dictionary) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -6181,7 +5932,6 @@ func (self Dictionary) Clear() {
 	mmm.API(self).builtin.Dictionary.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Adds entries from [param dictionary] to this dictionary. By default, duplicate keys are not copied over, unless [param overwrite] is [code]true[/code].
 [codeblocks]
@@ -6222,7 +5972,7 @@ GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
 [b]Note:[/b] [method merge] is [i]not[/i] recursive. Nested dictionaries are considered as keys that can be overwritten or not depending on the value of [param overwrite], but they will never be merged together.
 */
 //go:nosplit
-func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
+func (self Dictionary) Merge(dictionary Dictionary, overwrite bool)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(dictionary))
@@ -6232,7 +5982,6 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
 	mmm.API(self).builtin.Dictionary.merge(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	frame.Free()
 }
-
 /*
 Returns a copy of this dictionary merged with the other [param dictionary]. By default, duplicate keys are not copied over, unless [param overwrite] is [code]true[/code]. See also [method merge].
 This method is useful for quickly making dictionaries with default values:
@@ -6258,7 +6007,6 @@ func (self Dictionary) Merged(ctx Lifetime, dictionary Dictionary, overwrite boo
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the dictionary contains an entry with the given [param key].
 [codeblocks]
@@ -6303,7 +6051,6 @@ func (self Dictionary) Has(key Variant) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the dictionary contains all keys in the given [param keys] array.
 [codeblock]
@@ -6323,7 +6070,6 @@ func (self Dictionary) HasAll(keys Array) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Finds and returns the first key whose associated value is equal to [param value], or [code]null[/code] if it is not found.
 [b]Note:[/b] [code]null[/code] is also a valid key. If inside the dictionary, [method find_key] may give misleading results.
@@ -6340,7 +6086,6 @@ func (self Dictionary) FindKey(ctx Lifetime, value Variant) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the dictionary entry by key, if it exists. Returns [code]true[/code] if the given [param key] existed in the dictionary, otherwise [code]false[/code].
 [b]Note:[/b] Do not erase entries while iterating over the dictionary. You can iterate over the [method keys] array instead.
@@ -6357,7 +6102,6 @@ func (self Dictionary) Erase(key Variant) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a hashed 32-bit integer value representing the dictionary contents.
 [codeblocks]
@@ -6389,7 +6133,6 @@ func (self Dictionary) Hash() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the list of keys in the dictionary.
 */
@@ -6404,7 +6147,6 @@ func (self Dictionary) Keys(ctx Lifetime) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the list of values in this dictionary.
 */
@@ -6419,7 +6161,6 @@ func (self Dictionary) Values(ctx Lifetime) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates and returns a new copy of the dictionary. If [param deep] is [code]true[/code], inner [Dictionary] and [Array] keys and values are also copied, recursively.
 */
@@ -6435,7 +6176,6 @@ func (self Dictionary) Duplicate(ctx Lifetime, deep bool) Dictionary {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the corresponding value for the given [param key] in the dictionary. If the [param key] does not exist, returns [param default], or [code]null[/code] if the parameter is omitted.
 */
@@ -6452,7 +6192,6 @@ func (self Dictionary) Get(ctx Lifetime, key Variant, def Variant) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Gets a value and ensures the key is set. If the [param key] exists in the dictionary, this behaves like [method get]. Otherwise, the [param default] value is inserted into the dictionary and returned.
 */
@@ -6469,12 +6208,11 @@ func (self Dictionary) GetOrAdd(ctx Lifetime, key Variant, def Variant) Variant 
 	frame.Free()
 	return ret
 }
-
 /*
 Makes the dictionary read-only, i.e. disables modification of the dictionary's contents. Does not apply to nested content, e.g. content of nested dictionaries.
 */
 //go:nosplit
-func (self Dictionary) MakeReadOnly() {
+func (self Dictionary) MakeReadOnly()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -6482,7 +6220,6 @@ func (self Dictionary) MakeReadOnly() {
 	mmm.API(self).builtin.Dictionary.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the dictionary is read-only. See [method make_read_only]. Dictionaries are automatically read-only if declared with [code]const[/code] keyword.
 */
@@ -6497,7 +6234,6 @@ func (self Dictionary) IsReadOnly() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the two dictionaries contain the same keys and values, inner [Dictionary] and [Array] keys and values are compared recursively.
 */
@@ -6514,7 +6250,6 @@ func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array. Empty arrays ([code][][/code]) always return [code]0[/code]. See also [method is_empty].
 */
@@ -6529,7 +6264,6 @@ func (self Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty ([code][][/code]). See also [method size].
 */
@@ -6544,12 +6278,11 @@ func (self Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes all elements from the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self Array) Clear() {
+func (self Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -6557,7 +6290,6 @@ func (self Array) Clear() {
 	mmm.API(self).builtin.Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Returns a hashed 32-bit integer value representing the array and its contents.
 [b]Note:[/b] Arrays with equal hash values are [i]not[/i] guaranteed to be the same, as a result of hash collisions. On the countrary, arrays with different hash values are guaranteed to be different.
@@ -6573,12 +6305,11 @@ func (self Array) Hash() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns elements of another [param array] into the array. Resizes the array to match [param array]. Performs type conversions if the array is typed.
 */
 //go:nosplit
-func (self Array) Assign(array Array) {
+func (self Array) Assign(array Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -6587,12 +6318,11 @@ func (self Array) Assign(array Array) {
 	mmm.API(self).builtin.Array.assign(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Appends an element at the end of the array. See also [method push_front].
 */
 //go:nosplit
-func (self Array) PushBack(value Variant) {
+func (self Array) PushBack(value Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -6601,13 +6331,12 @@ func (self Array) PushBack(value Variant) {
 	mmm.API(self).builtin.Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Adds an element at the beginning of the array. See also [method push_back].
 [b]Note:[/b] This method shifts every other element's index forward, which may have a noticeable performance cost, especially on larger arrays.
 */
 //go:nosplit
-func (self Array) PushFront(value Variant) {
+func (self Array) PushFront(value Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -6616,12 +6345,11 @@ func (self Array) PushFront(value Variant) {
 	mmm.API(self).builtin.Array.push_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Appends [param value] at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (self Array) Append(value Variant) {
+func (self Array) Append(value Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -6630,7 +6358,6 @@ func (self Array) Append(value Variant) {
 	mmm.API(self).builtin.Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Appends another [param array] at the end of this array.
 [codeblock]
@@ -6641,7 +6368,7 @@ print(nums) # Prints [1, 2, 3, 4, 5, 6]
 [/codeblock]
 */
 //go:nosplit
-func (self Array) AppendArray(array Array) {
+func (self Array) AppendArray(array Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -6650,7 +6377,6 @@ func (self Array) AppendArray(array Array) {
 	mmm.API(self).builtin.Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Sets the array's number of elements to [param size]. If [param size] is smaller than the array's current size, the elements at the end are removed. If [param size] is greater, new default elements (usually [code]null[/code]) are added, depending on the array's type.
 Returns [constant OK] on success, or one of the other [enum Error] constants if this method fails.
@@ -6668,7 +6394,6 @@ func (self Array) Resize(size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Inserts a new element ([param value]) at a given index ([param position]) in the array. [param position] should be between [code]0[/code] and the array's [method size].
 Returns [constant OK] on success, or one of the other [enum Error] constants if this method fails.
@@ -6687,7 +6412,6 @@ func (self Array) Insert(position Int, value Variant) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the element from the array at the given index ([param position]). If the index is out of bounds, this method fails.
 If you need to return the removed element, use [method pop_at]. To remove an element by value, use [method erase] instead.
@@ -6695,7 +6419,7 @@ If you need to return the removed element, use [method pop_at]. To remove an ele
 [b]Note:[/b] The [param position] cannot be negative. To remove an element relative to the end of the array, use [code]arr.remove_at(arr.size() - (i + 1))[/code]. To remove the last element from the array, use [code]arr.resize(arr.size() - 1)[/code].
 */
 //go:nosplit
-func (self Array) RemoveAt(position Int) {
+func (self Array) RemoveAt(position Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
@@ -6704,7 +6428,6 @@ func (self Array) RemoveAt(position Int) {
 	mmm.API(self).builtin.Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Assigns the given [param value] to all elements in the array.
 This method can often be combined with [method resize] to create an array with a given size and initialized elements:
@@ -6725,7 +6448,7 @@ GD.Print(array); // Prints [2, 2, 2, 2, 2]
 [b]Note:[/b] If [param value] is a [Variant] passed by reference ([Object]-derived, [Array], [Dictionary], etc.), the array will be filled with references to the same [param value], which are not duplicates.
 */
 //go:nosplit
-func (self Array) Fill(value Variant) {
+func (self Array) Fill(value Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -6734,14 +6457,13 @@ func (self Array) Fill(value Variant) {
 	mmm.API(self).builtin.Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Finds and removes the first occurrence of [param value] from the array. If [param value] does not exist in the array, nothing happens. To remove an element by index, use [method remove_at] instead.
 [b]Note:[/b] This method shifts every element's index after the removed [param value] back, which may have a noticeable performance cost, especially on larger arrays.
 [b]Note:[/b] Erasing elements while iterating over arrays is [b]not[/b] supported and will result in unpredictable behavior.
 */
 //go:nosplit
-func (self Array) Erase(value Variant) {
+func (self Array) Erase(value Variant)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -6750,7 +6472,6 @@ func (self Array) Erase(value Variant) {
 	mmm.API(self).builtin.Array.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Returns the first element of the array. If the array is empty, fails and returns [code]null[/code]. See also [method back].
 [b]Note:[/b] Unlike with the [code][][/code] operator ([code]array[0][/code]), an error is generated without stopping project execution.
@@ -6766,7 +6487,6 @@ func (self Array) Front(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the last element of the array. If the array is empty, fails and returns [code]null[/code]. See also [method front].
 [b]Note:[/b] Unlike with the [code][][/code] operator ([code]array[-1][/code]), an error is generated without stopping project execution.
@@ -6782,7 +6502,6 @@ func (self Array) Back(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a random element from the array. Generates an error and returns [code]null[/code] if the array is empty.
 [codeblocks]
@@ -6808,7 +6527,6 @@ func (self Array) PickRandom(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]first[/b] occurrence of [param what] in this array, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the end of the array.
 [b]Note:[/b] If you just want to know whether the array contains [param what], use [method has] ([code]Contains[/code] in C#). In GDScript, you may also use the [code]in[/code] operator.
@@ -6827,7 +6545,6 @@ func (self Array) Find(what Variant, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of the [b]last[/b] occurrence of [param what] in this array, or [code]-1[/code] if there are none. The search's start can be specified with [param from], continuing to the beginning of the array. This method is the reverse of [method find].
 */
@@ -6844,7 +6561,6 @@ func (self Array) Rfind(what Variant, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 */
@@ -6860,7 +6576,6 @@ func (self Array) Count(value Variant) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array contains the given [param value].
 [codeblocks]
@@ -6898,7 +6613,6 @@ func (self Array) Has(value Variant) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without generating an error. See also [method pop_front].
 */
@@ -6913,7 +6627,6 @@ func (self Array) PopBack(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes and returns the first element of the array. Returns [code]null[/code] if the array is empty, without generating an error. See also [method pop_back].
 [b]Note:[/b] This method shifts every other element's index back, which may have a noticeable performance cost, especially on larger arrays.
@@ -6929,7 +6642,6 @@ func (self Array) PopFront(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes and returns the element of the array at index [param position]. If negative, [param position] is considered relative to the end of the array. Returns [code]null[/code] if the array is empty. If [param position] is out of bounds, an error message is also generated.
 [b]Note:[/b] This method shifts every element's index after [param position] back, which may have a noticeable performance cost, especially on larger arrays.
@@ -6946,7 +6658,6 @@ func (self Array) PopAt(ctx Lifetime, position Int) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the array in ascending order. The final order is dependent on the "less than" ([code]<[/code]) comparison between elements.
 [codeblocks]
@@ -6964,7 +6675,7 @@ GD.Print(numbers); // Prints [2.5, 5, 8, 10]
 [b]Note:[/b] The sorting algorithm used is not [url=https://en.wikipedia.org/wiki/Sorting_algorithm#Stability]stable[/url]. This means that equivalent elements (such as [code]2[/code] and [code]2.0[/code]) may have their order changed when calling [method sort].
 */
 //go:nosplit
-func (self Array) Sort() {
+func (self Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -6972,7 +6683,6 @@ func (self Array) Sort() {
 	mmm.API(self).builtin.Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Sorts the array using a custom [Callable].
 [param func] is called as many times as necessary, receiving two array elements as arguments. The function should return [code]true[/code] if the first element should be moved [i]behind[/i] the second one, otherwise it should return [code]false[/code].
@@ -7002,7 +6712,7 @@ print(files) # Prints ["newfile1", "newfile2", "newfile10", "newfile11"]
 [b]Note:[/b] You should not randomize the return value of [param func], as the heapsort algorithm expects a consistent result. Randomizing the return value will result in unexpected behavior.
 */
 //go:nosplit
-func (self Array) SortCustom(fn Callable) {
+func (self Array) SortCustom(fn Callable)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(fn))
@@ -7011,13 +6721,12 @@ func (self Array) SortCustom(fn Callable) {
 	mmm.API(self).builtin.Array.sort_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	frame.Free()
 }
-
 /*
 Shuffles all elements of the array in a random order.
 [b]Note:[/b] Like many similar functions in the engine (such as [method @GlobalScope.randi] or [method pick_random]), this method uses a common, global random seed. To get a predictable outcome from this method, see [method @GlobalScope.seed].
 */
 //go:nosplit
-func (self Array) Shuffle() {
+func (self Array) Shuffle()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -7025,7 +6734,6 @@ func (self Array) Shuffle() {
 	mmm.API(self).builtin.Array.shuffle(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Returns the index of [param value] in the sorted array. If it cannot be found, returns where [param value] should be inserted to keep the array sorted. The algorithm used is [url=https://en.wikipedia.org/wiki/Binary_search_algorithm]binary search[/url].
 If [param before] is [code]true[/code] (as by default), the returned index comes before all existing elements equal to [param value] in the array.
@@ -7055,7 +6763,6 @@ func (self Array) Bsearch(value Variant, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the index of [param value] in the sorted array. If it cannot be found, returns where [param value] should be inserted to keep the array sorted (using [param func] for the comparisons). The algorithm used is [url=https://en.wikipedia.org/wiki/Binary_search_algorithm]binary search[/url].
 Similar to [method sort_custom], [param func] is called as many times as necessary, receiving one array element and [param value] as arguments. The function should return [code]true[/code] if the array element should be [i]behind[/i] [param value], otherwise it should return [code]false[/code].
@@ -7096,12 +6803,11 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of all elements in the array.
 */
 //go:nosplit
-func (self Array) Reverse() {
+func (self Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -7109,7 +6815,6 @@ func (self Array) Reverse() {
 	mmm.API(self).builtin.Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Returns a new copy of the array.
 By default, a [b]shallow[/b] copy is returned: all nested [Array] and [Dictionary] elements are shared with the original array. Modifying them in one array will also affect them in the other.[br]If [param deep] is [code]true[/code], a [b]deep[/b] copy is returned: all nested arrays and dictionaries are also duplicated (recursively).
@@ -7126,7 +6831,6 @@ func (self Array) Duplicate(ctx Lifetime, deep bool) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a new [Array] containing this array's elements, from index [param begin] (inclusive) to [param end] (exclusive), every [param step] elements.
 If either [param begin] or [param end] are negative, their value is relative to the end of the array.
@@ -7158,7 +6862,6 @@ func (self Array) Slice(ctx Lifetime, begin Int, end Int, step Int, deep bool) A
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the given [Callable] on each element in the array and returns a new, filtered [Array].
 The [param method] receives one of the array elements as an argument, and should return [code]true[/code] to add the element to the filtered array, or [code]false[/code] to exclude it.
@@ -7186,7 +6889,6 @@ func (self Array) Filter(ctx Lifetime, method Callable) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the given [Callable] for each element in the array and returns a new array filled with values returned by the [param method].
 The [param method] should take one [Variant] parameter (the current array element) and can return any [Variant].
@@ -7214,7 +6916,6 @@ func (self Array) Map(ctx Lifetime, method Callable) Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the given [Callable] for each element in array, accumulates the result in [param accum], then returns it.
 The [param method] takes two arguments: the current value of [param accum] and the current array element. If [param accum] is [code]null[/code] (as by default), the iteration will start from the second element, with the first one used as initial value of [param accum].
@@ -7255,7 +6956,6 @@ func (self Array) Reduce(ctx Lifetime, method Callable, accum Variant) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the given [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]one or more[/i] elements in the array. If the [Callable] returns [code]false[/code] for all elements in the array, this method returns [code]false[/code].
 The [param method] should take one [Variant] parameter (the current array element) and return a [bool].
@@ -7288,7 +6988,6 @@ func (self Array) Any(method Callable) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Calls the given [Callable] on each element in the array and returns [code]true[/code] if the [Callable] returns [code]true[/code] for [i]all[/i] elements in the array. If the [Callable] returns [code]false[/code] for one array element or more, this method returns [code]false[/code].
 The [param method] should take one [Variant] parameter (the current array element) and return a [bool].
@@ -7344,7 +7043,6 @@ func (self Array) All(method Callable) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the maximum value contained in the array, if all elements can be compared. Otherwise, returns [code]null[/code]. See also [method min].
 To find the maximum value using a custom comparator, you can use [method reduce].
@@ -7360,7 +7058,6 @@ func (self Array) Max(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the minimum value contained in the array, if all elements can be compared. Otherwise, returns [code]null[/code]. See also [method max].
 */
@@ -7375,7 +7072,6 @@ func (self Array) Min(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is typed. Typed arrays can only contain elements of a specific type, as defined by the typed array constructor. The methods of a typed array are still expected to return a generic [Variant].
 In GDScript, it is possible to define a typed array with static typing:
@@ -7395,7 +7091,6 @@ func (self Array) IsTyped() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if this array is typed the same as the given [param array]. See also [method is_typed].
 */
@@ -7411,7 +7106,6 @@ func (self Array) IsSameTyped(array Array) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the built-in [Variant] type of the typed array as a [enum Variant.Type] constant. If the array is not typed, returns [constant TYPE_NIL]. See also [method is_typed].
 */
@@ -7426,7 +7120,6 @@ func (self Array) GetTypedBuiltin() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [b]built-in[/b] class name of the typed array, if the built-in [Variant] type [constant TYPE_OBJECT]. Otherwise, returns an empty [StringName]. See also [method is_typed] and [method Object.get_class].
 */
@@ -7441,7 +7134,6 @@ func (self Array) GetTypedClassName(ctx Lifetime) StringName {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the [Script] instance associated with this typed array, or [code]null[/code] if it does not exist. See also [method is_typed].
 */
@@ -7456,13 +7148,12 @@ func (self Array) GetTypedScript(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Makes the array read-only. The array's elements cannot be overridden with different values, and their order cannot change. Does not apply to nested elements, such as dictionaries.
 In GDScript, arrays are automatically read-only if declared with the [code]const[/code] keyword.
 */
 //go:nosplit
-func (self Array) MakeReadOnly() {
+func (self Array) MakeReadOnly()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -7470,7 +7161,6 @@ func (self Array) MakeReadOnly() {
 	mmm.API(self).builtin.Array.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array is read-only. See [method make_read_only].
 In GDScript, arrays are automatically read-only if declared with the [code]const[/code] keyword.
@@ -7486,7 +7176,6 @@ func (self Array) IsReadOnly() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -7502,7 +7191,6 @@ func (self *PackedByteArray) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -7518,12 +7206,11 @@ func (self *PackedByteArray) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the byte at the given index.
 */
 //go:nosplit
-func (self *PackedByteArray) Set(index Int, value Int) {
+func (self *PackedByteArray) Set(index Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -7534,7 +7221,6 @@ func (self *PackedByteArray) Set(index Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends an element at the end of the array.
 */
@@ -7551,7 +7237,6 @@ func (self *PackedByteArray) PushBack(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -7568,12 +7253,11 @@ func (self *PackedByteArray) Append(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedByteArray] at the end of this array.
 */
 //go:nosplit
-func (self *PackedByteArray) AppendArray(array PackedByteArray) {
+func (self *PackedByteArray) AppendArray(array PackedByteArray)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -7583,12 +7267,11 @@ func (self *PackedByteArray) AppendArray(array PackedByteArray) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedByteArray) RemoveAt(index Int) {
+func (self *PackedByteArray) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -7598,7 +7281,6 @@ func (self *PackedByteArray) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -7616,12 +7298,11 @@ func (self *PackedByteArray) Insert(at_index Int, value Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedByteArray) Fill(value Int) {
+func (self *PackedByteArray) Fill(value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -7631,7 +7312,6 @@ func (self *PackedByteArray) Fill(value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -7648,12 +7328,11 @@ func (self *PackedByteArray) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedByteArray) Clear() {
+func (self *PackedByteArray) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -7662,7 +7341,6 @@ func (self *PackedByteArray) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
@@ -7679,12 +7357,11 @@ func (self *PackedByteArray) Has(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedByteArray) Reverse() {
+func (self *PackedByteArray) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -7693,7 +7370,6 @@ func (self *PackedByteArray) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedByteArray], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedByteArray].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -7713,12 +7389,11 @@ func (self *PackedByteArray) Slice(ctx Lifetime, begin Int, end Int) PackedByteA
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (self *PackedByteArray) Sort() {
+func (self *PackedByteArray) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -7727,7 +7402,6 @@ func (self *PackedByteArray) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -7746,7 +7420,6 @@ func (self *PackedByteArray) Bsearch(value Int, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -7762,7 +7435,6 @@ func (self *PackedByteArray) Duplicate(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
@@ -7780,7 +7452,6 @@ func (self *PackedByteArray) Find(value Int, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
@@ -7798,7 +7469,6 @@ func (self *PackedByteArray) Rfind(value Int, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 */
@@ -7815,7 +7485,6 @@ func (self *PackedByteArray) Count(value Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method get_string_from_utf8] if the content is ASCII/Latin-1 only. Unlike the UTF-8 function this function maps every byte to a character in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use [method get_string_from_utf8]. This is the inverse of [method String.to_ascii_buffer].
 */
@@ -7831,7 +7500,6 @@ func (self *PackedByteArray) GetStringFromAscii(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_ascii] but supports UTF-8 encoded data. Use this function if you are unsure about the source of the data. For user input this function should always be preferred. Returns empty string if source array is not valid UTF-8 string. This is the inverse of [method String.to_utf8_buffer].
 */
@@ -7847,7 +7515,6 @@ func (self *PackedByteArray) GetStringFromUtf8(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts UTF-16 encoded array to [String]. If the BOM is missing, system endianness is assumed. Returns empty string if source array is not valid UTF-16 string. This is the inverse of [method String.to_utf16_buffer].
 */
@@ -7863,7 +7530,6 @@ func (self *PackedByteArray) GetStringFromUtf16(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns empty string if source array is not valid UTF-32 string. This is the inverse of [method String.to_utf32_buffer].
 */
@@ -7879,7 +7545,6 @@ func (self *PackedByteArray) GetStringFromUtf32(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on other platforms) encoded array to [String]. Returns empty string if source array is not valid wide string. This is the inverse of [method String.to_wchar_buffer].
 */
@@ -7895,7 +7560,6 @@ func (self *PackedByteArray) GetStringFromWchar(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a hexadecimal representation of this array as a [String].
 [codeblocks]
@@ -7921,7 +7585,6 @@ func (self *PackedByteArray) HexEncode(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a new [PackedByteArray] with the data compressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 */
@@ -7938,7 +7601,6 @@ func (self *PackedByteArray) Compress(ctx Lifetime, compression_mode Int) Packed
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a new [PackedByteArray] with the data decompressed. Set [param buffer_size] to the size of the uncompressed data. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants.
 [b]Note:[/b] Decompression is not guaranteed to work with data not compressed by Godot, for example if data compressed with the deflate compression mode lacks a checksum or header.
@@ -7957,7 +7619,6 @@ func (self *PackedByteArray) Decompress(ctx Lifetime, buffer_size Int, compressi
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a new [PackedByteArray] with the data decompressed. Set the compression mode using one of [enum FileAccess.CompressionMode]'s constants. [b]This method only accepts brotli, gzip, and deflate compression modes.[/b]
 This method is potentially slower than [method decompress], as it may have to re-allocate its output buffer multiple times while decompressing, whereas [method decompress] knows it's output buffer size from the beginning.
@@ -7978,7 +7639,6 @@ func (self *PackedByteArray) DecompressDynamic(ctx Lifetime, max_output_size Int
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 8-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -7995,7 +7655,6 @@ func (self *PackedByteArray) DecodeU8(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 8-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8012,7 +7671,6 @@ func (self *PackedByteArray) DecodeS8(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 16-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8029,7 +7687,6 @@ func (self *PackedByteArray) DecodeU16(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 16-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8046,7 +7703,6 @@ func (self *PackedByteArray) DecodeS16(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 32-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8063,7 +7719,6 @@ func (self *PackedByteArray) DecodeU32(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 32-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8080,7 +7735,6 @@ func (self *PackedByteArray) DecodeS32(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 64-bit unsigned integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8097,7 +7751,6 @@ func (self *PackedByteArray) DecodeU64(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 64-bit signed integer number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0[/code] if a valid number can't be decoded.
 */
@@ -8114,7 +7767,6 @@ func (self *PackedByteArray) DecodeS64(byte_offset Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 16-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
@@ -8131,7 +7783,6 @@ func (self *PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 32-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
@@ -8148,7 +7799,6 @@ func (self *PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a 64-bit floating-point number from the bytes starting at [param byte_offset]. Fails if the byte count is insufficient. Returns [code]0.0[/code] if a valid number can't be decoded.
 */
@@ -8165,7 +7815,6 @@ func (self *PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if a valid [Variant] value can be decoded at the [param byte_offset]. Returns [code]false[/code] otherwise or when the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
@@ -8183,7 +7832,6 @@ func (self *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) 
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
@@ -8201,7 +7849,6 @@ func (self *PackedByteArray) DecodeVar(ctx Lifetime, byte_offset Int, allow_obje
 	frame.Free()
 	return ret
 }
-
 /*
 Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Requires at least 4 bytes of data starting at the offset, otherwise fails.
 */
@@ -8219,7 +7866,6 @@ func (self *PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) 
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedInt32Array], where each block of 4 bytes has been converted to a signed 32-bit integer (C++ [code]int32_t[/code]).
 The size of the input array must be a multiple of 4 (size of 32-bit integer). The size of the new array will be [code]byte_array.size() / 4[/code].
@@ -8237,7 +7883,6 @@ func (self *PackedByteArray) ToInt32Array(ctx Lifetime) PackedInt32Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedInt64Array], where each block of 8 bytes has been converted to a signed 64-bit integer (C++ [code]int64_t[/code], Godot [int]).
 The size of the input array must be a multiple of 8 (size of 64-bit integer). The size of the new array will be [code]byte_array.size() / 8[/code].
@@ -8255,7 +7900,6 @@ func (self *PackedByteArray) ToInt64Array(ctx Lifetime) PackedInt64Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedFloat32Array], where each block of 4 bytes has been converted to a 32-bit float (C++ [code skip-lint]float[/code]).
 The size of the input array must be a multiple of 4 (size of 32-bit float). The size of the new array will be [code]byte_array.size() / 4[/code].
@@ -8273,7 +7917,6 @@ func (self *PackedByteArray) ToFloat32Array(ctx Lifetime) PackedFloat32Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedFloat64Array], where each block of 8 bytes has been converted to a 64-bit float (C++ [code]double[/code], Godot [float]).
 The size of the input array must be a multiple of 8 (size of 64-bit double). The size of the new array will be [code]byte_array.size() / 8[/code].
@@ -8291,12 +7934,11 @@ func (self *PackedByteArray) ToFloat64Array(ctx Lifetime) PackedFloat64Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Encodes a 8-bit unsigned integer number (byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeU8(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeU8(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8307,12 +7949,11 @@ func (self *PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 8-bit signed integer number (signed byte) at the index of [param byte_offset] bytes. The array must have at least 1 byte of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeS8(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeS8(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8323,12 +7964,11 @@ func (self *PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 16-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeU16(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeU16(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8339,12 +7979,11 @@ func (self *PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 16-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeS16(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeS16(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8355,12 +7994,11 @@ func (self *PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 32-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeU32(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeU32(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8371,12 +8009,11 @@ func (self *PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 32-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeS32(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeS32(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8387,12 +8024,11 @@ func (self *PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 64-bit unsigned integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeU64(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeU64(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8403,12 +8039,11 @@ func (self *PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 64-bit signed integer number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
+func (self *PackedByteArray) EncodeS64(byte_offset Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8419,12 +8054,11 @@ func (self *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 16-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 2 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
+func (self *PackedByteArray) EncodeHalf(byte_offset Int, value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8435,12 +8069,11 @@ func (self *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 32-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 4 bytes of space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
+func (self *PackedByteArray) EncodeFloat(byte_offset Int, value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8451,12 +8084,11 @@ func (self *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a 64-bit floating-point number as bytes at the index of [param byte_offset] bytes. The array must have at least 8 bytes of allocated space, starting at the offset.
 */
 //go:nosplit
-func (self *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
+func (self *PackedByteArray) EncodeDouble(byte_offset Int, value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -8467,7 +8099,6 @@ func (self *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient space must be allocated, depending on the encoded variant's size. If [param allow_objects] is [code]false[/code], [Object]-derived values are not permitted and will instead be serialized as ID-only.
 */
@@ -8486,7 +8117,6 @@ func (self *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_obj
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -8502,7 +8132,6 @@ func (self *PackedInt32Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -8518,12 +8147,11 @@ func (self *PackedInt32Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the integer at the given index.
 */
 //go:nosplit
-func (self *PackedInt32Array) Set(index Int, value Int) {
+func (self *PackedInt32Array) Set(index Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -8534,7 +8162,6 @@ func (self *PackedInt32Array) Set(index Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends a value to the array.
 */
@@ -8551,7 +8178,6 @@ func (self *PackedInt32Array) PushBack(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -8568,12 +8194,11 @@ func (self *PackedInt32Array) Append(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedInt32Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedInt32Array) AppendArray(array PackedInt32Array) {
+func (self *PackedInt32Array) AppendArray(array PackedInt32Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -8583,12 +8208,11 @@ func (self *PackedInt32Array) AppendArray(array PackedInt32Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedInt32Array) RemoveAt(index Int) {
+func (self *PackedInt32Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -8598,7 +8222,6 @@ func (self *PackedInt32Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -8616,12 +8239,11 @@ func (self *PackedInt32Array) Insert(at_index Int, value Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedInt32Array) Fill(value Int) {
+func (self *PackedInt32Array) Fill(value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -8631,7 +8253,6 @@ func (self *PackedInt32Array) Fill(value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -8648,12 +8269,11 @@ func (self *PackedInt32Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedInt32Array) Clear() {
+func (self *PackedInt32Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -8662,7 +8282,6 @@ func (self *PackedInt32Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
@@ -8679,12 +8298,11 @@ func (self *PackedInt32Array) Has(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedInt32Array) Reverse() {
+func (self *PackedInt32Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -8693,7 +8311,6 @@ func (self *PackedInt32Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedInt32Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedInt32Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -8713,7 +8330,6 @@ func (self *PackedInt32Array) Slice(ctx Lifetime, begin Int, end Int) PackedInt3
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
 The size of the new array will be [code]int32_array.size() * 4[/code].
@@ -8730,12 +8346,11 @@ func (self *PackedInt32Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (self *PackedInt32Array) Sort() {
+func (self *PackedInt32Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -8744,7 +8359,6 @@ func (self *PackedInt32Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -8763,7 +8377,6 @@ func (self *PackedInt32Array) Bsearch(value Int, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -8779,7 +8392,6 @@ func (self *PackedInt32Array) Duplicate(ctx Lifetime) PackedInt32Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
@@ -8797,7 +8409,6 @@ func (self *PackedInt32Array) Find(value Int, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
@@ -8815,7 +8426,6 @@ func (self *PackedInt32Array) Rfind(value Int, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 */
@@ -8832,7 +8442,6 @@ func (self *PackedInt32Array) Count(value Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -8848,7 +8457,6 @@ func (self *PackedInt64Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -8864,12 +8472,11 @@ func (self *PackedInt64Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the integer at the given index.
 */
 //go:nosplit
-func (self *PackedInt64Array) Set(index Int, value Int) {
+func (self *PackedInt64Array) Set(index Int, value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -8880,7 +8487,6 @@ func (self *PackedInt64Array) Set(index Int, value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends a value to the array.
 */
@@ -8897,7 +8503,6 @@ func (self *PackedInt64Array) PushBack(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -8914,12 +8519,11 @@ func (self *PackedInt64Array) Append(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedInt64Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedInt64Array) AppendArray(array PackedInt64Array) {
+func (self *PackedInt64Array) AppendArray(array PackedInt64Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -8929,12 +8533,11 @@ func (self *PackedInt64Array) AppendArray(array PackedInt64Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedInt64Array) RemoveAt(index Int) {
+func (self *PackedInt64Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -8944,7 +8547,6 @@ func (self *PackedInt64Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new integer at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -8962,12 +8564,11 @@ func (self *PackedInt64Array) Insert(at_index Int, value Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedInt64Array) Fill(value Int) {
+func (self *PackedInt64Array) Fill(value Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -8977,7 +8578,6 @@ func (self *PackedInt64Array) Fill(value Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -8994,12 +8594,11 @@ func (self *PackedInt64Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedInt64Array) Clear() {
+func (self *PackedInt64Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9008,7 +8607,6 @@ func (self *PackedInt64Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
@@ -9025,12 +8623,11 @@ func (self *PackedInt64Array) Has(value Int) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedInt64Array) Reverse() {
+func (self *PackedInt64Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9039,7 +8636,6 @@ func (self *PackedInt64Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedInt64Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedInt64Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -9059,7 +8655,6 @@ func (self *PackedInt64Array) Slice(ctx Lifetime, begin Int, end Int) PackedInt6
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
 The size of the new array will be [code]int64_array.size() * 8[/code].
@@ -9076,12 +8671,11 @@ func (self *PackedInt64Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (self *PackedInt64Array) Sort() {
+func (self *PackedInt64Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9090,7 +8684,6 @@ func (self *PackedInt64Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -9109,7 +8702,6 @@ func (self *PackedInt64Array) Bsearch(value Int, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -9125,7 +8717,6 @@ func (self *PackedInt64Array) Duplicate(ctx Lifetime) PackedInt64Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
@@ -9143,7 +8734,6 @@ func (self *PackedInt64Array) Find(value Int, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
@@ -9161,7 +8751,6 @@ func (self *PackedInt64Array) Rfind(value Int, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 */
@@ -9178,7 +8767,6 @@ func (self *PackedInt64Array) Count(value Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -9194,7 +8782,6 @@ func (self *PackedFloat32Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -9210,12 +8797,11 @@ func (self *PackedFloat32Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the float at the given index.
 */
 //go:nosplit
-func (self *PackedFloat32Array) Set(index Int, value Float) {
+func (self *PackedFloat32Array) Set(index Int, value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -9226,7 +8812,6 @@ func (self *PackedFloat32Array) Set(index Int, value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends an element at the end of the array.
 */
@@ -9243,7 +8828,6 @@ func (self *PackedFloat32Array) PushBack(value Float) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -9260,12 +8844,11 @@ func (self *PackedFloat32Array) Append(value Float) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedFloat32Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedFloat32Array) AppendArray(array PackedFloat32Array) {
+func (self *PackedFloat32Array) AppendArray(array PackedFloat32Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -9275,12 +8858,11 @@ func (self *PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedFloat32Array) RemoveAt(index Int) {
+func (self *PackedFloat32Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -9290,7 +8872,6 @@ func (self *PackedFloat32Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -9308,12 +8889,11 @@ func (self *PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedFloat32Array) Fill(value Float) {
+func (self *PackedFloat32Array) Fill(value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -9323,7 +8903,6 @@ func (self *PackedFloat32Array) Fill(value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -9340,12 +8919,11 @@ func (self *PackedFloat32Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedFloat32Array) Clear() {
+func (self *PackedFloat32Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9354,7 +8932,6 @@ func (self *PackedFloat32Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9372,12 +8949,11 @@ func (self *PackedFloat32Array) Has(value Float) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedFloat32Array) Reverse() {
+func (self *PackedFloat32Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9386,7 +8962,6 @@ func (self *PackedFloat32Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedFloat32Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedFloat32Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -9406,7 +8981,6 @@ func (self *PackedFloat32Array) Slice(ctx Lifetime, begin Int, end Int) PackedFl
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 4 bytes.
 The size of the new array will be [code]float32_array.size() * 4[/code].
@@ -9423,13 +8997,12 @@ func (self *PackedFloat32Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self *PackedFloat32Array) Sort() {
+func (self *PackedFloat32Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9438,7 +9011,6 @@ func (self *PackedFloat32Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -9458,7 +9030,6 @@ func (self *PackedFloat32Array) Bsearch(value Float, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -9474,7 +9045,6 @@ func (self *PackedFloat32Array) Duplicate(ctx Lifetime) PackedFloat32Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9493,7 +9063,6 @@ func (self *PackedFloat32Array) Find(value Float, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9512,7 +9081,6 @@ func (self *PackedFloat32Array) Rfind(value Float, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9530,7 +9098,6 @@ func (self *PackedFloat32Array) Count(value Float) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -9546,7 +9113,6 @@ func (self *PackedFloat64Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -9562,12 +9128,11 @@ func (self *PackedFloat64Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the float at the given index.
 */
 //go:nosplit
-func (self *PackedFloat64Array) Set(index Int, value Float) {
+func (self *PackedFloat64Array) Set(index Int, value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -9578,7 +9143,6 @@ func (self *PackedFloat64Array) Set(index Int, value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends an element at the end of the array.
 */
@@ -9595,7 +9159,6 @@ func (self *PackedFloat64Array) PushBack(value Float) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -9612,12 +9175,11 @@ func (self *PackedFloat64Array) Append(value Float) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedFloat64Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedFloat64Array) AppendArray(array PackedFloat64Array) {
+func (self *PackedFloat64Array) AppendArray(array PackedFloat64Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -9627,12 +9189,11 @@ func (self *PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedFloat64Array) RemoveAt(index Int) {
+func (self *PackedFloat64Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -9642,7 +9203,6 @@ func (self *PackedFloat64Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -9660,12 +9220,11 @@ func (self *PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedFloat64Array) Fill(value Float) {
+func (self *PackedFloat64Array) Fill(value Float)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -9675,7 +9234,6 @@ func (self *PackedFloat64Array) Fill(value Float) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -9692,12 +9250,11 @@ func (self *PackedFloat64Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedFloat64Array) Clear() {
+func (self *PackedFloat64Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9706,7 +9263,6 @@ func (self *PackedFloat64Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9724,12 +9280,11 @@ func (self *PackedFloat64Array) Has(value Float) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedFloat64Array) Reverse() {
+func (self *PackedFloat64Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9738,7 +9293,6 @@ func (self *PackedFloat64Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedFloat64Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedFloat64Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -9758,7 +9312,6 @@ func (self *PackedFloat64Array) Slice(ctx Lifetime, begin Int, end Int) PackedFl
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a copy of the data converted to a [PackedByteArray], where each element have been encoded as 8 bytes.
 The size of the new array will be [code]float64_array.size() * 8[/code].
@@ -9775,13 +9328,12 @@ func (self *PackedFloat64Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self *PackedFloat64Array) Sort() {
+func (self *PackedFloat64Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -9790,7 +9342,6 @@ func (self *PackedFloat64Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -9810,7 +9361,6 @@ func (self *PackedFloat64Array) Bsearch(value Float, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -9826,7 +9376,6 @@ func (self *PackedFloat64Array) Duplicate(ctx Lifetime) PackedFloat64Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9845,7 +9394,6 @@ func (self *PackedFloat64Array) Find(value Float, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9864,7 +9412,6 @@ func (self *PackedFloat64Array) Rfind(value Float, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -9882,7 +9429,6 @@ func (self *PackedFloat64Array) Count(value Float) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -9898,7 +9444,6 @@ func (self *PackedStringArray) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -9914,12 +9459,11 @@ func (self *PackedStringArray) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the [String] at the given index.
 */
 //go:nosplit
-func (self *PackedStringArray) Set(index Int, value String) {
+func (self *PackedStringArray) Set(index Int, value String)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -9930,7 +9474,6 @@ func (self *PackedStringArray) Set(index Int, value String) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends a string element at end of the array.
 */
@@ -9947,7 +9490,6 @@ func (self *PackedStringArray) PushBack(value String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -9964,12 +9506,11 @@ func (self *PackedStringArray) Append(value String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedStringArray] at the end of this array.
 */
 //go:nosplit
-func (self *PackedStringArray) AppendArray(array PackedStringArray) {
+func (self *PackedStringArray) AppendArray(array PackedStringArray)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -9979,12 +9520,11 @@ func (self *PackedStringArray) AppendArray(array PackedStringArray) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedStringArray) RemoveAt(index Int) {
+func (self *PackedStringArray) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -9994,7 +9534,6 @@ func (self *PackedStringArray) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -10012,12 +9551,11 @@ func (self *PackedStringArray) Insert(at_index Int, value String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedStringArray) Fill(value String) {
+func (self *PackedStringArray) Fill(value String)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(value))
@@ -10027,7 +9565,6 @@ func (self *PackedStringArray) Fill(value String) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -10044,12 +9581,11 @@ func (self *PackedStringArray) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedStringArray) Clear() {
+func (self *PackedStringArray) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10058,7 +9594,6 @@ func (self *PackedStringArray) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
@@ -10075,12 +9610,11 @@ func (self *PackedStringArray) Has(value String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedStringArray) Reverse() {
+func (self *PackedStringArray) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10089,7 +9623,6 @@ func (self *PackedStringArray) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedStringArray], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedStringArray].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -10109,7 +9642,6 @@ func (self *PackedStringArray) Slice(ctx Lifetime, begin Int, end Int) PackedStr
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a [PackedByteArray] with each string encoded as bytes.
 */
@@ -10125,12 +9657,11 @@ func (self *PackedStringArray) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (self *PackedStringArray) Sort() {
+func (self *PackedStringArray) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10139,7 +9670,6 @@ func (self *PackedStringArray) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -10158,7 +9688,6 @@ func (self *PackedStringArray) Bsearch(value String, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -10174,7 +9703,6 @@ func (self *PackedStringArray) Duplicate(ctx Lifetime) PackedStringArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
@@ -10192,7 +9720,6 @@ func (self *PackedStringArray) Find(value String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
@@ -10210,7 +9737,6 @@ func (self *PackedStringArray) Rfind(value String, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 */
@@ -10227,7 +9753,6 @@ func (self *PackedStringArray) Count(value String) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -10243,7 +9768,6 @@ func (self *PackedVector2Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -10259,12 +9783,11 @@ func (self *PackedVector2Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the [Vector2] at the given index.
 */
 //go:nosplit
-func (self *PackedVector2Array) Set(index Int, value Vector2) {
+func (self *PackedVector2Array) Set(index Int, value Vector2)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -10275,7 +9798,6 @@ func (self *PackedVector2Array) Set(index Int, value Vector2) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a [Vector2] at the end.
 */
@@ -10292,7 +9814,6 @@ func (self *PackedVector2Array) PushBack(value Vector2) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -10309,12 +9830,11 @@ func (self *PackedVector2Array) Append(value Vector2) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedVector2Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedVector2Array) AppendArray(array PackedVector2Array) {
+func (self *PackedVector2Array) AppendArray(array PackedVector2Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -10324,12 +9844,11 @@ func (self *PackedVector2Array) AppendArray(array PackedVector2Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedVector2Array) RemoveAt(index Int) {
+func (self *PackedVector2Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -10339,7 +9858,6 @@ func (self *PackedVector2Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -10357,12 +9875,11 @@ func (self *PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedVector2Array) Fill(value Vector2) {
+func (self *PackedVector2Array) Fill(value Vector2)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -10372,7 +9889,6 @@ func (self *PackedVector2Array) Fill(value Vector2) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -10389,12 +9905,11 @@ func (self *PackedVector2Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedVector2Array) Clear() {
+func (self *PackedVector2Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10403,7 +9918,6 @@ func (self *PackedVector2Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10421,12 +9935,11 @@ func (self *PackedVector2Array) Has(value Vector2) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedVector2Array) Reverse() {
+func (self *PackedVector2Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10435,7 +9948,6 @@ func (self *PackedVector2Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedVector2Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedVector2Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -10455,7 +9967,6 @@ func (self *PackedVector2Array) Slice(ctx Lifetime, begin Int, end Int) PackedVe
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
@@ -10471,13 +9982,12 @@ func (self *PackedVector2Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self *PackedVector2Array) Sort() {
+func (self *PackedVector2Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10486,7 +9996,6 @@ func (self *PackedVector2Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -10506,7 +10015,6 @@ func (self *PackedVector2Array) Bsearch(value Vector2, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -10522,7 +10030,6 @@ func (self *PackedVector2Array) Duplicate(ctx Lifetime) PackedVector2Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10541,7 +10048,6 @@ func (self *PackedVector2Array) Find(value Vector2, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10560,7 +10066,6 @@ func (self *PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10578,7 +10083,6 @@ func (self *PackedVector2Array) Count(value Vector2) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -10594,7 +10098,6 @@ func (self *PackedVector3Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -10610,12 +10113,11 @@ func (self *PackedVector3Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the [Vector3] at the given index.
 */
 //go:nosplit
-func (self *PackedVector3Array) Set(index Int, value Vector3) {
+func (self *PackedVector3Array) Set(index Int, value Vector3)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -10626,7 +10128,6 @@ func (self *PackedVector3Array) Set(index Int, value Vector3) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a [Vector3] at the end.
 */
@@ -10643,7 +10144,6 @@ func (self *PackedVector3Array) PushBack(value Vector3) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -10660,12 +10160,11 @@ func (self *PackedVector3Array) Append(value Vector3) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedVector3Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedVector3Array) AppendArray(array PackedVector3Array) {
+func (self *PackedVector3Array) AppendArray(array PackedVector3Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -10675,12 +10174,11 @@ func (self *PackedVector3Array) AppendArray(array PackedVector3Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedVector3Array) RemoveAt(index Int) {
+func (self *PackedVector3Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -10690,7 +10188,6 @@ func (self *PackedVector3Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -10708,12 +10205,11 @@ func (self *PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedVector3Array) Fill(value Vector3) {
+func (self *PackedVector3Array) Fill(value Vector3)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -10723,7 +10219,6 @@ func (self *PackedVector3Array) Fill(value Vector3) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -10740,12 +10235,11 @@ func (self *PackedVector3Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedVector3Array) Clear() {
+func (self *PackedVector3Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10754,7 +10248,6 @@ func (self *PackedVector3Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10772,12 +10265,11 @@ func (self *PackedVector3Array) Has(value Vector3) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedVector3Array) Reverse() {
+func (self *PackedVector3Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10786,7 +10278,6 @@ func (self *PackedVector3Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedVector3Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedVector3Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -10806,7 +10297,6 @@ func (self *PackedVector3Array) Slice(ctx Lifetime, begin Int, end Int) PackedVe
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
@@ -10822,13 +10312,12 @@ func (self *PackedVector3Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self *PackedVector3Array) Sort() {
+func (self *PackedVector3Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -10837,7 +10326,6 @@ func (self *PackedVector3Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -10857,7 +10345,6 @@ func (self *PackedVector3Array) Bsearch(value Vector3, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -10873,7 +10360,6 @@ func (self *PackedVector3Array) Duplicate(ctx Lifetime) PackedVector3Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10892,7 +10378,6 @@ func (self *PackedVector3Array) Find(value Vector3, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10911,7 +10396,6 @@ func (self *PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -10929,7 +10413,6 @@ func (self *PackedVector3Array) Count(value Vector3) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -10945,7 +10428,6 @@ func (self *PackedColorArray) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -10961,12 +10443,11 @@ func (self *PackedColorArray) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the [Color] at the given index.
 */
 //go:nosplit
-func (self *PackedColorArray) Set(index Int, value Color) {
+func (self *PackedColorArray) Set(index Int, value Color)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -10977,7 +10458,6 @@ func (self *PackedColorArray) Set(index Int, value Color) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Appends a value to the array.
 */
@@ -10994,7 +10474,6 @@ func (self *PackedColorArray) PushBack(value Color) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -11011,12 +10490,11 @@ func (self *PackedColorArray) Append(value Color) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedColorArray] at the end of this array.
 */
 //go:nosplit
-func (self *PackedColorArray) AppendArray(array PackedColorArray) {
+func (self *PackedColorArray) AppendArray(array PackedColorArray)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -11026,12 +10504,11 @@ func (self *PackedColorArray) AppendArray(array PackedColorArray) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedColorArray) RemoveAt(index Int) {
+func (self *PackedColorArray) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -11041,7 +10518,6 @@ func (self *PackedColorArray) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -11059,12 +10535,11 @@ func (self *PackedColorArray) Insert(at_index Int, value Color) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedColorArray) Fill(value Color) {
+func (self *PackedColorArray) Fill(value Color)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -11074,7 +10549,6 @@ func (self *PackedColorArray) Fill(value Color) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size. Calling [method resize] once and assigning the new values is faster than adding new elements one by one.
 */
@@ -11091,12 +10565,11 @@ func (self *PackedColorArray) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedColorArray) Clear() {
+func (self *PackedColorArray) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -11105,7 +10578,6 @@ func (self *PackedColorArray) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 */
@@ -11122,12 +10594,11 @@ func (self *PackedColorArray) Has(value Color) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedColorArray) Reverse() {
+func (self *PackedColorArray) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -11136,7 +10607,6 @@ func (self *PackedColorArray) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedColorArray], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedColorArray].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -11156,7 +10626,6 @@ func (self *PackedColorArray) Slice(ctx Lifetime, begin Int, end Int) PackedColo
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a [PackedByteArray] with each color encoded as bytes.
 */
@@ -11172,12 +10641,11 @@ func (self *PackedColorArray) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 */
 //go:nosplit
-func (self *PackedColorArray) Sort() {
+func (self *PackedColorArray) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -11186,7 +10654,6 @@ func (self *PackedColorArray) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -11205,7 +10672,6 @@ func (self *PackedColorArray) Bsearch(value Color, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -11221,7 +10687,6 @@ func (self *PackedColorArray) Duplicate(ctx Lifetime) PackedColorArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 */
@@ -11239,7 +10704,6 @@ func (self *PackedColorArray) Find(value Color, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 */
@@ -11257,7 +10721,6 @@ func (self *PackedColorArray) Rfind(value Color, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 */
@@ -11274,7 +10737,6 @@ func (self *PackedColorArray) Count(value Color) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of elements in the array.
 */
@@ -11290,7 +10752,6 @@ func (self *PackedVector4Array) Size() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the array is empty.
 */
@@ -11306,12 +10767,11 @@ func (self *PackedVector4Array) IsEmpty() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Changes the [Vector4] at the given index.
 */
 //go:nosplit
-func (self *PackedVector4Array) Set(index Int, value Vector4) {
+func (self *PackedVector4Array) Set(index Int, value Vector4)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -11322,7 +10782,6 @@ func (self *PackedVector4Array) Set(index Int, value Vector4) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a [Vector4] at the end.
 */
@@ -11339,7 +10798,6 @@ func (self *PackedVector4Array) PushBack(value Vector4) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends an element at the end of the array (alias of [method push_back]).
 */
@@ -11356,12 +10814,11 @@ func (self *PackedVector4Array) Append(value Vector4) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Appends a [PackedVector4Array] at the end of this array.
 */
 //go:nosplit
-func (self *PackedVector4Array) AppendArray(array PackedVector4Array) {
+func (self *PackedVector4Array) AppendArray(array PackedVector4Array)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(array))
@@ -11371,12 +10828,11 @@ func (self *PackedVector4Array) AppendArray(array PackedVector4Array) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Removes an element from the array by index.
 */
 //go:nosplit
-func (self *PackedVector4Array) RemoveAt(index Int) {
+func (self *PackedVector4Array) RemoveAt(index Int)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
@@ -11386,7 +10842,6 @@ func (self *PackedVector4Array) RemoveAt(index Int) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]idx == size()[/code]).
 */
@@ -11404,12 +10859,11 @@ func (self *PackedVector4Array) Insert(at_index Int, value Vector4) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns the given value to all elements in the array. This can typically be used together with [method resize] to create an array with a given size and initialized elements.
 */
 //go:nosplit
-func (self *PackedVector4Array) Fill(value Vector4) {
+func (self *PackedVector4Array) Fill(value Vector4)  {
 	var selfPtr = self
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -11419,7 +10873,6 @@ func (self *PackedVector4Array) Fill(value Vector4) {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Sets the size of the array. If the array is grown, reserves elements at the end of the array. If the array is shrunk, truncates the array to the new size.
 */
@@ -11436,12 +10889,11 @@ func (self *PackedVector4Array) Resize(new_size Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Clears the array. This is equivalent to using [method resize] with a size of [code]0[/code].
 */
 //go:nosplit
-func (self *PackedVector4Array) Clear() {
+func (self *PackedVector4Array) Clear()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -11450,7 +10902,6 @@ func (self *PackedVector4Array) Clear() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -11468,12 +10919,11 @@ func (self *PackedVector4Array) Has(value Vector4) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Reverses the order of the elements in the array.
 */
 //go:nosplit
-func (self *PackedVector4Array) Reverse() {
+func (self *PackedVector4Array) Reverse()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -11482,7 +10932,6 @@ func (self *PackedVector4Array) Reverse() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Returns the slice of the [PackedVector4Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [PackedVector4Array].
 The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
@@ -11502,7 +10951,6 @@ func (self *PackedVector4Array) Slice(ctx Lifetime, begin Int, end Int) PackedVe
 	frame.Free()
 	return ret
 }
-
 /*
 Returns a [PackedByteArray] with each vector encoded as bytes.
 */
@@ -11518,13 +10966,12 @@ func (self *PackedVector4Array) ToByteArray(ctx Lifetime) PackedByteArray {
 	frame.Free()
 	return ret
 }
-
 /*
 Sorts the elements of the array in ascending order.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (self *PackedVector4Array) Sort() {
+func (self *PackedVector4Array) Sort()  {
 	var selfPtr = self
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -11533,7 +10980,6 @@ func (self *PackedVector4Array) Sort() {
 	mmm.Set(selfPtr, p_self.Get())
 	frame.Free()
 }
-
 /*
 Finds the index of an existing value (or the insertion index that maintains sorting order, if the value is not yet present in the array) using binary search. Optionally, a [param before] specifier can be passed. If [code]false[/code], the returned index comes after all existing entries of the value in the array.
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
@@ -11553,7 +10999,6 @@ func (self *PackedVector4Array) Bsearch(value Vector4, before bool) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Creates a copy of the array, and returns it.
 */
@@ -11569,7 +11014,6 @@ func (self *PackedVector4Array) Duplicate(ctx Lifetime) PackedVector4Array {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -11588,7 +11032,6 @@ func (self *PackedVector4Array) Find(value Vector4, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -11607,7 +11050,6 @@ func (self *PackedVector4Array) Rfind(value Vector4, from Int) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of times an element is in the array.
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
@@ -11625,7 +11067,6 @@ func (self *PackedVector4Array) Count(value Vector4) Int {
 	frame.Free()
 	return ret
 }
-
 type ObjectConnectFlags int64
 
 /*
@@ -11642,7 +11083,6 @@ func (self Object) GetClass(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the object inherits from the given [param class]. See also [method get_class].
 [codeblocks]
@@ -11672,7 +11112,6 @@ func (self Object) IsClass(class String) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns [param value] to the given [param property]. If the property does not exist or the given [param value]'s type doesn't match, nothing happens.
 [codeblocks]
@@ -11690,7 +11129,7 @@ GD.Print(node.GlobalScale); // Prints Vector2(8, 2.5)
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) Set(property StringName, value Variant) {
+func (self Object) Set(property StringName, value Variant)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(property))
@@ -11699,7 +11138,6 @@ func (self Object) Set(property StringName, value Variant) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns the [Variant] value of the given [param property]. If the [param property] does not exist, this method returns [code]null[/code].
 [codeblocks]
@@ -11727,7 +11165,6 @@ func (self Object) Get(ctx Lifetime, property StringName) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Assigns a new [param value] to the property identified by the [param property_path]. The path should be a [NodePath] relative to this object, and can use the colon character ([code]:[/code]) to access nested properties.
 [codeblocks]
@@ -11747,7 +11184,7 @@ GD.Print(node.Position); // Prints (42, -10)
 [b]Note:[/b] In C#, [param property_path] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) SetIndexed(property_path NodePath, value Variant) {
+func (self Object) SetIndexed(property_path NodePath, value Variant)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(property_path))
@@ -11756,7 +11193,6 @@ func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_indexed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Gets the object's property indexed by the given [param property_path]. The path should be a [NodePath] relative to the current object and can use the colon character ([code]:[/code]) to access nested properties.
 [b]Examples:[/b] [code]"position:x"[/code] or [code]"material:next_pass:blend_mode"[/code].
@@ -11788,7 +11224,6 @@ func (self Object) GetIndexed(ctx Lifetime, property_path NodePath) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the object's property list as an [Array] of dictionaries. Each [Dictionary] contains the following entries:
 - [code]name[/code] is the property's name, as a [String];
@@ -11809,7 +11244,6 @@ func (self Object) GetPropertyList(ctx Lifetime) ArrayOf[Dictionary] {
 	frame.Free()
 	return TypedArray[Dictionary](ret)
 }
-
 /*
 Returns this object's methods and their signatures as an [Array] of dictionaries. Each [Dictionary] contains the following entries:
 - [code]name[/code] is the name of the method, as a [String];
@@ -11830,7 +11264,6 @@ func (self Object) GetMethodList(ctx Lifetime) ArrayOf[Dictionary] {
 	frame.Free()
 	return TypedArray[Dictionary](ret)
 }
-
 /*
 Returns [code]true[/code] if the given [param property] has a custom default value. Use [method property_get_revert] to get the [param property]'s default value.
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_can_revert] to customize the default value. If [method _property_can_revert] is not implemented, this method returns [code]false[/code].
@@ -11846,7 +11279,6 @@ func (self Object) PropertyCanRevert(property StringName) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the custom default value of the given [param property]. Use [method property_can_revert] to check if the [param property] has a custom default value.
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_get_revert] to customize the default value. If [method _property_get_revert] is not implemented, this method returns [code]null[/code].
@@ -11862,7 +11294,6 @@ func (self Object) PropertyGetRevert(ctx Lifetime, property StringName) Variant 
 	frame.Free()
 	return ret
 }
-
 /*
 Sends the given [param what] notification to all classes inherited by the object, triggering calls to [method _notification], starting from the highest ancestor (the [Object] class) and going down to the object's script.
 If [param reversed] is [code]true[/code], the call order is reversed.
@@ -11890,7 +11321,7 @@ player.Notification(NotificationEnterTree, true);
 [/codeblocks]
 */
 //go:nosplit
-func (self Object) Notification(what Int, reversed bool) {
+func (self Object) Notification(what Int, reversed bool)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
@@ -11899,7 +11330,6 @@ func (self Object) Notification(what Int, reversed bool) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[/code]. Override [method _to_string] to customize the string representation of the object.
 */
@@ -11913,7 +11343,6 @@ func (self Object) ToString(ctx Lifetime) String {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the object's unique instance ID. This ID can be saved in [EncodedObjectAsID], and can be used to retrieve this object instance with [method @GlobalScope.instance_from_id].
 [b]Note:[/b] This ID is only useful during the current session. It won't correspond to a similar object if the ID is sent over a network, or loaded from a file at a later time.
@@ -11928,13 +11357,12 @@ func (self Object) GetInstanceId() Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Attaches [param script] to the object, and instantiates it. As a result, the script's [method _init] is called. A [Script] is used to extend the object's functionality.
 If a script already exists, its instance is detached, and its property values and state are lost. Built-in property values are still kept.
 */
 //go:nosplit
-func (self Object) SetScript(script Variant) {
+func (self Object) SetScript(script Variant)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(script))
@@ -11942,7 +11370,6 @@ func (self Object) SetScript(script Variant) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns the object's [Script] instance, or [code]null[/code] if no script is attached.
 */
@@ -11956,7 +11383,6 @@ func (self Object) GetScript(ctx Lifetime) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Adds or changes the entry [param name] inside the object's metadata. The metadata [param value] can be any [Variant], although some types cannot be serialized correctly.
 If [param value] is [code]null[/code], the entry is removed. This is the equivalent of using [method remove_meta]. See also [method has_meta] and [method get_meta].
@@ -11964,7 +11390,7 @@ If [param value] is [code]null[/code], the entry is removed. This is the equival
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
 //go:nosplit
-func (self Object) SetMeta(name StringName, value Variant) {
+func (self Object) SetMeta(name StringName, value Variant)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(name))
@@ -11973,14 +11399,13 @@ func (self Object) SetMeta(name StringName, value Variant) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Removes the given entry [param name] from the object's metadata. See also [method has_meta], [method get_meta] and [method set_meta].
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
 //go:nosplit
-func (self Object) RemoveMeta(name StringName) {
+func (self Object) RemoveMeta(name StringName)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(name))
@@ -11988,7 +11413,6 @@ func (self Object) RemoveMeta(name StringName) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_remove_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns the object's metadata value for the given entry [param name]. If the entry does not exist, returns [param default]. If [param default] is [code]null[/code], an error is also generated.
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
@@ -12006,7 +11430,6 @@ func (self Object) GetMeta(ctx Lifetime, name StringName, def Variant) Variant {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if a metadata entry is found with the given [param name]. See also [method get_meta], [method set_meta] and [method remove_meta].
 [b]Note:[/b] A metadata's name must be a valid identifier as per [method StringName.is_valid_identifier] method.
@@ -12023,7 +11446,6 @@ func (self Object) HasMeta(name StringName) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the object's metadata entry names as a [PackedStringArray].
 */
@@ -12037,7 +11459,6 @@ func (self Object) GetMetaList(ctx Lifetime) ArrayOf[StringName] {
 	frame.Free()
 	return TypedArray[StringName](ret)
 }
-
 /*
 Adds a user-defined [param signal]. Optional arguments for the signal can be added as an [Array] of dictionaries, each defining a [code]name[/code] [String] and a [code]type[/code] [int] (see [enum Variant.Type]). See also [method has_user_signal] and [method remove_user_signal].
 [codeblocks]
@@ -12065,7 +11486,7 @@ AddUserSignal("Hurt", new Godot.Collections.Array()
 [/codeblocks]
 */
 //go:nosplit
-func (self Object) AddUserSignal(signal String, arguments Array) {
+func (self Object) AddUserSignal(signal String, arguments Array)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(signal))
@@ -12074,7 +11495,6 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_add_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included. See also [method remove_user_signal].
 */
@@ -12089,12 +11509,11 @@ func (self Object) HasUserSignal(signal StringName) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Removes the given user signal [param signal] from the object. See also [method add_user_signal] and [method has_user_signal].
 */
 //go:nosplit
-func (self Object) RemoveUserSignal(signal StringName) {
+func (self Object) RemoveUserSignal(signal StringName)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(signal))
@@ -12102,7 +11521,6 @@ func (self Object) RemoveUserSignal(signal StringName) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_remove_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Assigns [param value] to the given [param property], at the end of the current frame. This is equivalent to calling [method set] through [method call_deferred].
 [codeblocks]
@@ -12130,7 +11548,7 @@ GD.Print(node.Rotation); // Prints 3.0
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) SetDeferred(property StringName, value Variant) {
+func (self Object) SetDeferred(property StringName, value Variant)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(property))
@@ -12139,7 +11557,6 @@ func (self Object) SetDeferred(property StringName, value Variant) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_deferred, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Calls the [param method] on the object and returns the result. Unlike [method call], this method expects all parameters to be contained inside [param arg_array].
 [codeblocks]
@@ -12166,7 +11583,6 @@ func (self Object) Callv(ctx Lifetime, method StringName, arg_array Array) Varia
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the given [param method] name exists in the object.
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
@@ -12182,7 +11598,6 @@ func (self Object) HasMethod(method StringName) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the number of arguments of the given [param method] by name.
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
@@ -12198,7 +11613,6 @@ func (self Object) GetMethodArgumentCount(method StringName) Int {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the given [param signal] name exists in the object.
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
@@ -12214,7 +11628,6 @@ func (self Object) HasSignal(signal StringName) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the list of existing signals as an [Array] of dictionaries.
 [b]Note:[/b] Due of the implementation, each [Dictionary] is formatted very similarly to the returned values of [method get_method_list].
@@ -12229,7 +11642,6 @@ func (self Object) GetSignalList(ctx Lifetime) ArrayOf[Dictionary] {
 	frame.Free()
 	return TypedArray[Dictionary](ret)
 }
-
 /*
 Returns an [Array] of connections for the given [param signal] name. Each connection is represented as a [Dictionary] that contains three entries:
 - [code skip-lint]signal[/code] is a reference to the [Signal];
@@ -12247,7 +11659,6 @@ func (self Object) GetSignalConnectionList(ctx Lifetime, signal StringName) Arra
 	frame.Free()
 	return TypedArray[Dictionary](ret)
 }
-
 /*
 Returns an [Array] of signal connections received by this object. Each connection is represented as a [Dictionary] that contains three entries:
 - [code]signal[/code] is a reference to the [Signal];
@@ -12264,7 +11675,6 @@ func (self Object) GetIncomingConnections(ctx Lifetime) ArrayOf[Dictionary] {
 	frame.Free()
 	return TypedArray[Dictionary](ret)
 }
-
 /*
 Connects a [param signal] by name to a [param callable]. Optional [param flags] can be also added to configure the connection's behavior (see [enum ConnectFlags] constants).
 A signal can only be connected once to the same [Callable]. If the signal is already connected, this method returns [constant ERR_INVALID_PARAMETER] and pushes an error message, unless the signal is connected with [constant CONNECT_REFERENCE_COUNTED]. To prevent this, use [method is_connected] first to check for existing connections.
@@ -12406,12 +11816,11 @@ func (self Object) Connect(signal StringName, callable Callable, flags Int) int6
 	frame.Free()
 	return ret
 }
-
 /*
 Disconnects a [param signal] by name from a given [param callable]. If the connection does not exist, generates an error. Use [method is_connected] to make sure that the connection exists.
 */
 //go:nosplit
-func (self Object) Disconnect(signal StringName, callable Callable) {
+func (self Object) Disconnect(signal StringName, callable Callable)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mmm.Get(signal))
@@ -12420,7 +11829,6 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_disconnect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if a connection exists between the given [param signal] name and [param callable].
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
@@ -12437,12 +11845,11 @@ func (self Object) IsConnected(signal StringName, callable Callable) bool {
 	frame.Free()
 	return ret
 }
-
 /*
 If set to [code]true[/code], the object becomes unable to emit signals. As such, [method emit_signal] and signal connections will not work, until it is set to [code]false[/code].
 */
 //go:nosplit
-func (self Object) SetBlockSignals(enable bool) {
+func (self Object) SetBlockSignals(enable bool)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
@@ -12450,7 +11857,6 @@ func (self Object) SetBlockSignals(enable bool) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_block_signals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the object is blocking its signals from being emitted. See [method set_block_signals].
 */
@@ -12464,24 +11870,22 @@ func (self Object) IsBlockingSignals() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Emits the [signal property_list_changed] signal. This is mainly used to refresh the editor, so that the Inspector and editor plugins are properly updated.
 */
 //go:nosplit
-func (self Object) NotifyPropertyListChanged() {
+func (self Object) NotifyPropertyListChanged()  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_notify_property_list_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 If set to [code]true[/code], allows the object to translate messages with [method tr] and [method tr_n]. Enabled by default. See also [method can_translate_messages].
 */
 //go:nosplit
-func (self Object) SetMessageTranslation(enable bool) {
+func (self Object) SetMessageTranslation(enable bool)  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
@@ -12489,7 +11893,6 @@ func (self Object) SetMessageTranslation(enable bool) {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_set_message_translation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-
 /*
 Returns [code]true[/code] if the object is allowed to translate messages with [method tr] and [method tr_n]. See also [method set_message_translation].
 */
@@ -12503,7 +11906,6 @@ func (self Object) CanTranslateMessages() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Translates a [param message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
 If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns the [param message] without changes. See [method set_message_translation].
@@ -12522,7 +11924,6 @@ func (self Object) Tr(ctx Lifetime, message StringName, context StringName) Stri
 	frame.Free()
 	return ret
 }
-
 /*
 Translates a [param message] or [param plural_message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation.
 If [method can_translate_messages] is [code]false[/code], or no translation is available, this method returns [param message] or [param plural_message], without changes. See [method set_message_translation].
@@ -12545,7 +11946,6 @@ func (self Object) TrN(ctx Lifetime, message StringName, plural_message StringNa
 	frame.Free()
 	return ret
 }
-
 /*
 Returns [code]true[/code] if the [method Node.queue_free] method was called for the object.
 */
@@ -12559,12 +11959,11 @@ func (self Object) IsQueuedForDeletion() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 If this method is called during [constant NOTIFICATION_PREDELETE], this object will reject being freed and will remain allocated. This is mostly an internal function used for error handling to avoid the user from freeing objects when they are not intended to.
 */
 //go:nosplit
-func (self Object) CancelFree() {
+func (self Object) CancelFree()  {
 	var selfPtr = self.AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
@@ -12573,30 +11972,29 @@ func (self Object) CancelFree() {
 }
 func (self Object) Virtual(name string) reflect.Value {
 	switch name {
-	default:
-		return reflect.Value{}
+	default: return reflect.Value{}
 	}
 }
-
-type RefCounted struct {
-	_   [0]*RefCounted
-	ptr Pointer
-}
+type RefCounted struct {_ [0]*RefCounted; ptr Pointer}
 
 //go:nosplit
 func (self RefCounted) AsPointer() Pointer { return self.ptr }
 
+
 //go:nosplit
 func (self *RefCounted) SetPointer(ptr Pointer) { self.ptr = ptr }
 
-//go:nosplit
-func (self RefCounted) Super() Object { return *(*Object)(unsafe.Pointer(&self)) }
 
 //go:nosplit
-func (self RefCounted) AsRefCounted() RefCounted { return self }
+func (self RefCounted) Super() [1]Object { return *(*[1]Object)(unsafe.Pointer(&self)) }
+
 
 //go:nosplit
 func (self RefCounted) AsObject() Object { return *(*Object)(unsafe.Pointer(&self)) }
+
+
+//go:nosplit
+func (self RefCounted) AsRefCounted() [1]RefCounted { return [1]RefCounted{self} }
 
 /*
 Initializes the internal reference counter. Use this only if you really know what you are doing.
@@ -12612,7 +12010,6 @@ func (self RefCounted) InitRef() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Increments the internal reference counter. Use this only if you really know what you are doing.
 Returns [code]true[/code] if the increment was successful, [code]false[/code] otherwise.
@@ -12627,7 +12024,6 @@ func (self RefCounted) Reference() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Decrements the internal reference counter. Use this only if you really know what you are doing.
 Returns [code]true[/code] if the object should be freed after the decrement, [code]false[/code] otherwise.
@@ -12642,7 +12038,6 @@ func (self RefCounted) Unreference() bool {
 	frame.Free()
 	return ret
 }
-
 /*
 Returns the current reference count.
 */
@@ -12658,7 +12053,6 @@ func (self RefCounted) GetReferenceCount() Int {
 }
 func (self RefCounted) Virtual(name string) reflect.Value {
 	switch name {
-	default:
-		return VirtualByName(self.Super(), name)
+	default: return VirtualByName(self.Super()[0], name)
 	}
 }

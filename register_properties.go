@@ -53,7 +53,7 @@ func propertyOf(godot Lifetime, field reflect.StructField) gd.PropertyInfo {
 }
 
 func classNameOf(rtype reflect.Type) string {
-	if rtype.Kind() == reflect.Ptr {
+	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
 		return classNameOf(rtype.Elem())
 	}
 	if rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {

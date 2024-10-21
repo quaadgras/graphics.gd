@@ -40,8 +40,9 @@ func (s String) Free() {
 }
 
 func (s *String) Append(ctx Lifetime, other String) {
+	modified := mmm.API(*s).Strings.Append(ctx, *s, other)
 	mmm.End(*s)
-	*s = mmm.API(*s).Strings.Append(ctx, *s, other)
+	*s = modified
 }
 
 func (s String) UnsafePointer() unsafe.Pointer {
