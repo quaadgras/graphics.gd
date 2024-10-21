@@ -2,7 +2,7 @@ package SkeletonModifier3D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -29,6 +29,15 @@ This node should be used to implement custom IK solvers, constraints, or skeleto
 
 */
 type Simple [1]classdb.SkeletonModifier3D
+func (Simple) _process_modification(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) GetSkeleton() [1]classdb.Skeleton3D {
 	gc := gd.GarbageCollector(); _ = gc
 	return [1]classdb.Skeleton3D(Expert(self).GetSkeleton(gc))
@@ -53,6 +62,11 @@ func (self Simple) GetInfluence() float64 {
 type Expert = class
 type class [1]classdb.SkeletonModifier3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -149,6 +163,13 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_process_modification": return reflect.ValueOf(self._process_modification);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_modification": return reflect.ValueOf(self._process_modification);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

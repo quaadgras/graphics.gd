@@ -18,7 +18,7 @@ const (
 )
 
 func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
-	if method.IsVararg || method.IsVirtual {
+	if method.IsVararg {
 		return
 	}
 	if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
@@ -30,6 +30,72 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		"RID", "Projection", "Color":
 		return
 	}
+	resultSimple := classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
+	_, needsLifetime := classDB.isPointer(resultExpert)
+	if method.IsStatic {
+		needsLifetime = true
+	}
+	if method.IsVirtual {
+		fmt.Fprintf(w, "func (Simple) %s(impl func(ptr unsafe.Pointer", method.Name)
+		for _, arg := range method.Arguments {
+			fmt.Fprint(w, ", ")
+			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
+		}
+		fmt.Fprintf(w, ") %v, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
+		fmt.Fprintf(w, "\treturn func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
+		fmt.Fprintf(w, "\t\tgc := gd.NewLifetime(api)\n")
+		fmt.Fprintf(w, "\t\tclass.SetTemporary(gc)\n")
+		for i, arg := range method.Arguments {
+			var expert = classDB.convertType("", arg.Meta, arg.Type)
+
+			_, ok := classDB[arg.Type]
+			if ok {
+				fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), expert)
+				if arg.Type == "Object" {
+					fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
+				} else {
+					fmt.Fprintf(w, "\t\t%v[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
+				}
+				continue
+			}
+			argPtrKind, argIsPtr := classDB.isPointer(expert)
+			if argIsPtr {
+				fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name),
+					gdtype.Name(expert).Let("gc", fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", argPtrKind, i)))
+			} else {
+				fmt.Fprintf(w, "\t\tvar %v = gd.UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), expert, i)
+			}
+		}
+		fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
+		if resultSimple != "" {
+			fmt.Fprintf(w, "\t\tret := ")
+		}
+		fmt.Fprintf(w, "impl(self")
+		for _, arg := range method.Arguments {
+			fmt.Fprint(w, ", ")
+			fmt.Fprintf(w, "%v", gdtype.Name(classDB.convertType("", arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name)))
+		}
+		fmt.Fprintf(w, ")\n")
+		if resultSimple != "" {
+			ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
+			if needsLifetime {
+				_, ok := classDB[strings.TrimPrefix(resultExpert, "object.")]
+				if resultExpert == "gd.Object" {
+					ret = fmt.Sprintf("mmm.End(%s.AsPointer())", ret)
+				} else if ok {
+					ret = fmt.Sprintf("mmm.End(%s[0].AsPointer())", ret)
+				} else {
+					ret = fmt.Sprintf("mmm.End(%s)", ret)
+				}
+			}
+			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
+		}
+		fmt.Fprintf(w, "\t\tgc.End()\n")
+		fmt.Fprintf(w, "\t}\n")
+		fmt.Fprintf(w, "}\n")
+		return
+	}
 	fmt.Fprintf(w, "func (self Simple) %v(", convertName(method.Name))
 	for i, arg := range method.Arguments {
 		if i > 0 {
@@ -38,12 +104,6 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
 	}
 	fmt.Fprint(w, ") ")
-	resultSimple := classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
-	_, needsLifetime := classDB.isPointer(resultExpert)
-	if method.IsStatic {
-		needsLifetime = true
-	}
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "%v ", resultSimple)
 	}

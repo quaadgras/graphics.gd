@@ -2,7 +2,7 @@ package NavigationServer2D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -530,6 +530,11 @@ func (self Simple) GetDebugEnabled() bool {
 type Expert = class
 type class [1]classdb.NavigationServer2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -2264,6 +2269,12 @@ func (self class) AsNavigationServer2D() Expert { return self[0].AsNavigationSer
 func (self Simple) AsNavigationServer2D() Simple { return self[0].AsNavigationServer2D() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	default: return gd.VirtualByName(self[0].Super()[0], name)
 	}

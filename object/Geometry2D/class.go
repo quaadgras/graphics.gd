@@ -2,7 +2,7 @@ package Geometry2D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -115,6 +115,11 @@ func (self Simple) MakeAtlas(sizes gd.PackedVector2Array) gd.Dictionary {
 type Expert = class
 type class [1]classdb.Geometry2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -510,6 +515,12 @@ func (self class) AsGeometry2D() Expert { return self[0].AsGeometry2D() }
 func (self Simple) AsGeometry2D() Simple { return self[0].AsGeometry2D() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	default: return gd.VirtualByName(self[0].Super()[0], name)
 	}

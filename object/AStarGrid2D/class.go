@@ -2,7 +2,7 @@ package AStarGrid2D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -48,6 +48,30 @@ To remove a point from the pathfinding grid, it must be set as "solid" with [met
 
 */
 type Simple [1]classdb.AStarGrid2D
+func (Simple) _estimate_cost(impl func(ptr unsafe.Pointer, from_id gd.Vector2i, to_id gd.Vector2i) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_id = gd.UnsafeGet[gd.Vector2i](p_args,0)
+		var to_id = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, from_id, to_id)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Vector2i, to_id gd.Vector2i) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_id = gd.UnsafeGet[gd.Vector2i](p_args,0)
+		var to_id = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, from_id, to_id)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
 func (self Simple) SetRegion(region gd.Rect2i) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetRegion(region)
@@ -180,6 +204,11 @@ func (self Simple) GetIdPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_parti
 type Expert = class
 type class [1]classdb.AStarGrid2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -605,6 +634,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_estimate_cost": return reflect.ValueOf(self._estimate_cost);
+	case "_compute_cost": return reflect.ValueOf(self._compute_cost);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_estimate_cost": return reflect.ValueOf(self._estimate_cost);
 	case "_compute_cost": return reflect.ValueOf(self._compute_cost);

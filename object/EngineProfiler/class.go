@@ -2,7 +2,7 @@ package EngineProfiler
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -29,10 +29,49 @@ See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
 
 */
 type Simple [1]classdb.EngineProfiler
+func (Simple) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var enable = gd.UnsafeGet[bool](p_args,0)
+		var options = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, enable, options)
+		gc.End()
+	}
+}
+func (Simple) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var data = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, data)
+		gc.End()
+	}
+}
+func (Simple) _tick(impl func(ptr unsafe.Pointer, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var frame_time = gd.UnsafeGet[gd.Float](p_args,0)
+		var process_time = gd.UnsafeGet[gd.Float](p_args,1)
+		var physics_time = gd.UnsafeGet[gd.Float](p_args,2)
+		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(frame_time), float64(process_time), float64(physics_time), float64(physics_frame_time))
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.EngineProfiler
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -101,6 +140,15 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_toggle": return reflect.ValueOf(self._toggle);
+	case "_add_frame": return reflect.ValueOf(self._add_frame);
+	case "_tick": return reflect.ValueOf(self._tick);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_toggle": return reflect.ValueOf(self._toggle);
 	case "_add_frame": return reflect.ValueOf(self._add_frame);

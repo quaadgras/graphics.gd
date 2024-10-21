@@ -2,7 +2,7 @@ package EditorExportPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -109,6 +109,282 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 
 */
 type Simple [1]classdb.EditorExportPlugin
+func (Simple) _export_file(impl func(ptr unsafe.Pointer, path string, atype string, features gd.PackedStringArray) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, path.String(), atype.String(), features)
+		gc.End()
+	}
+}
+func (Simple) _export_begin(impl func(ptr unsafe.Pointer, features gd.PackedStringArray, is_debug bool, path string, flags int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,0))
+		var is_debug = gd.UnsafeGet[bool](p_args,1)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var flags = gd.UnsafeGet[gd.Int](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, features, is_debug, path.String(), int(flags))
+		gc.End()
+	}
+}
+func (Simple) _export_end(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, features gd.PackedStringArray) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, features)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]classdb.Resource, path string) [1]classdb.Resource, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var resource [1]classdb.Resource
+		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, resource, path.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, features gd.PackedStringArray) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, features)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]classdb.Node, path string) [1]classdb.Node, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var scene [1]classdb.Node
+		scene[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, scene, path.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_customization_configuration_hash(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _end_customize_scenes(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _end_customize_resources(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform)
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _should_update_export_options(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, option string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var option = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, option.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _supports_platform(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform [1]classdb.EditorExportPlatform, debug bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var platform [1]classdb.EditorExportPlatform
+		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var debug = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, platform, debug)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
 func (self Simple) AddSharedObject(path string, tags gd.PackedStringArray, target string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AddSharedObject(gc.String(path), tags, gc.String(target))
@@ -161,6 +437,11 @@ func (self Simple) GetOption(name string) gd.Variant {
 type Expert = class
 type class [1]classdb.EditorExportPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -747,6 +1028,35 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_export_file": return reflect.ValueOf(self._export_file);
+	case "_export_begin": return reflect.ValueOf(self._export_begin);
+	case "_export_end": return reflect.ValueOf(self._export_end);
+	case "_begin_customize_resources": return reflect.ValueOf(self._begin_customize_resources);
+	case "_customize_resource": return reflect.ValueOf(self._customize_resource);
+	case "_begin_customize_scenes": return reflect.ValueOf(self._begin_customize_scenes);
+	case "_customize_scene": return reflect.ValueOf(self._customize_scene);
+	case "_get_customization_configuration_hash": return reflect.ValueOf(self._get_customization_configuration_hash);
+	case "_end_customize_scenes": return reflect.ValueOf(self._end_customize_scenes);
+	case "_end_customize_resources": return reflect.ValueOf(self._end_customize_resources);
+	case "_get_export_options": return reflect.ValueOf(self._get_export_options);
+	case "_get_export_options_overrides": return reflect.ValueOf(self._get_export_options_overrides);
+	case "_should_update_export_options": return reflect.ValueOf(self._should_update_export_options);
+	case "_get_export_option_warning": return reflect.ValueOf(self._get_export_option_warning);
+	case "_get_export_features": return reflect.ValueOf(self._get_export_features);
+	case "_get_name": return reflect.ValueOf(self._get_name);
+	case "_supports_platform": return reflect.ValueOf(self._supports_platform);
+	case "_get_android_dependencies": return reflect.ValueOf(self._get_android_dependencies);
+	case "_get_android_dependencies_maven_repos": return reflect.ValueOf(self._get_android_dependencies_maven_repos);
+	case "_get_android_libraries": return reflect.ValueOf(self._get_android_libraries);
+	case "_get_android_manifest_activity_element_contents": return reflect.ValueOf(self._get_android_manifest_activity_element_contents);
+	case "_get_android_manifest_application_element_contents": return reflect.ValueOf(self._get_android_manifest_application_element_contents);
+	case "_get_android_manifest_element_contents": return reflect.ValueOf(self._get_android_manifest_element_contents);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_export_file": return reflect.ValueOf(self._export_file);
 	case "_export_begin": return reflect.ValueOf(self._export_begin);

@@ -7,8 +7,8 @@ import (
 	"reflect"
 
 	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/internal/mmm"
 	"grow.graphics/xy"
-	"runtime.link/mmm"
 )
 
 type Axis int

@@ -102,7 +102,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class) error {
 	fmt.Fprintf(file, "package %s\n\n", class.Name)
 	fmt.Fprintln(file, `import "unsafe"`)
 	fmt.Fprintln(file, `import "reflect"`)
-	fmt.Fprintln(file, `import "runtime.link/mmm"`)
+	fmt.Fprintln(file, `import "grow.graphics/gd/internal/mmm"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(file, `import object "grow.graphics/gd/object"`)
@@ -168,6 +168,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class) error {
 	fmt.Fprintf(file, "\ntype Expert = class\n")
 	fmt.Fprintf(file, "type class [1]classdb.%s\n", class.Name)
 	fmt.Fprintln(file, "func (self class) AsObject() gd.Object { return self[0].AsObject() }")
+	fmt.Fprintln(file, "func (self Simple) AsObject() gd.Object { return self[0].AsObject() }")
+	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }\n")
 	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }\n")
 	for _, method := range class.Methods {
 		classDB.methodCall(file, class.Package, class, method, callDefault)
@@ -189,20 +191,22 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class) error {
 			super = classDB[super.Inherits]
 		}
 	}
-	fmt.Fprintf(file, "\nfunc (self class) Virtual(name string) reflect.Value {\n")
-	fmt.Fprintf(file, "\tswitch name {\n")
-	for _, method := range class.Methods {
-		if method.IsVirtual {
-			fmt.Fprintf(file, "\tcase \"%v\": return reflect.ValueOf(self.%v);\n", method.Name, method.Name)
+	for _, self := range []string{"class", "Simple"} {
+		fmt.Fprintf(file, "\nfunc (self %s) Virtual(name string) reflect.Value {\n", self)
+		fmt.Fprintf(file, "\tswitch name {\n")
+		for _, method := range class.Methods {
+			if method.IsVirtual {
+				fmt.Fprintf(file, "\tcase \"%v\": return reflect.ValueOf(self.%v);\n", method.Name, method.Name)
+			}
 		}
+		if class.Inherits != "" {
+			fmt.Fprintf(file, "\tdefault: return gd.VirtualByName(self[0].Super()[0], name)\n")
+		} else {
+			fmt.Fprintf(file, "\tdefault: return reflect.Value{}\n")
+		}
+		fmt.Fprintf(file, "\t}\n")
+		fmt.Fprintf(file, "}\n")
 	}
-	if class.Inherits != "" {
-		fmt.Fprintf(file, "\tdefault: return gd.VirtualByName(self[0].Super()[0], name)\n")
-	} else {
-		fmt.Fprintf(file, "\tdefault: return reflect.Value{}\n")
-	}
-	fmt.Fprintf(file, "\t}\n")
-	fmt.Fprintf(file, "}\n")
 	fmt.Fprintf(file, `func init() {`)
 	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Pointer) any {var class Expert; class[0].SetPointer(ptr); return class })`, class.Name)
 	fmt.Fprintf(file, "}\n")

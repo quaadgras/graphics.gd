@@ -2,7 +2,7 @@ package CollisionObject3D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -32,6 +32,40 @@ Abstract base class for 3D physics objects. [CollisionObject3D] can hold any num
 
 */
 type Simple [1]classdb.CollisionObject3D
+func (Simple) _input_event(impl func(ptr unsafe.Pointer, camera [1]classdb.Camera3D, event [1]classdb.InputEvent, event_position gd.Vector3, normal gd.Vector3, shape_idx int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var camera [1]classdb.Camera3D
+		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var event_position = gd.UnsafeGet[gd.Vector3](p_args,2)
+		var normal = gd.UnsafeGet[gd.Vector3](p_args,3)
+		var shape_idx = gd.UnsafeGet[gd.Int](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, camera, event, event_position, normal, int(shape_idx))
+		gc.End()
+	}
+}
+func (Simple) _mouse_enter(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _mouse_exit(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) SetCollisionLayer(layer int) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetCollisionLayer(gd.Int(layer))
@@ -164,6 +198,11 @@ func (self Simple) ShapeFindOwner(shape_index int) int {
 type Expert = class
 type class [1]classdb.CollisionObject3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -627,6 +666,15 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_input_event": return reflect.ValueOf(self._input_event);
+	case "_mouse_enter": return reflect.ValueOf(self._mouse_enter);
+	case "_mouse_exit": return reflect.ValueOf(self._mouse_exit);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_input_event": return reflect.ValueOf(self._input_event);
 	case "_mouse_enter": return reflect.ValueOf(self._mouse_enter);

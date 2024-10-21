@@ -2,7 +2,7 @@ package AudioEffect
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -38,10 +38,25 @@ When applied on a bus, an audio effect creates a corresponding [AudioEffectInsta
 
 */
 type Simple [1]classdb.AudioEffect
+func (Simple) _instantiate(impl func(ptr unsafe.Pointer) [1]classdb.AudioEffectInstance, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.AudioEffect
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -98,6 +113,13 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_instantiate": return reflect.ValueOf(self._instantiate);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_instantiate": return reflect.ValueOf(self._instantiate);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

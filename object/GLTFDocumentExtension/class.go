@@ -2,7 +2,7 @@ package GLTFDocumentExtension
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -83,10 +83,283 @@ To use, make a new class extending GLTFDocumentExtension, override any methods y
 
 */
 type Simple [1]classdb.GLTFDocumentExtension
+func (Simple) _import_preflight(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, extensions gd.PackedStringArray) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var extensions = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, extensions)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_supported_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, gltf_node [1]classdb.GLTFNode, extensions gd.Dictionary) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var gltf_node [1]classdb.GLTFNode
+		gltf_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var extensions = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, gltf_node, extensions)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _parse_image_data(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, image_data []byte, mime_type string, ret_image [1]classdb.Image) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var image_data = mmm.Let[gd.PackedByteArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var mime_type = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var ret_image [1]classdb.Image
+		ret_image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,3)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, image_data.Bytes(), mime_type.String(), ret_image)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_image_file_extension(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, texture_json gd.Dictionary, ret_gltf_texture [1]classdb.GLTFTexture) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var texture_json = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var ret_gltf_texture [1]classdb.GLTFTexture
+		ret_gltf_texture[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, texture_json, ret_gltf_texture)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _generate_scene_node(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, gltf_node [1]classdb.GLTFNode, scene_parent [1]classdb.Node) [1]classdb.Node3D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var gltf_node [1]classdb.GLTFNode
+		gltf_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var scene_parent [1]classdb.Node
+		scene_parent[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, gltf_node, scene_parent)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _import_post_parse(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _import_node(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, gltf_node [1]classdb.GLTFNode, json gd.Dictionary, node [1]classdb.Node) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var gltf_node [1]classdb.GLTFNode
+		gltf_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var json = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var node [1]classdb.Node
+		node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,3)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, gltf_node, json, node)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _import_post(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, root [1]classdb.Node) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var root [1]classdb.Node
+		root[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, root)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _export_preflight(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, root [1]classdb.Node) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var root [1]classdb.Node
+		root[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, root)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _convert_scene_node(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, gltf_node [1]classdb.GLTFNode, scene_node [1]classdb.Node) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var gltf_node [1]classdb.GLTFNode
+		gltf_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var scene_node [1]classdb.Node
+		scene_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, state, gltf_node, scene_node)
+		gc.End()
+	}
+}
+func (Simple) _export_preserialize(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_saveable_image_formats(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, image [1]classdb.Image, image_dict gd.Dictionary, image_format string, lossy_quality float64) []byte, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var image [1]classdb.Image
+		image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var image_dict = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var image_format = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,3))
+		var lossy_quality = gd.UnsafeGet[gd.Float](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, image, image_dict, image_format.String(), float64(lossy_quality))
+		gd.UnsafeSet(p_back, mmm.End(gc.PackedByteSlice(ret)))
+		gc.End()
+	}
+}
+func (Simple) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, image [1]classdb.Image, file_path string, image_format string, lossy_quality float64) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var image [1]classdb.Image
+		image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var file_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var image_format = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,3))
+		var lossy_quality = gd.UnsafeGet[gd.Float](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, image, file_path.String(), image_format.String(), float64(lossy_quality))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, texture_json gd.Dictionary, gltf_texture [1]classdb.GLTFTexture, image_format string) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var texture_json = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var gltf_texture [1]classdb.GLTFTexture
+		gltf_texture[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		var image_format = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,3))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, texture_json, gltf_texture, image_format.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _export_node(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState, gltf_node [1]classdb.GLTFNode, json gd.Dictionary, node [1]classdb.Node) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var gltf_node [1]classdb.GLTFNode
+		gltf_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var json = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var node [1]classdb.Node
+		node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,3)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state, gltf_node, json, node)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _export_post(impl func(ptr unsafe.Pointer, state [1]classdb.GLTFState) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state [1]classdb.GLTFState
+		state[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, state)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.GLTFDocumentExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -481,6 +754,31 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_import_preflight": return reflect.ValueOf(self._import_preflight);
+	case "_get_supported_extensions": return reflect.ValueOf(self._get_supported_extensions);
+	case "_parse_node_extensions": return reflect.ValueOf(self._parse_node_extensions);
+	case "_parse_image_data": return reflect.ValueOf(self._parse_image_data);
+	case "_get_image_file_extension": return reflect.ValueOf(self._get_image_file_extension);
+	case "_parse_texture_json": return reflect.ValueOf(self._parse_texture_json);
+	case "_generate_scene_node": return reflect.ValueOf(self._generate_scene_node);
+	case "_import_post_parse": return reflect.ValueOf(self._import_post_parse);
+	case "_import_node": return reflect.ValueOf(self._import_node);
+	case "_import_post": return reflect.ValueOf(self._import_post);
+	case "_export_preflight": return reflect.ValueOf(self._export_preflight);
+	case "_convert_scene_node": return reflect.ValueOf(self._convert_scene_node);
+	case "_export_preserialize": return reflect.ValueOf(self._export_preserialize);
+	case "_get_saveable_image_formats": return reflect.ValueOf(self._get_saveable_image_formats);
+	case "_serialize_image_to_bytes": return reflect.ValueOf(self._serialize_image_to_bytes);
+	case "_save_image_at_path": return reflect.ValueOf(self._save_image_at_path);
+	case "_serialize_texture_json": return reflect.ValueOf(self._serialize_texture_json);
+	case "_export_node": return reflect.ValueOf(self._export_node);
+	case "_export_post": return reflect.ValueOf(self._export_post);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_import_preflight": return reflect.ValueOf(self._import_preflight);
 	case "_get_supported_extensions": return reflect.ValueOf(self._get_supported_extensions);

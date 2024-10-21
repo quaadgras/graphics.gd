@@ -2,7 +2,7 @@ package Control
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -177,6 +177,106 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 
 */
 type Simple [1]classdb.Control
+func (Simple) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var point = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, point)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _structured_text_parser(impl func(ptr unsafe.Pointer, args gd.Array, text string) gd.ArrayOf[gd.Vector3i], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var args = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var text = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, args, text.String())
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_tooltip(impl func(ptr unsafe.Pointer, at_position gd.Vector2) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var at_position = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, at_position)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_drag_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var at_position = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, at_position)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _can_drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var at_position = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var data = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, at_position, data)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var at_position = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var data = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, at_position, data)
+		gc.End()
+	}
+}
+func (Simple) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text string) gd.Object, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var for_text = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, for_text.String())
+		gd.UnsafeSet(p_back, mmm.End(ret.AsPointer()))
+		gc.End()
+	}
+}
+func (Simple) _gui_input(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, event)
+		gc.End()
+	}
+}
 func (self Simple) AcceptEvent() {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AcceptEvent()
@@ -693,6 +793,11 @@ func (self Simple) IsLocalizingNumeralSystem() bool {
 type Expert = class
 type class [1]classdb.Control
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -2657,6 +2762,21 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_has_point": return reflect.ValueOf(self._has_point);
+	case "_structured_text_parser": return reflect.ValueOf(self._structured_text_parser);
+	case "_get_minimum_size": return reflect.ValueOf(self._get_minimum_size);
+	case "_get_tooltip": return reflect.ValueOf(self._get_tooltip);
+	case "_get_drag_data": return reflect.ValueOf(self._get_drag_data);
+	case "_can_drop_data": return reflect.ValueOf(self._can_drop_data);
+	case "_drop_data": return reflect.ValueOf(self._drop_data);
+	case "_make_custom_tooltip": return reflect.ValueOf(self._make_custom_tooltip);
+	case "_gui_input": return reflect.ValueOf(self._gui_input);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_has_point": return reflect.ValueOf(self._has_point);
 	case "_structured_text_parser": return reflect.ValueOf(self._structured_text_parser);

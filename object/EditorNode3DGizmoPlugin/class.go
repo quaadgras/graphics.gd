@@ -2,7 +2,7 @@ package EditorNode3DGizmoPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -68,6 +68,237 @@ To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add
 
 */
 type Simple [1]classdb.EditorNode3DGizmoPlugin
+func (Simple) _has_gizmo(impl func(ptr unsafe.Pointer, for_node_3d [1]classdb.Node3D) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var for_node_3d [1]classdb.Node3D
+		for_node_3d[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, for_node_3d)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _create_gizmo(impl func(ptr unsafe.Pointer, for_node_3d [1]classdb.Node3D) [1]classdb.EditorNode3DGizmo, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var for_node_3d [1]classdb.Node3D
+		for_node_3d[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, for_node_3d)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_gizmo_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_priority(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _can_be_hidden(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _is_selectable_when_hidden(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _redraw(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, gizmo)
+		gc.End()
+	}
+}
+func (Simple) _get_handle_name(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, handle_id int, secondary bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var handle_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var secondary = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gizmo, int(handle_id), secondary)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _is_handle_highlighted(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, handle_id int, secondary bool) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var handle_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var secondary = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gizmo, int(handle_id), secondary)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_handle_value(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, handle_id int, secondary bool) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var handle_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var secondary = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gizmo, int(handle_id), secondary)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _begin_handle_action(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, handle_id int, secondary bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var handle_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var secondary = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, gizmo, int(handle_id), secondary)
+		gc.End()
+	}
+}
+func (Simple) _set_handle(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, handle_id int, secondary bool, camera [1]classdb.Camera3D, screen_pos gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var handle_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var secondary = gd.UnsafeGet[bool](p_args,2)
+		var camera [1]classdb.Camera3D
+		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,3)}))
+		var screen_pos = gd.UnsafeGet[gd.Vector2](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, gizmo, int(handle_id), secondary, camera, screen_pos)
+		gc.End()
+	}
+}
+func (Simple) _commit_handle(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, handle_id int, secondary bool, restore gd.Variant, cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var handle_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var secondary = gd.UnsafeGet[bool](p_args,2)
+		var restore = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,3))
+		var cancel = gd.UnsafeGet[bool](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, gizmo, int(handle_id), secondary, restore, cancel)
+		gc.End()
+	}
+}
+func (Simple) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, camera [1]classdb.Camera3D, screen_pos gd.Vector2) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var camera [1]classdb.Camera3D
+		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var screen_pos = gd.UnsafeGet[gd.Vector2](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gizmo, camera, screen_pos)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, camera [1]classdb.Camera3D, frustum_planes gd.ArrayOf[gd.Plane]) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var camera [1]classdb.Camera3D
+		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var frustum_planes = gd.TypedArray[gd.Plane](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2)))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gizmo, camera, frustum_planes)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, subgizmo_id int) gd.Transform3D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var subgizmo_id = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, gizmo, int(subgizmo_id))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, subgizmo_id int, transform gd.Transform3D) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var subgizmo_id = gd.UnsafeGet[gd.Int](p_args,1)
+		var transform = gd.UnsafeGet[gd.Transform3D](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, gizmo, int(subgizmo_id), transform)
+		gc.End()
+	}
+}
+func (Simple) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]classdb.EditorNode3DGizmo, ids gd.PackedInt32Array, restores gd.ArrayOf[gd.Transform3D], cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var gizmo [1]classdb.EditorNode3DGizmo
+		gizmo[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var ids = mmm.Let[gd.PackedInt32Array](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var restores = gd.TypedArray[gd.Transform3D](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2)))
+		var cancel = gd.UnsafeGet[bool](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, gizmo, ids, restores, cancel)
+		gc.End()
+	}
+}
 func (self Simple) CreateMaterial(name string, color gd.Color, billboard bool, on_top bool, use_vertex_color bool) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).CreateMaterial(gc.String(name), color, billboard, on_top, use_vertex_color)
@@ -92,6 +323,11 @@ func (self Simple) GetMaterial(name string, gizmo [1]classdb.EditorNode3DGizmo) 
 type Expert = class
 type class [1]classdb.EditorNode3DGizmoPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -506,6 +742,30 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_has_gizmo": return reflect.ValueOf(self._has_gizmo);
+	case "_create_gizmo": return reflect.ValueOf(self._create_gizmo);
+	case "_get_gizmo_name": return reflect.ValueOf(self._get_gizmo_name);
+	case "_get_priority": return reflect.ValueOf(self._get_priority);
+	case "_can_be_hidden": return reflect.ValueOf(self._can_be_hidden);
+	case "_is_selectable_when_hidden": return reflect.ValueOf(self._is_selectable_when_hidden);
+	case "_redraw": return reflect.ValueOf(self._redraw);
+	case "_get_handle_name": return reflect.ValueOf(self._get_handle_name);
+	case "_is_handle_highlighted": return reflect.ValueOf(self._is_handle_highlighted);
+	case "_get_handle_value": return reflect.ValueOf(self._get_handle_value);
+	case "_begin_handle_action": return reflect.ValueOf(self._begin_handle_action);
+	case "_set_handle": return reflect.ValueOf(self._set_handle);
+	case "_commit_handle": return reflect.ValueOf(self._commit_handle);
+	case "_subgizmos_intersect_ray": return reflect.ValueOf(self._subgizmos_intersect_ray);
+	case "_subgizmos_intersect_frustum": return reflect.ValueOf(self._subgizmos_intersect_frustum);
+	case "_get_subgizmo_transform": return reflect.ValueOf(self._get_subgizmo_transform);
+	case "_set_subgizmo_transform": return reflect.ValueOf(self._set_subgizmo_transform);
+	case "_commit_subgizmos": return reflect.ValueOf(self._commit_subgizmos);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_has_gizmo": return reflect.ValueOf(self._has_gizmo);
 	case "_create_gizmo": return reflect.ValueOf(self._create_gizmo);

@@ -9,7 +9,7 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 // Lifetime for ownership and a reference to the Godot API, apart from

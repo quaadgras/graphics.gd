@@ -2,7 +2,7 @@ package AudioEffectInstance
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -28,10 +28,37 @@ An audio effect instance manipulates the audio it receives for a given effect. T
 
 */
 type Simple [1]classdb.AudioEffectInstance
+func (Simple) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *classdb.AudioFrame, frame_count int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
+		var dst_buffer = gd.UnsafeGet[*classdb.AudioFrame](p_args,1)
+		var frame_count = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, src_buffer, dst_buffer, int(frame_count))
+		gc.End()
+	}
+}
+func (Simple) _process_silence(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.AudioEffectInstance
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -86,6 +113,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_process": return reflect.ValueOf(self._process);
+	case "_process_silence": return reflect.ValueOf(self._process_silence);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process": return reflect.ValueOf(self._process);
 	case "_process_silence": return reflect.ValueOf(self._process_silence);

@@ -5,7 +5,7 @@ package gd
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import gd "grow.graphics/gd/internal"
 
 

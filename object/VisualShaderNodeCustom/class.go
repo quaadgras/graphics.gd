@@ -2,7 +2,7 @@ package VisualShaderNodeCustom
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -100,6 +100,234 @@ class_name VisualShaderNodeNoise
 
 */
 type Simple [1]classdb.VisualShaderNodeCustom
+func (Simple) _get_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_description(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_category(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_return_icon_type(impl func(ptr unsafe.Pointer) classdb.VisualShaderNodePortType, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_input_port_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_input_port_type(impl func(ptr unsafe.Pointer, port int) classdb.VisualShaderNodePortType, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var port = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(port))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_input_port_name(impl func(ptr unsafe.Pointer, port int) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var port = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(port))
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_input_port_default_value(impl func(ptr unsafe.Pointer, port int) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var port = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(port))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_default_input_port(impl func(ptr unsafe.Pointer, atype classdb.VisualShaderNodePortType) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var atype = gd.UnsafeGet[classdb.VisualShaderNodePortType](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, atype)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_output_port_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_output_port_type(impl func(ptr unsafe.Pointer, port int) classdb.VisualShaderNodePortType, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var port = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(port))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_output_port_name(impl func(ptr unsafe.Pointer, port int) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var port = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(port))
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_property_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_property_name(impl func(ptr unsafe.Pointer, index int) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_property_default_index(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_property_options(impl func(ptr unsafe.Pointer, index int) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_code(impl func(ptr unsafe.Pointer, input_vars gd.ArrayOf[gd.String], output_vars gd.ArrayOf[gd.String], mode classdb.ShaderMode, atype classdb.VisualShaderType) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var input_vars = gd.TypedArray[gd.String](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0)))
+		var output_vars = gd.TypedArray[gd.String](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1)))
+		var mode = gd.UnsafeGet[classdb.ShaderMode](p_args,2)
+		var atype = gd.UnsafeGet[classdb.VisualShaderType](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, input_vars, output_vars, mode, atype)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_func_code(impl func(ptr unsafe.Pointer, mode classdb.ShaderMode, atype classdb.VisualShaderType) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var mode = gd.UnsafeGet[classdb.ShaderMode](p_args,0)
+		var atype = gd.UnsafeGet[classdb.VisualShaderType](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, mode, atype)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_global_code(impl func(ptr unsafe.Pointer, mode classdb.ShaderMode) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var mode = gd.UnsafeGet[classdb.ShaderMode](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, mode)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _is_highend(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _is_available(impl func(ptr unsafe.Pointer, mode classdb.ShaderMode, atype classdb.VisualShaderType) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var mode = gd.UnsafeGet[classdb.ShaderMode](p_args,0)
+		var atype = gd.UnsafeGet[classdb.VisualShaderType](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, mode, atype)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) GetOptionIndex(option int) int {
 	gc := gd.GarbageCollector(); _ = gc
 	return int(int(Expert(self).GetOptionIndex(gd.Int(option))))
@@ -108,6 +336,11 @@ func (self Simple) GetOptionIndex(option int) int {
 type Expert = class
 type class [1]classdb.VisualShaderNodeCustom
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -500,6 +733,33 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_name": return reflect.ValueOf(self._get_name);
+	case "_get_description": return reflect.ValueOf(self._get_description);
+	case "_get_category": return reflect.ValueOf(self._get_category);
+	case "_get_return_icon_type": return reflect.ValueOf(self._get_return_icon_type);
+	case "_get_input_port_count": return reflect.ValueOf(self._get_input_port_count);
+	case "_get_input_port_type": return reflect.ValueOf(self._get_input_port_type);
+	case "_get_input_port_name": return reflect.ValueOf(self._get_input_port_name);
+	case "_get_input_port_default_value": return reflect.ValueOf(self._get_input_port_default_value);
+	case "_get_default_input_port": return reflect.ValueOf(self._get_default_input_port);
+	case "_get_output_port_count": return reflect.ValueOf(self._get_output_port_count);
+	case "_get_output_port_type": return reflect.ValueOf(self._get_output_port_type);
+	case "_get_output_port_name": return reflect.ValueOf(self._get_output_port_name);
+	case "_get_property_count": return reflect.ValueOf(self._get_property_count);
+	case "_get_property_name": return reflect.ValueOf(self._get_property_name);
+	case "_get_property_default_index": return reflect.ValueOf(self._get_property_default_index);
+	case "_get_property_options": return reflect.ValueOf(self._get_property_options);
+	case "_get_code": return reflect.ValueOf(self._get_code);
+	case "_get_func_code": return reflect.ValueOf(self._get_func_code);
+	case "_get_global_code": return reflect.ValueOf(self._get_global_code);
+	case "_is_highend": return reflect.ValueOf(self._is_highend);
+	case "_is_available": return reflect.ValueOf(self._is_available);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_name": return reflect.ValueOf(self._get_name);
 	case "_get_description": return reflect.ValueOf(self._get_description);

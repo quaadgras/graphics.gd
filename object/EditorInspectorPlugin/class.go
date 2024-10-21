@@ -2,7 +2,7 @@ package EditorInspectorPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -40,6 +40,82 @@ To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_i
 
 */
 type Simple [1]classdb.EditorInspectorPlugin
+func (Simple) _can_handle(impl func(ptr unsafe.Pointer, obj gd.Object) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, obj)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _parse_begin(impl func(ptr unsafe.Pointer, obj gd.Object) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, obj)
+		gc.End()
+	}
+}
+func (Simple) _parse_category(impl func(ptr unsafe.Pointer, obj gd.Object, category string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var category = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, obj, category.String())
+		gc.End()
+	}
+}
+func (Simple) _parse_group(impl func(ptr unsafe.Pointer, obj gd.Object, group string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var group = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, obj, group.String())
+		gc.End()
+	}
+}
+func (Simple) _parse_property(impl func(ptr unsafe.Pointer, obj gd.Object, atype gd.VariantType, name string, hint_type gd.PropertyHint, hint_string string, usage_flags gd.PropertyUsageFlags, wide bool) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var atype = gd.UnsafeGet[gd.VariantType](p_args,1)
+		var name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var hint_type = gd.UnsafeGet[gd.PropertyHint](p_args,3)
+		var hint_string = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,4))
+		var usage_flags = gd.UnsafeGet[gd.PropertyUsageFlags](p_args,5)
+		var wide = gd.UnsafeGet[bool](p_args,6)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, obj, atype, name.String(), hint_type, hint_string.String(), usage_flags, wide)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _parse_end(impl func(ptr unsafe.Pointer, obj gd.Object) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, obj)
+		gc.End()
+	}
+}
 func (self Simple) AddCustomControl(control [1]classdb.Control) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AddCustomControl(control)
@@ -56,6 +132,11 @@ func (self Simple) AddPropertyEditorForMultipleProperties(label string, properti
 type Expert = class
 type class [1]classdb.EditorInspectorPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -221,6 +302,18 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_can_handle": return reflect.ValueOf(self._can_handle);
+	case "_parse_begin": return reflect.ValueOf(self._parse_begin);
+	case "_parse_category": return reflect.ValueOf(self._parse_category);
+	case "_parse_group": return reflect.ValueOf(self._parse_group);
+	case "_parse_property": return reflect.ValueOf(self._parse_property);
+	case "_parse_end": return reflect.ValueOf(self._parse_end);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_can_handle": return reflect.ValueOf(self._can_handle);
 	case "_parse_begin": return reflect.ValueOf(self._parse_begin);

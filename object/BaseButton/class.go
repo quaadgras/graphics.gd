@@ -2,7 +2,7 @@ package BaseButton
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -29,6 +29,25 @@ var _ mmm.Lifetime
 
 */
 type Simple [1]classdb.BaseButton
+func (Simple) _pressed(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _toggled(impl func(ptr unsafe.Pointer, toggled_on bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var toggled_on = gd.UnsafeGet[bool](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, toggled_on)
+		gc.End()
+	}
+}
 func (self Simple) SetPressed(pressed bool) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetPressed(pressed)
@@ -125,6 +144,11 @@ func (self Simple) GetButtonGroup() [1]classdb.ButtonGroup {
 type Expert = class
 type class [1]classdb.BaseButton
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -421,6 +445,14 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_pressed": return reflect.ValueOf(self._pressed);
+	case "_toggled": return reflect.ValueOf(self._toggled);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_pressed": return reflect.ValueOf(self._pressed);
 	case "_toggled": return reflect.ValueOf(self._toggled);

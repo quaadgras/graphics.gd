@@ -2,7 +2,7 @@ package EditorResourcePreviewGenerator
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -40,10 +40,73 @@ Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[
 
 */
 type Simple [1]classdb.EditorResourcePreviewGenerator
+func (Simple) _handles(impl func(ptr unsafe.Pointer, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var atype = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, atype.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _generate(impl func(ptr unsafe.Pointer, resource [1]classdb.Resource, size gd.Vector2i, metadata gd.Dictionary) [1]classdb.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var resource [1]classdb.Resource
+		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var metadata = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, resource, size, metadata)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _generate_from_path(impl func(ptr unsafe.Pointer, path string, size gd.Vector2i, metadata gd.Dictionary) [1]classdb.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var metadata = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), size, metadata)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _generate_small_preview_automatically(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _can_generate_small_preview(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.EditorResourcePreviewGenerator
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -152,6 +215,17 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_handles": return reflect.ValueOf(self._handles);
+	case "_generate": return reflect.ValueOf(self._generate);
+	case "_generate_from_path": return reflect.ValueOf(self._generate_from_path);
+	case "_generate_small_preview_automatically": return reflect.ValueOf(self._generate_small_preview_automatically);
+	case "_can_generate_small_preview": return reflect.ValueOf(self._can_generate_small_preview);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handles": return reflect.ValueOf(self._handles);
 	case "_generate": return reflect.ValueOf(self._generate);

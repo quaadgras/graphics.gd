@@ -2,7 +2,7 @@ package ResourceFormatLoader
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -49,10 +49,141 @@ Extending this class allows you to define your own loader. Be sure to respect th
 
 */
 type Simple [1]classdb.ResourceFormatLoader
+func (Simple) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _recognize_path(impl func(ptr unsafe.Pointer, path string, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), atype.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _handles_type(impl func(ptr unsafe.Pointer, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var atype = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, atype.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_resource_type(impl func(ptr unsafe.Pointer, path string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_resource_script_class(impl func(ptr unsafe.Pointer, path string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_resource_uid(impl func(ptr unsafe.Pointer, path string) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String())
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_dependencies(impl func(ptr unsafe.Pointer, path string, add_types bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var add_types = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), add_types)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, renames gd.Dictionary) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var renames = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), renames)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _exists(impl func(ptr unsafe.Pointer, path string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_classes_used(impl func(ptr unsafe.Pointer, path string) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _load(impl func(ptr unsafe.Pointer, path string, original_path string, use_sub_threads bool, cache_mode int) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var original_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var use_sub_threads = gd.UnsafeGet[bool](p_args,2)
+		var cache_mode = gd.UnsafeGet[gd.Int](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), original_path.String(), use_sub_threads, int(cache_mode))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.ResourceFormatLoader
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -242,6 +373,23 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_recognized_extensions": return reflect.ValueOf(self._get_recognized_extensions);
+	case "_recognize_path": return reflect.ValueOf(self._recognize_path);
+	case "_handles_type": return reflect.ValueOf(self._handles_type);
+	case "_get_resource_type": return reflect.ValueOf(self._get_resource_type);
+	case "_get_resource_script_class": return reflect.ValueOf(self._get_resource_script_class);
+	case "_get_resource_uid": return reflect.ValueOf(self._get_resource_uid);
+	case "_get_dependencies": return reflect.ValueOf(self._get_dependencies);
+	case "_rename_dependencies": return reflect.ValueOf(self._rename_dependencies);
+	case "_exists": return reflect.ValueOf(self._exists);
+	case "_get_classes_used": return reflect.ValueOf(self._get_classes_used);
+	case "_load": return reflect.ValueOf(self._load);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_recognized_extensions": return reflect.ValueOf(self._get_recognized_extensions);
 	case "_recognize_path": return reflect.ValueOf(self._recognize_path);

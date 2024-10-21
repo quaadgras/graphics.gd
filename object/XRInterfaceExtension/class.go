@@ -2,7 +2,7 @@ package XRInterfaceExtension
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -84,6 +84,328 @@ External XR interface plugins should inherit from this class.
 
 */
 type Simple [1]classdb.XRInterfaceExtension
+func (Simple) _get_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.StringName(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_capabilities(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _is_initialized(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _initialize(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _uninitialize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_system_info(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode classdb.XRInterfacePlayAreaMode) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var mode = gd.UnsafeGet[classdb.XRInterfacePlayAreaMode](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, mode)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_play_area_mode(impl func(ptr unsafe.Pointer) classdb.XRInterfacePlayAreaMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode classdb.XRInterfacePlayAreaMode) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var mode = gd.UnsafeGet[classdb.XRInterfacePlayAreaMode](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, mode)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_play_area(impl func(ptr unsafe.Pointer) gd.PackedVector3Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_render_target_size(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_view_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_camera_transform(impl func(ptr unsafe.Pointer) gd.Transform3D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int, cam_transform gd.Transform3D) gd.Transform3D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var view = gd.UnsafeGet[gd.Int](p_args,0)
+		var cam_transform = gd.UnsafeGet[gd.Transform3D](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(view), cam_transform)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int, aspect float64, z_near float64, z_far float64) gd.PackedFloat64Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var view = gd.UnsafeGet[gd.Int](p_args,0)
+		var aspect = gd.UnsafeGet[gd.Float](p_args,1)
+		var z_near = gd.UnsafeGet[gd.Float](p_args,2)
+		var z_far = gd.UnsafeGet[gd.Float](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(view), float64(aspect), float64(z_near), float64(z_far))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_vrs_texture(impl func(ptr unsafe.Pointer) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _process(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _pre_render(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var render_target = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, render_target)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target gd.RID, screen_rect gd.Rect2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var render_target = gd.UnsafeGet[gd.RID](p_args,0)
+		var screen_rect = gd.UnsafeGet[gd.Rect2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, render_target, screen_rect)
+		gc.End()
+	}
+}
+func (Simple) _end_frame(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name string) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var tracker_name = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, tracker_name.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_tracking_status(impl func(ptr unsafe.Pointer) classdb.XRInterfaceTrackingStatus, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name string, tracker_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var action_name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var tracker_name = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var frequency = gd.UnsafeGet[gd.Float](p_args,2)
+		var amplitude = gd.UnsafeGet[gd.Float](p_args,3)
+		var duration_sec = gd.UnsafeGet[gd.Float](p_args,4)
+		var delay_sec = gd.UnsafeGet[gd.Float](p_args,5)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, action_name.String(), tracker_name.String(), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
+		gc.End()
+	}
+}
+func (Simple) _get_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var enabled = gd.UnsafeGet[bool](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, enabled)
+		gc.End()
+	}
+}
+func (Simple) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_color_texture(impl func(ptr unsafe.Pointer) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_depth_texture(impl func(ptr unsafe.Pointer) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_velocity_texture(impl func(ptr unsafe.Pointer) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) GetColorTexture() gd.RID {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(Expert(self).GetColorTexture())
@@ -108,6 +430,11 @@ func (self Simple) GetRenderTargetTexture(render_target gd.RID) gd.RID {
 type Expert = class
 type class [1]classdb.XRInterfaceExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -647,6 +974,43 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_name": return reflect.ValueOf(self._get_name);
+	case "_get_capabilities": return reflect.ValueOf(self._get_capabilities);
+	case "_is_initialized": return reflect.ValueOf(self._is_initialized);
+	case "_initialize": return reflect.ValueOf(self._initialize);
+	case "_uninitialize": return reflect.ValueOf(self._uninitialize);
+	case "_get_system_info": return reflect.ValueOf(self._get_system_info);
+	case "_supports_play_area_mode": return reflect.ValueOf(self._supports_play_area_mode);
+	case "_get_play_area_mode": return reflect.ValueOf(self._get_play_area_mode);
+	case "_set_play_area_mode": return reflect.ValueOf(self._set_play_area_mode);
+	case "_get_play_area": return reflect.ValueOf(self._get_play_area);
+	case "_get_render_target_size": return reflect.ValueOf(self._get_render_target_size);
+	case "_get_view_count": return reflect.ValueOf(self._get_view_count);
+	case "_get_camera_transform": return reflect.ValueOf(self._get_camera_transform);
+	case "_get_transform_for_view": return reflect.ValueOf(self._get_transform_for_view);
+	case "_get_projection_for_view": return reflect.ValueOf(self._get_projection_for_view);
+	case "_get_vrs_texture": return reflect.ValueOf(self._get_vrs_texture);
+	case "_process": return reflect.ValueOf(self._process);
+	case "_pre_render": return reflect.ValueOf(self._pre_render);
+	case "_pre_draw_viewport": return reflect.ValueOf(self._pre_draw_viewport);
+	case "_post_draw_viewport": return reflect.ValueOf(self._post_draw_viewport);
+	case "_end_frame": return reflect.ValueOf(self._end_frame);
+	case "_get_suggested_tracker_names": return reflect.ValueOf(self._get_suggested_tracker_names);
+	case "_get_suggested_pose_names": return reflect.ValueOf(self._get_suggested_pose_names);
+	case "_get_tracking_status": return reflect.ValueOf(self._get_tracking_status);
+	case "_trigger_haptic_pulse": return reflect.ValueOf(self._trigger_haptic_pulse);
+	case "_get_anchor_detection_is_enabled": return reflect.ValueOf(self._get_anchor_detection_is_enabled);
+	case "_set_anchor_detection_is_enabled": return reflect.ValueOf(self._set_anchor_detection_is_enabled);
+	case "_get_camera_feed_id": return reflect.ValueOf(self._get_camera_feed_id);
+	case "_get_color_texture": return reflect.ValueOf(self._get_color_texture);
+	case "_get_depth_texture": return reflect.ValueOf(self._get_depth_texture);
+	case "_get_velocity_texture": return reflect.ValueOf(self._get_velocity_texture);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_name": return reflect.ValueOf(self._get_name);
 	case "_get_capabilities": return reflect.ValueOf(self._get_capabilities);

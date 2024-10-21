@@ -2,7 +2,7 @@ package VideoStream
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -25,6 +25,16 @@ Base resource type for all video streams. Classes that derive from [VideoStream]
 
 */
 type Simple [1]classdb.VideoStream
+func (Simple) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]classdb.VideoStreamPlayback, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 func (self Simple) SetFile(file string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetFile(gc.String(file))
@@ -37,6 +47,11 @@ func (self Simple) GetFile() string {
 type Expert = class
 type class [1]classdb.VideoStream
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -100,6 +115,13 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_instantiate_playback": return reflect.ValueOf(self._instantiate_playback);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_instantiate_playback": return reflect.ValueOf(self._instantiate_playback);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

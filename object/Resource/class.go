@@ -2,7 +2,7 @@ package Resource
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -36,6 +36,15 @@ The engine keeps a global cache of all loaded resources, referenced by paths (se
 
 */
 type Simple [1]classdb.Resource
+func (Simple) _setup_local_to_scene(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) SetPath(path string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetPath(gc.String(path))
@@ -100,6 +109,11 @@ func (self Simple) Duplicate(subresources bool) [1]classdb.Resource {
 type Expert = class
 type class [1]classdb.Resource
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -322,6 +336,13 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_setup_local_to_scene": return reflect.ValueOf(self._setup_local_to_scene);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_local_to_scene": return reflect.ValueOf(self._setup_local_to_scene);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

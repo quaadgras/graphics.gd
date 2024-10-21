@@ -2,7 +2,7 @@ package EditorPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -300,6 +300,257 @@ Plugins are used by the editor to extend functionality. The most common types of
 
 */
 type Simple [1]classdb.EditorPlugin
+func (Simple) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, event)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]classdb.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var viewport_control [1]classdb.Control
+		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, viewport_control)
+		gc.End()
+	}
+}
+func (Simple) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]classdb.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var viewport_control [1]classdb.Control
+		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, viewport_control)
+		gc.End()
+	}
+}
+func (Simple) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera [1]classdb.Camera3D, event [1]classdb.InputEvent) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var viewport_camera [1]classdb.Camera3D
+		viewport_camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, viewport_camera, event)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]classdb.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var viewport_control [1]classdb.Control
+		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, viewport_control)
+		gc.End()
+	}
+}
+func (Simple) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]classdb.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var viewport_control [1]classdb.Control
+		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, viewport_control)
+		gc.End()
+	}
+}
+func (Simple) _get_plugin_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_plugin_icon(impl func(ptr unsafe.Pointer) [1]classdb.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _has_main_screen(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _make_visible(impl func(ptr unsafe.Pointer, visible bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var visible = gd.UnsafeGet[bool](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, visible)
+		gc.End()
+	}
+}
+func (Simple) _edit(impl func(ptr unsafe.Pointer, obj gd.Object) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, obj)
+		gc.End()
+	}
+}
+func (Simple) _handles(impl func(ptr unsafe.Pointer, obj gd.Object) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var obj gd.Object
+		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, obj)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_state(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _set_state(impl func(ptr unsafe.Pointer, state gd.Dictionary) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var state = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, state)
+		gc.End()
+	}
+}
+func (Simple) _clear(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var for_scene = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, for_scene.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _save_external_data(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _apply_changes(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_breakpoints(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _set_window_layout(impl func(ptr unsafe.Pointer, configuration [1]classdb.ConfigFile) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var configuration [1]classdb.ConfigFile
+		configuration[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, configuration)
+		gc.End()
+	}
+}
+func (Simple) _get_window_layout(impl func(ptr unsafe.Pointer, configuration [1]classdb.ConfigFile) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var configuration [1]classdb.ConfigFile
+		configuration[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, configuration)
+		gc.End()
+	}
+}
+func (Simple) _build(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _enable_plugin(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _disable_plugin(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) AddControlToContainer(container classdb.EditorPluginCustomControlContainer, control [1]classdb.Control) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AddControlToContainer(container, control)
@@ -484,6 +735,11 @@ func (self Simple) GetPluginVersion() string {
 type Expert = class
 type class [1]classdb.EditorPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -1681,6 +1937,36 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_forward_canvas_gui_input": return reflect.ValueOf(self._forward_canvas_gui_input);
+	case "_forward_canvas_draw_over_viewport": return reflect.ValueOf(self._forward_canvas_draw_over_viewport);
+	case "_forward_canvas_force_draw_over_viewport": return reflect.ValueOf(self._forward_canvas_force_draw_over_viewport);
+	case "_forward_3d_gui_input": return reflect.ValueOf(self._forward_3d_gui_input);
+	case "_forward_3d_draw_over_viewport": return reflect.ValueOf(self._forward_3d_draw_over_viewport);
+	case "_forward_3d_force_draw_over_viewport": return reflect.ValueOf(self._forward_3d_force_draw_over_viewport);
+	case "_get_plugin_name": return reflect.ValueOf(self._get_plugin_name);
+	case "_get_plugin_icon": return reflect.ValueOf(self._get_plugin_icon);
+	case "_has_main_screen": return reflect.ValueOf(self._has_main_screen);
+	case "_make_visible": return reflect.ValueOf(self._make_visible);
+	case "_edit": return reflect.ValueOf(self._edit);
+	case "_handles": return reflect.ValueOf(self._handles);
+	case "_get_state": return reflect.ValueOf(self._get_state);
+	case "_set_state": return reflect.ValueOf(self._set_state);
+	case "_clear": return reflect.ValueOf(self._clear);
+	case "_get_unsaved_status": return reflect.ValueOf(self._get_unsaved_status);
+	case "_save_external_data": return reflect.ValueOf(self._save_external_data);
+	case "_apply_changes": return reflect.ValueOf(self._apply_changes);
+	case "_get_breakpoints": return reflect.ValueOf(self._get_breakpoints);
+	case "_set_window_layout": return reflect.ValueOf(self._set_window_layout);
+	case "_get_window_layout": return reflect.ValueOf(self._get_window_layout);
+	case "_build": return reflect.ValueOf(self._build);
+	case "_enable_plugin": return reflect.ValueOf(self._enable_plugin);
+	case "_disable_plugin": return reflect.ValueOf(self._disable_plugin);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_forward_canvas_gui_input": return reflect.ValueOf(self._forward_canvas_gui_input);
 	case "_forward_canvas_draw_over_viewport": return reflect.ValueOf(self._forward_canvas_draw_over_viewport);

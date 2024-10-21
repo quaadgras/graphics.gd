@@ -2,7 +2,7 @@ package EditorDebuggerPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -72,6 +72,74 @@ func _exit_tree():
 
 */
 type Simple [1]classdb.EditorDebuggerPlugin
+func (Simple) _setup_session(impl func(ptr unsafe.Pointer, session_id int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var session_id = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(session_id))
+		gc.End()
+	}
+}
+func (Simple) _has_capture(impl func(ptr unsafe.Pointer, capture string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var capture = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, capture.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _capture(impl func(ptr unsafe.Pointer, message string, data gd.Array, session_id int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var message = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var data = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var session_id = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, message.String(), data, int(session_id))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _goto_script_line(impl func(ptr unsafe.Pointer, script [1]classdb.Script, line int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var script [1]classdb.Script
+		script[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var line = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, script, int(line))
+		gc.End()
+	}
+}
+func (Simple) _breakpoints_cleared_in_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]classdb.Script, line int, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var script [1]classdb.Script
+		script[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var line = gd.UnsafeGet[gd.Int](p_args,1)
+		var enabled = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, script, int(line), enabled)
+		gc.End()
+	}
+}
 func (self Simple) GetSession(id int) [1]classdb.EditorDebuggerSession {
 	gc := gd.GarbageCollector(); _ = gc
 	return [1]classdb.EditorDebuggerSession(Expert(self).GetSession(gc, gd.Int(id)))
@@ -84,6 +152,11 @@ func (self Simple) GetSessions() gd.Array {
 type Expert = class
 type class [1]classdb.EditorDebuggerPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -227,6 +300,18 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_setup_session": return reflect.ValueOf(self._setup_session);
+	case "_has_capture": return reflect.ValueOf(self._has_capture);
+	case "_capture": return reflect.ValueOf(self._capture);
+	case "_goto_script_line": return reflect.ValueOf(self._goto_script_line);
+	case "_breakpoints_cleared_in_tree": return reflect.ValueOf(self._breakpoints_cleared_in_tree);
+	case "_breakpoint_set_in_tree": return reflect.ValueOf(self._breakpoint_set_in_tree);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_session": return reflect.ValueOf(self._setup_session);
 	case "_has_capture": return reflect.ValueOf(self._has_capture);

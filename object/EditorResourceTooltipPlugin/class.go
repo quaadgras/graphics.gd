@@ -2,7 +2,7 @@ package EditorResourceTooltipPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -38,6 +38,31 @@ A plugin must be first registered with [method FileSystemDock.add_resource_toolt
 
 */
 type Simple [1]classdb.EditorResourceTooltipPlugin
+func (Simple) _handles(impl func(ptr unsafe.Pointer, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var atype = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, atype.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata gd.Dictionary, base [1]classdb.Control) [1]classdb.Control, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var metadata = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var base [1]classdb.Control
+		base[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), metadata, base)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 func (self Simple) RequestThumbnail(path string, control [1]classdb.TextureRect) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).RequestThumbnail(gc.String(path), control)
@@ -46,6 +71,11 @@ func (self Simple) RequestThumbnail(path string, control [1]classdb.TextureRect)
 type Expert = class
 type class [1]classdb.EditorResourceTooltipPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -125,6 +155,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_handles": return reflect.ValueOf(self._handles);
+	case "_make_tooltip_for_path": return reflect.ValueOf(self._make_tooltip_for_path);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handles": return reflect.ValueOf(self._handles);
 	case "_make_tooltip_for_path": return reflect.ValueOf(self._make_tooltip_for_path);

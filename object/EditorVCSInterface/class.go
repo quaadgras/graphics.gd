@@ -2,7 +2,7 @@ package EditorVCSInterface
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -68,6 +68,249 @@ Defines the API that the editor uses to extract information from the underlying 
 
 */
 type Simple [1]classdb.EditorVCSInterface
+func (Simple) _initialize(impl func(ptr unsafe.Pointer, project_path string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var project_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, project_path.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _set_credentials(impl func(ptr unsafe.Pointer, username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var username = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var password = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var ssh_public_key_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var ssh_private_key_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,3))
+		var ssh_passphrase = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,4))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, username.String(), password.String(), ssh_public_key_path.String(), ssh_private_key_path.String(), ssh_passphrase.String())
+		gc.End()
+	}
+}
+func (Simple) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _stage_file(impl func(ptr unsafe.Pointer, file_path string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var file_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, file_path.String())
+		gc.End()
+	}
+}
+func (Simple) _unstage_file(impl func(ptr unsafe.Pointer, file_path string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var file_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, file_path.String())
+		gc.End()
+	}
+}
+func (Simple) _discard_file(impl func(ptr unsafe.Pointer, file_path string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var file_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, file_path.String())
+		gc.End()
+	}
+}
+func (Simple) _commit(impl func(ptr unsafe.Pointer, msg string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var msg = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, msg.String())
+		gc.End()
+	}
+}
+func (Simple) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area int) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var identifier = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var area = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, identifier.String(), int(area))
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _shut_down(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_vcs_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var max_commits = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(max_commits))
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _get_branch_list(impl func(ptr unsafe.Pointer) gd.ArrayOf[gd.String], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _get_remotes(impl func(ptr unsafe.Pointer) gd.ArrayOf[gd.String], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _create_branch(impl func(ptr unsafe.Pointer, branch_name string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var branch_name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, branch_name.String())
+		gc.End()
+	}
+}
+func (Simple) _remove_branch(impl func(ptr unsafe.Pointer, branch_name string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var branch_name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, branch_name.String())
+		gc.End()
+	}
+}
+func (Simple) _create_remote(impl func(ptr unsafe.Pointer, remote_name string, remote_url string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var remote_name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var remote_url = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, remote_name.String(), remote_url.String())
+		gc.End()
+	}
+}
+func (Simple) _remove_remote(impl func(ptr unsafe.Pointer, remote_name string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var remote_name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, remote_name.String())
+		gc.End()
+	}
+}
+func (Simple) _get_current_branch_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _checkout_branch(impl func(ptr unsafe.Pointer, branch_name string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var branch_name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, branch_name.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _pull(impl func(ptr unsafe.Pointer, remote string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var remote = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, remote.String())
+		gc.End()
+	}
+}
+func (Simple) _push(impl func(ptr unsafe.Pointer, remote string, force bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var remote = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var force = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, remote.String(), force)
+		gc.End()
+	}
+}
+func (Simple) _fetch(impl func(ptr unsafe.Pointer, remote string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var remote = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, remote.String())
+		gc.End()
+	}
+}
+func (Simple) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, text string) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var file_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var text = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, file_path.String(), text.String())
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
 func (self Simple) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) gd.Dictionary {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.Dictionary(Expert(self).CreateDiffLine(gc, gd.Int(new_line_no), gd.Int(old_line_no), gc.String(content), gc.String(status)))
@@ -104,6 +347,11 @@ func (self Simple) PopupError(msg string) {
 type Expert = class
 type class [1]classdb.EditorVCSInterface
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -578,6 +826,35 @@ func (self class) AsEditorVCSInterface() Expert { return self[0].AsEditorVCSInte
 func (self Simple) AsEditorVCSInterface() Simple { return self[0].AsEditorVCSInterface() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_initialize": return reflect.ValueOf(self._initialize);
+	case "_set_credentials": return reflect.ValueOf(self._set_credentials);
+	case "_get_modified_files_data": return reflect.ValueOf(self._get_modified_files_data);
+	case "_stage_file": return reflect.ValueOf(self._stage_file);
+	case "_unstage_file": return reflect.ValueOf(self._unstage_file);
+	case "_discard_file": return reflect.ValueOf(self._discard_file);
+	case "_commit": return reflect.ValueOf(self._commit);
+	case "_get_diff": return reflect.ValueOf(self._get_diff);
+	case "_shut_down": return reflect.ValueOf(self._shut_down);
+	case "_get_vcs_name": return reflect.ValueOf(self._get_vcs_name);
+	case "_get_previous_commits": return reflect.ValueOf(self._get_previous_commits);
+	case "_get_branch_list": return reflect.ValueOf(self._get_branch_list);
+	case "_get_remotes": return reflect.ValueOf(self._get_remotes);
+	case "_create_branch": return reflect.ValueOf(self._create_branch);
+	case "_remove_branch": return reflect.ValueOf(self._remove_branch);
+	case "_create_remote": return reflect.ValueOf(self._create_remote);
+	case "_remove_remote": return reflect.ValueOf(self._remove_remote);
+	case "_get_current_branch_name": return reflect.ValueOf(self._get_current_branch_name);
+	case "_checkout_branch": return reflect.ValueOf(self._checkout_branch);
+	case "_pull": return reflect.ValueOf(self._pull);
+	case "_push": return reflect.ValueOf(self._push);
+	case "_fetch": return reflect.ValueOf(self._fetch);
+	case "_get_line_diff": return reflect.ValueOf(self._get_line_diff);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_initialize": return reflect.ValueOf(self._initialize);
 	case "_set_credentials": return reflect.ValueOf(self._set_credentials);

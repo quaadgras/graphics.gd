@@ -2,7 +2,7 @@ package GraphNode
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -31,6 +31,19 @@ Slots can be configured in the Inspector dock once you add at least one child [C
 
 */
 type Simple [1]classdb.GraphNode
+func (Simple) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position gd.Vector2i, left bool, color gd.Color) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var slot_index = gd.UnsafeGet[gd.Int](p_args,0)
+		var position = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var left = gd.UnsafeGet[bool](p_args,2)
+		var color = gd.UnsafeGet[gd.Color](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(slot_index), position, left, color)
+		gc.End()
+	}
+}
 func (self Simple) SetTitle(title string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetTitle(gc.String(title))
@@ -179,6 +192,11 @@ func (self Simple) GetOutputPortSlot(port_idx int) int {
 type Expert = class
 type class [1]classdb.GraphNode
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -732,6 +750,13 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_draw_port": return reflect.ValueOf(self._draw_port);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw_port": return reflect.ValueOf(self._draw_port);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

@@ -10,11 +10,11 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/internal/mmm"
 	"grow.graphics/gd/object"
 	gdEngine "grow.graphics/gd/object/Engine"
 	"grow.graphics/gd/object/Node"
 	gdProjectSettings "grow.graphics/gd/object/ProjectSettings"
-	"runtime.link/mmm"
 )
 
 type onFree mmm.Pointer[func(), onFree, [0]uintptr]
@@ -629,7 +629,7 @@ func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, fie
 	type isNode interface {
 		gd.PointerToClass
 
-		AsNode() object.Node
+		AsNode() Node.Simple
 	}
 	nodeType := reflect.TypeOf([0]isNode{}).Elem()
 	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {

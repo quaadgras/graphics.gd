@@ -2,7 +2,7 @@ package PhysicsDirectBodyState2DExtension
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -112,10 +112,469 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 
 */
 type Simple [1]classdb.PhysicsDirectBodyState2DExtension
+func (Simple) _get_total_gravity(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_total_linear_damp(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_total_angular_damp(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_center_of_mass(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_center_of_mass_local(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_inverse_mass(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_inverse_inertia(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _set_linear_velocity(impl func(ptr unsafe.Pointer, velocity gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var velocity = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, velocity)
+		gc.End()
+	}
+}
+func (Simple) _get_linear_velocity(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _set_angular_velocity(impl func(ptr unsafe.Pointer, velocity float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var velocity = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(velocity))
+		gc.End()
+	}
+}
+func (Simple) _get_angular_velocity(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _set_transform(impl func(ptr unsafe.Pointer, transform gd.Transform2D) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var transform = gd.UnsafeGet[gd.Transform2D](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, transform)
+		gc.End()
+	}
+}
+func (Simple) _get_transform(impl func(ptr unsafe.Pointer) gd.Transform2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, local_position gd.Vector2) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var local_position = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, local_position)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var impulse = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, impulse)
+		gc.End()
+	}
+}
+func (Simple) _apply_impulse(impl func(ptr unsafe.Pointer, impulse gd.Vector2, position gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var impulse = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var position = gd.UnsafeGet[gd.Vector2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, impulse, position)
+		gc.End()
+	}
+}
+func (Simple) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var impulse = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(impulse))
+		gc.End()
+	}
+}
+func (Simple) _apply_central_force(impl func(ptr unsafe.Pointer, force gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var force = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, force)
+		gc.End()
+	}
+}
+func (Simple) _apply_force(impl func(ptr unsafe.Pointer, force gd.Vector2, position gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var force = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var position = gd.UnsafeGet[gd.Vector2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, force, position)
+		gc.End()
+	}
+}
+func (Simple) _apply_torque(impl func(ptr unsafe.Pointer, torque float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var torque = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(torque))
+		gc.End()
+	}
+}
+func (Simple) _add_constant_central_force(impl func(ptr unsafe.Pointer, force gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var force = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, force)
+		gc.End()
+	}
+}
+func (Simple) _add_constant_force(impl func(ptr unsafe.Pointer, force gd.Vector2, position gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var force = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var position = gd.UnsafeGet[gd.Vector2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, force, position)
+		gc.End()
+	}
+}
+func (Simple) _add_constant_torque(impl func(ptr unsafe.Pointer, torque float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var torque = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(torque))
+		gc.End()
+	}
+}
+func (Simple) _set_constant_force(impl func(ptr unsafe.Pointer, force gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var force = gd.UnsafeGet[gd.Vector2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, force)
+		gc.End()
+	}
+}
+func (Simple) _get_constant_force(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _set_constant_torque(impl func(ptr unsafe.Pointer, torque float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var torque = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(torque))
+		gc.End()
+	}
+}
+func (Simple) _get_constant_torque(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _set_sleep_state(impl func(ptr unsafe.Pointer, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var enabled = gd.UnsafeGet[bool](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, enabled)
+		gc.End()
+	}
+}
+func (Simple) _is_sleeping(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_contact_local_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_local_shape(impl func(ptr unsafe.Pointer, contact_idx int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_collider_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_idx int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx int) gd.Object, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, mmm.End(ret.AsPointer()))
+		gc.End()
+	}
+}
+func (Simple) _get_contact_collider_shape(impl func(ptr unsafe.Pointer, contact_idx int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_contact_collider_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var contact_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(contact_idx))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_step(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _integrate_forces(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_space_state(impl func(ptr unsafe.Pointer) [1]classdb.PhysicsDirectSpaceState2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.PhysicsDirectBodyState2DExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -768,6 +1227,56 @@ func (self class) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Expert {
 func (self Simple) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Simple { return self[0].AsPhysicsDirectBodyState2D() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_total_gravity": return reflect.ValueOf(self._get_total_gravity);
+	case "_get_total_linear_damp": return reflect.ValueOf(self._get_total_linear_damp);
+	case "_get_total_angular_damp": return reflect.ValueOf(self._get_total_angular_damp);
+	case "_get_center_of_mass": return reflect.ValueOf(self._get_center_of_mass);
+	case "_get_center_of_mass_local": return reflect.ValueOf(self._get_center_of_mass_local);
+	case "_get_inverse_mass": return reflect.ValueOf(self._get_inverse_mass);
+	case "_get_inverse_inertia": return reflect.ValueOf(self._get_inverse_inertia);
+	case "_set_linear_velocity": return reflect.ValueOf(self._set_linear_velocity);
+	case "_get_linear_velocity": return reflect.ValueOf(self._get_linear_velocity);
+	case "_set_angular_velocity": return reflect.ValueOf(self._set_angular_velocity);
+	case "_get_angular_velocity": return reflect.ValueOf(self._get_angular_velocity);
+	case "_set_transform": return reflect.ValueOf(self._set_transform);
+	case "_get_transform": return reflect.ValueOf(self._get_transform);
+	case "_get_velocity_at_local_position": return reflect.ValueOf(self._get_velocity_at_local_position);
+	case "_apply_central_impulse": return reflect.ValueOf(self._apply_central_impulse);
+	case "_apply_impulse": return reflect.ValueOf(self._apply_impulse);
+	case "_apply_torque_impulse": return reflect.ValueOf(self._apply_torque_impulse);
+	case "_apply_central_force": return reflect.ValueOf(self._apply_central_force);
+	case "_apply_force": return reflect.ValueOf(self._apply_force);
+	case "_apply_torque": return reflect.ValueOf(self._apply_torque);
+	case "_add_constant_central_force": return reflect.ValueOf(self._add_constant_central_force);
+	case "_add_constant_force": return reflect.ValueOf(self._add_constant_force);
+	case "_add_constant_torque": return reflect.ValueOf(self._add_constant_torque);
+	case "_set_constant_force": return reflect.ValueOf(self._set_constant_force);
+	case "_get_constant_force": return reflect.ValueOf(self._get_constant_force);
+	case "_set_constant_torque": return reflect.ValueOf(self._set_constant_torque);
+	case "_get_constant_torque": return reflect.ValueOf(self._get_constant_torque);
+	case "_set_sleep_state": return reflect.ValueOf(self._set_sleep_state);
+	case "_is_sleeping": return reflect.ValueOf(self._is_sleeping);
+	case "_get_contact_count": return reflect.ValueOf(self._get_contact_count);
+	case "_get_contact_local_position": return reflect.ValueOf(self._get_contact_local_position);
+	case "_get_contact_local_normal": return reflect.ValueOf(self._get_contact_local_normal);
+	case "_get_contact_local_shape": return reflect.ValueOf(self._get_contact_local_shape);
+	case "_get_contact_local_velocity_at_position": return reflect.ValueOf(self._get_contact_local_velocity_at_position);
+	case "_get_contact_collider": return reflect.ValueOf(self._get_contact_collider);
+	case "_get_contact_collider_position": return reflect.ValueOf(self._get_contact_collider_position);
+	case "_get_contact_collider_id": return reflect.ValueOf(self._get_contact_collider_id);
+	case "_get_contact_collider_object": return reflect.ValueOf(self._get_contact_collider_object);
+	case "_get_contact_collider_shape": return reflect.ValueOf(self._get_contact_collider_shape);
+	case "_get_contact_collider_velocity_at_position": return reflect.ValueOf(self._get_contact_collider_velocity_at_position);
+	case "_get_contact_impulse": return reflect.ValueOf(self._get_contact_impulse);
+	case "_get_step": return reflect.ValueOf(self._get_step);
+	case "_integrate_forces": return reflect.ValueOf(self._integrate_forces);
+	case "_get_space_state": return reflect.ValueOf(self._get_space_state);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_total_gravity": return reflect.ValueOf(self._get_total_gravity);
 	case "_get_total_linear_damp": return reflect.ValueOf(self._get_total_linear_damp);

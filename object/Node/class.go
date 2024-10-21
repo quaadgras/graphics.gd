@@ -2,7 +2,7 @@ package Node
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -95,6 +95,107 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 
 */
 type Simple [1]classdb.Node
+func (Simple) _process(impl func(ptr unsafe.Pointer, delta float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var delta = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(delta))
+		gc.End()
+	}
+}
+func (Simple) _physics_process(impl func(ptr unsafe.Pointer, delta float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var delta = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(delta))
+		gc.End()
+	}
+}
+func (Simple) _enter_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _exit_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _ready(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _get_configuration_warnings(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _input(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, event)
+		gc.End()
+	}
+}
+func (Simple) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, event)
+		gc.End()
+	}
+}
+func (Simple) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, event)
+		gc.End()
+	}
+}
+func (Simple) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, event)
+		gc.End()
+	}
+}
 func (self Simple) PrintOrphanNodes() {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).PrintOrphanNodes(gc)
@@ -543,6 +644,11 @@ func (self Simple) NotifyThreadSafe(what int) {
 type Expert = class
 type class [1]classdb.Node
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -2341,6 +2447,22 @@ func (self class) AsNode() Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_process": return reflect.ValueOf(self._process);
+	case "_physics_process": return reflect.ValueOf(self._physics_process);
+	case "_enter_tree": return reflect.ValueOf(self._enter_tree);
+	case "_exit_tree": return reflect.ValueOf(self._exit_tree);
+	case "_ready": return reflect.ValueOf(self._ready);
+	case "_get_configuration_warnings": return reflect.ValueOf(self._get_configuration_warnings);
+	case "_input": return reflect.ValueOf(self._input);
+	case "_shortcut_input": return reflect.ValueOf(self._shortcut_input);
+	case "_unhandled_input": return reflect.ValueOf(self._unhandled_input);
+	case "_unhandled_key_input": return reflect.ValueOf(self._unhandled_key_input);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process": return reflect.ValueOf(self._process);
 	case "_physics_process": return reflect.ValueOf(self._physics_process);

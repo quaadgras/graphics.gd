@@ -2,7 +2,7 @@ package EditorProperty
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -30,6 +30,25 @@ A custom control for editing properties that can be added to the [EditorInspecto
 
 */
 type Simple [1]classdb.EditorProperty
+func (Simple) _update_property(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var read_only = gd.UnsafeGet[bool](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, read_only)
+		gc.End()
+	}
+}
 func (self Simple) SetLabel(text string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetLabel(gc.String(text))
@@ -114,6 +133,11 @@ func (self Simple) EmitChanged(property string, value gd.Variant, field string, 
 type Expert = class
 type class [1]classdb.EditorProperty
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -397,6 +421,14 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_update_property": return reflect.ValueOf(self._update_property);
+	case "_set_read_only": return reflect.ValueOf(self._set_read_only);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_update_property": return reflect.ValueOf(self._update_property);
 	case "_set_read_only": return reflect.ValueOf(self._set_read_only);

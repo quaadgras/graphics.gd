@@ -6,7 +6,7 @@ import (
 
 	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/uc"
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type PackedByteArray mmm.Pointer[API, PackedByteArray, [2]uintptr]

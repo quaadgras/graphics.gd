@@ -2,7 +2,7 @@ package EditorScenePostImportPlugin
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -38,6 +38,102 @@ This plugin type exists to modify the process of importing scenes, allowing to c
 
 */
 type Simple [1]classdb.EditorScenePostImportPlugin
+func (Simple) _get_internal_import_options(impl func(ptr unsafe.Pointer, category int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var category = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(category))
+		gc.End()
+	}
+}
+func (Simple) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category int, for_animation bool, option string) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var category = gd.UnsafeGet[gd.Int](p_args,0)
+		var for_animation = gd.UnsafeGet[bool](p_args,1)
+		var option = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(category), for_animation, option.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category int, option string) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var category = gd.UnsafeGet[gd.Int](p_args,0)
+		var option = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(category), option.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _internal_process(impl func(ptr unsafe.Pointer, category int, base_node [1]classdb.Node, node [1]classdb.Node, resource [1]classdb.Resource) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var category = gd.UnsafeGet[gd.Int](p_args,0)
+		var base_node [1]classdb.Node
+		base_node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var node [1]classdb.Node
+		node[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		var resource [1]classdb.Resource
+		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,3)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(category), base_node, node, resource)
+		gc.End()
+	}
+}
+func (Simple) _get_import_options(impl func(ptr unsafe.Pointer, path string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, path.String())
+		gc.End()
+	}
+}
+func (Simple) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, for_animation bool, option string) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var for_animation = gd.UnsafeGet[bool](p_args,1)
+		var option = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String(), for_animation, option.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _pre_process(impl func(ptr unsafe.Pointer, scene [1]classdb.Node) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var scene [1]classdb.Node
+		scene[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, scene)
+		gc.End()
+	}
+}
+func (Simple) _post_process(impl func(ptr unsafe.Pointer, scene [1]classdb.Node) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var scene [1]classdb.Node
+		scene[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, scene)
+		gc.End()
+	}
+}
 func (self Simple) GetOptionValue(name string) gd.Variant {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.Variant(Expert(self).GetOptionValue(gc, gc.StringName(name)))
@@ -54,6 +150,11 @@ func (self Simple) AddImportOptionAdvanced(atype gd.VariantType, name string, de
 type Expert = class
 type class [1]classdb.EditorScenePostImportPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -248,6 +349,20 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_internal_import_options": return reflect.ValueOf(self._get_internal_import_options);
+	case "_get_internal_option_visibility": return reflect.ValueOf(self._get_internal_option_visibility);
+	case "_get_internal_option_update_view_required": return reflect.ValueOf(self._get_internal_option_update_view_required);
+	case "_internal_process": return reflect.ValueOf(self._internal_process);
+	case "_get_import_options": return reflect.ValueOf(self._get_import_options);
+	case "_get_option_visibility": return reflect.ValueOf(self._get_option_visibility);
+	case "_pre_process": return reflect.ValueOf(self._pre_process);
+	case "_post_process": return reflect.ValueOf(self._post_process);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_internal_import_options": return reflect.ValueOf(self._get_internal_import_options);
 	case "_get_internal_option_visibility": return reflect.ValueOf(self._get_internal_option_visibility);

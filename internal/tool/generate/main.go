@@ -451,7 +451,7 @@ func generate() error {
 	fmt.Fprintln(core)
 	fmt.Fprintln(core, `import "unsafe"`)
 	fmt.Fprintln(core, `import "reflect"`)
-	fmt.Fprintln(core, `import "runtime.link/mmm"`)
+	fmt.Fprintln(core, `import "grow.graphics/gd/internal/mmm"`)
 	fmt.Fprintln(core, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(core)
 
@@ -466,7 +466,7 @@ func generate() error {
 	fmt.Fprintln(all)
 	fmt.Fprintln(all, `import "unsafe"`)
 	fmt.Fprintln(all, `import "reflect"`)
-	fmt.Fprintln(all, `import "runtime.link/mmm"`)
+	fmt.Fprintln(all, `import "grow.graphics/gd/internal/mmm"`)
 	//fmt.Fprintln(all, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(all, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(all)

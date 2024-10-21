@@ -2,7 +2,7 @@ package gd
 
 import (
 	"grow.graphics/gd/internal/callframe"
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type Dictionary mmm.Pointer[API, Dictionary, uintptr]

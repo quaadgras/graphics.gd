@@ -2,7 +2,7 @@ package TextEdit
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -40,6 +40,67 @@ A multiline text editor. It also has limited facilities for editing code, such a
 
 */
 type Simple [1]classdb.TextEdit
+func (Simple) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char int, caret_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var unicode_char = gd.UnsafeGet[gd.Int](p_args,0)
+		var caret_index = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(unicode_char), int(caret_index))
+		gc.End()
+	}
+}
+func (Simple) _backspace(impl func(ptr unsafe.Pointer, caret_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var caret_index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(caret_index))
+		gc.End()
+	}
+}
+func (Simple) _cut(impl func(ptr unsafe.Pointer, caret_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var caret_index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(caret_index))
+		gc.End()
+	}
+}
+func (Simple) _copy(impl func(ptr unsafe.Pointer, caret_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var caret_index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(caret_index))
+		gc.End()
+	}
+}
+func (Simple) _paste(impl func(ptr unsafe.Pointer, caret_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var caret_index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(caret_index))
+		gc.End()
+	}
+}
+func (Simple) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var caret_index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(caret_index))
+		gc.End()
+	}
+}
 func (self Simple) HasImeText() bool {
 	gc := gd.GarbageCollector(); _ = gc
 	return bool(Expert(self).HasImeText())
@@ -976,6 +1037,11 @@ func (self Simple) GetSelectionColumn(caret_index int) int {
 type Expert = class
 type class [1]classdb.TextEdit
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -3992,6 +4058,18 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_handle_unicode_input": return reflect.ValueOf(self._handle_unicode_input);
+	case "_backspace": return reflect.ValueOf(self._backspace);
+	case "_cut": return reflect.ValueOf(self._cut);
+	case "_copy": return reflect.ValueOf(self._copy);
+	case "_paste": return reflect.ValueOf(self._paste);
+	case "_paste_primary_clipboard": return reflect.ValueOf(self._paste_primary_clipboard);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handle_unicode_input": return reflect.ValueOf(self._handle_unicode_input);
 	case "_backspace": return reflect.ValueOf(self._backspace);

@@ -2,7 +2,7 @@ package StyleBox
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -29,6 +29,50 @@ var _ mmm.Lifetime
 
 */
 type Simple [1]classdb.StyleBox
+func (Simple) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
+		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, to_canvas_item, rect)
+		gc.End()
+	}
+}
+func (Simple) _get_draw_rect(impl func(ptr unsafe.Pointer, rect gd.Rect2) gd.Rect2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var rect = gd.UnsafeGet[gd.Rect2](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, rect)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _test_mask(impl func(ptr unsafe.Pointer, point gd.Vector2, rect gd.Rect2) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var point = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, point, rect)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) GetMinimumSize() gd.Vector2 {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector2(Expert(self).GetMinimumSize())
@@ -69,6 +113,11 @@ func (self Simple) TestMask(point gd.Vector2, rect gd.Rect2) bool {
 type Expert = class
 type class [1]classdb.StyleBox
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -273,6 +322,16 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_draw": return reflect.ValueOf(self._draw);
+	case "_get_draw_rect": return reflect.ValueOf(self._get_draw_rect);
+	case "_get_minimum_size": return reflect.ValueOf(self._get_minimum_size);
+	case "_test_mask": return reflect.ValueOf(self._test_mask);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw": return reflect.ValueOf(self._draw);
 	case "_get_draw_rect": return reflect.ValueOf(self._get_draw_rect);

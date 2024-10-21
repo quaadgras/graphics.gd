@@ -2,7 +2,7 @@ package MainLoop
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -83,10 +83,55 @@ public partial class CustomMainLoop : MainLoop
 
 */
 type Simple [1]classdb.MainLoop
+func (Simple) _initialize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _physics_process(impl func(ptr unsafe.Pointer, delta float64) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var delta = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, float64(delta))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _process(impl func(ptr unsafe.Pointer, delta float64) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var delta = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, float64(delta))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _finalize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.MainLoop
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -159,6 +204,16 @@ func (self class) AsMainLoop() Expert { return self[0].AsMainLoop() }
 func (self Simple) AsMainLoop() Simple { return self[0].AsMainLoop() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_initialize": return reflect.ValueOf(self._initialize);
+	case "_physics_process": return reflect.ValueOf(self._physics_process);
+	case "_process": return reflect.ValueOf(self._process);
+	case "_finalize": return reflect.ValueOf(self._finalize);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_initialize": return reflect.ValueOf(self._initialize);
 	case "_physics_process": return reflect.ValueOf(self._physics_process);

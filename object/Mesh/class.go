@@ -2,7 +2,7 @@ package Mesh
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -51,6 +51,158 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 
 */
 type Simple [1]classdb.Mesh
+func (Simple) _get_surface_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_array_len(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index int) gd.ArrayOf[gd.Array], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_format(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _surface_set_material(impl func(ptr unsafe.Pointer, index int, material [1]classdb.Material) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		var material [1]classdb.Material
+		material[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(index), material)
+		gc.End()
+	}
+}
+func (Simple) _surface_get_material(impl func(ptr unsafe.Pointer, index int) [1]classdb.Material, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_blend_shape_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index int) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(index))
+		gd.UnsafeSet(p_back, mmm.End(gc.StringName(ret)))
+		gc.End()
+	}
+}
+func (Simple) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index int, name string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var index = gd.UnsafeGet[gd.Int](p_args,0)
+		var name = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(index), name.String())
+		gc.End()
+	}
+}
+func (Simple) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) SetLightmapSizeHint(size gd.Vector2i) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetLightmapSizeHint(size)
@@ -111,6 +263,11 @@ func (self Simple) GenerateTriangleMesh() [1]classdb.TriangleMesh {
 type Expert = class
 type class [1]classdb.Mesh
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -542,6 +699,26 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_surface_count": return reflect.ValueOf(self._get_surface_count);
+	case "_surface_get_array_len": return reflect.ValueOf(self._surface_get_array_len);
+	case "_surface_get_array_index_len": return reflect.ValueOf(self._surface_get_array_index_len);
+	case "_surface_get_arrays": return reflect.ValueOf(self._surface_get_arrays);
+	case "_surface_get_blend_shape_arrays": return reflect.ValueOf(self._surface_get_blend_shape_arrays);
+	case "_surface_get_lods": return reflect.ValueOf(self._surface_get_lods);
+	case "_surface_get_format": return reflect.ValueOf(self._surface_get_format);
+	case "_surface_get_primitive_type": return reflect.ValueOf(self._surface_get_primitive_type);
+	case "_surface_set_material": return reflect.ValueOf(self._surface_set_material);
+	case "_surface_get_material": return reflect.ValueOf(self._surface_get_material);
+	case "_get_blend_shape_count": return reflect.ValueOf(self._get_blend_shape_count);
+	case "_get_blend_shape_name": return reflect.ValueOf(self._get_blend_shape_name);
+	case "_set_blend_shape_name": return reflect.ValueOf(self._set_blend_shape_name);
+	case "_get_aabb": return reflect.ValueOf(self._get_aabb);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_surface_count": return reflect.ValueOf(self._get_surface_count);
 	case "_surface_get_array_len": return reflect.ValueOf(self._surface_get_array_len);

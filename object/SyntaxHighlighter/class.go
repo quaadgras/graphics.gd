@@ -2,7 +2,7 @@ package SyntaxHighlighter
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -31,6 +31,35 @@ Base class for syntax highlighters. Provides syntax highlighting data to a [Text
 
 */
 type Simple [1]classdb.SyntaxHighlighter
+func (Simple) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var line = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(line))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _clear_highlighting_cache(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _update_cache(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) GetLineSyntaxHighlighting(line int) gd.Dictionary {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.Dictionary(Expert(self).GetLineSyntaxHighlighting(gc, gd.Int(line)))
@@ -51,6 +80,11 @@ func (self Simple) GetTextEdit() [1]classdb.TextEdit {
 type Expert = class
 type class [1]classdb.SyntaxHighlighter
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -188,6 +222,15 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_line_syntax_highlighting": return reflect.ValueOf(self._get_line_syntax_highlighting);
+	case "_clear_highlighting_cache": return reflect.ValueOf(self._clear_highlighting_cache);
+	case "_update_cache": return reflect.ValueOf(self._update_cache);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_line_syntax_highlighting": return reflect.ValueOf(self._get_line_syntax_highlighting);
 	case "_clear_highlighting_cache": return reflect.ValueOf(self._clear_highlighting_cache);

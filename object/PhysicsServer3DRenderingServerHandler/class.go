@@ -2,7 +2,7 @@ package PhysicsServer3DRenderingServerHandler
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -15,6 +15,38 @@ var _ callframe.Frame
 var _ mmm.Lifetime
 
 type Simple [1]classdb.PhysicsServer3DRenderingServerHandler
+func (Simple) _set_vertex(impl func(ptr unsafe.Pointer, vertex_id int, vertex gd.Vector3) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var vertex_id = gd.UnsafeGet[gd.Int](p_args,0)
+		var vertex = gd.UnsafeGet[gd.Vector3](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(vertex_id), vertex)
+		gc.End()
+	}
+}
+func (Simple) _set_normal(impl func(ptr unsafe.Pointer, vertex_id int, normal gd.Vector3) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var vertex_id = gd.UnsafeGet[gd.Int](p_args,0)
+		var normal = gd.UnsafeGet[gd.Vector3](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(vertex_id), normal)
+		gc.End()
+	}
+}
+func (Simple) _set_aabb(impl func(ptr unsafe.Pointer, aabb gd.AABB) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var aabb = gd.UnsafeGet[gd.AABB](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, aabb)
+		gc.End()
+	}
+}
 func (self Simple) SetVertex(vertex_id int, vertex gd.Vector3) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetVertex(gd.Int(vertex_id), vertex)
@@ -31,6 +63,11 @@ func (self Simple) SetAabb(aabb gd.AABB) {
 type Expert = class
 type class [1]classdb.PhysicsServer3DRenderingServerHandler
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -129,6 +166,15 @@ func (self class) AsPhysicsServer3DRenderingServerHandler() Expert { return self
 func (self Simple) AsPhysicsServer3DRenderingServerHandler() Simple { return self[0].AsPhysicsServer3DRenderingServerHandler() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_set_vertex": return reflect.ValueOf(self._set_vertex);
+	case "_set_normal": return reflect.ValueOf(self._set_normal);
+	case "_set_aabb": return reflect.ValueOf(self._set_aabb);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_set_vertex": return reflect.ValueOf(self._set_vertex);
 	case "_set_normal": return reflect.ValueOf(self._set_normal);

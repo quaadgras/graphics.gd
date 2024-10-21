@@ -2,7 +2,7 @@ package SkeletonModification2D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -31,6 +31,36 @@ This is used to provide Godot with a flexible and powerful Inverse Kinematics so
 
 */
 type Simple [1]classdb.SkeletonModification2D
+func (Simple) _execute(impl func(ptr unsafe.Pointer, delta float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var delta = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(delta))
+		gc.End()
+	}
+}
+func (Simple) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]classdb.SkeletonModificationStack2D) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var modification_stack [1]classdb.SkeletonModificationStack2D
+		modification_stack[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, modification_stack)
+		gc.End()
+	}
+}
+func (Simple) _draw_editor_gizmo(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) SetEnabled(enabled bool) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetEnabled(enabled)
@@ -75,6 +105,11 @@ func (self Simple) GetEditorDrawGizmo() bool {
 type Expert = class
 type class [1]classdb.SkeletonModification2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -267,6 +302,15 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_execute": return reflect.ValueOf(self._execute);
+	case "_setup_modification": return reflect.ValueOf(self._setup_modification);
+	case "_draw_editor_gizmo": return reflect.ValueOf(self._draw_editor_gizmo);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_execute": return reflect.ValueOf(self._execute);
 	case "_setup_modification": return reflect.ValueOf(self._setup_modification);

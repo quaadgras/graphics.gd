@@ -8,7 +8,7 @@ import (
 
 	"grow.graphics/gd/internal/callframe"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 // Variant returns a variant from the given value, which must be one of the

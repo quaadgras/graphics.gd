@@ -8,7 +8,7 @@ import (
 	"grow.graphics/gd/internal/callframe"
 
 	"runtime.link/api"
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 // API specification for Godot's GDExtension.

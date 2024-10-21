@@ -8,7 +8,7 @@ import (
 	"grow.graphics/gd/object"
 	"grow.graphics/gd/object/Node"
 	gdResourceLoader "grow.graphics/gd/object/ResourceLoader"
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 // Class can be embedded inside of a struct to represent a new Class type.

@@ -2,7 +2,7 @@ package CompositorEffect
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -25,6 +25,18 @@ This resource defines a custom rendering effect that can be applied to [Viewport
 
 */
 type Simple [1]classdb.CompositorEffect
+func (Simple) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type int, render_data [1]classdb.RenderData) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var effect_callback_type = gd.UnsafeGet[gd.Int](p_args,0)
+		var render_data [1]classdb.RenderData
+		render_data[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(effect_callback_type), render_data)
+		gc.End()
+	}
+}
 func (self Simple) SetEnabled(enabled bool) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetEnabled(enabled)
@@ -85,6 +97,11 @@ func (self Simple) GetNeedsSeparateSpecular() bool {
 type Expert = class
 type class [1]classdb.CompositorEffect
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -264,6 +281,13 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_render_callback": return reflect.ValueOf(self._render_callback);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_render_callback": return reflect.ValueOf(self._render_callback);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

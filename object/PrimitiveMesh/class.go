@@ -2,7 +2,7 @@ package PrimitiveMesh
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -26,6 +26,16 @@ Base class for all primitive meshes. Handles applying a [Material] to a primitiv
 
 */
 type Simple [1]classdb.PrimitiveMesh
+func (Simple) _create_mesh_array(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 func (self Simple) SetMaterial(material [1]classdb.Material) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetMaterial(material)
@@ -78,6 +88,11 @@ func (self Simple) RequestUpdate() {
 type Expert = class
 type class [1]classdb.PrimitiveMesh
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -262,6 +277,13 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_create_mesh_array": return reflect.ValueOf(self._create_mesh_array);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_create_mesh_array": return reflect.ValueOf(self._create_mesh_array);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

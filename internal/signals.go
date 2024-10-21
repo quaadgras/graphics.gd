@@ -5,7 +5,7 @@ package gd
 import (
 	"grow.graphics/gd/internal/callframe"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type Signal mmm.Pointer[API, Signal, [2]uintptr]

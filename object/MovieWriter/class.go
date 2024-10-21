@@ -2,7 +2,7 @@ package MovieWriter
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -47,6 +47,72 @@ If you need to encode to a different format or pipe a stream through third-party
 
 */
 type Simple [1]classdb.MovieWriter
+func (Simple) _get_audio_mix_rate(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) classdb.AudioServerSpeakerMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _handles_file(impl func(ptr unsafe.Pointer, path string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, path.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps int, base_path string) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args,0)
+		var fps = gd.UnsafeGet[gd.Int](p_args,1)
+		var base_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, movie_size, int(fps), base_path.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]classdb.Image, audio_frame_block unsafe.Pointer) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var frame_image [1]classdb.Image
+		frame_image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, frame_image, audio_frame_block)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _write_end(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) AddWriter(writer [1]classdb.MovieWriter) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AddWriter(gc, writer)
@@ -55,6 +121,11 @@ func (self Simple) AddWriter(writer [1]classdb.MovieWriter) {
 type Expert = class
 type class [1]classdb.MovieWriter
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -178,6 +249,18 @@ func (self class) AsMovieWriter() Expert { return self[0].AsMovieWriter() }
 func (self Simple) AsMovieWriter() Simple { return self[0].AsMovieWriter() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_audio_mix_rate": return reflect.ValueOf(self._get_audio_mix_rate);
+	case "_get_audio_speaker_mode": return reflect.ValueOf(self._get_audio_speaker_mode);
+	case "_handles_file": return reflect.ValueOf(self._handles_file);
+	case "_write_begin": return reflect.ValueOf(self._write_begin);
+	case "_write_frame": return reflect.ValueOf(self._write_frame);
+	case "_write_end": return reflect.ValueOf(self._write_end);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_audio_mix_rate": return reflect.ValueOf(self._get_audio_mix_rate);
 	case "_get_audio_speaker_mode": return reflect.ValueOf(self._get_audio_speaker_mode);

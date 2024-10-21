@@ -9,7 +9,7 @@ import (
 	"grow.graphics/uc"
 	"grow.graphics/xy"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type Bool = bool

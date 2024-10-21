@@ -2,7 +2,7 @@ package AudioStreamPlayback
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -43,6 +43,109 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 
 */
 type Simple [1]classdb.AudioStreamPlayback
+func (Simple) _start(impl func(ptr unsafe.Pointer, from_pos float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_pos = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(from_pos))
+		gc.End()
+	}
+}
+func (Simple) _stop(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _is_playing(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_loop_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_playback_position(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _seek(impl func(ptr unsafe.Pointer, position float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var position = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(position))
+		gc.End()
+	}
+}
+func (Simple) _mix(impl func(ptr unsafe.Pointer, buffer *classdb.AudioFrame, rate_scale float64, frames int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var buffer = gd.UnsafeGet[*classdb.AudioFrame](p_args,0)
+		var rate_scale = gd.UnsafeGet[gd.Float](p_args,1)
+		var frames = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, buffer, float64(rate_scale), int(frames))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _tag_used_streams(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _set_parameter(impl func(ptr unsafe.Pointer, name string, value gd.Variant) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var name = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var value = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, name.String(), value)
+		gc.End()
+	}
+}
+func (Simple) _get_parameter(impl func(ptr unsafe.Pointer, name string) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var name = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, name.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
 func (self Simple) SetSamplePlayback(playback_sample [1]classdb.AudioSamplePlayback) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetSamplePlayback(playback_sample)
@@ -55,6 +158,11 @@ func (self Simple) GetSamplePlayback() [1]classdb.AudioSamplePlayback {
 type Expert = class
 type class [1]classdb.AudioStreamPlayback
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -247,6 +355,22 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_start": return reflect.ValueOf(self._start);
+	case "_stop": return reflect.ValueOf(self._stop);
+	case "_is_playing": return reflect.ValueOf(self._is_playing);
+	case "_get_loop_count": return reflect.ValueOf(self._get_loop_count);
+	case "_get_playback_position": return reflect.ValueOf(self._get_playback_position);
+	case "_seek": return reflect.ValueOf(self._seek);
+	case "_mix": return reflect.ValueOf(self._mix);
+	case "_tag_used_streams": return reflect.ValueOf(self._tag_used_streams);
+	case "_set_parameter": return reflect.ValueOf(self._set_parameter);
+	case "_get_parameter": return reflect.ValueOf(self._get_parameter);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_start": return reflect.ValueOf(self._start);
 	case "_stop": return reflect.ValueOf(self._stop);

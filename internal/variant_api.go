@@ -2,7 +2,7 @@
 
 package gd
 
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 
 // Copy returns a copy of the variant that will belong to the provided context.
 func (variant Variant) Copy(ctx Lifetime) Variant {

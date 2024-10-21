@@ -2,7 +2,7 @@ package Range
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -27,6 +27,16 @@ Range is an abstract base class for controls that represent a number within a ra
 
 */
 type Simple [1]classdb.Range
+func (Simple) _value_changed(impl func(ptr unsafe.Pointer, new_value float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var new_value = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(new_value))
+		gc.End()
+	}
+}
 func (self Simple) GetValue() float64 {
 	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(Expert(self).GetValue()))
@@ -123,6 +133,11 @@ func (self Simple) Unshare() {
 type Expert = class
 type class [1]classdb.Range
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -400,6 +415,13 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_value_changed": return reflect.ValueOf(self._value_changed);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_value_changed": return reflect.ValueOf(self._value_changed);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

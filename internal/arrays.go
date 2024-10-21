@@ -5,7 +5,7 @@ import (
 	"iter"
 
 	"grow.graphics/gd/internal/callframe"
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type Array mmm.Pointer[API, Array, uintptr]

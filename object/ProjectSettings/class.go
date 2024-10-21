@@ -2,7 +2,7 @@ package ProjectSettings
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -98,6 +98,11 @@ func (self Simple) SaveCustom(file string) gd.Error {
 type Expert = class
 type class [1]classdb.ProjectSettings
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -443,6 +448,12 @@ func (self class) AsProjectSettings() Expert { return self[0].AsProjectSettings(
 func (self Simple) AsProjectSettings() Simple { return self[0].AsProjectSettings() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	default: return gd.VirtualByName(self[0].Super()[0], name)
 	}

@@ -2,7 +2,7 @@ package Texture2D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -44,6 +44,90 @@ Textures are often created by loading them from a file. See [method @GDScript.lo
 
 */
 type Simple [1]classdb.Texture2D
+func (Simple) _get_width(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_height(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int, y int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var x = gd.UnsafeGet[gd.Int](p_args,0)
+		var y = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(x), int(y))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _has_alpha(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, pos gd.Vector2, modulate gd.Color, transpose bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Vector2](p_args,1)
+		var modulate = gd.UnsafeGet[gd.Color](p_args,2)
+		var transpose = gd.UnsafeGet[bool](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, to_canvas_item, pos, modulate, transpose)
+		gc.End()
+	}
+}
+func (Simple) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
+		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
+		var tile = gd.UnsafeGet[bool](p_args,2)
+		var modulate = gd.UnsafeGet[gd.Color](p_args,3)
+		var transpose = gd.UnsafeGet[bool](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, to_canvas_item, rect, tile, modulate, transpose)
+		gc.End()
+	}
+}
+func (Simple) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
+		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
+		var src_rect = gd.UnsafeGet[gd.Rect2](p_args,2)
+		var modulate = gd.UnsafeGet[gd.Color](p_args,3)
+		var transpose = gd.UnsafeGet[bool](p_args,4)
+		var clip_uv = gd.UnsafeGet[bool](p_args,5)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
+		gc.End()
+	}
+}
 func (self Simple) GetWidth() int {
 	gc := gd.GarbageCollector(); _ = gc
 	return int(int(Expert(self).GetWidth()))
@@ -84,6 +168,11 @@ func (self Simple) CreatePlaceholder() [1]classdb.Resource {
 type Expert = class
 type class [1]classdb.Texture2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -367,6 +456,19 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_width": return reflect.ValueOf(self._get_width);
+	case "_get_height": return reflect.ValueOf(self._get_height);
+	case "_is_pixel_opaque": return reflect.ValueOf(self._is_pixel_opaque);
+	case "_has_alpha": return reflect.ValueOf(self._has_alpha);
+	case "_draw": return reflect.ValueOf(self._draw);
+	case "_draw_rect": return reflect.ValueOf(self._draw_rect);
+	case "_draw_rect_region": return reflect.ValueOf(self._draw_rect_region);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_width": return reflect.ValueOf(self._get_width);
 	case "_get_height": return reflect.ValueOf(self._get_height);

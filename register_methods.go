@@ -7,7 +7,7 @@ import (
 	"reflect"
 
 	gd "grow.graphics/gd/internal"
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 func registerMethods(godot Lifetime, class StringName, rtype reflect.Type) {

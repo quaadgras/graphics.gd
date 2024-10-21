@@ -2,7 +2,7 @@ package Translation
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -27,6 +27,32 @@ var _ mmm.Lifetime
 
 */
 type Simple [1]classdb.Translation
+func (Simple) _get_plural_message(impl func(ptr unsafe.Pointer, src_message string, src_plural_message string, n int, context string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var src_message = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var src_plural_message = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var n = gd.UnsafeGet[gd.Int](p_args,2)
+		var context = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,3))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, src_message.String(), src_plural_message.String(), int(n), context.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.StringName(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_message(impl func(ptr unsafe.Pointer, src_message string, context string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var src_message = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var context = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, src_message.String(), context.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.StringName(ret)))
+		gc.End()
+	}
+}
 func (self Simple) SetLocale(locale string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetLocale(gc.String(locale))
@@ -71,6 +97,11 @@ func (self Simple) GetMessageCount() int {
 type Expert = class
 type class [1]classdb.Translation
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -269,6 +300,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_plural_message": return reflect.ValueOf(self._get_plural_message);
+	case "_get_message": return reflect.ValueOf(self._get_message);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_plural_message": return reflect.ValueOf(self._get_plural_message);
 	case "_get_message": return reflect.ValueOf(self._get_message);

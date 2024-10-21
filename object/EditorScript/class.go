@@ -2,7 +2,7 @@ package EditorScript
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -49,6 +49,15 @@ public partial class HelloEditor : EditorScript
 
 */
 type Simple [1]classdb.EditorScript
+func (Simple) _run(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 func (self Simple) AddRootNode(node [1]classdb.Node) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AddRootNode(node)
@@ -65,6 +74,11 @@ func (self Simple) GetEditorInterface() [1]classdb.EditorInterface {
 type Expert = class
 type class [1]classdb.EditorScript
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -140,6 +154,13 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_run": return reflect.ValueOf(self._run);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_run": return reflect.ValueOf(self._run);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

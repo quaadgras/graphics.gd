@@ -8,9 +8,9 @@ import (
 
 	internal "grow.graphics/gd/internal"
 
+	"grow.graphics/gd/internal/mmm"
 	"runtime.link/api"
 	"runtime.link/api/stub"
-	"runtime.link/mmm"
 )
 
 import "C"
@@ -32,7 +32,7 @@ func (p pinner) Free() { mmm.API(p).Unpin(); mmm.End(p) }
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer
 
-var background = internal.NewContext(&godot)
+var background = internal.NewContext(&internal.Global)
 
 // Link returns a handle to the [API] and the global [ClassDB].
 // The [bool] return value is [true] if the API has been
@@ -44,9 +44,9 @@ func Link() (internal.Lifetime, bool) {
 	return background, true
 }
 
-var (
-	godot = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
-)
+func init() {
+	internal.Global = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
+}
 
 //export loadExtension
 func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) uint8 {
@@ -54,8 +54,8 @@ func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) ui
 		return get_proc_address(lookupFunc, s)
 	}
 	classDB = internal.ExtensionToken(classes)
-	godot.ExtensionToken = classDB
-	linkCGO(&godot)
+	internal.Global.ExtensionToken = classDB
+	linkCGO(&internal.Global)
 	init := (*initialization)(configuration)
 	*init = initialization{}
 	init.minimum_initialization_level = initializationLevel(internal.GDExtensionInitializationLevelScene)

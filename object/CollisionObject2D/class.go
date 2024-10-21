@@ -2,7 +2,7 @@ package CollisionObject2D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -37,6 +37,58 @@ Abstract base class for 2D physics objects. [CollisionObject2D] can hold any num
 
 */
 type Simple [1]classdb.CollisionObject2D
+func (Simple) _input_event(impl func(ptr unsafe.Pointer, viewport [1]classdb.Viewport, event [1]classdb.InputEvent, shape_idx int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var viewport [1]classdb.Viewport
+		viewport[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var shape_idx = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, viewport, event, int(shape_idx))
+		gc.End()
+	}
+}
+func (Simple) _mouse_enter(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _mouse_exit(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
+func (Simple) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shape_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(shape_idx))
+		gc.End()
+	}
+}
+func (Simple) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shape_idx = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(shape_idx))
+		gc.End()
+	}
+}
 func (self Simple) GetRid() gd.RID {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(Expert(self).GetRid())
@@ -177,6 +229,11 @@ func (self Simple) ShapeFindOwner(shape_index int) int {
 type Expert = class
 type class [1]classdb.CollisionObject2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -709,6 +766,17 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_input_event": return reflect.ValueOf(self._input_event);
+	case "_mouse_enter": return reflect.ValueOf(self._mouse_enter);
+	case "_mouse_exit": return reflect.ValueOf(self._mouse_exit);
+	case "_mouse_shape_enter": return reflect.ValueOf(self._mouse_shape_enter);
+	case "_mouse_shape_exit": return reflect.ValueOf(self._mouse_shape_exit);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_input_event": return reflect.ValueOf(self._input_event);
 	case "_mouse_enter": return reflect.ValueOf(self._mouse_enter);

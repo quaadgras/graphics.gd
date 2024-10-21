@@ -2,7 +2,7 @@ package RenderSceneBuffersExtension
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -31,10 +31,56 @@ This class allows for a RenderSceneBuffer implementation to be made in GDExtensi
 
 */
 type Simple [1]classdb.RenderSceneBuffersExtension
+func (Simple) _configure(impl func(ptr unsafe.Pointer, config [1]classdb.RenderSceneBuffersConfiguration) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var config [1]classdb.RenderSceneBuffersConfiguration
+		config[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, config)
+		gc.End()
+	}
+}
+func (Simple) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var fsr_sharpness = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(fsr_sharpness))
+		gc.End()
+	}
+}
+func (Simple) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var texture_mipmap_bias = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(texture_mipmap_bias))
+		gc.End()
+	}
+}
+func (Simple) _set_use_debanding(impl func(ptr unsafe.Pointer, use_debanding bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var use_debanding = gd.UnsafeGet[bool](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, use_debanding)
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.RenderSceneBuffersExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -122,6 +168,16 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_configure": return reflect.ValueOf(self._configure);
+	case "_set_fsr_sharpness": return reflect.ValueOf(self._set_fsr_sharpness);
+	case "_set_texture_mipmap_bias": return reflect.ValueOf(self._set_texture_mipmap_bias);
+	case "_set_use_debanding": return reflect.ValueOf(self._set_use_debanding);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_configure": return reflect.ValueOf(self._configure);
 	case "_set_fsr_sharpness": return reflect.ValueOf(self._set_fsr_sharpness);

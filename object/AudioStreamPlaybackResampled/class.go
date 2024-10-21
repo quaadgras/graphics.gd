@@ -2,7 +2,7 @@ package AudioStreamPlaybackResampled
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -16,6 +16,28 @@ var _ callframe.Frame
 var _ mmm.Lifetime
 
 type Simple [1]classdb.AudioStreamPlaybackResampled
+func (Simple) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *classdb.AudioFrame, frame_count int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var dst_buffer = gd.UnsafeGet[*classdb.AudioFrame](p_args,0)
+		var frame_count = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, dst_buffer, int(frame_count))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
 func (self Simple) BeginResample() {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).BeginResample()
@@ -24,6 +46,11 @@ func (self Simple) BeginResample() {
 type Expert = class
 type class [1]classdb.AudioStreamPlaybackResampled
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -86,6 +113,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_mix_resampled": return reflect.ValueOf(self._mix_resampled);
+	case "_get_stream_sampling_rate": return reflect.ValueOf(self._get_stream_sampling_rate);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_mix_resampled": return reflect.ValueOf(self._mix_resampled);
 	case "_get_stream_sampling_rate": return reflect.ValueOf(self._get_stream_sampling_rate);

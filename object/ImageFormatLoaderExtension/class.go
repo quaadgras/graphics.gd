@@ -2,7 +2,7 @@ package ImageFormatLoaderExtension
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -28,6 +28,32 @@ Be sure to respect the documented return types and values. You should create an 
 
 */
 type Simple [1]classdb.ImageFormatLoaderExtension
+func (Simple) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _load_image(impl func(ptr unsafe.Pointer, image [1]classdb.Image, fileaccess [1]classdb.FileAccess, flags classdb.ImageFormatLoaderLoaderFlags, scale float64) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var image [1]classdb.Image
+		image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var fileaccess [1]classdb.FileAccess
+		fileaccess[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var flags = gd.UnsafeGet[classdb.ImageFormatLoaderLoaderFlags](p_args,2)
+		var scale = gd.UnsafeGet[gd.Float](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, image, fileaccess, flags, float64(scale))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) AddFormatLoader() {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).AddFormatLoader()
@@ -40,6 +66,11 @@ func (self Simple) RemoveFormatLoader() {
 type Expert = class
 type class [1]classdb.ImageFormatLoaderExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -126,6 +157,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_recognized_extensions": return reflect.ValueOf(self._get_recognized_extensions);
+	case "_load_image": return reflect.ValueOf(self._load_image);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_recognized_extensions": return reflect.ValueOf(self._get_recognized_extensions);
 	case "_load_image": return reflect.ValueOf(self._load_image);

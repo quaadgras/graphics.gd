@@ -7,7 +7,7 @@ import (
 
 	"grow.graphics/gd/internal/callframe"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type String mmm.Pointer[API, String, uintptr]

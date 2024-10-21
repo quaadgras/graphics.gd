@@ -433,9 +433,10 @@ import (
 	"unsafe"
 
 	gd "grow.graphics/gd/internal"
+	internal "grow.graphics/gd/internal"
 	"grow.graphics/gd/internal/callframe"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 func btoi(b bool) int {
@@ -454,7 +455,7 @@ func doInitialization(init *initialization) {
 
 //export initialize
 func initialize(_ unsafe.Pointer, level initializationLevel) {
-	godot.Init(background, gd.GDExtensionInitializationLevel(level))
+	internal.Global.Init(background, gd.GDExtensionInitializationLevel(level))
 	if level == 2 {
 		main()
 	}
@@ -2056,7 +2057,7 @@ func linkCGO(API *gd.API) {
 
 	classdb_register_extension_class_signal := dlsymGD("classdb_register_extension_class_signal")
 	API.ClassDB.RegisterClassSignal = func(library gd.ExtensionToken, class, signal gd.StringName, args []gd.PropertyInfo) {
-		ctx := gd.NewLifetime(&godot)
+		ctx := gd.NewLifetime(&internal.Global)
 		defer ctx.End()
 		var frame = callframe.New()
 		var p_class = callframe.Arg(frame, mmm.Get(class))
@@ -2398,7 +2399,7 @@ func makePackedFunctions[T gd.Packed, V comparable](prefix string) gd.PackedFunc
 
 //export set_func
 func set_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 
 	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
@@ -2408,7 +2409,7 @@ func set_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
 
 //export get_func
 func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 
 	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
@@ -2464,7 +2465,7 @@ func cPropertyList(ctx gd.Lifetime, list []gd.PropertyInfo) *C.GDExtensionProper
 
 //export get_property_list_func
 func get_property_list_func(p_instance uintptr, p_length *uint32) *C.GDExtensionPropertyInfo {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	list := cgo.Handle(p_instance).Value().(gd.ObjectInterface).GetPropertyList(ctx)
 	*p_length = uint32(len(list))
 	return cPropertyList(ctx, list)
@@ -2477,7 +2478,7 @@ func free_property_list_func(_ uintptr, p_properties *C.GDExtensionPropertyInfo)
 
 //export property_can_revert_func
 func property_can_revert_func(p_instance uintptr, p_name unsafe.Pointer) bool {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
 	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyCanRevert(name)
@@ -2485,7 +2486,7 @@ func property_can_revert_func(p_instance uintptr, p_name unsafe.Pointer) bool {
 
 //export property_get_revert_func
 func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 	name := mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
 	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(ctx, name)
@@ -2502,7 +2503,7 @@ func notification_func(p_instance uintptr, p_notification int32, p_reversed bool
 
 //export to_string_func
 func to_string_func(p_instance uintptr, valid, out unsafe.Pointer) {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 	s, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).ToString()
 	if !ok {
@@ -2535,7 +2536,7 @@ func free_instance_func(_, p_instance uintptr) {
 
 //export recreate_instance_func
 func recreate_instance_func(p_class, p_super uintptr) uintptr {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.Recover()
 	var super gd.Object
 	super.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{p_super}))
@@ -2544,7 +2545,7 @@ func recreate_instance_func(p_class, p_super uintptr) uintptr {
 
 //export get_virtual_call_data_func
 func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 	var name = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
 	virtual := cgo.Handle(p_class).Value().(gd.ClassInterface).GetVirtual(name)
@@ -2556,7 +2557,7 @@ func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr 
 
 //export call_virtual_with_data_func
 func call_virtual_with_data_func(p_instance uintptr, p_name unsafe.Pointer, p_data uintptr, p_args, p_ret unsafe.Pointer) {
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 	var name = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, *(*uintptr)(p_name))
 	cgo.Handle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgo.Handle(p_data).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
@@ -2573,7 +2574,7 @@ func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensio
 
 	var slice = unsafe.Slice((**[3]uintptr)(p_args), int(count))
 
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 
 	var args = make([]gd.Variant, 0, len(slice))
@@ -2593,7 +2594,7 @@ func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensio
 func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
 	method := cgo.Handle(p_method).Value().(*gd.Method)
 	var variants = make([]gd.Variant, 0, int(count))
-	ctx := gd.NewLifetime(&godot)
+	ctx := gd.NewLifetime(&internal.Global)
 	defer ctx.End()
 	for _, elem := range unsafe.Slice((**[3]uintptr)(p_args), int(count)) {
 		variants = append(variants, mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, *elem))
@@ -2606,7 +2607,7 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 	if result != (gd.Variant{}) {
 		if result.Type() == gd.TypeObject {
 			ptr := mmm.End(result.Interface(ctx).(gd.Object).AsPointer())
-			instance, ok := godot.Instances[ptr[0]]
+			instance, ok := internal.Global.Instances[ptr[0]]
 			if ok {
 				tmp := instance.GetKeepAlive()
 				instance.SetPointer(mmm.Let[gd.Pointer, gd.API, [2]uintptr](tmp.Lifetime, tmp.API, ptr))

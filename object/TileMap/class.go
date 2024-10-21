@@ -2,7 +2,7 @@ package TileMap
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -36,6 +36,31 @@ To force an update earlier on, call [method update_internals].
 
 */
 type Simple [1]classdb.TileMap
+func (Simple) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords gd.Vector2i) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var layer = gd.UnsafeGet[gd.Int](p_args,0)
+		var coords = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(layer), coords)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords gd.Vector2i, tile_data [1]classdb.TileData) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var layer = gd.UnsafeGet[gd.Int](p_args,0)
+		var coords = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var tile_data [1]classdb.TileData
+		tile_data[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, int(layer), coords, tile_data)
+		gc.End()
+	}
+}
 func (self Simple) SetNavigationMap(layer int, mapping gd.RID) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetNavigationMap(gd.Int(layer), mapping)
@@ -272,6 +297,11 @@ func (self Simple) GetNeighborCell(coords gd.Vector2i, neighbor classdb.TileSetC
 type Expert = class
 type class [1]classdb.TileMap
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -1169,6 +1199,14 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_use_tile_data_runtime_update": return reflect.ValueOf(self._use_tile_data_runtime_update);
+	case "_tile_data_runtime_update": return reflect.ValueOf(self._tile_data_runtime_update);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_use_tile_data_runtime_update": return reflect.ValueOf(self._use_tile_data_runtime_update);
 	case "_tile_data_runtime_update": return reflect.ValueOf(self._tile_data_runtime_update);

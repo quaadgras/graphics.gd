@@ -2,7 +2,7 @@ package TextServerExtension
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -668,10 +668,2538 @@ External [TextServer] implementations should inherit from this class.
 
 */
 type Simple [1]classdb.TextServerExtension
+func (Simple) _has_feature(impl func(ptr unsafe.Pointer, feature classdb.TextServerFeature) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var feature = gd.UnsafeGet[classdb.TextServerFeature](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, feature)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_features(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _free_rid(impl func(ptr unsafe.Pointer, rid gd.RID) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, rid)
+		gc.End()
+	}
+}
+func (Simple) _has(impl func(ptr unsafe.Pointer, rid gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _load_support_data(impl func(ptr unsafe.Pointer, filename string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var filename = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, filename.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_support_data_filename(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _get_support_data_info(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _save_support_data(impl func(ptr unsafe.Pointer, filename string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var filename = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, filename.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var locale = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, locale.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _name_to_tag(impl func(ptr unsafe.Pointer, name string) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, name.String())
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _tag_to_name(impl func(ptr unsafe.Pointer, tag int) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var tag = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(tag))
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _create_font(impl func(ptr unsafe.Pointer) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_data(impl func(ptr unsafe.Pointer, font_rid gd.RID, data []byte) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var data = mmm.Let[gd.PackedByteArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, data.Bytes())
+		gc.End()
+	}
+}
+func (Simple) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid gd.RID, data_ptr unsafe.Pointer, data_size int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var data_ptr = gd.UnsafeGet[unsafe.Pointer](p_args,1)
+		var data_size = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, data_ptr, int(data_size))
+		gc.End()
+	}
+}
+func (Simple) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid gd.RID, face_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var face_index = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(face_index))
+		gc.End()
+	}
+}
+func (Simple) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_style(impl func(ptr unsafe.Pointer, font_rid gd.RID, style classdb.TextServerFontStyle) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var style = gd.UnsafeGet[classdb.TextServerFontStyle](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, style)
+		gc.End()
+	}
+}
+func (Simple) _font_get_style(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerFontStyle, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var name = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, name.String())
+		gc.End()
+	}
+}
+func (Simple) _font_get_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name_style string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var name_style = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, name_style.String())
+		gc.End()
+	}
+}
+func (Simple) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid gd.RID, weight int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var weight = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(weight))
+		gc.End()
+	}
+}
+func (Simple) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid gd.RID, stretch int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var stretch = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(stretch))
+		gc.End()
+	}
+}
+func (Simple) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid gd.RID, antialiasing classdb.TextServerFontAntialiasing) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var antialiasing = gd.UnsafeGet[classdb.TextServerFontAntialiasing](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, antialiasing)
+		gc.End()
+	}
+}
+func (Simple) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerFontAntialiasing, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID, disable_embedded_bitmaps bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var disable_embedded_bitmaps = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, disable_embedded_bitmaps)
+		gc.End()
+	}
+}
+func (Simple) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID, generate_mipmaps bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var generate_mipmaps = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, generate_mipmaps)
+		gc.End()
+	}
+}
+func (Simple) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid gd.RID, msdf bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var msdf = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, msdf)
+		gc.End()
+	}
+}
+func (Simple) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid gd.RID, msdf_pixel_range int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var msdf_pixel_range = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(msdf_pixel_range))
+		gc.End()
+	}
+}
+func (Simple) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, msdf_size int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var msdf_size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(msdf_size))
+		gc.End()
+	}
+}
+func (Simple) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, fixed_size int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var fixed_size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(fixed_size))
+		gc.End()
+	}
+}
+func (Simple) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid gd.RID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var fixed_size_scale_mode = gd.UnsafeGet[classdb.TextServerFixedSizeScaleMode](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, fixed_size_scale_mode)
+		gc.End()
+	}
+}
+func (Simple) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerFixedSizeScaleMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid gd.RID, allow_system_fallback bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var allow_system_fallback = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, allow_system_fallback)
+		gc.End()
+	}
+}
+func (Simple) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_rid gd.RID, force_autohinter bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var force_autohinter = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, force_autohinter)
+		gc.End()
+	}
+}
+func (Simple) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid gd.RID, hinting classdb.TextServerHinting) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var hinting = gd.UnsafeGet[classdb.TextServerHinting](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, hinting)
+		gc.End()
+	}
+}
+func (Simple) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerHinting, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid gd.RID, subpixel_positioning classdb.TextServerSubpixelPositioning) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var subpixel_positioning = gd.UnsafeGet[classdb.TextServerSubpixelPositioning](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, subpixel_positioning)
+		gc.End()
+	}
+}
+func (Simple) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerSubpixelPositioning, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid gd.RID, strength float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var strength = gd.UnsafeGet[gd.Float](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, float64(strength))
+		gc.End()
+	}
+}
+func (Simple) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid gd.RID, spacing classdb.TextServerSpacingType, value int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args,1)
+		var value = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, spacing, int(value))
+		gc.End()
+	}
+}
+func (Simple) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid gd.RID, spacing classdb.TextServerSpacingType) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, spacing)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID, baseline_offset float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var baseline_offset = gd.UnsafeGet[gd.Float](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, float64(baseline_offset))
+		gc.End()
+	}
+}
+func (Simple) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid gd.RID, transform gd.Transform2D) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var transform = gd.UnsafeGet[gd.Transform2D](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, transform)
+		gc.End()
+	}
+}
+func (Simple) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Transform2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid gd.RID, variation_coordinates gd.Dictionary) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var variation_coordinates = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, variation_coordinates)
+		gc.End()
+	}
+}
+func (Simple) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid gd.RID, oversampling float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var oversampling = gd.UnsafeGet[gd.Float](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, float64(oversampling))
+		gc.End()
+	}
+}
+func (Simple) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.ArrayOf[gd.Vector2i], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid gd.RID) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid)
+		gc.End()
+	}
+}
+func (Simple) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size)
+		gc.End()
+	}
+}
+func (Simple) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, ascent float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var ascent = gd.UnsafeGet[gd.Float](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), float64(ascent))
+		gc.End()
+	}
+}
+func (Simple) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, descent float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var descent = gd.UnsafeGet[gd.Float](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), float64(descent))
+		gc.End()
+	}
+}
+func (Simple) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, underline_position float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var underline_position = gd.UnsafeGet[gd.Float](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), float64(underline_position))
+		gc.End()
+	}
+}
+func (Simple) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, underline_thickness float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var underline_thickness = gd.UnsafeGet[gd.Float](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), float64(underline_thickness))
+		gc.End()
+	}
+}
+func (Simple) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, scale float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var scale = gd.UnsafeGet[gd.Float](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), float64(scale))
+		gc.End()
+	}
+}
+func (Simple) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size)
+		gc.End()
+	}
+}
+func (Simple) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var texture_index = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(texture_index))
+		gc.End()
+	}
+}
+func (Simple) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int, image [1]classdb.Image) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var texture_index = gd.UnsafeGet[gd.Int](p_args,2)
+		var image [1]classdb.Image
+		image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,3)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(texture_index), image)
+		gc.End()
+	}
+}
+func (Simple) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int) [1]classdb.Image, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var texture_index = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(texture_index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int, offset gd.PackedInt32Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var texture_index = gd.UnsafeGet[gd.Int](p_args,2)
+		var offset = mmm.Let[gd.PackedInt32Array](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,3))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(texture_index), offset)
+		gc.End()
+	}
+}
+func (Simple) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var texture_index = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(texture_index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size)
+		gc.End()
+	}
+}
+func (Simple) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(glyph))
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size), int(glyph))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph int, advance gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		var advance = gd.UnsafeGet[gd.Vector2](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), int(glyph), advance)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(glyph))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, offset gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		var offset = gd.UnsafeGet[gd.Vector2](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(glyph), offset)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(glyph))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, gl_size gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		var gl_size = gd.UnsafeGet[gd.Vector2](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(glyph), gl_size)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Rect2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(glyph))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, uv_rect gd.Rect2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		var uv_rect = gd.UnsafeGet[gd.Rect2](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(glyph), uv_rect)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(glyph))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, texture_idx int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		var texture_idx = gd.UnsafeGet[gd.Int](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(glyph), int(texture_idx))
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(glyph))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var glyph = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, size, int(glyph))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, index int) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var index = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size), int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) gd.ArrayOf[gd.Vector2i], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size))
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size))
+		gc.End()
+	}
+}
+func (Simple) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_pair gd.Vector2i) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var glyph_pair = gd.UnsafeGet[gd.Vector2i](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), glyph_pair)
+		gc.End()
+	}
+}
+func (Simple) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_pair gd.Vector2i, kerning gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var glyph_pair = gd.UnsafeGet[gd.Vector2i](p_args,2)
+		var kerning = gd.UnsafeGet[gd.Vector2](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, int(size), glyph_pair, kerning)
+		gc.End()
+	}
+}
+func (Simple) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_pair gd.Vector2i) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var glyph_pair = gd.UnsafeGet[gd.Vector2i](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size), glyph_pair)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, char int, variation_selector int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var char = gd.UnsafeGet[gd.Int](p_args,2)
+		var variation_selector = gd.UnsafeGet[gd.Int](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size), int(char), int(variation_selector))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var glyph_index = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(size), int(glyph_index))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_has_char(impl func(ptr unsafe.Pointer, font_rid gd.RID, char int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var char = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, int(char))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid gd.RID) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _font_render_range(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, start int, end int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var start = gd.UnsafeGet[gd.Int](p_args,2)
+		var end = gd.UnsafeGet[gd.Int](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(start), int(end))
+		gc.End()
+	}
+}
+func (Simple) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, index int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
+		var index = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, size, int(index))
+		gc.End()
+	}
+}
+func (Simple) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var canvas = gd.UnsafeGet[gd.RID](p_args,1)
+		var size = gd.UnsafeGet[gd.Int](p_args,2)
+		var pos = gd.UnsafeGet[gd.Vector2](p_args,3)
+		var index = gd.UnsafeGet[gd.Int](p_args,4)
+		var color = gd.UnsafeGet[gd.Color](p_args,5)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, canvas, int(size), pos, int(index), color)
+		gc.End()
+	}
+}
+func (Simple) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid gd.RID, canvas gd.RID, size int, outline_size int, pos gd.Vector2, index int, color gd.Color) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var canvas = gd.UnsafeGet[gd.RID](p_args,1)
+		var size = gd.UnsafeGet[gd.Int](p_args,2)
+		var outline_size = gd.UnsafeGet[gd.Int](p_args,3)
+		var pos = gd.UnsafeGet[gd.Vector2](p_args,4)
+		var index = gd.UnsafeGet[gd.Int](p_args,5)
+		var color = gd.UnsafeGet[gd.Color](p_args,6)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, canvas, int(size), int(outline_size), pos, int(index), color)
+		gc.End()
+	}
+}
+func (Simple) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, language.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string, supported bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var supported = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, language.String(), supported)
+		gc.End()
+	}
+}
+func (Simple) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, language.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, language.String())
+		gc.End()
+	}
+}
+func (Simple) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var script = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, script.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string, supported bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var script = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var supported = gd.UnsafeGet[bool](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, script.String(), supported)
+		gc.End()
+	}
+}
+func (Simple) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var script = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid, script.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var script = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, script.String())
+		gc.End()
+	}
+}
+func (Simple) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID, overrides gd.Dictionary) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		var overrides = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, font_rid, overrides)
+		gc.End()
+	}
+}
+func (Simple) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var font_rid = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, oversampling float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var oversampling = gd.UnsafeGet[gd.Float](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, float64(oversampling))
+		gc.End()
+	}
+}
+func (Simple) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int, index int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var size = gd.UnsafeGet[gd.Int](p_args,0)
+		var index = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(size), int(index))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var canvas = gd.UnsafeGet[gd.RID](p_args,0)
+		var size = gd.UnsafeGet[gd.Int](p_args,1)
+		var pos = gd.UnsafeGet[gd.Vector2](p_args,2)
+		var index = gd.UnsafeGet[gd.Int](p_args,3)
+		var color = gd.UnsafeGet[gd.Color](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, canvas, int(size), pos, int(index), color)
+		gc.End()
+	}
+}
+func (Simple) _create_shaped_text(impl func(ptr unsafe.Pointer, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var direction = gd.UnsafeGet[classdb.TextServerDirection](p_args,0)
+		var orientation = gd.UnsafeGet[classdb.TextServerOrientation](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, direction, orientation)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped gd.RID) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped gd.RID, direction classdb.TextServerDirection) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var direction = gd.UnsafeGet[classdb.TextServerDirection](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, direction)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped gd.RID) classdb.TextServerDirection, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer, shaped gd.RID) classdb.TextServerDirection, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped gd.RID, override gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var override = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, override)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID, punct string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var punct = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, punct.String())
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped gd.RID, char int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var char = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, int(char))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shaped gd.RID, orientation classdb.TextServerOrientation) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var orientation = gd.UnsafeGet[classdb.TextServerOrientation](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, orientation)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shaped gd.RID) classdb.TextServerOrientation, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, shaped gd.RID, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var enabled = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, enabled)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, shaped gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, shaped gd.RID, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var enabled = gd.UnsafeGet[bool](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, enabled)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, shaped gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped gd.RID, spacing classdb.TextServerSpacingType, value int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args,1)
+		var value = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, spacing, int(value))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped gd.RID, spacing classdb.TextServerSpacingType) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, spacing)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID, text string, fonts gd.ArrayOf[gd.RID], size int, opentype_features gd.Dictionary, language string, meta gd.Variant) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var text = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var fonts = gd.TypedArray[gd.RID](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2)))
+		var size = gd.UnsafeGet[gd.Int](p_args,3)
+		var opentype_features = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,4))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,5))
+		var meta = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,6))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, text.String(), fonts, int(size), opentype_features, language.String(), meta)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, length int, baseline float64) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var key = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		var size = gd.UnsafeGet[gd.Vector2](p_args,2)
+		var inline_align = gd.UnsafeGet[gd.InlineAlignment](p_args,3)
+		var length = gd.UnsafeGet[gd.Int](p_args,4)
+		var baseline = gd.UnsafeGet[gd.Float](p_args,5)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, key, size, inline_align, int(length), float64(baseline))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gd.InlineAlignment, baseline float64) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var key = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		var size = gd.UnsafeGet[gd.Vector2](p_args,2)
+		var inline_align = gd.UnsafeGet[gd.InlineAlignment](p_args,3)
+		var baseline = gd.UnsafeGet[gd.Float](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, key, size, inline_align, float64(baseline))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped gd.RID, index int) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var index = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(index))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped gd.RID, index int, fonts gd.ArrayOf[gd.RID], size int, opentype_features gd.Dictionary) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var index = gd.UnsafeGet[gd.Int](p_args,1)
+		var fonts = gd.TypedArray[gd.RID](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2)))
+		var size = gd.UnsafeGet[gd.Int](p_args,3)
+		var opentype_features = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,4))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, int(index), fonts, int(size), opentype_features)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped gd.RID, start int, length int) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var start = gd.UnsafeGet[gd.Int](p_args,1)
+		var length = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(start), int(length))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.RID, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped gd.RID, width float64, justification_flags classdb.TextServerJustificationFlag) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var width = gd.UnsafeGet[gd.Float](p_args,1)
+		var justification_flags = gd.UnsafeGet[classdb.TextServerJustificationFlag](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, float64(width), justification_flags)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped gd.RID, tab_stops gd.PackedFloat32Array) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var tab_stops = mmm.Let[gd.PackedFloat32Array](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, tab_stops)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_update_justification_ops(impl func(ptr unsafe.Pointer, shaped gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped gd.RID) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *classdb. Glyph, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped gd.RID) *classdb. Glyph, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shaped gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.Vector2i, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped gd.RID, width gd.PackedFloat32Array, start int, once bool, break_flags classdb.TextServerLineBreakFlag) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var width = mmm.Let[gd.PackedFloat32Array](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var start = gd.UnsafeGet[gd.Int](p_args,2)
+		var once = gd.UnsafeGet[bool](p_args,3)
+		var break_flags = gd.UnsafeGet[classdb.TextServerLineBreakFlag](p_args,4)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, width, int(start), once, break_flags)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, width float64, start int, break_flags classdb.TextServerLineBreakFlag) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var width = gd.UnsafeGet[gd.Float](p_args,1)
+		var start = gd.UnsafeGet[gd.Int](p_args,2)
+		var break_flags = gd.UnsafeGet[classdb.TextServerLineBreakFlag](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, float64(width), int(start), break_flags)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, grapheme_flags classdb.TextServerGraphemeFlag, skip_grapheme_flags classdb.TextServerGraphemeFlag) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var grapheme_flags = gd.UnsafeGet[classdb.TextServerGraphemeFlag](p_args,1)
+		var skip_grapheme_flags = gd.UnsafeGet[classdb.TextServerGraphemeFlag](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, grapheme_flags, skip_grapheme_flags)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shaped gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer, shaped gd.RID) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *classdb. Glyph, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer, shaped gd.RID, width float64, trim_flags classdb.TextServerTextOverrunFlag) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var width = gd.UnsafeGet[gd.Float](p_args,1)
+		var trim_flags = gd.UnsafeGet[classdb.TextServerTextOverrunFlag](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, float64(width), trim_flags)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Rect2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var key = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, key)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Vector2i, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var key = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, key)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var key = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, key)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer, shaped gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointer, shaped gd.RID) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.Pointer, shaped gd.RID, start int, end int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var start = gd.UnsafeGet[gd.Int](p_args,1)
+		var end = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(start), int(end))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped gd.RID, position int, caret *classdb.CaretInfo) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var position = gd.UnsafeGet[gd.Int](p_args,1)
+		var caret = gd.UnsafeGet[*classdb.CaretInfo](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, int(position), caret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped gd.RID, start int, end int) gd.PackedVector2Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var start = gd.UnsafeGet[gd.Int](p_args,1)
+		var end = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(start), int(end))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, shaped gd.RID, coord float64) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var coord = gd.UnsafeGet[gd.Float](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, float64(coord))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, shaped gd.RID, coord float64) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var coord = gd.UnsafeGet[gd.Float](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, float64(coord))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l float64, clip_r float64, color gd.Color) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var canvas = gd.UnsafeGet[gd.RID](p_args,1)
+		var pos = gd.UnsafeGet[gd.Vector2](p_args,2)
+		var clip_l = gd.UnsafeGet[gd.Float](p_args,3)
+		var clip_r = gd.UnsafeGet[gd.Float](p_args,4)
+		var color = gd.UnsafeGet[gd.Color](p_args,5)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, canvas, pos, float64(clip_l), float64(clip_r), color)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l float64, clip_r float64, outline_size int, color gd.Color) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var canvas = gd.UnsafeGet[gd.RID](p_args,1)
+		var pos = gd.UnsafeGet[gd.Vector2](p_args,2)
+		var clip_l = gd.UnsafeGet[gd.Float](p_args,3)
+		var clip_r = gd.UnsafeGet[gd.Float](p_args,4)
+		var outline_size = gd.UnsafeGet[gd.Int](p_args,5)
+		var color = gd.UnsafeGet[gd.Color](p_args,6)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, shaped, canvas, pos, float64(clip_l), float64(clip_r), int(outline_size), color)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) gd.Vector2, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(pos))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(pos))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(pos))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(pos))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(pos))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var shaped = gd.UnsafeGet[gd.RID](p_args,0)
+		var pos = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, shaped, int(pos))
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _format_number(impl func(ptr unsafe.Pointer, number string, language string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var number = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, number.String(), language.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _parse_number(impl func(ptr unsafe.Pointer, number string, language string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var number = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, number.String(), language.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _percent_sign(impl func(ptr unsafe.Pointer, language string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, language.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _strip_diacritics(impl func(ptr unsafe.Pointer, s string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _is_valid_identifier(impl func(ptr unsafe.Pointer, s string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var unicode = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(unicode))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s string, language string, chars_per_line int) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var chars_per_line = gd.UnsafeGet[gd.Int](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String(), language.String(), int(chars_per_line))
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s string, language string) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String(), language.String())
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _is_confusable(impl func(ptr unsafe.Pointer, s string, dict gd.PackedStringArray) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var dict = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String(), dict)
+		gd.UnsafeSet(p_back, gd.Int(ret))
+		gc.End()
+	}
+}
+func (Simple) _spoof_check(impl func(ptr unsafe.Pointer, s string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String())
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _string_to_upper(impl func(ptr unsafe.Pointer, s string, language string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String(), language.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _string_to_lower(impl func(ptr unsafe.Pointer, s string, language string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String(), language.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _string_to_title(impl func(ptr unsafe.Pointer, s string, language string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var s = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var language = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, s.String(), language.String())
+		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
+		gc.End()
+	}
+}
+func (Simple) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type classdb.TextServerStructuredTextParser, args gd.Array, text string) gd.ArrayOf[gd.Vector3i], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var parser_type = gd.UnsafeGet[classdb.TextServerStructuredTextParser](p_args,0)
+		var args = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var text = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, parser_type, args, text.String())
+		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
+		gc.End()
+	}
+}
+func (Simple) _cleanup(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self)
+		gc.End()
+	}
+}
 // Expert 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Expert = class
 type class [1]classdb.TextServerExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -4300,6 +6828,228 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_has_feature": return reflect.ValueOf(self._has_feature);
+	case "_get_name": return reflect.ValueOf(self._get_name);
+	case "_get_features": return reflect.ValueOf(self._get_features);
+	case "_free_rid": return reflect.ValueOf(self._free_rid);
+	case "_has": return reflect.ValueOf(self._has);
+	case "_load_support_data": return reflect.ValueOf(self._load_support_data);
+	case "_get_support_data_filename": return reflect.ValueOf(self._get_support_data_filename);
+	case "_get_support_data_info": return reflect.ValueOf(self._get_support_data_info);
+	case "_save_support_data": return reflect.ValueOf(self._save_support_data);
+	case "_is_locale_right_to_left": return reflect.ValueOf(self._is_locale_right_to_left);
+	case "_name_to_tag": return reflect.ValueOf(self._name_to_tag);
+	case "_tag_to_name": return reflect.ValueOf(self._tag_to_name);
+	case "_create_font": return reflect.ValueOf(self._create_font);
+	case "_create_font_linked_variation": return reflect.ValueOf(self._create_font_linked_variation);
+	case "_font_set_data": return reflect.ValueOf(self._font_set_data);
+	case "_font_set_data_ptr": return reflect.ValueOf(self._font_set_data_ptr);
+	case "_font_set_face_index": return reflect.ValueOf(self._font_set_face_index);
+	case "_font_get_face_index": return reflect.ValueOf(self._font_get_face_index);
+	case "_font_get_face_count": return reflect.ValueOf(self._font_get_face_count);
+	case "_font_set_style": return reflect.ValueOf(self._font_set_style);
+	case "_font_get_style": return reflect.ValueOf(self._font_get_style);
+	case "_font_set_name": return reflect.ValueOf(self._font_set_name);
+	case "_font_get_name": return reflect.ValueOf(self._font_get_name);
+	case "_font_get_ot_name_strings": return reflect.ValueOf(self._font_get_ot_name_strings);
+	case "_font_set_style_name": return reflect.ValueOf(self._font_set_style_name);
+	case "_font_get_style_name": return reflect.ValueOf(self._font_get_style_name);
+	case "_font_set_weight": return reflect.ValueOf(self._font_set_weight);
+	case "_font_get_weight": return reflect.ValueOf(self._font_get_weight);
+	case "_font_set_stretch": return reflect.ValueOf(self._font_set_stretch);
+	case "_font_get_stretch": return reflect.ValueOf(self._font_get_stretch);
+	case "_font_set_antialiasing": return reflect.ValueOf(self._font_set_antialiasing);
+	case "_font_get_antialiasing": return reflect.ValueOf(self._font_get_antialiasing);
+	case "_font_set_disable_embedded_bitmaps": return reflect.ValueOf(self._font_set_disable_embedded_bitmaps);
+	case "_font_get_disable_embedded_bitmaps": return reflect.ValueOf(self._font_get_disable_embedded_bitmaps);
+	case "_font_set_generate_mipmaps": return reflect.ValueOf(self._font_set_generate_mipmaps);
+	case "_font_get_generate_mipmaps": return reflect.ValueOf(self._font_get_generate_mipmaps);
+	case "_font_set_multichannel_signed_distance_field": return reflect.ValueOf(self._font_set_multichannel_signed_distance_field);
+	case "_font_is_multichannel_signed_distance_field": return reflect.ValueOf(self._font_is_multichannel_signed_distance_field);
+	case "_font_set_msdf_pixel_range": return reflect.ValueOf(self._font_set_msdf_pixel_range);
+	case "_font_get_msdf_pixel_range": return reflect.ValueOf(self._font_get_msdf_pixel_range);
+	case "_font_set_msdf_size": return reflect.ValueOf(self._font_set_msdf_size);
+	case "_font_get_msdf_size": return reflect.ValueOf(self._font_get_msdf_size);
+	case "_font_set_fixed_size": return reflect.ValueOf(self._font_set_fixed_size);
+	case "_font_get_fixed_size": return reflect.ValueOf(self._font_get_fixed_size);
+	case "_font_set_fixed_size_scale_mode": return reflect.ValueOf(self._font_set_fixed_size_scale_mode);
+	case "_font_get_fixed_size_scale_mode": return reflect.ValueOf(self._font_get_fixed_size_scale_mode);
+	case "_font_set_allow_system_fallback": return reflect.ValueOf(self._font_set_allow_system_fallback);
+	case "_font_is_allow_system_fallback": return reflect.ValueOf(self._font_is_allow_system_fallback);
+	case "_font_set_force_autohinter": return reflect.ValueOf(self._font_set_force_autohinter);
+	case "_font_is_force_autohinter": return reflect.ValueOf(self._font_is_force_autohinter);
+	case "_font_set_hinting": return reflect.ValueOf(self._font_set_hinting);
+	case "_font_get_hinting": return reflect.ValueOf(self._font_get_hinting);
+	case "_font_set_subpixel_positioning": return reflect.ValueOf(self._font_set_subpixel_positioning);
+	case "_font_get_subpixel_positioning": return reflect.ValueOf(self._font_get_subpixel_positioning);
+	case "_font_set_embolden": return reflect.ValueOf(self._font_set_embolden);
+	case "_font_get_embolden": return reflect.ValueOf(self._font_get_embolden);
+	case "_font_set_spacing": return reflect.ValueOf(self._font_set_spacing);
+	case "_font_get_spacing": return reflect.ValueOf(self._font_get_spacing);
+	case "_font_set_baseline_offset": return reflect.ValueOf(self._font_set_baseline_offset);
+	case "_font_get_baseline_offset": return reflect.ValueOf(self._font_get_baseline_offset);
+	case "_font_set_transform": return reflect.ValueOf(self._font_set_transform);
+	case "_font_get_transform": return reflect.ValueOf(self._font_get_transform);
+	case "_font_set_variation_coordinates": return reflect.ValueOf(self._font_set_variation_coordinates);
+	case "_font_get_variation_coordinates": return reflect.ValueOf(self._font_get_variation_coordinates);
+	case "_font_set_oversampling": return reflect.ValueOf(self._font_set_oversampling);
+	case "_font_get_oversampling": return reflect.ValueOf(self._font_get_oversampling);
+	case "_font_get_size_cache_list": return reflect.ValueOf(self._font_get_size_cache_list);
+	case "_font_clear_size_cache": return reflect.ValueOf(self._font_clear_size_cache);
+	case "_font_remove_size_cache": return reflect.ValueOf(self._font_remove_size_cache);
+	case "_font_set_ascent": return reflect.ValueOf(self._font_set_ascent);
+	case "_font_get_ascent": return reflect.ValueOf(self._font_get_ascent);
+	case "_font_set_descent": return reflect.ValueOf(self._font_set_descent);
+	case "_font_get_descent": return reflect.ValueOf(self._font_get_descent);
+	case "_font_set_underline_position": return reflect.ValueOf(self._font_set_underline_position);
+	case "_font_get_underline_position": return reflect.ValueOf(self._font_get_underline_position);
+	case "_font_set_underline_thickness": return reflect.ValueOf(self._font_set_underline_thickness);
+	case "_font_get_underline_thickness": return reflect.ValueOf(self._font_get_underline_thickness);
+	case "_font_set_scale": return reflect.ValueOf(self._font_set_scale);
+	case "_font_get_scale": return reflect.ValueOf(self._font_get_scale);
+	case "_font_get_texture_count": return reflect.ValueOf(self._font_get_texture_count);
+	case "_font_clear_textures": return reflect.ValueOf(self._font_clear_textures);
+	case "_font_remove_texture": return reflect.ValueOf(self._font_remove_texture);
+	case "_font_set_texture_image": return reflect.ValueOf(self._font_set_texture_image);
+	case "_font_get_texture_image": return reflect.ValueOf(self._font_get_texture_image);
+	case "_font_set_texture_offsets": return reflect.ValueOf(self._font_set_texture_offsets);
+	case "_font_get_texture_offsets": return reflect.ValueOf(self._font_get_texture_offsets);
+	case "_font_get_glyph_list": return reflect.ValueOf(self._font_get_glyph_list);
+	case "_font_clear_glyphs": return reflect.ValueOf(self._font_clear_glyphs);
+	case "_font_remove_glyph": return reflect.ValueOf(self._font_remove_glyph);
+	case "_font_get_glyph_advance": return reflect.ValueOf(self._font_get_glyph_advance);
+	case "_font_set_glyph_advance": return reflect.ValueOf(self._font_set_glyph_advance);
+	case "_font_get_glyph_offset": return reflect.ValueOf(self._font_get_glyph_offset);
+	case "_font_set_glyph_offset": return reflect.ValueOf(self._font_set_glyph_offset);
+	case "_font_get_glyph_size": return reflect.ValueOf(self._font_get_glyph_size);
+	case "_font_set_glyph_size": return reflect.ValueOf(self._font_set_glyph_size);
+	case "_font_get_glyph_uv_rect": return reflect.ValueOf(self._font_get_glyph_uv_rect);
+	case "_font_set_glyph_uv_rect": return reflect.ValueOf(self._font_set_glyph_uv_rect);
+	case "_font_get_glyph_texture_idx": return reflect.ValueOf(self._font_get_glyph_texture_idx);
+	case "_font_set_glyph_texture_idx": return reflect.ValueOf(self._font_set_glyph_texture_idx);
+	case "_font_get_glyph_texture_rid": return reflect.ValueOf(self._font_get_glyph_texture_rid);
+	case "_font_get_glyph_texture_size": return reflect.ValueOf(self._font_get_glyph_texture_size);
+	case "_font_get_glyph_contours": return reflect.ValueOf(self._font_get_glyph_contours);
+	case "_font_get_kerning_list": return reflect.ValueOf(self._font_get_kerning_list);
+	case "_font_clear_kerning_map": return reflect.ValueOf(self._font_clear_kerning_map);
+	case "_font_remove_kerning": return reflect.ValueOf(self._font_remove_kerning);
+	case "_font_set_kerning": return reflect.ValueOf(self._font_set_kerning);
+	case "_font_get_kerning": return reflect.ValueOf(self._font_get_kerning);
+	case "_font_get_glyph_index": return reflect.ValueOf(self._font_get_glyph_index);
+	case "_font_get_char_from_glyph_index": return reflect.ValueOf(self._font_get_char_from_glyph_index);
+	case "_font_has_char": return reflect.ValueOf(self._font_has_char);
+	case "_font_get_supported_chars": return reflect.ValueOf(self._font_get_supported_chars);
+	case "_font_render_range": return reflect.ValueOf(self._font_render_range);
+	case "_font_render_glyph": return reflect.ValueOf(self._font_render_glyph);
+	case "_font_draw_glyph": return reflect.ValueOf(self._font_draw_glyph);
+	case "_font_draw_glyph_outline": return reflect.ValueOf(self._font_draw_glyph_outline);
+	case "_font_is_language_supported": return reflect.ValueOf(self._font_is_language_supported);
+	case "_font_set_language_support_override": return reflect.ValueOf(self._font_set_language_support_override);
+	case "_font_get_language_support_override": return reflect.ValueOf(self._font_get_language_support_override);
+	case "_font_remove_language_support_override": return reflect.ValueOf(self._font_remove_language_support_override);
+	case "_font_get_language_support_overrides": return reflect.ValueOf(self._font_get_language_support_overrides);
+	case "_font_is_script_supported": return reflect.ValueOf(self._font_is_script_supported);
+	case "_font_set_script_support_override": return reflect.ValueOf(self._font_set_script_support_override);
+	case "_font_get_script_support_override": return reflect.ValueOf(self._font_get_script_support_override);
+	case "_font_remove_script_support_override": return reflect.ValueOf(self._font_remove_script_support_override);
+	case "_font_get_script_support_overrides": return reflect.ValueOf(self._font_get_script_support_overrides);
+	case "_font_set_opentype_feature_overrides": return reflect.ValueOf(self._font_set_opentype_feature_overrides);
+	case "_font_get_opentype_feature_overrides": return reflect.ValueOf(self._font_get_opentype_feature_overrides);
+	case "_font_supported_feature_list": return reflect.ValueOf(self._font_supported_feature_list);
+	case "_font_supported_variation_list": return reflect.ValueOf(self._font_supported_variation_list);
+	case "_font_get_global_oversampling": return reflect.ValueOf(self._font_get_global_oversampling);
+	case "_font_set_global_oversampling": return reflect.ValueOf(self._font_set_global_oversampling);
+	case "_get_hex_code_box_size": return reflect.ValueOf(self._get_hex_code_box_size);
+	case "_draw_hex_code_box": return reflect.ValueOf(self._draw_hex_code_box);
+	case "_create_shaped_text": return reflect.ValueOf(self._create_shaped_text);
+	case "_shaped_text_clear": return reflect.ValueOf(self._shaped_text_clear);
+	case "_shaped_text_set_direction": return reflect.ValueOf(self._shaped_text_set_direction);
+	case "_shaped_text_get_direction": return reflect.ValueOf(self._shaped_text_get_direction);
+	case "_shaped_text_get_inferred_direction": return reflect.ValueOf(self._shaped_text_get_inferred_direction);
+	case "_shaped_text_set_bidi_override": return reflect.ValueOf(self._shaped_text_set_bidi_override);
+	case "_shaped_text_set_custom_punctuation": return reflect.ValueOf(self._shaped_text_set_custom_punctuation);
+	case "_shaped_text_get_custom_punctuation": return reflect.ValueOf(self._shaped_text_get_custom_punctuation);
+	case "_shaped_text_set_custom_ellipsis": return reflect.ValueOf(self._shaped_text_set_custom_ellipsis);
+	case "_shaped_text_get_custom_ellipsis": return reflect.ValueOf(self._shaped_text_get_custom_ellipsis);
+	case "_shaped_text_set_orientation": return reflect.ValueOf(self._shaped_text_set_orientation);
+	case "_shaped_text_get_orientation": return reflect.ValueOf(self._shaped_text_get_orientation);
+	case "_shaped_text_set_preserve_invalid": return reflect.ValueOf(self._shaped_text_set_preserve_invalid);
+	case "_shaped_text_get_preserve_invalid": return reflect.ValueOf(self._shaped_text_get_preserve_invalid);
+	case "_shaped_text_set_preserve_control": return reflect.ValueOf(self._shaped_text_set_preserve_control);
+	case "_shaped_text_get_preserve_control": return reflect.ValueOf(self._shaped_text_get_preserve_control);
+	case "_shaped_text_set_spacing": return reflect.ValueOf(self._shaped_text_set_spacing);
+	case "_shaped_text_get_spacing": return reflect.ValueOf(self._shaped_text_get_spacing);
+	case "_shaped_text_add_string": return reflect.ValueOf(self._shaped_text_add_string);
+	case "_shaped_text_add_object": return reflect.ValueOf(self._shaped_text_add_object);
+	case "_shaped_text_resize_object": return reflect.ValueOf(self._shaped_text_resize_object);
+	case "_shaped_get_span_count": return reflect.ValueOf(self._shaped_get_span_count);
+	case "_shaped_get_span_meta": return reflect.ValueOf(self._shaped_get_span_meta);
+	case "_shaped_set_span_update_font": return reflect.ValueOf(self._shaped_set_span_update_font);
+	case "_shaped_text_substr": return reflect.ValueOf(self._shaped_text_substr);
+	case "_shaped_text_get_parent": return reflect.ValueOf(self._shaped_text_get_parent);
+	case "_shaped_text_fit_to_width": return reflect.ValueOf(self._shaped_text_fit_to_width);
+	case "_shaped_text_tab_align": return reflect.ValueOf(self._shaped_text_tab_align);
+	case "_shaped_text_shape": return reflect.ValueOf(self._shaped_text_shape);
+	case "_shaped_text_update_breaks": return reflect.ValueOf(self._shaped_text_update_breaks);
+	case "_shaped_text_update_justification_ops": return reflect.ValueOf(self._shaped_text_update_justification_ops);
+	case "_shaped_text_is_ready": return reflect.ValueOf(self._shaped_text_is_ready);
+	case "_shaped_text_get_glyphs": return reflect.ValueOf(self._shaped_text_get_glyphs);
+	case "_shaped_text_sort_logical": return reflect.ValueOf(self._shaped_text_sort_logical);
+	case "_shaped_text_get_glyph_count": return reflect.ValueOf(self._shaped_text_get_glyph_count);
+	case "_shaped_text_get_range": return reflect.ValueOf(self._shaped_text_get_range);
+	case "_shaped_text_get_line_breaks_adv": return reflect.ValueOf(self._shaped_text_get_line_breaks_adv);
+	case "_shaped_text_get_line_breaks": return reflect.ValueOf(self._shaped_text_get_line_breaks);
+	case "_shaped_text_get_word_breaks": return reflect.ValueOf(self._shaped_text_get_word_breaks);
+	case "_shaped_text_get_trim_pos": return reflect.ValueOf(self._shaped_text_get_trim_pos);
+	case "_shaped_text_get_ellipsis_pos": return reflect.ValueOf(self._shaped_text_get_ellipsis_pos);
+	case "_shaped_text_get_ellipsis_glyph_count": return reflect.ValueOf(self._shaped_text_get_ellipsis_glyph_count);
+	case "_shaped_text_get_ellipsis_glyphs": return reflect.ValueOf(self._shaped_text_get_ellipsis_glyphs);
+	case "_shaped_text_overrun_trim_to_width": return reflect.ValueOf(self._shaped_text_overrun_trim_to_width);
+	case "_shaped_text_get_objects": return reflect.ValueOf(self._shaped_text_get_objects);
+	case "_shaped_text_get_object_rect": return reflect.ValueOf(self._shaped_text_get_object_rect);
+	case "_shaped_text_get_object_range": return reflect.ValueOf(self._shaped_text_get_object_range);
+	case "_shaped_text_get_object_glyph": return reflect.ValueOf(self._shaped_text_get_object_glyph);
+	case "_shaped_text_get_size": return reflect.ValueOf(self._shaped_text_get_size);
+	case "_shaped_text_get_ascent": return reflect.ValueOf(self._shaped_text_get_ascent);
+	case "_shaped_text_get_descent": return reflect.ValueOf(self._shaped_text_get_descent);
+	case "_shaped_text_get_width": return reflect.ValueOf(self._shaped_text_get_width);
+	case "_shaped_text_get_underline_position": return reflect.ValueOf(self._shaped_text_get_underline_position);
+	case "_shaped_text_get_underline_thickness": return reflect.ValueOf(self._shaped_text_get_underline_thickness);
+	case "_shaped_text_get_dominant_direction_in_range": return reflect.ValueOf(self._shaped_text_get_dominant_direction_in_range);
+	case "_shaped_text_get_carets": return reflect.ValueOf(self._shaped_text_get_carets);
+	case "_shaped_text_get_selection": return reflect.ValueOf(self._shaped_text_get_selection);
+	case "_shaped_text_hit_test_grapheme": return reflect.ValueOf(self._shaped_text_hit_test_grapheme);
+	case "_shaped_text_hit_test_position": return reflect.ValueOf(self._shaped_text_hit_test_position);
+	case "_shaped_text_draw": return reflect.ValueOf(self._shaped_text_draw);
+	case "_shaped_text_draw_outline": return reflect.ValueOf(self._shaped_text_draw_outline);
+	case "_shaped_text_get_grapheme_bounds": return reflect.ValueOf(self._shaped_text_get_grapheme_bounds);
+	case "_shaped_text_next_grapheme_pos": return reflect.ValueOf(self._shaped_text_next_grapheme_pos);
+	case "_shaped_text_prev_grapheme_pos": return reflect.ValueOf(self._shaped_text_prev_grapheme_pos);
+	case "_shaped_text_get_character_breaks": return reflect.ValueOf(self._shaped_text_get_character_breaks);
+	case "_shaped_text_next_character_pos": return reflect.ValueOf(self._shaped_text_next_character_pos);
+	case "_shaped_text_prev_character_pos": return reflect.ValueOf(self._shaped_text_prev_character_pos);
+	case "_shaped_text_closest_character_pos": return reflect.ValueOf(self._shaped_text_closest_character_pos);
+	case "_format_number": return reflect.ValueOf(self._format_number);
+	case "_parse_number": return reflect.ValueOf(self._parse_number);
+	case "_percent_sign": return reflect.ValueOf(self._percent_sign);
+	case "_strip_diacritics": return reflect.ValueOf(self._strip_diacritics);
+	case "_is_valid_identifier": return reflect.ValueOf(self._is_valid_identifier);
+	case "_is_valid_letter": return reflect.ValueOf(self._is_valid_letter);
+	case "_string_get_word_breaks": return reflect.ValueOf(self._string_get_word_breaks);
+	case "_string_get_character_breaks": return reflect.ValueOf(self._string_get_character_breaks);
+	case "_is_confusable": return reflect.ValueOf(self._is_confusable);
+	case "_spoof_check": return reflect.ValueOf(self._spoof_check);
+	case "_string_to_upper": return reflect.ValueOf(self._string_to_upper);
+	case "_string_to_lower": return reflect.ValueOf(self._string_to_lower);
+	case "_string_to_title": return reflect.ValueOf(self._string_to_title);
+	case "_parse_structured_text": return reflect.ValueOf(self._parse_structured_text);
+	case "_cleanup": return reflect.ValueOf(self._cleanup);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_has_feature": return reflect.ValueOf(self._has_feature);
 	case "_get_name": return reflect.ValueOf(self._get_name);

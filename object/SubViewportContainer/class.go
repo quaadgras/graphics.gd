@@ -2,7 +2,7 @@ package SubViewportContainer
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -30,6 +30,18 @@ A container that displays the contents of underlying [SubViewport] child nodes. 
 
 */
 type Simple [1]classdb.SubViewportContainer
+func (Simple) _propagate_input_event(impl func(ptr unsafe.Pointer, event [1]classdb.InputEvent) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var event [1]classdb.InputEvent
+		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, event)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) SetStretch(enable bool) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetStretch(enable)
@@ -50,6 +62,11 @@ func (self Simple) GetStretchShrink() int {
 type Expert = class
 type class [1]classdb.SubViewportContainer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -150,6 +167,13 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_propagate_input_event": return reflect.ValueOf(self._propagate_input_event);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_propagate_input_event": return reflect.ValueOf(self._propagate_input_event);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

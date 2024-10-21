@@ -2,7 +2,7 @@ package VisualInstance3D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -25,6 +25,16 @@ The [VisualInstance3D] is used to connect a resource to a visual representation.
 
 */
 type Simple [1]classdb.VisualInstance3D
+func (Simple) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) SetBase(base gd.RID) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetBase(base)
@@ -77,6 +87,11 @@ func (self Simple) GetAabb() gd.AABB {
 type Expert = class
 type class [1]classdb.VisualInstance3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -253,6 +268,13 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_get_aabb": return reflect.ValueOf(self._get_aabb);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_aabb": return reflect.ValueOf(self._get_aabb);
 	default: return gd.VirtualByName(self[0].Super()[0], name)

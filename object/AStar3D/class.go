@@ -2,7 +2,7 @@ package AStar3D
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -58,6 +58,30 @@ If the default [method _estimate_cost] and [method _compute_cost] methods are us
 
 */
 type Simple [1]classdb.AStar3D
+func (Simple) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_id = gd.UnsafeGet[gd.Int](p_args,0)
+		var to_id = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(from_id), int(to_id))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
+func (Simple) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_id = gd.UnsafeGet[gd.Int](p_args,0)
+		var to_id = gd.UnsafeGet[gd.Int](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(from_id), int(to_id))
+		gd.UnsafeSet(p_back, gd.Float(ret))
+		gc.End()
+	}
+}
 func (self Simple) GetAvailablePointId() int {
 	gc := gd.GarbageCollector(); _ = gc
 	return int(int(Expert(self).GetAvailablePointId()))
@@ -154,6 +178,11 @@ func (self Simple) GetIdPath(from_id int, to_id int, allow_partial_path bool) gd
 type Expert = class
 type class [1]classdb.AStar3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -626,6 +655,14 @@ func (self class) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 func (self Simple) AsRefCounted() gd.RefCounted { return self[0].AsRefCounted() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_estimate_cost": return reflect.ValueOf(self._estimate_cost);
+	case "_compute_cost": return reflect.ValueOf(self._compute_cost);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_estimate_cost": return reflect.ValueOf(self._estimate_cost);
 	case "_compute_cost": return reflect.ValueOf(self._compute_cost);

@@ -2,7 +2,7 @@ package EditorFileSystemDirectory
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -79,6 +79,11 @@ func (self Simple) FindDirIndex(name string) int {
 type Expert = class
 type class [1]classdb.EditorFileSystemDirectory
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -286,6 +291,12 @@ func (self class) AsEditorFileSystemDirectory() Expert { return self[0].AsEditor
 func (self Simple) AsEditorFileSystemDirectory() Simple { return self[0].AsEditorFileSystemDirectory() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	default: return gd.VirtualByName(self[0].Super()[0], name)
 	}

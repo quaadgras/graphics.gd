@@ -2,7 +2,7 @@
 
 package gd
 
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 
 func (variant Variant) evaluateIntoBool(ctx Lifetime, op Operator, other Variant) bool {
 	val, ok := mmm.API(variant).Variants.Evaluate(ctx, op, variant, other)

@@ -2,7 +2,7 @@ package GraphEdit
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -69,6 +69,60 @@ var _ mmm.Lifetime
 
 */
 type Simple [1]classdb.GraphEdit
+func (Simple) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position gd.Vector2) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var in_node gd.Object
+		in_node.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var in_port = gd.UnsafeGet[gd.Int](p_args,1)
+		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, in_node, int(in_port), mouse_position)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position gd.Vector2) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var in_node gd.Object
+		in_node.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var in_port = gd.UnsafeGet[gd.Int](p_args,1)
+		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args,2)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, in_node, int(in_port), mouse_position)
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
+func (Simple) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) gd.PackedVector2Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_position = gd.UnsafeGet[gd.Vector2](p_args,0)
+		var to_position = gd.UnsafeGet[gd.Vector2](p_args,1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, from_position, to_position)
+		gd.UnsafeSet(p_back, mmm.End(ret))
+		gc.End()
+	}
+}
+func (Simple) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node string, from_port int, to_node string, to_port int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var from_node = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var from_port = gd.UnsafeGet[gd.Int](p_args,1)
+		var to_node = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var to_port = gd.UnsafeGet[gd.Int](p_args,3)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, from_node.String(), int(from_port), to_node.String(), int(to_port))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) ConnectNode(from_node string, from_port int, to_node string, to_port int) gd.Error {
 	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(Expert(self).ConnectNode(gc.StringName(from_node), gd.Int(from_port), gc.StringName(to_node), gd.Int(to_port)))
@@ -353,6 +407,11 @@ func (self Simple) SetSelected(node [1]classdb.Node) {
 type Expert = class
 type class [1]classdb.GraphEdit
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -1268,6 +1327,16 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_is_in_input_hotzone": return reflect.ValueOf(self._is_in_input_hotzone);
+	case "_is_in_output_hotzone": return reflect.ValueOf(self._is_in_output_hotzone);
+	case "_get_connection_line": return reflect.ValueOf(self._get_connection_line);
+	case "_is_node_hover_valid": return reflect.ValueOf(self._is_node_hover_valid);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_is_in_input_hotzone": return reflect.ValueOf(self._is_in_input_hotzone);
 	case "_is_in_output_hotzone": return reflect.ValueOf(self._is_in_output_hotzone);

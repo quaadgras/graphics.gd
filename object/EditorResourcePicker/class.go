@@ -2,7 +2,7 @@ package EditorResourcePicker
 
 import "unsafe"
 import "reflect"
-import "runtime.link/mmm"
+import "grow.graphics/gd/internal/mmm"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import object "grow.graphics/gd/object"
@@ -34,6 +34,28 @@ This [Control] node is used in the editor's Inspector dock to allow editing of [
 
 */
 type Simple [1]classdb.EditorResourcePicker
+func (Simple) _set_create_options(impl func(ptr unsafe.Pointer, menu_node gd.Object) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var menu_node gd.Object
+		menu_node.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		self := reflect.ValueOf(class).UnsafePointer()
+impl(self, menu_node)
+		gc.End()
+	}
+}
+func (Simple) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+		gc := gd.NewLifetime(api)
+		class.SetTemporary(gc)
+		var id = gd.UnsafeGet[gd.Int](p_args,0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, int(id))
+		gd.UnsafeSet(p_back, ret)
+		gc.End()
+	}
+}
 func (self Simple) SetBaseType(base_type string) {
 	gc := gd.GarbageCollector(); _ = gc
 	Expert(self).SetBaseType(gc.String(base_type))
@@ -78,6 +100,11 @@ func (self Simple) IsEditable() bool {
 type Expert = class
 type class [1]classdb.EditorResourcePicker
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self Simple) AsObject() gd.Object { return self[0].AsObject() }
+
+
+//go:nosplit
+func (self *Simple) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 
 //go:nosplit
@@ -273,6 +300,14 @@ func (self class) AsNode() Node.Expert { return self[0].AsNode() }
 func (self Simple) AsNode() Node.Simple { return self[0].AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
+	switch name {
+	case "_set_create_options": return reflect.ValueOf(self._set_create_options);
+	case "_handle_menu_selected": return reflect.ValueOf(self._handle_menu_selected);
+	default: return gd.VirtualByName(self[0].Super()[0], name)
+	}
+}
+
+func (self Simple) Virtual(name string) reflect.Value {
 	switch name {
 	case "_set_create_options": return reflect.ValueOf(self._set_create_options);
 	case "_handle_menu_selected": return reflect.ValueOf(self._handle_menu_selected);

@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"runtime.link/mmm"
+	"grow.graphics/gd/internal/mmm"
 )
 
 type Object struct {
