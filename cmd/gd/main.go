@@ -154,7 +154,7 @@ func wrap() error {
 	}
 	godot, err := useGodot()
 	if err != nil {
-		return fmt.Errorf("gd requires Godot v%s to be installed as a binary at $GOPATH/bin/godot-%s: %w", version, err)
+		return fmt.Errorf("gd requires Godot v%s to be installed as a binary at $GOPATH/bin/godot-%s: %w", version, version, err)
 	}
 	wd, err := os.Getwd()
 	if err != nil {
