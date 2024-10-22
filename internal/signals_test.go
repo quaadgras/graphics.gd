@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"grow.graphics/gd"
+	"grow.graphics/gd/gdclass/Node2D"
 	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/object/Node2D"
 )
 
 type CustomSignal struct {

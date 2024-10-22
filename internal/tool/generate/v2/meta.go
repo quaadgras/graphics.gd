@@ -70,6 +70,8 @@ func fixReserved(name string) string {
 		return "arange"
 	case "default":
 		return "def"
+	case "class":
+		return "class_"
 	case "func":
 		return "fn"
 	case "frame":
@@ -121,6 +123,10 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
+		meta, rest, ok := strings.Cut(gdType, ":")
+		if ok {
+			gdType = rest
+		}
 		return maybeInternal("ArrayOf[" + classDB.convertType(pkg, meta, gdType) + "]")
 	}
 	switch gdType {
@@ -195,13 +201,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 
 		if class, ok := classDB[gdType]; ok {
-			if pkg != class.Package {
-				if class.Package == "internal" {
-					class.Package = "gd"
-				}
-				return "[1]" + class.Package + "." + class.Name
-			}
-			return "object." + class.Name
+			return "gdclass." + class.Name
 		}
 
 		if inCore(gdType) {
@@ -209,7 +209,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 
 		if gdType != "" {
-			return "[1]classdb." + gdType
+			return "gdclass." + gdType
 		}
 		return gdType
 	}
@@ -227,12 +227,28 @@ func (classDB ClassDB) convertTypeSimple(meta string, gdType string) string {
 		return "float64"
 	case "bool", "Bool":
 		return "bool"
-	case "String":
-		return "string"
-	case "StringName":
+	case "String", "StringName", "NodePath":
 		return "string"
 	case "PackedByteArray":
 		return "[]byte"
+	case "PackedStringArray":
+		return "[]string"
+	case "PackedInt32Array":
+		return "[]int32"
+	case "PackedInt64Array":
+		return "[]int64"
+	case "PackedFloat32Array":
+		return "[]float32"
+	case "PackedFloat64Array":
+		return "[]float64"
+	case "PackedVector2Array":
+		return "[]gd.Vector2"
+	case "PackedVector3Array":
+		return "[]gd.Vector3"
+	case "PackedVector4Array":
+		return "[]gd.Vector4"
+	case "PackedColorArray":
+		return "[]gd.Color"
 	case "enum::Error":
 		return "gd.Error"
 	default:
@@ -329,7 +345,7 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "[1]")
 	t = strings.TrimPrefix(t, "gd.")
 	t = strings.TrimPrefix(t, "classdb.")
-	t = strings.TrimPrefix(t, "object.")
+	t = strings.TrimPrefix(t, "gdclass.")
 	if strings.HasPrefix(t, "ArrayOf") {
 		return "uintptr", true
 	}

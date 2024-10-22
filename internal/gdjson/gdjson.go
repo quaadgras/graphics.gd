@@ -9,6 +9,15 @@ type Enum struct {
 	} `json:"values"`
 }
 
+type Signal struct {
+	Name      string `json:"name"`
+	Arguments []struct {
+		Name string `json:"name"`
+		Type string `json:"type"`
+		Meta string `json:"meta"`
+	} `json:"arguments,omitempty"`
+}
+
 type Method struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -23,10 +32,10 @@ type Method struct {
 		Meta string `json:"meta"`
 	} `json:"return_value,omitempty"`
 	Arguments []struct {
-		Name         string `json:"name"`
-		Type         string `json:"type"`
-		Meta         string `json:"meta"`
-		DefaultValue string `json:"default_value,omitempty"`
+		Name         string  `json:"name"`
+		Type         string  `json:"type"`
+		Meta         string  `json:"meta"`
+		DefaultValue *string `json:"default_value"`
 	} `json:"arguments,omitempty"`
 }
 
@@ -39,6 +48,7 @@ type Class struct {
 	Description    string `json:"description"`
 	IsRefcounted   bool   `json:"is_refcounted"`
 	IsInstantiable bool   `json:"is_instantiable"`
+	IsSingleton    bool
 
 	IsKeyed   bool `json:"is_keyed"` // builtin class
 	Operators []struct {
@@ -67,20 +77,14 @@ type Class struct {
 		Type string `json:"type"`
 	} `json:"members,omitempty"` // builtin class
 
-	Signals []struct {
-		Name      string `json:"name"`
-		Arguments []struct {
-			Name string `json:"name"`
-			Type string `json:"type"`
-			Meta string `json:"meta"`
-		} `json:"arguments,omitempty"`
-	} `json:"signals,omitempty"`
+	Signals    []Signal `json:"signals,omitempty"`
 	Properties []struct {
-		Type   string `json:"type"`
-		Name   string `json:"name"`
-		Setter string `json:"setter"`
-		Getter string `json:"getter"`
-		Index  int    `json:"index"`
+		Type        string `json:"type"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Setter      string `json:"setter"`
+		Getter      string `json:"getter"`
+		Index       *int   `json:"index"`
 	} `json:"properties,omitempty"`
 	Constants []struct {
 		Name  string `json:"name"`

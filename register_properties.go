@@ -63,7 +63,7 @@ func classNameOf(rtype reflect.Type) string {
 			}
 		}
 		if rtype.Name() == "" && rtype.Field(0).Anonymous {
-			return rtype.Field(0).Name
+			return classNameOf(rtype.Field(0).Type)
 		}
 		return strings.TrimPrefix(rtype.Name(), "class")
 	}
@@ -165,7 +165,14 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 		case rtype.ConvertibleTo(reflect.TypeOf(Dictionary{})):
 			vtype = TypeDictionary
 		default:
-			panic("gdextension.RegisterClass: unsupported property type " + rtype.String())
+			switch rtype {
+			case reflect.TypeOf([0]string{}).Elem():
+				vtype = TypeString
+			case reflect.TypeOf([0]int{}).Elem():
+				vtype = TypeInt
+			default:
+				panic("gdextension.RegisterClass: unsupported property type " + rtype.String())
+			}
 		}
 	}
 	return

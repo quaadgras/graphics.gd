@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"grow.graphics/gd"
-	"grow.graphics/gd/object/Resource"
+	"grow.graphics/gd/gdclass/Resource"
 )
 
 func TestMap(t *testing.T) {

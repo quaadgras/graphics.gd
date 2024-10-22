@@ -4,6 +4,7 @@ package gd
 
 import (
 	"reflect"
+	"strings"
 	"unsafe"
 
 	"grow.graphics/gd/internal/mmm"
@@ -106,6 +107,24 @@ func VirtualByName(class IsClass, name string) reflect.Value {
 	return class.Virtual(name)
 }
 
+func classNameOf(rtype reflect.Type) string {
+	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
+		return classNameOf(rtype.Elem())
+	}
+	if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+		if rtype.Field(0).Anonymous {
+			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
+				return rename
+			}
+		}
+		if rtype.Name() == "" && rtype.Field(0).Anonymous {
+			return classNameOf(rtype.Field(0).Type)
+		}
+		return strings.TrimPrefix(rtype.Name(), "class")
+	}
+	return ""
+}
+
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
@@ -122,7 +141,7 @@ func As[T IsClass](godot Lifetime, class IsClass) (T, bool) {
 	}
 	tmp := NewLifetime(godot.API)
 	defer tmp.End()
-	var classtag = godot.API.ClassDB.GetClassTag(tmp.StringName(rtype.Name()))
+	var classtag = godot.API.ClassDB.GetClassTag(tmp.StringName(classNameOf(rtype)))
 	casted := godot.API.Object.CastTo(class.AsObject(), classtag)
 	if casted != (Object{}) && mmm.Get(casted.AsPointer()) != ([2]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true

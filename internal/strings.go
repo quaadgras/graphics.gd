@@ -69,6 +69,16 @@ func (Godot *API) StringFromStringName(ctx Lifetime, s StringName) String {
 	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
 }
 
+func (Godot *API) StringFromNodePath(ctx Lifetime, s NodePath) String {
+	var frame = callframe.New()
+	callframe.Arg(frame, mmm.Get(s))
+	var r_ret = callframe.Ret[uintptr](frame)
+	Godot.typeset.creation.String[3](r_ret.Uintptr(), frame.Array(0))
+	var raw = r_ret.Get()
+	frame.Free()
+	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
+}
+
 type StringName mmm.Pointer[API, StringName, uintptr]
 
 func (Godot *API) StringNameFromString(ctx Lifetime, s String) StringName {
@@ -107,6 +117,12 @@ func (s String) NodePath(ctx Lifetime) NodePath {
 	var raw = r_ret.Get()
 	frame.Free()
 	return mmm.New[NodePath](ctx.Lifetime, ctx.API, raw)
+}
+
+func (n NodePath) String() string {
+	tmp := NewLifetime(mmm.API(n))
+	defer tmp.End()
+	return tmp.API.StringFromNodePath(tmp, n).String()
 }
 
 func (n NodePath) Free() {

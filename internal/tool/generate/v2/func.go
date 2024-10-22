@@ -17,7 +17,24 @@ const (
 	callUtility
 )
 
-func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
+func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson.Signal, singleton bool) {
+	if singleton {
+		fmt.Fprintf(w, "\nfunc On%v(cb func(", convertName(signal.Name))
+	} else {
+		fmt.Fprintf(w, "\nfunc (self Go) On%v(cb func(", convertName(signal.Name))
+	}
+	for i, arg := range signal.Arguments {
+		if i > 0 {
+			fmt.Fprint(w, ", ")
+		}
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
+	}
+	fmt.Fprint(w, ")) {\n\tgc := gd.GarbageCollector(); _ = gc\n\t")
+	fmt.Fprintf(w, `self[0].AsObject().Connect(gc.StringName("%s"), gc.Callable(cb), 0)`, signal.Name)
+	fmt.Fprint(w, "\n}\n\n")
+}
+
+func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method, singleton bool) {
 	if method.IsVararg {
 		return
 	}
@@ -30,89 +47,47 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		"RID", "Projection", "Color":
 		return
 	}
+	if method.Description != "" {
+		fmt.Fprintln(w, "\n/*")
+		fmt.Fprint(w, method.Description)
+		fmt.Fprintln(w, "\n*/")
+	}
+	if method.IsVirtual {
+		classDB.simpleVirtualCall(w, class, method)
+		return
+	}
 	resultSimple := classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
 	_, needsLifetime := classDB.isPointer(resultExpert)
 	if method.IsStatic {
 		needsLifetime = true
 	}
-	if method.IsVirtual {
-		fmt.Fprintf(w, "func (Simple) %s(impl func(ptr unsafe.Pointer", method.Name)
-		for _, arg := range method.Arguments {
-			fmt.Fprint(w, ", ")
+	if singleton {
+		fmt.Fprintf(w, "func %v(", convertName(method.Name))
+	} else {
+		fmt.Fprintf(w, "func (self Go) %v(", convertName(method.Name))
+	}
+	for i, arg := range method.Arguments {
+		if arg.DefaultValue == nil {
+			if i > 0 {
+				fmt.Fprint(w, ", ")
+			}
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
 		}
-		fmt.Fprintf(w, ") %v, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
-		fmt.Fprintf(w, "\treturn func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
-		fmt.Fprintf(w, "\t\tgc := gd.NewLifetime(api)\n")
-		fmt.Fprintf(w, "\t\tclass.SetTemporary(gc)\n")
-		for i, arg := range method.Arguments {
-			var expert = classDB.convertType("", arg.Meta, arg.Type)
-
-			_, ok := classDB[arg.Type]
-			if ok {
-				fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), expert)
-				if arg.Type == "Object" {
-					fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
-				} else {
-					fmt.Fprintf(w, "\t\t%v[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
-				}
-				continue
-			}
-			argPtrKind, argIsPtr := classDB.isPointer(expert)
-			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name),
-					gdtype.Name(expert).Let("gc", fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", argPtrKind, i)))
-			} else {
-				fmt.Fprintf(w, "\t\tvar %v = gd.UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), expert, i)
-			}
-		}
-		fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
-		if resultSimple != "" {
-			fmt.Fprintf(w, "\t\tret := ")
-		}
-		fmt.Fprintf(w, "impl(self")
-		for _, arg := range method.Arguments {
-			fmt.Fprint(w, ", ")
-			fmt.Fprintf(w, "%v", gdtype.Name(classDB.convertType("", arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name)))
-		}
-		fmt.Fprintf(w, ")\n")
-		if resultSimple != "" {
-			ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
-			if needsLifetime {
-				_, ok := classDB[strings.TrimPrefix(resultExpert, "object.")]
-				if resultExpert == "gd.Object" {
-					ret = fmt.Sprintf("mmm.End(%s.AsPointer())", ret)
-				} else if ok {
-					ret = fmt.Sprintf("mmm.End(%s[0].AsPointer())", ret)
-				} else {
-					ret = fmt.Sprintf("mmm.End(%s)", ret)
-				}
-			}
-			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
-		}
-		fmt.Fprintf(w, "\t\tgc.End()\n")
-		fmt.Fprintf(w, "\t}\n")
-		fmt.Fprintf(w, "}\n")
-		return
-	}
-	fmt.Fprintf(w, "func (self Simple) %v(", convertName(method.Name))
-	for i, arg := range method.Arguments {
-		if i > 0 {
-			fmt.Fprint(w, ", ")
-		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
 	}
 	fmt.Fprint(w, ") ")
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "%v ", resultSimple)
 	}
 	fmt.Fprint(w, "{\n\tgc := gd.GarbageCollector(); _ = gc\n\t")
+	if singleton {
+		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+	}
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "return %s(", resultSimple)
 	}
 	var call strings.Builder
-	fmt.Fprintf(&call, "Expert(self).%v(", convertName(method.Name))
+	fmt.Fprintf(&call, "class(self).%v(", convertName(method.Name))
 	if needsLifetime {
 		fmt.Fprint(&call, "gc")
 	}
@@ -120,7 +95,35 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		if i > 0 || needsLifetime {
 			fmt.Fprint(&call, ", ")
 		}
-		fmt.Fprint(&call, gdtype.Name(classDB.convertType("", arg.Meta, arg.Type)).ConvertToSimple(fixReserved(arg.Name)))
+		val := fixReserved(arg.Name)
+		if arg.DefaultValue != nil {
+			val = *arg.DefaultValue
+			val = strings.TrimPrefix(val, "&")
+			if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
+				val = "([1]" + classDB.convertTypeSimple(arg.Meta, arg.Type) + "{}[0])"
+			} else {
+				if strings.Contains(val, "(") {
+					switch {
+					case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
+						strings.HasPrefix(val, "Transform3D("):
+						val = "gd.New" + val
+					case strings.HasPrefix(val, "StringName(\""):
+						val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
+					case strings.HasPrefix(val, "NodePath(\""):
+						val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
+						if val == "" {
+							val = `""`
+						}
+					default:
+						val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
+					}
+				}
+			}
+			if gdtype.Name(classDB.convertType("", arg.Meta, arg.Type)) == "gd.Variant" {
+				val = `gc.Variant(` + val + `)`
+			}
+		}
+		fmt.Fprint(&call, gdtype.Name(classDB.convertType("", arg.Meta, arg.Type)).ConvertToSimple(val))
 	}
 	fmt.Fprint(&call, ")")
 	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String()))
@@ -128,6 +131,75 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprint(w, ")")
 	}
 	fmt.Fprintf(w, "\n}\n")
+}
+
+func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
+	resultSimple := classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
+	_, needsLifetime := classDB.isPointer(resultExpert)
+	if method.IsStatic {
+		needsLifetime = true
+	}
+	fmt.Fprintf(w, "func (Go) %s(impl func(ptr unsafe.Pointer", method.Name)
+	for _, arg := range method.Arguments {
+		fmt.Fprint(w, ", ")
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
+	}
+	fmt.Fprintf(w, ") %v, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
+	fmt.Fprintf(w, "\treturn func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
+	fmt.Fprintf(w, "\t\tgc := gd.NewLifetime(api)\n")
+	fmt.Fprintf(w, "\t\tclass.SetTemporary(gc)\n")
+	for i, arg := range method.Arguments {
+		var expert = classDB.convertType("", arg.Meta, arg.Type)
+
+		_, ok := classDB[arg.Type]
+		if ok {
+			fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), expert)
+			if arg.Type == "Object" {
+				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
+			} else {
+				fmt.Fprintf(w, "\t\t%v[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
+			}
+			continue
+		}
+		argPtrKind, argIsPtr := classDB.isPointer(expert)
+		if argIsPtr {
+			fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name),
+				gdtype.Name(expert).Let("gc", fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", argPtrKind, i)))
+		} else {
+			fmt.Fprintf(w, "\t\tvar %v = gd.UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), expert, i)
+		}
+	}
+	fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
+	if resultSimple != "" {
+		fmt.Fprintf(w, "\t\tret := ")
+	}
+	fmt.Fprintf(w, "impl(self")
+	for _, arg := range method.Arguments {
+		fmt.Fprint(w, ", ")
+		fmt.Fprintf(w, "%v", gdtype.Name(classDB.convertType("", arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name)))
+	}
+	fmt.Fprintf(w, ")\n")
+	if resultSimple != "" {
+		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
+		if needsLifetime {
+			name := strings.TrimPrefix(resultExpert, "gdclass.")
+			name = strings.TrimPrefix(name, "[1]classdb.")
+			_, ok := classDB[name]
+			if resultExpert == "gd.Object" {
+				ret = fmt.Sprintf("mmm.End(%s.AsPointer())", ret)
+			} else if ok {
+				ret = fmt.Sprintf("mmm.End(%s[0].AsPointer())", ret)
+			} else {
+				ret = fmt.Sprintf("mmm.End(%s)", ret)
+			}
+		}
+		fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
+	}
+	fmt.Fprintf(w, "\t\tgc.End()\n")
+	fmt.Fprintf(w, "\t}\n")
+	fmt.Fprintf(w, "}\n")
+	return
 }
 
 func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, method gdjson.Method, ctype callType) {
@@ -204,7 +276,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			ret := gdtype.Name(result).ToUnderlying("ret")
 			if isPtr {
-				_, ok := classDB[strings.TrimPrefix(result, "object.")]
+				_, ok := classDB[strings.TrimPrefix(result, "gdclass.")]
 				if result == "gd.Object" {
 					ret = fmt.Sprintf("mmm.End(%s.AsPointer())", ret)
 				} else if ok {
@@ -346,7 +418,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	}
 
 	if isPtr {
-		_, ok := classDB[strings.TrimPrefix(result, "object.")]
+		_, ok := classDB[strings.TrimPrefix(result, "gdclass.")]
 		if ok || result == "gd.Object" {
 			fmt.Fprintf(w, "\tvar ret %v\n", result)
 

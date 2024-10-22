@@ -3,8 +3,8 @@ package gd_test
 import (
 	"testing"
 
+	"grow.graphics/gd/gdclass/Image"
 	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/object/Image"
 )
 
 func TestStatic(t *testing.T) {

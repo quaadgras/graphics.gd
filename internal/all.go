@@ -11970,11 +11970,7 @@ func (self Object) CancelFree()  {
 	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Object.Bind_cancel_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self Object) Virtual(name string) reflect.Value {
-	switch name {
-	default: return reflect.Value{}
-	}
-}
+func (self Object) Virtual(name string) reflect.Value { return reflect.Value{} }
 type RefCounted struct {_ [0]*RefCounted; ptr Pointer}
 
 //go:nosplit
@@ -11986,15 +11982,7 @@ func (self *RefCounted) SetPointer(ptr Pointer) { self.ptr = ptr }
 
 
 //go:nosplit
-func (self RefCounted) Super() [1]Object { return *(*[1]Object)(unsafe.Pointer(&self)) }
-
-
-//go:nosplit
 func (self RefCounted) AsObject() Object { return *(*Object)(unsafe.Pointer(&self)) }
-
-
-//go:nosplit
-func (self RefCounted) AsRefCounted() [1]RefCounted { return [1]RefCounted{self} }
 
 /*
 Initializes the internal reference counter. Use this only if you really know what you are doing.
@@ -12051,8 +12039,4 @@ func (self RefCounted) GetReferenceCount() Int {
 	frame.Free()
 	return ret
 }
-func (self RefCounted) Virtual(name string) reflect.Value {
-	switch name {
-	default: return VirtualByName(self.Super()[0], name)
-	}
-}
+func (self RefCounted) Virtual(name string) reflect.Value { return reflect.Value{} }

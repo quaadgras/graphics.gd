@@ -4,10 +4,11 @@ import (
 	"reflect"
 	"unsafe"
 
+	"grow.graphics/gd/gdclass"
+	"grow.graphics/gd/gdclass/Node"
+	"grow.graphics/gd/gdclass/ResourceLoader"
+	gdResourceLoader "grow.graphics/gd/gdclass/ResourceLoader"
 	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/object"
-	"grow.graphics/gd/object/Node"
-	gdResourceLoader "grow.graphics/gd/object/ResourceLoader"
 	"grow.graphics/gd/internal/mmm"
 )
 
@@ -79,7 +80,7 @@ func As[T gd.IsClass](godot Lifetime, class gd.IsClass) (T, bool) {
 type isResource interface {
 	gd.IsClass
 
-	AsResource() object.Resource
+	AsResource() gdclass.Resource
 }
 
 // Load returns a Resource from the filesystem located at the absolute path. Unless it's already
@@ -108,19 +109,19 @@ func Load[T isResource](godot Lifetime, path string) (T, bool) {
 	tmp := NewLifetime(godot)
 	defer tmp.End()
 	hint := classNameOf(reflect.TypeOf([0]T{}).Elem())
-	resource := gdResourceLoader.Expert(ResourceLoader(godot)).Load(godot,
+	resource := ResourceLoader.GD().Load(godot,
 		tmp.String(path), tmp.String(hint), gdResourceLoader.CacheModeReuse)
 	return As[T](godot, resource[0])
 }
 
 // AddChild adds a child to the parent node, returning a [NodePath] to the child
 // with the specified lifetime.
-func AddChild(godot Lifetime, parent, child object.Node) NodePath {
+func AddChild(godot Lifetime, parent, child gdclass.Node) NodePath {
 	tmp := NewLifetime(godot)
 	defer tmp.End()
-	var adding object.Node
+	var adding gdclass.Node
 	adding[0].SetPointer(mmm.New[gd.Pointer](tmp.Lifetime, godot.API, mmm.Get(child[0].AsPointer())))
-	Node.Expert(parent).AddChild(adding, true, 0)
+	Node.GD(parent).AddChild(adding, true, 0)
 	defer mmm.End(child[0].AsPointer())
-	return Node.Expert(child).GetPath(godot)
+	return Node.GD(child).GetPath(godot)
 }

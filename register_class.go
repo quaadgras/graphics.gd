@@ -9,12 +9,16 @@ import (
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"grow.graphics/gd/gdclass"
+	"grow.graphics/gd/gdclass/EditorPlugin"
+	"grow.graphics/gd/gdclass/Engine"
+	"grow.graphics/gd/gdclass/MainLoop"
+	"grow.graphics/gd/gdclass/Node"
+	"grow.graphics/gd/gdclass/ProjectSettings"
+	"grow.graphics/gd/gdclass/Script"
+	"grow.graphics/gd/gdclass/ScriptLanguage"
 	gd "grow.graphics/gd/internal"
 	"grow.graphics/gd/internal/mmm"
-	"grow.graphics/gd/object"
-	gdEngine "grow.graphics/gd/object/Engine"
-	"grow.graphics/gd/object/Node"
-	gdProjectSettings "grow.graphics/gd/object/ProjectSettings"
 )
 
 type onFree mmm.Pointer[func(), onFree, [0]uintptr]
@@ -69,9 +73,9 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 
 	var tool = false
 	switch {
-	case superType.Implements(reflect.TypeOf([0]interface{ AsScript() object.Script }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsEditorPlugin() object.EditorPlugin }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() object.ScriptLanguage }{}).Elem()),
+	case superType.Implements(reflect.TypeOf([0]interface{ AsScript() Script.Go }{}).Elem()),
+		superType.Implements(reflect.TypeOf([0]interface{ AsEditorPlugin() EditorPlugin.Go }{}).Elem()),
+		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() ScriptLanguage.Go }{}).Elem()),
 		classType.Implements(reflect.TypeOf([0]Tool{}).Elem()):
 		tool = true
 	}
@@ -97,11 +101,11 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 	registerMethods(godot, className, classType)
 
 	if superType.Implements(reflect.TypeOf([0]interface {
-		AsMainLoop() object.MainLoop
+		AsMainLoop() MainLoop.Go
 	}{}).Elem()) {
 		main_loop_type := godot.String("application/run/main_loop_type")
-		gdProjectSettings.Expert(ProjectSettings(godot)).SetInitialValue(main_loop_type, godot.Variant(className))
-		gdProjectSettings.Expert(ProjectSettings(godot)).SetSetting(main_loop_type, godot.Variant(className))
+		ProjectSettings.GD().SetInitialValue(main_loop_type, godot.Variant(className))
+		ProjectSettings.GD().SetSetting(main_loop_type, godot.Variant(className))
 	}
 
 	type onRegister interface {
@@ -233,7 +237,7 @@ func (class classImplementation) reloadInstance(ctx gd.Lifetime, super Object) g
 		object:   mmm.Get(super.AsPointer())[0],
 		Value:    value.Addr().Interface().(gd.ExtensionClass),
 		signals:  signals,
-		isEditor: !class.Tool && gdEngine.Expert(Engine(ctx)).IsEditorHint(),
+		isEditor: !class.Tool && Engine.IsEditorHint(),
 	}
 }
 
@@ -241,7 +245,7 @@ func (class classImplementation) GetVirtual(name StringName) any {
 	ctx := gd.NewLifetime(class.Godot)
 	defer ctx.End()
 
-	if !class.Tool && gdEngine.Expert(Engine(ctx)).IsEditorHint() {
+	if !class.Tool && Engine.IsEditorHint() {
 		return nil
 	}
 
@@ -301,7 +305,14 @@ type instanceImplementation struct {
 	isEditor bool
 }
 
+var lastGC int
+
 func (instance *instanceImplementation) setupForCall(tmp Lifetime) func() {
+	if frame := Engine.GetFramesDrawn(); frame > lastGC {
+		gd.GC.End()
+		gd.GC = gd.NewLifetime(&gd.Global)
+		lastGC = frame
+	}
 	old := instance.Value.AsObject().AsPointer()
 	instance.Value.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, tmp.API, [2]uintptr{instance.object}))
 	instance.Value.SetTemporary(tmp)
@@ -603,7 +614,7 @@ func (instance *instanceImplementation) ready() {
 	tmp := NewLifetime(instance.Value.GetKeepAlive())
 	defer tmp.End()
 
-	var parent object.Node
+	var parent gdclass.Node
 	parent[0].SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, instance.Value.GetKeepAlive().API, [2]uintptr{instance.object}))
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
@@ -625,11 +636,11 @@ func (instance *instanceImplementation) ready() {
 	}
 }
 
-func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, field reflect.StructField, parent, owner object.Node) {
+func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, field reflect.StructField, parent, owner gdclass.Node) {
 	type isNode interface {
 		gd.PointerToClass
 
-		AsNode() Node.Simple
+		AsNode() Node.Go
 	}
 	nodeType := reflect.TypeOf([0]isNode{}).Elem()
 	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
@@ -660,7 +671,7 @@ func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, fie
 		name = tag
 	}
 	path := tmp.String(name).NodePath(tmp)
-	if !Node.Expert(parent).HasNode(path) {
+	if !Node.GD(parent).HasNode(path) {
 		child := instance.Value.GetKeepAlive().API.ClassDB.ConstructObject(instance.Value.GetKeepAlive(), tmp.StringName(classNameOf(field.Type)))
 		native, ok := instance.Value.GetKeepAlive().API.Instances[mmm.Get(child.AsPointer())[0]]
 		if ok {
@@ -670,18 +681,19 @@ func (instance *instanceImplementation) assertChild(tmp Lifetime, value any, fie
 			class.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.Get(child.AsPointer())))
 		}
 		child.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.End(child.AsPointer())))
+
 		var mode Node.InternalMode = Node.InternalModeDisabled
 		if !field.IsExported() {
 			mode = Node.InternalModeFront
 		}
-		Node.Expert(class.AsNode()).SetName(tmp.String(field.Name))
-		var adding object.Node
+		Node.GD(class.AsNode()).SetName(tmp.String(field.Name))
+		var adding gdclass.Node
 		adding[0].SetPointer(mmm.Pin[gd.Pointer](tmp.Lifetime, tmp.API, class.AsObject().AsPointer().Pointer()))
-		Node.Expert(parent).AddChild(adding, true, mode)
-		Node.Expert(class.AsNode()).SetOwner(owner)
+		Node.GD(parent).AddChild(adding, true, mode)
+		Node.GD(class.AsNode()).SetOwner(owner)
 		return
 	}
-	var node = Node.Expert(parent).GetNode(tmp, path)
+	var node = Node.GD(parent).GetNode(tmp, path)
 	if name := node[0].AsObject().GetClass(tmp).String(); name != classNameOf(field.Type) {
 		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 	}

@@ -5,13 +5,13 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd"
+	"grow.graphics/gd/gdclass/Script"
+	"grow.graphics/gd/gdclass/ScriptLanguageExtension"
 	classdb "grow.graphics/gd/internal/classdb"
-	"grow.graphics/gd/object/Script"
-	"grow.graphics/gd/object/ScriptLanguageExtension"
 )
 
 type Language struct {
-	gd.Class[Language, ScriptLanguageExtension.Expert] `gd:"GoLanguage"`
+	gd.Class[Language, ScriptLanguageExtension.GD] `gd:"GoLanguage"`
 }
 
 func (lang *Language) AddGlobalConstant(name gd.StringName, value gd.Variant)      {}
@@ -174,12 +174,12 @@ func (lang *Language) MakeFunction(class_name, function_name gd.String, function
 	return lang.Temporary.String("")
 }
 
-func (lang *Language) MakeTemplate(template, class_name, base_class_name gd.String) Script.Expert {
+func (lang *Language) MakeTemplate(template, class_name, base_class_name gd.String) Script.GD {
 	fmt.Println("MakeTemplate")
-	return Script.Expert{}
+	return Script.GD{}
 }
 
-func (lang *Language) OpenInExternalEditor(script Script.Expert, line, column gd.Int) gd.Int {
+func (lang *Language) OpenInExternalEditor(script Script.GD, line, column gd.Int) gd.Int {
 	return 0
 }
 
@@ -195,15 +195,15 @@ func (lang *Language) ProfilingGetFrameData(info_array *classdb.ScriptLanguageEx
 	return 0
 }
 
-func (lang *Language) ProfilingStart()                                            {}
-func (lang *Language) ProfilingStop()                                             {}
-func (lang *Language) ReloadAllScripts()                                          {}
-func (lang *Language) ReloadToolScript(script Script.Expert, soft_reload gd.Bool) {}
-func (lang *Language) RemoveNamedGlobalConstant(name gd.StringName)               {}
-func (lang *Language) SupportsBuiltinMode() gd.Bool                               { return false }
-func (lang *Language) SupportsDocumentation() gd.Bool                             { return false }
-func (lang *Language) ThreadEnter()                                               {}
-func (lang *Language) ThreadExit()                                                {}
+func (lang *Language) ProfilingStart()                                        {}
+func (lang *Language) ProfilingStop()                                         {}
+func (lang *Language) ReloadAllScripts()                                      {}
+func (lang *Language) ReloadToolScript(script Script.GD, soft_reload gd.Bool) {}
+func (lang *Language) RemoveNamedGlobalConstant(name gd.StringName)           {}
+func (lang *Language) SupportsBuiltinMode() gd.Bool                           { return false }
+func (lang *Language) SupportsDocumentation() gd.Bool                         { return false }
+func (lang *Language) ThreadEnter()                                           {}
+func (lang *Language) ThreadExit()                                            {}
 func (lang *Language) Validate(script, path gd.String, functions, errors, warnings, safe_lines gd.Bool) gd.Dictionary {
 	return lang.Temporary.Dictionary()
 }

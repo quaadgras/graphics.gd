@@ -168,13 +168,7 @@ func (lifetime Lifetime) End() {
 		if next.api == nil {
 			break
 		}
-		if lifetime.lock {
-			Mutex.Unlock()
-		}
 		root.nxt.free()
-		if lifetime.lock {
-			Mutex.Lock()
-		}
 	}
 	root.rev++
 	if root.rev < maxRevision {
@@ -315,9 +309,6 @@ func Set[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr *T, val
 // method of a [PointerWithFree]. Does not free any underlying resources associated
 // with the pointer, use [Free] for that.
 func End[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T) Size {
-	Mutex.Lock()
-	defer Mutex.Unlock()
-
 	var zero Size
 	var empty T
 	if ptr == empty {

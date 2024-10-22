@@ -5,9 +5,25 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/uc"
 	"grow.graphics/gd/internal/mmm"
+	"grow.graphics/uc"
 )
+
+func (p PackedInt32Array) AsSlice() []int32     { return mmm.API(p).PackedInt32Array.CopyAsSlice(p) }
+func (p PackedInt64Array) AsSlice() []int64     { return mmm.API(p).PackedInt64Array.CopyAsSlice(p) }
+func (p PackedFloat32Array) AsSlice() []float32 { return mmm.API(p).PackedFloat32Array.CopyAsSlice(p) }
+func (p PackedFloat64Array) AsSlice() []float64 { return mmm.API(p).PackedFloat64Array.CopyAsSlice(p) }
+func (p PackedVector2Array) AsSlice() []Vector2 { return mmm.API(p).PackedVector2Array.CopyAsSlice(p) }
+func (p PackedVector3Array) AsSlice() []Vector3 { return mmm.API(p).PackedVector3Array.CopyAsSlice(p) }
+func (p PackedVector4Array) AsSlice() []Vector4 { return mmm.API(p).PackedVector4Array.CopyAsSlice(p) }
+func (p PackedColorArray) AsSlice() []Color     { return mmm.API(p).PackedColorArray.CopyAsSlice(p) }
+func (p PackedStringArray) Strings(tmp Lifetime) []string {
+	var s = make([]string, p.Size())
+	for i := int64(0); i < p.Size(); i++ {
+		s[i] = p.Index(tmp, i).String()
+	}
+	return s
+}
 
 type PackedByteArray mmm.Pointer[API, PackedByteArray, [2]uintptr]
 

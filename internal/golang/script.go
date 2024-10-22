@@ -5,13 +5,13 @@ import (
 
 	"grow.graphics/gd"
 
-	"grow.graphics/gd/object/Script"
-	"grow.graphics/gd/object/ScriptExtension"
-	"grow.graphics/gd/object/ScriptLanguage"
+	"grow.graphics/gd/gdclass/Script"
+	"grow.graphics/gd/gdclass/ScriptExtension"
+	"grow.graphics/gd/gdclass/ScriptLanguage"
 )
 
 type GoScript struct {
-	gd.Class[GoScript, ScriptExtension.Expert] `gd:"GoScript"`
+	gd.Class[GoScript, ScriptExtension.GD] `gd:"GoScript"`
 }
 
 func (script *GoScript) CanInstantiate() gd.Bool {
@@ -22,7 +22,7 @@ func (script *GoScript) EditorCanReloadFromFile() gd.Bool {
 	return true
 }
 
-func (script *GoScript) GetBaseScript() Script.Expert {
+func (script *GoScript) GetBaseScript() Script.GD {
 	return script.Super().AsScript()
 }
 
@@ -46,8 +46,8 @@ func (script *GoScript) GetInstanceBaseType() gd.StringName {
 	return script.Temporary.StringName("Node")
 }
 
-func (script *GoScript) GetLanguage() ScriptLanguage.Expert {
-	return ScriptLanguage.Expert{}
+func (script *GoScript) GetLanguage() ScriptLanguage.GD {
+	return ScriptLanguage.GD{}
 }
 
 func (script *GoScript) GetMemberLine(member gd.StringName) gd.Int {

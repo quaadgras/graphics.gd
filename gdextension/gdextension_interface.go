@@ -465,6 +465,8 @@ func initialize(_ unsafe.Pointer, level initializationLevel) {
 func deinitialize(_ unsafe.Pointer, level initializationLevel) {
 	if level == 0 {
 		background.End()
+		gd.Static.End()
+		gd.GC.End()
 	}
 }
 

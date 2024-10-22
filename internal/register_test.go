@@ -7,10 +7,10 @@ import (
 	"testing"
 
 	"grow.graphics/gd"
+	"grow.graphics/gd/gdclass/Engine"
+	"grow.graphics/gd/gdclass/Node"
+	"grow.graphics/gd/gdclass/Node2D"
 	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/object/Engine"
-	"grow.graphics/gd/object/Node"
-	"grow.graphics/gd/object/Node2D"
 )
 
 func TestRegister(t *testing.T) {
