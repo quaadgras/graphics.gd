@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"go/build"
 	"io"
+	"io/fs"
 	"net/http"
 	"os"
 	"os/exec"
@@ -65,10 +66,66 @@ func main() {
 	}
 }
 
+func installGodot(gobin string) (string, error) {
+	switch runtime.GOOS {
+	case "android":
+		return "echo", nil
+	case "darwin":
+		if _, err := exec.LookPath("brew"); err != nil {
+			return "", fmt.Errorf("gd: cannot install godot without homebrew")
+		}
+		fmt.Println("gd: installing Godot stable for macOS (via brew)")
+		if err := exec.Command("brew", "install", "godot").Run(); err != nil {
+			return "", fmt.Errorf("gd: failed to 'brew install godot': %w", err)
+		}
+		return "godot", nil
+	case "linux":
+		fmt.Println("gd: downloading Godot v" + version + " stable for linux")
+		resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/" + version + "-stable/Godot_v" + version + "-stable_linux.x86_64.zip")
+		if err != nil {
+			return "", err
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode != 200 {
+			return "", err
+		}
+		data, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return "", err
+		}
+		archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
+		if err != nil {
+			return "", err
+		}
+		inZip, err := archive.Open("Godot_v" + version + "-stable_linux.x86_64")
+		if err != nil {
+			return "", err
+		}
+		defer inZip.Close()
+		//executable
+		binPath := filepath.Join(gobin, "godot-"+version)
+		file, err := os.OpenFile(binPath, os.O_CREATE|os.O_WRONLY, 0755)
+		if err != nil {
+			return "", err
+		}
+		defer file.Close()
+		if _, err = io.Copy(file, inZip); err != nil {
+			return "", err
+		}
+		return binPath, nil
+	default:
+		return "", fmt.Errorf("gd: installing godot for GOOS %v is not supported", runtime.GOOS)
+	}
+}
+
 func useGodot() (string, error) {
 	gopath := os.Getenv("GOPATH")
 	if gopath == "" {
 		gopath = build.Default.GOPATH
+	}
+	gobin := os.Getenv("GOBIN")
+	if gobin == "" {
+		gobin = filepath.Join(gopath, "bin")
 	}
 	godot, err := exec.LookPath("godot")
 	if err == nil {
@@ -82,63 +139,24 @@ func useGodot() (string, error) {
 	if binary, err := exec.LookPath("godot-" + version); err == nil {
 		return binary, nil
 	}
-	info, err := os.Stat(gopath + "/bin/godot-" + version)
-	if os.IsNotExist(err) {
-		switch runtime.GOOS {
-		case "android":
-			return "echo", nil
-		case "darwin":
-			if _, err := exec.LookPath("brew"); err == nil {
-				fmt.Println("gd: installing Godot stable for macOS (via brew)")
-				if err := exec.Command("brew", "install", "godot").Run(); err != nil {
-					return "", err
-				}
-			}
-		case "linux":
-			fmt.Println("gd: downloading Godot v" + version + " stable for linux")
-			resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/" + version + "-stable/Godot_v" + version + "-stable_linux.x86_64.zip")
-			if err != nil {
-				return "", err
-			}
-			defer resp.Body.Close()
-			if resp.StatusCode != 200 {
-				return "", err
-			}
-			data, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return "", err
-			}
-			archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
-			if err != nil {
-				return "", err
-			}
-			inZip, err := archive.Open("Godot_v" + version + "-stable_linux.x86_64")
-			if err != nil {
-				return "", err
-			}
-			defer inZip.Close()
-			//executable
-			file, err := os.OpenFile(gopath+"/bin/godot-"+version, os.O_CREATE|os.O_WRONLY, 0755)
-			if err != nil {
-				return "", err
-			}
-			defer file.Close()
-			if _, err = io.Copy(file, inZip); err != nil {
-				return "", err
-			}
-		default:
+	godotBin := filepath.Join(gobin + "godot-" + version)
+	info, err := os.Stat(godotBin)
+	if err != nil {
+		if !errors.Is(err, fs.ErrNotExist) {
 			return "", err
 		}
-	} else if err != nil {
-		return "", err
-	} else {
-		if info.Mode()&0111 == 0 {
-			if err := os.Chmod(gopath+"/bin/godot-"+version, 0755); err != nil {
-				return "", err
-			}
+		godot, err := installGodot(gobin)
+		if err != nil {
+			return "", err
+		}
+		return godot, nil
+	}
+	if info.Mode()&0111 == 0 {
+		if err := os.Chmod(godotBin, 0755); err != nil {
+			return "", err
 		}
 	}
-	return gopath + "/bin/godot-" + version, nil
+	return filepath.Join(gobin, "godot-"+version), nil
 }
 
 func wrap() error {
