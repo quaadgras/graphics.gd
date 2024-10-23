@@ -6,6 +6,7 @@ import (
 
 	"grow.graphics/gd/gdmaths/Angle"
 	"grow.graphics/gd/gdmaths/Float"
+	"grow.graphics/gd/gdmaths/Int"
 )
 
 // XY is a 2-element structure that can be used to represent 2D coordinates or any
@@ -22,7 +23,7 @@ type XY = struct {
 }
 
 // New constructs a new Vector2 from the given x and y.
-func New(x, y float64) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x: float, y: float)
+func New[X Float.Any](x, y X) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x: float, y: float)
 
 type Axis int
 
@@ -32,25 +33,17 @@ const (
 )
 
 var (
-	Zero  = XY{0, 0}                                       // Zero vector, a vector with all components set to 0.
-	One   = XY{1, 1}                                       // One vector, a vector with all components set to 1.
-	Inf   = XY{Float.X(math.Inf(1)), Float.X(math.Inf(1))} // Infinity vector, a vector with all components set to math.Inf(1).
-	Left  = XY{-1, 0}                                      // Left unit vector. Represents the direction of left.
-	Right = XY{1, 0}                                       // Right unit vector. Represents the direction of right.
-	Up    = XY{0, -1}                                      // Up unit vector. Y is down in 2D, so this vector points -Y.
-	Down  = XY{0, 1}                                       // Down unit vector. Y is down in 2D, so this vector points +Y.
+	Zero  = XY{0, 0}                 // Zero vector, a vector with all components set to 0.
+	One   = XY{1, 1}                 // One vector, a vector with all components set to 1.
+	Inf   = XY{Float.Inf, Float.Inf} // Infinity vector, a vector with all components set to math.Inf(1).
+	Left  = XY{-1, 0}                // Left unit vector. Represents the direction of left.
+	Right = XY{1, 0}                 // Right unit vector. Represents the direction of right.
+	Up    = XY{0, -1}                // Up unit vector. Y is down in 2D, so this vector points -Y.
+	Down  = XY{0, 1}                 // Down unit vector. Y is down in 2D, so this vector points +Y.
 )
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).
-func Abs(vec XY) XY { //gd:Vector2.abs
-	if vec.X < 0 {
-		vec.X = -vec.X
-	}
-	if vec.Y < 0 {
-		vec.Y = -vec.Y
-	}
-	return vec
-}
+func Abs(vec XY) XY { return XY{Float.Abs(vec.X), Float.Abs(vec.Y)} } //gd:Vector2.abs
 
 // Angle Returns this vector's angle with respect to the positive X axis, or (1, 0) vector, in radians.
 //
@@ -80,11 +73,11 @@ func AngleBetween(a, b XY) Angle.Radians { return Float.Atan2(Cross(a, b), Dot(a
 func AngleToPoint(vec, p XY) Angle.Radians { return Angle.Radians(AngleRadians(Sub(vec, p))) } //gd:Vector2.angle_to_point
 
 // Aspect returns the aspect ratio of this vector, the ratio of x to y.
-func Aspect(vec XY) float64 { return float64(vec.X / vec.Y) } //gd:Vector2.aspect
+func Aspect(vec XY) Float.X { return vec.X / vec.Y } //gd:Vector2.aspect
 
 // BezierDerivative returns the derivative at the given t on the Bézier curve defined by this
 // vector and the given control_1, control_2, and end points.
-func BezierDerivative(vec, control1, control2, end XY, t float64) XY { //gd:Vector2.bezier_derivative
+func BezierDerivative[X Float.Any](vec, control1, control2, end XY, t X) XY { //gd:Vector2.bezier_derivative
 	return XY{
 		Float.BezierDerivative(vec.X, control1.X, control2.X, end.X, Float.X(t)),
 		Float.BezierDerivative(vec.Y, control1.Y, control2.Y, end.Y, Float.X(t)),
@@ -93,7 +86,7 @@ func BezierDerivative(vec, control1, control2, end XY, t float64) XY { //gd:Vect
 
 // BezierInterpolate returns the point at the given t on the Bézier curve defined by this vector
 // and the given control_1, control_2, and end points.
-func BezierInterpolate(vec, control1, control2, end XY, t float64) XY { //gd:Vector2.bezier_interpolate
+func BezierInterpolate[X Float.Any](vec, control1, control2, end XY, t X) XY { //gd:Vector2.bezier_interpolate
 	return XY{
 		Float.BezierInterpolate(vec.X, control1.X, control2.X, end.X, Float.X(t)),
 		Float.BezierInterpolate(vec.Y, control1.Y, control2.Y, end.Y, Float.X(t)),
@@ -111,6 +104,14 @@ func Clamp(vec, from, to XY) XY { //gd:Vector2.clamp
 	return XY{Float.Clamp(vec.X, from.X, to.X), Float.Clamp(vec.Y, from.Y, to.Y)}
 }
 
+// Clampf returns a new vector with all components clamped to the given min and max.
+func Clampf[X Float.Any](vec XY, from, to X) XY { //gd:Vector2.clampf
+	return XY{
+		Float.Clamp(vec.X, Float.X(from), Float.X(to)),
+		Float.Clamp(vec.Y, Float.X(from), Float.X(to)),
+	}
+}
+
 // Cross returns the 2D analog of the cross product for this vector and with.
 //
 // This is the signed area of the parallelogram formed by the two vectors. If the second vector
@@ -119,12 +120,12 @@ func Clamp(vec, from, to XY) XY { //gd:Vector2.clamp
 //
 // Note: Cross product is not defined in 2D mathematically. This method embeds the 2D
 // vectors in the XY plane of 3D space and uses their cross product's Z component as the analog.
-func Cross(a, b XY) float64 { return float64(a.X*b.Y - a.Y*b.X) } //gd:Vector2.cross
+func Cross(a, b XY) Float.X { return a.X*b.Y - a.Y*b.X } //gd:Vector2.cross
 
 // CubicInterpolate performs a cubic interpolation between this vector and b using pre_a and
 // post_b as handles, and returns the result at position weight. weight is on the range of
 // 0.0 to 1.0, representing the amount of interpolation.
-func CubicInterpolate(vec, b, preA, postB XY, weight float64) XY { //Vector2.cubic_interpolate
+func CubicInterpolate[X Float.Any](vec, b, preA, postB XY, weight X) XY { //Vector2.cubic_interpolate
 	return XY{
 		Float.CubicInterpolate(vec.X, b.X, preA.X, postB.X, Float.X(weight)),
 		Float.CubicInterpolate(vec.Y, b.Y, preA.Y, postB.Y, Float.X(weight)),
@@ -136,7 +137,7 @@ func CubicInterpolate(vec, b, preA, postB XY, weight float64) XY { //Vector2.cub
 // 0.0 to 1.0, representing the amount of interpolation.
 //
 // It can perform smoother interpolation than cubic_interpolate by the time values.
-func CubicInterpolateInTime(vec, b, preA, postB XY, weight, b_t, pre_a_t, post_b_t float64) XY { //gd:Vector2.cubic_interpolate_in_time
+func CubicInterpolateInTime[X Float.Any](vec, b, preA, postB XY, weight, b_t, pre_a_t, post_b_t X) XY { //gd:Vector2.cubic_interpolate_in_time
 	return XY{
 		Float.CubicInterpolateInTime(vec.X, b.X, preA.X, postB.X, Float.X(weight), Float.X(b_t), Float.X(pre_a_t), Float.X(post_b_t)),
 		Float.CubicInterpolateInTime(vec.Y, b.Y, preA.Y, postB.Y, Float.X(weight), Float.X(b_t), Float.X(pre_a_t), Float.X(post_b_t)),
@@ -151,13 +152,13 @@ func Direction(a, b XY) XY { return Normalized(Sub(b, a)) } //gd:Vector2.directi
 //
 // This method runs faster than distance_to, so prefer it if you need to compare vectors or
 // need the squared distance for some formula.
-func DistanceSquared(a, b XY) float64 { //gd:Vector2.distance_squared_to
-	return float64((a.X-b.X)*(a.X-b.X) + (a.Y-b.Y)*(a.Y-b.Y))
+func DistanceSquared(a, b XY) Float.X { //gd:Vector2.distance_squared_to
+	return (a.X-b.X)*(a.X-b.X) + (a.Y-b.Y)*(a.Y-b.Y)
 }
 
 // Distance returns the distance between this vector and to.
-func Distance(a, b XY) float64 { //gd:Vector2.distance_to
-	return float64(math.Sqrt(float64(DistanceSquared(a, b))))
+func Distance(a, b XY) Float.X { //gd:Vector2.distance_to
+	return Float.X(math.Sqrt(float64(DistanceSquared(a, b))))
 }
 
 // Dot returns the dot product of this vector and with. This can be used to compare the angle
@@ -171,7 +172,7 @@ func Distance(a, b XY) float64 { //gd:Vector2.distance_to
 // when the vectors are facing opposite directions, and 1.0 (0 degree angle) when the vectors are aligned.
 //
 // Note: Vector2.Dot(a,b) is equivalent to Vector2.Dot(b,a)
-func Dot(a, b XY) float64 { return float64(a.X*b.X + a.Y*b.Y) } //gd:Vector2.dot
+func Dot(a, b XY) Float.X { return a.X*b.X + a.Y*b.Y } //gd:Vector2.dot
 
 // Floor returns a new vector with all components rounded down (towards negative infinity).
 func Floor(vec XY) XY { //gd:Vector2.floor
@@ -194,23 +195,23 @@ func IsNormalized(vec XY) bool { return Float.IsApproximatelyEqual(LengthSquared
 func IsApproximatelyZero(vec XY) bool { return IsApproximatelyEqual(vec, Zero) } //gd:Vector2.is_zero_approx
 
 // Length returns the length (magnitude) of this vector.
-func Length(vec XY) float64 { //gd:Vector2.length
-	return float64(math.Sqrt(float64(LengthSquared(vec))))
+func Length(vec XY) Float.X { //gd:Vector2.length
+	return Float.X(math.Sqrt(float64(LengthSquared(vec))))
 }
 
 // LengthSquared returns the squared length (squared magnitude) of this vector.
-func LengthSquared(vec XY) float64 { return float64(vec.X*vec.X + vec.Y*vec.Y) } //gd:Vector2.length_squared
+func LengthSquared(vec XY) Float.X { return Float.X(vec.X*vec.X + vec.Y*vec.Y) } //gd:Vector2.length_squared
 
 // Lerp returns the result of the linear interpolation between this vector and to by amount weight. weight
 // is on the range of 0.0 to 1.0, representing the amount of interpolation.
-func Lerp(vec, to XY, weight float64) XY { //gd:Vector2.lerp
+func Lerp[X Float.Any](vec, to XY, weight X) XY { //gd:Vector2.lerp
 	return XY{Float.Lerp(vec.X, to.X, Float.X(weight)), Float.Lerp(vec.Y, to.Y, Float.X(weight))}
 }
 
 // LengthLimited returns the vector with a maximum length by limiting its length to length.
-func LengthLimited(vec XY, length float64) XY { //gd:Vector2.limit_length
+func LengthLimited[X Float.Any](vec XY, length X) XY { //gd:Vector2.limit_length
 	var l = Length(vec)
-	if l > 0 && length < l {
+	if l > 0 && Float.X(length) < l {
 		vec = Mulf(vec, 1/l)
 		vec = Mulf(vec, length)
 	}
@@ -237,13 +238,13 @@ func MinAxis(vec XY) Axis { //gd:Vector2.min_axis_index
 
 // Move returns a new vector moved toward to by the fixed delta amount. Will not go past
 // the final value.
-func Move(a, b XY, delta float64) XY { //gd:Vector2.move_toward
+func Move[X Float.Any](a, b XY, delta X) XY { //gd:Vector2.move_toward
 	var vd = Sub(b, a)
 	var len = Length(vd)
-	if len <= delta || len < Float.Epsilon {
+	if len <= Float.X(delta) || len < Float.Epsilon {
 		return b
 	}
-	return Add(a, Mulf(vd, len*delta))
+	return Add(a, Mulf(vd, len*Float.X(delta)))
 }
 
 // Normalized returns the result of scaling the vector to unit length. Equivalent to v / v.Length().
@@ -255,7 +256,7 @@ func Normalized(vec XY) XY { //gd:Vector2.normalized
 	if length == 0 {
 		return Zero
 	}
-	return XY{Float.X(float64(vec.X) / length), Float.X(float64(vec.Y) / length)}
+	return XY{vec.X / length, vec.Y / length}
 }
 
 // Orthogonal returns a perpendicular vector rotated 90 degrees counter-clockwise compared to the original,
@@ -263,7 +264,7 @@ func Normalized(vec XY) XY { //gd:Vector2.normalized
 func Orthogonal(vec XY) XY { return XY{vec.Y, -vec.X} } //gd:Vector2.orthogonal
 
 // Posmode returns a vector composed of the [Fposmod] of this vector's components and [Mod].
-func Posmod(vec XY, mod float64) XY { //gd:Vector2.posmod
+func Posmod[X Float.Any](vec XY, mod X) XY { //gd:Vector2.posmod
 	return XY{Float.Posmod(vec.X, Float.X(mod)), Float.Posmod(vec.Y, Float.X(mod))}
 }
 
@@ -311,10 +312,10 @@ func Slerp(vec, to XY, weight Angle.Radians) XY { //gd:Vector2.slerp
 	var end_length_sq = LengthSquared(to)
 	if start_length_sq == 0.0 || end_length_sq == 0.0 {
 		// Zero length vectors have no angle, so the best we can do is either lerp or throw an error.
-		return Lerp(vec, to, float64(weight))
+		return Lerp(vec, to, weight)
 	}
 	var start_length = Float.Sqrt(start_length_sq)
-	var result_length = Float.Lerp(start_length, Float.Sqrt(end_length_sq), float64(weight))
+	var result_length = Float.Lerp(start_length, Float.Sqrt(end_length_sq), Float.X(weight))
 	var angle = AngleBetween(vec, to)
 	return Mulf(Rotated(vec, angle*weight), result_length/start_length)
 }
@@ -332,25 +333,51 @@ func Snapped(v, step XY) XY { //gd:Vector2.snapped
 	}
 }
 
-func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:(Vector2 + Vector2)
-func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:(Vector2 - Vector2)
-func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:(Vector2 * Vector2)
-func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:(Vector2 / Vector2)
+func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:operator +(right: Vector2)
+func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:operator -(right: Vector2)
+func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:operator *(right: Vector2)
+func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:operator /(right: Vector2)
 
-func Addf(a XY, b float64) XY { //gd:(Vector2 + float)
+func Addf[X Float.Any](a XY, b X) XY { //gd:operator +(right: float)
 	return XY{a.X + Float.X(b), a.Y + Float.X(b)}
 }
-func Subf(a XY, b float64) XY { //gd:(Vector2 - float)
+func Subf[X Float.Any](a XY, b X) XY { //gd:operator -(right: float)
 	return XY{a.X - Float.X(b), a.Y - Float.X(b)}
 }
-func Mulf(a XY, b float64) XY { //gd:(Vector2 * float)
+func Mulf[X Float.Any](a XY, b X) XY { //gd:operator *(right: float)
 	return XY{a.X * Float.X(b), a.Y * Float.X(b)}
 }
-func Divf(a XY, b float64) XY { //gd:(Vector2 / float)
+func Divf[X Float.Any](a XY, b X) XY { //gd:operator /(right: float)
 	return XY{a.X / Float.X(b), a.Y / Float.X(b)}
 }
 
-func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:(-Vector2)
+func Addi[X Int.Any](a XY, b X) XY { //gd:operator +(right: int)
+	return XY{a.X + Float.X(b), a.Y + Float.X(b)}
+}
+func Subi[X Int.Any](a XY, b X) XY { //gd:operator -(right: int)
+	return XY{a.X - Float.X(b), a.Y - Float.X(b)}
+}
+func Muli[X Int.Any](a XY, b X) XY { //gd:operator *(right: int)
+	return XY{a.X * Float.X(b), a.Y * Float.X(b)}
+}
+func Divi[X Int.Any](a XY, b X) XY { //gd:operator /(right: int)
+	return XY{a.X / Float.X(b), a.Y / Float.X(b)}
+}
+
+func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:operator unary-()
+
+func Index[I Int.Any](v XY, i I) Float.X { //gd:operator [](index: int)
+	switch Axis(i) {
+	case X:
+		return v.X
+	case Y:
+		return v.Y
+	default:
+		panic("index out of range")
+	}
+}
+
+// func Array(vec XY) [2]Float.X { return [2]Float.X{vec.X, vec.Y} }
 
 /*
 func (v Vector2) Transform(t Transform2D) Vector2 { return Vector2{t.tdotx(v), t.tdoty(v)}.Add(t[2]) } //Transform2D * Vector2D

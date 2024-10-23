@@ -20,53 +20,6 @@ const (
 	W
 )
 
-// NewVector2i constructs a new Vector2i from the given x and y.
-func NewVector2i(x, y Int) Vector2i { return Vector2i{int32(x), int32(y)} }
-
-// NewRect2 constructs a Rect2 by setting its position to (x, y), and its size to (width, height).
-func NewRect2(x, y, width, height Float) Rect2 {
-	return xy.NewRect2(x, y, width, height)
-}
-
-// NewRect2i constructs a Rect2i by setting its position to (x, y), and its size to (width, height).
-func NewRect2i(x, y, width, height Int) Rect2i {
-	return Rect2i{Position: Vector2i{int32(x), int32(y)}, Size: Vector2i{int32(width), int32(height)}}
-}
-
-// NewVector3 constructs a new Vector3 from the given x, y, and z.
-func NewVector3(x, y, z Float) Vector3 { return xy.NewVector3(x, y, z) }
-
-// NewVector3i constructs a new Vector3i from the given x, y, and z.
-func NewVector3i(x, y, z Int) Vector3i { return Vector3i{int32(x), int32(y), int32(z)} }
-
-// NewTransform2D constructs a new Transform2D from the given rotation and position.
-func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vector2) Transform2D {
-	return xy.NewTransform2D(rotation, xy.Vector2{scale.X, scale.Y}, skew, xy.Vector2{position.X, position.Y})
-}
-
-// NewVector4 constructs a new Vector4 from the given x, y, z, and w.
-func NewVector4(x, y, z, w Float) Vector4 {
-	return xy.NewVector4(x, y, z, w)
-}
-
-// NewVector4i constructs a new Vector4i from the given x, y, z, and w.
-func NewVector4i(x, y, z, w Int) Vector4i {
-	return Vector4i{int32(x), int32(y), int32(z), int32(w)}
-}
-
-// NewPlane creates a plane from the three points, given in clockwise order.
-func NewPlane(a, b, c Vector3) Plane { return xy.NewPlane(a, b, c) }
-
-// NewBasisScaledBy constructs a pure scale basis matrix with no rotation or shearing. The scale values are set as
-// the diagonal of the matrix, and the other parts of the matrix are zero.
-func NewBasisScaledBy(scale Vector3) Basis { return xy.NewBasisScaledBy(scale) }
-
-// NewBasisRotatedAround constructs a pure rotation basis matrix, rotated around the given axis by angle (in radians).
-// The axis must be a normalized vector.
-func NewBasisRotatedAround(axis Vector3, angle Radians) Basis {
-	return xy.NewBasisRotatedAround(axis, angle)
-}
-
 type (
 	EulerAngles = xy.EulerAngles
 	Radians     = xy.Radians
