@@ -3,4 +3,4 @@
 
 package Float
 
-type X = float32
+type X float32
