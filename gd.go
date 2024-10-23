@@ -20,9 +20,6 @@ const (
 	W
 )
 
-// NewVector2 constructs a new Vector2 from the given x and y.
-func NewVector2(x, y Float) Vector2 { return xy.NewVector2(x, y) }
-
 // NewVector2i constructs a new Vector2i from the given x and y.
 func NewVector2i(x, y Int) Vector2i { return Vector2i{int32(x), int32(y)} }
 
@@ -44,7 +41,7 @@ func NewVector3i(x, y, z Int) Vector3i { return Vector3i{int32(x), int32(y), int
 
 // NewTransform2D constructs a new Transform2D from the given rotation and position.
 func NewTransform2D(rotation Radians, scale Vector2, skew Radians, position Vector2) Transform2D {
-	return xy.NewTransform2D(rotation, scale, skew, position)
+	return xy.NewTransform2D(rotation, xy.Vector2{scale.X, scale.Y}, skew, xy.Vector2{position.X, position.Y})
 }
 
 // NewVector4 constructs a new Vector4 from the given x, y, z, and w.

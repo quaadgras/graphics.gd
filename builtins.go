@@ -52,7 +52,7 @@ func New[T gd.IsClass](ctx Lifetime) *T {
 	if native, ok := ctx.API.Instances[mmm.Get(object.AsPointer())[0]]; ok {
 		native.SetPointer(object.AsPointer())
 		native.SetTemporary(ctx)
-		if rc, ok := As[RefCounted](ctx, object); ok {
+		if rc, ok := gdclass.As[RefCounted](object); ok {
 			rc.Reference() // resources need to be referenced when we create them, as we will unreference them when they expire.
 		}
 		return any(native).(*T)
@@ -69,12 +69,6 @@ func New[T gd.IsClass](ctx Lifetime) *T {
 func Const[F func(T) T, T any](constant F) T {
 	var zero T
 	return constant(zero)
-}
-
-// As attempts to cast the given class to T, returning true
-// if the cast was successful.
-func As[T gd.IsClass](godot Lifetime, class gd.IsClass) (T, bool) {
-	return gd.As[T](godot, class)
 }
 
 type isResource interface {
@@ -111,7 +105,7 @@ func Load[T isResource](godot Lifetime, path string) (T, bool) {
 	hint := classNameOf(reflect.TypeOf([0]T{}).Elem())
 	resource := ResourceLoader.GD().Load(godot,
 		tmp.String(path), tmp.String(hint), gdResourceLoader.CacheModeReuse)
-	return As[T](godot, resource[0])
+	return gdclass.As[T](resource[0])
 }
 
 // AddChild adds a child to the parent node, returning a [NodePath] to the child

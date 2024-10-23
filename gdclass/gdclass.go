@@ -1,6 +1,13 @@
 package gdclass
 
-import classdb "grow.graphics/gd/internal/classdb"
+import (
+	gd "grow.graphics/gd/internal"
+	classdb "grow.graphics/gd/internal/classdb"
+)
+
+// As attempts to cast the given class to T, returning true
+// if the cast was successful.
+func As[T gd.IsClass](class gd.IsClass) (T, bool) { return gd.As[T](gd.GC, class) }
 
 type AESContext = [1]classdb.AESContext
 type AStar2D = [1]classdb.AStar2D

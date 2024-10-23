@@ -10,6 +10,8 @@ import (
 	"grow.graphics/xy"
 
 	"grow.graphics/gd/internal/mmm"
+
+	vector2 "grow.graphics/gd/gdmaths/Vector2"
 )
 
 type Bool = bool
@@ -17,7 +19,7 @@ type Bool = bool
 type (
 	Float       = float64
 	Int         = int64
-	Vector2     = xy.Vector2
+	Vector2     = vector2.XY
 	Vector2i    = xy.Vector2i
 	Rect2       = xy.Rect2
 	Rect2i      = xy.Rect2i
