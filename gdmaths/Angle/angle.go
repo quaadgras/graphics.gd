@@ -1,8 +1,8 @@
 package Angle
 
-type Radians = float32
-type Degrees = float32
-type Vector3 = struct {
+type Radians float
+type Degrees float
+type XYZ = struct {
 	X Radians
 	Y Radians
 	Z Radians

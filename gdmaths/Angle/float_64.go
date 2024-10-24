@@ -1,6 +1,6 @@
 //go:build precision_double
 // +build precision_double
 
-package Float
+package Angle
 
-type X float64
+type float = float64
