@@ -38,6 +38,15 @@ func Sign[X Any](x X) X { //gd:signi
 	}
 }
 
+// Posmod returns the integer modulus of x divided by y that wraps equally in positive and negative.
+func Posmod[T Any](x, y T) T { //gd:posmod
+	value := x % y
+	if ((value < 0) && (y > 0)) || ((value > 0) && (y < 0)) {
+		value += y
+	}
+	return value
+}
+
 // Snapped returns the multiple of step that is the closest to x. This can also be used to round a
 // floating point number to an arbitrary number of decimals.
 func Snapped[X Any](val, by X) X { //gd:snappedi
