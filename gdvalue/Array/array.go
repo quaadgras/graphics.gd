@@ -2,6 +2,7 @@ package Array
 
 import (
 	"fmt"
+	"iter"
 	"math/rand"
 	"reflect"
 	"sort"
@@ -618,4 +619,15 @@ func SortFunc[T any](less func(a, b T) bool, array Of[T]) {
 		return
 	}
 	sort.Sort(sorter[T]{array: array, less: less})
+}
+
+// Iter returns a new iterator for this array.
+func Iter[T any](array Of[T]) iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		for i := range array.Length() {
+			if !yield(i, array.Lookup(i)) {
+				return
+			}
+		}
+	}
 }
