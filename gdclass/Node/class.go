@@ -1,17 +1,12 @@
 package Node
 
-import (
-	"reflect"
-	"unsafe"
-
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/mmm"
-
-	"grow.graphics/gd/gdclass"
-	gd "grow.graphics/gd/internal"
-
-	classdb "grow.graphics/gd/internal/classdb"
-)
+import "unsafe"
+import "reflect"
+import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/callframe"
+import gd "grow.graphics/gd/internal"
+import "grow.graphics/gd/gdclass"
+import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
@@ -38,23 +33,23 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 		//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
 		//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Process(delta float64)
+		Process(delta float64) 
 		//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
 		//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
 		//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		PhysicsProcess(delta float64)
+		PhysicsProcess(delta float64) 
 		//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
 		//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
-		EnterTree()
+		EnterTree() 
 		//Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [method remove_child] in a script). If the node has children, its [method _exit_tree] callback will be called last, after all its children have left the tree.
 		//Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
-		ExitTree()
+		ExitTree() 
 		//Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [method _ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
 		//Corresponds to the [constant NOTIFICATION_READY] notification in [method Object._notification]. See also the [code]@onready[/code] annotation for variables.
 		//Usually used for initialization. For even earlier initialization, [method Object._init] may be used. See also [method _enter_tree].
 		//[b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
-		Ready()
+		Ready() 
 		//The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a [code]tool[/code] script.
 		//Returning an empty array produces no warnings.
 		//Call [method update_configuration_warnings] when the warnings need to be updated for this node.
@@ -76,26 +71,26 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Input(event gdclass.InputEvent)
+		Input(event gdclass.InputEvent) 
 		//Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [method _input] or any GUI [Control] item. It is called before [method _unhandled_key_input] and [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_shortcut_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
-		ShortcutInput(event gdclass.InputEvent)
+		ShortcutInput(event gdclass.InputEvent) 
 		//Called when an [InputEvent] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] and after [method _unhandled_key_input]. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		UnhandledInput(event gdclass.InputEvent)
+		UnhandledInput(event gdclass.InputEvent) 
 		//Called when an [InputEventKey] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] but before [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
 		//It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_key_input].
 		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 		//This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
 		//For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		UnhandledKeyInput(event gdclass.InputEvent)
+		UnhandledKeyInput(event gdclass.InputEvent) 
 	}
 
 */

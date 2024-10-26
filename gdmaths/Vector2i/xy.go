@@ -40,7 +40,7 @@ var (
 )
 
 // New constructs a new Vector2i from the given x and y.
-func New(x, y int) XY { return XY{int32(x), int32(y)} } //gd:Vector2i(x:int,y:int)
+func New[X Int.Any | Float.Any](x, y X) XY { return XY{int32(x), int32(y)} } //gd:Vector2i(x:int,y:int)
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).
 func Abs(v XY) XY { return XY{Int.Abs(v.X), Int.Abs(v.Y)} } //gd:Vector2i.abs
@@ -59,7 +59,7 @@ func Clamp(vec, min, max XY) XY { //gd:Vector2i.clamp
 
 // Clampi returns a new vector with all components clamped between the components of min
 // and max.
-func Clampi[X Int.Any](vec XY, min, max X) XY { //gd:Vector2i.clamp
+func Clampi[X Int.Any](vec XY, min, max X) XY { //gd:Vector2i.clampi
 	return XY{
 		Int.Clamp(vec.X, int32(min), int32(max)),
 		Int.Clamp(vec.Y, int32(min), int32(max)),
@@ -155,18 +155,15 @@ func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:Vector2i*(right:Ve
 func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:Vector2i/(right:Vector2i)
 func Mod(a, b XY) XY { return XY{a.X % b.X, a.Y % b.Y} } //gd:Vector2i%(right:Vector2i)
 
-func Addi[X Int.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:Vector2i+(right:int)
-func Subi[X Int.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:Vector2i-(right:int)
-func Muli[X Int.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:Vector2i*(right:int)
-func Divi[X Int.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:Vector2i/(right:int)
-func Modi[X Int.Any](a XY, b X) XY { return XY{a.X % int32(b), a.Y % int32(b)} } //gd:Vector2i%(right:int)
-
-func Addf[X Float.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:Vector2i+(right:float)
-func Subf[X Float.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:Vector2i-(right:float)
-func Mulf[X Float.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:Vector2i*(right:float)
-func Divf[X Float.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:Vector2i/(right:float)
+func AddX[X Float.Any | Int.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:Vector2i+(right:float)
+func SubX[X Float.Any | Int.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:Vector2i-(right:float)
+func MulX[X Float.Any | Int.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:Vector2i*(right:float)
+func DivX[X Float.Any | Int.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:Vector2i/(right:float)
+func ModX[X Float.Any | Int.Any](a XY, b X) XY { return XY{a.X % int32(b), a.Y % int32(b)} } //gd:Vector2i%(right:float)
 
 func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:Vector2i-(unary)
+
+func AsArray(vec XY) [3]int32 { return [3]int32{vec.X, vec.Y} }
 
 func Index[I Int.Any](v XY, i I) int { //gd:Vector2i[](index:int)
 	switch Axis(i) {

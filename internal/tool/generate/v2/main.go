@@ -42,6 +42,20 @@ func generate() error {
 			}
 		}
 	}
+	if err := os.MkdirAll("./gdenums", 0755); err != nil {
+		return xray.New(err)
+	}
+	enums, err := os.Create("./gdenums/enums.go")
+	if err != nil {
+		return xray.New(err)
+	}
+	fmt.Fprintln(enums, `package gdenums`)
+	fmt.Fprintln(enums)
+	for _, enum := range spec.GlobalEnums {
+		generateEnum(enums, "", enum)
+		fmt.Fprintln(enums)
+	}
+	defer enums.Close()
 	for i, class := range spec.Classes {
 		var pkg = "internal"
 		if !inCore(class.Name) {

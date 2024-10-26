@@ -58,7 +58,7 @@ var (
 )
 
 // New returns a [XYZ] with the given components.
-func New[X Float.Any](x, y, z X) XYZ { //gd:Vector3(x:float,y:float,z:float)
+func New[X Int.Any | Float.Any](x, y, z X) XYZ { //gd:Vector3(x:float,y:float,z:float)
 	return XYZ{Float.X(x), Float.X(y), Float.X(z)}
 }
 
@@ -113,6 +113,16 @@ func Clamp(v, min, max XYZ) XYZ { //gd:Vector3.clamp
 		Float.Clamp(v.X, min.X, max.X),
 		Float.Clamp(v.Y, min.Y, max.Y),
 		Float.Clamp(v.Z, min.Z, max.Z),
+	}
+}
+
+// Clampf returns a new vector with all components clamped between the components of min and max,
+// by running [Float.Clamp] on each component.
+func Clampf[X Float.Any](v XYZ, min, max X) XYZ { //gd:Vector3.clampf
+	return XYZ{
+		Float.Clamp(v.X, Float.X(min), Float.X(max)),
+		Float.Clamp(v.Y, Float.X(min), Float.X(max)),
+		Float.Clamp(v.Z, Float.X(min), Float.X(max)),
 	}
 }
 
@@ -268,10 +278,46 @@ func Lerp[X Float.Any](v, to XYZ, weight X) XYZ { //gd:Vector3.lerp
 func LengthLimited[X Float.Any](v XYZ, length X) XYZ { //gd:Vector3.limit_length
 	var l = Length(v)
 	if l > 0 && Float.X(length) < l {
-		v = Divf(v, l)
-		v = Mulf(v, length)
+		v = DivX(v, l)
+		v = MulX(v, length)
 	}
 	return v
+}
+
+// Max returns the component-wise minimum of this and with, equivalent to
+//
+//	Vector3.New(max(x, with.x), max(y, with.y), max(z, with.z))
+func Max(a, b XYZ) XYZ { //gd:Vector3.max
+	return XYZ{
+		max(a.X, b.X), max(a.Y, b.Y), max(a.Z, b.Z),
+	}
+}
+
+// Maxf returns the component-wise maximum of this and with, equivalent to
+//
+//	Vector3.New(max(x, with), max(y, with), max(z, with)).
+func Maxf[X Float.Any](v XYZ, with X) XYZ { //gd:Vector3.maxf
+	return XYZ{
+		max(v.X, Float.X(with)), max(v.Y, Float.X(with)), max(v.Z, Float.X(with)),
+	}
+}
+
+// Min returns the component-wise minimum of this and with, equivalent to
+//
+//	Vector3.New(min(x, with.x), min(y, with.y), min(z, with.z))
+func Min(a, b XYZ) XYZ { //gd:Vector3.min
+	return XYZ{
+		min(a.X, b.X), min(a.Y, b.Y), min(a.Z, b.Z),
+	}
+}
+
+// Minf returns the component-wise minimum of this and with, equivalent to
+//
+//	Vector3.New(min(x, with), min(y, with), min(z, with), min(w, with)).
+func Minf[X Float.Any](v XYZ, with X) XYZ { //gd:Vector3.minf
+	return XYZ{
+		min(v.X, Float.X(with)), min(v.Y, Float.X(with)), min(v.Z, Float.X(with)),
+	}
 }
 
 // MaxAxis returns the axis of the vector's highest value. See [Axis] constants. If all components are
@@ -311,7 +357,7 @@ func Move[X Float.Any](a, b XYZ, delta X) XYZ { //gd:Vector3.move_toward
 	if l <= Float.X(delta) || l < Float.Epsilon {
 		return b
 	}
-	return Add(a, Mulf(Divf(vd, l), delta))
+	return Add(a, MulX(DivX(vd, l), delta))
 }
 
 // Normalized returns the result of scaling the vector to unit length. Equivalent to v / v.Length().
@@ -323,7 +369,7 @@ func Normalized(v XYZ) XYZ { //gd:Vector3.normalized
 	if l == 0 {
 		return Zero
 	}
-	return Divf(v, l)
+	return DivX(v, l)
 }
 
 // OctahedronDecode returns the [XYZ] from an octahedral-compressed form created using
@@ -357,7 +403,7 @@ func OctahedronDecode(uv Vector2.XY) XYZ { //gd:Vector3.octahedron_decode
 // Note: Octahedral compression is lossy, although visual differences are rarely perceptible in
 // real world scenarios.
 func OctahedronEncode(v XYZ) Vector2.XY { //gd:Vector3.octahedron_encode
-	v = Divf(v, float64(Float.Abs(v.X)+Float.Abs(v.Y)+Float.Abs(v.Z)))
+	v = DivX(v, float64(Float.Abs(v.X)+Float.Abs(v.Y)+Float.Abs(v.Z)))
 	var o Vector2.XY
 	if v.Z >= 0.0 {
 		o.X = v.X
@@ -408,7 +454,7 @@ func Posmod(v, mod XYZ) XYZ { //gd:Vector3.posmodv
 
 // Project returns the result of projecting the vector onto the given vector b.
 func Project(v, b XYZ) XYZ { //gd:Vector3.project
-	return Mulf(b, Dot(v, b)/LengthSquared(b))
+	return MulX(b, Dot(v, b)/LengthSquared(b))
 }
 
 // Rotated returns the result of rotating this vector around a given axis by angle (in radians).
@@ -424,6 +470,12 @@ func Round(v XYZ) XYZ { //gd:Vector3.round
 	return XYZ{
 		Float.Round(v.X), Float.Round(v.Y), Float.Round(v.Z),
 	}
+}
+
+// Sign returns a new vector with each component set to 1.0 if it's positive, -1.0 if it's negative,
+// and 0.0 if it's zero. The result is identical to calling [Signf] on each component.
+func Sign(vec XYZ) XYZ { //gd:Vector3.sign
+	return XYZ{Float.Sign(vec.X), Float.Sign(vec.Y), Float.Sign(vec.Z)}
 }
 
 // SignedAngle returns the signed angle to the given vector, in radians. The sign of the angle is
@@ -459,16 +511,16 @@ func Slerp[X Float.Any](v, to XYZ, weight X) XYZ { //gd:Vector3.slerp
 		// Colinear vectors have no rotation axis or angle between them, so the best we can do is lerp.
 		return Lerp(v, to, weight)
 	}
-	axis = Divf(axis, Float.Sqrt(axis_length_sq))
+	axis = DivX(axis, Float.Sqrt(axis_length_sq))
 	var start_length = Float.Sqrt(start_length_sq)
 	var result_length = Float.Lerp(start_length, Float.Sqrt(end_length_sq), Float.X(weight))
 	var angle = AngleBetween(v, to)
-	return Mulf(Rotated(v, axis, angle*Angle.Radians(weight)), result_length/start_length)
+	return MulX(Rotated(v, axis, angle*Angle.Radians(weight)), result_length/start_length)
 }
 
 // Slide returns a new vector slid along a plane defined by the given normal.
 func Slide(v, n XYZ) XYZ { //gd:Vector3.slide
-	return Sub(v, Mulf(n, Dot(v, n)))
+	return Sub(v, MulX(n, Dot(v, n)))
 }
 
 // Snapped returns a new vector with each component snapped to the nearest multiple of the corresponding component
@@ -481,9 +533,19 @@ func Snapped(v, step XYZ) XYZ { //gd:Vector3.snapped
 	}
 }
 
+// Snappedf returns a new vector with each component snapped to the nearest multiple of step.
+// This can also be used to round the components to an arbitrary number of decimals.
+func Snappedf[X Float.Any](v XYZ, step X) XYZ { //gd:Vector3.snappedf
+	return XYZ{
+		Float.Snapped(v.X, Float.X(step)),
+		Float.Snapped(v.Y, Float.X(step)),
+		Float.Snapped(v.Z, Float.X(step)),
+	}
+}
+
 // Reflect returns the result of reflecting the vector from a plane defined by the given normal n.
 func Reflect(v, n XYZ) XYZ { //gd:Vector3.reflect
-	return Sub(Mulf(n, 2.0*Dot(v, n)), v)
+	return Sub(MulX(n, 2.0*Dot(v, n)), v)
 }
 
 func Add(a, b XYZ) XYZ { //gd:Vector3+(right:Vector3)
@@ -499,30 +561,19 @@ func Div(a, b XYZ) XYZ { //gd:Vector3/(right:Vector3)
 	return XYZ{a.X / b.X, a.Y / b.Y, a.Z / b.Z}
 }
 
-func Addf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3+(right:float)
+func AddX[X Float.Any | Int.Any](a XYZ, b X) XYZ { //gd:Vector3+(right:float)
 	return XYZ{a.X + Float.X(b), a.Y + Float.X(b), a.Z + Float.X(b)}
 }
-func Subf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3-(right:float)
+func SubX[X Float.Any | Int.Any](a XYZ, b X) XYZ { //gd:Vector3-(right:float)
 	return XYZ{a.X - Float.X(b), a.Y - Float.X(b), a.Z - Float.X(b)}
 }
-func Mulf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3*(right:float)
+func MulX[X Float.Any | Int.Any](a XYZ, b X) XYZ { //gd:Vector3*(right:float)
 	return XYZ{a.X * Float.X(b), a.Y * Float.X(b), a.Z * Float.X(b)}
 }
-func Divf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3/(right:float)
-	return XYZ{a.X / Float.X(b), a.Y / Float.X(b), a.Z / Float.X(b)}
-}
-
-func Addi[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3+(right:int)
-	return XYZ{a.X + Float.X(b), a.Y + Float.X(b), a.Z + Float.X(b)}
-}
-func Subi[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3-(right:int)
-	return XYZ{a.X - Float.X(b), a.Y - Float.X(b), a.Z - Float.X(b)}
-}
-func Muli[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3*(right:int)
-	return XYZ{a.X * Float.X(b), a.Y * Float.X(b), a.Z * Float.X(b)}
-}
-func Divi[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3/(right:int)
+func DivX[X Float.Any | Int.Any](a XYZ, b X) XYZ { //gd:Vector3/(right:float)
 	return XYZ{a.X / Float.X(b), a.Y / Float.X(b), a.Z / Float.X(b)}
 }
 
 func Neg(v XYZ) XYZ { return XYZ{-v.X, -v.Y, -v.Z} } //gd:Vector3-(unary)
+
+func AsArray(vec XYZ) [3]Float.X { return [3]Float.X{vec.X, vec.Y, vec.Z} }

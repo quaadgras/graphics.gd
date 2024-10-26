@@ -49,7 +49,7 @@ var (
 )
 
 // New returns a [XYZ] with the given components.
-func New[X Int.Any](x, y, z X) XYZ { //gd:Vector3i(x: int, y: int, z: int)
+func New[X Int.Any | Float.Any](x, y, z X) XYZ { //gd:Vector3i(x:int,y:int,z:int)
 	return XYZ{int32(x), int32(y), int32(z)}
 }
 
@@ -94,7 +94,7 @@ func Distance(v, to XYZ) Float.X { //gd:Vector3i.distance_to
 }
 
 // Length the length (magnitude) of this vector.
-func Length(v XYZ) Float.X { //gd:Vector3.length
+func Length(v XYZ) Float.X { //gd:Vector3i.length
 	return Float.X(math.Sqrt(float64(LengthSquared(v))))
 }
 
@@ -102,7 +102,7 @@ func Length(v XYZ) Float.X { //gd:Vector3.length
 //
 // This method runs faster than length, so prefer it if you need to compare vectors
 // or need the squared distance for some formula.
-func LengthSquared(v XYZ) int { //gd:Vector3.length_squared
+func LengthSquared(v XYZ) int { //gd:Vector3i.length_squared
 	return int(v.X)*int(v.X) + int(v.Y)*int(v.Y) + int(v.Z)*int(v.Z)
 }
 
@@ -186,18 +186,25 @@ func Mul(a, b XYZ) XYZ { return XYZ{a.X * b.X, a.Y * b.Y, a.Z * b.Z} } //gd:Vect
 func Div(a, b XYZ) XYZ { return XYZ{a.X / b.X, a.Y / b.Y, a.Z / b.Z} } //gd:Vector3i/(right:Vector2i)
 func Mod(a, b XYZ) XYZ { return XYZ{a.X % b.X, a.Y % b.Y, a.Z % b.Z} } //gd:Vector3i%(right:Vector2i)
 
-func Addi[X Int.Any](a XYZ, b X) XYZ { return XYZ{a.X + int32(b), a.Y + int32(b), a.Z + int32(b)} } //gd:Vector3i+(right:int)
-func Subi[X Int.Any](a XYZ, b X) XYZ { return XYZ{a.X - int32(b), a.Y - int32(b), a.Z - int32(b)} } //gd:Vector3i-(right:int)
-func Muli[X Int.Any](a XYZ, b X) XYZ { return XYZ{a.X * int32(b), a.Y * int32(b), a.Z * int32(b)} } //gd:Vector3i*(right:int)
-func Divi[X Int.Any](a XYZ, b X) XYZ { return XYZ{a.X / int32(b), a.Y / int32(b), a.Z / int32(b)} } //gd:Vector3i/(right:int)
-func Modi[X Int.Any](a XYZ, b X) XYZ { return XYZ{a.X % int32(b), a.Y % int32(b), a.Z % int32(b)} } //gd:Vector3i%(right:int)
-
-func Addf[X Float.Any](a XYZ, b X) XYZ { return XYZ{a.X + int32(b), a.Y + int32(b), a.Z + int32(b)} } //gd:Vector3i+(right:float)
-func Subf[X Float.Any](a XYZ, b X) XYZ { return XYZ{a.X - int32(b), a.Y - int32(b), a.Z - int32(b)} } //gd:Vector3i-(right:float)
-func Mulf[X Float.Any](a XYZ, b X) XYZ { return XYZ{a.X * int32(b), a.Y * int32(b), a.Z * int32(b)} } //gd:Vector3i*(right:float)
-func Divf[X Float.Any](a XYZ, b X) XYZ { return XYZ{a.X / int32(b), a.Y / int32(b), a.Z / int32(b)} } //gd:Vector3i/(right:float)
+func AddX[X Int.Any | Float.Any](a XYZ, b X) XYZ { //gd:Vector3i+(right:int)
+	return XYZ{a.X + int32(b), a.Y + int32(b), a.Z + int32(b)}
+}
+func SubX[X Int.Any | Float.Any](a XYZ, b X) XYZ { //gd:Vector3i-(right:int)
+	return XYZ{a.X - int32(b), a.Y - int32(b), a.Z - int32(b)}
+}
+func MulX[X Int.Any | Float.Any](a XYZ, b X) XYZ { //gd:Vector3i*(right:int)
+	return XYZ{a.X * int32(b), a.Y * int32(b), a.Z * int32(b)}
+}
+func DivX[X Int.Any | Float.Any](a XYZ, b X) XYZ { //gd:Vector3i/(right:int)
+	return XYZ{a.X / int32(b), a.Y / int32(b), a.Z / int32(b)}
+}
+func ModX[X Int.Any | Float.Any](a XYZ, b X) XYZ { //gd:Vector3i%(right:int)
+	return XYZ{a.X % int32(b), a.Y % int32(b), a.Z % int32(b)}
+}
 
 func Neg(v XYZ) XYZ { return XYZ{-v.X, -v.Y, -v.Z} } //gd:Vector3i-(unary)
+
+func AsArray(vec XYZ) [3]int32 { return [3]int32{vec.X, vec.Y, vec.Z} }
 
 func Index[I Int.Any](v XYZ, i I) int { //gd:Vector3i[](index:int)
 	switch Axis(i) {

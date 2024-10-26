@@ -23,7 +23,7 @@ type XY = struct {
 }
 
 // New constructs a new Vector2 from the given x and y.
-func New[X Float.Any](x, y X) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x:float,y:float)
+func New[X Int.Any | Float.Any](x, y X) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x:float,y:float)
 
 type Axis int
 
@@ -125,7 +125,7 @@ func Cross(a, b XY) Float.X { return a.X*b.Y - a.Y*b.X } //gd:Vector2.cross
 // CubicInterpolate performs a cubic interpolation between this vector and b using pre_a and
 // post_b as handles, and returns the result at position weight. weight is on the range of
 // 0.0 to 1.0, representing the amount of interpolation.
-func CubicInterpolate[X Float.Any](vec, b, preA, postB XY, weight X) XY { //Vector2.cubic_interpolate
+func CubicInterpolate[X Float.Any](vec, b, preA, postB XY, weight X) XY { //gd:Vector2.cubic_interpolate
 	return XY{
 		Float.CubicInterpolate(vec.X, b.X, preA.X, postB.X, Float.X(weight)),
 		Float.CubicInterpolate(vec.Y, b.Y, preA.Y, postB.Y, Float.X(weight)),
@@ -212,10 +212,46 @@ func Lerp[X Float.Any](vec, to XY, weight X) XY { //gd:Vector2.lerp
 func LengthLimited[X Float.Any](vec XY, length X) XY { //gd:Vector2.limit_length
 	var l = Length(vec)
 	if l > 0 && Float.X(length) < l {
-		vec = Mulf(vec, 1/l)
-		vec = Mulf(vec, length)
+		vec = MulX(vec, 1/l)
+		vec = MulX(vec, length)
 	}
 	return vec
+}
+
+// Max returns the component-wise minimum of this and with, equivalent to
+//
+//	Vector2.New(max(x, with.x), max(y, with.y))
+func Max(a, b XY) XY { //gd:Vector2.max
+	return XY{
+		max(a.X, b.X), max(a.Y, b.Y),
+	}
+}
+
+// Maxf returns the component-wise maximum of this and with, equivalent to
+//
+//	Vector2.New(max(x, with), max(y, with)).
+func Maxf[X Float.Any](v XY, with X) XY { //gd:Vector2.maxf
+	return XY{
+		max(v.X, Float.X(with)), max(v.Y, Float.X(with)),
+	}
+}
+
+// Min returns the component-wise minimum of this and with, equivalent to
+//
+//	Vector2.New(min(x, with.x), min(y, with.y))
+func Min(a, b XY) XY { //gd:Vector2.min
+	return XY{
+		min(a.X, b.X), min(a.Y, b.Y),
+	}
+}
+
+// Minf returns the component-wise minimum of this and with, equivalent to
+//
+//	Vector2.New(min(x, with), min(y, with)).
+func Minf[X Float.Any | Int.Any](v XY, with X) XY { //gd:Vector2.minf
+	return XY{
+		min(v.X, Float.X(with)), min(v.Y, Float.X(with)),
+	}
 }
 
 // MaxAxis returns the axis of the vector's highest value. See [Axis] constants. If all
@@ -244,7 +280,7 @@ func Move[X Float.Any](a, b XY, delta X) XY { //gd:Vector2.move_toward
 	if len <= Float.X(delta) || len < Float.Epsilon {
 		return b
 	}
-	return Add(a, Mulf(vd, len*Float.X(delta)))
+	return Add(a, MulX(vd, len*Float.X(delta)))
 }
 
 // Normalized returns the result of scaling the vector to unit length. Equivalent to v / v.Length().
@@ -275,12 +311,12 @@ func PosmodVector(vec, mod XY) XY { //gd:Vector2.posmodv
 
 // Project returns the result of projecting the vector onto the given vector b.
 func Project(a, b XY) XY { //gd:Vector2.project
-	return Mulf(b, Dot(a, b)/LengthSquared(b))
+	return MulX(b, Dot(a, b)/LengthSquared(b))
 }
 
 // Reflect returns the result of reflecting the vector from a line defined by the given direction vector n.
 func Reflect(v, n XY) XY { //gd:Vector2.reflect
-	return Sub(Mulf(n, 2*Dot(v, n)), v)
+	return Sub(MulX(n, 2*Dot(v, n)), v)
 }
 
 // Rotated returns the result of rotating this vector by angle (in radians).
@@ -298,7 +334,7 @@ func Round(v XY) XY { //gd:Vector2.round
 
 // Sign returns a new vector with each component set to 1.0 if it's positive, -1.0 if it's negative,
 // and 0.0 if it's zero. The result is identical to calling [Signf] on each component.
-func Sign(vec XY) XY { //Vector2.sign
+func Sign(vec XY) XY { //gd:Vector2.sign
 	return XY{Float.Sign(vec.X), Float.Sign(vec.Y)}
 }
 
@@ -317,12 +353,12 @@ func Slerp(vec, to XY, weight Angle.Radians) XY { //gd:Vector2.slerp
 	var start_length = Float.Sqrt(start_length_sq)
 	var result_length = Float.Lerp(start_length, Float.Sqrt(end_length_sq), Float.X(weight))
 	var angle = AngleBetween(vec, to)
-	return Mulf(Rotated(vec, angle*weight), result_length/start_length)
+	return MulX(Rotated(vec, angle*weight), result_length/start_length)
 }
 
 // Slide returns the result of sliding the vector along a plane defined by the given normal.
 func Slide(v, n XY) XY { //gd:Vector2.slide
-	return Sub(v, Mulf(n, Dot(v, n)))
+	return Sub(v, MulX(n, Dot(v, n)))
 }
 
 // Snapped returns a new vector with all components snapped to the nearest multiple of step.
@@ -333,34 +369,29 @@ func Snapped(v, step XY) XY { //gd:Vector2.snapped
 	}
 }
 
+// Snappedf returns a new vector with all components snapped to the nearest multiple of step.
+func Snappedf[X Float.Any](v XY, step X) XY { //gd:Vector2.snappedf
+	return XY{
+		Float.Snapped(v.X, Float.X(step)),
+		Float.Snapped(v.Y, Float.X(step)),
+	}
+}
+
 func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:Vector2+(right:Vector2)
 func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:Vector2-(right:Vector2)
 func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:Vector2*(right:Vector2)
 func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:Vector2/(right:Vector2)
 
-func Addf[X Float.Any](a XY, b X) XY { //gd:Vector2+(right:float)
+func AddX[X Float.Any | Int.Any](a XY, b X) XY { //gd:Vector2+(right:float)
 	return XY{a.X + Float.X(b), a.Y + Float.X(b)}
 }
-func Subf[X Float.Any](a XY, b X) XY { //gd:Vector2-(right:float)
+func SubX[X Float.Any | Int.Any](a XY, b X) XY { //gd:Vector2-(right:float)
 	return XY{a.X - Float.X(b), a.Y - Float.X(b)}
 }
-func Mulf[X Float.Any](a XY, b X) XY { //gd:Vector2*(right:float)
+func MulX[X Float.Any | Int.Any](a XY, b X) XY { //gd:Vector2*(right:float)
 	return XY{a.X * Float.X(b), a.Y * Float.X(b)}
 }
-func Divf[X Float.Any](a XY, b X) XY { //gd:Vector2/(right:float)
-	return XY{a.X / Float.X(b), a.Y / Float.X(b)}
-}
-
-func Addi[X Int.Any](a XY, b X) XY { //gd:Vector2+(right:int)
-	return XY{a.X + Float.X(b), a.Y + Float.X(b)}
-}
-func Subi[X Int.Any](a XY, b X) XY { //gd:Vector2-(right:int)
-	return XY{a.X - Float.X(b), a.Y - Float.X(b)}
-}
-func Muli[X Int.Any](a XY, b X) XY { //gd:Vector2*(right:int)
-	return XY{a.X * Float.X(b), a.Y * Float.X(b)}
-}
-func Divi[X Int.Any](a XY, b X) XY { //gd:Vector2/(right:int)
+func DivX[X Float.Any | Int.Any](a XY, b X) XY { //gd:Vector2/(right:float)
 	return XY{a.X / Float.X(b), a.Y / Float.X(b)}
 }
 
@@ -377,7 +408,7 @@ func Index[I Int.Any](v XY, i I) Float.X { //gd:Vector2[](index:int)
 	}
 }
 
-// func Array(vec XY) [2]Float.X { return [2]Float.X{vec.X, vec.Y} }
+func AsArray(vec XY) [2]Float.X { return [2]Float.X{vec.X, vec.Y} }
 
 /*
 func (v Vector2) Transform(t Transform2D) Vector2 { return Vector2{t.tdotx(v), t.tdoty(v)}.Add(t[2]) } //Transform2D * Vector2D

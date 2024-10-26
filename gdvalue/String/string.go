@@ -9,6 +9,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net/netip"
+	"net/url"
 	"path"
 	"path/filepath"
 	"reflect"
@@ -19,6 +20,7 @@ import (
 	"unicode/utf16"
 	"unicode/utf8"
 
+	"golang.org/x/text/encoding/unicode/utf32"
 	"grow.graphics/gd/gdmaths/Float"
 	"grow.graphics/gd/gdmaths/Int"
 )
@@ -46,7 +48,7 @@ func Bigrams[S Any](s S) []S { //gd:String.bigrams
 
 // BinaryToInteger converts the string representing a binary number into an int. The string may
 // optionally be prefixed with "0b", and an additional - prefix for negative numbers.
-func BinaryToInteger[S Any](s S) int { //gd:String.binary_to_integer
+func BinaryToInteger[S Any](s S) int { //gd:String.bin_to_int
 	s = S(strings.TrimPrefix(string(s), "0b"))
 	var r int
 	for i := 0; i < len(s); i++ {
@@ -61,13 +63,13 @@ func BinaryToInteger[S Any](s S) int { //gd:String.binary_to_integer
 }
 
 // Escape returns a copy of the string with special characters escaped using the Go language standard.
-func Escape[S Any](s S) S { //gd:String.c_escape gd:String.json_escape
+func Escape[S Any](s S) S { //gd:String.c_escape String.json_escape String.xml_escape
 	escaped := strconv.QuoteToASCII(string(s))
 	return S(escaped[1 : len(escaped)-1])
 }
 
 // Unescape returns a copy of the string with escaped characters replaced by their meanings.
-func Unescape[S Any](s S) S { //gd:String.c_unescape
+func Unescape[S Any](s S) S { //gd:String.c_unescape String.xml_unescape
 	unescaped, _ := strconv.Unquote(`"` + string(s) + `"`)
 	return S(unescaped)
 }
@@ -211,7 +213,7 @@ func ComparisonStrictNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_t
 //
 // To get a bool result from a string comparison, use the == operator instead. See also
 // [ComparisonStrictNatural], [ComparisonStrictNaturalPrioritizePeriodsAndUnderscores], and [Comparison].
-func ComparisonNatural[S Any](a, b S) int { //gd:String.naturalnocasecmp_to
+func ComparisonNatural[S Any](a, b S) int { //gd:String.naturalcasecmp_to
 	return ComparisonStrictNatural(strings.ToUpper(string(a)), strings.ToUpper(string(b)))
 }
 
@@ -338,7 +340,7 @@ func Integer[I Int.Any](number I) string { //gd:String.num_int64
 }
 
 // Natural converts the given unsigned int to a string representation, with the given base.
-func Natural[I ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uint | ~uintptr](number I) string { //gd:String.num_uint
+func Natural[I ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uint | ~uintptr](number I) string { //gd:String.num_uint64
 	return strconv.FormatUint(uint64(number), 10)
 }
 
@@ -411,13 +413,13 @@ func Directory[S Any](path S) S { //gd:String.get_base_dir
 }
 
 // PathWithoutExtension returns the full file path, without the extension, if the string is a valid file path.
-func PathWithoutExtension[S Any](path S) S { //gd:String.get_file_path_without_extension
+func PathWithoutExtension[S Any](path S) S { //gd:String.get_basename
 	return S(strings.TrimSuffix(string(path), filepath.Ext(string(path))))
 }
 
 // FileExtension returns the file extension without the leading period (.) if the string is a
 // valid file name or path. Otherwise, returns an empty string.
-func FileExtension[S Any](path S) S { //gd:String.get_file_extension
+func FileExtension[S Any](path S) S { //gd:String.get_extension
 	ext := filepath.Ext(string(path))
 	if ext != "" {
 		return S(ext[1:])
@@ -426,7 +428,7 @@ func FileExtension[S Any](path S) S { //gd:String.get_file_extension
 }
 
 // FileName returns the file name, including the extension, if the string is a valid file path,
-func FileName[S Any](path S) S { //gd:String.get_file_name
+func FileName[S Any](path S) S { //gd:String.get_file
 	return S(filepath.Base(string(path)))
 }
 
@@ -435,7 +437,7 @@ func FileName[S Any](path S) S { //gd:String.get_file_name
 // element does not exist.
 //
 // This is faster than split, if you only need one substring.
-func Extract[S Any, D ~string | ~[]byte | rune, I Int.Any](s S, delimiter D, index I) S { //gd:String.get_slice gd:String.get_slicec
+func Extract[S Any, D ~string | ~[]byte | rune, I Int.Any](s S, delimiter D, index I) S { //gd:String.get_slice String.get_slicec
 	var n int
 	var current S
 	for i := 0; i < int(index+1); i++ {
@@ -563,7 +565,7 @@ func IsStrictSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_o
 }
 
 // IsSubsequenceOf returns true if all characters of this string can be found in text in any order, ignoring case.
-func IsSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_of_ignore_case
+func IsSubsequenceOf[S Any](text, s S) bool { //gd:String.is_subsequence_ofn
 	if len(s) == 0 {
 		return true
 	}
@@ -709,7 +711,7 @@ func Match[S Any](pattern, text S) bool { //gd:String.matchn
 }
 
 // MD5 returns the MD5 hash of the string as a byte slice.
-func MD5[S Any](s S) []byte { //gd:String.md5_buffer gd:String.md5_text
+func MD5[S Any](s S) []byte { //gd:String.md5_buffer String.md5_text
 	sum := md5.Sum([]byte(string(s)))
 	return sum[:]
 }
@@ -853,14 +855,14 @@ func StripSuffix[S Any](s S, chars S) S { //gd:String.rstrip
 }
 
 // SHA1 returns the SHA-1 hash of the string.
-func SHA1[S Any](s S) S { //gd:String.sha1_buffer gd:String.sha1_text
+func SHA1[S Any](s S) S { //gd:String.sha1_buffer String.sha1_text
 	h := sha1.New()
 	h.Write([]byte(string(s)))
 	return S(hex.EncodeToString(h.Sum(nil)))
 }
 
 // SHA256 returns the SHA-256 hash of the string.
-func SHA256[S Any](s S) S { //gd:String.sha256_buffer gd:String.sha256_text
+func SHA256[S Any](s S) S { //gd:String.sha256_buffer String.sha256_text
 	h := sha256.New()
 	h.Write([]byte(string(s)))
 	return S(hex.EncodeToString(h.Sum(nil)))
@@ -984,7 +986,7 @@ func ToASCII[S Any](s S) []byte { //gd:String.to_ascii_buffer
 }
 
 // ToCamelCase returns the string converted to camelCase.
-func ToCamelCase[S Any](s S) S { //gd:String.to_camelcase
+func ToCamelCase[S Any](s S) S { //gd:String.to_camel_case
 	return S(strings.ReplaceAll(strings.Title(strings.ToLower(string(s))), " ", ""))
 }
 
@@ -1033,14 +1035,14 @@ func ToLower[S Any](s S) S { //gd:String.to_lower
 }
 
 // ToPascalCase returns the string converted to PascalCase.
-func ToPascalCase[S Any](s S) S { //gd:String.to_pascalcase
+func ToPascalCase[S Any](s S) S { //gd:String.to_pascal_case
 	return S(strings.ReplaceAll(strings.Title(strings.ToLower(string(s))), " ", ""))
 }
 
 // ToSnakeCase Returns the string converted to snake_case.
 //
 // Note: Numbers followed by a single letter are not separated in the conversion to keep some words (such as "2D") together.
-func ToSnakeCase[S Any](s S) S { //gd:String.to_snakecase
+func ToSnakeCase[S Any](s S) S { //gd:String.to_snake_case
 	var new_string S
 	var start_index = 0
 	for i := 1; i < len(s); i++ {
@@ -1079,7 +1081,7 @@ func ToUTF8[S Any](s S) []byte { //gd:String.to_utf8_buffer
 }
 
 // ToUTF16 converts the string to a UTF-16.
-func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer
+func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_buffer
 	var result bytes.Buffer
 	for _, r := range string(s) {
 		a, b := utf16.EncodeRune(r)
@@ -1087,6 +1089,13 @@ func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer
 		result.WriteByte(byte(b))
 	}
 	return result.Bytes()
+}
+
+// ToUTF32 converts the string to a UTF-32.
+func ToUTF32[S Any](s S) []byte { //gd:String.to_utf32_buffer
+	var UTF = utf32.UTF32(utf32.LittleEndian, utf32.UseBOM).NewEncoder()
+	b, _ := UTF.Bytes([]byte(s))
+	return b
 }
 
 // TrimPrefix removes the given prefix from the start of the string, or returns the string unchanged.
@@ -1110,7 +1119,7 @@ func UnicodeAt[S Any](s S, index int) rune { //gd:String.unicode_at
 }
 
 // StripFilename returns a copy of the string with all characters that are not allowed in [IsValidFilename] replaced with underscores.
-func StripFilename[S Any](s S) S {
+func StripFilename[S Any](s S) S { //gd:String.validate_filename
 	var result strings.Builder
 	for _, r := range string(s) {
 		if IsValidFilename(string(r)) {
@@ -1123,7 +1132,7 @@ func StripFilename[S Any](s S) S {
 }
 
 // StripNodeName returns a copy of the string with all characters that are not allowed in Node.name (. : @ / " %) replaced with underscores.
-func StripNodeName[S Any](s S) S {
+func StripNodeName[S Any](s S) S { //gd:String.validate_node_name
 	return S(strings.Map(func(r rune) rune {
 		switch r {
 		case '.', ':', '@', '/', '"', '%':
@@ -1131,4 +1140,22 @@ func StripNodeName[S Any](s S) S {
 		}
 		return r
 	}, string(s)))
+}
+
+// StartingFrom returns a slice of the string from the given start index to the end index.
+func StartingFrom[S Any](s S, start int) S { //gd:String.substr
+	return S(string(s)[start:])
+}
+
+// EncodeURI encodes the string to URL-friendly format. This method is meant to properly
+// encode the parameters in a URL when sending an HTTP request. See also [DecodeURI].
+func EncodeURI[S Any](s S) S { //gd:String.uri_encode
+	return S(url.QueryEscape(string(s)))
+}
+
+// DecodeURI decodes the string from URL-friendly format. This method is meant to properly
+// decode the parameters in a URL when receiving an HTTP request. See also [EncodeURI].
+func DecodeURI[S Any](s S) S { //gd:String.uri_decode
+	decoded, _ := url.QueryUnescape(string(s))
+	return S(decoded)
 }
