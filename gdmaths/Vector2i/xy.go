@@ -40,7 +40,7 @@ var (
 )
 
 // New constructs a new Vector2i from the given x and y.
-func New(x, y int) XY { return XY{int32(x), int32(y)} } //gd:Vector2i(x: int, y: int)
+func New(x, y int) XY { return XY{int32(x), int32(y)} } //gd:Vector2i(x:int,y:int)
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).
 func Abs(v XY) XY { return XY{Int.Abs(v.X), Int.Abs(v.Y)} } //gd:Vector2i.abs
@@ -149,26 +149,26 @@ func Snappedi[X Int.Any](v XY, step X) XY { //gd:Vector2i.snappedi
 	}
 }
 
-func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:operator +(right: Vector2i)
-func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:operator -(right: Vector2i)
-func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:operator *(right: Vector2i)
-func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:operator /(right: Vector2i)
-func Mod(a, b XY) XY { return XY{a.X % b.X, a.Y % b.Y} } //gd:operator %(right: Vector2i)
+func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:Vector2i+(right:Vector2i)
+func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:operator-(right:Vector2i)
+func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:Vector2i*(right:Vector2i)
+func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:Vector2i/(right:Vector2i)
+func Mod(a, b XY) XY { return XY{a.X % b.X, a.Y % b.Y} } //gd:Vector2i%(right:Vector2i)
 
-func Addi[X Int.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:operator +(right: int)
-func Subi[X Int.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:operator -(right: int)
-func Muli[X Int.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:operator *(right: int)
-func Divi[X Int.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:operator /(right: int)
-func Modi[X Int.Any](a XY, b X) XY { return XY{a.X % int32(b), a.Y % int32(b)} } //gd:operator %(right: int)
+func Addi[X Int.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:Vector2i+(right:int)
+func Subi[X Int.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:Vector2i-(right:int)
+func Muli[X Int.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:Vector2i*(right:int)
+func Divi[X Int.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:Vector2i/(right:int)
+func Modi[X Int.Any](a XY, b X) XY { return XY{a.X % int32(b), a.Y % int32(b)} } //gd:Vector2i%(right:int)
 
-func Addf[X Float.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:operator +(right: float)
-func Subf[X Float.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:operator -(right: float)
-func Mulf[X Float.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:operator *(right: float)
-func Divf[X Float.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:operator /(right: float)
+func Addf[X Float.Any](a XY, b X) XY { return XY{a.X + int32(b), a.Y + int32(b)} } //gd:Vector2i+(right:float)
+func Subf[X Float.Any](a XY, b X) XY { return XY{a.X - int32(b), a.Y - int32(b)} } //gd:Vector2i-(right:float)
+func Mulf[X Float.Any](a XY, b X) XY { return XY{a.X * int32(b), a.Y * int32(b)} } //gd:Vector2i*(right:float)
+func Divf[X Float.Any](a XY, b X) XY { return XY{a.X / int32(b), a.Y / int32(b)} } //gd:Vector2i/(right:float)
 
-func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:operator unary-()
+func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:Vector2i-(unary)
 
-func Index[I Int.Any](v XY, i I) int { //gd:operator [](index: int)
+func Index[I Int.Any](v XY, i I) int { //gd:Vector2i[](index:int)
 	switch Axis(i) {
 	case X:
 		return int(v.X)

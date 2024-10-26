@@ -23,7 +23,7 @@ type XY = struct {
 }
 
 // New constructs a new Vector2 from the given x and y.
-func New[X Float.Any](x, y X) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x: float, y: float)
+func New[X Float.Any](x, y X) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x:float,y:float)
 
 type Axis int
 
@@ -333,40 +333,40 @@ func Snapped(v, step XY) XY { //gd:Vector2.snapped
 	}
 }
 
-func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:operator +(right: Vector2)
-func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:operator -(right: Vector2)
-func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:operator *(right: Vector2)
-func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:operator /(right: Vector2)
+func Add(a, b XY) XY { return XY{a.X + b.X, a.Y + b.Y} } //gd:Vector2+(right:Vector2)
+func Sub(a, b XY) XY { return XY{a.X - b.X, a.Y - b.Y} } //gd:Vector2-(right:Vector2)
+func Mul(a, b XY) XY { return XY{a.X * b.X, a.Y * b.Y} } //gd:Vector2*(right:Vector2)
+func Div(a, b XY) XY { return XY{a.X / b.X, a.Y / b.Y} } //gd:Vector2/(right:Vector2)
 
-func Addf[X Float.Any](a XY, b X) XY { //gd:operator +(right: float)
+func Addf[X Float.Any](a XY, b X) XY { //gd:Vector2+(right:float)
 	return XY{a.X + Float.X(b), a.Y + Float.X(b)}
 }
-func Subf[X Float.Any](a XY, b X) XY { //gd:operator -(right: float)
+func Subf[X Float.Any](a XY, b X) XY { //gd:Vector2-(right:float)
 	return XY{a.X - Float.X(b), a.Y - Float.X(b)}
 }
-func Mulf[X Float.Any](a XY, b X) XY { //gd:operator *(right: float)
+func Mulf[X Float.Any](a XY, b X) XY { //gd:Vector2*(right:float)
 	return XY{a.X * Float.X(b), a.Y * Float.X(b)}
 }
-func Divf[X Float.Any](a XY, b X) XY { //gd:operator /(right: float)
+func Divf[X Float.Any](a XY, b X) XY { //gd:Vector2/(right:float)
 	return XY{a.X / Float.X(b), a.Y / Float.X(b)}
 }
 
-func Addi[X Int.Any](a XY, b X) XY { //gd:operator +(right: int)
+func Addi[X Int.Any](a XY, b X) XY { //gd:Vector2+(right:int)
 	return XY{a.X + Float.X(b), a.Y + Float.X(b)}
 }
-func Subi[X Int.Any](a XY, b X) XY { //gd:operator -(right: int)
+func Subi[X Int.Any](a XY, b X) XY { //gd:Vector2-(right:int)
 	return XY{a.X - Float.X(b), a.Y - Float.X(b)}
 }
-func Muli[X Int.Any](a XY, b X) XY { //gd:operator *(right: int)
+func Muli[X Int.Any](a XY, b X) XY { //gd:Vector2*(right:int)
 	return XY{a.X * Float.X(b), a.Y * Float.X(b)}
 }
-func Divi[X Int.Any](a XY, b X) XY { //gd:operator /(right: int)
+func Divi[X Int.Any](a XY, b X) XY { //gd:Vector2/(right:int)
 	return XY{a.X / Float.X(b), a.Y / Float.X(b)}
 }
 
-func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:operator unary-()
+func Neg(v XY) XY { return XY{-v.X, -v.Y} } //gd:Vector2-(unary)
 
-func Index[I Int.Any](v XY, i I) Float.X { //gd:operator [](index: int)
+func Index[I Int.Any](v XY, i I) Float.X { //gd:Vector2[](index:int)
 	switch Axis(i) {
 	case X:
 		return v.X

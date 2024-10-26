@@ -57,8 +57,8 @@ var (
 	ModelRear   = XYZ{0, 0, -1} // Unit vector pointing towards the rear side of imported 3D assets.
 )
 
-// New returns a Vector3 with the given components.
-func New[X Float.Any](x, y, z X) XYZ { //gd:Vector3(x: float, y: float, z: float)
+// New returns a [XYZ] with the given components.
+func New[X Float.Any](x, y, z X) XYZ { //gd:Vector3(x:float,y:float,z:float)
 	return XYZ{Float.X(x), Float.X(y), Float.X(z)}
 }
 
@@ -107,7 +107,7 @@ func Ceil(v XYZ) XYZ { //gd:Vector3.ceil
 }
 
 // Clamp returns a new vector with all components clamped between the components of min and max,
-// by running [Clampf] on each component.
+// by running [Float.Clamp] on each component.
 func Clamp(v, min, max XYZ) XYZ { //gd:Vector3.clamp
 	return XYZ{
 		Float.Clamp(v.X, min.X, max.X),
@@ -486,43 +486,43 @@ func Reflect(v, n XYZ) XYZ { //gd:Vector3.reflect
 	return Sub(Mulf(n, 2.0*Dot(v, n)), v)
 }
 
-func Add(a, b XYZ) XYZ { //gd:operator +(right: Vector3)
+func Add(a, b XYZ) XYZ { //gd:Vector3+(right:Vector3)
 	return XYZ{a.X + b.X, a.Y + b.Y, a.Z + b.Z}
 }
-func Sub(a, b XYZ) XYZ { //gd:operator -(right: Vector3)
+func Sub(a, b XYZ) XYZ { //gd:Vector3-(right:Vector3)
 	return XYZ{a.X - b.X, a.Y - b.Y, a.Z - b.Z}
 }
-func Mul(a, b XYZ) XYZ { //gd:operator *(right: Vector3)
+func Mul(a, b XYZ) XYZ { //gd:Vector3*(right:Vector3)
 	return XYZ{a.X * b.X, a.Y * b.Y, a.Z * b.Z}
 }
-func Div(a, b XYZ) XYZ { //gd:operator /(right: Vector3)
+func Div(a, b XYZ) XYZ { //gd:Vector3/(right:Vector3)
 	return XYZ{a.X / b.X, a.Y / b.Y, a.Z / b.Z}
 }
 
-func Addf[X Float.Any](a XYZ, b X) XYZ { //gd:operator +(right: float)
+func Addf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3+(right:float)
 	return XYZ{a.X + Float.X(b), a.Y + Float.X(b), a.Z + Float.X(b)}
 }
-func Subf[X Float.Any](a XYZ, b X) XYZ { //gd:operator -(right: float)
+func Subf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3-(right:float)
 	return XYZ{a.X - Float.X(b), a.Y - Float.X(b), a.Z - Float.X(b)}
 }
-func Mulf[X Float.Any](a XYZ, b X) XYZ { //gd:operator *(right: float)
+func Mulf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3*(right:float)
 	return XYZ{a.X * Float.X(b), a.Y * Float.X(b), a.Z * Float.X(b)}
 }
-func Divf[X Float.Any](a XYZ, b X) XYZ { //gd:operator /(right: float)
+func Divf[X Float.Any](a XYZ, b X) XYZ { //gd:Vector3/(right:float)
 	return XYZ{a.X / Float.X(b), a.Y / Float.X(b), a.Z / Float.X(b)}
 }
 
-func Addi[X Int.Any](a XYZ, b X) XYZ { //gd:operator +(right: int)
+func Addi[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3+(right:int)
 	return XYZ{a.X + Float.X(b), a.Y + Float.X(b), a.Z + Float.X(b)}
 }
-func Subi[X Int.Any](a XYZ, b X) XYZ { //gd:operator -(right: int)
+func Subi[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3-(right:int)
 	return XYZ{a.X - Float.X(b), a.Y - Float.X(b), a.Z - Float.X(b)}
 }
-func Muli[X Int.Any](a XYZ, b X) XYZ { //gd:operator *(right: int)
+func Muli[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3*(right:int)
 	return XYZ{a.X * Float.X(b), a.Y * Float.X(b), a.Z * Float.X(b)}
 }
-func Divi[X Int.Any](a XYZ, b X) XYZ { //gd:operator /(right: int)
+func Divi[X Int.Any](a XYZ, b X) XYZ { //gd:Vector3/(right:int)
 	return XYZ{a.X / Float.X(b), a.Y / Float.X(b), a.Z / Float.X(b)}
 }
 
-func Neg(v XYZ) XYZ { return XYZ{-v.X, -v.Y, -v.Z} } //gd:operator unary-()
+func Neg(v XYZ) XYZ { return XYZ{-v.X, -v.Y, -v.Z} } //gd:Vector3-(unary)
