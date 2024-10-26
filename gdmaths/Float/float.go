@@ -3,8 +3,6 @@ package Float
 
 import (
 	"math"
-
-	"grow.graphics/gd/gdmaths/Angle"
 )
 
 const Epsilon = 0.00001
@@ -24,14 +22,6 @@ func ʕ[T any](q bool, a T, b T) T {
 
 // Abs returns the absolute value of the float parameter x (i.e. non-negative value).
 func Abs[X Any](x X) X { return X(math.Abs(float64(x))) } //gd:absf
-
-// Atan2 returns the arc tangent of y/x in radians. Use to get the angle of tangent y/x. To compute
-// the value, the method takes into account the sign of both arguments in order to determine the quadrant.
-//
-// Important note: The Y coordinate comes first, by convention.
-func Atan2[T Any](y, x T) Angle.Radians { //gd:atan2
-	return Angle.Radians(math.Atan2(float64(y), float64(x)))
-}
 
 // BezierDerivative returns the derivative at the given t on a one-dimensional Bézier curve defined by the given
 // control_1, control_2, and end points.
@@ -69,9 +59,6 @@ func Clamp[X Any](value, min, max X) X { //clamp
 	}
 	return value
 }
-
-// Cos returns the cosine of angle x in radians.
-func Cos[X Any](x X) Angle.Radians { return Angle.Radians(math.Cos(float64(x))) } //gd:cos
 
 // CubicInterpolate cubic interpolates between two values by the factor defined in weightSee also
 // with pre and post values.
@@ -171,9 +158,6 @@ func Sign[X Any](x X) X { //gd:signf
 		return 0
 	}
 }
-
-// Sin returns the sine of angle x in radians.
-func Sin[X Any](x X) Angle.Radians { return Angle.Radians(math.Sin(float64(x))) } //gd:sin
 
 // Snapped returns the multiple of step that is the closest to x. This can also be used to round a
 // floating point number to an arbitrary number of decimals.

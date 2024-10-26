@@ -328,6 +328,12 @@ func Round(v XYZW) XYZW { //gd:Vector4.round
 	}
 }
 
+// Sign returns a new vector with each component set to 1.0 if it's positive, -1.0 if it's negative,
+// and 0.0 if it's zero. The result is identical to calling [Float.Sign] on each component.
+func Sign(vec XYZW) XYZW { //gd:Vector4.sign
+	return XYZW{Float.Sign(vec.X), Float.Sign(vec.Y), Float.Sign(vec.Z), Float.Sign(vec.W)}
+}
+
 // Snapped returns a new vector with each component snapped to the nearest multiple of the corresponding component
 // in step. This can also be used to round the components to an arbitrary number of decimals.
 func Snapped(v, step XYZW) XYZW { //gd:Vector4.snapped

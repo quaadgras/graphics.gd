@@ -57,13 +57,13 @@ func Abs(vec XY) XY { return XY{Float.Abs(vec.X), Float.Abs(vec.Y)} } //gd:Vecto
 // Equivalent to the result of [Atan2] when called with the vector's y and x as parameters:
 //
 //	Atan2(y, x).
-func AngleRadians(vec XY) Angle.Radians { return Float.Atan2(vec.Y, vec.X) } //gd:Vector2.angle
+func AngleRadians(vec XY) Angle.Radians { return Angle.Atan2(vec.Y, vec.X) } //gd:Vector2.angle
 
 // AngleBetween returns the angle between the given vectors, in radians.
 //
 // Illustration of the returned angle.
 // https://raw.githubusercontent.com/godotengine/godot-docs/master/img/vector2_angle_to.png
-func AngleBetween(a, b XY) Angle.Radians { return Float.Atan2(Cross(a, b), Dot(a, b)) } //gd:Vector2.angle_to
+func AngleBetween(a, b XY) Angle.Radians { return Angle.Atan2(Cross(a, b), Dot(a, b)) } //gd:Vector2.angle_to
 
 // AngleToPoint returns the angle between the line connecting the two points and the X axis, in radians.
 // a.AngleToPoint(b) is equivalent of doing (b - a).Angle().
@@ -321,8 +321,8 @@ func Reflect(v, n XY) XY { //gd:Vector2.reflect
 
 // Rotated returns the result of rotating this vector by angle (in radians).
 func Rotated(v XY, by Angle.Radians) XY { //gd:Vector2.rotated
-	var cs = Float.X(Float.Cos(Float.X(by)))
-	var sn = Float.X(Float.Sin(Float.X(by)))
+	var cs = Float.X(Angle.Cos(by))
+	var sn = Float.X(Angle.Sin(by))
 	return XY{v.X*cs - v.Y*sn, v.X*sn + v.Y*cs}
 }
 

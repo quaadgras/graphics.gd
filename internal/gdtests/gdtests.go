@@ -60,6 +60,9 @@ func Sprint(value any) string {
 func Print(t *testing.T, output string, value any) {
 	t.Helper()
 	printed := Sprint(value)
+	if s, ok := value.(string); ok {
+		printed = s
+	}
 	if printed != output {
 		t.Fatalf("expected %q, got %q", output, printed)
 	}
