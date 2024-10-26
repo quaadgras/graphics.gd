@@ -1,6 +1,6 @@
 package gdenums
 
-type Side = classdb.Side
+type Side int
 
 const (
 /*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
@@ -13,7 +13,7 @@ const (
 	SideBottom Side = 3
 )
 
-type Corner = classdb.Corner
+type Corner int
 
 const (
 /*Top-left corner.*/
@@ -26,7 +26,7 @@ const (
 	CornerBottomLeft Corner = 3
 )
 
-type Orientation = classdb.Orientation
+type Orientation int
 
 const (
 /*General vertical alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
@@ -35,7 +35,7 @@ const (
 	Horizontal Orientation = 0
 )
 
-type ClockDirection = classdb.ClockDirection
+type ClockDirection int
 
 const (
 /*Clockwise rotation. Used by some methods (e.g. [method Image.rotate_90]).*/
@@ -44,7 +44,7 @@ const (
 	Counterclockwise ClockDirection = 1
 )
 
-type HorizontalAlignment = classdb.HorizontalAlignment
+type HorizontalAlignment int
 
 const (
 /*Horizontal left alignment, usually for text-derived classes.*/
@@ -57,7 +57,7 @@ const (
 	HorizontalAlignmentFill HorizontalAlignment = 3
 )
 
-type VerticalAlignment = classdb.VerticalAlignment
+type VerticalAlignment int
 
 const (
 /*Vertical top alignment, usually for text-derived classes.*/
@@ -70,7 +70,7 @@ const (
 	VerticalAlignmentFill VerticalAlignment = 3
 )
 
-type InlineAlignment = classdb.InlineAlignment
+type InlineAlignment int
 
 const (
 /*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
@@ -101,7 +101,7 @@ const (
 	InlineAlignmentTextMask InlineAlignment = 12
 )
 
-type EulerOrder = classdb.EulerOrder
+type EulerOrder int
 
 const (
 /*Specifies that Euler angles should be in XYZ order. When composing, the order is X, Y, Z. When decomposing, the order is reversed, first Z, then Y, and X last.*/
@@ -118,7 +118,7 @@ const (
 	EulerOrderZyx EulerOrder = 5
 )
 
-type Key = classdb.Key
+type Key int
 
 const (
 /*Enum value which doesn't correspond to any key. This is used to initialize [enum Key] properties with a generic state.*/
@@ -509,7 +509,7 @@ const (
 	KeySection Key = 167
 )
 
-type KeyModifierMask = classdb.KeyModifierMask
+type KeyModifierMask int
 
 const (
 /*Key Code mask.*/
@@ -532,7 +532,7 @@ const (
 	KeyMaskGroupSwitch KeyModifierMask = 1073741824
 )
 
-type KeyLocation = classdb.KeyLocation
+type KeyLocation int
 
 const (
 /*Used for keys which only appear once, or when a comparison doesn't need to differentiate the [code]LEFT[/code] and [code]RIGHT[/code] versions.
@@ -544,7 +544,7 @@ For example, when using [method InputEvent.is_match], an event which has [consta
 	KeyLocationRight KeyLocation = 2
 )
 
-type MouseButton = classdb.MouseButton
+type MouseButton int
 
 const (
 /*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
@@ -569,7 +569,7 @@ const (
 	MouseButtonXbutton2 MouseButton = 9
 )
 
-type MouseButtonMask = classdb.MouseButtonMask
+type MouseButtonMask int
 
 const (
 /*Primary mouse button mask, usually for the left button.*/
@@ -584,7 +584,7 @@ const (
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
 
-type JoyButton = classdb.JoyButton
+type JoyButton int
 
 const (
 /*An invalid game controller button.*/
@@ -640,7 +640,7 @@ const (
 	JoyButtonMax JoyButton = 128
 )
 
-type JoyAxis = classdb.JoyAxis
+type JoyAxis int
 
 const (
 /*An invalid game controller axis.*/
@@ -663,7 +663,7 @@ const (
 	JoyAxisMax JoyAxis = 10
 )
 
-type MIDIMessage = classdb.MIDIMessage
+type MIDIMessage int
 
 const (
 /*Does not correspond to any MIDI message. This is the default value of [member InputEventMIDI.message].*/
@@ -711,7 +711,7 @@ const (
 	MidiMessageSystemReset MIDIMessage = 255
 )
 
-type Error = classdb.Error
+type Error int
 
 const (
 /*Methods that return [enum Error] return [constant OK] when no error occurred.
@@ -827,7 +827,7 @@ if error:
 	ErrPrinterOnFire Error = 48
 )
 
-type PropertyHint = classdb.PropertyHint
+type PropertyHint int
 
 const (
 /*The property has no hint for the editor.*/
@@ -969,7 +969,7 @@ hintString = $"{Variant.Type.Array:D}:{Variant.Type.Object:D}/{PropertyHint.Reso
 	PropertyHintMax PropertyHint = 38
 )
 
-type PropertyUsageFlags = classdb.PropertyUsageFlags
+type PropertyUsageFlags int
 
 const (
 /*The property is not stored, and does not display in the editor. This is the default for non-exported properties.*/
@@ -1036,7 +1036,7 @@ const (
 	PropertyUsageNoEditor PropertyUsageFlags = 2
 )
 
-type MethodFlags = classdb.MethodFlags
+type MethodFlags int
 
 const (
 /*Flag for a normal method.*/
@@ -1057,145 +1057,145 @@ const (
 	MethodFlagsDefault MethodFlags = 1
 )
 
-type Variant.Type = classdb.Variant.Type
+type VariantType int
 
 const (
 /*Variable is [code]null[/code].*/
-	TypeNil Variant.Type = 0
+	TypeNil VariantType = 0
 /*Variable is of type [bool].*/
-	TypeBool Variant.Type = 1
+	TypeBool VariantType = 1
 /*Variable is of type [int].*/
-	TypeInt Variant.Type = 2
+	TypeInt VariantType = 2
 /*Variable is of type [float].*/
-	TypeFloat Variant.Type = 3
+	TypeFloat VariantType = 3
 /*Variable is of type [String].*/
-	TypeString Variant.Type = 4
+	TypeString VariantType = 4
 /*Variable is of type [Vector2].*/
-	TypeVector2 Variant.Type = 5
+	TypeVector2 VariantType = 5
 /*Variable is of type [Vector2i].*/
-	TypeVector2i Variant.Type = 6
+	TypeVector2i VariantType = 6
 /*Variable is of type [Rect2].*/
-	TypeRect2 Variant.Type = 7
+	TypeRect2 VariantType = 7
 /*Variable is of type [Rect2i].*/
-	TypeRect2i Variant.Type = 8
+	TypeRect2i VariantType = 8
 /*Variable is of type [Vector3].*/
-	TypeVector3 Variant.Type = 9
+	TypeVector3 VariantType = 9
 /*Variable is of type [Vector3i].*/
-	TypeVector3i Variant.Type = 10
+	TypeVector3i VariantType = 10
 /*Variable is of type [Transform2D].*/
-	TypeTransform2d Variant.Type = 11
+	TypeTransform2d VariantType = 11
 /*Variable is of type [Vector4].*/
-	TypeVector4 Variant.Type = 12
+	TypeVector4 VariantType = 12
 /*Variable is of type [Vector4i].*/
-	TypeVector4i Variant.Type = 13
+	TypeVector4i VariantType = 13
 /*Variable is of type [Plane].*/
-	TypePlane Variant.Type = 14
+	TypePlane VariantType = 14
 /*Variable is of type [Quaternion].*/
-	TypeQuaternion Variant.Type = 15
+	TypeQuaternion VariantType = 15
 /*Variable is of type [AABB].*/
-	TypeAabb Variant.Type = 16
+	TypeAabb VariantType = 16
 /*Variable is of type [Basis].*/
-	TypeBasis Variant.Type = 17
+	TypeBasis VariantType = 17
 /*Variable is of type [Transform3D].*/
-	TypeTransform3d Variant.Type = 18
+	TypeTransform3d VariantType = 18
 /*Variable is of type [Projection].*/
-	TypeProjection Variant.Type = 19
+	TypeProjection VariantType = 19
 /*Variable is of type [Color].*/
-	TypeColor Variant.Type = 20
+	TypeColor VariantType = 20
 /*Variable is of type [StringName].*/
-	TypeStringName Variant.Type = 21
+	TypeStringName VariantType = 21
 /*Variable is of type [NodePath].*/
-	TypeNodePath Variant.Type = 22
+	TypeNodePath VariantType = 22
 /*Variable is of type [RID].*/
-	TypeRid Variant.Type = 23
+	TypeRid VariantType = 23
 /*Variable is of type [Object].*/
-	TypeObject Variant.Type = 24
+	TypeObject VariantType = 24
 /*Variable is of type [Callable].*/
-	TypeCallable Variant.Type = 25
+	TypeCallable VariantType = 25
 /*Variable is of type [Signal].*/
-	TypeSignal Variant.Type = 26
+	TypeSignal VariantType = 26
 /*Variable is of type [Dictionary].*/
-	TypeDictionary Variant.Type = 27
+	TypeDictionary VariantType = 27
 /*Variable is of type [Array].*/
-	TypeArray Variant.Type = 28
+	TypeArray VariantType = 28
 /*Variable is of type [PackedByteArray].*/
-	TypePackedByteArray Variant.Type = 29
+	TypePackedByteArray VariantType = 29
 /*Variable is of type [PackedInt32Array].*/
-	TypePackedInt32Array Variant.Type = 30
+	TypePackedInt32Array VariantType = 30
 /*Variable is of type [PackedInt64Array].*/
-	TypePackedInt64Array Variant.Type = 31
+	TypePackedInt64Array VariantType = 31
 /*Variable is of type [PackedFloat32Array].*/
-	TypePackedFloat32Array Variant.Type = 32
+	TypePackedFloat32Array VariantType = 32
 /*Variable is of type [PackedFloat64Array].*/
-	TypePackedFloat64Array Variant.Type = 33
+	TypePackedFloat64Array VariantType = 33
 /*Variable is of type [PackedStringArray].*/
-	TypePackedStringArray Variant.Type = 34
+	TypePackedStringArray VariantType = 34
 /*Variable is of type [PackedVector2Array].*/
-	TypePackedVector2Array Variant.Type = 35
+	TypePackedVector2Array VariantType = 35
 /*Variable is of type [PackedVector3Array].*/
-	TypePackedVector3Array Variant.Type = 36
+	TypePackedVector3Array VariantType = 36
 /*Variable is of type [PackedColorArray].*/
-	TypePackedColorArray Variant.Type = 37
+	TypePackedColorArray VariantType = 37
 /*Variable is of type [PackedVector4Array].*/
-	TypePackedVector4Array Variant.Type = 38
+	TypePackedVector4Array VariantType = 38
 /*Represents the size of the [enum Variant.Type] enum.*/
-	TypeMax Variant.Type = 39
+	TypeMax VariantType = 39
 )
 
-type Variant.Operator = classdb.Variant.Operator
+type VariantOperator int
 
 const (
 /*Equality operator ([code]==[/code]).*/
-	OpEqual Variant.Operator = 0
+	OpEqual VariantOperator = 0
 /*Inequality operator ([code]!=[/code]).*/
-	OpNotEqual Variant.Operator = 1
+	OpNotEqual VariantOperator = 1
 /*Less than operator ([code]<[/code]).*/
-	OpLess Variant.Operator = 2
+	OpLess VariantOperator = 2
 /*Less than or equal operator ([code]<=[/code]).*/
-	OpLessEqual Variant.Operator = 3
+	OpLessEqual VariantOperator = 3
 /*Greater than operator ([code]>[/code]).*/
-	OpGreater Variant.Operator = 4
+	OpGreater VariantOperator = 4
 /*Greater than or equal operator ([code]>=[/code]).*/
-	OpGreaterEqual Variant.Operator = 5
+	OpGreaterEqual VariantOperator = 5
 /*Addition operator ([code]+[/code]).*/
-	OpAdd Variant.Operator = 6
+	OpAdd VariantOperator = 6
 /*Subtraction operator ([code]-[/code]).*/
-	OpSubtract Variant.Operator = 7
+	OpSubtract VariantOperator = 7
 /*Multiplication operator ([code]*[/code]).*/
-	OpMultiply Variant.Operator = 8
+	OpMultiply VariantOperator = 8
 /*Division operator ([code]/[/code]).*/
-	OpDivide Variant.Operator = 9
+	OpDivide VariantOperator = 9
 /*Unary negation operator ([code]-[/code]).*/
-	OpNegate Variant.Operator = 10
+	OpNegate VariantOperator = 10
 /*Unary plus operator ([code]+[/code]).*/
-	OpPositive Variant.Operator = 11
+	OpPositive VariantOperator = 11
 /*Remainder/modulo operator ([code]%[/code]).*/
-	OpModule Variant.Operator = 12
+	OpModule VariantOperator = 12
 /*Power operator ([code]**[/code]).*/
-	OpPower Variant.Operator = 13
+	OpPower VariantOperator = 13
 /*Left shift operator ([code]<<[/code]).*/
-	OpShiftLeft Variant.Operator = 14
+	OpShiftLeft VariantOperator = 14
 /*Right shift operator ([code]>>[/code]).*/
-	OpShiftRight Variant.Operator = 15
+	OpShiftRight VariantOperator = 15
 /*Bitwise AND operator ([code]&[/code]).*/
-	OpBitAnd Variant.Operator = 16
+	OpBitAnd VariantOperator = 16
 /*Bitwise OR operator ([code]|[/code]).*/
-	OpBitOr Variant.Operator = 17
+	OpBitOr VariantOperator = 17
 /*Bitwise XOR operator ([code]^[/code]).*/
-	OpBitXor Variant.Operator = 18
+	OpBitXor VariantOperator = 18
 /*Bitwise NOT operator ([code]~[/code]).*/
-	OpBitNegate Variant.Operator = 19
+	OpBitNegate VariantOperator = 19
 /*Logical AND operator ([code]and[/code] or [code]&&[/code]).*/
-	OpAnd Variant.Operator = 20
+	OpAnd VariantOperator = 20
 /*Logical OR operator ([code]or[/code] or [code]||[/code]).*/
-	OpOr Variant.Operator = 21
+	OpOr VariantOperator = 21
 /*Logical XOR operator (not implemented in GDScript).*/
-	OpXor Variant.Operator = 22
+	OpXor VariantOperator = 22
 /*Logical NOT operator ([code]not[/code] or [code]![/code]).*/
-	OpNot Variant.Operator = 23
+	OpNot VariantOperator = 23
 /*Logical IN operator ([code]in[/code]).*/
-	OpIn Variant.Operator = 24
+	OpIn VariantOperator = 24
 /*Represents the size of the [enum Variant.Operator] enum.*/
-	OpMax Variant.Operator = 25
+	OpMax VariantOperator = 25
 )
 

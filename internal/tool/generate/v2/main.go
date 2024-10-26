@@ -52,7 +52,7 @@ func generate() error {
 	fmt.Fprintln(enums, `package gdenums`)
 	fmt.Fprintln(enums)
 	for _, enum := range spec.GlobalEnums {
-		generateEnum(enums, "", enum)
+		generateEnum(enums, "", enum, "")
 		fmt.Fprintln(enums)
 	}
 	defer enums.Close()
@@ -93,13 +93,19 @@ func generate() error {
 	return nil
 }
 
-func generateEnum(code io.Writer, prefix string, enum gdjson.Enum) {
+func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb string) {
 	rename := enum.Name
 	if enum.Name == "MouseMode" {
 		rename = "MouseModeValue"
 	}
+	rename = strings.Replace(rename, ".", "", -1)
+	enum.Name = strings.Replace(enum.Name, ".", "", -1)
 
-	fmt.Fprintf(code, "type %v = classdb.%s%s\n\n", rename, prefix, enum.Name)
+	if classdb != "" {
+		fmt.Fprintf(code, "type %v = %s%s%s\n\n", rename, classdb, prefix, enum.Name)
+	} else {
+		fmt.Fprintf(code, "type %v int\n\n", rename)
+	}
 	fmt.Fprintf(code, "const (\n")
 	for _, value := range enum.Values {
 		n := convertName(value.Name)
@@ -289,7 +295,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })`, class.Name)
 	fmt.Fprintf(file, "}\n")
 	for _, enum := range class.Enums {
-		generateEnum(file, class.Name, enum)
+		generateEnum(file, class.Name, enum, "classdb.")
 	}
 	return nil
 }

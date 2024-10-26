@@ -48,8 +48,8 @@ var (
 	//  - The y points up [Vector2.Up]
 	//
 	Identity = OriginXY{
-		X: Vector2.New(1, 0),
-		Y: Vector2.New(0, 1),
+		X: Vector2.Right,
+		Y: Vector2.Up,
 	}
 
 	// When any transform is multiplied by FlipX, it negates all components of the x axis (the X column).
@@ -71,8 +71,8 @@ var (
 // New returns the identity transform.
 func New() OriginXY {
 	return OriginXY{
-		X: Vector2.New(1, 0),
-		Y: Vector2.New(0, 1),
+		X: Vector2.Right,
+		Y: Vector2.Up,
 	}
 }
 

@@ -11,7 +11,8 @@ const Tau Radians = 2 * Pi
 
 type Radians Float.X
 type Degrees Float.X
-type XYZ = struct {
+
+type Euler3D = struct {
 	X Radians
 	Y Radians
 	Z Radians
@@ -27,6 +28,12 @@ type vector2 = struct {
 // from returning NaN.
 func Acos[X Float.Any](x X) Radians { //gd:acos
 	return Radians(math.Acos(float64(Float.Clamp(x, -1.0, 1.0))))
+}
+
+// Asin returns the arc sine of x in radians. Use to get the angle of sine x. x will be clamped
+// between -1.0 and 1.0 (inclusive), in order to prevent asin from returning NaN.
+func Asin[X Float.Any](x X) Radians { //gd:asin
+	return Radians(math.Asin(float64(Float.Clamp(x, -1.0, 1.0))))
 }
 
 // Difference returns the difference between the two angles, in the range of [-Pi, +Pi].

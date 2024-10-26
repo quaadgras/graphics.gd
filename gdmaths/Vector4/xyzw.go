@@ -163,6 +163,9 @@ func IsApproximatelyEqual(a, b XYZW) bool { //gd:Vector4.is_equal_approx
 	if !Float.IsApproximatelyEqual(a.Z, b.Z) {
 		return false
 	}
+	if !Float.IsApproximatelyEqual(a.W, b.W) {
+		return false
+	}
 	return true
 }
 
@@ -175,6 +178,9 @@ func IsFinite(v XYZW) bool { //gd:Vector4.is_finite
 		return false
 	}
 	if !Float.IsFinite(v.Z) {
+		return false
+	}
+	if !Float.IsFinite(v.W) {
 		return false
 	}
 	return true

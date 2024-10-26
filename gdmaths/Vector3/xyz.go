@@ -38,8 +38,8 @@ var (
 	Inf   = XYZ{Float.Inf, Float.Inf, Float.Inf} // Inf vector, a vector with all components set to positive infinity.
 	Left  = XYZ{-1, 0, 0}                        // Left unit vector. Represents the local direction of left, and the global direction of west.
 	Right = XYZ{1, 0, 0}                         // Right unit vector. Represents the local direction of right, and the global direction of east.
-	Up    = XYZ{0, -1, 0}                        // Up unit vector.
-	Down  = XYZ{0, 1, 0}                         // Down unit vector.
+	Up    = XYZ{0, 1, 0}                         // Up unit vector.
+	Down  = XYZ{0, -1, 0}                        // Down unit vector.
 
 	// Forward unit vector. Represents the local direction of forward, and the global direction
 	// of north. Keep in mind that the forward direction for lights, cameras, etc is different
@@ -71,7 +71,7 @@ func Abs(v XYZ) XYZ { //gd:Vector3.abs
 
 // AngleBetween returns the unsigned minimum angle to the given vector, in radians.
 func AngleBetween(a, b XYZ) Angle.Radians { //gd:Vector3.angle_to
-	return Float.Atan2(Length(Cross(a, b)), Dot(a, b))
+	return Angle.Atan2(Length(Cross(a, b)), Dot(a, b))
 }
 
 // BezierDerivative returns the derivative at the given t on the Bézier curve
@@ -425,15 +425,6 @@ func OctahedronEncode(v XYZ) Vector2.XY { //gd:Vector3.octahedron_encode
 	return o
 }
 
-// Outer returns the outer product with with.
-/*func Outer(v, with XYZ) Basis { //gd:Vector3.outer
-return Basis{
-	Vector3{v[X] * with[X], v[X] * with[Y], v[X] * with[Z]},
-	Vector3{y * with[X], y * with[Y], y * with[Z]},
-	Vector3{z * with[X], z * with[Y], z * with[Z]},
-}
-}*/
-
 // Posmodf returns a vector composed of the Fposmod of this vector's components and mod.
 func Posmodf[X Float.Any](v XYZ, mod X) XYZ { //gd:Vector3.posmod
 	return XYZ{
@@ -483,7 +474,7 @@ func Sign(vec XYZ) XYZ { //gd:Vector3.sign
 // the side specified by the axis.
 func SignedAngle(v, to XYZ, axis XYZ) Angle.Radians { //gd:Vector3.signed_angle_to
 	var cross_to = Cross(v, to)
-	var unsigned_angle = Float.Atan2(Length(cross_to), Dot(v, to))
+	var unsigned_angle = Angle.Atan2(Length(cross_to), Dot(v, to))
 	var sign = Dot(cross_to, axis)
 	if sign < 0 {
 		return -unsigned_angle
@@ -577,3 +568,16 @@ func DivX[X Float.Any | Int.Any](a XYZ, b X) XYZ { //gd:Vector3/(right:float)
 func Neg(v XYZ) XYZ { return XYZ{-v.X, -v.Y, -v.Z} } //gd:Vector3-(unary)
 
 func AsArray(vec XYZ) [3]Float.X { return [3]Float.X{vec.X, vec.Y, vec.Z} }
+
+func Index[I Int.Any](v XYZ, i I) Float.X { //gd:Vector3[](index:int)
+	switch Axis(i) {
+	case X:
+		return v.X
+	case Y:
+		return v.Y
+	case Z:
+		return v.Z
+	default:
+		panic("index out of range")
+	}
+}
