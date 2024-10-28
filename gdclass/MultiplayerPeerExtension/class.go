@@ -2,7 +2,7 @@ package MultiplayerPeerExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class is designed to be inherited from a GDExtension plugin to implement custom networking layers for the multiplayer API (such as WebRTC). All the methods below [b]must[/b] be implemented to have a working custom multiplayer implementation. See also [MultiplayerAPI].
@@ -76,14 +76,11 @@ Called when a packet needs to be received by the [MultiplayerAPI], with [param r
 */
 func (Go) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, r_buffer, r_buffer_size)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -92,14 +89,11 @@ Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buf
 */
 func (Go) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		var p_buffer_size = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer, int(p_buffer_size))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -108,12 +102,9 @@ Called when the available packet count is internally requested by the [Multiplay
 */
 func (Go) _get_available_packet_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -122,12 +113,9 @@ Called when the maximum allowed packet size (in bytes) is requested by the [Mult
 */
 func (Go) _get_max_packet_size(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -136,12 +124,13 @@ Called when a packet needs to be received by the [MultiplayerAPI], if [method _g
 */
 func (Go) _get_packet_script(impl func(ptr unsafe.Pointer) []byte, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedByteSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedByteSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -150,13 +139,11 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (Go) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer []byte) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var p_buffer = mmm.Let[gd.PackedByteArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,0))
+		var p_buffer = discreet.New[gd.PackedByteArray](gd.UnsafeGet[[2]uintptr](p_args,0))
+		defer discreet.End(p_buffer)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer.Bytes())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -165,12 +152,9 @@ Called to get the channel over which the next available packet was received. See
 */
 func (Go) _get_packet_channel(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -179,12 +163,9 @@ Called to get the transfer mode the remote peer used to send the next available 
 */
 func (Go) _get_packet_mode(impl func(ptr unsafe.Pointer) classdb.MultiplayerPeerTransferMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -193,12 +174,9 @@ Called when the channel to use is set for this [MultiplayerPeer] (see [member Mu
 */
 func (Go) _set_transfer_channel(impl func(ptr unsafe.Pointer, p_channel int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var p_channel = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(p_channel))
-		gc.End()
 	}
 }
 
@@ -207,12 +185,9 @@ Called when the transfer channel to use is read on this [MultiplayerPeer] (see [
 */
 func (Go) _get_transfer_channel(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -221,12 +196,9 @@ Called when the transfer mode is set on this [MultiplayerPeer] (see [member Mult
 */
 func (Go) _set_transfer_mode(impl func(ptr unsafe.Pointer, p_mode classdb.MultiplayerPeerTransferMode) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var p_mode = gd.UnsafeGet[classdb.MultiplayerPeerTransferMode](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_mode)
-		gc.End()
 	}
 }
 
@@ -235,12 +207,9 @@ Called when the transfer mode to use is read on this [MultiplayerPeer] (see [mem
 */
 func (Go) _get_transfer_mode(impl func(ptr unsafe.Pointer) classdb.MultiplayerPeerTransferMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -249,12 +218,9 @@ Called when the target peer to use is set for this [MultiplayerPeer] (see [metho
 */
 func (Go) _set_target_peer(impl func(ptr unsafe.Pointer, p_peer int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var p_peer = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(p_peer))
-		gc.End()
 	}
 }
 
@@ -263,12 +229,9 @@ Called when the ID of the [MultiplayerPeer] who sent the most recent packet is r
 */
 func (Go) _get_packet_peer(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -277,12 +240,9 @@ Called when the "is server" status is requested on the [MultiplayerAPI]. See [me
 */
 func (Go) _is_server(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -291,11 +251,8 @@ Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
 */
 func (Go) _poll(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -304,11 +261,8 @@ Called when the multiplayer peer should be immediately closed (see [method Multi
 */
 func (Go) _close(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -317,13 +271,10 @@ Called when the connected [param p_peer] should be forcibly disconnected (see [m
 */
 func (Go) _disconnect_peer(impl func(ptr unsafe.Pointer, p_peer int, p_force bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var p_peer = gd.UnsafeGet[gd.Int](p_args,0)
 		var p_force = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(p_peer), p_force)
-		gc.End()
 	}
 }
 
@@ -332,12 +283,9 @@ Called when the unique ID of this [MultiplayerPeer] is requested (see [method Mu
 */
 func (Go) _get_unique_id(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -346,12 +294,9 @@ Called when the "refuse new connections" status is set on this [MultiplayerPeer]
 */
 func (Go) _set_refuse_new_connections(impl func(ptr unsafe.Pointer, p_enable bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var p_enable = gd.UnsafeGet[bool](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_enable)
-		gc.End()
 	}
 }
 
@@ -360,12 +305,9 @@ Called when the "refuse new connections" status is requested on this [Multiplaye
 */
 func (Go) _is_refusing_new_connections(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -374,12 +316,9 @@ Called to check if the server can act as a relay in the current configuration. S
 */
 func (Go) _is_server_relay_supported(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -388,12 +327,9 @@ Called when the connection status is requested on the [MultiplayerPeer] (see [me
 */
 func (Go) _get_connection_status(impl func(ptr unsafe.Pointer) classdb.MultiplayerPeerConnectionStatus, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -401,18 +337,9 @@ type GD = class
 type class [1]classdb.MultiplayerPeerExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MultiplayerPeerExtension"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerPeerExtension"))
+	return Go{classdb.MultiplayerPeerExtension(object)}
 }
 
 /*
@@ -420,14 +347,11 @@ Called when a packet needs to be received by the [MultiplayerAPI], with [param r
 */
 func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, r_buffer, r_buffer_size)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -436,14 +360,11 @@ Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buf
 */
 func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size gd.Int) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		var p_buffer_size = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer, p_buffer_size)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -452,12 +373,9 @@ Called when the available packet count is internally requested by the [Multiplay
 */
 func (class) _get_available_packet_count(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -466,12 +384,9 @@ Called when the maximum allowed packet size (in bytes) is requested by the [Mult
 */
 func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -480,12 +395,13 @@ Called when a packet needs to be received by the [MultiplayerAPI], if [method _g
 */
 func (class) _get_packet_script(impl func(ptr unsafe.Pointer) gd.PackedByteArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -494,13 +410,10 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer gd.PackedByteArray) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var p_buffer = mmm.Let[gd.PackedByteArray](ctx.Lifetime, ctx.API, gd.UnsafeGet[[2]uintptr](p_args,0))
+		var p_buffer = discreet.New[gd.PackedByteArray](gd.UnsafeGet[[2]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -509,12 +422,9 @@ Called to get the channel over which the next available packet was received. See
 */
 func (class) _get_packet_channel(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -523,12 +433,9 @@ Called to get the transfer mode the remote peer used to send the next available 
 */
 func (class) _get_packet_mode(impl func(ptr unsafe.Pointer) classdb.MultiplayerPeerTransferMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -537,12 +444,9 @@ Called when the channel to use is set for this [MultiplayerPeer] (see [member Mu
 */
 func (class) _set_transfer_channel(impl func(ptr unsafe.Pointer, p_channel gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var p_channel = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_channel)
-		ctx.End()
 	}
 }
 
@@ -551,12 +455,9 @@ Called when the transfer channel to use is read on this [MultiplayerPeer] (see [
 */
 func (class) _get_transfer_channel(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -565,12 +466,9 @@ Called when the transfer mode is set on this [MultiplayerPeer] (see [member Mult
 */
 func (class) _set_transfer_mode(impl func(ptr unsafe.Pointer, p_mode classdb.MultiplayerPeerTransferMode) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var p_mode = gd.UnsafeGet[classdb.MultiplayerPeerTransferMode](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_mode)
-		ctx.End()
 	}
 }
 
@@ -579,12 +477,9 @@ Called when the transfer mode to use is read on this [MultiplayerPeer] (see [mem
 */
 func (class) _get_transfer_mode(impl func(ptr unsafe.Pointer) classdb.MultiplayerPeerTransferMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -593,12 +488,9 @@ Called when the target peer to use is set for this [MultiplayerPeer] (see [metho
 */
 func (class) _set_target_peer(impl func(ptr unsafe.Pointer, p_peer gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var p_peer = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_peer)
-		ctx.End()
 	}
 }
 
@@ -607,12 +499,9 @@ Called when the ID of the [MultiplayerPeer] who sent the most recent packet is r
 */
 func (class) _get_packet_peer(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -621,12 +510,9 @@ Called when the "is server" status is requested on the [MultiplayerAPI]. See [me
 */
 func (class) _is_server(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -635,11 +521,8 @@ Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
 */
 func (class) _poll(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -648,11 +531,8 @@ Called when the multiplayer peer should be immediately closed (see [method Multi
 */
 func (class) _close(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -661,13 +541,10 @@ Called when the connected [param p_peer] should be forcibly disconnected (see [m
 */
 func (class) _disconnect_peer(impl func(ptr unsafe.Pointer, p_peer gd.Int, p_force bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var p_peer = gd.UnsafeGet[gd.Int](p_args,0)
 		var p_force = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_peer, p_force)
-		ctx.End()
 	}
 }
 
@@ -676,12 +553,9 @@ Called when the unique ID of this [MultiplayerPeer] is requested (see [method Mu
 */
 func (class) _get_unique_id(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -690,12 +564,9 @@ Called when the "refuse new connections" status is set on this [MultiplayerPeer]
 */
 func (class) _set_refuse_new_connections(impl func(ptr unsafe.Pointer, p_enable bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var p_enable = gd.UnsafeGet[bool](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, p_enable)
-		ctx.End()
 	}
 }
 
@@ -704,12 +575,9 @@ Called when the "refuse new connections" status is requested on this [Multiplaye
 */
 func (class) _is_refusing_new_connections(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -718,12 +586,9 @@ Called to check if the server can act as a relay in the current configuration. S
 */
 func (class) _is_server_relay_supported(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -732,12 +597,9 @@ Called when the connection status is requested on the [MultiplayerPeer] (see [me
 */
 func (class) _get_connection_status(impl func(ptr unsafe.Pointer) classdb.MultiplayerPeerConnectionStatus, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -807,4 +669,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsMultiplayerPeer(), name)
 	}
 }
-func init() {classdb.Register("MultiplayerPeerExtension", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MultiplayerPeerExtension", func(ptr gd.Object) any { return classdb.MultiplayerPeerExtension(ptr) })}

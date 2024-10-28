@@ -1,7 +1,6 @@
-//go:build !generate
+package gdenums
 
-package gd
-
+// Error implements the [error] interface.
 func (err Error) Error() string {
 	switch err {
 	case Failed:

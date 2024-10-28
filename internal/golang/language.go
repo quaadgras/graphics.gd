@@ -1,16 +1,6 @@
 package golang
 
-import (
-	"fmt"
-	"unsafe"
-
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdclass/Script"
-	"grow.graphics/gd/gdclass/ScriptLanguageExtension"
-	classdb "grow.graphics/gd/internal/classdb"
-)
-
-type Language struct {
+/*type Language struct {
 	gd.Class[Language, ScriptLanguageExtension.GD] `gd:"GoLanguage"`
 }
 
@@ -18,13 +8,13 @@ func (lang *Language) AddGlobalConstant(name gd.StringName, value gd.Variant)   
 func (lang *Language) AddNamedGlobalConstant(name gd.StringName, value gd.Variant) {}
 
 func (lang *Language) AutoIndentCode(code gd.String, from, upto gd.Int) gd.String {
-	return lang.Temporary.String("")
+	return internal.NewString("")
 }
 func (lang *Language) CanInheritFromFile() gd.Bool {
 	return false
 }
 func (lang *Language) CompleteCode(code, path gd.String, owner gd.Object) gd.Dictionary {
-	return lang.Temporary.Dictionary()
+	return internal.NewDictionary()
 }
 func (lang *Language) CreateScript() gd.Object {
 	fmt.Println("CreateScript")
@@ -85,12 +75,12 @@ func (lang *Language) GetBuiltinTemplates(object gd.StringName) gd.ArrayOf[gd.Di
 
 // GetCommentDelimeters should return the comment delimeters for the language.
 func (lang *Language) GetCommentDelimeters() gd.PackedStringArray {
-	return lang.Temporary.PackedStringSlice([]string{"//", "/* */"})
+	return lang.Temporary.PackedStringSlice([]string{"//", "/* "})
 }
 
 // GetDocCommentDelimiters should return the comment delimeters for the language.
 func (lang *Language) GetDocCommentDelimiters() gd.PackedStringArray {
-	return lang.Temporary.PackedStringSlice([]string{"//", "/* */"})
+	return lang.Temporary.PackedStringSlice([]string{"//", "/* "})
 }
 
 // GetExtension should return the file extension for source files.
@@ -210,3 +200,4 @@ func (lang *Language) Validate(script, path gd.String, functions, errors, warnin
 func (lang *Language) ValidatePath(path gd.String) gd.String {
 	return lang.Temporary.String("")
 }
+*/

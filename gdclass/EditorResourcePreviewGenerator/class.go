@@ -2,7 +2,7 @@ package EditorResourcePreviewGenerator
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[/code] in [EditorSettings] to find out the right size to do previews at.
@@ -46,13 +46,11 @@ Returns [code]true[/code] if your generator supports the resource of type [param
 */
 func (Go) _handles(impl func(ptr unsafe.Pointer, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var atype = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -64,16 +62,18 @@ Care must be taken because this function is always called from a thread (not the
 */
 func (Go) _generate(impl func(ptr unsafe.Pointer, resource gdclass.Resource, size gd.Vector2i, metadata gd.Dictionary) gdclass.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
-		var metadata = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var metadata = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,2))
+		defer discreet.End(metadata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, size, metadata)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -85,15 +85,18 @@ Care must be taken because this function is always called from a thread (not the
 */
 func (Go) _generate_from_path(impl func(ptr unsafe.Pointer, path string, size gd.Vector2i, metadata gd.Dictionary) gdclass.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
-		var metadata = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var metadata = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,2))
+		defer discreet.End(metadata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), size, metadata)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -103,12 +106,9 @@ By default, it returns [code]false[/code].
 */
 func (Go) _generate_small_preview_automatically(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -118,12 +118,9 @@ By default, it returns [code]false[/code].
 */
 func (Go) _can_generate_small_preview(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -131,18 +128,9 @@ type GD = class
 type class [1]classdb.EditorResourcePreviewGenerator
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorResourcePreviewGenerator"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourcePreviewGenerator"))
+	return Go{classdb.EditorResourcePreviewGenerator(object)}
 }
 
 /*
@@ -150,13 +138,10 @@ Returns [code]true[/code] if your generator supports the resource of type [param
 */
 func (class) _handles(impl func(ptr unsafe.Pointer, atype gd.String) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var atype = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -168,16 +153,17 @@ Care must be taken because this function is always called from a thread (not the
 */
 func (class) _generate(impl func(ptr unsafe.Pointer, resource gdclass.Resource, size gd.Vector2i, metadata gd.Dictionary) gdclass.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
-		var metadata = mmm.Let[gd.Dictionary](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,2))
+		var metadata = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, size, metadata)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -189,15 +175,16 @@ Care must be taken because this function is always called from a thread (not the
 */
 func (class) _generate_from_path(impl func(ptr unsafe.Pointer, path gd.String, size gd.Vector2i, metadata gd.Dictionary) gdclass.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		var size = gd.UnsafeGet[gd.Vector2i](p_args,1)
-		var metadata = mmm.Let[gd.Dictionary](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,2))
+		var metadata = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, size, metadata)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -207,12 +194,9 @@ By default, it returns [code]false[/code].
 */
 func (class) _generate_small_preview_automatically(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -222,12 +206,9 @@ By default, it returns [code]false[/code].
 */
 func (class) _can_generate_small_preview(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -257,4 +238,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorResourcePreviewGenerator", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorResourcePreviewGenerator", func(ptr gd.Object) any { return classdb.EditorResourcePreviewGenerator(ptr) })}

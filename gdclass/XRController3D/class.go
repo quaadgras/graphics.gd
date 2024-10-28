@@ -2,7 +2,7 @@ package XRController3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This is a helper spatial node that is linked to the tracking of controllers. It also offers several handy passthroughs to the state of buttons and such on the controllers.
@@ -30,39 +30,34 @@ type Go [1]classdb.XRController3D
 Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 func (self Go) IsButtonPressed(name string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).IsButtonPressed(gc.StringName(name)))
+	return bool(class(self).IsButtonPressed(gd.NewStringName(name)))
 }
 
 /*
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
 func (self Go) GetInput(name string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GetInput(gc, gc.StringName(name)))
+	return gd.Variant(class(self).GetInput(gd.NewStringName(name)))
 }
 
 /*
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
 func (self Go) GetFloat(name string) float64 {
-	gc := gd.GarbageCollector(); _ = gc
-	return float64(float64(class(self).GetFloat(gc.StringName(name))))
+	return float64(float64(class(self).GetFloat(gd.NewStringName(name))))
 }
 
 /*
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
 func (self Go) GetVector2(name string) gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Vector2(class(self).GetVector2(gc.StringName(name)))
+	return gd.Vector2(class(self).GetVector2(gd.NewStringName(name)))
 }
 
 /*
 Returns the hand holding this controller, if known. See [enum XRPositionalTracker.TrackerHand].
 */
 func (self Go) GetTrackerHand() classdb.XRPositionalTrackerTrackerHand {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.XRPositionalTrackerTrackerHand(class(self).GetTrackerHand())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -70,18 +65,9 @@ type GD = class
 type class [1]classdb.XRController3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("XRController3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRController3D"))
+	return Go{classdb.XRController3D(object)}
 }
 
 /*
@@ -89,11 +75,10 @@ Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 //go:nosplit
 func (self class) IsButtonPressed(name gd.StringName) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRController3D.Bind_is_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_is_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -102,13 +87,12 @@ func (self class) IsButtonPressed(name gd.StringName) bool {
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
 //go:nosplit
-func (self class) GetInput(ctx gd.Lifetime, name gd.StringName) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetInput(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRController3D.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -117,11 +101,10 @@ Returns a numeric value for the input with the given [param name]. This is used 
 */
 //go:nosplit
 func (self class) GetFloat(name gd.StringName) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRController3D.Bind_get_float, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_float, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,11 +114,10 @@ Returns a [Vector2] for the input with the given [param name]. This is used for 
 */
 //go:nosplit
 func (self class) GetVector2(name gd.StringName) gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRController3D.Bind_get_vector2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_vector2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -145,41 +127,35 @@ Returns the hand holding this controller, if known. See [enum XRPositionalTracke
 */
 //go:nosplit
 func (self class) GetTrackerHand() classdb.XRPositionalTrackerTrackerHand {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.XRPositionalTrackerTrackerHand](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRController3D.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 func (self Go) OnButtonPressed(cb func(name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("button_pressed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnButtonReleased(cb func(name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("button_released"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnInputFloatChanged(cb func(name string, value float64)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("input_float_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnInputVector2Changed(cb func(name string, value gd.Vector2)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("input_vector2_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnProfileChanged(cb func(role string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("profile_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -203,4 +179,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsXRNode3D(), name)
 	}
 }
-func init() {classdb.Register("XRController3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("XRController3D", func(ptr gd.Object) any { return classdb.XRController3D(ptr) })}

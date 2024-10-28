@@ -2,7 +2,7 @@ package SurfaceTool
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
@@ -47,7 +47,6 @@ By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
 func (self Go) SetSkinWeightCount(count classdb.SurfaceToolSkinWeightCount) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSkinWeightCount(count)
 }
 
@@ -57,7 +56,6 @@ Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 [b]Note:[/b] This function returns an enum, not the exact number of weights.
 */
 func (self Go) GetSkinWeightCount() classdb.SurfaceToolSkinWeightCount {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.SurfaceToolSkinWeightCount(class(self).GetSkinWeightCount())
 }
 
@@ -66,7 +64,6 @@ Sets the color format for this custom [param channel_index]. Use [constant CUSTO
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
 func (self Go) SetCustomFormat(channel_index int, format classdb.SurfaceToolCustomFormat) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCustomFormat(gd.Int(channel_index), format)
 }
 
@@ -74,7 +71,6 @@ func (self Go) SetCustomFormat(channel_index int, format classdb.SurfaceToolCust
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
 func (self Go) GetCustomFormat(channel_index int) classdb.SurfaceToolCustomFormat {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.SurfaceToolCustomFormat(class(self).GetCustomFormat(gd.Int(channel_index)))
 }
 
@@ -82,7 +78,6 @@ func (self Go) GetCustomFormat(channel_index int) classdb.SurfaceToolCustomForma
 Called before adding any vertices. Takes the primitive type as an argument (e.g. [constant Mesh.PRIMITIVE_TRIANGLES]).
 */
 func (self Go) Begin(primitive classdb.MeshPrimitiveType) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Begin(primitive)
 }
 
@@ -90,7 +85,6 @@ func (self Go) Begin(primitive classdb.MeshPrimitiveType) {
 Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
 */
 func (self Go) AddVertex(vertex gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddVertex(vertex)
 }
 
@@ -99,7 +93,6 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 [b]Note:[/b] The material must have [member BaseMaterial3D.vertex_color_use_as_albedo] enabled for the vertex color to be visible.
 */
 func (self Go) SetColor(color gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetColor(color)
 }
 
@@ -107,7 +100,6 @@ func (self Go) SetColor(color gd.Color) {
 Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Go) SetNormal(normal gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetNormal(normal)
 }
 
@@ -115,7 +107,6 @@ func (self Go) SetNormal(normal gd.Vector3) {
 Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Go) SetTangent(tangent gd.Plane) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTangent(tangent)
 }
 
@@ -123,7 +114,6 @@ func (self Go) SetTangent(tangent gd.Plane) {
 Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Go) SetUv(uv gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUv(uv)
 }
 
@@ -131,7 +121,6 @@ func (self Go) SetUv(uv gd.Vector2) {
 Specifies an optional second set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Go) SetUv2(uv2 gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUv2(uv2)
 }
 
@@ -139,16 +128,14 @@ func (self Go) SetUv2(uv2 gd.Vector2) {
 Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] must contain 4 integers.
 */
 func (self Go) SetBones(bones []int32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetBones(gc.PackedInt32Slice(bones))
+	class(self).SetBones(gd.NewPackedInt32Slice(bones))
 }
 
 /*
 Specifies weight values to use for the [i]next[/i] vertex. [param weights] must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 func (self Go) SetWeights(weights []float32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetWeights(gc.PackedFloat32Slice(weights))
+	class(self).SetWeights(gd.NewPackedFloat32Slice(weights))
 }
 
 /*
@@ -156,7 +143,6 @@ Sets the custom value on this vertex for [param channel_index].
 [method set_custom_format] must be called first for this [param channel_index]. Formats which are not RGBA will ignore other color channels.
 */
 func (self Go) SetCustom(channel_index int, custom_color gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCustom(gd.Int(channel_index), custom_color)
 }
 
@@ -165,7 +151,6 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 [b]Note:[/b] This function actually takes a [code]uint32_t[/code], so C# users should use [code]uint32.MaxValue[/code] instead of [code]-1[/code] to produce a mesh with flat normals.
 */
 func (self Go) SetSmoothGroup(index int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSmoothGroup(gd.Int(index))
 }
 
@@ -174,15 +159,13 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Go) AddTriangleFan(vertices []gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddTriangleFan(gc.PackedVector3Slice(vertices), gc.PackedVector2Slice(([1][]gd.Vector2{}[0])), gc.PackedColorSlice(([1][]gd.Color{}[0])), gc.PackedVector2Slice(([1][]gd.Vector2{}[0])), gc.PackedVector3Slice(([1][]gd.Vector3{}[0])), ([1]gd.ArrayOf[gd.Plane]{}[0]))
+	class(self).AddTriangleFan(gd.NewPackedVector3Slice(vertices), gd.NewPackedVector2Slice(([1][]gd.Vector2{}[0])), gd.NewPackedColorSlice(([1][]gd.Color{}[0])), gd.NewPackedVector2Slice(([1][]gd.Vector2{}[0])), gd.NewPackedVector3Slice(([1][]gd.Vector3{}[0])), ([1]gd.Array{}[0]))
 }
 
 /*
 Adds a vertex to index array if you are using indexed vertices. Does not need to be called before adding vertices.
 */
 func (self Go) AddIndex(index int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddIndex(gd.Int(index))
 }
 
@@ -190,7 +173,6 @@ func (self Go) AddIndex(index int) {
 Shrinks the vertex array by creating an index array. This can improve performance by avoiding vertex reuse.
 */
 func (self Go) Index() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Index()
 }
 
@@ -198,7 +180,6 @@ func (self Go) Index() {
 Removes the index array by expanding the vertex array.
 */
 func (self Go) Deindex() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Deindex()
 }
 
@@ -208,7 +189,6 @@ Generates normals from vertices so you do not have to do it manually. If [param 
 [b]Note:[/b] [method generate_normals] takes smooth groups into account. To generate smooth normals, set the smooth group to a value greater than or equal to [code]0[/code] using [method set_smooth_group] or leave the smooth group at the default of [code]0[/code]. To generate flat normals, set the smooth group to [code]-1[/code] using [method set_smooth_group] prior to adding vertices.
 */
 func (self Go) GenerateNormals() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).GenerateNormals(false)
 }
 
@@ -216,7 +196,6 @@ func (self Go) GenerateNormals() {
 Generates a tangent vector for each vertex. Requires that each vertex have UVs and normals set already (see [method generate_normals]).
 */
 func (self Go) GenerateTangents() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).GenerateTangents()
 }
 
@@ -224,7 +203,6 @@ func (self Go) GenerateTangents() {
 Optimizes triangle sorting for performance. Requires that [method get_primitive_type] is [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Go) OptimizeIndicesForCache() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).OptimizeIndicesForCache()
 }
 
@@ -232,7 +210,6 @@ func (self Go) OptimizeIndicesForCache() {
 Returns the axis-aligned bounding box of the vertex positions.
 */
 func (self Go) GetAabb() gd.AABB {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.AABB(class(self).GetAabb())
 }
 
@@ -240,15 +217,13 @@ func (self Go) GetAabb() gd.AABB {
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 func (self Go) GenerateLod(nd_threshold float64) []int32 {
-	gc := gd.GarbageCollector(); _ = gc
-	return []int32(class(self).GenerateLod(gc, gd.Float(nd_threshold), gd.Int(3)).AsSlice())
+	return []int32(class(self).GenerateLod(gd.Float(nd_threshold), gd.Int(3)).AsSlice())
 }
 
 /*
 Sets [Material] to be used by the [Mesh] you are constructing.
 */
 func (self Go) SetMaterial(material gdclass.Material) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaterial(material)
 }
 
@@ -256,7 +231,6 @@ func (self Go) SetMaterial(material gdclass.Material) {
 Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Go) GetPrimitiveType() classdb.MeshPrimitiveType {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.MeshPrimitiveType(class(self).GetPrimitiveType())
 }
 
@@ -264,7 +238,6 @@ func (self Go) GetPrimitiveType() classdb.MeshPrimitiveType {
 Clear all information passed into the surface tool so far.
 */
 func (self Go) Clear() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Clear()
 }
 
@@ -272,7 +245,6 @@ func (self Go) Clear() {
 Creates a vertex array from an existing [Mesh].
 */
 func (self Go) CreateFrom(existing gdclass.Mesh, surface int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).CreateFrom(existing, gd.Int(surface))
 }
 
@@ -280,7 +252,6 @@ func (self Go) CreateFrom(existing gdclass.Mesh, surface int) {
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Go) CreateFromArrays(arrays gd.Array) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).CreateFromArrays(arrays, 3)
 }
 
@@ -288,15 +259,13 @@ func (self Go) CreateFromArrays(arrays gd.Array) {
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
 func (self Go) CreateFromBlendShape(existing gdclass.Mesh, surface int, blend_shape string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).CreateFromBlendShape(existing, gd.Int(surface), gc.String(blend_shape))
+	class(self).CreateFromBlendShape(existing, gd.Int(surface), gd.NewString(blend_shape))
 }
 
 /*
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
 func (self Go) AppendFrom(existing gdclass.Mesh, surface int, transform gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AppendFrom(existing, gd.Int(surface), transform)
 }
 
@@ -305,34 +274,23 @@ Returns a constructed [ArrayMesh] from current information passed in. If an exis
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
 func (self Go) Commit() gdclass.ArrayMesh {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.ArrayMesh(class(self).Commit(gc, ([1]gdclass.ArrayMesh{}[0]), gd.Int(0)))
+	return gdclass.ArrayMesh(class(self).Commit(([1]gdclass.ArrayMesh{}[0]), gd.Int(0)))
 }
 
 /*
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
 func (self Go) CommitToArrays() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Array(class(self).CommitToArrays(gc))
+	return gd.Array(class(self).CommitToArrays())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.SurfaceTool
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("SurfaceTool"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SurfaceTool"))
+	return Go{classdb.SurfaceTool(object)}
 }
 
 /*
@@ -342,11 +300,10 @@ By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
 */
 //go:nosplit
 func (self class) SetSkinWeightCount(count classdb.SurfaceToolSkinWeightCount)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -356,10 +313,9 @@ Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 */
 //go:nosplit
 func (self class) GetSkinWeightCount() classdb.SurfaceToolSkinWeightCount {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.SurfaceToolSkinWeightCount](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -370,12 +326,11 @@ Must be invoked after [method begin] and should be set before [method commit] or
 */
 //go:nosplit
 func (self class) SetCustomFormat(channel_index gd.Int, format classdb.SurfaceToolCustomFormat)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, format)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_custom_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -383,11 +338,10 @@ Returns the format for custom [param channel_index] (currently up to 4). Returns
 */
 //go:nosplit
 func (self class) GetCustomFormat(channel_index gd.Int) classdb.SurfaceToolCustomFormat {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	var r_ret = callframe.Ret[classdb.SurfaceToolCustomFormat](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_get_custom_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_custom_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -397,11 +351,10 @@ Called before adding any vertices. Takes the primitive type as an argument (e.g.
 */
 //go:nosplit
 func (self class) Begin(primitive classdb.MeshPrimitiveType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -409,11 +362,10 @@ Specifies the position of current vertex. Should be called after specifying othe
 */
 //go:nosplit
 func (self class) AddVertex(vertex gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_add_vertex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_vertex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -422,11 +374,10 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 */
 //go:nosplit
 func (self class) SetColor(color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -434,11 +385,10 @@ Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to h
 */
 //go:nosplit
 func (self class) SetNormal(normal gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, normal)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -446,11 +396,10 @@ Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to 
 */
 //go:nosplit
 func (self class) SetTangent(tangent gd.Plane)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, tangent)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -458,11 +407,10 @@ Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every ve
 */
 //go:nosplit
 func (self class) SetUv(uv gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, uv)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_uv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -470,11 +418,10 @@ Specifies an optional second set of UV coordinates to use for the [i]next[/i] ve
 */
 //go:nosplit
 func (self class) SetUv2(uv2 gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_uv2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -482,11 +429,10 @@ Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] mus
 */
 //go:nosplit
 func (self class) SetBones(bones gd.PackedInt32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(bones))
+	callframe.Arg(frame, discreet.Get(bones))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -494,11 +440,10 @@ Specifies weight values to use for the [i]next[/i] vertex. [param weights] must 
 */
 //go:nosplit
 func (self class) SetWeights(weights gd.PackedFloat32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(weights))
+	callframe.Arg(frame, discreet.Get(weights))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -507,12 +452,11 @@ Sets the custom value on this vertex for [param channel_index].
 */
 //go:nosplit
 func (self class) SetCustom(channel_index gd.Int, custom_color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, custom_color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_custom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -521,11 +465,10 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 */
 //go:nosplit
 func (self class) SetSmoothGroup(index gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_smooth_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_smooth_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -533,17 +476,16 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents gd.ArrayOf[gd.Plane])  {
-	var selfPtr = self[0].AsPointer()
+func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents gd.Array)  {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(vertices))
-	callframe.Arg(frame, mmm.Get(uvs))
-	callframe.Arg(frame, mmm.Get(colors))
-	callframe.Arg(frame, mmm.Get(uv2s))
-	callframe.Arg(frame, mmm.Get(normals))
-	callframe.Arg(frame, mmm.Get(tangents))
+	callframe.Arg(frame, discreet.Get(vertices))
+	callframe.Arg(frame, discreet.Get(uvs))
+	callframe.Arg(frame, discreet.Get(colors))
+	callframe.Arg(frame, discreet.Get(uv2s))
+	callframe.Arg(frame, discreet.Get(normals))
+	callframe.Arg(frame, discreet.Get(tangents))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -551,11 +493,10 @@ Adds a vertex to index array if you are using indexed vertices. Does not need to
 */
 //go:nosplit
 func (self class) AddIndex(index gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_add_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -563,10 +504,9 @@ Shrinks the vertex array by creating an index array. This can improve performanc
 */
 //go:nosplit
 func (self class) Index()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -574,10 +514,9 @@ Removes the index array by expanding the vertex array.
 */
 //go:nosplit
 func (self class) Deindex()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_deindex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_deindex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -587,11 +526,10 @@ Generates normals from vertices so you do not have to do it manually. If [param 
 */
 //go:nosplit
 func (self class) GenerateNormals(flip bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, flip)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_generate_normals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_normals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -599,10 +537,9 @@ Generates a tangent vector for each vertex. Requires that each vertex have UVs a
 */
 //go:nosplit
 func (self class) GenerateTangents()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_generate_tangents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_tangents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -610,10 +547,9 @@ Optimizes triangle sorting for performance. Requires that [method get_primitive_
 */
 //go:nosplit
 func (self class) OptimizeIndicesForCache()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_optimize_indices_for_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_optimize_indices_for_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -621,10 +557,9 @@ Returns the axis-aligned bounding box of the vertex positions.
 */
 //go:nosplit
 func (self class) GetAabb() gd.AABB {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -633,14 +568,13 @@ func (self class) GetAabb() gd.AABB {
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 //go:nosplit
-func (self class) GenerateLod(ctx gd.Lifetime, nd_threshold gd.Float, target_index_count gd.Int) gd.PackedInt32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, nd_threshold)
 	callframe.Arg(frame, target_index_count)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_generate_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -649,11 +583,10 @@ Sets [Material] to be used by the [Mesh] you are constructing.
 */
 //go:nosplit
 func (self class) SetMaterial(material gdclass.Material)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(material[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(material[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -661,10 +594,9 @@ Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
 func (self class) GetPrimitiveType() classdb.MeshPrimitiveType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.MeshPrimitiveType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -674,10 +606,9 @@ Clear all information passed into the surface tool so far.
 */
 //go:nosplit
 func (self class) Clear()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -685,12 +616,11 @@ Creates a vertex array from an existing [Mesh].
 */
 //go:nosplit
 func (self class) CreateFrom(existing gdclass.Mesh, surface gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(existing[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_create_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -698,12 +628,11 @@ Creates this SurfaceTool from existing vertex arrays such as returned by [method
 */
 //go:nosplit
 func (self class) CreateFromArrays(arrays gd.Array, primitive_type classdb.MeshPrimitiveType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(arrays))
+	callframe.Arg(frame, discreet.Get(arrays))
 	callframe.Arg(frame, primitive_type)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_create_from_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -711,13 +640,12 @@ Creates a vertex array from the specified blend shape of an existing [Mesh]. Thi
 */
 //go:nosplit
 func (self class) CreateFromBlendShape(existing gdclass.Mesh, surface gd.Int, blend_shape gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(existing[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
-	callframe.Arg(frame, mmm.Get(blend_shape))
+	callframe.Arg(frame, discreet.Get(blend_shape))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_create_from_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -725,13 +653,12 @@ Append vertices from a given [Mesh] surface onto the current vertex array with s
 */
 //go:nosplit
 func (self class) AppendFrom(existing gdclass.Mesh, surface gd.Int, transform gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(existing[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_append_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_append_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -739,15 +666,13 @@ Returns a constructed [ArrayMesh] from current information passed in. If an exis
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
 //go:nosplit
-func (self class) Commit(ctx gd.Lifetime, existing gdclass.ArrayMesh, flags gd.Int) gdclass.ArrayMesh {
-	var selfPtr = self[0].AsPointer()
+func (self class) Commit(existing gdclass.ArrayMesh, flags gd.Int) gdclass.ArrayMesh {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(existing[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(existing[0])[0])
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.ArrayMesh
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.ArrayMesh{classdb.ArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -755,12 +680,11 @@ func (self class) Commit(ctx gd.Lifetime, existing gdclass.ArrayMesh, flags gd.I
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
 //go:nosplit
-func (self class) CommitToArrays(ctx gd.Lifetime) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) CommitToArrays() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -780,7 +704,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("SurfaceTool", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("SurfaceTool", func(ptr gd.Object) any { return classdb.SurfaceTool(ptr) })}
 type CustomFormat = classdb.SurfaceToolCustomFormat
 
 const (

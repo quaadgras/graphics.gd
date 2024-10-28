@@ -43,6 +43,16 @@ func Difference(from, to Radians) Radians { //gd:angle_difference
 	return Float.Mod(2*difference, Tau) - difference
 }
 
+// Tan returns the tangent of angle x in radians.
+func Tan(x Radians) Float.X { return Float.X(math.Tan(float64(x))) } //tan
+
+// Atan returns the arc tangent of x in radians. Use it to get the angle from an angle's tangent in
+// trigonometry. The method cannot know in which quadrant the angle should fall. See atan2 if you
+// have both y and x.
+func Atan[X Float.Any](x X) Radians { //atan
+	return Radians(math.Atan(float64(x)))
+}
+
 // Atan2 returns the arc tangent of y/x in radians. Use to get the angle of tangent y/x. To compute
 // the value, the method takes into account the sign of both arguments in order to determine the quadrant.
 //
@@ -77,3 +87,6 @@ func Lerp[X Float.Any](from, to Radians, weight X) Radians { //gd:lerp_angle
 func (angle Radians) AsVector2() vector2 { //gd:Vector2.from_angle
 	return vector2{float(math.Cos(float64(angle))), float(math.Sin(float64(angle)))}
 }
+
+func InRadians(deg Degrees) Radians { return Radians(deg) * (Pi / 180.0) } //deg_to_rad
+func InDegrees(rad Radians) Degrees { return Degrees(rad * (180.0 / Pi)) } //rad_to_deg

@@ -2,7 +2,7 @@ package ParallaxBackground
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A ParallaxBackground uses one or more [ParallaxLayer] child nodes to create a parallax effect. Each [ParallaxLayer] can move at a different speed using [member ParallaxLayer.motion_offset]. This creates an illusion of depth in a 2D game. If not used with a [Camera2D], you must manually calculate the [member scroll_offset].
@@ -27,190 +27,157 @@ type GD = class
 type class [1]classdb.ParallaxBackground
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ParallaxBackground"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ParallaxBackground"))
+	return Go{classdb.ParallaxBackground(object)}
 }
 
 func (self Go) ScrollOffset() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector2(class(self).GetScrollOffset())
 }
 
 func (self Go) SetScrollOffset(value gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetScrollOffset(value)
 }
 
 func (self Go) ScrollBaseOffset() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector2(class(self).GetScrollBaseOffset())
 }
 
 func (self Go) SetScrollBaseOffset(value gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetScrollBaseOffset(value)
 }
 
 func (self Go) ScrollBaseScale() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector2(class(self).GetScrollBaseScale())
 }
 
 func (self Go) SetScrollBaseScale(value gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetScrollBaseScale(value)
 }
 
 func (self Go) ScrollLimitBegin() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector2(class(self).GetLimitBegin())
 }
 
 func (self Go) SetScrollLimitBegin(value gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetLimitBegin(value)
 }
 
 func (self Go) ScrollLimitEnd() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector2(class(self).GetLimitEnd())
 }
 
 func (self Go) SetScrollLimitEnd(value gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetLimitEnd(value)
 }
 
 func (self Go) ScrollIgnoreCameraZoom() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsIgnoreCameraZoom())
 }
 
 func (self Go) SetScrollIgnoreCameraZoom(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetIgnoreCameraZoom(value)
 }
 
 //go:nosplit
 func (self class) SetScrollOffset(offset gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_set_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_set_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetScrollOffset() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetScrollBaseOffset(offset gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_set_scroll_base_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_set_scroll_base_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetScrollBaseOffset() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_get_scroll_base_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetScrollBaseScale(scale gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_set_scroll_base_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_set_scroll_base_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetScrollBaseScale() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_get_scroll_base_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetLimitBegin(offset gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_set_limit_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_set_limit_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetLimitBegin() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_get_limit_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_limit_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetLimitEnd(offset gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_set_limit_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_set_limit_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetLimitEnd() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_get_limit_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_get_limit_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetIgnoreCameraZoom(ignore bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, ignore)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_set_ignore_camera_zoom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_set_ignore_camera_zoom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsIgnoreCameraZoom() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ParallaxBackground.Bind_is_ignore_camera_zoom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxBackground.Bind_is_ignore_camera_zoom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -233,4 +200,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsCanvasLayer(), name)
 	}
 }
-func init() {classdb.Register("ParallaxBackground", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ParallaxBackground", func(ptr gd.Object) any { return classdb.ParallaxBackground(ptr) })}

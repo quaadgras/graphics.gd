@@ -2,7 +2,7 @@ package Shader
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
@@ -26,7 +26,6 @@ type Go [1]classdb.Shader
 Returns the shader mode for the shader.
 */
 func (self Go) GetMode() classdb.ShaderMode {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ShaderMode(class(self).GetMode())
 }
 
@@ -36,8 +35,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 func (self Go) SetDefaultTextureParameter(name string, texture gdclass.Texture2D) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDefaultTextureParameter(gc.StringName(name), texture, gd.Int(0))
+	class(self).SetDefaultTextureParameter(gd.NewStringName(name), texture, gd.Int(0))
 }
 
 /*
@@ -46,8 +44,7 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 func (self Go) GetDefaultTextureParameter(name string) gdclass.Texture2D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Texture2D(class(self).GetDefaultTextureParameter(gc, gc.StringName(name), gd.Int(0)))
+	return gdclass.Texture2D(class(self).GetDefaultTextureParameter(gd.NewStringName(name), gd.Int(0)))
 }
 
 /*
@@ -55,36 +52,24 @@ Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for 
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
 func (self Go) GetShaderUniformList() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Array(class(self).GetShaderUniformList(gc, false))
+	return gd.Array(class(self).GetShaderUniformList(false))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.Shader
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Shader"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Shader"))
+	return Go{classdb.Shader(object)}
 }
 
 func (self Go) Code() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetCode(gc).String())
+		return string(class(self).GetCode().String())
 }
 
 func (self Go) SetCode(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetCode(gc.String(value))
+	class(self).SetCode(gd.NewString(value))
 }
 
 /*
@@ -92,30 +77,27 @@ Returns the shader mode for the shader.
 */
 //go:nosplit
 func (self class) GetMode() classdb.ShaderMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ShaderMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shader.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCode(code gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(code))
+	callframe.Arg(frame, discreet.Get(code))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shader.Bind_set_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_set_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetCode(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCode() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shader.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -126,13 +108,12 @@ Sets the default texture to be used with a texture uniform. The default is used 
 */
 //go:nosplit
 func (self class) SetDefaultTextureParameter(name gd.StringName, texture gdclass.Texture2D, index gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	callframe.Arg(frame, mmm.Get(texture[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, discreet.Get(texture[0])[0])
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shader.Bind_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -141,15 +122,13 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) GetDefaultTextureParameter(ctx gd.Lifetime, name gd.StringName, index gd.Int) gdclass.Texture2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetDefaultTextureParameter(name gd.StringName, index gd.Int) gdclass.Texture2D {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shader.Bind_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Texture2D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -158,13 +137,12 @@ Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for 
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
 //go:nosplit
-func (self class) GetShaderUniformList(ctx gd.Lifetime, get_groups bool) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetShaderUniformList(get_groups bool) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, get_groups)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shader.Bind_get_shader_uniform_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_shader_uniform_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -186,7 +164,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("Shader", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Shader", func(ptr gd.Object) any { return classdb.Shader(ptr) })}
 type Mode = classdb.ShaderMode
 
 const (

@@ -2,7 +2,7 @@ package VisualShaderNodeCubemap
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Translated to [code]texture(cubemap, vec3)[/code] in the shader language. Returns a color vector and alpha channel as scalar.
@@ -26,104 +26,82 @@ type GD = class
 type class [1]classdb.VisualShaderNodeCubemap
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeCubemap"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCubemap"))
+	return Go{classdb.VisualShaderNodeCubemap(object)}
 }
 
 func (self Go) Source() classdb.VisualShaderNodeCubemapSource {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeCubemapSource(class(self).GetSource())
 }
 
 func (self Go) SetSource(value classdb.VisualShaderNodeCubemapSource) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSource(value)
 }
 
 func (self Go) CubeMap() gdclass.Cubemap {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Cubemap(class(self).GetCubeMap(gc))
+		return gdclass.Cubemap(class(self).GetCubeMap())
 }
 
 func (self Go) SetCubeMap(value gdclass.Cubemap) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCubeMap(value)
 }
 
 func (self Go) TextureType() classdb.VisualShaderNodeCubemapTextureType {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeCubemapTextureType(class(self).GetTextureType())
 }
 
 func (self Go) SetTextureType(value classdb.VisualShaderNodeCubemapTextureType) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextureType(value)
 }
 
 //go:nosplit
 func (self class) SetSource(value classdb.VisualShaderNodeCubemapSource)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCubemap.Bind_set_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSource() classdb.VisualShaderNodeCubemapSource {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeCubemapSource](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCubemap.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCubeMap(value gdclass.Cubemap)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(value[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(value[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCubemap.Bind_set_cube_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_cube_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetCubeMap(ctx gd.Lifetime) gdclass.Cubemap {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCubeMap() gdclass.Cubemap {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCubemap.Bind_get_cube_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Cubemap
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_cube_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Cubemap{classdb.Cubemap(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTextureType(value classdb.VisualShaderNodeCubemapTextureType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCubemap.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextureType() classdb.VisualShaderNodeCubemapTextureType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeCubemapTextureType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCubemap.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -148,7 +126,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNode(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeCubemap", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeCubemap", func(ptr gd.Object) any { return classdb.VisualShaderNodeCubemap(ptr) })}
 type Source = classdb.VisualShaderNodeCubemapSource
 
 const (

@@ -2,7 +2,7 @@ package CSGPrimitive3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Parent class for various CSG primitives. It contains code and functionality that is common between them. It cannot be used directly. Instead use one of the various classes that inherit from it.
@@ -30,45 +30,32 @@ type GD = class
 type class [1]classdb.CSGPrimitive3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("CSGPrimitive3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGPrimitive3D"))
+	return Go{classdb.CSGPrimitive3D(object)}
 }
 
 func (self Go) FlipFaces() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetFlipFaces())
 }
 
 func (self Go) SetFlipFaces(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFlipFaces(value)
 }
 
 //go:nosplit
 func (self class) SetFlipFaces(flip_faces bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_faces)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CSGPrimitive3D.Bind_set_flip_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPrimitive3D.Bind_set_flip_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFlipFaces() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CSGPrimitive3D.Bind_get_flip_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPrimitive3D.Bind_get_flip_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -97,4 +84,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsCSGShape3D(), name)
 	}
 }
-func init() {classdb.Register("CSGPrimitive3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("CSGPrimitive3D", func(ptr gd.Object) any { return classdb.CSGPrimitive3D(ptr) })}

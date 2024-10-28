@@ -2,7 +2,7 @@ package VisualShaderNodeDerivativeFunc
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This node is only available in [code]Fragment[/code] and [code]Light[/code] visual shaders.
@@ -26,103 +26,82 @@ type GD = class
 type class [1]classdb.VisualShaderNodeDerivativeFunc
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeDerivativeFunc"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeDerivativeFunc"))
+	return Go{classdb.VisualShaderNodeDerivativeFunc(object)}
 }
 
 func (self Go) OpType() classdb.VisualShaderNodeDerivativeFuncOpType {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeDerivativeFuncOpType(class(self).GetOpType())
 }
 
 func (self Go) SetOpType(value classdb.VisualShaderNodeDerivativeFuncOpType) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetOpType(value)
 }
 
 func (self Go) Function() classdb.VisualShaderNodeDerivativeFuncFunction {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeDerivativeFuncFunction(class(self).GetFunction())
 }
 
 func (self Go) SetFunction(value classdb.VisualShaderNodeDerivativeFuncFunction) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFunction(value)
 }
 
 func (self Go) Precision() classdb.VisualShaderNodeDerivativeFuncPrecision {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeDerivativeFuncPrecision(class(self).GetPrecision())
 }
 
 func (self Go) SetPrecision(value classdb.VisualShaderNodeDerivativeFuncPrecision) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPrecision(value)
 }
 
 //go:nosplit
 func (self class) SetOpType(atype classdb.VisualShaderNodeDerivativeFuncOpType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetOpType() classdb.VisualShaderNodeDerivativeFuncOpType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeDerivativeFuncOpType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFunction(fn classdb.VisualShaderNodeDerivativeFuncFunction)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFunction() classdb.VisualShaderNodeDerivativeFuncFunction {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeDerivativeFuncFunction](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPrecision(precision classdb.VisualShaderNodeDerivativeFuncPrecision)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, precision)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPrecision() classdb.VisualShaderNodeDerivativeFuncPrecision {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeDerivativeFuncPrecision](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -147,7 +126,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNode(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Object) any { return classdb.VisualShaderNodeDerivativeFunc(ptr) })}
 type OpType = classdb.VisualShaderNodeDerivativeFuncOpType
 
 const (

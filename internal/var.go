@@ -6,10 +6,9 @@ import (
 	"reflect"
 
 	"grow.graphics/gd/internal/callframe"
+	"grow.graphics/gd/internal/discreet"
 	"grow.graphics/uc"
 	"grow.graphics/xy"
-
-	"grow.graphics/gd/internal/mmm"
 
 	vector2 "grow.graphics/gd/gdmaths/Vector2"
 	vector2i "grow.graphics/gd/gdmaths/Vector2i"
@@ -47,19 +46,18 @@ type (
 
 type RID uint64
 
-type Callable mmm.Pointer[API, Callable, [2]uintptr]
-
 func (c Callable) Free() {
+	ptr, ok := discreet.End(c)
+	if !ok {
+		return
+	}
 	var frame = callframe.New()
-	mmm.API(c).typeset.destruct.Callable(callframe.Arg(frame, mmm.End(c)).Uintptr())
+	Global.typeset.destruct.Callable(callframe.Arg(frame, ptr).Uintptr())
 	frame.Free()
 }
 
-type Variant mmm.Pointer[API, Variant, [3]uintptr]
-
 func (s Variant) Free() {
-	mmm.API(s).Variants.Destroy(s)
-	mmm.End(s)
+	Global.Variants.Destroy(s)
 }
 
 type Iterator struct {
@@ -68,11 +66,11 @@ type Iterator struct {
 }
 
 func (iter Iterator) Next() bool {
-	return mmm.API(iter.self).Variants.IteratorNext(iter.self, iter.iter)
+	return Global.Variants.IteratorNext(iter.self, iter.iter)
 }
 
-func (iter Iterator) Value(ctx Lifetime) Variant {
-	val, ok := mmm.API(iter.self).Variants.IteratorGet(ctx, iter.self, iter.iter)
+func (iter Iterator) Value() Variant {
+	val, ok := Global.Variants.IteratorGet(iter.self, iter.iter)
 	if !ok {
 		panic("failed to get iterator value")
 	}

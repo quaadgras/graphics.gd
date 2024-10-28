@@ -12,7 +12,7 @@ import (
 	classdb "grow.graphics/gd/internal/classdb"
 )
 
-func propertyOf(godot Lifetime, field reflect.StructField) gd.PropertyInfo {
+func propertyOf(field reflect.StructField) gd.PropertyInfo {
 	var name = field.Name
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
@@ -44,10 +44,10 @@ func propertyOf(godot Lifetime, field reflect.StructField) gd.PropertyInfo {
 	}
 	return gd.PropertyInfo{
 		Type:       vtype,
-		Name:       godot.StringName(name),
-		ClassName:  godot.StringName(classNameOf(field.Type)),
+		Name:       gd.NewStringName(name),
+		ClassName:  gd.NewStringName(classNameOf(field.Type)),
 		Hint:       hint,
-		HintString: godot.String(hintString),
+		HintString: gd.NewString(hintString),
 		Usage:      usage,
 	}
 }
@@ -158,8 +158,6 @@ func variantTypeOf(rtype reflect.Type) (vtype VariantType) {
 		switch {
 		case rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()):
 			vtype = TypeObject
-		case rtype.Implements(reflect.TypeOf([0]gd.IsArray{}).Elem()):
-			vtype = TypeArray
 		case rtype.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()):
 			vtype = TypeSignal
 		case rtype.ConvertibleTo(reflect.TypeOf(Dictionary{})):

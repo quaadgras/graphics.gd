@@ -2,7 +2,7 @@ package WebXRInterface
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
@@ -114,15 +114,13 @@ Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/
 This method returns nothing, instead it emits the [signal session_supported] signal with the result.
 */
 func (self Go) IsSessionSupported(session_mode string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).IsSessionSupported(gc.String(session_mode))
+	class(self).IsSessionSupported(gd.NewString(session_mode))
 }
 
 /*
 Returns [code]true[/code] if there is an active input source with the given [param input_source_id].
 */
 func (self Go) IsInputSourceActive(input_source_id int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsInputSourceActive(gd.Int(input_source_id)))
 }
 
@@ -138,8 +136,7 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeezestart]
 */
 func (self Go) GetInputSourceTracker(input_source_id int) gdclass.XRControllerTracker {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.XRControllerTracker(class(self).GetInputSourceTracker(gc, gd.Int(input_source_id)))
+	return gdclass.XRControllerTracker(class(self).GetInputSourceTracker(gd.Int(input_source_id)))
 }
 
 /*
@@ -147,7 +144,6 @@ Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
 func (self Go) GetInputSourceTargetRayMode(input_source_id int) classdb.WebXRInterfaceTargetRayMode {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.WebXRInterfaceTargetRayMode(class(self).GetInputSourceTargetRayMode(gd.Int(input_source_id)))
 }
 
@@ -155,7 +151,6 @@ func (self Go) GetInputSourceTargetRayMode(input_source_id int) classdb.WebXRInt
 Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [method set_display_refresh_rate].
 */
 func (self Go) GetDisplayRefreshRate() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetDisplayRefreshRate()))
 }
 
@@ -163,7 +158,6 @@ func (self Go) GetDisplayRefreshRate() float64 {
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
 func (self Go) SetDisplayRefreshRate(refresh_rate float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDisplayRefreshRate(gd.Float(refresh_rate))
 }
 
@@ -171,81 +165,60 @@ func (self Go) SetDisplayRefreshRate(refresh_rate float64) {
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
 func (self Go) GetAvailableDisplayRefreshRates() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Array(class(self).GetAvailableDisplayRefreshRates(gc))
+	return gd.Array(class(self).GetAvailableDisplayRefreshRates())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.WebXRInterface
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("WebXRInterface"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebXRInterface"))
+	return Go{classdb.WebXRInterface(object)}
 }
 
 func (self Go) SessionMode() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetSessionMode(gc).String())
+		return string(class(self).GetSessionMode().String())
 }
 
 func (self Go) SetSessionMode(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetSessionMode(gc.String(value))
+	class(self).SetSessionMode(gd.NewString(value))
 }
 
 func (self Go) RequiredFeatures() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetRequiredFeatures(gc).String())
+		return string(class(self).GetRequiredFeatures().String())
 }
 
 func (self Go) SetRequiredFeatures(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetRequiredFeatures(gc.String(value))
+	class(self).SetRequiredFeatures(gd.NewString(value))
 }
 
 func (self Go) OptionalFeatures() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetOptionalFeatures(gc).String())
+		return string(class(self).GetOptionalFeatures().String())
 }
 
 func (self Go) SetOptionalFeatures(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetOptionalFeatures(gc.String(value))
+	class(self).SetOptionalFeatures(gd.NewString(value))
 }
 
 func (self Go) RequestedReferenceSpaceTypes() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetRequestedReferenceSpaceTypes(gc).String())
+		return string(class(self).GetRequestedReferenceSpaceTypes().String())
 }
 
 func (self Go) SetRequestedReferenceSpaceTypes(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetRequestedReferenceSpaceTypes(gc.String(value))
+	class(self).SetRequestedReferenceSpaceTypes(gd.NewString(value))
 }
 
 func (self Go) ReferenceSpaceType() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetReferenceSpaceType(gc).String())
+		return string(class(self).GetReferenceSpaceType().String())
 }
 
 func (self Go) EnabledFeatures() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetEnabledFeatures(gc).String())
+		return string(class(self).GetEnabledFeatures().String())
 }
 
 func (self Go) VisibilityState() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetVisibilityState(gc).String())
+		return string(class(self).GetVisibilityState().String())
 }
 
 /*
@@ -255,106 +228,95 @@ This method returns nothing, instead it emits the [signal session_supported] sig
 */
 //go:nosplit
 func (self class) IsSessionSupported(session_mode gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(session_mode))
+	callframe.Arg(frame, discreet.Get(session_mode))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_is_session_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_is_session_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetSessionMode(session_mode gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(session_mode))
+	callframe.Arg(frame, discreet.Get(session_mode))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_set_session_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_session_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetSessionMode(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSessionMode() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_session_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_session_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRequiredFeatures(required_features gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(required_features))
+	callframe.Arg(frame, discreet.Get(required_features))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_set_required_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_required_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetRequiredFeatures(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRequiredFeatures() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_required_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_required_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetOptionalFeatures(optional_features gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(optional_features))
+	callframe.Arg(frame, discreet.Get(optional_features))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_set_optional_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_optional_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetOptionalFeatures(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOptionalFeatures() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_optional_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
-	frame.Free()
-	return ret
-}
-//go:nosplit
-func (self class) GetReferenceSpaceType(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_reference_space_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_optional_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetEnabledFeatures(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetReferenceSpaceType() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_enabled_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_reference_space_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
+	frame.Free()
+	return ret
+}
+//go:nosplit
+func (self class) GetEnabledFeatures() gd.String {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_enabled_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(requested_reference_space_types))
+	callframe.Arg(frame, discreet.Get(requested_reference_space_types))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_set_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetRequestedReferenceSpaceTypes(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRequestedReferenceSpaceTypes() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -363,11 +325,10 @@ Returns [code]true[/code] if there is an active input source with the given [par
 */
 //go:nosplit
 func (self class) IsInputSourceActive(input_source_id gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_is_input_source_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_is_input_source_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -384,14 +345,12 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeezestart]
 */
 //go:nosplit
-func (self class) GetInputSourceTracker(ctx gd.Lifetime, input_source_id gd.Int) gdclass.XRControllerTracker {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetInputSourceTracker(input_source_id gd.Int) gdclass.XRControllerTracker {
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_input_source_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.XRControllerTracker
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_input_source_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.XRControllerTracker{classdb.XRControllerTracker(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -401,22 +360,20 @@ This can help interpret the input coming from that input source. See [url=https:
 */
 //go:nosplit
 func (self class) GetInputSourceTargetRayMode(input_source_id gd.Int) classdb.WebXRInterfaceTargetRayMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[classdb.WebXRInterfaceTargetRayMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_input_source_target_ray_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_input_source_target_ray_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetVisibilityState(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetVisibilityState() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_visibility_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_visibility_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -425,10 +382,9 @@ Returns the display refresh rate for the current HMD. Not supported on all HMDs 
 */
 //go:nosplit
 func (self class) GetDisplayRefreshRate() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -438,101 +394,86 @@ Sets the display refresh rate for the current HMD. Not supported on all HMDs and
 */
 //go:nosplit
 func (self class) SetDisplayRefreshRate(refresh_rate gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, refresh_rate)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_set_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_set_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
 //go:nosplit
-func (self class) GetAvailableDisplayRefreshRates(ctx gd.Lifetime) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetAvailableDisplayRefreshRates() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 func (self Go) OnSessionSupported(cb func(session_mode string, supported bool)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("session_supported"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSessionStarted(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("session_started"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSessionEnded(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("session_ended"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSessionFailed(cb func(message string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("session_failed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSelectstart(cb func(input_source_id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("selectstart"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSelect(cb func(input_source_id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("select"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("select"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSelectend(cb func(input_source_id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("selectend"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSqueezestart(cb func(input_source_id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("squeezestart"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSqueeze(cb func(input_source_id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("squeeze"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSqueezeend(cb func(input_source_id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("squeezeend"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnVisibilityStateChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("visibility_state_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnReferenceSpaceReset(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("reference_space_reset"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnDisplayRefreshRateChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("display_refresh_rate_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -554,7 +495,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsXRInterface(), name)
 	}
 }
-func init() {classdb.Register("WebXRInterface", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("WebXRInterface", func(ptr gd.Object) any { return classdb.WebXRInterface(ptr) })}
 type TargetRayMode = classdb.WebXRInterfaceTargetRayMode
 
 const (

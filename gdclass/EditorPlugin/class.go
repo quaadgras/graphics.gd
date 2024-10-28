@@ -2,7 +2,7 @@ package EditorPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
@@ -343,14 +343,11 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (Go) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -391,13 +388,10 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (Go) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		gc.End()
 	}
 }
 
@@ -407,13 +401,10 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (Go) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		gc.End()
 	}
 }
 
@@ -453,16 +444,13 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 */
 func (Go) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera gdclass.Camera3D, event gdclass.InputEvent) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var viewport_camera gdclass.Camera3D
-		viewport_camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var viewport_camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_camera[0])
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,1)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, viewport_camera, event)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -503,13 +491,10 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportC
 */
 func (Go) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		gc.End()
 	}
 }
 
@@ -519,13 +504,10 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (Go) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		gc.End()
 	}
 }
 
@@ -535,12 +517,13 @@ For main screen plugins, this appears at the top of the screen, to the right of 
 */
 func (Go) _get_plugin_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -569,12 +552,13 @@ public override Texture2D _GetPluginIcon()
 */
 func (Go) _get_plugin_icon(impl func(ptr unsafe.Pointer) gdclass.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -605,12 +589,9 @@ func _get_plugin_icon():
 */
 func (Go) _has_main_screen(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -620,12 +601,9 @@ Remember that you have to manage the visibility of all your editor controls manu
 */
 func (Go) _make_visible(impl func(ptr unsafe.Pointer, visible bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var visible = gd.UnsafeGet[bool](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, visible)
-		gc.End()
 	}
 }
 
@@ -635,13 +613,10 @@ This function is used for plugins that edit specific object types (nodes or reso
 */
 func (Go) _edit(impl func(ptr unsafe.Pointer, obj gd.Object) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var obj gd.Object
-		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var obj = discreet.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})
+		defer discreet.End(obj)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, obj)
-		gc.End()
 	}
 }
 
@@ -651,14 +626,11 @@ Implement this function if your plugin edits a specific type of object (Resource
 */
 func (Go) _handles(impl func(ptr unsafe.Pointer, obj gd.Object) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var obj gd.Object
-		obj.SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var obj = discreet.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})
+		defer discreet.End(obj)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -675,12 +647,13 @@ func _get_state():
 */
 func (Go) _get_state(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -695,12 +668,10 @@ func _set_state(data):
 */
 func (Go) _set_state(impl func(ptr unsafe.Pointer, state gd.Dictionary) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var state = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var state = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(state)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, state)
-		gc.End()
 	}
 }
 
@@ -709,11 +680,8 @@ Clear all the state and reset the object being edited to zero. This ensures your
 */
 func (Go) _clear(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -743,13 +711,15 @@ func _get_unsaved_status(for_scene):
 */
 func (Go) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var for_scene = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var for_scene = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(for_scene)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_scene.String())
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -758,11 +728,8 @@ This method is called after the editor saves the project or when it's closed. It
 */
 func (Go) _save_external_data(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -772,11 +739,8 @@ This is used, for example, in shader editors to let the plugin know that it must
 */
 func (Go) _apply_changes(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -785,12 +749,13 @@ This is for editors that edit script-based objects. You can return a list of bre
 */
 func (Go) _get_breakpoints(impl func(ptr unsafe.Pointer) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -804,13 +769,10 @@ func _set_window_layout(configuration):
 */
 func (Go) _set_window_layout(impl func(ptr unsafe.Pointer, configuration gdclass.ConfigFile) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var configuration gdclass.ConfigFile
-		configuration[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var configuration = gdclass.ConfigFile{discreet.New[classdb.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, configuration)
-		gc.End()
 	}
 }
 
@@ -825,13 +787,10 @@ func _get_window_layout(configuration):
 */
 func (Go) _get_window_layout(impl func(ptr unsafe.Pointer, configuration gdclass.ConfigFile) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var configuration gdclass.ConfigFile
-		configuration[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var configuration = gdclass.ConfigFile{discreet.New[classdb.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, configuration)
-		gc.End()
 	}
 }
 
@@ -841,12 +800,9 @@ This method must return a boolean. If this method returns [code]false[/code], th
 */
 func (Go) _build(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -855,11 +811,8 @@ Called by the engine when the user enables the [EditorPlugin] in the Plugin tab 
 */
 func (Go) _enable_plugin(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -868,11 +821,8 @@ Called by the engine when the user disables the [EditorPlugin] in the Plugin tab
 */
 func (Go) _disable_plugin(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -882,7 +832,6 @@ Please remember that you have to manage the visibility of your custom controls y
 When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_container] and free it with [method Node.queue_free].
 */
 func (self Go) AddControlToContainer(container classdb.EditorPluginCustomControlContainer, control gdclass.Control) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddControlToContainer(container, control)
 }
 
@@ -891,8 +840,7 @@ Adds a control to the bottom panel (together with Output, Debug, Animation, etc)
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Go) AddControlToBottomPanel(control gdclass.Control, title string) gdclass.Button {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Button(class(self).AddControlToBottomPanel(gc, control, gc.String(title), ([1]gdclass.Shortcut{}[0])))
+	return gdclass.Button(class(self).AddControlToBottomPanel(control, gd.NewString(title), ([1]gdclass.Shortcut{}[0])))
 }
 
 /*
@@ -902,7 +850,6 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Go) AddControlToDock(slot classdb.EditorPluginDockSlot, control gdclass.Control) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddControlToDock(slot, control, ([1]gdclass.Shortcut{}[0]))
 }
 
@@ -910,7 +857,6 @@ func (self Go) AddControlToDock(slot classdb.EditorPluginDockSlot, control gdcla
 Removes the control from the dock. You have to manually [method Node.queue_free] the control.
 */
 func (self Go) RemoveControlFromDocks(control gdclass.Control) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveControlFromDocks(control)
 }
 
@@ -918,7 +864,6 @@ func (self Go) RemoveControlFromDocks(control gdclass.Control) {
 Removes the control from the bottom panel. You have to manually [method Node.queue_free] the control.
 */
 func (self Go) RemoveControlFromBottomPanel(control gdclass.Control) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveControlFromBottomPanel(control)
 }
 
@@ -926,7 +871,6 @@ func (self Go) RemoveControlFromBottomPanel(control gdclass.Control) {
 Removes the control from the specified container. You have to manually [method Node.queue_free] the control.
 */
 func (self Go) RemoveControlFromContainer(container classdb.EditorPluginCustomControlContainer, control gdclass.Control) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveControlFromContainer(container, control)
 }
 
@@ -934,7 +878,6 @@ func (self Go) RemoveControlFromContainer(container classdb.EditorPluginCustomCo
 Sets the tab icon for the given control in a dock slot. Setting to [code]null[/code] removes the icon.
 */
 func (self Go) SetDockTabIcon(control gdclass.Control, icon gdclass.Texture2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDockTabIcon(control, icon)
 }
 
@@ -942,32 +885,28 @@ func (self Go) SetDockTabIcon(control gdclass.Control, icon gdclass.Texture2D) {
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
 func (self Go) AddToolMenuItem(name string, callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddToolMenuItem(gc.String(name), callable)
+	class(self).AddToolMenuItem(gd.NewString(name), callable)
 }
 
 /*
 Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. Use [method remove_tool_menu_item] on plugin clean up to remove the menu.
 */
 func (self Go) AddToolSubmenuItem(name string, submenu gdclass.PopupMenu) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddToolSubmenuItem(gc.String(name), submenu)
+	class(self).AddToolSubmenuItem(gd.NewString(name), submenu)
 }
 
 /*
 Removes a menu [param name] from [b]Project > Tools[/b].
 */
 func (self Go) RemoveToolMenuItem(name string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RemoveToolMenuItem(gc.String(name))
+	class(self).RemoveToolMenuItem(gd.NewString(name))
 }
 
 /*
 Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 */
 func (self Go) GetExportAsMenu() gdclass.PopupMenu {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.PopupMenu(class(self).GetExportAsMenu(gc))
+	return gdclass.PopupMenu(class(self).GetExportAsMenu())
 }
 
 /*
@@ -979,39 +918,34 @@ During run-time, this will be a simple object with a script so this function doe
 [b]Note:[/b] Custom types added this way are not true classes. They are just a helper to create a node with specific script.
 */
 func (self Go) AddCustomType(atype string, base string, script gdclass.Script, icon gdclass.Texture2D) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddCustomType(gc.String(atype), gc.String(base), script, icon)
+	class(self).AddCustomType(gd.NewString(atype), gd.NewString(base), script, icon)
 }
 
 /*
 Removes a custom type added by [method add_custom_type].
 */
 func (self Go) RemoveCustomType(atype string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RemoveCustomType(gc.String(atype))
+	class(self).RemoveCustomType(gd.NewString(atype))
 }
 
 /*
 Adds a script at [param path] to the Autoload list as [param name].
 */
 func (self Go) AddAutoloadSingleton(name string, path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddAutoloadSingleton(gc.String(name), gc.String(path))
+	class(self).AddAutoloadSingleton(gd.NewString(name), gd.NewString(path))
 }
 
 /*
 Removes an Autoload [param name] from the list.
 */
 func (self Go) RemoveAutoloadSingleton(name string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RemoveAutoloadSingleton(gc.String(name))
+	class(self).RemoveAutoloadSingleton(gd.NewString(name))
 }
 
 /*
 Updates the overlays of the 2D and 3D editor viewport. Causes methods [method _forward_canvas_draw_over_viewport], [method _forward_canvas_force_draw_over_viewport], [method _forward_3d_draw_over_viewport] and [method _forward_3d_force_draw_over_viewport] to be called.
 */
 func (self Go) UpdateOverlays() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).UpdateOverlays()))
 }
 
@@ -1019,7 +953,6 @@ func (self Go) UpdateOverlays() int {
 Makes a specific item in the bottom panel visible.
 */
 func (self Go) MakeBottomPanelItemVisible(item gdclass.Control) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).MakeBottomPanelItemVisible(item)
 }
 
@@ -1027,7 +960,6 @@ func (self Go) MakeBottomPanelItemVisible(item gdclass.Control) {
 Minimizes the bottom panel.
 */
 func (self Go) HideBottomPanel() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).HideBottomPanel()
 }
 
@@ -1035,8 +967,7 @@ func (self Go) HideBottomPanel() {
 Gets the undo/redo object. Most actions in the editor can be undoable, so use this object to make sure this happens when it's worth it.
 */
 func (self Go) GetUndoRedo() gdclass.EditorUndoRedoManager {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.EditorUndoRedoManager(class(self).GetUndoRedo(gc))
+	return gdclass.EditorUndoRedoManager(class(self).GetUndoRedo())
 }
 
 /*
@@ -1044,7 +975,6 @@ Hooks a callback into the undo/redo action creation when a property is modified 
 The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] [code]modified_object[/code], [String] [code]property[/code] and [Variant] [code]new_value[/code]. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
 */
 func (self Go) AddUndoRedoInspectorHookCallback(callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddUndoRedoInspectorHookCallback(callable)
 }
 
@@ -1052,7 +982,6 @@ func (self Go) AddUndoRedoInspectorHookCallback(callable gd.Callable) {
 Removes a callback previously added by [method add_undo_redo_inspector_hook_callback].
 */
 func (self Go) RemoveUndoRedoInspectorHookCallback(callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveUndoRedoInspectorHookCallback(callable)
 }
 
@@ -1060,7 +989,6 @@ func (self Go) RemoveUndoRedoInspectorHookCallback(callable gd.Callable) {
 Queue save the project's editor layout.
 */
 func (self Go) QueueSaveLayout() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).QueueSaveLayout()
 }
 
@@ -1068,7 +996,6 @@ func (self Go) QueueSaveLayout() {
 Registers a custom translation parser plugin for extracting translatable strings from custom files.
 */
 func (self Go) AddTranslationParserPlugin(parser gdclass.EditorTranslationParserPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddTranslationParserPlugin(parser)
 }
 
@@ -1076,7 +1003,6 @@ func (self Go) AddTranslationParserPlugin(parser gdclass.EditorTranslationParser
 Removes a custom translation parser plugin registered by [method add_translation_parser_plugin].
 */
 func (self Go) RemoveTranslationParserPlugin(parser gdclass.EditorTranslationParserPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveTranslationParserPlugin(parser)
 }
 
@@ -1087,7 +1013,6 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 func (self Go) AddImportPlugin(importer gdclass.EditorImportPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddImportPlugin(importer, false)
 }
 
@@ -1095,7 +1020,6 @@ func (self Go) AddImportPlugin(importer gdclass.EditorImportPlugin) {
 Removes an import plugin registered by [method add_import_plugin].
 */
 func (self Go) RemoveImportPlugin(importer gdclass.EditorImportPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveImportPlugin(importer)
 }
 
@@ -1104,7 +1028,6 @@ Registers a new [EditorSceneFormatImporter]. Scene importers are used to import 
 If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
 func (self Go) AddSceneFormatImporterPlugin(scene_format_importer gdclass.EditorSceneFormatImporter) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddSceneFormatImporterPlugin(scene_format_importer, false)
 }
 
@@ -1112,7 +1035,6 @@ func (self Go) AddSceneFormatImporterPlugin(scene_format_importer gdclass.Editor
 Removes a scene format importer registered by [method add_scene_format_importer_plugin].
 */
 func (self Go) RemoveSceneFormatImporterPlugin(scene_format_importer gdclass.EditorSceneFormatImporter) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveSceneFormatImporterPlugin(scene_format_importer)
 }
 
@@ -1121,7 +1043,6 @@ Add a [EditorScenePostImportPlugin]. These plugins allow customizing the import 
 If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
 func (self Go) AddScenePostImportPlugin(scene_import_plugin gdclass.EditorScenePostImportPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddScenePostImportPlugin(scene_import_plugin, false)
 }
 
@@ -1129,7 +1050,6 @@ func (self Go) AddScenePostImportPlugin(scene_import_plugin gdclass.EditorSceneP
 Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_import_plugin].
 */
 func (self Go) RemoveScenePostImportPlugin(scene_import_plugin gdclass.EditorScenePostImportPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveScenePostImportPlugin(scene_import_plugin)
 }
 
@@ -1138,7 +1058,6 @@ Registers a new [EditorExportPlugin]. Export plugins are used to perform tasks w
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 func (self Go) AddExportPlugin(plugin gdclass.EditorExportPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddExportPlugin(plugin)
 }
 
@@ -1146,7 +1065,6 @@ func (self Go) AddExportPlugin(plugin gdclass.EditorExportPlugin) {
 Removes an export plugin registered by [method add_export_plugin].
 */
 func (self Go) RemoveExportPlugin(plugin gdclass.EditorExportPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveExportPlugin(plugin)
 }
 
@@ -1155,7 +1073,6 @@ Registers a new [EditorNode3DGizmoPlugin]. Gizmo plugins are used to add custom 
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 func (self Go) AddNode3dGizmoPlugin(plugin gdclass.EditorNode3DGizmoPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddNode3dGizmoPlugin(plugin)
 }
 
@@ -1163,7 +1080,6 @@ func (self Go) AddNode3dGizmoPlugin(plugin gdclass.EditorNode3DGizmoPlugin) {
 Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 */
 func (self Go) RemoveNode3dGizmoPlugin(plugin gdclass.EditorNode3DGizmoPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveNode3dGizmoPlugin(plugin)
 }
 
@@ -1184,7 +1100,6 @@ func _exit_tree():
 [/codeblocks]
 */
 func (self Go) AddInspectorPlugin(plugin gdclass.EditorInspectorPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddInspectorPlugin(plugin)
 }
 
@@ -1192,7 +1107,6 @@ func (self Go) AddInspectorPlugin(plugin gdclass.EditorInspectorPlugin) {
 Removes an inspector plugin registered by [method add_import_plugin]
 */
 func (self Go) RemoveInspectorPlugin(plugin gdclass.EditorInspectorPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveInspectorPlugin(plugin)
 }
 
@@ -1201,7 +1115,6 @@ Registers a new [EditorResourceConversionPlugin]. Resource conversion plugins ar
 See [EditorResourceConversionPlugin] for an example of how to create a resource conversion plugin.
 */
 func (self Go) AddResourceConversionPlugin(plugin gdclass.EditorResourceConversionPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddResourceConversionPlugin(plugin)
 }
 
@@ -1209,7 +1122,6 @@ func (self Go) AddResourceConversionPlugin(plugin gdclass.EditorResourceConversi
 Removes a resource conversion plugin registered by [method add_resource_conversion_plugin].
 */
 func (self Go) RemoveResourceConversionPlugin(plugin gdclass.EditorResourceConversionPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveResourceConversionPlugin(plugin)
 }
 
@@ -1217,7 +1129,6 @@ func (self Go) RemoveResourceConversionPlugin(plugin gdclass.EditorResourceConve
 Use this method if you always want to receive inputs from 3D view screen inside [method _forward_3d_gui_input]. It might be especially usable if your plugin will want to use raycast in the scene.
 */
 func (self Go) SetInputEventForwardingAlwaysEnabled() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetInputEventForwardingAlwaysEnabled()
 }
 
@@ -1225,7 +1136,6 @@ func (self Go) SetInputEventForwardingAlwaysEnabled() {
 Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D editor and [method _forward_3d_force_draw_over_viewport] for the 3D editor when their viewports are updated. You need to call this method only once and it will work permanently for this plugin.
 */
 func (self Go) SetForceDrawOverForwardingEnabled() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetForceDrawOverForwardingEnabled()
 }
 
@@ -1233,8 +1143,7 @@ func (self Go) SetForceDrawOverForwardingEnabled() {
 Returns the [EditorInterface] singleton instance.
 */
 func (self Go) GetEditorInterface() gdclass.EditorInterface {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.EditorInterface(class(self).GetEditorInterface(gc))
+	return gdclass.EditorInterface(class(self).GetEditorInterface())
 }
 
 /*
@@ -1243,15 +1152,13 @@ Gets the Editor's dialog used for making scripts.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
 func (self Go) GetScriptCreateDialog() gdclass.ScriptCreateDialog {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.ScriptCreateDialog(class(self).GetScriptCreateDialog(gc))
+	return gdclass.ScriptCreateDialog(class(self).GetScriptCreateDialog())
 }
 
 /*
 Adds a [Script] as debugger plugin to the Debugger. The script must extend [EditorDebuggerPlugin].
 */
 func (self Go) AddDebuggerPlugin(script gdclass.EditorDebuggerPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddDebuggerPlugin(script)
 }
 
@@ -1259,7 +1166,6 @@ func (self Go) AddDebuggerPlugin(script gdclass.EditorDebuggerPlugin) {
 Removes the debugger plugin with given script from the Debugger.
 */
 func (self Go) RemoveDebuggerPlugin(script gdclass.EditorDebuggerPlugin) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveDebuggerPlugin(script)
 }
 
@@ -1267,26 +1173,16 @@ func (self Go) RemoveDebuggerPlugin(script gdclass.EditorDebuggerPlugin) {
 Provide the version of the plugin declared in the [code]plugin.cfg[/code] config file.
 */
 func (self Go) GetPluginVersion() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetPluginVersion(gc).String())
+	return string(class(self).GetPluginVersion().String())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorPlugin"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPlugin"))
+	return Go{classdb.EditorPlugin(object)}
 }
 
 /*
@@ -1331,14 +1227,11 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (class) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -1379,13 +1272,10 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (class) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		ctx.End()
 	}
 }
 
@@ -1395,13 +1285,10 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		ctx.End()
 	}
 }
 
@@ -1441,16 +1328,13 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 */
 func (class) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera gdclass.Camera3D, event gdclass.InputEvent) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var viewport_camera gdclass.Camera3D
-		viewport_camera[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,1)}))
+		var viewport_camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_camera[0])
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,1)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, viewport_camera, event)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -1491,13 +1375,10 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportC
 */
 func (class) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		ctx.End()
 	}
 }
 
@@ -1507,13 +1388,10 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (class) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control gdclass.Control) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var viewport_control gdclass.Control
-		viewport_control[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var viewport_control = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, viewport_control)
-		ctx.End()
 	}
 }
 
@@ -1523,12 +1401,13 @@ For main screen plugins, this appears at the top of the screen, to the right of 
 */
 func (class) _get_plugin_name(impl func(ptr unsafe.Pointer) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1557,12 +1436,13 @@ public override Texture2D _GetPluginIcon()
 */
 func (class) _get_plugin_icon(impl func(ptr unsafe.Pointer) gdclass.Texture2D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1593,12 +1473,9 @@ func _get_plugin_icon():
 */
 func (class) _has_main_screen(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -1608,12 +1485,9 @@ Remember that you have to manage the visibility of all your editor controls manu
 */
 func (class) _make_visible(impl func(ptr unsafe.Pointer, visible bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var visible = gd.UnsafeGet[bool](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, visible)
-		ctx.End()
 	}
 }
 
@@ -1623,13 +1497,10 @@ This function is used for plugins that edit specific object types (nodes or reso
 */
 func (class) _edit(impl func(ptr unsafe.Pointer, obj gd.Object) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var obj gd.Object
-		obj.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var obj = discreet.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})
+		defer discreet.End(obj)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, obj)
-		ctx.End()
 	}
 }
 
@@ -1639,14 +1510,11 @@ Implement this function if your plugin edits a specific type of object (Resource
 */
 func (class) _handles(impl func(ptr unsafe.Pointer, obj gd.Object) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var obj gd.Object
-		obj.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var obj = discreet.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})
+		defer discreet.End(obj)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -1663,12 +1531,13 @@ func _get_state():
 */
 func (class) _get_state(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1683,12 +1552,9 @@ func _set_state(data):
 */
 func (class) _set_state(impl func(ptr unsafe.Pointer, state gd.Dictionary) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var state = mmm.Let[gd.Dictionary](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var state = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, state)
-		ctx.End()
 	}
 }
 
@@ -1697,11 +1563,8 @@ Clear all the state and reset the object being edited to zero. This ensures your
 */
 func (class) _clear(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1731,13 +1594,14 @@ func _get_unsaved_status(for_scene):
 */
 func (class) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene gd.String) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var for_scene = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var for_scene = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_scene)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1746,11 +1610,8 @@ This method is called after the editor saves the project or when it's closed. It
 */
 func (class) _save_external_data(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1760,11 +1621,8 @@ This is used, for example, in shader editors to let the plugin know that it must
 */
 func (class) _apply_changes(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1773,12 +1631,13 @@ This is for editors that edit script-based objects. You can return a list of bre
 */
 func (class) _get_breakpoints(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1792,13 +1651,10 @@ func _set_window_layout(configuration):
 */
 func (class) _set_window_layout(impl func(ptr unsafe.Pointer, configuration gdclass.ConfigFile) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var configuration gdclass.ConfigFile
-		configuration[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var configuration = gdclass.ConfigFile{discreet.New[classdb.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, configuration)
-		ctx.End()
 	}
 }
 
@@ -1813,13 +1669,10 @@ func _get_window_layout(configuration):
 */
 func (class) _get_window_layout(impl func(ptr unsafe.Pointer, configuration gdclass.ConfigFile) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var configuration gdclass.ConfigFile
-		configuration[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var configuration = gdclass.ConfigFile{discreet.New[classdb.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, configuration)
-		ctx.End()
 	}
 }
 
@@ -1829,12 +1682,9 @@ This method must return a boolean. If this method returns [code]false[/code], th
 */
 func (class) _build(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -1843,11 +1693,8 @@ Called by the engine when the user enables the [EditorPlugin] in the Plugin tab 
 */
 func (class) _enable_plugin(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1856,11 +1703,8 @@ Called by the engine when the user disables the [EditorPlugin] in the Plugin tab
 */
 func (class) _disable_plugin(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1871,12 +1715,11 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 */
 //go:nosplit
 func (self class) AddControlToContainer(container classdb.EditorPluginCustomControlContainer, control gdclass.Control)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
-	callframe.Arg(frame, mmm.End(control[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_control_to_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1884,16 +1727,14 @@ Adds a control to the bottom panel (together with Output, Debug, Animation, etc)
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 //go:nosplit
-func (self class) AddControlToBottomPanel(ctx gd.Lifetime, control gdclass.Control, title gd.String, shortcut gdclass.Shortcut) gdclass.Button {
-	var selfPtr = self[0].AsPointer()
+func (self class) AddControlToBottomPanel(control gdclass.Control, title gd.String, shortcut gdclass.Shortcut) gdclass.Button {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(control[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(title))
-	callframe.Arg(frame, mmm.Get(shortcut[0].AsPointer())[0])
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Button
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, discreet.Get(title))
+	callframe.Arg(frame, discreet.Get(shortcut[0])[0])
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Button{classdb.Button(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1905,13 +1746,12 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 */
 //go:nosplit
 func (self class) AddControlToDock(slot classdb.EditorPluginDockSlot, control gdclass.Control, shortcut gdclass.Shortcut)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, slot)
-	callframe.Arg(frame, mmm.End(control[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(shortcut[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, discreet.Get(shortcut[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_control_to_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1919,11 +1759,10 @@ Removes the control from the dock. You have to manually [method Node.queue_free]
 */
 //go:nosplit
 func (self class) RemoveControlFromDocks(control gdclass.Control)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(control[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(control[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_control_from_docks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1931,11 +1770,10 @@ Removes the control from the bottom panel. You have to manually [method Node.que
 */
 //go:nosplit
 func (self class) RemoveControlFromBottomPanel(control gdclass.Control)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(control[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(control[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_control_from_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1943,12 +1781,11 @@ Removes the control from the specified container. You have to manually [method N
 */
 //go:nosplit
 func (self class) RemoveControlFromContainer(container classdb.EditorPluginCustomControlContainer, control gdclass.Control)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
-	callframe.Arg(frame, mmm.Get(control[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(control[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_control_from_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1956,12 +1793,11 @@ Sets the tab icon for the given control in a dock slot. Setting to [code]null[/c
 */
 //go:nosplit
 func (self class) SetDockTabIcon(control gdclass.Control, icon gdclass.Texture2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(control[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(icon[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(control[0])[0])
+	callframe.Arg(frame, discreet.Get(icon[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_set_dock_tab_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_dock_tab_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1969,12 +1805,11 @@ Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When click
 */
 //go:nosplit
 func (self class) AddToolMenuItem(name gd.String, callable gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	callframe.Arg(frame, mmm.Get(callable))
+	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, discreet.Get(callable))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1982,12 +1817,11 @@ Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. U
 */
 //go:nosplit
 func (self class) AddToolSubmenuItem(name gd.String, submenu gdclass.PopupMenu)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	callframe.Arg(frame, mmm.End(submenu[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(submenu[0])))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1995,24 +1829,21 @@ Removes a menu [param name] from [b]Project > Tools[/b].
 */
 //go:nosplit
 func (self class) RemoveToolMenuItem(name gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 */
 //go:nosplit
-func (self class) GetExportAsMenu(ctx gd.Lifetime) gdclass.PopupMenu {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetExportAsMenu() gdclass.PopupMenu {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.PopupMenu
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.PopupMenu{classdb.PopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2026,14 +1857,13 @@ During run-time, this will be a simple object with a script so this function doe
 */
 //go:nosplit
 func (self class) AddCustomType(atype gd.String, base gd.String, script gdclass.Script, icon gdclass.Texture2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(atype))
-	callframe.Arg(frame, mmm.Get(base))
-	callframe.Arg(frame, mmm.Get(script[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(icon[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(atype))
+	callframe.Arg(frame, discreet.Get(base))
+	callframe.Arg(frame, discreet.Get(script[0])[0])
+	callframe.Arg(frame, discreet.Get(icon[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_custom_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_custom_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2041,11 +1871,10 @@ Removes a custom type added by [method add_custom_type].
 */
 //go:nosplit
 func (self class) RemoveCustomType(atype gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(atype))
+	callframe.Arg(frame, discreet.Get(atype))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_custom_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_custom_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2053,12 +1882,11 @@ Adds a script at [param path] to the Autoload list as [param name].
 */
 //go:nosplit
 func (self class) AddAutoloadSingleton(name gd.String, path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2066,11 +1894,10 @@ Removes an Autoload [param name] from the list.
 */
 //go:nosplit
 func (self class) RemoveAutoloadSingleton(name gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2078,10 +1905,9 @@ Updates the overlays of the 2D and 3D editor viewport. Causes methods [method _f
 */
 //go:nosplit
 func (self class) UpdateOverlays() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_update_overlays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_update_overlays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2091,11 +1917,10 @@ Makes a specific item in the bottom panel visible.
 */
 //go:nosplit
 func (self class) MakeBottomPanelItemVisible(item gdclass.Control)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(item[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(item[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_make_bottom_panel_item_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2103,23 +1928,20 @@ Minimizes the bottom panel.
 */
 //go:nosplit
 func (self class) HideBottomPanel()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_hide_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_hide_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Gets the undo/redo object. Most actions in the editor can be undoable, so use this object to make sure this happens when it's worth it.
 */
 //go:nosplit
-func (self class) GetUndoRedo(ctx gd.Lifetime) gdclass.EditorUndoRedoManager {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetUndoRedo() gdclass.EditorUndoRedoManager {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.EditorUndoRedoManager
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.EditorUndoRedoManager{classdb.EditorUndoRedoManager(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2129,11 +1951,10 @@ The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] 
 */
 //go:nosplit
 func (self class) AddUndoRedoInspectorHookCallback(callable gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(callable))
+	callframe.Arg(frame, discreet.Get(callable))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2141,11 +1962,10 @@ Removes a callback previously added by [method add_undo_redo_inspector_hook_call
 */
 //go:nosplit
 func (self class) RemoveUndoRedoInspectorHookCallback(callable gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(callable))
+	callframe.Arg(frame, discreet.Get(callable))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2153,10 +1973,9 @@ Queue save the project's editor layout.
 */
 //go:nosplit
 func (self class) QueueSaveLayout()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_queue_save_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_queue_save_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2164,11 +1983,10 @@ Registers a custom translation parser plugin for extracting translatable strings
 */
 //go:nosplit
 func (self class) AddTranslationParserPlugin(parser gdclass.EditorTranslationParserPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(parser[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(parser[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2176,11 +1994,10 @@ Removes a custom translation parser plugin registered by [method add_translation
 */
 //go:nosplit
 func (self class) RemoveTranslationParserPlugin(parser gdclass.EditorTranslationParserPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(parser[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(parser[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2191,12 +2008,11 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddImportPlugin(importer gdclass.EditorImportPlugin, first_priority bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(importer[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(importer[0])[0])
 	callframe.Arg(frame, first_priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2204,11 +2020,10 @@ Removes an import plugin registered by [method add_import_plugin].
 */
 //go:nosplit
 func (self class) RemoveImportPlugin(importer gdclass.EditorImportPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(importer[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(importer[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2217,12 +2032,11 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 */
 //go:nosplit
 func (self class) AddSceneFormatImporterPlugin(scene_format_importer gdclass.EditorSceneFormatImporter, first_priority bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(scene_format_importer[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(scene_format_importer[0])[0])
 	callframe.Arg(frame, first_priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2230,11 +2044,10 @@ Removes a scene format importer registered by [method add_scene_format_importer_
 */
 //go:nosplit
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer gdclass.EditorSceneFormatImporter)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(scene_format_importer[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(scene_format_importer[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2243,12 +2056,11 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 */
 //go:nosplit
 func (self class) AddScenePostImportPlugin(scene_import_plugin gdclass.EditorScenePostImportPlugin, first_priority bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(scene_import_plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(scene_import_plugin[0])[0])
 	callframe.Arg(frame, first_priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2256,11 +2068,10 @@ Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_impo
 */
 //go:nosplit
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin gdclass.EditorScenePostImportPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(scene_import_plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(scene_import_plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2269,11 +2080,10 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddExportPlugin(plugin gdclass.EditorExportPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_export_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_export_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2281,11 +2091,10 @@ Removes an export plugin registered by [method add_export_plugin].
 */
 //go:nosplit
 func (self class) RemoveExportPlugin(plugin gdclass.EditorExportPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_export_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2294,11 +2103,10 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddNode3dGizmoPlugin(plugin gdclass.EditorNode3DGizmoPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2306,11 +2114,10 @@ Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 */
 //go:nosplit
 func (self class) RemoveNode3dGizmoPlugin(plugin gdclass.EditorNode3DGizmoPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2331,11 +2138,10 @@ func _exit_tree():
 */
 //go:nosplit
 func (self class) AddInspectorPlugin(plugin gdclass.EditorInspectorPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2343,11 +2149,10 @@ Removes an inspector plugin registered by [method add_import_plugin]
 */
 //go:nosplit
 func (self class) RemoveInspectorPlugin(plugin gdclass.EditorInspectorPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2356,11 +2161,10 @@ See [EditorResourceConversionPlugin] for an example of how to create a resource 
 */
 //go:nosplit
 func (self class) AddResourceConversionPlugin(plugin gdclass.EditorResourceConversionPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2368,11 +2172,10 @@ Removes a resource conversion plugin registered by [method add_resource_conversi
 */
 //go:nosplit
 func (self class) RemoveResourceConversionPlugin(plugin gdclass.EditorResourceConversionPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plugin[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(plugin[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2380,10 +2183,9 @@ Use this method if you always want to receive inputs from 3D view screen inside 
 */
 //go:nosplit
 func (self class) SetInputEventForwardingAlwaysEnabled()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_set_input_event_forwarding_always_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_input_event_forwarding_always_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2391,23 +2193,20 @@ Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D 
 */
 //go:nosplit
 func (self class) SetForceDrawOverForwardingEnabled()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
-func (self class) GetEditorInterface(ctx gd.Lifetime) gdclass.EditorInterface {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEditorInterface() gdclass.EditorInterface {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.EditorInterface
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.EditorInterface{classdb.EditorInterface(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2417,13 +2216,11 @@ Gets the Editor's dialog used for making scripts.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
 //go:nosplit
-func (self class) GetScriptCreateDialog(ctx gd.Lifetime) gdclass.ScriptCreateDialog {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetScriptCreateDialog() gdclass.ScriptCreateDialog {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.ScriptCreateDialog
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.ScriptCreateDialog{classdb.ScriptCreateDialog(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2432,11 +2229,10 @@ Adds a [Script] as debugger plugin to the Debugger. The script must extend [Edit
 */
 //go:nosplit
 func (self class) AddDebuggerPlugin(script gdclass.EditorDebuggerPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(script[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(script[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_add_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2444,59 +2240,51 @@ Removes the debugger plugin with given script from the Debugger.
 */
 //go:nosplit
 func (self class) RemoveDebuggerPlugin(script gdclass.EditorDebuggerPlugin)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(script[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(script[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_remove_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Provide the version of the plugin declared in the [code]plugin.cfg[/code] config file.
 */
 //go:nosplit
-func (self class) GetPluginVersion(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPluginVersion() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPlugin.Bind_get_plugin_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 func (self Go) OnSceneChanged(cb func(scene_root gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("scene_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSceneClosed(cb func(filepath string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("scene_closed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnMainScreenChanged(cb func(screen_name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("main_screen_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnResourceSaved(cb func(resource gdclass.Resource)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("resource_saved"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSceneSaved(cb func(filepath string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("scene_saved"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnProjectSettingsChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("project_settings_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -2564,7 +2352,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("EditorPlugin", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorPlugin", func(ptr gd.Object) any { return classdb.EditorPlugin(ptr) })}
 type CustomControlContainer = classdb.EditorPluginCustomControlContainer
 
 const (

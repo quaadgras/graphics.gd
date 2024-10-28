@@ -2,7 +2,7 @@ package OpenXRAction
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This resource defines an OpenXR action. Actions can be used both for inputs (buttons, joysticks, triggers, etc.) and outputs (haptics).
@@ -28,104 +28,83 @@ type GD = class
 type class [1]classdb.OpenXRAction
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("OpenXRAction"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAction"))
+	return Go{classdb.OpenXRAction(object)}
 }
 
 func (self Go) LocalizedName() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetLocalizedName(gc).String())
+		return string(class(self).GetLocalizedName().String())
 }
 
 func (self Go) SetLocalizedName(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetLocalizedName(gc.String(value))
+	class(self).SetLocalizedName(gd.NewString(value))
 }
 
 func (self Go) ActionType() classdb.OpenXRActionActionType {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.OpenXRActionActionType(class(self).GetActionType())
 }
 
 func (self Go) SetActionType(value classdb.OpenXRActionActionType) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetActionType(value)
 }
 
 func (self Go) ToplevelPaths() []string {
-	gc := gd.GarbageCollector(); _ = gc
-		return []string(class(self).GetToplevelPaths(gc).Strings(gc))
+		return []string(class(self).GetToplevelPaths().Strings())
 }
 
 func (self Go) SetToplevelPaths(value []string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetToplevelPaths(gc.PackedStringSlice(value))
+	class(self).SetToplevelPaths(gd.NewPackedStringSlice(value))
 }
 
 //go:nosplit
 func (self class) SetLocalizedName(localized_name gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(localized_name))
+	callframe.Arg(frame, discreet.Get(localized_name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRAction.Bind_set_localized_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_set_localized_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetLocalizedName(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLocalizedName() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRAction.Bind_get_localized_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_localized_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetActionType(action_type classdb.OpenXRActionActionType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, action_type)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRAction.Bind_set_action_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_set_action_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetActionType() classdb.OpenXRActionActionType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.OpenXRActionActionType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRAction.Bind_get_action_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_action_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetToplevelPaths(toplevel_paths gd.PackedStringArray)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(toplevel_paths))
+	callframe.Arg(frame, discreet.Get(toplevel_paths))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRAction.Bind_set_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_set_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetToplevelPaths(ctx gd.Lifetime) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetToplevelPaths() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRAction.Bind_get_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -147,7 +126,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("OpenXRAction", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("OpenXRAction", func(ptr gd.Object) any { return classdb.OpenXRAction(ptr) })}
 type ActionType = classdb.OpenXRActionActionType
 
 const (

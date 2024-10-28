@@ -2,7 +2,7 @@ package AnimationNode
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
@@ -55,12 +55,13 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Go) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -69,12 +70,13 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Go) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -83,13 +85,15 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Go) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) gdclass.AnimationNode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var name = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var name = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -98,13 +102,15 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Go) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter string) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var parameter = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var parameter = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -113,13 +119,11 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Go) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var parameter = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var parameter = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -130,8 +134,6 @@ This function should return the delta.
 */
 func (Go) _process(impl func(ptr unsafe.Pointer, time float64, seek bool, is_external_seeking bool, test_only bool) float64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var time = gd.UnsafeGet[gd.Float](p_args,0)
 		var seek = gd.UnsafeGet[bool](p_args,1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args,2)
@@ -139,7 +141,6 @@ func (Go) _process(impl func(ptr unsafe.Pointer, time float64, seek bool, is_ext
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, float64(time), seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, gd.Float(ret))
-		gc.End()
 	}
 }
 
@@ -148,12 +149,13 @@ When inheriting from [AnimationRootNode], implement this virtual method to overr
 */
 func (Go) _get_caption(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -162,12 +164,9 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Go) _has_filter(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -175,15 +174,13 @@ func (Go) _has_filter(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.Ex
 Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 */
 func (self Go) AddInput(name string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).AddInput(gc.String(name)))
+	return bool(class(self).AddInput(gd.NewString(name)))
 }
 
 /*
 Removes an input, call this only when inactive.
 */
 func (self Go) RemoveInput(index int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveInput(gd.Int(index))
 }
 
@@ -191,23 +188,20 @@ func (self Go) RemoveInput(index int) {
 Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
 */
 func (self Go) SetInputName(input int, name string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).SetInputName(gd.Int(input), gc.String(name)))
+	return bool(class(self).SetInputName(gd.Int(input), gd.NewString(name)))
 }
 
 /*
 Gets the name of an input by index.
 */
 func (self Go) GetInputName(input int) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetInputName(gc, gd.Int(input)).String())
+	return string(class(self).GetInputName(gd.Int(input)).String())
 }
 
 /*
 Amount of inputs in this animation node, only useful for animation nodes that go into [AnimationNodeBlendTree].
 */
 func (self Go) GetInputCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetInputCount()))
 }
 
@@ -215,24 +209,21 @@ func (self Go) GetInputCount() int {
 Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
 */
 func (self Go) FindInput(name string) int {
-	gc := gd.GarbageCollector(); _ = gc
-	return int(int(class(self).FindInput(gc.String(name))))
+	return int(int(class(self).FindInput(gd.NewString(name))))
 }
 
 /*
 Adds or removes a path for the filter.
 */
 func (self Go) SetFilterPath(path string, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetFilterPath(gc.String(path).NodePath(gc), enable)
+	class(self).SetFilterPath(gd.NewString(path).NodePath(), enable)
 }
 
 /*
 Returns whether the given path is filtered.
 */
 func (self Go) IsPathFiltered(path string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).IsPathFiltered(gc.String(path).NodePath(gc)))
+	return bool(class(self).IsPathFiltered(gd.NewString(path).NodePath()))
 }
 
 /*
@@ -240,23 +231,20 @@ Blend an animation by [param blend] amount (name must be valid in the linked [An
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
 func (self Go) BlendAnimation(animation string, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).BlendAnimation(gc.StringName(animation), gd.Float(time), gd.Float(delta), seeked, is_external_seeking, gd.Float(blend), 0)
+	class(self).BlendAnimation(gd.NewStringName(animation), gd.Float(time), gd.Float(delta), seeked, is_external_seeking, gd.Float(blend), 0)
 }
 
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
 func (self Go) BlendNode(name string, node gdclass.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64) float64 {
-	gc := gd.GarbageCollector(); _ = gc
-	return float64(float64(class(self).BlendNode(gc.StringName(name), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
+	return float64(float64(class(self).BlendNode(gd.NewStringName(name), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
 /*
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
 func (self Go) BlendInput(input_index int, time float64, seek bool, is_external_seeking bool, blend float64) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).BlendInput(gd.Int(input_index), gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
@@ -264,43 +252,30 @@ func (self Go) BlendInput(input_index int, time float64, seek bool, is_external_
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
 func (self Go) SetParameter(name string, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetParameter(gc.StringName(name), value)
+	class(self).SetParameter(gd.NewStringName(name), value)
 }
 
 /*
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (self Go) GetParameter(name string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GetParameter(gc, gc.StringName(name)))
+	return gd.Variant(class(self).GetParameter(gd.NewStringName(name)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.AnimationNode
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("AnimationNode"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNode"))
+	return Go{classdb.AnimationNode(object)}
 }
 
 func (self Go) FilterEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsFilterEnabled())
 }
 
 func (self Go) SetFilterEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFilterEnabled(value)
 }
 
@@ -309,12 +284,13 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -323,12 +299,13 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -337,13 +314,14 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name gd.StringName) gdclass.AnimationNode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var name = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var name = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -352,13 +330,14 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter gd.StringName) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var parameter = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var parameter = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -367,13 +346,10 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter gd.StringName) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var parameter = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var parameter = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -384,8 +360,6 @@ This function should return the delta.
 */
 func (class) _process(impl func(ptr unsafe.Pointer, time gd.Float, seek bool, is_external_seeking bool, test_only bool) gd.Float, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var time = gd.UnsafeGet[gd.Float](p_args,0)
 		var seek = gd.UnsafeGet[bool](p_args,1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args,2)
@@ -393,7 +367,6 @@ func (class) _process(impl func(ptr unsafe.Pointer, time gd.Float, seek bool, is
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, time, seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -402,12 +375,13 @@ When inheriting from [AnimationRootNode], implement this virtual method to overr
 */
 func (class) _get_caption(impl func(ptr unsafe.Pointer) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -416,12 +390,9 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _has_filter(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -430,11 +401,10 @@ Adds an input to the animation node. This is only useful for animation nodes cre
 */
 //go:nosplit
 func (self class) AddInput(name gd.String) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_add_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_add_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -444,11 +414,10 @@ Removes an input, call this only when inactive.
 */
 //go:nosplit
 func (self class) RemoveInput(index gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_remove_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_remove_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -456,12 +425,11 @@ Sets the name of the input at the given [param input] index. If the setting fail
 */
 //go:nosplit
 func (self class) SetInputName(input gd.Int, name gd.String) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_set_input_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_input_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -470,13 +438,12 @@ func (self class) SetInputName(input gd.Int, name gd.String) bool {
 Gets the name of an input by index.
 */
 //go:nosplit
-func (self class) GetInputName(ctx gd.Lifetime, input gd.Int) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetInputName(input gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_get_input_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_input_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -485,10 +452,9 @@ Amount of inputs in this animation node, only useful for animation nodes that go
 */
 //go:nosplit
 func (self class) GetInputCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_get_input_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_input_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -498,11 +464,10 @@ Returns the input index which corresponds to [param name]. If not found, returns
 */
 //go:nosplit
 func (self class) FindInput(name gd.String) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_find_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_find_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -512,12 +477,11 @@ Adds or removes a path for the filter.
 */
 //go:nosplit
 func (self class) SetFilterPath(path gd.NodePath, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_set_filter_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_filter_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -525,30 +489,27 @@ Returns whether the given path is filtered.
 */
 //go:nosplit
 func (self class) IsPathFiltered(path gd.NodePath) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_is_path_filtered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_is_path_filtered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFilterEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_set_filter_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_filter_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsFilterEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_is_filter_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_is_filter_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -559,9 +520,8 @@ A [param looped_flag] is used by internal processing immediately after the loop.
 */
 //go:nosplit
 func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta gd.Float, seeked bool, is_external_seeking bool, blend gd.Float, looped_flag classdb.AnimationLoopedFlag)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(animation))
+	callframe.Arg(frame, discreet.Get(animation))
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, seeked)
@@ -569,7 +529,7 @@ func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta g
 	callframe.Arg(frame, blend)
 	callframe.Arg(frame, looped_flag)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_blend_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_blend_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -577,10 +537,9 @@ Blend another animation node (in case this animation node contains child animati
 */
 //go:nosplit
 func (self class) BlendNode(name gd.StringName, node gdclass.AnimationNode, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter classdb.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, seek)
 	callframe.Arg(frame, is_external_seeking)
@@ -589,7 +548,7 @@ func (self class) BlendNode(name gd.StringName, node gdclass.AnimationNode, time
 	callframe.Arg(frame, sync)
 	callframe.Arg(frame, test_only)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_blend_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_blend_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -599,7 +558,6 @@ Blend an input. This is only useful for animation nodes created for an [Animatio
 */
 //go:nosplit
 func (self class) BlendInput(input_index gd.Int, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter classdb.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, input_index)
 	callframe.Arg(frame, time)
@@ -610,7 +568,7 @@ func (self class) BlendInput(input_index gd.Int, time gd.Float, seek bool, is_ex
 	callframe.Arg(frame, sync)
 	callframe.Arg(frame, test_only)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_blend_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_blend_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -620,43 +578,38 @@ Sets a custom parameter. These are used as local memory, because resources can b
 */
 //go:nosplit
 func (self class) SetParameter(name gd.StringName, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_set_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_set_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 //go:nosplit
-func (self class) GetParameter(ctx gd.Lifetime, name gd.StringName) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetParameter(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNode.Bind_get_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
 func (self Go) OnTreeChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tree_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnAnimationNodeRenamed(cb func(object_id int, old_name string, new_name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("animation_node_renamed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("animation_node_renamed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnAnimationNodeRemoved(cb func(object_id int, name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("animation_node_removed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("animation_node_removed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -694,7 +647,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("AnimationNode", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("AnimationNode", func(ptr gd.Object) any { return classdb.AnimationNode(ptr) })}
 type FilterAction = classdb.AnimationNodeFilterAction
 
 const (

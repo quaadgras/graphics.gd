@@ -2,7 +2,7 @@ package SpinBox
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [SpinBox] is a numerical input text field. It allows entering integers and floating-point numbers.
@@ -50,7 +50,6 @@ type Go [1]classdb.SpinBox
 Applies the current value of this [SpinBox].
 */
 func (self Go) Apply() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Apply()
 }
 
@@ -59,227 +58,189 @@ Returns the [LineEdit] instance from this [SpinBox]. You can use it to access pr
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Go) GetLineEdit() gdclass.LineEdit {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.LineEdit(class(self).GetLineEdit(gc))
+	return gdclass.LineEdit(class(self).GetLineEdit())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.SpinBox
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("SpinBox"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpinBox"))
+	return Go{classdb.SpinBox(object)}
 }
 
 func (self Go) Alignment() gd.HorizontalAlignment {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 func (self Go) SetAlignment(value gd.HorizontalAlignment) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetHorizontalAlignment(value)
 }
 
 func (self Go) Editable() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsEditable())
 }
 
 func (self Go) SetEditable(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEditable(value)
 }
 
 func (self Go) UpdateOnTextChanged() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetUpdateOnTextChanged())
 }
 
 func (self Go) SetUpdateOnTextChanged(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUpdateOnTextChanged(value)
 }
 
 func (self Go) Prefix() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetPrefix(gc).String())
+		return string(class(self).GetPrefix().String())
 }
 
 func (self Go) SetPrefix(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetPrefix(gc.String(value))
+	class(self).SetPrefix(gd.NewString(value))
 }
 
 func (self Go) Suffix() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetSuffix(gc).String())
+		return string(class(self).GetSuffix().String())
 }
 
 func (self Go) SetSuffix(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetSuffix(gc.String(value))
+	class(self).SetSuffix(gd.NewString(value))
 }
 
 func (self Go) CustomArrowStep() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetCustomArrowStep()))
 }
 
 func (self Go) SetCustomArrowStep(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCustomArrowStep(gd.Float(value))
 }
 
 func (self Go) SelectAllOnFocus() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSelectAllOnFocus())
 }
 
 func (self Go) SetSelectAllOnFocus(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSelectAllOnFocus(value)
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment gd.HorizontalAlignment)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetHorizontalAlignment() gd.HorizontalAlignment {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.HorizontalAlignment](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSuffix(suffix gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(suffix))
+	callframe.Arg(frame, discreet.Get(suffix))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetSuffix(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSuffix() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPrefix(prefix gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(prefix))
+	callframe.Arg(frame, discreet.Get(prefix))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_prefix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_prefix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetPrefix(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPrefix() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_get_prefix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_prefix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEditable(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetCustomArrowStep(arrow_step gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, arrow_step)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_custom_arrow_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_custom_arrow_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetCustomArrowStep() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_get_custom_arrow_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_custom_arrow_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) IsEditable() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUpdateOnTextChanged(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_update_on_text_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_update_on_text_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetUpdateOnTextChanged() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_get_update_on_text_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_update_on_text_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_set_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_set_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSelectAllOnFocus() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_is_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_is_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -289,10 +250,9 @@ Applies the current value of this [SpinBox].
 */
 //go:nosplit
 func (self class) Apply()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_apply, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_apply, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -300,13 +260,11 @@ Returns the [LineEdit] instance from this [SpinBox]. You can use it to access pr
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetLineEdit(ctx gd.Lifetime) gdclass.LineEdit {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLineEdit() gdclass.LineEdit {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SpinBox.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.LineEdit
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.LineEdit{classdb.LineEdit(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -332,4 +290,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRange(), name)
 	}
 }
-func init() {classdb.Register("SpinBox", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("SpinBox", func(ptr gd.Object) any { return classdb.SpinBox(ptr) })}

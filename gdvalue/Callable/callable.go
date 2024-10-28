@@ -2,6 +2,7 @@
 package Callable
 
 import (
+	"math"
 	"reflect"
 	"runtime"
 
@@ -78,7 +79,7 @@ func (l local) Bind(args ...any) Func {
 //
 // Note: When this method is chained with other similar methods, the order in which the
 // argument list is modified is read from right to left.
-func Bind(fn Func, args ...any) Func {
+func Bind(fn Func, args ...any) Func { //gd:Callable.bind Callable.bindv
 	if fn == nil {
 		return nil
 	}
@@ -87,7 +88,7 @@ func Bind(fn Func, args ...any) Func {
 
 // Call calls the method represented by this Callable. Arguments can be passed and should
 // match the method's signature.
-func Call(fn Func, args ...any) any {
+func Call(fn Func, args ...any) any { //gd:Callable.call Callable.call_deferred Callable.callv Callable.rpc Callable.rpc_id
 	if fn == nil {
 		return nil
 	}
@@ -95,7 +96,7 @@ func Call(fn Func, args ...any) any {
 }
 
 // Create creates a new Callable for the method named method in the specified value.
-func Create(value any, method string) Func {
+func Create(value any, method string) Func { //gd:Callable.create
 	if value == nil {
 		return nil
 	}
@@ -103,7 +104,7 @@ func Create(value any, method string) Func {
 }
 
 // ArgumentCount returns the total number of arguments this Callable should take.
-func ArgumentCount(fn Func) int {
+func ArgumentCount(fn Func) int { //gd:Callable.get_argument_count
 	if fn == nil {
 		return 0
 	}
@@ -112,7 +113,7 @@ func ArgumentCount(fn Func) int {
 }
 
 // BoundArguments returns the arguments that have been bound to this Callable.
-func BoundArguments(fn Func) Array.Of[any] {
+func BoundArguments(fn Func) Array.Of[any] { //gd:Callable.get_bound_arguments
 	if fn == nil {
 		return nil
 	}
@@ -123,7 +124,7 @@ func BoundArguments(fn Func) Array.Of[any] {
 // BoundArgumentsCount returns the total amount of arguments bound (or unbound)
 // via successive bind or unbind calls. If the amount of arguments unbound is
 // greater than the ones bound, this function returns a value less than zero.
-func BoundArgumentsCount(fn Func) int {
+func BoundArgumentsCount(fn Func) int { //gd:Callable.get_bound_arguments_count
 	if fn == nil {
 		return 0
 	}
@@ -132,7 +133,7 @@ func BoundArgumentsCount(fn Func) int {
 
 // Method returns the name of the function represented by this Callable or
 // an empty string if a name is not available.
-func Method(fn Func) string {
+func Method(fn Func) string { //gd:Callable.get_method
 	if fn == nil {
 		return ""
 	}
@@ -140,20 +141,43 @@ func Method(fn Func) string {
 }
 
 // IsProxy returns true if the given value is not backed by a Go function.
-func IsProxy(fn Func) bool {
+func IsProxy(fn Func) bool { //gd:Callable.is_custom
 	if fn == nil {
 		return true
 	}
 	return reflect.TypeOf(fn).Kind() != reflect.Func
 }
 
+// Hash returns the 32-bit hash value of this Callable's object.
+//
+// Note: Callables with equal content will always produce identical hash values. However,
+// the reverse is not true. Returning identical hash values does not imply the
+// callables are equal, because different callables can have identical hash values due
+// to hash collisions. The engine uses a 32-bit hash algorithm for hash.
+func Hash(fn Func) uint32 { //gd:Callable.hash
+	return uint32(reflect.ValueOf(reflect.TypeOf(fn)).Pointer() % math.MaxUint32)
+}
+
+// Receiver returns the receiver of the method represented by this Callable.
+// If no receiver is available, this function returns nil.
+func Receiver(fn Func) any { //gd:Callable.get_object Callable.get_object_id
+	if fn == nil {
+		return nil
+	}
+	l, ok := fn.(*local)
+	if !ok {
+		return nil
+	}
+	return l.value
+}
+
 // IsNull returns true if the given value is nil.
-func IsNull(fn Func) bool {
+func IsNull(fn Func) bool { //gd:Callable.is_null
 	return fn == nil
 }
 
 // IsStandard returns true if the given value is backed by a Go function.
-func IsStandard(fn Func) bool {
+func IsStandard(fn Func) bool { //gd:Callable.is_standard
 	if fn == nil {
 		return false
 	}
@@ -161,6 +185,37 @@ func IsStandard(fn Func) bool {
 }
 
 // IsValid returns true if the given value is not nil.
-func IsValid(fn Func) bool {
+func IsValid(fn Func) bool { //gd:Callable.is_valid
 	return fn != nil
+}
+
+// Unbind returns a copy of this Callable with a number of arguments unbound. In other
+// words, when the new callable is called the last few arguments supplied by the user
+// are ignored, according to argcount. The remaining arguments are passed to the callable.
+// This allows to use the original callable in a context that attempts to pass more
+// arguments than this callable can handle, e.g. a signal with a fixed number of arguments.
+// See also [Bind].
+//
+// Note: When this method is chained with other similar methods, the order in which the
+// argument list is modified is read from right to left.
+func Unbind(fn Func, argcount int) Func { //gd:Callable.unbind
+	if fn == nil {
+		return nil
+	}
+	return &unbind{Func: fn, count: argcount}
+}
+
+type unbind struct {
+	Func
+	count int
+}
+
+func (u *unbind) Call(args ...any) any {
+	if u.Func == nil {
+		return nil
+	}
+	if len(args) >= u.count {
+		args = args[:len(args)-u.count]
+	}
+	return u.Func.Call(args...)
 }

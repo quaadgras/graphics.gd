@@ -2,7 +2,7 @@ package RenderData
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Abstract render data object, exists for the duration of rendering a single viewport.
@@ -25,23 +25,20 @@ type Go [1]classdb.RenderData
 Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
 */
 func (self Go) GetRenderSceneBuffers() gdclass.RenderSceneBuffers {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.RenderSceneBuffers(class(self).GetRenderSceneBuffers(gc))
+	return gdclass.RenderSceneBuffers(class(self).GetRenderSceneBuffers())
 }
 
 /*
 Returns the [RenderSceneData] object managing this frames scene data.
 */
 func (self Go) GetRenderSceneData() gdclass.RenderSceneData {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.RenderSceneData(class(self).GetRenderSceneData(gc))
+	return gdclass.RenderSceneData(class(self).GetRenderSceneData())
 }
 
 /*
 Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
 */
 func (self Go) GetEnvironment() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(class(self).GetEnvironment())
 }
 
@@ -49,7 +46,6 @@ func (self Go) GetEnvironment() gd.RID {
 Returns the [RID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
 */
 func (self Go) GetCameraAttributes() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(class(self).GetCameraAttributes())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -57,31 +53,20 @@ type GD = class
 type class [1]classdb.RenderData
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("RenderData"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderData"))
+	return Go{classdb.RenderData(object)}
 }
 
 /*
 Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
 */
 //go:nosplit
-func (self class) GetRenderSceneBuffers(ctx gd.Lifetime) gdclass.RenderSceneBuffers {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRenderSceneBuffers() gdclass.RenderSceneBuffers {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RenderData.Bind_get_render_scene_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.RenderSceneBuffers
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.RenderSceneBuffers{classdb.RenderSceneBuffers(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -89,13 +74,11 @@ func (self class) GetRenderSceneBuffers(ctx gd.Lifetime) gdclass.RenderSceneBuff
 Returns the [RenderSceneData] object managing this frames scene data.
 */
 //go:nosplit
-func (self class) GetRenderSceneData(ctx gd.Lifetime) gdclass.RenderSceneData {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRenderSceneData() gdclass.RenderSceneData {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.RenderSceneData
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.RenderSceneData{classdb.RenderSceneData(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -104,10 +87,9 @@ Returns the [RID] of the environments object in the [RenderingServer] being used
 */
 //go:nosplit
 func (self class) GetEnvironment() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RenderData.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -117,10 +99,9 @@ Returns the [RID] of the camera attributes object in the [RenderingServer] being
 */
 //go:nosplit
 func (self class) GetCameraAttributes() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RenderData.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -139,4 +120,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("RenderData", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("RenderData", func(ptr gd.Object) any { return classdb.RenderData(ptr) })}

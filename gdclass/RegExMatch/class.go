@@ -2,7 +2,7 @@ package RegExMatch
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
@@ -24,7 +24,6 @@ type Go [1]classdb.RegExMatch
 Returns the number of capturing groups.
 */
 func (self Go) GetGroupCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetGroupCount()))
 }
 
@@ -33,8 +32,7 @@ Returns the substring of the match from the source string. Capturing groups can 
 Returns an empty string if the group did not match or doesn't exist.
 */
 func (self Go) GetString() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetString(gc, gc.Variant(0)).String())
+	return string(class(self).GetString(gd.NewVariant(0)).String())
 }
 
 /*
@@ -42,8 +40,7 @@ Returns the starting position of the match within the source string. The startin
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Go) GetStart() int {
-	gc := gd.GarbageCollector(); _ = gc
-	return int(int(class(self).GetStart(gc.Variant(0))))
+	return int(int(class(self).GetStart(gd.NewVariant(0))))
 }
 
 /*
@@ -51,50 +48,36 @@ Returns the end position of the match within the source string. The end position
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Go) GetEnd() int {
-	gc := gd.GarbageCollector(); _ = gc
-	return int(int(class(self).GetEnd(gc.Variant(0))))
+	return int(int(class(self).GetEnd(gd.NewVariant(0))))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.RegExMatch
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("RegExMatch"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RegExMatch"))
+	return Go{classdb.RegExMatch(object)}
 }
 
 func (self Go) Subject() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetSubject(gc).String())
+		return string(class(self).GetSubject().String())
 }
 
 func (self Go) Names() gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Dictionary(class(self).GetNames(gc))
+		return gd.Dictionary(class(self).GetNames())
 }
 
 func (self Go) Strings() []string {
-	gc := gd.GarbageCollector(); _ = gc
-		return []string(class(self).GetStrings(gc).Strings(gc))
+		return []string(class(self).GetStrings().Strings())
 }
 
 //go:nosplit
-func (self class) GetSubject(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSubject() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_subject, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_subject, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -103,31 +86,28 @@ Returns the number of capturing groups.
 */
 //go:nosplit
 func (self class) GetGroupCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_group_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_group_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetNames(ctx gd.Lifetime) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetNames() gd.Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetStrings(ctx gd.Lifetime) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetStrings() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_strings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_strings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -136,13 +116,12 @@ Returns the substring of the match from the source string. Capturing groups can 
 Returns an empty string if the group did not match or doesn't exist.
 */
 //go:nosplit
-func (self class) GetString(ctx gd.Lifetime, name gd.Variant) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetString(name gd.Variant) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(name))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -152,11 +131,10 @@ Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetStart(name gd.Variant) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -167,11 +145,10 @@ Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetEnd(name gd.Variant) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegExMatch.Bind_get_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -192,4 +169,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("RegExMatch", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("RegExMatch", func(ptr gd.Object) any { return classdb.RegExMatch(ptr) })}

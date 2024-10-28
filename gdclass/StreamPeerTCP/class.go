@@ -2,7 +2,7 @@ package StreamPeerTCP
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A stream peer that handles TCP connections. This object can be used to connect to TCP servers, or also is returned by a TCP server.
@@ -27,23 +27,20 @@ Opens the TCP socket, and binds it to the specified local address.
 This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
 */
 func (self Go) Bind(port int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Bind(gd.Int(port), gc.String("*")))
+	return gd.Error(class(self).Bind(gd.Int(port), gd.NewString("*")))
 }
 
 /*
 Connects to the specified [code]host:port[/code] pair. A hostname will be resolved if valid. Returns [constant OK] on success.
 */
 func (self Go) ConnectToHost(host string, port int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).ConnectToHost(gc.String(host), gd.Int(port)))
+	return gd.Error(class(self).ConnectToHost(gd.NewString(host), gd.Int(port)))
 }
 
 /*
 Poll the socket, updating its state. See [method get_status].
 */
 func (self Go) Poll() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Poll())
 }
 
@@ -51,7 +48,6 @@ func (self Go) Poll() gd.Error {
 Returns the status of the connection, see [enum Status].
 */
 func (self Go) GetStatus() classdb.StreamPeerTCPStatus {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.StreamPeerTCPStatus(class(self).GetStatus())
 }
 
@@ -59,15 +55,13 @@ func (self Go) GetStatus() classdb.StreamPeerTCPStatus {
 Returns the IP of this peer.
 */
 func (self Go) GetConnectedHost() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetConnectedHost(gc).String())
+	return string(class(self).GetConnectedHost().String())
 }
 
 /*
 Returns the port of this peer.
 */
 func (self Go) GetConnectedPort() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetConnectedPort()))
 }
 
@@ -75,7 +69,6 @@ func (self Go) GetConnectedPort() int {
 Returns the local port to which this peer is bound.
 */
 func (self Go) GetLocalPort() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetLocalPort()))
 }
 
@@ -83,7 +76,6 @@ func (self Go) GetLocalPort() int {
 Disconnects from host.
 */
 func (self Go) DisconnectFromHost() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).DisconnectFromHost()
 }
 
@@ -92,7 +84,6 @@ If [param enabled] is [code]true[/code], packets will be sent immediately. If [p
 [b]Note:[/b] It's recommended to leave this disabled for applications that send large packets or need to transfer a lot of data, as enabling this can decrease the total available bandwidth.
 */
 func (self Go) SetNoDelay(enabled bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetNoDelay(enabled)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -100,18 +91,9 @@ type GD = class
 type class [1]classdb.StreamPeerTCP
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("StreamPeerTCP"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerTCP"))
+	return Go{classdb.StreamPeerTCP(object)}
 }
 
 /*
@@ -120,12 +102,11 @@ This method is generally not needed, and only used to force the subsequent call 
 */
 //go:nosplit
 func (self class) Bind(port gd.Int, host gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_bind, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_bind, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -135,12 +116,11 @@ Connects to the specified [code]host:port[/code] pair. A hostname will be resolv
 */
 //go:nosplit
 func (self class) ConnectToHost(host gd.String, port gd.Int) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,10 +130,9 @@ Poll the socket, updating its state. See [method get_status].
 */
 //go:nosplit
 func (self class) Poll() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -163,10 +142,9 @@ Returns the status of the connection, see [enum Status].
 */
 //go:nosplit
 func (self class) GetStatus() classdb.StreamPeerTCPStatus {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.StreamPeerTCPStatus](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -175,12 +153,11 @@ func (self class) GetStatus() classdb.StreamPeerTCPStatus {
 Returns the IP of this peer.
 */
 //go:nosplit
-func (self class) GetConnectedHost(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetConnectedHost() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_get_connected_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -189,10 +166,9 @@ Returns the port of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedPort() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_get_connected_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -202,10 +178,9 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -215,10 +190,9 @@ Disconnects from host.
 */
 //go:nosplit
 func (self class) DisconnectFromHost()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_disconnect_from_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_disconnect_from_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -227,11 +201,10 @@ If [param enabled] is [code]true[/code], packets will be sent immediately. If [p
 */
 //go:nosplit
 func (self class) SetNoDelay(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.StreamPeerTCP.Bind_set_no_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_set_no_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsStreamPeerTCP() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -252,7 +225,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsStreamPeer(), name)
 	}
 }
-func init() {classdb.Register("StreamPeerTCP", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("StreamPeerTCP", func(ptr gd.Object) any { return classdb.StreamPeerTCP(ptr) })}
 type Status = classdb.StreamPeerTCPStatus
 
 const (

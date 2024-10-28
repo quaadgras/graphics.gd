@@ -2,7 +2,7 @@ package NavigationPathQueryResult2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class stores the result of a 2D navigation path query from the [NavigationServer2D].
@@ -24,7 +24,6 @@ type Go [1]classdb.NavigationPathQueryResult2D
 Reset the result object to its initial state. This is useful to reuse the object across multiple queries.
 */
 func (self Go) Reset() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Reset()
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -32,133 +31,108 @@ type GD = class
 type class [1]classdb.NavigationPathQueryResult2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("NavigationPathQueryResult2D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationPathQueryResult2D"))
+	return Go{classdb.NavigationPathQueryResult2D(object)}
 }
 
 func (self Go) Path() []gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []gd.Vector2(class(self).GetPath(gc).AsSlice())
+		return []gd.Vector2(class(self).GetPath().AsSlice())
 }
 
 func (self Go) SetPath(value []gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetPath(gc.PackedVector2Slice(value))
+	class(self).SetPath(gd.NewPackedVector2Slice(value))
 }
 
 func (self Go) PathTypes() []int32 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []int32(class(self).GetPathTypes(gc).AsSlice())
+		return []int32(class(self).GetPathTypes().AsSlice())
 }
 
 func (self Go) SetPathTypes(value []int32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetPathTypes(gc.PackedInt32Slice(value))
+	class(self).SetPathTypes(gd.NewPackedInt32Slice(value))
 }
 
-func (self Go) PathRids() gd.ArrayOf[gd.RID] {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.ArrayOf[gd.RID](class(self).GetPathRids(gc))
+func (self Go) PathRids() gd.Array {
+		return gd.Array(class(self).GetPathRids())
 }
 
-func (self Go) SetPathRids(value gd.ArrayOf[gd.RID]) {
-	gc := gd.GarbageCollector(); _ = gc
+func (self Go) SetPathRids(value gd.Array) {
 	class(self).SetPathRids(value)
 }
 
 func (self Go) PathOwnerIds() []int64 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []int64(class(self).GetPathOwnerIds(gc).AsSlice())
+		return []int64(class(self).GetPathOwnerIds().AsSlice())
 }
 
 func (self Go) SetPathOwnerIds(value []int64) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetPathOwnerIds(gc.PackedInt64Slice(value))
+	class(self).SetPathOwnerIds(gd.NewPackedInt64Slice(value))
 }
 
 //go:nosplit
 func (self class) SetPath(path gd.PackedVector2Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetPath(ctx gd.Lifetime) gd.PackedVector2Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPath() gd.PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPathTypes(path_types gd.PackedInt32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path_types))
+	callframe.Arg(frame, discreet.Get(path_types))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_set_path_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetPathTypes(ctx gd.Lifetime) gd.PackedInt32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPathTypes() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_get_path_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_types, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) SetPathRids(path_rids gd.ArrayOf[gd.RID])  {
-	var selfPtr = self[0].AsPointer()
+func (self class) SetPathRids(path_rids gd.Array)  {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path_rids))
+	callframe.Arg(frame, discreet.Get(path_rids))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_set_path_rids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path_rids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetPathRids(ctx gd.Lifetime) gd.ArrayOf[gd.RID] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPathRids() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_get_path_rids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_rids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gd.RID](ret)
+	return ret
 }
 //go:nosplit
 func (self class) SetPathOwnerIds(path_owner_ids gd.PackedInt64Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path_owner_ids))
+	callframe.Arg(frame, discreet.Get(path_owner_ids))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_set_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_set_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetPathOwnerIds(ctx gd.Lifetime) gd.PackedInt64Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPathOwnerIds() gd.PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_get_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt64Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -167,10 +141,9 @@ Reset the result object to its initial state. This is useful to reuse the object
 */
 //go:nosplit
 func (self class) Reset()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationPathQueryResult2D.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsNavigationPathQueryResult2D() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -189,7 +162,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("NavigationPathQueryResult2D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("NavigationPathQueryResult2D", func(ptr gd.Object) any { return classdb.NavigationPathQueryResult2D(ptr) })}
 type PathSegmentType = classdb.NavigationPathQueryResult2DPathSegmentType
 
 const (

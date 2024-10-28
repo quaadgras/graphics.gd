@@ -2,7 +2,7 @@ package OpenXRExtensionWrapperExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
@@ -85,7 +85,7 @@ var _ mmm.Lifetime
 		//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
 		SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values gd.Dictionary, next_pointer unsafe.Pointer) int
 		//Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
-		GetViewportCompositionLayerExtensionProperties() gd.ArrayOf[gd.Dictionary]
+		GetViewportCompositionLayerExtensionProperties() gd.Array
 		//Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
 		GetViewportCompositionLayerExtensionPropertyDefaults() gd.Dictionary
 		//Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
@@ -103,12 +103,13 @@ Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dict
 */
 func (Go) _get_requested_extensions(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -117,13 +118,10 @@ Adds additional data structures when interogating OpenXR system abilities.
 */
 func (Go) _set_system_properties_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -132,13 +130,10 @@ Adds additional data structures when the OpenXR instance is created.
 */
 func (Go) _set_instance_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -147,13 +142,10 @@ Adds additional data structures when the OpenXR session is created.
 */
 func (Go) _set_session_create_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -162,13 +154,10 @@ Adds additional data structures when creating OpenXR swapchains.
 */
 func (Go) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -177,14 +166,11 @@ Adds additional data structures when each hand tracker is created.
 */
 func (Go) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr unsafe.Pointer, hand_index int, next_pointer unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var hand_index = gd.UnsafeGet[gd.Int](p_args,0)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(hand_index), next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -194,12 +180,9 @@ This will only be called if the extension previously registered itself with [met
 */
 func (Go) _get_composition_layer_count(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -209,13 +192,10 @@ This will only be called if the extension previously registered itself with [met
 */
 func (Go) _get_composition_layer(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var index = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -225,13 +205,10 @@ This will only be called if the extension previously registered itself with [met
 */
 func (Go) _get_composition_layer_order(impl func(ptr unsafe.Pointer, index int) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var index = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -240,12 +217,13 @@ Returns a [PackedStringArray] of positional tracker names that are used within t
 */
 func (Go) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -255,11 +233,8 @@ Extensions should also provide metadata regardless of whether they are supported
 */
 func (Go) _on_register_metadata(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -268,11 +243,8 @@ Called before the OpenXR instance is created.
 */
 func (Go) _on_before_instance_created(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -281,12 +253,9 @@ Called right after the OpenXR instance is created.
 */
 func (Go) _on_instance_created(impl func(ptr unsafe.Pointer, instance int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var instance = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(instance))
-		gc.End()
 	}
 }
 
@@ -295,11 +264,8 @@ Called right before the OpenXR instance is destroyed.
 */
 func (Go) _on_instance_destroyed(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -308,12 +274,9 @@ Called right after the OpenXR session is created.
 */
 func (Go) _on_session_created(impl func(ptr unsafe.Pointer, session int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var session = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(session))
-		gc.End()
 	}
 }
 
@@ -322,11 +285,8 @@ Called as part of the OpenXR process handling. This happens right before general
 */
 func (Go) _on_process(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -335,11 +295,8 @@ Called right before the XR viewports begin their rendering step.
 */
 func (Go) _on_pre_render(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -348,11 +305,8 @@ Called right after the main swapchains are (re)created.
 */
 func (Go) _on_main_swapchains_created(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -361,11 +315,8 @@ Called right before the OpenXR session is destroyed.
 */
 func (Go) _on_session_destroyed(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -374,11 +325,8 @@ Called when the OpenXR session state is changed to idle.
 */
 func (Go) _on_state_idle(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -387,11 +335,8 @@ Called when the OpenXR session state is changed to ready. This means OpenXR is r
 */
 func (Go) _on_state_ready(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -400,11 +345,8 @@ Called when the OpenXR session state is changed to synchronized. OpenXR also ret
 */
 func (Go) _on_state_synchronized(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -413,11 +355,8 @@ Called when the OpenXR session state is changed to visible. This means OpenXR is
 */
 func (Go) _on_state_visible(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -426,11 +365,8 @@ Called when the OpenXR session state is changed to focused. This state is the ac
 */
 func (Go) _on_state_focused(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -439,11 +375,8 @@ Called when the OpenXR session state is changed to stopping.
 */
 func (Go) _on_state_stopping(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -452,11 +385,8 @@ Called when the OpenXR session state is changed to loss pending.
 */
 func (Go) _on_state_loss_pending(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -465,11 +395,8 @@ Called when the OpenXR session state is changed to exiting.
 */
 func (Go) _on_state_exiting(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -478,13 +405,10 @@ Called when there is an OpenXR event to process. When implementing, return [code
 */
 func (Go) _on_event_polled(impl func(ptr unsafe.Pointer, event unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var event = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -495,29 +419,28 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 */
 func (Go) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values gd.Dictionary, next_pointer unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
-		var property_values = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var property_values = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(property_values)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer, property_values, next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
 /*
 Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
 */
-func (Go) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Go) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -526,12 +449,13 @@ Gets a [Dictionary] containing the default values for the properties returned by
 */
 func (Go) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -541,12 +465,9 @@ Called when a composition layer created via [OpenXRCompositionLayer] is destroye
 */
 func (Go) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Pointer, layer unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, layer)
-		gc.End()
 	}
 }
 
@@ -554,15 +475,13 @@ impl(self, layer)
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
 func (self Go) GetOpenxrApi() gdclass.OpenXRAPIExtension {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.OpenXRAPIExtension(class(self).GetOpenxrApi(gc))
+	return gdclass.OpenXRAPIExtension(class(self).GetOpenxrApi())
 }
 
 /*
 Registers the extension. This should happen at core module initialization level.
 */
 func (self Go) RegisterExtensionWrapper() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RegisterExtensionWrapper()
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -570,18 +489,9 @@ type GD = class
 type class [1]classdb.OpenXRExtensionWrapperExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("OpenXRExtensionWrapperExtension"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRExtensionWrapperExtension"))
+	return Go{classdb.OpenXRExtensionWrapperExtension(object)}
 }
 
 /*
@@ -591,12 +501,13 @@ Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dict
 */
 func (class) _get_requested_extensions(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -605,13 +516,10 @@ Adds additional data structures when interogating OpenXR system abilities.
 */
 func (class) _set_system_properties_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -620,13 +528,10 @@ Adds additional data structures when the OpenXR instance is created.
 */
 func (class) _set_instance_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -635,13 +540,10 @@ Adds additional data structures when the OpenXR session is created.
 */
 func (class) _set_session_create_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -650,13 +552,10 @@ Adds additional data structures when creating OpenXR swapchains.
 */
 func (class) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -665,14 +564,11 @@ Adds additional data structures when each hand tracker is created.
 */
 func (class) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr unsafe.Pointer, hand_index gd.Int, next_pointer unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var hand_index = gd.UnsafeGet[gd.Int](p_args,0)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, hand_index, next_pointer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -682,12 +578,9 @@ This will only be called if the extension previously registered itself with [met
 */
 func (class) _get_composition_layer_count(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -697,13 +590,10 @@ This will only be called if the extension previously registered itself with [met
 */
 func (class) _get_composition_layer(impl func(ptr unsafe.Pointer, index gd.Int) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var index = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -713,13 +603,10 @@ This will only be called if the extension previously registered itself with [met
 */
 func (class) _get_composition_layer_order(impl func(ptr unsafe.Pointer, index gd.Int) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var index = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -728,12 +615,13 @@ Returns a [PackedStringArray] of positional tracker names that are used within t
 */
 func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -743,11 +631,8 @@ Extensions should also provide metadata regardless of whether they are supported
 */
 func (class) _on_register_metadata(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -756,11 +641,8 @@ Called before the OpenXR instance is created.
 */
 func (class) _on_before_instance_created(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -769,12 +651,9 @@ Called right after the OpenXR instance is created.
 */
 func (class) _on_instance_created(impl func(ptr unsafe.Pointer, instance gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var instance = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, instance)
-		ctx.End()
 	}
 }
 
@@ -783,11 +662,8 @@ Called right before the OpenXR instance is destroyed.
 */
 func (class) _on_instance_destroyed(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -796,12 +672,9 @@ Called right after the OpenXR session is created.
 */
 func (class) _on_session_created(impl func(ptr unsafe.Pointer, session gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var session = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, session)
-		ctx.End()
 	}
 }
 
@@ -810,11 +683,8 @@ Called as part of the OpenXR process handling. This happens right before general
 */
 func (class) _on_process(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -823,11 +693,8 @@ Called right before the XR viewports begin their rendering step.
 */
 func (class) _on_pre_render(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -836,11 +703,8 @@ Called right after the main swapchains are (re)created.
 */
 func (class) _on_main_swapchains_created(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -849,11 +713,8 @@ Called right before the OpenXR session is destroyed.
 */
 func (class) _on_session_destroyed(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -862,11 +723,8 @@ Called when the OpenXR session state is changed to idle.
 */
 func (class) _on_state_idle(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -875,11 +733,8 @@ Called when the OpenXR session state is changed to ready. This means OpenXR is r
 */
 func (class) _on_state_ready(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -888,11 +743,8 @@ Called when the OpenXR session state is changed to synchronized. OpenXR also ret
 */
 func (class) _on_state_synchronized(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -901,11 +753,8 @@ Called when the OpenXR session state is changed to visible. This means OpenXR is
 */
 func (class) _on_state_visible(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -914,11 +763,8 @@ Called when the OpenXR session state is changed to focused. This state is the ac
 */
 func (class) _on_state_focused(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -927,11 +773,8 @@ Called when the OpenXR session state is changed to stopping.
 */
 func (class) _on_state_stopping(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -940,11 +783,8 @@ Called when the OpenXR session state is changed to loss pending.
 */
 func (class) _on_state_loss_pending(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -953,11 +793,8 @@ Called when the OpenXR session state is changed to exiting.
 */
 func (class) _on_state_exiting(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -966,13 +803,10 @@ Called when there is an OpenXR event to process. When implementing, return [code
 */
 func (class) _on_event_polled(impl func(ptr unsafe.Pointer, event unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var event = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -983,29 +817,27 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 */
 func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values gd.Dictionary, next_pointer unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
-		var property_values = mmm.Let[gd.Dictionary](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var property_values = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,1))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer, property_values, next_pointer)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
 /*
 Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
 */
-func (class) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1014,12 +846,13 @@ Gets a [Dictionary] containing the default values for the properties returned by
 */
 func (class) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr unsafe.Pointer) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1029,12 +862,9 @@ Called when a composition layer created via [OpenXRCompositionLayer] is destroye
 */
 func (class) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Pointer, layer unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, layer)
-		ctx.End()
 	}
 }
 
@@ -1042,13 +872,11 @@ impl(self, layer)
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
 //go:nosplit
-func (self class) GetOpenxrApi(ctx gd.Lifetime) gdclass.OpenXRAPIExtension {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOpenxrApi() gdclass.OpenXRAPIExtension {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.OpenXRAPIExtension
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.OpenXRAPIExtension{classdb.OpenXRAPIExtension(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1057,10 +885,9 @@ Registers the extension. This should happen at core module initialization level.
 */
 //go:nosplit
 func (self class) RegisterExtensionWrapper()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsOpenXRExtensionWrapperExtension() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -1141,4 +968,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("OpenXRExtensionWrapperExtension", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("OpenXRExtensionWrapperExtension", func(ptr gd.Object) any { return classdb.OpenXRExtensionWrapperExtension(ptr) })}

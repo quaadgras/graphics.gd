@@ -1,5 +1,5 @@
-// Package Vector4i provides a 4D vector using integer coordinates.
-package Vector4i
+// Package Vector4 provides a 4D vector using integer coordinates.
+package Vector4
 
 import (
 	"math"

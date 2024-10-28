@@ -2,7 +2,7 @@ package OccluderInstance3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Occlusion culling can improve rendering performance in closed/semi-open areas by hiding geometry that is occluded by other objects.
@@ -32,7 +32,6 @@ type Go [1]classdb.OccluderInstance3D
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Go) SetBakeMaskValue(layer_number int, value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBakeMaskValue(gd.Int(layer_number), value)
 }
 
@@ -40,7 +39,6 @@ func (self Go) SetBakeMaskValue(layer_number int, value bool) {
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Go) GetBakeMaskValue(layer_number int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetBakeMaskValue(gd.Int(layer_number)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -48,65 +46,48 @@ type GD = class
 type class [1]classdb.OccluderInstance3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("OccluderInstance3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OccluderInstance3D"))
+	return Go{classdb.OccluderInstance3D(object)}
 }
 
 func (self Go) Occluder() gdclass.Occluder3D {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Occluder3D(class(self).GetOccluder(gc))
+		return gdclass.Occluder3D(class(self).GetOccluder())
 }
 
 func (self Go) SetOccluder(value gdclass.Occluder3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetOccluder(value)
 }
 
 func (self Go) BakeMask() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetBakeMask()))
 }
 
 func (self Go) SetBakeMask(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBakeMask(gd.Int(value))
 }
 
 func (self Go) BakeSimplificationDistance() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetBakeSimplificationDistance()))
 }
 
 func (self Go) SetBakeSimplificationDistance(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBakeSimplificationDistance(gd.Float(value))
 }
 
 //go:nosplit
 func (self class) SetBakeMask(mask gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_set_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBakeMask() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -116,12 +97,11 @@ Based on [param value], enables or disables the specified layer in the [member b
 */
 //go:nosplit
 func (self class) SetBakeMaskValue(layer_number gd.Int, value bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_set_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -129,51 +109,45 @@ Returns whether or not the specified layer of the [member bake_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetBakeMaskValue(layer_number gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_get_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBakeSimplificationDistance(simplification_distance gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, simplification_distance)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_set_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBakeSimplificationDistance() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_get_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetOccluder(occluder gdclass.Occluder3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(occluder[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(occluder[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_set_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetOccluder(ctx gd.Lifetime) gdclass.Occluder3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOccluder() gdclass.Occluder3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.OccluderInstance3D.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Occluder3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Occluder3D{classdb.Occluder3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -197,4 +171,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() {classdb.Register("OccluderInstance3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("OccluderInstance3D", func(ptr gd.Object) any { return classdb.OccluderInstance3D(ptr) })}

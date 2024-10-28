@@ -2,7 +2,7 @@ package EditorNode3DGizmo
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
@@ -41,14 +41,14 @@ Gizmo that is used for providing custom visualization and editing (handles and s
 		//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 		SubgizmosIntersectRay(camera gdclass.Camera3D, point gd.Vector2) int
 		//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-		SubgizmosIntersectFrustum(camera gdclass.Camera3D, frustum gd.ArrayOf[gd.Plane]) []int32
+		SubgizmosIntersectFrustum(camera gdclass.Camera3D, frustum gd.Array) []int32
 		//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
 		SetSubgizmoTransform(id int, transform gd.Transform3D) 
 		//Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
 		GetSubgizmoTransform(id int) gd.Transform3D
 		//Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
-		CommitSubgizmos(ids []int32, restores gd.ArrayOf[gd.Transform3D], cancel bool) 
+		CommitSubgizmos(ids []int32, restores gd.Array, cancel bool) 
 	}
 
 */
@@ -59,11 +59,8 @@ Override this method to add all the gizmo elements whenever a gizmo update is re
 */
 func (Go) _redraw(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -73,14 +70,15 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 */
 func (Go) _get_handle_name(impl func(ptr unsafe.Pointer, id int, secondary bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -90,14 +88,11 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 */
 func (Go) _is_handle_highlighted(impl func(ptr unsafe.Pointer, id int, secondary bool) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -107,25 +102,23 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 */
 func (Go) _get_handle_value(impl func(ptr unsafe.Pointer, id int, secondary bool) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Go) _begin_handle_action(impl func(ptr unsafe.Pointer, id int, secondary bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(id), secondary)
-		gc.End()
 	}
 }
 
@@ -135,16 +128,13 @@ The [param secondary] argument is [code]true[/code] when the edited handle is se
 */
 func (Go) _set_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, camera gdclass.Camera3D, point gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
-		var camera gdclass.Camera3D
-		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		var camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,2)})}
+		defer discreet.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(id), secondary, camera, point)
-		gc.End()
 	}
 }
 
@@ -155,15 +145,13 @@ The [param secondary] argument is [code]true[/code] when the committed handle is
 */
 func (Go) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, restore gd.Variant, cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
-		var restore = mmm.Let[gd.Variant](gc.Lifetime, gc.API, gd.UnsafeGet[[3]uintptr](p_args,2))
+		var restore = discreet.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args,2))
+		defer discreet.End(restore)
 		var cancel = gd.UnsafeGet[bool](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(id), secondary, restore, cancel)
-		gc.End()
 	}
 }
 
@@ -172,32 +160,31 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a [p
 */
 func (Go) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera gdclass.Camera3D, point gd.Vector2) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var camera gdclass.Camera3D
-		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, point)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (Go) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera gdclass.Camera3D, frustum gd.ArrayOf[gd.Plane]) []int32, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Go) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera gdclass.Camera3D, frustum gd.Array) []int32, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var camera gdclass.Camera3D
-		camera[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var frustum = gd.TypedArray[gd.Plane](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1)))
+		var camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(camera[0])
+		var frustum = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(frustum)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, frustum)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedInt32Slice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedInt32Slice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -206,13 +193,10 @@ Override this method to update the node properties during subgizmo editing (see 
 */
 func (Go) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id int, transform gd.Transform3D) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var transform = gd.UnsafeGet[gd.Transform3D](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(id), transform)
-		gc.End()
 	}
 }
 
@@ -221,13 +205,10 @@ Override this method to return the current transform of a subgizmo. This transfo
 */
 func (Go) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id int) gd.Transform3D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -235,16 +216,15 @@ func (Go) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id int) gd.Trans
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
-func (Go) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, restores gd.ArrayOf[gd.Transform3D], cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Go) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, restores gd.Array, cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var ids = mmm.Let[gd.PackedInt32Array](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,0))
-		var restores = gd.TypedArray[gd.Transform3D](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1)))
+		var ids = discreet.New[gd.PackedInt32Array](gd.UnsafeGet[[2]uintptr](p_args,0))
+		defer discreet.End(ids)
+		var restores = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(restores)
 		var cancel = gd.UnsafeGet[bool](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, ids.AsSlice(), restores, cancel)
-		gc.End()
 	}
 }
 
@@ -252,15 +232,13 @@ impl(self, ids.AsSlice(), restores, cancel)
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
 func (self Go) AddLines(lines []gd.Vector3, material gdclass.Material) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddLines(gc.PackedVector3Slice(lines), material, false, gd.Color{1, 1, 1, 1})
+	class(self).AddLines(gd.NewPackedVector3Slice(lines), material, false, gd.Color{1, 1, 1, 1})
 }
 
 /*
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
 func (self Go) AddMesh(mesh gdclass.Mesh) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddMesh(mesh, ([1]gdclass.Material{}[0]), gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), ([1]gdclass.SkinReference{}[0]))
 }
 
@@ -268,15 +246,13 @@ func (self Go) AddMesh(mesh gdclass.Mesh) {
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
 func (self Go) AddCollisionSegments(segments []gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddCollisionSegments(gc.PackedVector3Slice(segments))
+	class(self).AddCollisionSegments(gd.NewPackedVector3Slice(segments))
 }
 
 /*
 Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be generated from a regular [Mesh] too. Call this method during [method _redraw].
 */
 func (self Go) AddCollisionTriangles(triangles gdclass.TriangleMesh) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddCollisionTriangles(triangles)
 }
 
@@ -284,7 +260,6 @@ func (self Go) AddCollisionTriangles(triangles gdclass.TriangleMesh) {
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
 func (self Go) AddUnscaledBillboard(material gdclass.Material) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddUnscaledBillboard(material, gd.Float(1), gd.Color{1, 1, 1, 1})
 }
 
@@ -294,15 +269,13 @@ The [param secondary] argument marks the added handles as secondary, meaning the
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
 func (self Go) AddHandles(handles []gd.Vector3, material gdclass.Material, ids []int32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddHandles(gc.PackedVector3Slice(handles), material, gc.PackedInt32Slice(ids), false, false)
+	class(self).AddHandles(gd.NewPackedVector3Slice(handles), material, gd.NewPackedInt32Slice(ids), false, false)
 }
 
 /*
 Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [Node3D].
 */
 func (self Go) SetNode3d(node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetNode3d(node)
 }
 
@@ -310,23 +283,20 @@ func (self Go) SetNode3d(node gdclass.Node) {
 Returns the [Node3D] node associated with this gizmo.
 */
 func (self Go) GetNode3d() gdclass.Node3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node3D(class(self).GetNode3d(gc))
+	return gdclass.Node3D(class(self).GetNode3d())
 }
 
 /*
 Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retrieve materials using [method EditorNode3DGizmoPlugin.get_material].
 */
 func (self Go) GetPlugin() gdclass.EditorNode3DGizmoPlugin {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.EditorNode3DGizmoPlugin(class(self).GetPlugin(gc))
+	return gdclass.EditorNode3DGizmoPlugin(class(self).GetPlugin())
 }
 
 /*
 Removes everything in the gizmo including meshes, collisions and handles.
 */
 func (self Go) Clear() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Clear()
 }
 
@@ -334,7 +304,6 @@ func (self Go) Clear() {
 Sets the gizmo's hidden state. If [code]true[/code], the gizmo will be hidden. If [code]false[/code], it will be shown.
 */
 func (self Go) SetHidden(hidden bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetHidden(hidden)
 }
 
@@ -342,7 +311,6 @@ func (self Go) SetHidden(hidden bool) {
 Returns [code]true[/code] if the given subgizmo is currently selected. Can be used to highlight selected elements during [method _redraw].
 */
 func (self Go) IsSubgizmoSelected(id int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsSubgizmoSelected(gd.Int(id)))
 }
 
@@ -350,26 +318,16 @@ func (self Go) IsSubgizmoSelected(id int) bool {
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
 func (self Go) GetSubgizmoSelection() []int32 {
-	gc := gd.GarbageCollector(); _ = gc
-	return []int32(class(self).GetSubgizmoSelection(gc).AsSlice())
+	return []int32(class(self).GetSubgizmoSelection().AsSlice())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorNode3DGizmo
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorNode3DGizmo"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorNode3DGizmo"))
+	return Go{classdb.EditorNode3DGizmo(object)}
 }
 
 /*
@@ -377,11 +335,8 @@ Override this method to add all the gizmo elements whenever a gizmo update is re
 */
 func (class) _redraw(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -391,14 +346,15 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 */
 func (class) _get_handle_name(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -408,14 +364,11 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 */
 func (class) _is_handle_highlighted(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -425,26 +378,24 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 */
 func (class) _get_handle_value(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
 func (class) _begin_handle_action(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, id, secondary)
-		ctx.End()
 	}
 }
 
@@ -454,16 +405,13 @@ The [param secondary] argument is [code]true[/code] when the edited handle is se
 */
 func (class) _set_handle(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool, camera gdclass.Camera3D, point gd.Vector2) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
-		var camera gdclass.Camera3D
-		camera[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		var camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,2)})}
+		defer discreet.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, id, secondary, camera, point)
-		ctx.End()
 	}
 }
 
@@ -474,15 +422,12 @@ The [param secondary] argument is [code]true[/code] when the committed handle is
 */
 func (class) _commit_handle(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool, restore gd.Variant, cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var secondary = gd.UnsafeGet[bool](p_args,1)
-		var restore = mmm.Let[gd.Variant](ctx.Lifetime, ctx.API, gd.UnsafeGet[[3]uintptr](p_args,2))
+		var restore = discreet.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args,2))
 		var cancel = gd.UnsafeGet[bool](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, id, secondary, restore, cancel)
-		ctx.End()
 	}
 }
 
@@ -491,32 +436,30 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a [p
 */
 func (class) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera gdclass.Camera3D, point gd.Vector2) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var camera gdclass.Camera3D
-		camera[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, point)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera gdclass.Camera3D, frustum gd.ArrayOf[gd.Plane]) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera gdclass.Camera3D, frustum gd.Array) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var camera gdclass.Camera3D
-		camera[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var frustum = gd.TypedArray[gd.Plane](mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1)))
+		var camera = gdclass.Camera3D{discreet.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(camera[0])
+		var frustum = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, frustum)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -525,13 +468,10 @@ Override this method to update the node properties during subgizmo editing (see 
 */
 func (class) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int, transform gd.Transform3D) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		var transform = gd.UnsafeGet[gd.Transform3D](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, id, transform)
-		ctx.End()
 	}
 }
 
@@ -540,13 +480,10 @@ Override this method to return the current transform of a subgizmo. This transfo
 */
 func (class) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int) gd.Transform3D, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var id = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -554,16 +491,13 @@ func (class) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int) gd
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
-func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32Array, restores gd.ArrayOf[gd.Transform3D], cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32Array, restores gd.Array, cancel bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var ids = mmm.Let[gd.PackedInt32Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[[2]uintptr](p_args,0))
-		var restores = gd.TypedArray[gd.Transform3D](mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1)))
+		var ids = discreet.New[gd.PackedInt32Array](gd.UnsafeGet[[2]uintptr](p_args,0))
+		var restores = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
 		var cancel = gd.UnsafeGet[bool](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, ids, restores, cancel)
-		ctx.End()
 	}
 }
 
@@ -572,14 +506,13 @@ Adds lines to the gizmo (as sets of 2 points), with a given material. The lines 
 */
 //go:nosplit
 func (self class) AddLines(lines gd.PackedVector3Array, material gdclass.Material, billboard bool, modulate gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(lines))
-	callframe.Arg(frame, mmm.Get(material[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(lines))
+	callframe.Arg(frame, discreet.Get(material[0])[0])
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, modulate)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_add_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -587,14 +520,13 @@ Adds a mesh to the gizmo with the specified [param material], local [param trans
 */
 //go:nosplit
 func (self class) AddMesh(mesh gdclass.Mesh, material gdclass.Material, transform gd.Transform3D, skeleton gdclass.SkinReference)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(mesh[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(material[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(mesh[0])[0])
+	callframe.Arg(frame, discreet.Get(material[0])[0])
 	callframe.Arg(frame, transform)
-	callframe.Arg(frame, mmm.Get(skeleton[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(skeleton[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_add_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -602,11 +534,10 @@ Adds the specified [param segments] to the gizmo's collision shape for picking. 
 */
 //go:nosplit
 func (self class) AddCollisionSegments(segments gd.PackedVector3Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(segments))
+	callframe.Arg(frame, discreet.Get(segments))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_add_collision_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -614,11 +545,10 @@ Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be gener
 */
 //go:nosplit
 func (self class) AddCollisionTriangles(triangles gdclass.TriangleMesh)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(triangles[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(triangles[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_add_collision_triangles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_triangles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -626,13 +556,12 @@ Adds an unscaled billboard for visualization and selection. Call this method dur
 */
 //go:nosplit
 func (self class) AddUnscaledBillboard(material gdclass.Material, default_scale gd.Float, modulate gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(material[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(material[0])[0])
 	callframe.Arg(frame, default_scale)
 	callframe.Arg(frame, modulate)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_add_unscaled_billboard, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_unscaled_billboard, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -642,15 +571,14 @@ There are virtual methods which will be called upon editing of these handles. Ca
 */
 //go:nosplit
 func (self class) AddHandles(handles gd.PackedVector3Array, material gdclass.Material, ids gd.PackedInt32Array, billboard bool, secondary bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(handles))
-	callframe.Arg(frame, mmm.Get(material[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(ids))
+	callframe.Arg(frame, discreet.Get(handles))
+	callframe.Arg(frame, discreet.Get(material[0])[0])
+	callframe.Arg(frame, discreet.Get(ids))
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, secondary)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_add_handles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_add_handles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -658,24 +586,21 @@ Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [
 */
 //go:nosplit
 func (self class) SetNode3d(node gdclass.Node)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(node[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_set_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_set_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the [Node3D] node associated with this gizmo.
 */
 //go:nosplit
-func (self class) GetNode3d(ctx gd.Lifetime) gdclass.Node3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetNode3d() gdclass.Node3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_get_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node3D
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node3D{classdb.Node3D(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -683,13 +608,11 @@ func (self class) GetNode3d(ctx gd.Lifetime) gdclass.Node3D {
 Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retrieve materials using [method EditorNode3DGizmoPlugin.get_material].
 */
 //go:nosplit
-func (self class) GetPlugin(ctx gd.Lifetime) gdclass.EditorNode3DGizmoPlugin {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPlugin() gdclass.EditorNode3DGizmoPlugin {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_get_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.EditorNode3DGizmoPlugin
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.EditorNode3DGizmoPlugin{classdb.EditorNode3DGizmoPlugin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -698,10 +621,9 @@ Removes everything in the gizmo including meshes, collisions and handles.
 */
 //go:nosplit
 func (self class) Clear()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -709,11 +631,10 @@ Sets the gizmo's hidden state. If [code]true[/code], the gizmo will be hidden. I
 */
 //go:nosplit
 func (self class) SetHidden(hidden bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_set_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_set_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -721,11 +642,10 @@ Returns [code]true[/code] if the given subgizmo is currently selected. Can be us
 */
 //go:nosplit
 func (self class) IsSubgizmoSelected(id gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_is_subgizmo_selected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_is_subgizmo_selected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -734,12 +654,11 @@ func (self class) IsSubgizmoSelected(id gd.Int) bool {
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
 //go:nosplit
-func (self class) GetSubgizmoSelection(ctx gd.Lifetime) gd.PackedInt32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSubgizmoSelection() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorNode3DGizmo.Bind_get_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -785,4 +704,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode3DGizmo(), name)
 	}
 }
-func init() {classdb.Register("EditorNode3DGizmo", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorNode3DGizmo", func(ptr gd.Object) any { return classdb.EditorNode3DGizmo(ptr) })}

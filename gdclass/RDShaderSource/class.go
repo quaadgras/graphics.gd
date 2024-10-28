@@ -2,7 +2,7 @@ package RDShaderSource
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Shader source code in text form.
@@ -25,77 +25,56 @@ type GD = class
 type class [1]classdb.RDShaderSource
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("RDShaderSource"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDShaderSource"))
+	return Go{classdb.RDShaderSource(object)}
 }
 
 func (self Go) SourceVertex() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetStageSource(gc,0).String())
+		return string(class(self).GetStageSource(0).String())
 }
 
 func (self Go) SetSourceVertex(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetStageSource(0, gc.String(value))
+	class(self).SetStageSource(0, gd.NewString(value))
 }
 
 func (self Go) SourceFragment() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetStageSource(gc,1).String())
+		return string(class(self).GetStageSource(1).String())
 }
 
 func (self Go) SetSourceFragment(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetStageSource(1, gc.String(value))
+	class(self).SetStageSource(1, gd.NewString(value))
 }
 
 func (self Go) SourceTesselationControl() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetStageSource(gc,2).String())
+		return string(class(self).GetStageSource(2).String())
 }
 
 func (self Go) SetSourceTesselationControl(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetStageSource(2, gc.String(value))
+	class(self).SetStageSource(2, gd.NewString(value))
 }
 
 func (self Go) SourceTesselationEvaluation() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetStageSource(gc,3).String())
+		return string(class(self).GetStageSource(3).String())
 }
 
 func (self Go) SetSourceTesselationEvaluation(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetStageSource(3, gc.String(value))
+	class(self).SetStageSource(3, gd.NewString(value))
 }
 
 func (self Go) SourceCompute() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetStageSource(gc,4).String())
+		return string(class(self).GetStageSource(4).String())
 }
 
 func (self Go) SetSourceCompute(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetStageSource(4, gc.String(value))
+	class(self).SetStageSource(4, gd.NewString(value))
 }
 
 func (self Go) Language() classdb.RenderingDeviceShaderLanguage {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.RenderingDeviceShaderLanguage(class(self).GetLanguage())
 }
 
 func (self Go) SetLanguage(value classdb.RenderingDeviceShaderLanguage) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetLanguage(value)
 }
 
@@ -104,43 +83,39 @@ Sets [param source] code for the specified shader [param stage]. Equivalent to s
 */
 //go:nosplit
 func (self class) SetStageSource(stage classdb.RenderingDeviceShaderStage, source gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
-	callframe.Arg(frame, mmm.Get(source))
+	callframe.Arg(frame, discreet.Get(source))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RDShaderSource.Bind_set_stage_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_stage_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns source code for the specified shader [param stage]. Equivalent to getting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
 */
 //go:nosplit
-func (self class) GetStageSource(ctx gd.Lifetime, stage classdb.RenderingDeviceShaderStage) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetStageSource(stage classdb.RenderingDeviceShaderStage) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RDShaderSource.Bind_get_stage_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_stage_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetLanguage(language classdb.RenderingDeviceShaderLanguage)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, language)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RDShaderSource.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetLanguage() classdb.RenderingDeviceShaderLanguage {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.RenderingDeviceShaderLanguage](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RDShaderSource.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -161,4 +136,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("RDShaderSource", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("RDShaderSource", func(ptr gd.Object) any { return classdb.RDShaderSource(ptr) })}

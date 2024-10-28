@@ -3,7 +3,7 @@ package ResourceLoader
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A singleton used to load resource files from the filesystem.
@@ -24,8 +24,7 @@ It uses the many [ResourceFormatLoader] classes registered in the engine (either
 var self gdclass.ResourceLoader
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.ResourceLoader)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.ResourceLoader)
 	self = *(*gdclass.ResourceLoader)(unsafe.Pointer(&obj))
 }
 
@@ -34,9 +33,8 @@ Loads the resource using threads. If [param use_sub_threads] is [code]true[/code
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
 func LoadThreadedRequest(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Error(class(self).LoadThreadedRequest(gc.String(path), gc.String(""), false, 1))
+	return gd.Error(class(self).LoadThreadedRequest(gd.NewString(path), gd.NewString(""), false, 1))
 }
 
 /*
@@ -45,9 +43,8 @@ An array variable can optionally be passed via [param progress], and will return
 [b]Note:[/b] The recommended way of using this method is to call it during different frames (e.g., in [method Node._process], instead of a loop).
 */
 func LoadThreadedGetStatus(path string) classdb.ResourceLoaderThreadLoadStatus {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return classdb.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gc.String(path), ([1]gd.Array{}[0])))
+	return classdb.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), ([1]gd.Array{}[0])))
 }
 
 /*
@@ -55,9 +52,8 @@ Returns the resource loaded by [method load_threaded_request].
 If this is called before the loading thread is done (i.e. [method load_threaded_get_status] is not [constant THREAD_LOAD_LOADED]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [method load_threaded_get_status] to known when the load has actually completed.
 */
 func LoadThreadedGet(path string) gdclass.Resource {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.Resource(class(self).LoadThreadedGet(gc, gc.String(path)))
+	return gdclass.Resource(class(self).LoadThreadedGet(gd.NewString(path)))
 }
 
 /*
@@ -71,18 +67,16 @@ GDScript has a simplified [method @GDScript.load] built-in method which can be u
 [b]Note:[/b] Relative paths will be prefixed with [code]"res://"[/code] before loading, to avoid unexpected results make sure your paths are absolute.
 */
 func Load(path string) gdclass.Resource {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.Resource(class(self).Load(gc, gc.String(path), gc.String(""), 1))
+	return gdclass.Resource(class(self).Load(gd.NewString(path), gd.NewString(""), 1))
 }
 
 /*
 Returns the list of recognized extensions for a resource type.
 */
 func GetRecognizedExtensionsForType(atype string) []string {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return []string(class(self).GetRecognizedExtensionsForType(gc, gc.String(atype)).Strings(gc))
+	return []string(class(self).GetRecognizedExtensionsForType(gd.NewString(atype)).Strings())
 }
 
 /*
@@ -90,7 +84,6 @@ Registers a new [ResourceFormatLoader]. The ResourceLoader will use the Resource
 This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
 */
 func AddResourceFormatLoader(format_loader gdclass.ResourceFormatLoader) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AddResourceFormatLoader(format_loader, false)
 }
@@ -99,7 +92,6 @@ func AddResourceFormatLoader(format_loader gdclass.ResourceFormatLoader) {
 Unregisters the given [ResourceFormatLoader].
 */
 func RemoveResourceFormatLoader(format_loader gdclass.ResourceFormatLoader) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).RemoveResourceFormatLoader(format_loader)
 }
@@ -108,7 +100,6 @@ func RemoveResourceFormatLoader(format_loader gdclass.ResourceFormatLoader) {
 Changes the behavior on missing sub-resources. The default behavior is to abort loading.
 */
 func SetAbortOnMissingResources(abort bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetAbortOnMissingResources(abort)
 }
@@ -123,9 +114,8 @@ for dep in ResourceLoader.get_dependencies(path):
 [/codeblock]
 */
 func GetDependencies(path string) []string {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return []string(class(self).GetDependencies(gc, gc.String(path)).Strings(gc))
+	return []string(class(self).GetDependencies(gd.NewString(path)).Strings())
 }
 
 /*
@@ -133,9 +123,8 @@ Returns whether a cached resource is available for the given [param path].
 Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [method load] method will use the cached version. The cached resource can be overridden by using [method Resource.take_over_path] on a new resource for that same path.
 */
 func HasCached(path string) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return bool(class(self).HasCached(gc.String(path)))
+	return bool(class(self).HasCached(gd.NewString(path)))
 }
 
 /*
@@ -144,27 +133,21 @@ An optional [param type_hint] can be used to further specify the [Resource] type
 [b]Note:[/b] If you use [method Resource.take_over_path], this method will return [code]true[/code] for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
 */
 func Exists(path string) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return bool(class(self).Exists(gc.String(path), gc.String("")))
+	return bool(class(self).Exists(gd.NewString(path), gd.NewString("")))
 }
 
 /*
 Returns the ID associated with a given resource path, or [code]-1[/code] when no such ID exists.
 */
 func GetResourceUid(path string) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return int(int(class(self).GetResourceUid(gc.String(path))))
+	return int(int(class(self).GetResourceUid(gd.NewString(path))))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func GD() class { once.Do(singleton); return self }
 type class [1]classdb.ResourceLoader
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 /*
 Loads the resource using threads. If [param use_sub_threads] is [code]true[/code], multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
@@ -172,14 +155,13 @@ The [param cache_mode] property defines whether and how the cache should be used
 */
 //go:nosplit
 func (self class) LoadThreadedRequest(path gd.String, type_hint gd.String, use_sub_threads bool, cache_mode classdb.ResourceLoaderCacheMode) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(type_hint))
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(type_hint))
 	callframe.Arg(frame, use_sub_threads)
 	callframe.Arg(frame, cache_mode)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_load_threaded_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -191,12 +173,11 @@ An array variable can optionally be passed via [param progress], and will return
 */
 //go:nosplit
 func (self class) LoadThreadedGetStatus(path gd.String, progress gd.Array) classdb.ResourceLoaderThreadLoadStatus {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(progress))
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(progress))
 	var r_ret = callframe.Ret[classdb.ResourceLoaderThreadLoadStatus](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_load_threaded_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -206,14 +187,12 @@ Returns the resource loaded by [method load_threaded_request].
 If this is called before the loading thread is done (i.e. [method load_threaded_get_status] is not [constant THREAD_LOAD_LOADED]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [method load_threaded_get_status] to known when the load has actually completed.
 */
 //go:nosplit
-func (self class) LoadThreadedGet(ctx gd.Lifetime, path gd.String) gdclass.Resource {
-	var selfPtr = self[0].AsPointer()
+func (self class) LoadThreadedGet(path gd.String) gdclass.Resource {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_load_threaded_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Resource
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(path))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -228,16 +207,14 @@ GDScript has a simplified [method @GDScript.load] built-in method which can be u
 [b]Note:[/b] Relative paths will be prefixed with [code]"res://"[/code] before loading, to avoid unexpected results make sure your paths are absolute.
 */
 //go:nosplit
-func (self class) Load(ctx gd.Lifetime, path gd.String, type_hint gd.String, cache_mode classdb.ResourceLoaderCacheMode) gdclass.Resource {
-	var selfPtr = self[0].AsPointer()
+func (self class) Load(path gd.String, type_hint gd.String, cache_mode classdb.ResourceLoaderCacheMode) gdclass.Resource {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(type_hint))
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(type_hint))
 	callframe.Arg(frame, cache_mode)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Resource
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -245,13 +222,12 @@ func (self class) Load(ctx gd.Lifetime, path gd.String, type_hint gd.String, cac
 Returns the list of recognized extensions for a resource type.
 */
 //go:nosplit
-func (self class) GetRecognizedExtensionsForType(ctx gd.Lifetime, atype gd.String) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRecognizedExtensionsForType(atype gd.String) gd.PackedStringArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(atype))
+	callframe.Arg(frame, discreet.Get(atype))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_get_recognized_extensions_for_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_recognized_extensions_for_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -261,12 +237,11 @@ This method is performed implicitly for ResourceFormatLoaders written in GDScrip
 */
 //go:nosplit
 func (self class) AddResourceFormatLoader(format_loader gdclass.ResourceFormatLoader, at_front bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(format_loader[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(format_loader[0])[0])
 	callframe.Arg(frame, at_front)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_add_resource_format_loader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_add_resource_format_loader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -274,11 +249,10 @@ Unregisters the given [ResourceFormatLoader].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader gdclass.ResourceFormatLoader)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(format_loader[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(format_loader[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_remove_resource_format_loader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_remove_resource_format_loader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -286,11 +260,10 @@ Changes the behavior on missing sub-resources. The default behavior is to abort 
 */
 //go:nosplit
 func (self class) SetAbortOnMissingResources(abort bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, abort)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_set_abort_on_missing_resources, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_set_abort_on_missing_resources, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -303,13 +276,12 @@ for dep in ResourceLoader.get_dependencies(path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetDependencies(ctx gd.Lifetime, path gd.String) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetDependencies(path gd.String) gd.PackedStringArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_get_dependencies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_dependencies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -319,11 +291,10 @@ Once a resource has been loaded by the engine, it is cached in memory for faster
 */
 //go:nosplit
 func (self class) HasCached(path gd.String) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_has_cached, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_has_cached, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -335,12 +306,11 @@ An optional [param type_hint] can be used to further specify the [Resource] type
 */
 //go:nosplit
 func (self class) Exists(path gd.String, type_hint gd.String) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(type_hint))
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(type_hint))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_exists, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_exists, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -350,11 +320,10 @@ Returns the ID associated with a given resource path, or [code]-1[/code] when no
 */
 //go:nosplit
 func (self class) GetResourceUid(path gd.String) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ResourceLoader.Bind_get_resource_uid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_resource_uid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -364,7 +333,7 @@ func (self class) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("ResourceLoader", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ResourceLoader", func(ptr gd.Object) any { return classdb.ResourceLoader(ptr) })}
 type ThreadLoadStatus = classdb.ResourceLoaderThreadLoadStatus
 
 const (

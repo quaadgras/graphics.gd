@@ -2,7 +2,7 @@ package VisualShaderNodeColorOp
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Applies [member operator] to two color inputs.
@@ -26,45 +26,32 @@ type GD = class
 type class [1]classdb.VisualShaderNodeColorOp
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeColorOp"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeColorOp"))
+	return Go{classdb.VisualShaderNodeColorOp(object)}
 }
 
 func (self Go) Operator() classdb.VisualShaderNodeColorOpOperator {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeColorOpOperator(class(self).GetOperator())
 }
 
 func (self Go) SetOperator(value classdb.VisualShaderNodeColorOpOperator) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetOperator(value)
 }
 
 //go:nosplit
 func (self class) SetOperator(op classdb.VisualShaderNodeColorOpOperator)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeColorOp.Bind_set_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeColorOp.Bind_set_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetOperator() classdb.VisualShaderNodeColorOpOperator {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeColorOpOperator](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeColorOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeColorOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -89,7 +76,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNode(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeColorOp", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeColorOp", func(ptr gd.Object) any { return classdb.VisualShaderNodeColorOp(ptr) })}
 type Operator = classdb.VisualShaderNodeColorOpOperator
 
 const (

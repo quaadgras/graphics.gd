@@ -2,7 +2,7 @@ package VisualShaderNodeVec3Parameter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Translated to [code]uniform vec3[/code] in the shader language.
@@ -27,74 +27,57 @@ type GD = class
 type class [1]classdb.VisualShaderNodeVec3Parameter
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeVec3Parameter"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVec3Parameter"))
+	return Go{classdb.VisualShaderNodeVec3Parameter(object)}
 }
 
 func (self Go) DefaultValueEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsDefaultValueEnabled())
 }
 
 func (self Go) SetDefaultValueEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDefaultValueEnabled(value)
 }
 
 func (self Go) DefaultValue() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector3(class(self).GetDefaultValue())
 }
 
 func (self Go) SetDefaultValue(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDefaultValue(value)
 }
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeVec3Parameter.Bind_set_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec3Parameter.Bind_set_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeVec3Parameter.Bind_is_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec3Parameter.Bind_is_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDefaultValue(value gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeVec3Parameter.Bind_set_default_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec3Parameter.Bind_set_default_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDefaultValue() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeVec3Parameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec3Parameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -121,4 +104,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNodeParameter(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeVec3Parameter", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeVec3Parameter", func(ptr gd.Object) any { return classdb.VisualShaderNodeVec3Parameter(ptr) })}

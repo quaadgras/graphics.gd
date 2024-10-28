@@ -2,7 +2,7 @@ package TorusMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Class representing a torus [PrimitiveMesh].
@@ -27,132 +27,107 @@ type GD = class
 type class [1]classdb.TorusMesh
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("TorusMesh"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TorusMesh"))
+	return Go{classdb.TorusMesh(object)}
 }
 
 func (self Go) InnerRadius() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetInnerRadius()))
 }
 
 func (self Go) SetInnerRadius(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetInnerRadius(gd.Float(value))
 }
 
 func (self Go) OuterRadius() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetOuterRadius()))
 }
 
 func (self Go) SetOuterRadius(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetOuterRadius(gd.Float(value))
 }
 
 func (self Go) Rings() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetRings()))
 }
 
 func (self Go) SetRings(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRings(gd.Int(value))
 }
 
 func (self Go) RingSegments() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetRingSegments()))
 }
 
 func (self Go) SetRingSegments(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRingSegments(gd.Int(value))
 }
 
 //go:nosplit
 func (self class) SetInnerRadius(radius gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_set_inner_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_inner_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetInnerRadius() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetOuterRadius(radius gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_set_outer_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_outer_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetOuterRadius() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRings(rings gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_set_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRings() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRingSegments(rings gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_set_ring_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_ring_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRingSegments() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TorusMesh.Bind_get_ring_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_ring_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -179,4 +154,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
-func init() {classdb.Register("TorusMesh", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("TorusMesh", func(ptr gd.Object) any { return classdb.TorusMesh(ptr) })}

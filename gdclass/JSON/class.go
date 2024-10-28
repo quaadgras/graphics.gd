@@ -2,7 +2,7 @@ package JSON
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The [JSON] class enables all data types to be converted to and from a JSON string. This is useful for serializing data, e.g. to save to a file or send over the network.
@@ -94,16 +94,14 @@ The [param indent] parameter controls if and how something is indented; its cont
 [/codeblock]
 */
 func (self Go) Stringify(data gd.Variant) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).Stringify(gc, data, gc.String(""), true, false).String())
+	return string(class(self).Stringify(data, gd.NewString(""), true, false).String())
 }
 
 /*
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
 func (self Go) ParseString(json_string string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).ParseString(gc, gc.String(json_string)))
+	return gd.Variant(class(self).ParseString(gd.NewString(json_string)))
 }
 
 /*
@@ -113,23 +111,20 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 func (self Go) Parse(json_text string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Parse(gc.String(json_text), false))
+	return gd.Error(class(self).Parse(gd.NewString(json_text), false))
 }
 
 /*
 Return the text parsed by [method parse] (requires passing [code]keep_text[/code] to [method parse]).
 */
 func (self Go) GetParsedText() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetParsedText(gc).String())
+	return string(class(self).GetParsedText().String())
 }
 
 /*
 Returns [code]0[/code] if the last call to [method parse] was successful, or the line number where the parse failed.
 */
 func (self Go) GetErrorLine() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetErrorLine()))
 }
 
@@ -137,35 +132,23 @@ func (self Go) GetErrorLine() int {
 Returns an empty string if the last call to [method parse] was successful, or the error message if it failed.
 */
 func (self Go) GetErrorMessage() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetErrorMessage(gc).String())
+	return string(class(self).GetErrorMessage().String())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.JSON
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("JSON"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JSON"))
+	return Go{classdb.JSON(object)}
 }
 
 func (self Go) Data() gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Variant(class(self).GetData(gc))
+		return gd.Variant(class(self).GetData())
 }
 
 func (self Go) SetData(value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetData(value)
 }
 
@@ -213,15 +196,15 @@ The [param indent] parameter controls if and how something is indented; its cont
 [/codeblock]
 */
 //go:nosplit
-func (self class) Stringify(ctx gd.Lifetime, data gd.Variant, indent gd.String, sort_keys bool, full_precision bool) gd.String {
+func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, full_precision bool) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(data))
-	callframe.Arg(frame, mmm.Get(indent))
+	callframe.Arg(frame, discreet.Get(data))
+	callframe.Arg(frame, discreet.Get(indent))
 	callframe.Arg(frame, sort_keys)
 	callframe.Arg(frame, full_precision)
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.JSON.Bind_stringify, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_stringify, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -229,12 +212,12 @@ func (self class) Stringify(ctx gd.Lifetime, data gd.Variant, indent gd.String, 
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
 //go:nosplit
-func (self class) ParseString(ctx gd.Lifetime, json_string gd.String) gd.Variant {
+func (self class) ParseString(json_string gd.String) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(json_string))
+	callframe.Arg(frame, discreet.Get(json_string))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.JSON.Bind_parse_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -246,45 +229,41 @@ The optional [param keep_text] argument instructs the parser to keep a copy of t
 */
 //go:nosplit
 func (self class) Parse(json_text gd.String, keep_text bool) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(json_text))
+	callframe.Arg(frame, discreet.Get(json_text))
 	callframe.Arg(frame, keep_text)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSON.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetData(ctx gd.Lifetime) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetData() gd.Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSON.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetData(data gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(data))
+	callframe.Arg(frame, discreet.Get(data))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSON.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Return the text parsed by [method parse] (requires passing [code]keep_text[/code] to [method parse]).
 */
 //go:nosplit
-func (self class) GetParsedText(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetParsedText() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSON.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -293,10 +272,9 @@ Returns [code]0[/code] if the last call to [method parse] was successful, or the
 */
 //go:nosplit
 func (self class) GetErrorLine() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSON.Bind_get_error_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -305,12 +283,11 @@ func (self class) GetErrorLine() gd.Int {
 Returns an empty string if the last call to [method parse] was successful, or the error message if it failed.
 */
 //go:nosplit
-func (self class) GetErrorMessage(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetErrorMessage() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSON.Bind_get_error_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -332,4 +309,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("JSON", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("JSON", func(ptr gd.Object) any { return classdb.JSON(ptr) })}

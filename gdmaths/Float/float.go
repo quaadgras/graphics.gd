@@ -143,6 +143,9 @@ func Posmod[X Any](x, y X) X { //gd:fposmod
 	return value
 }
 
+// Pow returns the result of base raised to the power of exp.
+func Pow[X Any](base, exp X) X { return X(math.Pow(float64(base), float64(exp))) } //pow
+
 // Round rounds x to the nearest whole number, with halfway cases rounded away from 0.
 func Round[X Any](x X) X { return X(math.Round(float64(x))) } //gd:roundf
 

@@ -2,7 +2,7 @@ package TLSOptions
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 TLSOptions abstracts the configuration options for the [StreamPeerTLS] and [PacketPeerDTLS] classes.
@@ -39,8 +39,7 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 func (self Go) Client() gdclass.TLSOptions {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.TLSOptions(class(self).Client(gc, ([1]gdclass.X509Certificate{}[0]), gc.String("")))
+	return gdclass.TLSOptions(class(self).Client(([1]gdclass.X509Certificate{}[0]), gd.NewString("")))
 }
 
 /*
@@ -48,8 +47,7 @@ Creates an [b]unsafe[/b] TLS client configuration where certificate validation i
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 func (self Go) ClientUnsafe() gdclass.TLSOptions {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.TLSOptions(class(self).ClientUnsafe(gc, ([1]gdclass.X509Certificate{}[0])))
+	return gdclass.TLSOptions(class(self).ClientUnsafe(([1]gdclass.X509Certificate{}[0])))
 }
 
 /*
@@ -57,15 +55,13 @@ Creates a TLS server configuration using the provided [param key] and [param cer
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
 func (self Go) Server(key gdclass.CryptoKey, certificate gdclass.X509Certificate) gdclass.TLSOptions {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.TLSOptions(class(self).Server(gc, key, certificate))
+	return gdclass.TLSOptions(class(self).Server(key, certificate))
 }
 
 /*
 Returns [code]true[/code] if created with [method TLSOptions.server], [code]false[/code] otherwise.
 */
 func (self Go) IsServer() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsServer())
 }
 
@@ -73,7 +69,6 @@ func (self Go) IsServer() bool {
 Returns [code]true[/code] if created with [method TLSOptions.client_unsafe], [code]false[/code] otherwise.
 */
 func (self Go) IsUnsafeClient() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsUnsafeClient())
 }
 
@@ -81,50 +76,37 @@ func (self Go) IsUnsafeClient() bool {
 Returns the common name (domain name) override specified when creating with [method TLSOptions.client].
 */
 func (self Go) GetCommonNameOverride() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetCommonNameOverride(gc).String())
+	return string(class(self).GetCommonNameOverride().String())
 }
 
 /*
 Returns the CA [X509Certificate] chain specified when creating with [method TLSOptions.client] or [method TLSOptions.client_unsafe].
 */
 func (self Go) GetTrustedCaChain() gdclass.X509Certificate {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.X509Certificate(class(self).GetTrustedCaChain(gc))
+	return gdclass.X509Certificate(class(self).GetTrustedCaChain())
 }
 
 /*
 Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 */
 func (self Go) GetPrivateKey() gdclass.CryptoKey {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.CryptoKey(class(self).GetPrivateKey(gc))
+	return gdclass.CryptoKey(class(self).GetPrivateKey())
 }
 
 /*
 Returns the [X509Certificate] specified when creating with [method TLSOptions.server].
 */
 func (self Go) GetOwnCertificate() gdclass.X509Certificate {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.X509Certificate(class(self).GetOwnCertificate(gc))
+	return gdclass.X509Certificate(class(self).GetOwnCertificate())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.TLSOptions
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("TLSOptions"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TLSOptions"))
+	return Go{classdb.TLSOptions(object)}
 }
 
 /*
@@ -133,14 +115,13 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 //go:nosplit
-func (self class) Client(ctx gd.Lifetime, trusted_chain gdclass.X509Certificate, common_name_override gd.String) gdclass.TLSOptions {
+func (self class) Client(trusted_chain gdclass.X509Certificate, common_name_override gd.String) gdclass.TLSOptions {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(trusted_chain[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(common_name_override))
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.TLSOptions.Bind_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.TLSOptions
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(trusted_chain[0])[0])
+	callframe.Arg(frame, discreet.Get(common_name_override))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.TLSOptions{classdb.TLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -149,13 +130,12 @@ Creates an [b]unsafe[/b] TLS client configuration where certificate validation i
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 //go:nosplit
-func (self class) ClientUnsafe(ctx gd.Lifetime, trusted_chain gdclass.X509Certificate) gdclass.TLSOptions {
+func (self class) ClientUnsafe(trusted_chain gdclass.X509Certificate) gdclass.TLSOptions {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(trusted_chain[0].AsPointer())[0])
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.TLSOptions.Bind_client_unsafe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.TLSOptions
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(trusted_chain[0])[0])
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client_unsafe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.TLSOptions{classdb.TLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -164,14 +144,13 @@ Creates a TLS server configuration using the provided [param key] and [param cer
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
 //go:nosplit
-func (self class) Server(ctx gd.Lifetime, key gdclass.CryptoKey, certificate gdclass.X509Certificate) gdclass.TLSOptions {
+func (self class) Server(key gdclass.CryptoKey, certificate gdclass.X509Certificate) gdclass.TLSOptions {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(key[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(certificate[0].AsPointer())[0])
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.TLSOptions.Bind_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.TLSOptions
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(key[0])[0])
+	callframe.Arg(frame, discreet.Get(certificate[0])[0])
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.TLSOptions{classdb.TLSOptions(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -180,10 +159,9 @@ Returns [code]true[/code] if created with [method TLSOptions.server], [code]fals
 */
 //go:nosplit
 func (self class) IsServer() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TLSOptions.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -193,10 +171,9 @@ Returns [code]true[/code] if created with [method TLSOptions.client_unsafe], [co
 */
 //go:nosplit
 func (self class) IsUnsafeClient() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TLSOptions.Bind_is_unsafe_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_unsafe_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -205,12 +182,11 @@ func (self class) IsUnsafeClient() bool {
 Returns the common name (domain name) override specified when creating with [method TLSOptions.client].
 */
 //go:nosplit
-func (self class) GetCommonNameOverride(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCommonNameOverride() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TLSOptions.Bind_get_common_name_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_common_name_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -218,13 +194,11 @@ func (self class) GetCommonNameOverride(ctx gd.Lifetime) gd.String {
 Returns the CA [X509Certificate] chain specified when creating with [method TLSOptions.client] or [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) GetTrustedCaChain(ctx gd.Lifetime) gdclass.X509Certificate {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTrustedCaChain() gdclass.X509Certificate {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TLSOptions.Bind_get_trusted_ca_chain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.X509Certificate
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_trusted_ca_chain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.X509Certificate{classdb.X509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -232,13 +206,11 @@ func (self class) GetTrustedCaChain(ctx gd.Lifetime) gdclass.X509Certificate {
 Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) GetPrivateKey(ctx gd.Lifetime) gdclass.CryptoKey {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPrivateKey() gdclass.CryptoKey {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TLSOptions.Bind_get_private_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.CryptoKey
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_private_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.CryptoKey{classdb.CryptoKey(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -246,13 +218,11 @@ func (self class) GetPrivateKey(ctx gd.Lifetime) gdclass.CryptoKey {
 Returns the [X509Certificate] specified when creating with [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) GetOwnCertificate(ctx gd.Lifetime) gdclass.X509Certificate {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOwnCertificate() gdclass.X509Certificate {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TLSOptions.Bind_get_own_certificate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.X509Certificate
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_own_certificate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.X509Certificate{classdb.X509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -272,4 +242,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("TLSOptions", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("TLSOptions", func(ptr gd.Object) any { return classdb.TLSOptions(ptr) })}

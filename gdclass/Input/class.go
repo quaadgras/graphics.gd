@@ -3,7 +3,7 @@ package Input
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -23,8 +23,7 @@ The [Input] singleton handles key presses, mouse buttons and movement, gamepads,
 var self gdclass.Input
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.Input)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.Input)
 	self = *(*gdclass.Input)(unsafe.Pointer(&obj))
 }
 
@@ -32,7 +31,6 @@ func singleton() {
 Returns [code]true[/code] if any action, key, joypad button, or mouse button is being pressed. This will also return [code]true[/code] if any action is simulated via code by calling [method action_press].
 */
 func IsAnythingPressed() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsAnythingPressed())
 }
@@ -43,7 +41,6 @@ Returns [code]true[/code] if you are pressing the Latin key in the current keybo
 [b]Note:[/b] Due to keyboard ghosting, [method is_key_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 func IsKeyPressed(keycode gd.Key) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsKeyPressed(keycode))
 }
@@ -54,7 +51,6 @@ Returns [code]true[/code] if you are pressing the key in the physical location o
 [b]Note:[/b] Due to keyboard ghosting, [method is_physical_key_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 func IsPhysicalKeyPressed(keycode gd.Key) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsPhysicalKeyPressed(keycode))
 }
@@ -63,7 +59,6 @@ func IsPhysicalKeyPressed(keycode gd.Key) bool {
 Returns [code]true[/code] if you are pressing the key with the [param keycode] printed on it. You can pass a [enum Key] constant or any Unicode character code.
 */
 func IsKeyLabelPressed(keycode gd.Key) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsKeyLabelPressed(keycode))
 }
@@ -72,7 +67,6 @@ func IsKeyLabelPressed(keycode gd.Key) bool {
 Returns [code]true[/code] if you are pressing the mouse button specified with [enum MouseButton].
 */
 func IsMouseButtonPressed(button gd.MouseButton) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsMouseButtonPressed(button))
 }
@@ -81,7 +75,6 @@ func IsMouseButtonPressed(button gd.MouseButton) bool {
 Returns [code]true[/code] if you are pressing the joypad button (see [enum JoyButton]).
 */
 func IsJoyButtonPressed(device int, button gd.JoyButton) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsJoyButtonPressed(gd.Int(device), button))
 }
@@ -92,9 +85,8 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 func IsActionPressed(action string) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return bool(class(self).IsActionPressed(gc.StringName(action), false))
+	return bool(class(self).IsActionPressed(gd.NewStringName(action), false))
 }
 
 /*
@@ -106,9 +98,8 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] During input handling (e.g. [method Node._input]), use [method InputEvent.is_action_pressed] instead to query the action state of the current event.
 */
 func IsActionJustPressed(action string) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return bool(class(self).IsActionJustPressed(gc.StringName(action), false))
+	return bool(class(self).IsActionJustPressed(gd.NewStringName(action), false))
 }
 
 /*
@@ -118,9 +109,8 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] During input handling (e.g. [method Node._input]), use [method InputEvent.is_action_released] instead to query the action state of the current event.
 */
 func IsActionJustReleased(action string) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return bool(class(self).IsActionJustReleased(gc.StringName(action), false))
+	return bool(class(self).IsActionJustReleased(gd.NewStringName(action), false))
 }
 
 /*
@@ -128,9 +118,8 @@ Returns a value between 0 and 1 representing the intensity of the given action. 
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func GetActionStrength(action string) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return float64(float64(class(self).GetActionStrength(gc.StringName(action), false)))
+	return float64(float64(class(self).GetActionStrength(gd.NewStringName(action), false)))
 }
 
 /*
@@ -138,9 +127,8 @@ Returns a value between 0 and 1 representing the raw intensity of the given acti
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func GetActionRawStrength(action string) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return float64(float64(class(self).GetActionRawStrength(gc.StringName(action), false)))
+	return float64(float64(class(self).GetActionRawStrength(gd.NewStringName(action), false)))
 }
 
 /*
@@ -148,9 +136,8 @@ Get axis input by specifying two actions, one negative and one positive.
 This is a shorthand for writing [code]Input.get_action_strength("positive_action") - Input.get_action_strength("negative_action")[/code].
 */
 func GetAxis(negative_action string, positive_action string) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return float64(float64(class(self).GetAxis(gc.StringName(negative_action), gc.StringName(positive_action))))
+	return float64(float64(class(self).GetAxis(gd.NewStringName(negative_action), gd.NewStringName(positive_action))))
 }
 
 /*
@@ -159,34 +146,30 @@ This method is useful when getting vector input, such as from a joystick, direct
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
 func GetVector(negative_x string, positive_x string, negative_y string, positive_y string) gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Vector2(class(self).GetVector(gc.StringName(negative_x), gc.StringName(positive_x), gc.StringName(negative_y), gc.StringName(positive_y), gd.Float(-1.0)))
+	return gd.Vector2(class(self).GetVector(gd.NewStringName(negative_x), gd.NewStringName(positive_x), gd.NewStringName(negative_y), gd.NewStringName(positive_y), gd.Float(-1.0)))
 }
 
 /*
 Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
 */
 func AddJoyMapping(mapping string) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).AddJoyMapping(gc.String(mapping), false)
+	class(self).AddJoyMapping(gd.NewString(mapping), false)
 }
 
 /*
 Removes all mappings from the internal database that match the given GUID.
 */
 func RemoveJoyMapping(guid string) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).RemoveJoyMapping(gc.String(guid))
+	class(self).RemoveJoyMapping(gd.NewString(guid))
 }
 
 /*
 Returns [code]true[/code] if the system knows the specified device. This means that it sets all button and axis indices. Unknown joypads are not expected to match these constants, but you can still retrieve events from them.
 */
 func IsJoyKnown(device int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).IsJoyKnown(gd.Int(device)))
 }
@@ -195,7 +178,6 @@ func IsJoyKnown(device int) bool {
 Returns the current value of the joypad axis at given index (see [enum JoyAxis]).
 */
 func GetJoyAxis(device int, axis gd.JoyAxis) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).GetJoyAxis(gd.Int(device), axis)))
 }
@@ -204,18 +186,16 @@ func GetJoyAxis(device int, axis gd.JoyAxis) float64 {
 Returns the name of the joypad at the specified device index, e.g. [code]PS4 Controller[/code]. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names.
 */
 func GetJoyName(device int) string {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return string(class(self).GetJoyName(gc, gd.Int(device)).String())
+	return string(class(self).GetJoyName(gd.Int(device)).String())
 }
 
 /*
 Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns [code]"Default Gamepad"[/code] otherwise. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
 */
 func GetJoyGuid(device int) string {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return string(class(self).GetJoyGuid(gc, gd.Int(device)).String())
+	return string(class(self).GetJoyGuid(gd.Int(device)).String())
 }
 
 /*
@@ -229,9 +209,8 @@ On Linux:
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
 func GetJoyInfo(device int) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetJoyInfo(gc, gd.Int(device)))
+	return gd.Dictionary(class(self).GetJoyInfo(gd.Int(device)))
 }
 
 /*
@@ -239,7 +218,6 @@ Queries whether an input device should be ignored or not. Devices can be ignored
 [b]Note:[/b] Some 3rd party tools can contribute to the list of ignored devices. For example, [i]SteamInput[/i] creates virtual devices from physical devices for remapping purposes. To avoid handling the same input device twice, the original device is added to the ignore list.
 */
 func ShouldIgnoreDevice(vendor_id int, product_id int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).ShouldIgnoreDevice(gd.Int(vendor_id), gd.Int(product_id)))
 }
@@ -247,17 +225,15 @@ func ShouldIgnoreDevice(vendor_id int, product_id int) bool {
 /*
 Returns an [Array] containing the device IDs of all currently connected joypads.
 */
-func GetConnectedJoypads() gd.ArrayOf[gd.Int] {
-	gc := gd.GarbageCollector(); _ = gc
+func GetConnectedJoypads() gd.Array {
 	once.Do(singleton)
-	return gd.ArrayOf[gd.Int](class(self).GetConnectedJoypads(gc))
+	return gd.Array(class(self).GetConnectedJoypads())
 }
 
 /*
 Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
 */
 func GetJoyVibrationStrength(device int) gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector2(class(self).GetJoyVibrationStrength(gd.Int(device)))
 }
@@ -266,7 +242,6 @@ func GetJoyVibrationStrength(device int) gd.Vector2 {
 Returns the duration of the current vibration effect in seconds.
 */
 func GetJoyVibrationDuration(device int) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).GetJoyVibrationDuration(gd.Int(device))))
 }
@@ -277,7 +252,6 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 [b]Note:[/b] For macOS, vibration is only supported in macOS 11 and later.
 */
 func StartJoyVibration(device int, weak_magnitude float64, strong_magnitude float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).StartJoyVibration(gd.Int(device), gd.Float(weak_magnitude), gd.Float(strong_magnitude), gd.Float(0))
 }
@@ -286,7 +260,6 @@ func StartJoyVibration(device int, weak_magnitude float64, strong_magnitude floa
 Stops the vibration of the joypad started with [method start_joy_vibration].
 */
 func StopJoyVibration(device int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).StopJoyVibration(gd.Int(device))
 }
@@ -301,7 +274,6 @@ Vibrate the handheld device for the specified duration in milliseconds.
 [b]Note:[/b] Some web browsers such as Safari and Firefox for Android do not support [method vibrate_handheld].
 */
 func VibrateHandheld() {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).VibrateHandheld(gd.Int(500), gd.Float(-1.0))
 }
@@ -311,7 +283,6 @@ Returns the gravity in m/s² of the device's accelerometer sensor, if the device
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 func GetGravity() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).GetGravity())
 }
@@ -322,7 +293,6 @@ Note this method returns an empty [Vector3] when running from the editor even wh
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 func GetAccelerometer() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).GetAccelerometer())
 }
@@ -332,7 +302,6 @@ Returns the magnetic field strength in micro-Tesla for all axes of the device's 
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 func GetMagnetometer() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).GetMagnetometer())
 }
@@ -342,7 +311,6 @@ Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyr
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
 func GetGyroscope() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).GetGyroscope())
 }
@@ -352,7 +320,6 @@ Sets the gravity value of the accelerometer sensor. Can be used for debugging on
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 func SetGravity(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetGravity(value)
 }
@@ -362,7 +329,6 @@ Sets the acceleration value of the accelerometer sensor. Can be used for debuggi
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 func SetAccelerometer(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetAccelerometer(value)
 }
@@ -372,7 +338,6 @@ Sets the value of the magnetic field of the magnetometer sensor. Can be used for
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 func SetMagnetometer(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetMagnetometer(value)
 }
@@ -382,7 +347,6 @@ Sets the value of the rotation rate of the gyroscope sensor. Can be used for deb
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
 func SetGyroscope(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetGyroscope(value)
 }
@@ -391,7 +355,6 @@ func SetGyroscope(value gd.Vector3) {
 Returns the last mouse velocity. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
 func GetLastMouseVelocity() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector2(class(self).GetLastMouseVelocity())
 }
@@ -400,7 +363,6 @@ func GetLastMouseVelocity() gd.Vector2 {
 Returns the last mouse velocity in screen coordinates. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
 func GetLastMouseScreenVelocity() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector2(class(self).GetLastMouseScreenVelocity())
 }
@@ -409,7 +371,6 @@ func GetLastMouseScreenVelocity() gd.Vector2 {
 Returns mouse buttons as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [method DisplayServer.mouse_get_button_state].
 */
 func GetMouseButtonMask() gd.MouseButtonMask {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.MouseButtonMask(class(self).GetMouseButtonMask())
 }
@@ -420,7 +381,6 @@ Mouse position is clipped to the limits of the screen resolution, or to the limi
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 func WarpMouse(position gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).WarpMouse(position)
 }
@@ -431,18 +391,16 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 [b]Note:[/b] This method will not cause any [method Node._input] calls. It is intended to be used with [method is_action_pressed] and [method is_action_just_pressed]. If you want to simulate [code]_input[/code], use [method parse_input_event] instead.
 */
 func ActionPress(action string) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).ActionPress(gc.StringName(action), gd.Float(1.0))
+	class(self).ActionPress(gd.NewStringName(action), gd.Float(1.0))
 }
 
 /*
 If the specified action is already pressed, this will release it.
 */
 func ActionRelease(action string) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).ActionRelease(gc.StringName(action))
+	class(self).ActionRelease(gd.NewStringName(action))
 }
 
 /*
@@ -451,7 +409,6 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 [b]Note:[/b] This method generates an [InputEventMouseMotion] to update cursor immediately.
 */
 func SetDefaultCursorShape() {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetDefaultCursorShape(0)
 }
@@ -460,7 +417,6 @@ func SetDefaultCursorShape() {
 Returns the currently assigned cursor shape (see [enum CursorShape]).
 */
 func GetCurrentCursorShape() classdb.InputCursorShape {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return classdb.InputCursorShape(class(self).GetCurrentCursorShape())
 }
@@ -474,7 +430,6 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
 func SetCustomMouseCursor(image gdclass.Resource) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetCustomMouseCursor(image, 0, gd.Vector2{0, 0})
 }
@@ -499,7 +454,6 @@ Input.ParseInputEvent(cancelEvent);
 [b]Note:[/b] Calling this function has no influence on the operating system. So for example sending an [InputEventMouseMotion] will not move the OS mouse cursor to the specified position (use [method warp_mouse] instead) and sending [kbd]Alt/Cmd + Tab[/kbd] as [InputEventKey] won't toggle between active windows.
 */
 func ParseInputEvent(event gdclass.InputEvent) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).ParseInputEvent(event)
 }
@@ -509,7 +463,6 @@ Sends all input events which are in the current buffer to the game loop. These e
 The engine will already do this itself at key execution points (at least once per frame). However, this can be useful in advanced cases where you want precise control over the timing of event handling.
 */
 func FlushBufferedEvents() {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).FlushBufferedEvents()
 }
@@ -518,47 +471,35 @@ func GD() class { once.Do(singleton); return self }
 type class [1]classdb.Input
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
 func MouseMode() classdb.InputMouseMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.InputMouseMode(class(self).GetMouseMode())
 }
 
 func SetMouseMode(value classdb.InputMouseMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMouseMode(value)
 }
 
 func UseAccumulatedInput() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingAccumulatedInput())
 }
 
 func SetUseAccumulatedInput(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseAccumulatedInput(value)
 }
 
 func EmulateMouseFromTouch() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsEmulatingMouseFromTouch())
 }
 
 func SetEmulateMouseFromTouch(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEmulateMouseFromTouch(value)
 }
 
 func EmulateTouchFromMouse() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsEmulatingTouchFromMouse())
 }
 
 func SetEmulateTouchFromMouse(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEmulateTouchFromMouse(value)
 }
 
@@ -567,10 +508,9 @@ Returns [code]true[/code] if any action, key, joypad button, or mouse button is 
 */
 //go:nosplit
 func (self class) IsAnythingPressed() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_anything_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_anything_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -582,11 +522,10 @@ Returns [code]true[/code] if you are pressing the Latin key in the current keybo
 */
 //go:nosplit
 func (self class) IsKeyPressed(keycode gd.Key) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_key_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_key_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -598,11 +537,10 @@ Returns [code]true[/code] if you are pressing the key in the physical location o
 */
 //go:nosplit
 func (self class) IsPhysicalKeyPressed(keycode gd.Key) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_physical_key_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_physical_key_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -612,11 +550,10 @@ Returns [code]true[/code] if you are pressing the key with the [param keycode] p
 */
 //go:nosplit
 func (self class) IsKeyLabelPressed(keycode gd.Key) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_key_label_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_key_label_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -626,11 +563,10 @@ Returns [code]true[/code] if you are pressing the mouse button specified with [e
 */
 //go:nosplit
 func (self class) IsMouseButtonPressed(button gd.MouseButton) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, button)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_mouse_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_mouse_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -640,12 +576,11 @@ Returns [code]true[/code] if you are pressing the joypad button (see [enum JoyBu
 */
 //go:nosplit
 func (self class) IsJoyButtonPressed(device gd.Int, button gd.JoyButton) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, button)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_joy_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_joy_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -657,12 +592,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionPressed(action gd.StringName, exact_match bool) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_action_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -677,12 +611,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionJustPressed(action gd.StringName, exact_match bool) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_action_just_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -695,12 +628,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionJustReleased(action gd.StringName, exact_match bool) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_action_just_released, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_released, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -711,12 +643,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) GetActionStrength(action gd.StringName, exact_match bool) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -727,12 +658,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) GetActionRawStrength(action gd.StringName, exact_match bool) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_action_raw_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_raw_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -743,12 +673,11 @@ This is a shorthand for writing [code]Input.get_action_strength("positive_action
 */
 //go:nosplit
 func (self class) GetAxis(negative_action gd.StringName, positive_action gd.StringName) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(negative_action))
-	callframe.Arg(frame, mmm.Get(positive_action))
+	callframe.Arg(frame, discreet.Get(negative_action))
+	callframe.Arg(frame, discreet.Get(positive_action))
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -760,15 +689,14 @@ By default, the deadzone is automatically calculated from the average of the act
 */
 //go:nosplit
 func (self class) GetVector(negative_x gd.StringName, positive_x gd.StringName, negative_y gd.StringName, positive_y gd.StringName, deadzone gd.Float) gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(negative_x))
-	callframe.Arg(frame, mmm.Get(positive_x))
-	callframe.Arg(frame, mmm.Get(negative_y))
-	callframe.Arg(frame, mmm.Get(positive_y))
+	callframe.Arg(frame, discreet.Get(negative_x))
+	callframe.Arg(frame, discreet.Get(positive_x))
+	callframe.Arg(frame, discreet.Get(negative_y))
+	callframe.Arg(frame, discreet.Get(positive_y))
 	callframe.Arg(frame, deadzone)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_vector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_vector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -778,12 +706,11 @@ Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally up
 */
 //go:nosplit
 func (self class) AddJoyMapping(mapping gd.String, update_existing bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(mapping))
+	callframe.Arg(frame, discreet.Get(mapping))
 	callframe.Arg(frame, update_existing)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_add_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_add_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -791,11 +718,10 @@ Removes all mappings from the internal database that match the given GUID.
 */
 //go:nosplit
 func (self class) RemoveJoyMapping(guid gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(guid))
+	callframe.Arg(frame, discreet.Get(guid))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_remove_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_remove_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -803,11 +729,10 @@ Returns [code]true[/code] if the system knows the specified device. This means t
 */
 //go:nosplit
 func (self class) IsJoyKnown(device gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_joy_known, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_joy_known, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -817,12 +742,11 @@ Returns the current value of the joypad axis at given index (see [enum JoyAxis])
 */
 //go:nosplit
 func (self class) GetJoyAxis(device gd.Int, axis gd.JoyAxis) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_joy_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -831,13 +755,12 @@ func (self class) GetJoyAxis(device gd.Int, axis gd.JoyAxis) gd.Float {
 Returns the name of the joypad at the specified device index, e.g. [code]PS4 Controller[/code]. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names.
 */
 //go:nosplit
-func (self class) GetJoyName(ctx gd.Lifetime, device gd.Int) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetJoyName(device gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_joy_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -845,13 +768,12 @@ func (self class) GetJoyName(ctx gd.Lifetime, device gd.Int) gd.String {
 Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns [code]"Default Gamepad"[/code] otherwise. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
 */
 //go:nosplit
-func (self class) GetJoyGuid(ctx gd.Lifetime, device gd.Int) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetJoyGuid(device gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_joy_guid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_guid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -866,13 +788,12 @@ On Linux:
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
 //go:nosplit
-func (self class) GetJoyInfo(ctx gd.Lifetime, device gd.Int) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetJoyInfo(device gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_joy_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -882,12 +803,11 @@ Queries whether an input device should be ignored or not. Devices can be ignored
 */
 //go:nosplit
 func (self class) ShouldIgnoreDevice(vendor_id gd.Int, product_id gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, vendor_id)
 	callframe.Arg(frame, product_id)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_should_ignore_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_should_ignore_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -896,25 +816,23 @@ func (self class) ShouldIgnoreDevice(vendor_id gd.Int, product_id gd.Int) bool {
 Returns an [Array] containing the device IDs of all currently connected joypads.
 */
 //go:nosplit
-func (self class) GetConnectedJoypads(ctx gd.Lifetime) gd.ArrayOf[gd.Int] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetConnectedJoypads() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_connected_joypads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_connected_joypads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gd.Int](ret)
+	return ret
 }
 /*
 Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
 */
 //go:nosplit
 func (self class) GetJoyVibrationStrength(device gd.Int) gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_joy_vibration_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -924,11 +842,10 @@ Returns the duration of the current vibration effect in seconds.
 */
 //go:nosplit
 func (self class) GetJoyVibrationDuration(device gd.Int) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_joy_vibration_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -940,14 +857,13 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 */
 //go:nosplit
 func (self class) StartJoyVibration(device gd.Int, weak_magnitude gd.Float, strong_magnitude gd.Float, duration gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, weak_magnitude)
 	callframe.Arg(frame, strong_magnitude)
 	callframe.Arg(frame, duration)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_start_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_start_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -955,11 +871,10 @@ Stops the vibration of the joypad started with [method start_joy_vibration].
 */
 //go:nosplit
 func (self class) StopJoyVibration(device gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_stop_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_stop_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -973,12 +888,11 @@ Vibrate the handheld device for the specified duration in milliseconds.
 */
 //go:nosplit
 func (self class) VibrateHandheld(duration_ms gd.Int, amplitude gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, duration_ms)
 	callframe.Arg(frame, amplitude)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_vibrate_handheld, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_vibrate_handheld, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -987,10 +901,9 @@ Returns the gravity in m/s² of the device's accelerometer sensor, if the device
 */
 //go:nosplit
 func (self class) GetGravity() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1002,10 +915,9 @@ Note this method returns an empty [Vector3] when running from the editor even wh
 */
 //go:nosplit
 func (self class) GetAccelerometer() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_accelerometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_accelerometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1016,10 +928,9 @@ Returns the magnetic field strength in micro-Tesla for all axes of the device's 
 */
 //go:nosplit
 func (self class) GetMagnetometer() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_magnetometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_magnetometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1030,10 +941,9 @@ Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyr
 */
 //go:nosplit
 func (self class) GetGyroscope() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_gyroscope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gyroscope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1044,11 +954,10 @@ Sets the gravity value of the accelerometer sensor. Can be used for debugging on
 */
 //go:nosplit
 func (self class) SetGravity(value gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1057,11 +966,10 @@ Sets the acceleration value of the accelerometer sensor. Can be used for debuggi
 */
 //go:nosplit
 func (self class) SetAccelerometer(value gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_accelerometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_accelerometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1070,11 +978,10 @@ Sets the value of the magnetic field of the magnetometer sensor. Can be used for
 */
 //go:nosplit
 func (self class) SetMagnetometer(value gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_magnetometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_magnetometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1083,11 +990,10 @@ Sets the value of the rotation rate of the gyroscope sensor. Can be used for deb
 */
 //go:nosplit
 func (self class) SetGyroscope(value gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_gyroscope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_gyroscope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1095,10 +1001,9 @@ Returns the last mouse velocity. To provide a precise and jitter-free velocity, 
 */
 //go:nosplit
 func (self class) GetLastMouseVelocity() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_last_mouse_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1108,10 +1013,9 @@ Returns the last mouse velocity in screen coordinates. To provide a precise and 
 */
 //go:nosplit
 func (self class) GetLastMouseScreenVelocity() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_last_mouse_screen_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_screen_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1121,29 +1025,26 @@ Returns mouse buttons as a bitmask. If multiple mouse buttons are pressed at the
 */
 //go:nosplit
 func (self class) GetMouseButtonMask() gd.MouseButtonMask {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.MouseButtonMask](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_mouse_button_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_button_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMouseMode(mode classdb.InputMouseMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMouseMode() classdb.InputMouseMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.InputMouseMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1155,11 +1056,10 @@ Mouse position is clipped to the limits of the screen resolution, or to the limi
 */
 //go:nosplit
 func (self class) WarpMouse(position gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1169,12 +1069,11 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 */
 //go:nosplit
 func (self class) ActionPress(action gd.StringName, strength gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, strength)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_action_press, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_press, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1182,11 +1081,10 @@ If the specified action is already pressed, this will release it.
 */
 //go:nosplit
 func (self class) ActionRelease(action gd.StringName)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_action_release, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_release, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1196,11 +1094,10 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 */
 //go:nosplit
 func (self class) SetDefaultCursorShape(shape classdb.InputCursorShape)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_default_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_default_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1208,10 +1105,9 @@ Returns the currently assigned cursor shape (see [enum CursorShape]).
 */
 //go:nosplit
 func (self class) GetCurrentCursorShape() classdb.InputCursorShape {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.InputCursorShape](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_get_current_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_current_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1226,13 +1122,12 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 */
 //go:nosplit
 func (self class) SetCustomMouseCursor(image gdclass.Resource, shape classdb.InputCursorShape, hotspot gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(image[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(image[0])[0])
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, hotspot)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_custom_mouse_cursor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_custom_mouse_cursor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1256,28 +1151,25 @@ Input.ParseInputEvent(cancelEvent);
 */
 //go:nosplit
 func (self class) ParseInputEvent(event gdclass.InputEvent)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(event[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(event[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_parse_input_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_parse_input_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetUseAccumulatedInput(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_use_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_use_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingAccumulatedInput() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_using_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_using_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1288,53 +1180,47 @@ The engine will already do this itself at key execution points (at least once pe
 */
 //go:nosplit
 func (self class) FlushBufferedEvents()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_flush_buffered_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_flush_buffered_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetEmulateMouseFromTouch(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_emulate_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_emulate_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsEmulatingMouseFromTouch() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_emulating_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_emulating_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEmulateTouchFromMouse(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_set_emulate_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_emulate_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsEmulatingTouchFromMouse() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Input.Bind_is_emulating_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_emulating_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 func OnJoyConnectionChanged(cb func(device int, connected bool)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("joy_connection_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("joy_connection_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -1343,7 +1229,7 @@ func (self class) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("Input", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Input", func(ptr gd.Object) any { return classdb.Input(ptr) })}
 type MouseModeValue = classdb.InputMouseMode
 
 const (

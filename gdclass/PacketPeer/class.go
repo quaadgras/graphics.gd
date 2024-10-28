@@ -2,7 +2,7 @@ package PacketPeer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 PacketPeer is an abstraction and base class for packet-based protocols (such as UDP). It provides an API for sending and receiving packets both as raw data or variables. This makes it easy to transfer data over a protocol, without having to encode data as low-level bytes or having to worry about network ordering.
@@ -27,8 +27,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Go) GetVar() gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GetVar(gc, false))
+	return gd.Variant(class(self).GetVar(false))
 }
 
 /*
@@ -36,7 +35,6 @@ Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 func (self Go) PutVar(v gd.Variant) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).PutVar(v, false))
 }
 
@@ -44,23 +42,20 @@ func (self Go) PutVar(v gd.Variant) gd.Error {
 Gets a raw packet.
 */
 func (self Go) GetPacket() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).GetPacket(gc).Bytes())
+	return []byte(class(self).GetPacket().Bytes())
 }
 
 /*
 Sends a raw packet.
 */
 func (self Go) PutPacket(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).PutPacket(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).PutPacket(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
 Returns the error state of the last packet received (via [method get_packet] and [method get_var]).
 */
 func (self Go) GetPacketError() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).GetPacketError())
 }
 
@@ -68,7 +63,6 @@ func (self Go) GetPacketError() gd.Error {
 Returns the number of packets currently available in the ring-buffer.
 */
 func (self Go) GetAvailablePacketCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetAvailablePacketCount()))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -76,27 +70,16 @@ type GD = class
 type class [1]classdb.PacketPeer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("PacketPeer"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PacketPeer"))
+	return Go{classdb.PacketPeer(object)}
 }
 
 func (self Go) EncodeBufferMaxSize() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetEncodeBufferMaxSize()))
 }
 
 func (self Go) SetEncodeBufferMaxSize(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEncodeBufferMaxSize(gd.Int(value))
 }
 
@@ -106,13 +89,12 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
-func (self class) GetVar(ctx gd.Lifetime, allow_objects bool) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetVar(allow_objects bool) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_get_var, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_var, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -122,12 +104,11 @@ Internally, this uses the same encoding mechanism as the [method @GlobalScope.va
 */
 //go:nosplit
 func (self class) PutVar(v gd.Variant, full_objects bool) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(v))
+	callframe.Arg(frame, discreet.Get(v))
 	callframe.Arg(frame, full_objects)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_put_var, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_var, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -136,12 +117,11 @@ func (self class) PutVar(v gd.Variant, full_objects bool) int64 {
 Gets a raw packet.
 */
 //go:nosplit
-func (self class) GetPacket(ctx gd.Lifetime) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPacket() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_get_packet, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -150,11 +130,10 @@ Sends a raw packet.
 */
 //go:nosplit
 func (self class) PutPacket(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_put_packet, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_packet, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -164,10 +143,9 @@ Returns the error state of the last packet received (via [method get_packet] and
 */
 //go:nosplit
 func (self class) GetPacketError() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_get_packet_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -177,31 +155,28 @@ Returns the number of packets currently available in the ring-buffer.
 */
 //go:nosplit
 func (self class) GetAvailablePacketCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_get_available_packet_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_available_packet_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) GetEncodeBufferMaxSize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_get_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEncodeBufferMaxSize(max_size gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PacketPeer.Bind_set_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_set_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsPacketPeer() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -220,4 +195,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("PacketPeer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("PacketPeer", func(ptr gd.Object) any { return classdb.PacketPeer(ptr) })}

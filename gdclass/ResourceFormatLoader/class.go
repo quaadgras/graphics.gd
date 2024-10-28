@@ -2,7 +2,7 @@ package ResourceFormatLoader
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Godot loads resources in the editor or in exported games using ResourceFormatLoaders. They are queried automatically via the [ResourceLoader] singleton, or when a resource with internal dependencies is loaded. Each file type may load as a different resource type, so multiple ResourceFormatLoaders are registered in the engine.
@@ -55,12 +55,13 @@ Gets the list of extensions for files this loader is able to read.
 */
 func (Go) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -70,14 +71,13 @@ If it is not implemented, the default behavior returns whether the path's extens
 */
 func (Go) _recognize_path(impl func(ptr unsafe.Pointer, path string, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var atype = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
+		var atype = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), atype.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -87,13 +87,11 @@ Tells which resource class this loader can load.
 */
 func (Go) _handles_type(impl func(ptr unsafe.Pointer, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var atype = mmm.Let[gd.StringName](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -103,13 +101,15 @@ Gets the class name of the resource associated with the given path. If the loade
 */
 func (Go) _get_resource_type(impl func(ptr unsafe.Pointer, path string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -118,24 +118,24 @@ Returns the script class name associated with the [Resource] under the given [pa
 */
 func (Go) _get_resource_script_class(impl func(ptr unsafe.Pointer, path string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Go) _get_resource_uid(impl func(ptr unsafe.Pointer, path string) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -145,14 +145,16 @@ If implemented, gets the dependencies of a given resource. If [param add_types] 
 */
 func (Go) _get_dependencies(impl func(ptr unsafe.Pointer, path string, add_types bool) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		var add_types = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), add_types)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -162,36 +164,35 @@ Returns [constant OK] on success, or an [enum Error] constant in case of failure
 */
 func (Go) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, renames gd.Dictionary) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var renames = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
+		var renames = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(renames)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), renames)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 func (Go) _exists(impl func(ptr unsafe.Pointer, path string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 func (Go) _get_classes_used(impl func(ptr unsafe.Pointer, path string) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -201,16 +202,19 @@ The [param cache_mode] property defines whether and how the cache should be used
 */
 func (Go) _load(impl func(ptr unsafe.Pointer, path string, original_path string, use_sub_threads bool, cache_mode int) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var original_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
+		var original_path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(original_path)
 		var use_sub_threads = gd.UnsafeGet[bool](p_args,2)
 		var cache_mode = gd.UnsafeGet[gd.Int](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), original_path.String(), use_sub_threads, int(cache_mode))
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -218,18 +222,9 @@ type GD = class
 type class [1]classdb.ResourceFormatLoader
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ResourceFormatLoader"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceFormatLoader"))
+	return Go{classdb.ResourceFormatLoader(object)}
 }
 
 /*
@@ -237,12 +232,13 @@ Gets the list of extensions for files this loader is able to read.
 */
 func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -252,14 +248,11 @@ If it is not implemented, the default behavior returns whether the path's extens
 */
 func (class) _recognize_path(impl func(ptr unsafe.Pointer, path gd.String, atype gd.StringName) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var atype = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var atype = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, atype)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -269,13 +262,10 @@ Tells which resource class this loader can load.
 */
 func (class) _handles_type(impl func(ptr unsafe.Pointer, atype gd.StringName) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var atype = mmm.Let[gd.StringName](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = discreet.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -285,13 +275,14 @@ Gets the class name of the resource associated with the given path. If the loade
 */
 func (class) _get_resource_type(impl func(ptr unsafe.Pointer, path gd.String) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -300,25 +291,23 @@ Returns the script class name associated with the [Resource] under the given [pa
 */
 func (class) _get_resource_script_class(impl func(ptr unsafe.Pointer, path gd.String) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
 func (class) _get_resource_uid(impl func(ptr unsafe.Pointer, path gd.String) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -328,14 +317,15 @@ If implemented, gets the dependencies of a given resource. If [param add_types] 
 */
 func (class) _get_dependencies(impl func(ptr unsafe.Pointer, path gd.String, add_types bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		var add_types = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, add_types)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -345,38 +335,33 @@ Returns [constant OK] on success, or an [enum Error] constant in case of failure
 */
 func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path gd.String, renames gd.Dictionary) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var renames = mmm.Let[gd.Dictionary](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var renames = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, renames)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
 func (class) _exists(impl func(ptr unsafe.Pointer, path gd.String) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
 func (class) _get_classes_used(impl func(ptr unsafe.Pointer, path gd.String) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -386,16 +371,17 @@ The [param cache_mode] property defines whether and how the cache should be used
 */
 func (class) _load(impl func(ptr unsafe.Pointer, path gd.String, original_path gd.String, use_sub_threads bool, cache_mode gd.Int) gd.Variant, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var original_path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var original_path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
 		var use_sub_threads = gd.UnsafeGet[bool](p_args,2)
 		var cache_mode = gd.UnsafeGet[gd.Int](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, original_path, use_sub_threads, cache_mode)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -437,7 +423,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("ResourceFormatLoader", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ResourceFormatLoader", func(ptr gd.Object) any { return classdb.ResourceFormatLoader(ptr) })}
 type CacheMode = classdb.ResourceFormatLoaderCacheMode
 
 const (

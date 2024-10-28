@@ -2,7 +2,7 @@ package NavigationObstacle2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 An obstacle needs a navigation map and outline [member vertices] defined to work correctly. The outlines can not cross or overlap.
@@ -29,7 +29,6 @@ type Go [1]classdb.NavigationObstacle2D
 Returns the [RID] of this obstacle on the [NavigationServer2D].
 */
 func (self Go) GetRid() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(class(self).GetRid())
 }
 
@@ -37,7 +36,6 @@ func (self Go) GetRid() gd.RID {
 Sets the [RID] of the navigation map this NavigationObstacle node should use and also updates the [code]obstacle[/code] on the NavigationServer.
 */
 func (self Go) SetNavigationMap(navigation_map gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetNavigationMap(navigation_map)
 }
 
@@ -45,7 +43,6 @@ func (self Go) SetNavigationMap(navigation_map gd.RID) {
 Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 */
 func (self Go) GetNavigationMap() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(class(self).GetNavigationMap())
 }
 
@@ -53,7 +50,6 @@ func (self Go) GetNavigationMap() gd.RID {
 Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Go) SetAvoidanceLayerValue(layer_number int, value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAvoidanceLayerValue(gd.Int(layer_number), value)
 }
 
@@ -61,7 +57,6 @@ func (self Go) SetAvoidanceLayerValue(layer_number int, value bool) {
 Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Go) GetAvoidanceLayerValue(layer_number int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetAvoidanceLayerValue(gd.Int(layer_number)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -69,87 +64,64 @@ type GD = class
 type class [1]classdb.NavigationObstacle2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("NavigationObstacle2D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationObstacle2D"))
+	return Go{classdb.NavigationObstacle2D(object)}
 }
 
 func (self Go) Radius() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetRadius()))
 }
 
 func (self Go) SetRadius(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRadius(gd.Float(value))
 }
 
 func (self Go) Vertices() []gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []gd.Vector2(class(self).GetVertices(gc).AsSlice())
+		return []gd.Vector2(class(self).GetVertices().AsSlice())
 }
 
 func (self Go) SetVertices(value []gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetVertices(gc.PackedVector2Slice(value))
+	class(self).SetVertices(gd.NewPackedVector2Slice(value))
 }
 
 func (self Go) AffectNavigationMesh() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetAffectNavigationMesh())
 }
 
 func (self Go) SetAffectNavigationMesh(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAffectNavigationMesh(value)
 }
 
 func (self Go) CarveNavigationMesh() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetCarveNavigationMesh())
 }
 
 func (self Go) SetCarveNavigationMesh(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCarveNavigationMesh(value)
 }
 
 func (self Go) AvoidanceEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetAvoidanceEnabled())
 }
 
 func (self Go) SetAvoidanceEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAvoidanceEnabled(value)
 }
 
 func (self Go) Velocity() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector2(class(self).GetVelocity())
 }
 
 func (self Go) SetVelocity(value gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVelocity(value)
 }
 
 func (self Go) AvoidanceLayers() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetAvoidanceLayers()))
 }
 
 func (self Go) SetAvoidanceLayers(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAvoidanceLayers(gd.Int(value))
 }
 
@@ -158,29 +130,26 @@ Returns the [RID] of this obstacle on the [NavigationServer2D].
 */
 //go:nosplit
 func (self class) GetRid() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAvoidanceEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAvoidanceEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -190,11 +159,10 @@ Sets the [RID] of the navigation map this NavigationObstacle node should use and
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -202,86 +170,77 @@ Returns the [RID] of the navigation map for this NavigationObstacle node. This f
 */
 //go:nosplit
 func (self class) GetNavigationMap() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRadius(radius gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRadius() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVelocity(velocity gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetVelocity() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVertices(vertices gd.PackedVector2Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(vertices))
+	callframe.Arg(frame, discreet.Get(vertices))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetVertices(ctx gd.Lifetime) gd.PackedVector2Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetVertices() gd.PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAvoidanceLayers(layers gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAvoidanceLayers() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -291,12 +250,11 @@ Based on [param value], enables or disables the specified layer in the [member a
 */
 //go:nosplit
 func (self class) SetAvoidanceLayerValue(layer_number gd.Int, value bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -304,49 +262,44 @@ Returns whether or not the specified layer of the [member avoidance_layers] bitm
 */
 //go:nosplit
 func (self class) GetAvoidanceLayerValue(layer_number gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAffectNavigationMesh(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_affect_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_affect_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAffectNavigationMesh() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_affect_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_affect_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCarveNavigationMesh(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_set_carve_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_set_carve_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetCarveNavigationMesh() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationObstacle2D.Bind_get_carve_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationObstacle2D.Bind_get_carve_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,4 +324,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() {classdb.Register("NavigationObstacle2D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("NavigationObstacle2D", func(ptr gd.Object) any { return classdb.NavigationObstacle2D(ptr) })}

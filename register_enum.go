@@ -37,7 +37,7 @@ type Enum[Class gd.IsClass, T integer] struct {
 }
 
 // Register the enum with Godot.
-func (enum Enum[Class, T]) Register(godot Lifetime) {
+func (enum Enum[Class, T]) Register() {
 	var classType = reflect.TypeOf([0]Class{}).Elem()
 
 	// Support 'gd' tag for renaming the class within Godot.
@@ -50,15 +50,12 @@ func (enum Enum[Class, T]) Register(godot Lifetime) {
 			}
 		}
 	}
-	var className = godot.StringName(rename)
+	var className = gd.NewStringName(rename)
 
-	tmp := gd.NewLifetime(godot.API)
-	defer tmp.End()
-
-	enumName := tmp.StringName(enum.Name)
+	enumName := gd.NewStringName(enum.Name)
 
 	for name, value := range enum.Values {
-		valueName := tmp.StringName(name)
-		godot.API.ClassDB.RegisterClassIntegerConstant(godot.API.ExtensionToken, className, enumName, valueName, int64(value), enum.Bitfield)
+		valueName := gd.NewStringName(name)
+		gd.Global.ClassDB.RegisterClassIntegerConstant(gd.Global.ExtensionToken, className, enumName, valueName, int64(value), enum.Bitfield)
 	}
 }

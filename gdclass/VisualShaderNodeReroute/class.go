@@ -2,7 +2,7 @@ package VisualShaderNodeReroute
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Automatically adapts its port type to the type of the incoming connection and ensures valid connections.
@@ -26,22 +26,12 @@ type GD = class
 type class [1]classdb.VisualShaderNodeReroute
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeReroute"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeReroute"))
+	return Go{classdb.VisualShaderNodeReroute(object)}
 }
 
 func (self Go) PortType() classdb.VisualShaderNodePortType {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodePortType(class(self).GetPortType())
 }
 
@@ -50,10 +40,9 @@ Returns the port type of the reroute node.
 */
 //go:nosplit
 func (self class) GetPortType() classdb.VisualShaderNodePortType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodePortType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeReroute.Bind_get_port_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeReroute.Bind_get_port_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -78,4 +67,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNode(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeReroute", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeReroute", func(ptr gd.Object) any { return classdb.VisualShaderNodeReroute(ptr) })}

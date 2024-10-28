@@ -2,7 +2,7 @@ package VisualShaderNodeParticleAccelerator
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Particle accelerator can be used in "process" step of particle shader. It will accelerate the particles. Connect it to the Velocity output port.
@@ -26,45 +26,32 @@ type GD = class
 type class [1]classdb.VisualShaderNodeParticleAccelerator
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeParticleAccelerator"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleAccelerator"))
+	return Go{classdb.VisualShaderNodeParticleAccelerator(object)}
 }
 
 func (self Go) Mode() classdb.VisualShaderNodeParticleAcceleratorMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeParticleAcceleratorMode(class(self).GetMode())
 }
 
 func (self Go) SetMode(value classdb.VisualShaderNodeParticleAcceleratorMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMode(value)
 }
 
 //go:nosplit
 func (self class) SetMode(mode classdb.VisualShaderNodeParticleAcceleratorMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeParticleAccelerator.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMode() classdb.VisualShaderNodeParticleAcceleratorMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeParticleAcceleratorMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeParticleAccelerator.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -89,7 +76,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNode(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeParticleAccelerator", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeParticleAccelerator", func(ptr gd.Object) any { return classdb.VisualShaderNodeParticleAccelerator(ptr) })}
 type Mode = classdb.VisualShaderNodeParticleAcceleratorMode
 
 const (

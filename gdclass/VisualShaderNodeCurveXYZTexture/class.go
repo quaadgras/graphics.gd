@@ -2,7 +2,7 @@ package VisualShaderNodeCurveXYZTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Comes with a built-in editor for texture's curves.
@@ -27,47 +27,33 @@ type GD = class
 type class [1]classdb.VisualShaderNodeCurveXYZTexture
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeCurveXYZTexture"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCurveXYZTexture"))
+	return Go{classdb.VisualShaderNodeCurveXYZTexture(object)}
 }
 
 func (self Go) Texture() gdclass.CurveXYZTexture {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.CurveXYZTexture(class(self).GetTexture(gc))
+		return gdclass.CurveXYZTexture(class(self).GetTexture())
 }
 
 func (self Go) SetTexture(value gdclass.CurveXYZTexture) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTexture(value)
 }
 
 //go:nosplit
 func (self class) SetTexture(texture gdclass.CurveXYZTexture)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(texture[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(texture[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetTexture(ctx gd.Lifetime) gdclass.CurveXYZTexture {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTexture() gdclass.CurveXYZTexture {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.CurveXYZTexture
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.CurveXYZTexture{classdb.CurveXYZTexture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -93,4 +79,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNodeResizableBase(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeCurveXYZTexture", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeCurveXYZTexture", func(ptr gd.Object) any { return classdb.VisualShaderNodeCurveXYZTexture(ptr) })}

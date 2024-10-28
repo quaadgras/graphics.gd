@@ -2,7 +2,7 @@ package Texture3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Base class for [ImageTexture3D] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. [Texture3D] is the base class for all 3-dimensional texture types. See also [TextureLayered].
@@ -33,7 +33,7 @@ To create such a texture file yourself, reimport your image files using the Godo
 		//Called when the presence of mipmaps in the [Texture3D] is queried.
 		HasMipmaps() bool
 		//Called when the [Texture3D]'s data is queried.
-		GetData() gd.ArrayOf[gdclass.Image]
+		GetData() gd.Array
 	}
 
 */
@@ -44,12 +44,9 @@ Called when the [Texture3D]'s format is queried.
 */
 func (Go) _get_format(impl func(ptr unsafe.Pointer) classdb.ImageFormat, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -58,12 +55,9 @@ Called when the [Texture3D]'s width is queried.
 */
 func (Go) _get_width(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -72,12 +66,9 @@ Called when the [Texture3D]'s height is queried.
 */
 func (Go) _get_height(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -86,12 +77,9 @@ Called when the [Texture3D]'s depth is queried.
 */
 func (Go) _get_depth(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -100,26 +88,24 @@ Called when the presence of mipmaps in the [Texture3D] is queried.
 */
 func (Go) _has_mipmaps(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
 /*
 Called when the [Texture3D]'s data is queried.
 */
-func (Go) _get_data(impl func(ptr unsafe.Pointer) gd.ArrayOf[gdclass.Image], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Go) _get_data(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -127,7 +113,6 @@ func (Go) _get_data(impl func(ptr unsafe.Pointer) gd.ArrayOf[gdclass.Image], api
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
 func (self Go) GetFormat() classdb.ImageFormat {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ImageFormat(class(self).GetFormat())
 }
 
@@ -135,7 +120,6 @@ func (self Go) GetFormat() classdb.ImageFormat {
 Returns the [Texture3D]'s width in pixels. Width is typically represented by the X axis.
 */
 func (self Go) GetWidth() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetWidth()))
 }
 
@@ -143,7 +127,6 @@ func (self Go) GetWidth() int {
 Returns the [Texture3D]'s height in pixels. Width is typically represented by the Y axis.
 */
 func (self Go) GetHeight() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetHeight()))
 }
 
@@ -151,7 +134,6 @@ func (self Go) GetHeight() int {
 Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the Z axis (a dimension not present in [Texture2D]).
 */
 func (self Go) GetDepth() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetDepth()))
 }
 
@@ -159,42 +141,30 @@ func (self Go) GetDepth() int {
 Returns [code]true[/code] if the [Texture3D] has generated mipmaps.
 */
 func (self Go) HasMipmaps() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasMipmaps())
 }
 
 /*
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
-func (self Go) GetData() gd.ArrayOf[gdclass.Image] {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.ArrayOf[gdclass.Image](class(self).GetData(gc))
+func (self Go) GetData() gd.Array {
+	return gd.Array(class(self).GetData())
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
 func (self Go) CreatePlaceholder() gdclass.Resource {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Resource(class(self).CreatePlaceholder(gc))
+	return gdclass.Resource(class(self).CreatePlaceholder())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.Texture3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Texture3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture3D"))
+	return Go{classdb.Texture3D(object)}
 }
 
 /*
@@ -202,12 +172,9 @@ Called when the [Texture3D]'s format is queried.
 */
 func (class) _get_format(impl func(ptr unsafe.Pointer) classdb.ImageFormat, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -216,12 +183,9 @@ Called when the [Texture3D]'s width is queried.
 */
 func (class) _get_width(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -230,12 +194,9 @@ Called when the [Texture3D]'s height is queried.
 */
 func (class) _get_height(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -244,12 +205,9 @@ Called when the [Texture3D]'s depth is queried.
 */
 func (class) _get_depth(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -258,26 +216,24 @@ Called when the presence of mipmaps in the [Texture3D] is queried.
 */
 func (class) _has_mipmaps(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
 /*
 Called when the [Texture3D]'s data is queried.
 */
-func (class) _get_data(impl func(ptr unsafe.Pointer) gd.ArrayOf[gdclass.Image], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_data(impl func(ptr unsafe.Pointer) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -286,10 +242,9 @@ Returns the current format being used by this texture. See [enum Image.Format] f
 */
 //go:nosplit
 func (self class) GetFormat() classdb.ImageFormat {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ImageFormat](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -299,10 +254,9 @@ Returns the [Texture3D]'s width in pixels. Width is typically represented by the
 */
 //go:nosplit
 func (self class) GetWidth() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -312,10 +266,9 @@ Returns the [Texture3D]'s height in pixels. Width is typically represented by th
 */
 //go:nosplit
 func (self class) GetHeight() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -325,10 +278,9 @@ Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the
 */
 //go:nosplit
 func (self class) GetDepth() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -338,10 +290,9 @@ Returns [code]true[/code] if the [Texture3D] has generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -350,26 +301,23 @@ func (self class) HasMipmaps() bool {
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
 //go:nosplit
-func (self class) GetData(ctx gd.Lifetime) gd.ArrayOf[gdclass.Image] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetData() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gdclass.Image](ret)
+	return ret
 }
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder(ctx gd.Lifetime) gdclass.Resource {
-	var selfPtr = self[0].AsPointer()
+func (self class) CreatePlaceholder() gdclass.Resource {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture3D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Resource
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -405,4 +353,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsTexture(), name)
 	}
 }
-func init() {classdb.Register("Texture3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Texture3D", func(ptr gd.Object) any { return classdb.Texture3D(ptr) })}

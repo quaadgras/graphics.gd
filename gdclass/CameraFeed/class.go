@@ -2,7 +2,7 @@ package CameraFeed
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A camera feed gives you access to a single physical camera attached to your device. When enabled, Godot will start capturing frames from the camera which can then be used. See also [CameraServer].
@@ -25,7 +25,6 @@ type Go [1]classdb.CameraFeed
 Returns the unique ID for this feed.
 */
 func (self Go) GetId() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetId()))
 }
 
@@ -33,15 +32,13 @@ func (self Go) GetId() int {
 Returns the camera's name.
 */
 func (self Go) GetName() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetName(gc).String())
+	return string(class(self).GetName().String())
 }
 
 /*
 Returns the position of camera on the device.
 */
 func (self Go) GetPosition() classdb.CameraFeedFeedPosition {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.CameraFeedFeedPosition(class(self).GetPosition())
 }
 
@@ -49,7 +46,6 @@ func (self Go) GetPosition() classdb.CameraFeedFeedPosition {
 Returns feed image data type.
 */
 func (self Go) GetDatatype() classdb.CameraFeedFeedDataType {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.CameraFeedFeedDataType(class(self).GetDatatype())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -57,37 +53,24 @@ type GD = class
 type class [1]classdb.CameraFeed
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("CameraFeed"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraFeed"))
+	return Go{classdb.CameraFeed(object)}
 }
 
 func (self Go) FeedIsActive() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsActive())
 }
 
 func (self Go) SetFeedIsActive(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetActive(value)
 }
 
 func (self Go) FeedTransform() gd.Transform2D {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Transform2D(class(self).GetTransform())
 }
 
 func (self Go) SetFeedTransform(value gd.Transform2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTransform(value)
 }
 
@@ -96,43 +79,39 @@ Returns the unique ID for this feed.
 */
 //go:nosplit
 func (self class) GetId() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_get_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) IsActive() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetActive(active bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the camera's name.
 */
 //go:nosplit
-func (self class) GetName(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetName() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -141,31 +120,28 @@ Returns the position of camera on the device.
 */
 //go:nosplit
 func (self class) GetPosition() classdb.CameraFeedFeedPosition {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.CameraFeedFeedPosition](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) GetTransform() gd.Transform2D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTransform(transform gd.Transform2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -173,10 +149,9 @@ Returns feed image data type.
 */
 //go:nosplit
 func (self class) GetDatatype() classdb.CameraFeedFeedDataType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.CameraFeedFeedDataType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CameraFeed.Bind_get_datatype, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_datatype, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -197,7 +172,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("CameraFeed", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("CameraFeed", func(ptr gd.Object) any { return classdb.CameraFeed(ptr) })}
 type FeedDataType = classdb.CameraFeedFeedDataType
 
 const (

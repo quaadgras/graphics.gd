@@ -412,11 +412,6 @@ func Directory[S Any](path S) S { //gd:String.get_base_dir
 	return S(filepath.Dir(string(path)))
 }
 
-// PathWithoutExtension returns the full file path, without the extension, if the string is a valid file path.
-func PathWithoutExtension[S Any](path S) S { //gd:String.get_basename
-	return S(strings.TrimSuffix(string(path), filepath.Ext(string(path))))
-}
-
 // FileExtension returns the file extension without the leading period (.) if the string is a
 // valid file name or path. Otherwise, returns an empty string.
 func FileExtension[S Any](path S) S { //gd:String.get_extension
@@ -526,24 +521,9 @@ func Insert[S Any](what, s S, position int) S { //gd:String.insert
 	return S(string(s[:position]) + string(what) + string(s[position:]))
 }
 
-// IsAbsolutePath returns true if the string is a path to a file or directory, and its starting
-// point is explicitly defined. This method is the opposite of [IsRelativePath].
-//
-// This includes all paths starting with "res://", "user://", "C:\", "/", etc.
-func IsAbsolutePath[S Any](s S) bool { //gd:String.is_absolute_path
-	return filepath.IsAbs(string(s))
-}
-
 // IsEmpty returns true if the string's length is 0 (""). See also length.
 func IsEmpty[S Any](s S) bool { //gd:String.is_empty
 	return len(s) == 0
-}
-
-// IsRelativePath returns true if the string is a path, and its starting point is dependent on context.
-// The path could begin from the current directory, or the current Node (if the string is derived from
-// a NodePath), and may sometimes be prefixed with "./". This method is the opposite of [IsAbsolutePath].
-func IsRelativePath[S Any](s S) bool { //gd:String.is_relative_path
-	return !filepath.IsAbs(string(s))
 }
 
 // IsStrictSubsequenceOf returns true if all characters of this string can be found in text in their original order.

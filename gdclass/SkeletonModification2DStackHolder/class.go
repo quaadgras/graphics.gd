@@ -2,7 +2,7 @@ package SkeletonModification2DStackHolder
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This [SkeletonModification2D] holds a reference to a [SkeletonModificationStack2D], allowing you to use multiple modification stacks on a single [Skeleton2D].
@@ -27,7 +27,6 @@ type Go [1]classdb.SkeletonModification2DStackHolder
 Sets the [SkeletonModificationStack2D] that this modification is holding. This modification stack will then be executed when this modification is executed.
 */
 func (self Go) SetHeldModificationStack(held_modification_stack gdclass.SkeletonModificationStack2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetHeldModificationStack(held_modification_stack)
 }
 
@@ -35,26 +34,16 @@ func (self Go) SetHeldModificationStack(held_modification_stack gdclass.Skeleton
 Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
 func (self Go) GetHeldModificationStack() gdclass.SkeletonModificationStack2D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.SkeletonModificationStack2D(class(self).GetHeldModificationStack(gc))
+	return gdclass.SkeletonModificationStack2D(class(self).GetHeldModificationStack())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.SkeletonModification2DStackHolder
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("SkeletonModification2DStackHolder"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DStackHolder"))
+	return Go{classdb.SkeletonModification2DStackHolder(object)}
 }
 
 /*
@@ -62,24 +51,21 @@ Sets the [SkeletonModificationStack2D] that this modification is holding. This m
 */
 //go:nosplit
 func (self class) SetHeldModificationStack(held_modification_stack gdclass.SkeletonModificationStack2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(held_modification_stack[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(held_modification_stack[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
 //go:nosplit
-func (self class) GetHeldModificationStack(ctx gd.Lifetime) gdclass.SkeletonModificationStack2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetHeldModificationStack() gdclass.SkeletonModificationStack2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.SkeletonModificationStack2D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.SkeletonModificationStack2D{classdb.SkeletonModificationStack2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -103,4 +89,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsSkeletonModification2D(), name)
 	}
 }
-func init() {classdb.Register("SkeletonModification2DStackHolder", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("SkeletonModification2DStackHolder", func(ptr gd.Object) any { return classdb.SkeletonModification2DStackHolder(ptr) })}

@@ -2,7 +2,7 @@ package SkinReference
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 An internal object containing a mapping from a [Skin] used within the context of a particular [MeshInstance3D] to refer to the skeleton's [RID] in the RenderingServer.
@@ -28,7 +28,6 @@ type Go [1]classdb.SkinReference
 Returns the [RID] owned by this SkinReference, as returned by [method RenderingServer.skeleton_create].
 */
 func (self Go) GetSkeleton() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(class(self).GetSkeleton())
 }
 
@@ -37,26 +36,16 @@ Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance
 Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
 */
 func (self Go) GetSkin() gdclass.Skin {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Skin(class(self).GetSkin(gc))
+	return gdclass.Skin(class(self).GetSkin())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.SkinReference
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("SkinReference"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkinReference"))
+	return Go{classdb.SkinReference(object)}
 }
 
 /*
@@ -64,10 +53,9 @@ Returns the [RID] owned by this SkinReference, as returned by [method RenderingS
 */
 //go:nosplit
 func (self class) GetSkeleton() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SkinReference.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -77,13 +65,11 @@ Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance
 Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
 */
 //go:nosplit
-func (self class) GetSkin(ctx gd.Lifetime) gdclass.Skin {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSkin() gdclass.Skin {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SkinReference.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Skin
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Skin{classdb.Skin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -103,4 +89,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("SkinReference", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("SkinReference", func(ptr gd.Object) any { return classdb.SkinReference(ptr) })}

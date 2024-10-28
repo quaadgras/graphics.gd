@@ -2,7 +2,7 @@ package EditorPaths
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This editor-only singleton returns OS-specific paths to various data folders and files. It can be used in editor plugins to ensure files are saved in the correct location on each operating system.
@@ -32,8 +32,7 @@ Returns the absolute path to the user's data folder. This folder should be used 
 [/codeblock]
 */
 func (self Go) GetDataDir() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetDataDir(gc).String())
+	return string(class(self).GetDataDir().String())
 }
 
 /*
@@ -46,8 +45,7 @@ Returns the absolute path to the user's configuration folder. This folder should
 [/codeblock]
 */
 func (self Go) GetConfigDir() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetConfigDir(gc).String())
+	return string(class(self).GetConfigDir().String())
 }
 
 /*
@@ -60,8 +58,7 @@ Returns the absolute path to the user's cache folder. This folder should be used
 [/codeblock]
 */
 func (self Go) GetCacheDir() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetCacheDir(gc).String())
+	return string(class(self).GetCacheDir().String())
 }
 
 /*
@@ -72,7 +69,6 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 [b]Note:[/b] The Steam release of Godot uses self-contained mode by default.
 */
 func (self Go) IsSelfContained() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsSelfContained())
 }
 
@@ -80,34 +76,23 @@ func (self Go) IsSelfContained() bool {
 Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [method is_self_contained].
 */
 func (self Go) GetSelfContainedFile() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetSelfContainedFile(gc).String())
+	return string(class(self).GetSelfContainedFile().String())
 }
 
 /*
 Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
 func (self Go) GetProjectSettingsDir() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetProjectSettingsDir(gc).String())
+	return string(class(self).GetProjectSettingsDir().String())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorPaths
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorPaths"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPaths"))
+	return Go{classdb.EditorPaths(object)}
 }
 
 /*
@@ -120,12 +105,11 @@ Returns the absolute path to the user's data folder. This folder should be used 
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetDataDir(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetDataDir() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPaths.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -139,12 +123,11 @@ Returns the absolute path to the user's configuration folder. This folder should
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetConfigDir(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetConfigDir() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPaths.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -158,12 +141,11 @@ Returns the absolute path to the user's cache folder. This folder should be used
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetCacheDir(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCacheDir() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPaths.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -176,10 +158,9 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 */
 //go:nosplit
 func (self class) IsSelfContained() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPaths.Bind_is_self_contained, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_is_self_contained, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -188,12 +169,11 @@ func (self class) IsSelfContained() bool {
 Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [method is_self_contained].
 */
 //go:nosplit
-func (self class) GetSelfContainedFile(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSelfContainedFile() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPaths.Bind_get_self_contained_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_self_contained_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -201,12 +181,11 @@ func (self class) GetSelfContainedFile(ctx gd.Lifetime) gd.String {
 Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
 //go:nosplit
-func (self class) GetProjectSettingsDir(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetProjectSettingsDir() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorPaths.Bind_get_project_settings_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_project_settings_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -224,4 +203,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("EditorPaths", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorPaths", func(ptr gd.Object) any { return classdb.EditorPaths(ptr) })}

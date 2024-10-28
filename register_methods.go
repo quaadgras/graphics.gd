@@ -7,10 +7,10 @@ import (
 	"reflect"
 
 	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/internal/mmm"
+	"grow.graphics/gd/internal/discreet"
 )
 
-func registerMethods(godot Lifetime, class StringName, rtype reflect.Type) {
+func registerMethods(class StringName, rtype reflect.Type) {
 	classTypePtr := reflect.PointerTo(rtype)
 	for i := 0; i < classTypePtr.NumMethod(); i++ {
 		i := i
@@ -31,61 +31,46 @@ func registerMethods(godot Lifetime, class StringName, rtype reflect.Type) {
 		if method.Name == "OnRegister" {
 			continue
 		}
-		if method.Type.NumIn() > 1 && method.Type.In(1) == reflect.TypeOf(Lifetime{}) {
-			hasContext = true
-		}
-
 		var offset = 0
-		if hasContext {
-			offset = 1
-		}
-
 		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-1-offset)
 		var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, method.Type.NumIn()-1-offset)
 		for i := 1 + offset; i < method.Type.NumIn(); i++ {
 			arguments = append(arguments,
-				propertyOf(godot, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)}))
+				propertyOf(reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)}))
 			metadatas = append(metadatas, 0)
 		}
 		var returns *gd.PropertyInfo
 		var returnMetadata gd.ClassMethodArgumentMetadata
 		if method.Type.NumOut() > 0 {
-			property := propertyOf(godot, reflect.StructField{Name: "result", Type: method.Type.Out(0)})
+			property := propertyOf(reflect.StructField{Name: "result", Type: method.Type.Out(0)})
 			returns = &property
 			returnMetadata = 0
 		}
 
-		godot.API.ClassDB.RegisterClassMethod(godot, godot.API.ExtensionToken, class, gd.Method{
-			Name: godot.StringName(method.Name),
+		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
+			Name: gd.NewStringName(method.Name),
 			// FIXME type check and return an error if arguments are invalid.
-			Call: func(godot gd.Lifetime, instance any, v ...gd.Variant) (gd.Variant, error) {
+			Call: func(instance any, v ...gd.Variant) (gd.Variant, error) {
 				var args = make([]reflect.Value, len(v)+offset)
-				if hasContext {
-					args[0] = reflect.ValueOf(godot)
-				}
 				for i := 0; i < len(v); i++ {
 					if method.Type.In(i + 1 + offset).Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
 						var obj = reflect.New(method.Type.In(i + 1 + offset))
-						obj.Interface().(gd.PointerToClass).SetPointer(gd.LetVariantAsPointerType[gd.Pointer](godot, v[i], TypeObject))
+						obj.Interface().(gd.PointerToClass).SetPointer(gd.LetVariantAsPointerType[gd.Object](v[i], TypeObject))
 						args[i+offset] = obj.Elem()
 					} else {
-						args[i+offset] = reflect.ValueOf(v[i].Interface(godot))
+						args[i+offset] = reflect.ValueOf(v[i].Interface())
 					}
 				}
 				extensionInstance := instance.(*instanceImplementation).Value
-				extensionInstance.SetTemporary(godot)
 				rets := reflect.ValueOf(extensionInstance).Method(i).Call(args)
 				if len(rets) > 0 {
-					return godot.Variant(rets[0].Interface()), nil
+					return gd.NewVariant(rets[0].Interface()), nil
 				}
 				return gd.Variant{}, nil
 			},
 			PointerCall: func(instance any, args gd.UnsafeArgs, ret gd.UnsafeBack) {
-				var tmp = gd.NewLifetime(godot.API)
-				defer tmp.End()
 				extensionInstance := instance.(*instanceImplementation).Value
-				extensionInstance.SetTemporary(tmp)
-				slowCall(hasContext, tmp, reflect.ValueOf(extensionInstance).Method(i), args, ret)
+				slowCall(hasContext, reflect.ValueOf(extensionInstance).Method(i), args, ret)
 			},
 			Arguments:           arguments,
 			ArgumentsMetadata:   metadatas,
@@ -95,16 +80,12 @@ func registerMethods(godot Lifetime, class StringName, rtype reflect.Type) {
 	}
 }
 
-func slowCall(hasContext bool, ctx Lifetime, method reflect.Value, p_args gd.UnsafeArgs, p_ret gd.UnsafeBack) {
-	godot := ctx.API
+func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret gd.UnsafeBack) {
+	godot := gd.Global
 	var (
 		args = make([]reflect.Value, method.Type().NumIn())
 	)
 	var offset = 0
-	if hasContext {
-		offset = 1
-		args[0] = reflect.ValueOf(ctx)
-	}
 	for i := offset; i < method.Type().NumIn(); i++ {
 		switch method.Type().In(i) {
 		case reflect.TypeOf(Bool(false)):
@@ -114,8 +95,10 @@ func slowCall(hasContext bool, ctx Lifetime, method reflect.Value, p_args gd.Uns
 		case reflect.TypeOf(Float(0)):
 			args[i] = reflect.ValueOf(gd.UnsafeGet[Float](p_args, i-offset))
 		case reflect.TypeOf(String{}):
-			ptr := gd.UnsafeGet[uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[String](ctx.Lifetime, ctx.API, ptr))
+			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+			val := discreet.New[String](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(Vector2{}):
 			args[i] = reflect.ValueOf(gd.UnsafeGet[Vector2](p_args, i-offset))
 		case reflect.TypeOf(Vector2i{}):
@@ -149,57 +132,87 @@ func slowCall(hasContext bool, ctx Lifetime, method reflect.Value, p_args gd.Uns
 		case reflect.TypeOf(Color{}):
 			args[i] = reflect.ValueOf(gd.UnsafeGet[Color](p_args, i-offset))
 		case reflect.TypeOf(StringName{}):
-			ptr := gd.UnsafeGet[uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[StringName](ctx.Lifetime, ctx.API, ptr))
+			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+			val := discreet.New[StringName](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(NodePath{}):
-			ptr := gd.UnsafeGet[uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[NodePath](ctx.Lifetime, ctx.API, ptr))
+			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+			val := discreet.New[NodePath](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(RID(0)):
 			args[i] = reflect.ValueOf(gd.UnsafeGet[RID](p_args, i-offset))
 		case reflect.TypeOf(Object{}):
-			ptr := gd.UnsafeGet[uintptr](p_args, i-offset)
-			var obj Object
-			obj.SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{ptr}))
-			args[i] = reflect.ValueOf(obj)
+			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+			val := discreet.New[Object]([3]uintptr{ptr[0]})
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(Callable{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[Callable](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[Callable](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.Signal{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[gd.Signal](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[Signal](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(Dictionary{}):
-			ptr := gd.UnsafeGet[uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[Dictionary](ctx.Lifetime, ctx.API, ptr))
+			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+			val := discreet.New[Dictionary](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(Array{}):
-			ptr := gd.UnsafeGet[uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[Array](ctx.Lifetime, ctx.API, ptr))
+			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+			val := discreet.New[Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedByteArray{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedByteArray](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedByteArray](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedInt32Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedInt32Array](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedInt32Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedInt64Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedInt64Array](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedInt64Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedFloat32Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedFloat32Array](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedFloat32Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedFloat64Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedFloat64Array](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedFloat64Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedStringArray{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedStringArray](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedStringArray](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedVector2Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedVector2Array](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedVector2Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedVector3Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedVector3Array](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedVector3Array](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(PackedColorArray{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			args[i] = reflect.ValueOf(mmm.Let[PackedColorArray](ctx.Lifetime, ctx.API, ptr))
+			val := discreet.New[PackedColorArray](ptr)
+			defer val.Free()
+			args[i] = reflect.ValueOf(val)
 		default:
 			panic(fmt.Sprintf("gdextension: unsupported Godot -> Go type %v", method.Type().In(i)))
 		}
@@ -214,8 +227,8 @@ func slowCall(hasContext bool, ctx Lifetime, method reflect.Value, p_args gd.Uns
 		case Float:
 			gd.UnsafeSet[Float](p_ret, val)
 		case String:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[1]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case Vector2:
 			gd.UnsafeSet[Vector2](p_ret, val)
 		case Vector2i:
@@ -249,53 +262,49 @@ func slowCall(hasContext bool, ctx Lifetime, method reflect.Value, p_args gd.Uns
 		case Color:
 			gd.UnsafeSet[Color](p_ret, val)
 		case StringName:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[1]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case NodePath:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[1]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case RID:
 			gd.UnsafeSet[RID](p_ret, val)
 		case Object:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val.AsPointer())[0])
-			instance, ok := godot.Instances[mmm.Get(val.AsPointer())[0]]
-			if ok {
-				tmp := instance.GetKeepAlive()
-				ptr := mmm.End(val.AsPointer())
-				instance.SetPointer(mmm.Let[gd.Pointer](tmp.Lifetime, tmp.API, ptr))
-			} else {
-				mmm.End(val.AsPointer())
+			gd.UnsafeSet[uintptr](p_ret, discreet.Get(val)[0])
+			_, ok := godot.Instances[discreet.Get(val)[0]]
+			if !ok {
+				discreet.End(val)
 			}
 		case Callable:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case gd.Signal:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case Dictionary:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[1]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case Array:
-			gd.UnsafeSet[uintptr](p_ret, mmm.Get(val))
-			mmm.End(val)
+			gd.UnsafeSet[[1]uintptr](p_ret, discreet.Get(val))
+			discreet.End(val)
 		case PackedByteArray:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedInt32Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedInt64Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedFloat32Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedFloat64Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedStringArray:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedVector2Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedVector3Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		case PackedColorArray:
-			gd.UnsafeSet[[2]uintptr](p_ret, mmm.Get(val))
+			gd.UnsafeSet[[2]uintptr](p_ret, discreet.Get(val))
 		default:
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", method.Type().Out(0)))
 		}

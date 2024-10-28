@@ -12,7 +12,7 @@ import (
 // registerSignals registers [Signal[T]] fields as signals emittable by the class,
 // when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
-func registerSignals(godot Lifetime, class StringName, rtype reflect.Type) {
+func registerSignals(class StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
 		name := field.Name
@@ -23,7 +23,7 @@ func registerSignals(godot Lifetime, class StringName, rtype reflect.Type) {
 			name = tag
 		}
 		if field.Type.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
-			var signalName = godot.StringName(name)
+			var signalName = gd.NewStringName(name)
 			var ftype = field.Type.Field(1).Type
 			if ftype.Kind() != reflect.Func {
 				panic("gdextension.RegisterClass: Signal[T] Emit field must be a function")
@@ -36,24 +36,24 @@ func registerSignals(godot Lifetime, class StringName, rtype reflect.Type) {
 			for i := 0; i < ftype.NumIn(); i++ {
 				args = append(args, gd.PropertyInfo{
 					Type:      variantTypeOf(ftype.In(i)),
-					Name:      godot.StringName(fmt.Sprintf("arg%d", i)),
-					ClassName: godot.StringName(classNameOf(ftype.In(i))),
+					Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
+					ClassName: gd.NewStringName(classNameOf(ftype.In(i))),
 				})
 			}
-			godot.API.ClassDB.RegisterClassSignal(godot.API.ExtensionToken, class, signalName, args)
+			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
-			var signalName = godot.StringName(name)
+			var signalName = gd.NewStringName(name)
 			var etype = field.Type.Elem()
 			var args []gd.PropertyInfo
 			if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				args = append(args, gd.PropertyInfo{
 					Type:      variantTypeOf(etype),
-					Name:      godot.StringName("event"),
-					ClassName: godot.StringName(classNameOf(etype)),
+					Name:      gd.NewStringName("event"),
+					ClassName: gd.NewStringName(classNameOf(etype)),
 				})
 			}
-			godot.API.ClassDB.RegisterClassSignal(godot.API.ExtensionToken, class, signalName, args)
+			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
 		}
 	}
 }
@@ -63,7 +63,7 @@ type signalChan struct {
 	rvalue reflect.Value
 }
 
-func manageSignals(godot Lifetime, instance Int, signals []signalChan) {
+func manageSignals(instance Int, signals []signalChan) {
 	var cases = make([]reflect.SelectCase, len(signals))
 	for i, signal := range signals {
 		cases[i] = reflect.SelectCase{
@@ -81,16 +81,15 @@ func manageSignals(godot Lifetime, instance Int, signals []signalChan) {
 			}
 		}
 		signal := signals[chosen]
-		godot.Callable(func() {
-			tmp := gd.NewLifetime(godot.API)
-			if godot.API.Object.GetInstanceFromID(tmp, gd.ObjectID(instance)) == (gd.Object{}) {
+		gd.NewCallable(func() {
+			if gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance)) == (gd.Object{}) {
 				panic("manageSignals: object freed")
 			}
 			rtype := value.Type()
 			if rtype.Kind() == reflect.Struct && rtype.NumField() == 0 {
 				signal.signal.Emit()
 			} else {
-				signal.signal.Emit(tmp.Variant(value.Interface()))
+				signal.signal.Emit(gd.NewVariant(value.Interface()))
 			}
 		}).CallDeferred()
 	}

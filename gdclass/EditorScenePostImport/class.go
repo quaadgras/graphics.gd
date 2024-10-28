@@ -2,7 +2,7 @@ package EditorScenePostImport
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Imported scenes can be automatically modified right after import by setting their [b]Custom Script[/b] Import property to a [code]tool[/code] script that inherits from this class.
@@ -78,14 +78,15 @@ Called after the scene was imported. This method must return the modified versio
 */
 func (Go) _post_import(impl func(ptr unsafe.Pointer, scene gdclass.Node) gd.Object, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var scene gdclass.Node
-		scene[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var scene = gdclass.Node{discreet.New[classdb.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
-		gd.UnsafeSet(p_back, mmm.End(ret.AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -93,26 +94,16 @@ func (Go) _post_import(impl func(ptr unsafe.Pointer, scene gdclass.Node) gd.Obje
 Returns the source file path which got imported (e.g. [code]res://scene.dae[/code]).
 */
 func (self Go) GetSourceFile() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetSourceFile(gc).String())
+	return string(class(self).GetSourceFile().String())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorScenePostImport
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorScenePostImport"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScenePostImport"))
+	return Go{classdb.EditorScenePostImport(object)}
 }
 
 /*
@@ -120,14 +111,15 @@ Called after the scene was imported. This method must return the modified versio
 */
 func (class) _post_import(impl func(ptr unsafe.Pointer, scene gdclass.Node) gd.Object, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var scene gdclass.Node
-		scene[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var scene = gdclass.Node{discreet.New[classdb.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
-		gd.UnsafeSet(p_back, mmm.End(ret.AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -135,12 +127,11 @@ func (class) _post_import(impl func(ptr unsafe.Pointer, scene gdclass.Node) gd.O
 Returns the source file path which got imported (e.g. [code]res://scene.dae[/code]).
 */
 //go:nosplit
-func (self class) GetSourceFile(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSourceFile() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorScenePostImport.Bind_get_source_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScenePostImport.Bind_get_source_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -162,4 +153,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorScenePostImport", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorScenePostImport", func(ptr gd.Object) any { return classdb.EditorScenePostImport(ptr) })}

@@ -2,7 +2,7 @@ package LightmapGI
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The [LightmapGI] node is used to compute and store baked lightmaps. Lightmaps are used to provide high-quality indirect lighting with very little light leaking. [LightmapGI] can also provide rough reflections using spherical harmonics if [member directional] is enabled. Dynamic objects can receive indirect lighting thanks to [i]light probes[/i], which can be automatically placed by setting [member generate_probes_subdiv] to a value other than [constant GENERATE_PROBES_DISABLED]. Additional lightmap probes can also be added by creating [LightmapProbe] nodes. The downside is that lightmaps are fully static and cannot be baked in an exported project. Baking a [LightmapGI] node is also slower compared to [VoxelGI].
@@ -32,571 +32,483 @@ type GD = class
 type class [1]classdb.LightmapGI
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("LightmapGI"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapGI"))
+	return Go{classdb.LightmapGI(object)}
 }
 
 func (self Go) Quality() classdb.LightmapGIBakeQuality {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.LightmapGIBakeQuality(class(self).GetBakeQuality())
 }
 
 func (self Go) SetQuality(value classdb.LightmapGIBakeQuality) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBakeQuality(value)
 }
 
 func (self Go) Bounces() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetBounces()))
 }
 
 func (self Go) SetBounces(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBounces(gd.Int(value))
 }
 
 func (self Go) BounceIndirectEnergy() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetBounceIndirectEnergy()))
 }
 
 func (self Go) SetBounceIndirectEnergy(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBounceIndirectEnergy(gd.Float(value))
 }
 
 func (self Go) Directional() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsDirectional())
 }
 
 func (self Go) SetDirectional(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDirectional(value)
 }
 
 func (self Go) UseTextureForBounces() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingTextureForBounces())
 }
 
 func (self Go) SetUseTextureForBounces(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseTextureForBounces(value)
 }
 
 func (self Go) Interior() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsInterior())
 }
 
 func (self Go) SetInterior(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetInterior(value)
 }
 
 func (self Go) UseDenoiser() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingDenoiser())
 }
 
 func (self Go) SetUseDenoiser(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseDenoiser(value)
 }
 
 func (self Go) DenoiserStrength() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetDenoiserStrength()))
 }
 
 func (self Go) SetDenoiserStrength(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDenoiserStrength(gd.Float(value))
 }
 
 func (self Go) DenoiserRange() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetDenoiserRange()))
 }
 
 func (self Go) SetDenoiserRange(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDenoiserRange(gd.Int(value))
 }
 
 func (self Go) Bias() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetBias()))
 }
 
 func (self Go) SetBias(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBias(gd.Float(value))
 }
 
 func (self Go) TexelScale() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetTexelScale()))
 }
 
 func (self Go) SetTexelScale(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTexelScale(gd.Float(value))
 }
 
 func (self Go) MaxTextureSize() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetMaxTextureSize()))
 }
 
 func (self Go) SetMaxTextureSize(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaxTextureSize(gd.Int(value))
 }
 
 func (self Go) EnvironmentMode() classdb.LightmapGIEnvironmentMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.LightmapGIEnvironmentMode(class(self).GetEnvironmentMode())
 }
 
 func (self Go) SetEnvironmentMode(value classdb.LightmapGIEnvironmentMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEnvironmentMode(value)
 }
 
 func (self Go) EnvironmentCustomSky() gdclass.Sky {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Sky(class(self).GetEnvironmentCustomSky(gc))
+		return gdclass.Sky(class(self).GetEnvironmentCustomSky())
 }
 
 func (self Go) SetEnvironmentCustomSky(value gdclass.Sky) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEnvironmentCustomSky(value)
 }
 
 func (self Go) EnvironmentCustomColor() gd.Color {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Color(class(self).GetEnvironmentCustomColor())
 }
 
 func (self Go) SetEnvironmentCustomColor(value gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEnvironmentCustomColor(value)
 }
 
 func (self Go) EnvironmentCustomEnergy() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetEnvironmentCustomEnergy()))
 }
 
 func (self Go) SetEnvironmentCustomEnergy(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEnvironmentCustomEnergy(gd.Float(value))
 }
 
 func (self Go) CameraAttributes() gdclass.CameraAttributes {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.CameraAttributes(class(self).GetCameraAttributes(gc))
+		return gdclass.CameraAttributes(class(self).GetCameraAttributes())
 }
 
 func (self Go) SetCameraAttributes(value gdclass.CameraAttributes) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCameraAttributes(value)
 }
 
 func (self Go) GenerateProbesSubdiv() classdb.LightmapGIGenerateProbes {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.LightmapGIGenerateProbes(class(self).GetGenerateProbes())
 }
 
 func (self Go) SetGenerateProbesSubdiv(value classdb.LightmapGIGenerateProbes) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetGenerateProbes(value)
 }
 
 func (self Go) LightData() gdclass.LightmapGIData {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.LightmapGIData(class(self).GetLightData(gc))
+		return gdclass.LightmapGIData(class(self).GetLightData())
 }
 
 func (self Go) SetLightData(value gdclass.LightmapGIData) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetLightData(value)
 }
 
 //go:nosplit
 func (self class) SetLightData(data gdclass.LightmapGIData)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(data[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(data[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_light_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_light_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetLightData(ctx gd.Lifetime) gdclass.LightmapGIData {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLightData() gdclass.LightmapGIData {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_light_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.LightmapGIData
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_light_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.LightmapGIData{classdb.LightmapGIData(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBakeQuality(bake_quality classdb.LightmapGIBakeQuality)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bake_quality)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_bake_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_bake_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBakeQuality() classdb.LightmapGIBakeQuality {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.LightmapGIBakeQuality](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_bake_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bake_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBounces(bounces gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bounces)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBounces() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBounceIndirectEnergy(bounce_indirect_energy gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce_indirect_energy)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_bounce_indirect_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_bounce_indirect_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBounceIndirectEnergy() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_bounce_indirect_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bounce_indirect_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetGenerateProbes(subdivision classdb.LightmapGIGenerateProbes)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivision)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_generate_probes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_generate_probes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetGenerateProbes() classdb.LightmapGIGenerateProbes {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.LightmapGIGenerateProbes](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_generate_probes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_generate_probes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBias(bias gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBias() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEnvironmentMode(mode classdb.LightmapGIEnvironmentMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_environment_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_environment_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetEnvironmentMode() classdb.LightmapGIEnvironmentMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.LightmapGIEnvironmentMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_environment_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEnvironmentCustomSky(sky gdclass.Sky)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(sky[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(sky[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_environment_custom_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_environment_custom_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetEnvironmentCustomSky(ctx gd.Lifetime) gdclass.Sky {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEnvironmentCustomSky() gdclass.Sky {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_environment_custom_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Sky
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_custom_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Sky{classdb.Sky(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEnvironmentCustomColor(color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_environment_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_environment_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetEnvironmentCustomColor() gd.Color {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_environment_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEnvironmentCustomEnergy(energy gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_environment_custom_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_environment_custom_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetEnvironmentCustomEnergy() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_environment_custom_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_custom_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTexelScale(texel_scale gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, texel_scale)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_texel_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_texel_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTexelScale() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_texel_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_texel_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMaxTextureSize(max_texture_size gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, max_texture_size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_max_texture_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_max_texture_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMaxTextureSize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_max_texture_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_max_texture_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseDenoiser(use_denoiser bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, use_denoiser)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_use_denoiser, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_use_denoiser, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingDenoiser() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_is_using_denoiser, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_is_using_denoiser, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDenoiserStrength(denoiser_strength gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, denoiser_strength)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_denoiser_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_denoiser_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDenoiserStrength() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_denoiser_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_denoiser_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDenoiserRange(denoiser_range gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, denoiser_range)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_denoiser_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_denoiser_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDenoiserRange() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_denoiser_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_denoiser_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetInterior(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsInterior() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_is_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_is_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDirectional(directional bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, directional)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_directional, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_directional, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsDirectional() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_is_directional, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_is_directional, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseTextureForBounces(use_texture_for_bounces bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, use_texture_for_bounces)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_use_texture_for_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_use_texture_for_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingTextureForBounces() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_is_using_texture_for_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_is_using_texture_for_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes gdclass.CameraAttributes)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(camera_attributes[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(camera_attributes[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetCameraAttributes(ctx gd.Lifetime) gdclass.CameraAttributes {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCameraAttributes() gdclass.CameraAttributes {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LightmapGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.CameraAttributes
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.CameraAttributes{classdb.CameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -620,7 +532,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() {classdb.Register("LightmapGI", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("LightmapGI", func(ptr gd.Object) any { return classdb.LightmapGI(ptr) })}
 type BakeQuality = classdb.LightmapGIBakeQuality
 
 const (

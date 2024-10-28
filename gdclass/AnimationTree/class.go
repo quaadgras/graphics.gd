@@ -2,7 +2,7 @@ package AnimationTree
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A node used for advanced animation transitions in an [AnimationPlayer].
@@ -27,7 +27,6 @@ type Go [1]classdb.AnimationTree
 Sets the process notification in which to update animations.
 */
 func (self Go) SetProcessCallback(mode classdb.AnimationTreeAnimationProcessCallback) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessCallback(mode)
 }
 
@@ -35,7 +34,6 @@ func (self Go) SetProcessCallback(mode classdb.AnimationTreeAnimationProcessCall
 Returns the process notification in which to update animations.
 */
 func (self Go) GetProcessCallback() classdb.AnimationTreeAnimationProcessCallback {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.AnimationTreeAnimationProcessCallback(class(self).GetProcessCallback())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -43,105 +41,83 @@ type GD = class
 type class [1]classdb.AnimationTree
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("AnimationTree"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationTree"))
+	return Go{classdb.AnimationTree(object)}
 }
 
 func (self Go) TreeRoot() gdclass.AnimationRootNode {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.AnimationRootNode(class(self).GetTreeRoot(gc))
+		return gdclass.AnimationRootNode(class(self).GetTreeRoot())
 }
 
 func (self Go) SetTreeRoot(value gdclass.AnimationRootNode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTreeRoot(value)
 }
 
 func (self Go) AdvanceExpressionBaseNode() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetAdvanceExpressionBaseNode(gc).String())
+		return string(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
 func (self Go) SetAdvanceExpressionBaseNode(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetAdvanceExpressionBaseNode(gc.String(value).NodePath(gc))
+	class(self).SetAdvanceExpressionBaseNode(gd.NewString(value).NodePath())
 }
 
 func (self Go) AnimPlayer() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetAnimationPlayer(gc).String())
+		return string(class(self).GetAnimationPlayer().String())
 }
 
 func (self Go) SetAnimPlayer(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetAnimationPlayer(gc.String(value).NodePath(gc))
+	class(self).SetAnimationPlayer(gd.NewString(value).NodePath())
 }
 
 //go:nosplit
 func (self class) SetTreeRoot(animation_node gdclass.AnimationRootNode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(animation_node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(animation_node[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_set_tree_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_set_tree_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetTreeRoot(ctx gd.Lifetime) gdclass.AnimationRootNode {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTreeRoot() gdclass.AnimationRootNode {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_get_tree_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.AnimationRootNode
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_tree_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.AnimationRootNode{classdb.AnimationRootNode(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAdvanceExpressionBaseNode(path gd.NodePath)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_set_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_set_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetAdvanceExpressionBaseNode(ctx gd.Lifetime) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetAdvanceExpressionBaseNode() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_get_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAnimationPlayer(path gd.NodePath)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_set_animation_player, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_set_animation_player, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetAnimationPlayer(ctx gd.Lifetime) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetAnimationPlayer() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -150,11 +126,10 @@ Sets the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) SetProcessCallback(mode classdb.AnimationTreeAnimationProcessCallback)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_set_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_set_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -162,17 +137,15 @@ Returns the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) GetProcessCallback() classdb.AnimationTreeAnimationProcessCallback {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.AnimationTreeAnimationProcessCallback](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationTree.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 func (self Go) OnAnimationPlayerChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("animation_player_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("animation_player_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -194,7 +167,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsAnimationMixer(), name)
 	}
 }
-func init() {classdb.Register("AnimationTree", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("AnimationTree", func(ptr gd.Object) any { return classdb.AnimationTree(ptr) })}
 type AnimationProcessCallback = classdb.AnimationTreeAnimationProcessCallback
 
 const (

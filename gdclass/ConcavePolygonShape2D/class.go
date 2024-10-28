@@ -2,7 +2,7 @@ package ConcavePolygonShape2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A 2D polyline shape, intended for use in physics. Used internally in [CollisionPolygon2D] when it's in [constant CollisionPolygon2D.BUILD_SEGMENTS] mode.
@@ -30,46 +30,33 @@ type GD = class
 type class [1]classdb.ConcavePolygonShape2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ConcavePolygonShape2D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConcavePolygonShape2D"))
+	return Go{classdb.ConcavePolygonShape2D(object)}
 }
 
 func (self Go) Segments() []gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []gd.Vector2(class(self).GetSegments(gc).AsSlice())
+		return []gd.Vector2(class(self).GetSegments().AsSlice())
 }
 
 func (self Go) SetSegments(value []gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetSegments(gc.PackedVector2Slice(value))
+	class(self).SetSegments(gd.NewPackedVector2Slice(value))
 }
 
 //go:nosplit
 func (self class) SetSegments(segments gd.PackedVector2Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(segments))
+	callframe.Arg(frame, discreet.Get(segments))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ConcavePolygonShape2D.Bind_set_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetSegments(ctx gd.Lifetime) gd.PackedVector2Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSegments() gd.PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ConcavePolygonShape2D.Bind_get_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedVector2Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -93,4 +80,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsShape2D(), name)
 	}
 }
-func init() {classdb.Register("ConcavePolygonShape2D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ConcavePolygonShape2D", func(ptr gd.Object) any { return classdb.ConcavePolygonShape2D(ptr) })}

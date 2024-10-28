@@ -49,35 +49,35 @@ func (name Name) End(val string) string {
 func (name Name) ConvertToSimple(val string) string {
 	switch name {
 	case "gd.String":
-		return fmt.Sprintf("gc.String(%v)", val)
+		return fmt.Sprintf("gd.NewString(%v)", val)
 	case "gd.StringName":
-		return fmt.Sprintf("gc.StringName(%v)", val)
+		return fmt.Sprintf("gd.NewStringName(%v)", val)
 	case "gd.NodePath":
-		return fmt.Sprintf("gc.String(%v).NodePath(gc)", val)
+		return fmt.Sprintf("gd.NewString(%v).NodePath()", val)
 	case "gd.Int":
 		return fmt.Sprintf("gd.Int(%v)", val)
 	case "gd.Float":
 		return fmt.Sprintf("gd.Float(%v)", val)
 	case "gd.PackedByteArray":
-		return fmt.Sprintf("gc.PackedByteSlice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedByteSlice(%v)", val)
 	case "gd.PackedStringArray":
-		return fmt.Sprintf("gc.PackedStringSlice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedStringSlice(%v)", val)
 	case "gd.PackedInt32Array":
-		return fmt.Sprintf("gc.PackedInt32Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedInt32Slice(%v)", val)
 	case "gd.PackedInt64Array":
-		return fmt.Sprintf("gc.PackedInt64Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedInt64Slice(%v)", val)
 	case "gd.PackedFloat32Array":
-		return fmt.Sprintf("gc.PackedFloat32Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedFloat32Slice(%v)", val)
 	case "gd.PackedFloat64Array":
-		return fmt.Sprintf("gc.PackedFloat64Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedFloat64Slice(%v)", val)
 	case "gd.PackedVector2Array":
-		return fmt.Sprintf("gc.PackedVector2Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedVector2Slice(%v)", val)
 	case "gd.PackedVector3Array":
-		return fmt.Sprintf("gc.PackedVector3Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedVector3Slice(%v)", val)
 	case "gd.PackedVector4Array":
-		return fmt.Sprintf("gc.PackedVector4Slice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedVector4Slice(%v)", val)
 	case "gd.PackedColorArray":
-		return fmt.Sprintf("gc.PackedColorSlice(%v)", val)
+		return fmt.Sprintf("gd.NewPackedColorSlice(%v)", val)
 	default:
 		return val
 	}
@@ -94,7 +94,7 @@ func (name Name) ConvertToGo(val string) string {
 	case "gd.PackedByteArray":
 		return fmt.Sprintf("%v.Bytes()", val)
 	case "gd.PackedStringArray":
-		return fmt.Sprintf("%v.Strings(gc)", val)
+		return fmt.Sprintf("%v.Strings()", val)
 	case "gd.PackedInt32Array", "gd.PackedInt64Array", "gd.PackedFloat32Array", "gd.PackedFloat64Array",
 		"gd.PackedVector2Array", "gd.PackedVector3Array", "gd.PackedVector4Array", "gd.PackedColorArray":
 		return fmt.Sprintf("%v.AsSlice()", val)

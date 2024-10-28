@@ -2,7 +2,7 @@ package HashingContext
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The HashingContext class provides an interface for computing cryptographic hashes over multiple iterations. Useful for computing hashes of big files (so you don't have to load them all in memory), network streams, and data streams in general (so you don't have to hold buffers).
@@ -75,7 +75,6 @@ type Go [1]classdb.HashingContext
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
 func (self Go) Start(atype classdb.HashingContextHashType) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Start(atype))
 }
 
@@ -83,34 +82,23 @@ func (self Go) Start(atype classdb.HashingContextHashType) gd.Error {
 Updates the computation with the given [param chunk] of data.
 */
 func (self Go) Update(chunk []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Update(gc.PackedByteSlice(chunk)))
+	return gd.Error(class(self).Update(gd.NewPackedByteSlice(chunk)))
 }
 
 /*
 Closes the current context, and return the computed hash.
 */
 func (self Go) Finish() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).Finish(gc).Bytes())
+	return []byte(class(self).Finish().Bytes())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.HashingContext
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("HashingContext"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HashingContext"))
+	return Go{classdb.HashingContext(object)}
 }
 
 /*
@@ -118,11 +106,10 @@ Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA
 */
 //go:nosplit
 func (self class) Start(atype classdb.HashingContextHashType) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HashingContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -132,11 +119,10 @@ Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
 func (self class) Update(chunk gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(chunk))
+	callframe.Arg(frame, discreet.Get(chunk))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HashingContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -145,12 +131,11 @@ func (self class) Update(chunk gd.PackedByteArray) int64 {
 Closes the current context, and return the computed hash.
 */
 //go:nosplit
-func (self class) Finish(ctx gd.Lifetime) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) Finish() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HashingContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -170,7 +155,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("HashingContext", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("HashingContext", func(ptr gd.Object) any { return classdb.HashingContext(ptr) })}
 type HashType = classdb.HashingContextHashType
 
 const (

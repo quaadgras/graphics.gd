@@ -2,7 +2,7 @@ package VoxelGI
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [VoxelGI]s are used to provide high-quality real-time indirect light and reflections to scenes. They precompute the effect of objects that emit light and the effect of static geometry to simulate the behavior of complex light in real-time. [VoxelGI]s need to be baked before having a visible effect. However, once baked, dynamic objects will receive light from them. Furthermore, lights can be fully dynamic or baked.
@@ -33,7 +33,6 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
 func (self Go) Bake() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Bake(([1]gdclass.Node{}[0]), false)
 }
 
@@ -41,7 +40,6 @@ func (self Go) Bake() {
 Calls [method bake] with [code]create_visual_debug[/code] enabled.
 */
 func (self Go) DebugBake() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).DebugBake()
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -49,135 +47,108 @@ type GD = class
 type class [1]classdb.VoxelGI
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VoxelGI"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VoxelGI"))
+	return Go{classdb.VoxelGI(object)}
 }
 
 func (self Go) Subdiv() classdb.VoxelGISubdiv {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VoxelGISubdiv(class(self).GetSubdiv())
 }
 
 func (self Go) SetSubdiv(value classdb.VoxelGISubdiv) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSubdiv(value)
 }
 
 func (self Go) Size() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector3(class(self).GetSize())
 }
 
 func (self Go) SetSize(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSize(value)
 }
 
 func (self Go) CameraAttributes() gdclass.CameraAttributes {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.CameraAttributes(class(self).GetCameraAttributes(gc))
+		return gdclass.CameraAttributes(class(self).GetCameraAttributes())
 }
 
 func (self Go) SetCameraAttributes(value gdclass.CameraAttributes) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCameraAttributes(value)
 }
 
 func (self Go) Data() gdclass.VoxelGIData {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.VoxelGIData(class(self).GetProbeData(gc))
+		return gdclass.VoxelGIData(class(self).GetProbeData())
 }
 
 func (self Go) SetData(value gdclass.VoxelGIData) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProbeData(value)
 }
 
 //go:nosplit
 func (self class) SetProbeData(data gdclass.VoxelGIData)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(data[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(data[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_set_probe_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_probe_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetProbeData(ctx gd.Lifetime) gdclass.VoxelGIData {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetProbeData() gdclass.VoxelGIData {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_get_probe_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.VoxelGIData
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_probe_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.VoxelGIData{classdb.VoxelGIData(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSubdiv(subdiv classdb.VoxelGISubdiv)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, subdiv)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_set_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSubdiv() classdb.VoxelGISubdiv {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VoxelGISubdiv](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_get_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSize(size gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSize() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes gdclass.CameraAttributes)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(camera_attributes[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(camera_attributes[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetCameraAttributes(ctx gd.Lifetime) gdclass.CameraAttributes {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCameraAttributes() gdclass.CameraAttributes {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.CameraAttributes
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.CameraAttributes{classdb.CameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -188,12 +159,11 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 */
 //go:nosplit
 func (self class) Bake(from_node gdclass.Node, create_visual_debug bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(from_node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(from_node[0])[0])
 	callframe.Arg(frame, create_visual_debug)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -201,10 +171,9 @@ Calls [method bake] with [code]create_visual_debug[/code] enabled.
 */
 //go:nosplit
 func (self class) DebugBake()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VoxelGI.Bind_debug_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_debug_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsVoxelGI() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -227,7 +196,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() {classdb.Register("VoxelGI", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VoxelGI", func(ptr gd.Object) any { return classdb.VoxelGI(ptr) })}
 type Subdiv = classdb.VoxelGISubdiv
 
 const (

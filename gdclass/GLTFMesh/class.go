@@ -2,7 +2,7 @@ package GLTFMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
@@ -26,8 +26,7 @@ Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 func (self Go) GetAdditionalData(extension_name string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GetAdditionalData(gc, gc.StringName(extension_name)))
+	return gd.Variant(class(self).GetAdditionalData(gd.NewStringName(extension_name)))
 }
 
 /*
@@ -35,143 +34,116 @@ Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 func (self Go) SetAdditionalData(extension_name string, additional_data gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetAdditionalData(gc.StringName(extension_name), additional_data)
+	class(self).SetAdditionalData(gd.NewStringName(extension_name), additional_data)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.GLTFMesh
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("GLTFMesh"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFMesh"))
+	return Go{classdb.GLTFMesh(object)}
 }
 
 func (self Go) OriginalName() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetOriginalName(gc).String())
+		return string(class(self).GetOriginalName().String())
 }
 
 func (self Go) SetOriginalName(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetOriginalName(gc.String(value))
+	class(self).SetOriginalName(gd.NewString(value))
 }
 
 func (self Go) Mesh() gdclass.ImporterMesh {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.ImporterMesh(class(self).GetMesh(gc))
+		return gdclass.ImporterMesh(class(self).GetMesh())
 }
 
 func (self Go) SetMesh(value gdclass.ImporterMesh) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMesh(value)
 }
 
 func (self Go) BlendWeights() []float32 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []float32(class(self).GetBlendWeights(gc).AsSlice())
+		return []float32(class(self).GetBlendWeights().AsSlice())
 }
 
 func (self Go) SetBlendWeights(value []float32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetBlendWeights(gc.PackedFloat32Slice(value))
+	class(self).SetBlendWeights(gd.NewPackedFloat32Slice(value))
 }
 
-func (self Go) InstanceMaterials() gd.ArrayOf[gdclass.Material] {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.ArrayOf[gdclass.Material](class(self).GetInstanceMaterials(gc))
+func (self Go) InstanceMaterials() gd.Array {
+		return gd.Array(class(self).GetInstanceMaterials())
 }
 
-func (self Go) SetInstanceMaterials(value gd.ArrayOf[gdclass.Material]) {
-	gc := gd.GarbageCollector(); _ = gc
+func (self Go) SetInstanceMaterials(value gd.Array) {
 	class(self).SetInstanceMaterials(value)
 }
 
 //go:nosplit
-func (self class) GetOriginalName(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOriginalName() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetOriginalName(original_name gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(original_name))
+	callframe.Arg(frame, discreet.Get(original_name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_set_original_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_original_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetMesh(ctx gd.Lifetime) gdclass.ImporterMesh {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMesh() gdclass.ImporterMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.ImporterMesh
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.ImporterMesh{classdb.ImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMesh(mesh gdclass.ImporterMesh)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(mesh[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(mesh[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetBlendWeights(ctx gd.Lifetime) gd.PackedFloat32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetBlendWeights() gd.PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_get_blend_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_blend_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBlendWeights(blend_weights gd.PackedFloat32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(blend_weights))
+	callframe.Arg(frame, discreet.Get(blend_weights))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_set_blend_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_blend_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetInstanceMaterials(ctx gd.Lifetime) gd.ArrayOf[gdclass.Material] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetInstanceMaterials() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_get_instance_materials, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_instance_materials, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gdclass.Material](ret)
+	return ret
 }
 //go:nosplit
-func (self class) SetInstanceMaterials(instance_materials gd.ArrayOf[gdclass.Material])  {
-	var selfPtr = self[0].AsPointer()
+func (self class) SetInstanceMaterials(instance_materials gd.Array)  {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(instance_materials))
+	callframe.Arg(frame, discreet.Get(instance_materials))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_set_instance_materials, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_instance_materials, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -179,13 +151,12 @@ Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 //go:nosplit
-func (self class) GetAdditionalData(ctx gd.Lifetime, extension_name gd.StringName) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(extension_name))
+	callframe.Arg(frame, discreet.Get(extension_name))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -195,12 +166,11 @@ The first argument should be the [GLTFDocumentExtension] name (does not have to 
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(extension_name))
-	callframe.Arg(frame, mmm.Get(additional_data))
+	callframe.Arg(frame, discreet.Get(extension_name))
+	callframe.Arg(frame, discreet.Get(additional_data))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFMesh.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsGLTFMesh() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -221,4 +191,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("GLTFMesh", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("GLTFMesh", func(ptr gd.Object) any { return classdb.GLTFMesh(ptr) })}

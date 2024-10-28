@@ -15,14 +15,14 @@ import (
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
-func (Godot *API) Init(static Lifetime, level GDExtensionInitializationLevel) {
+func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	Godot.Instances = make(map[uintptr]ExtensionClass)
 	if level == GDExtensionInitializationLevelScene {
 		Godot.linkTypeset()
 		Godot.linkVariant()
 		Godot.linkUtility()
 		Godot.linkBuiltin()
-		Godot.linkSingletons(static)
+		Godot.linkSingletons()
 		Godot.linkMethods(false)
 	}
 	if level == GDExtensionInitializationLevelEditor {
@@ -30,26 +30,23 @@ func (Godot *API) Init(static Lifetime, level GDExtensionInitializationLevel) {
 	}
 }
 
-func (Godot *API) linkSingletons(static Lifetime) {
+func (Godot *API) linkSingletons() {
 	rvalue := reflect.ValueOf(&Godot.Singletons).Elem()
 
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
-		rvalue.Field(i).Set(reflect.ValueOf(static.StringName(field.Name)))
+		rvalue.Field(i).Set(reflect.ValueOf(NewStringName(field.Name)))
 	}
 }
 
 // linkUtility, each field of cache.utility is a function value that
 // needs to be loaded in dynamically.
 func (Godot *API) linkUtility() {
-	ctx := NewLifetime(Godot)
-	defer ctx.End()
-
 	rvalue := reflect.ValueOf(&Godot.utility).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
 		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
-		name := ctx.StringName(field.Name)
+		name := NewStringName(field.Name)
 		hash, err := strconv.ParseInt(field.Tag.Get("hash"), 10, 64)
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
@@ -61,9 +58,6 @@ func (Godot *API) linkUtility() {
 // linkBuiltin is very similar to [Godot.linkMethods], except it loads in methods for the
 // builtin Godot classes.
 func (Godot *API) linkBuiltin() {
-	ctx := NewLifetime(Godot)
-	defer ctx.End()
-
 	rvalue := reflect.ValueOf(&Godot.builtin).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
@@ -72,7 +66,7 @@ func (Godot *API) linkBuiltin() {
 			method := class.Type.Field(j)
 			method.Name = strings.TrimSuffix(method.Name, "_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
-			methodName := ctx.StringName(method.Name)
+			methodName := NewStringName(method.Name)
 			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
@@ -87,9 +81,6 @@ func (Godot *API) linkBuiltin() {
 // the class it represents. Each field of that struct needs to be
 // filled in with a [MethodBind].
 func (Godot *API) linkMethods(editor bool) {
-	ctx := NewLifetime(Godot)
-	defer ctx.End()
-
 	rvalue := reflect.ValueOf(&Godot.Methods).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
@@ -113,8 +104,8 @@ func (Godot *API) linkMethods(editor bool) {
 			method.Name = strings.TrimPrefix(method.Name, "Bind_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
 
-			className := ctx.StringName(class.Name)
-			methodName := ctx.StringName(method.Name)
+			className := NewStringName(class.Name)
+			methodName := NewStringName(method.Name)
 			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
@@ -129,10 +120,7 @@ func (Godot *API) linkMethods(editor bool) {
 }
 
 func (Godot *API) linkTypeset() {
-	tmp := NewLifetime(Godot)
-	defer tmp.End()
-
-	Godot.refCountedClassTag = Godot.ClassDB.GetClassTag(tmp.StringName("RefCounted"))
+	Godot.refCountedClassTag = Godot.ClassDB.GetClassTag(NewStringName("RefCounted"))
 
 	Godot.linkTypesetCreation()
 	Godot.linkTypesetOperator()

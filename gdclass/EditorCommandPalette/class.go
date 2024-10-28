@@ -2,7 +2,7 @@ package EditorCommandPalette
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Object that holds all the available Commands and their shortcuts text. These Commands can be accessed through [b]Editor > Command Palette[/b] menu.
@@ -49,8 +49,7 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 func (self Go) AddCommand(command_name string, key_name string, binded_callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddCommand(gc.String(command_name), gc.String(key_name), binded_callable, gc.String("None"))
+	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), binded_callable, gd.NewString("None"))
 }
 
 /*
@@ -58,26 +57,16 @@ Removes the custom command from EditorCommandPalette.
 - [param key_name]: [String] (Name of the key for a particular [b]Command[/b].)
 */
 func (self Go) RemoveCommand(key_name string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RemoveCommand(gc.String(key_name))
+	class(self).RemoveCommand(gd.NewString(key_name))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorCommandPalette
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorCommandPalette"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorCommandPalette"))
+	return Go{classdb.EditorCommandPalette(object)}
 }
 
 /*
@@ -89,14 +78,13 @@ Adds a custom command to EditorCommandPalette.
 */
 //go:nosplit
 func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_callable gd.Callable, shortcut_text gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(command_name))
-	callframe.Arg(frame, mmm.Get(key_name))
-	callframe.Arg(frame, mmm.Get(binded_callable))
-	callframe.Arg(frame, mmm.Get(shortcut_text))
+	callframe.Arg(frame, discreet.Get(command_name))
+	callframe.Arg(frame, discreet.Get(key_name))
+	callframe.Arg(frame, discreet.Get(binded_callable))
+	callframe.Arg(frame, discreet.Get(shortcut_text))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -105,11 +93,10 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(key_name))
+	callframe.Arg(frame, discreet.Get(key_name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorCommandPalette.Bind_remove_command, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_remove_command, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsEditorCommandPalette() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -136,4 +123,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsConfirmationDialog(), name)
 	}
 }
-func init() {classdb.Register("EditorCommandPalette", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorCommandPalette", func(ptr gd.Object) any { return classdb.EditorCommandPalette(ptr) })}

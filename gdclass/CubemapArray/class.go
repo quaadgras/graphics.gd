@@ -2,7 +2,7 @@ package CubemapArray
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [CubemapArray]s are made of an array of [Cubemap]s. Like [Cubemap]s, they are made of multiple textures, the amount of which must be divisible by 6 (one for each face of the cube).
@@ -31,39 +31,27 @@ type Go [1]classdb.CubemapArray
 Creates a placeholder version of this resource ([PlaceholderCubemapArray]).
 */
 func (self Go) CreatePlaceholder() gdclass.Resource {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Resource(class(self).CreatePlaceholder(gc))
+	return gdclass.Resource(class(self).CreatePlaceholder())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.CubemapArray
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("CubemapArray"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CubemapArray"))
+	return Go{classdb.CubemapArray(object)}
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderCubemapArray]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder(ctx gd.Lifetime) gdclass.Resource {
-	var selfPtr = self[0].AsPointer()
+func (self class) CreatePlaceholder() gdclass.Resource {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CubemapArray.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Resource
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CubemapArray.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -91,4 +79,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsImageTextureLayered(), name)
 	}
 }
-func init() {classdb.Register("CubemapArray", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("CubemapArray", func(ptr gd.Object) any { return classdb.CubemapArray(ptr) })}

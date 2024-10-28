@@ -2,7 +2,7 @@ package Node
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
@@ -104,12 +104,9 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 */
 func (Go) _process(impl func(ptr unsafe.Pointer, delta float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, float64(delta))
-		gc.End()
 	}
 }
 
@@ -121,12 +118,9 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 */
 func (Go) _physics_process(impl func(ptr unsafe.Pointer, delta float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, float64(delta))
-		gc.End()
 	}
 }
 
@@ -136,11 +130,8 @@ Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Ob
 */
 func (Go) _enter_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -150,11 +141,8 @@ Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Obj
 */
 func (Go) _exit_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -166,11 +154,8 @@ Usually used for initialization. For even earlier initialization, [method Object
 */
 func (Go) _ready(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -193,12 +178,13 @@ func _get_configuration_warnings():
 */
 func (Go) _get_configuration_warnings(impl func(ptr unsafe.Pointer) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -211,13 +197,10 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (Go) _input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		gc.End()
 	}
 }
 
@@ -230,13 +213,10 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (Go) _shortcut_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		gc.End()
 	}
 }
 
@@ -249,13 +229,10 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (Go) _unhandled_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		gc.End()
 	}
 }
 
@@ -269,13 +246,10 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (Go) _unhandled_key_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		gc.End()
 	}
 }
 
@@ -284,8 +258,7 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 [b]Note:[/b] This method only works in debug builds. Does nothing in a project exported in release mode.
 */
 func (self Go) PrintOrphanNodes() {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).PrintOrphanNodes(gc)
+	class(self).PrintOrphanNodes()
 }
 
 /*
@@ -295,7 +268,6 @@ Use [method add_child] instead of this method if you don't need the child node t
 [b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Go) AddSibling(sibling gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddSibling(sibling, false)
 }
 
@@ -324,7 +296,6 @@ If you need the child node to be added below a specific node in the list of chil
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
 func (self Go) AddChild(node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddChild(node, false, 0)
 }
 
@@ -333,7 +304,6 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 [b]Note:[/b] When this node is inside the tree, this method sets the [member owner] of the removed [param node] (or its descendants) to [code]null[/code], if their [member owner] is no longer an ancestor (see [method is_ancestor_of]).
 */
 func (self Go) RemoveChild(node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveChild(node)
 }
 
@@ -342,7 +312,6 @@ Changes the parent of this [Node] to the [param new_parent]. The node needs to a
 If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 */
 func (self Go) Reparent(new_parent gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Reparent(new_parent, true)
 }
 
@@ -351,7 +320,6 @@ Returns the number of children of this node.
 If [param include_internal] is [code]false[/code], internal children are not counted (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Go) GetChildCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetChildCount(false)))
 }
 
@@ -359,9 +327,8 @@ func (self Go) GetChildCount() int {
 Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Go) GetChildren() gd.ArrayOf[gdclass.Node] {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.ArrayOf[gdclass.Node](class(self).GetChildren(gc, false))
+func (self Go) GetChildren() gd.Array {
+	return gd.Array(class(self).GetChildren(false))
 }
 
 /*
@@ -379,16 +346,14 @@ var c = get_child(-1).name # c is "Last"
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
 func (self Go) GetChild(idx int) gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).GetChild(gc, gd.Int(idx), false))
+	return gdclass.Node(class(self).GetChild(gd.Int(idx), false))
 }
 
 /*
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
 func (self Go) HasNode(path string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).HasNode(gc.String(path).NodePath(gc)))
+	return bool(class(self).HasNode(gd.NewString(path).NodePath()))
 }
 
 /*
@@ -424,24 +389,21 @@ GetNode("/root/MyGame");
 [/codeblocks]
 */
 func (self Go) GetNode(path string) gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).GetNode(gc, gc.String(path).NodePath(gc)))
+	return gdclass.Node(class(self).GetNode(gd.NewString(path).NodePath()))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
 func (self Go) GetNodeOrNull(path string) gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).GetNodeOrNull(gc, gc.String(path).NodePath(gc)))
+	return gdclass.Node(class(self).GetNodeOrNull(gd.NewString(path).NodePath()))
 }
 
 /*
 Returns this node's parent node, or [code]null[/code] if the node doesn't have a parent.
 */
 func (self Go) GetParent() gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).GetParent(gc))
+	return gdclass.Node(class(self).GetParent())
 }
 
 /*
@@ -452,8 +414,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
 func (self Go) FindChild(pattern string) gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).FindChild(gc, gc.String(pattern), true, true))
+	return gdclass.Node(class(self).FindChild(gd.NewString(pattern), true, true))
 }
 
 /*
@@ -464,9 +425,8 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing references to the found nodes in a variable.
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
-func (self Go) FindChildren(pattern string) gd.ArrayOf[gdclass.Node] {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.ArrayOf[gdclass.Node](class(self).FindChildren(gc, gc.String(pattern), gc.String(""), true, true))
+func (self Go) FindChildren(pattern string) gd.Array {
+	return gd.Array(class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true))
 }
 
 /*
@@ -474,16 +434,14 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
 func (self Go) FindParent(pattern string) gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).FindParent(gc, gc.String(pattern)))
+	return gdclass.Node(class(self).FindParent(gd.NewString(pattern)))
 }
 
 /*
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
 func (self Go) HasNodeAndResource(path string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).HasNodeAndResource(gc.String(path).NodePath(gc)))
+	return bool(class(self).HasNodeAndResource(gd.NewString(path).NodePath()))
 }
 
 /*
@@ -528,15 +486,13 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 func (self Go) GetNodeAndResource(path string) gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Array(class(self).GetNodeAndResource(gc, gc.String(path).NodePath(gc)))
+	return gd.Array(class(self).GetNodeAndResource(gd.NewString(path).NodePath()))
 }
 
 /*
 Returns [code]true[/code] if this node is currently inside a [SceneTree]. See also [method get_tree].
 */
 func (self Go) IsInsideTree() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsInsideTree())
 }
 
@@ -544,7 +500,6 @@ func (self Go) IsInsideTree() bool {
 Returns [code]true[/code] if the node is part of the scene currently opened in the editor.
 */
 func (self Go) IsPartOfEditedScene() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsPartOfEditedScene())
 }
 
@@ -552,7 +507,6 @@ func (self Go) IsPartOfEditedScene() bool {
 Returns [code]true[/code] if the given [param node] is a direct or indirect child of this node.
 */
 func (self Go) IsAncestorOf(node gdclass.Node) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsAncestorOf(node))
 }
 
@@ -560,7 +514,6 @@ func (self Go) IsAncestorOf(node gdclass.Node) bool {
 Returns [code]true[/code] if the given [param node] occurs later in the scene hierarchy than this node. A node occurring later is usually processed last.
 */
 func (self Go) IsGreaterThan(node gdclass.Node) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsGreaterThan(node))
 }
 
@@ -568,8 +521,7 @@ func (self Go) IsGreaterThan(node gdclass.Node) bool {
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
 func (self Go) GetPath() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetPath(gc).String())
+	return string(class(self).GetPath().String())
 }
 
 /*
@@ -578,8 +530,7 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 func (self Go) GetPathTo(node gdclass.Node) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetPathTo(gc, node, false).String())
+	return string(class(self).GetPathTo(node, false).String())
 }
 
 /*
@@ -589,24 +540,21 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 [b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
 */
 func (self Go) AddToGroup(group string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddToGroup(gc.StringName(group), false)
+	class(self).AddToGroup(gd.NewStringName(group), false)
 }
 
 /*
 Removes the node from the given [param group]. Does nothing if the node is not in the [param group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 func (self Go) RemoveFromGroup(group string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RemoveFromGroup(gc.StringName(group))
+	class(self).RemoveFromGroup(gd.NewStringName(group))
 }
 
 /*
 Returns [code]true[/code] if this node has been added to the given [param group]. See [method add_to_group] and [method remove_from_group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 func (self Go) IsInGroup(group string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).IsInGroup(gc.StringName(group)))
+	return bool(class(self).IsInGroup(gd.NewStringName(group)))
 }
 
 /*
@@ -614,7 +562,6 @@ Moves [param child_node] to the given index. A node's index is the order among i
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
 func (self Go) MoveChild(child_node gdclass.Node, to_index int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).MoveChild(child_node, gd.Int(to_index))
 }
 
@@ -641,9 +588,8 @@ foreach (string group in GetGroups())
 [/csharp]
 [/codeblocks]
 */
-func (self Go) GetGroups() gd.ArrayOf[gd.StringName] {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.ArrayOf[gd.StringName](class(self).GetGroups(gc))
+func (self Go) GetGroups() gd.Array {
+	return gd.Array(class(self).GetGroups())
 }
 
 /*
@@ -651,7 +597,6 @@ Returns this node's order among its siblings. The first node's index is [code]0[
 If [param include_internal] is [code]false[/code], returns the index ignoring internal children. The first, non-internal child will have an index of [code]0[/code] (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Go) GetIndex() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetIndex(false)))
 }
 
@@ -668,7 +613,6 @@ SplashScreen/Camera2D
 [/codeblock]
 */
 func (self Go) PrintTree() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PrintTree()
 }
 
@@ -685,7 +629,6 @@ May print, for example:
 [/codeblock]
 */
 func (self Go) PrintTreePretty() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PrintTreePretty()
 }
 
@@ -702,8 +645,7 @@ TheGame/SplashScreen/Camera2D
 [/codeblock]
 */
 func (self Go) GetTreeString() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetTreeString(gc).String())
+	return string(class(self).GetTreeString().String())
 }
 
 /*
@@ -719,15 +661,13 @@ May print, for example:
 [/codeblock]
 */
 func (self Go) GetTreeStringPretty() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetTreeStringPretty(gc).String())
+	return string(class(self).GetTreeStringPretty().String())
 }
 
 /*
 Calls [method Object.notification] with [param what] on this node and all of its children, recursively.
 */
 func (self Go) PropagateNotification(what int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PropagateNotification(gd.Int(what))
 }
 
@@ -736,8 +676,7 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 func (self Go) PropagateCall(method string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).PropagateCall(gc.StringName(method), ([1]gd.Array{}[0]), false)
+	class(self).PropagateCall(gd.NewStringName(method), ([1]gd.Array{}[0]), false)
 }
 
 /*
@@ -745,7 +684,6 @@ If set to [code]true[/code], enables physics (fixed framerate) processing. When 
 [b]Note:[/b] If [method _physics_process] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 func (self Go) SetPhysicsProcess(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsProcess(enable)
 }
 
@@ -753,7 +691,6 @@ func (self Go) SetPhysicsProcess(enable bool) {
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
 */
 func (self Go) GetPhysicsProcessDeltaTime() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetPhysicsProcessDeltaTime()))
 }
 
@@ -761,7 +698,6 @@ func (self Go) GetPhysicsProcessDeltaTime() float64 {
 Returns [code]true[/code] if physics processing is enabled (see [method set_physics_process]).
 */
 func (self Go) IsPhysicsProcessing() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsPhysicsProcessing())
 }
 
@@ -769,7 +705,6 @@ func (self Go) IsPhysicsProcessing() bool {
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
 */
 func (self Go) GetProcessDeltaTime() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetProcessDeltaTime()))
 }
 
@@ -779,7 +714,6 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 [b]Note:[/b] This method only affects the [method _process] callback, i.e. it has no effect on other callbacks like [method _physics_process]. If you want to disable all processing for the node, set [member process_mode] to [constant PROCESS_MODE_DISABLED].
 */
 func (self Go) SetProcess(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcess(enable)
 }
 
@@ -787,7 +721,6 @@ func (self Go) SetProcess(enable bool) {
 Returns [code]true[/code] if processing is enabled (see [method set_process]).
 */
 func (self Go) IsProcessing() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsProcessing())
 }
 
@@ -796,7 +729,6 @@ If set to [code]true[/code], enables input processing.
 [b]Note:[/b] If [method _input] is overridden, this will be automatically enabled before [method _ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
 func (self Go) SetProcessInput(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessInput(enable)
 }
 
@@ -804,7 +736,6 @@ func (self Go) SetProcessInput(enable bool) {
 Returns [code]true[/code] if the node is processing input (see [method set_process_input]).
 */
 func (self Go) IsProcessingInput() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsProcessingInput())
 }
 
@@ -813,7 +744,6 @@ If set to [code]true[/code], enables shortcut processing for this node.
 [b]Note:[/b] If [method _shortcut_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 func (self Go) SetProcessShortcutInput(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessShortcutInput(enable)
 }
 
@@ -821,7 +751,6 @@ func (self Go) SetProcessShortcutInput(enable bool) {
 Returns [code]true[/code] if the node is processing shortcuts (see [method set_process_shortcut_input]).
 */
 func (self Go) IsProcessingShortcutInput() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsProcessingShortcutInput())
 }
 
@@ -830,7 +759,6 @@ If set to [code]true[/code], enables unhandled input processing. It enables the 
 [b]Note:[/b] If [method _unhandled_input] is overridden, this will be automatically enabled before [method _ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
 func (self Go) SetProcessUnhandledInput(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessUnhandledInput(enable)
 }
 
@@ -838,7 +766,6 @@ func (self Go) SetProcessUnhandledInput(enable bool) {
 Returns [code]true[/code] if the node is processing unhandled input (see [method set_process_unhandled_input]).
 */
 func (self Go) IsProcessingUnhandledInput() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsProcessingUnhandledInput())
 }
 
@@ -847,7 +774,6 @@ If set to [code]true[/code], enables unhandled key input processing.
 [b]Note:[/b] If [method _unhandled_key_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 func (self Go) SetProcessUnhandledKeyInput(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessUnhandledKeyInput(enable)
 }
 
@@ -855,7 +781,6 @@ func (self Go) SetProcessUnhandledKeyInput(enable bool) {
 Returns [code]true[/code] if the node is processing unhandled key input (see [method set_process_unhandled_key_input]).
 */
 func (self Go) IsProcessingUnhandledKeyInput() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsProcessingUnhandledKeyInput())
 }
 
@@ -869,7 +794,6 @@ Returns [code]true[/code] if the node can receive processing notifications and i
 If the node is not inside the tree, returns [code]false[/code] no matter the value of [member process_mode].
 */
 func (self Go) CanProcess() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).CanProcess())
 }
 
@@ -877,7 +801,6 @@ func (self Go) CanProcess() bool {
 If set to [code]true[/code], the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_displayed_folded].
 */
 func (self Go) SetDisplayFolded(fold bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDisplayFolded(fold)
 }
 
@@ -885,7 +808,6 @@ func (self Go) SetDisplayFolded(fold bool) {
 Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [method set_display_folded].
 */
 func (self Go) IsDisplayedFolded() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsDisplayedFolded())
 }
 
@@ -894,7 +816,6 @@ If set to [code]true[/code], enables internal processing for this node. Internal
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 func (self Go) SetProcessInternal(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessInternal(enable)
 }
 
@@ -902,7 +823,6 @@ func (self Go) SetProcessInternal(enable bool) {
 Returns [code]true[/code] if internal processing is enabled (see [method set_process_internal]).
 */
 func (self Go) IsProcessingInternal() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsProcessingInternal())
 }
 
@@ -911,7 +831,6 @@ If set to [code]true[/code], enables internal physics for this node. Internal ph
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 func (self Go) SetPhysicsProcessInternal(enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsProcessInternal(enable)
 }
 
@@ -919,7 +838,6 @@ func (self Go) SetPhysicsProcessInternal(enable bool) {
 Returns [code]true[/code] if internal physics processing is enabled (see [method set_physics_process_internal]).
 */
 func (self Go) IsPhysicsProcessingInternal() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsPhysicsProcessingInternal())
 }
 
@@ -928,7 +846,6 @@ Returns [code]true[/code] if physics interpolation is enabled for this node (see
 [b]Note:[/b] Interpolation will only be active if both the flag is set [b]and[/b] physics interpolation is enabled within the [SceneTree]. This can be tested using [method is_physics_interpolated_and_enabled].
 */
 func (self Go) IsPhysicsInterpolated() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsPhysicsInterpolated())
 }
 
@@ -938,7 +855,6 @@ This is a convenience version of [method is_physics_interpolated] that also chec
 See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics/common/physics_interpolation].
 */
 func (self Go) IsPhysicsInterpolatedAndEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsPhysicsInterpolatedAndEnabled())
 }
 
@@ -949,7 +865,6 @@ The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be rec
 [b]Note:[/b] This function should be called [b]after[/b] moving the node, rather than before.
 */
 func (self Go) ResetPhysicsInterpolation() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ResetPhysicsInterpolation()
 }
 
@@ -957,24 +872,21 @@ func (self Go) ResetPhysicsInterpolation() {
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
 func (self Go) GetWindow() gdclass.Window {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Window(class(self).GetWindow(gc))
+	return gdclass.Window(class(self).GetWindow())
 }
 
 /*
 Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
 func (self Go) GetLastExclusiveWindow() gdclass.Window {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Window(class(self).GetLastExclusiveWindow(gc))
+	return gdclass.Window(class(self).GetLastExclusiveWindow())
 }
 
 /*
 Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
 */
 func (self Go) GetTree() gdclass.SceneTree {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.SceneTree(class(self).GetTree(gc))
+	return gdclass.SceneTree(class(self).GetTree())
 }
 
 /*
@@ -992,8 +904,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 [b]Note:[/b] The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
 */
 func (self Go) CreateTween() gdclass.Tween {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Tween(class(self).CreateTween(gc))
+	return gdclass.Tween(class(self).CreateTween())
 }
 
 /*
@@ -1001,8 +912,7 @@ Duplicates the node, returning a new node with all of its properties, signals an
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 func (self Go) Duplicate() gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).Duplicate(gc, gd.Int(15)))
+	return gdclass.Node(class(self).Duplicate(gd.Int(15)))
 }
 
 /*
@@ -1011,7 +921,6 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 [b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
 */
 func (self Go) ReplaceBy(node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ReplaceBy(node, false)
 }
 
@@ -1019,7 +928,6 @@ func (self Go) ReplaceBy(node gdclass.Node) {
 If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [method get_scene_instance_load_placeholder].
 */
 func (self Go) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
 }
 
@@ -1027,7 +935,6 @@ func (self Go) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
 Returns [code]true[/code] if this node is an instance load placeholder. See [InstancePlaceholder] and [method set_scene_instance_load_placeholder].
 */
 func (self Go) GetSceneInstanceLoadPlaceholder() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetSceneInstanceLoadPlaceholder())
 }
 
@@ -1035,7 +942,6 @@ func (self Go) GetSceneInstanceLoadPlaceholder() bool {
 Set to [code]true[/code] to allow all nodes owned by [param node] to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_editable_instance].
 */
 func (self Go) SetEditableInstance(node gdclass.Node, is_editable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEditableInstance(node, is_editable)
 }
 
@@ -1043,7 +949,6 @@ func (self Go) SetEditableInstance(node gdclass.Node, is_editable bool) {
 Returns [code]true[/code] if [param node] has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [method set_editable_instance].
 */
 func (self Go) IsEditableInstance(node gdclass.Node) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsEditableInstance(node))
 }
 
@@ -1051,8 +956,7 @@ func (self Go) IsEditableInstance(node gdclass.Node) bool {
 Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
 */
 func (self Go) GetViewport() gdclass.Viewport {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Viewport(class(self).GetViewport(gc))
+	return gdclass.Viewport(class(self).GetViewport())
 }
 
 /*
@@ -1061,7 +965,6 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 [b]Note:[/b] The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [method Object.free] through [method Object.call_deferred].
 */
 func (self Go) QueueFree() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).QueueFree()
 }
 
@@ -1070,7 +973,6 @@ Requests [method _ready] to be called again the next time the node enters the tr
 [b]Note:[/b] This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [method _ready] callbacks will be the same as normal.
 */
 func (self Go) RequestReady() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RequestReady()
 }
 
@@ -1079,7 +981,6 @@ Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and 
 [method request_ready] resets it back to [code]false[/code].
 */
 func (self Go) IsNodeReady() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsNodeReady())
 }
 
@@ -1089,7 +990,6 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 [b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
 */
 func (self Go) SetMultiplayerAuthority(id int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMultiplayerAuthority(gd.Int(id), true)
 }
 
@@ -1097,7 +997,6 @@ func (self Go) SetMultiplayerAuthority(id int) {
 Returns the peer ID of the multiplayer authority for this node. See [method set_multiplayer_authority].
 */
 func (self Go) GetMultiplayerAuthority() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetMultiplayerAuthority()))
 }
 
@@ -1105,7 +1004,6 @@ func (self Go) GetMultiplayerAuthority() int {
 Returns [code]true[/code] if the local system is the multiplayer authority of this node.
 */
 func (self Go) IsMultiplayerAuthority() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsMultiplayerAuthority())
 }
 
@@ -1118,8 +1016,7 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 func (self Go) RpcConfig(method string, config gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RpcConfig(gc.StringName(method), config)
+	class(self).RpcConfig(gd.NewStringName(method), config)
 }
 
 /*
@@ -1129,8 +1026,7 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 func (self Go) Atr(message string) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).Atr(gc, gc.String(message), gc.StringName("")).String())
+	return string(class(self).Atr(gd.NewString(message), gd.NewStringName("")).String())
 }
 
 /*
@@ -1142,15 +1038,13 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 func (self Go) AtrN(message string, plural_message string, n int) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).AtrN(gc, gc.String(message), gc.StringName(plural_message), gd.Int(n), gc.StringName("")).String())
+	return string(class(self).AtrN(gd.NewString(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
 }
 
 /*
 Refreshes the warnings displayed for this node in the Scene dock. Use [method _get_configuration_warnings] to customize the warning messages to display.
 */
 func (self Go) UpdateConfigurationWarnings() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).UpdateConfigurationWarnings()
 }
 
@@ -1158,15 +1052,13 @@ func (self Go) UpdateConfigurationWarnings() {
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 func (self Go) SetDeferredThreadGroup(property string, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDeferredThreadGroup(gc.StringName(property), value)
+	class(self).SetDeferredThreadGroup(gd.NewStringName(property), value)
 }
 
 /*
 Similar to [method call_deferred_thread_group], but for notifications.
 */
 func (self Go) NotifyDeferredThreadGroup(what int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).NotifyDeferredThreadGroup(gd.Int(what))
 }
 
@@ -1174,15 +1066,13 @@ func (self Go) NotifyDeferredThreadGroup(what int) {
 Similar to [method call_thread_safe], but for setting properties.
 */
 func (self Go) SetThreadSafe(property string, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetThreadSafe(gc.StringName(property), value)
+	class(self).SetThreadSafe(gd.NewStringName(property), value)
 }
 
 /*
 Similar to [method call_thread_safe], but for notifications.
 */
 func (self Go) NotifyThreadSafe(what int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).NotifyThreadSafe(gd.Int(what))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1190,153 +1080,117 @@ type GD = class
 type class [1]classdb.Node
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Node"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node"))
+	return Go{classdb.Node(object)}
 }
 
 func (self Go) Name() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetName(gc).String())
+		return string(class(self).GetName().String())
 }
 
 func (self Go) SetName(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetName(gc.String(value))
+	class(self).SetName(gd.NewString(value))
 }
 
 func (self Go) UniqueNameInOwner() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUniqueNameInOwner())
 }
 
 func (self Go) SetUniqueNameInOwner(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUniqueNameInOwner(value)
 }
 
 func (self Go) SceneFilePath() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetSceneFilePath(gc).String())
+		return string(class(self).GetSceneFilePath().String())
 }
 
 func (self Go) SetSceneFilePath(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetSceneFilePath(gc.String(value))
+	class(self).SetSceneFilePath(gd.NewString(value))
 }
 
 func (self Go) Owner() gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Node(class(self).GetOwner(gc))
+		return gdclass.Node(class(self).GetOwner())
 }
 
 func (self Go) SetOwner(value gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetOwner(value)
 }
 
 func (self Go) Multiplayer() gdclass.MultiplayerAPI {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.MultiplayerAPI(class(self).GetMultiplayer(gc))
+		return gdclass.MultiplayerAPI(class(self).GetMultiplayer())
 }
 
 func (self Go) ProcessMode() classdb.NodeProcessMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.NodeProcessMode(class(self).GetProcessMode())
 }
 
 func (self Go) SetProcessMode(value classdb.NodeProcessMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessMode(value)
 }
 
 func (self Go) ProcessPriority() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetProcessPriority()))
 }
 
 func (self Go) SetProcessPriority(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessPriority(gd.Int(value))
 }
 
 func (self Go) ProcessPhysicsPriority() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetPhysicsProcessPriority()))
 }
 
 func (self Go) SetProcessPhysicsPriority(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsProcessPriority(gd.Int(value))
 }
 
 func (self Go) ProcessThreadGroup() classdb.NodeProcessThreadGroup {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.NodeProcessThreadGroup(class(self).GetProcessThreadGroup())
 }
 
 func (self Go) SetProcessThreadGroup(value classdb.NodeProcessThreadGroup) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessThreadGroup(value)
 }
 
 func (self Go) ProcessThreadGroupOrder() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetProcessThreadGroupOrder()))
 }
 
 func (self Go) SetProcessThreadGroupOrder(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessThreadGroupOrder(gd.Int(value))
 }
 
 func (self Go) ProcessThreadMessages() classdb.NodeProcessThreadMessages {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.NodeProcessThreadMessages(class(self).GetProcessThreadMessages())
 }
 
 func (self Go) SetProcessThreadMessages(value classdb.NodeProcessThreadMessages) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetProcessThreadMessages(value)
 }
 
 func (self Go) PhysicsInterpolationMode() classdb.NodePhysicsInterpolationMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.NodePhysicsInterpolationMode(class(self).GetPhysicsInterpolationMode())
 }
 
 func (self Go) SetPhysicsInterpolationMode(value classdb.NodePhysicsInterpolationMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsInterpolationMode(value)
 }
 
 func (self Go) AutoTranslateMode() classdb.NodeAutoTranslateMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.NodeAutoTranslateMode(class(self).GetAutoTranslateMode())
 }
 
 func (self Go) SetAutoTranslateMode(value classdb.NodeAutoTranslateMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAutoTranslateMode(value)
 }
 
 func (self Go) EditorDescription() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetEditorDescription(gc).String())
+		return string(class(self).GetEditorDescription().String())
 }
 
 func (self Go) SetEditorDescription(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetEditorDescription(gc.String(value))
+	class(self).SetEditorDescription(gd.NewString(value))
 }
 
 /*
@@ -1347,12 +1201,9 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 */
 func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, delta)
-		ctx.End()
 	}
 }
 
@@ -1364,12 +1215,9 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 */
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, delta)
-		ctx.End()
 	}
 }
 
@@ -1379,11 +1227,8 @@ Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Ob
 */
 func (class) _enter_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1393,11 +1238,8 @@ Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Obj
 */
 func (class) _exit_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1409,11 +1251,8 @@ Usually used for initialization. For even earlier initialization, [method Object
 */
 func (class) _ready(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -1436,12 +1275,13 @@ func _get_configuration_warnings():
 */
 func (class) _get_configuration_warnings(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1454,13 +1294,10 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (class) _input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		ctx.End()
 	}
 }
 
@@ -1473,13 +1310,10 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (class) _shortcut_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		ctx.End()
 	}
 }
 
@@ -1492,13 +1326,10 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (class) _unhandled_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		ctx.End()
 	}
 }
 
@@ -1512,13 +1343,10 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (class) _unhandled_key_input(impl func(ptr unsafe.Pointer, event gdclass.InputEvent) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var event gdclass.InputEvent
-		event[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var event = gdclass.InputEvent{discreet.New[classdb.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, event)
-		ctx.End()
 	}
 }
 
@@ -1527,10 +1355,10 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 [b]Note:[/b] This method only works in debug builds. Does nothing in a project exported in release mode.
 */
 //go:nosplit
-func (self class) PrintOrphanNodes(ctx gd.Lifetime)  {
+func (self class) PrintOrphanNodes()  {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1541,30 +1369,27 @@ Use [method add_child] instead of this method if you don't need the child node t
 */
 //go:nosplit
 func (self class) AddSibling(sibling gdclass.Node, force_readable_name bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(sibling[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(sibling[0])))
 	callframe.Arg(frame, force_readable_name)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetName(name gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetName(ctx gd.Lifetime) gd.StringName {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetName() gd.StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.StringName](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1594,13 +1419,12 @@ If you need the child node to be added below a specific node in the list of chil
 */
 //go:nosplit
 func (self class) AddChild(node gdclass.Node, force_readable_name bool, internal_ classdb.NodeInternalMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(node[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
 	callframe.Arg(frame, force_readable_name)
 	callframe.Arg(frame, internal_)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1609,11 +1433,10 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 */
 //go:nosplit
 func (self class) RemoveChild(node gdclass.Node)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1622,12 +1445,11 @@ If [param keep_global_transform] is [code]true[/code], the node's global transfo
 */
 //go:nosplit
 func (self class) Reparent(new_parent gdclass.Node, keep_global_transform bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(new_parent[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(new_parent[0])[0])
 	callframe.Arg(frame, keep_global_transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_reparent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reparent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1636,11 +1458,10 @@ If [param include_internal] is [code]false[/code], internal children are not cou
 */
 //go:nosplit
 func (self class) GetChildCount(include_internal bool) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1650,15 +1471,14 @@ Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetChildren(ctx gd.Lifetime, include_internal bool) gd.ArrayOf[gdclass.Node] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetChildren(include_internal bool) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gdclass.Node](ret)
+	return ret
 }
 /*
 Fetches a child node by its index. Each child node has an index relative its siblings (see [method get_index]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [method get_child_count] to iterate over this node's children. If no child exists at the given index, this method returns [code]null[/code] and an error is generated.
@@ -1675,15 +1495,13 @@ var c = get_child(-1).name # c is "Last"
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
 //go:nosplit
-func (self class) GetChild(ctx gd.Lifetime, idx gd.Int, include_internal bool) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetChild(idx gd.Int, include_internal bool) gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1692,11 +1510,10 @@ Returns [code]true[/code] if the [param path] points to a valid node. See also [
 */
 //go:nosplit
 func (self class) HasNode(path gd.NodePath) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1734,14 +1551,12 @@ GetNode("/root/MyGame");
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNode(ctx gd.Lifetime, path gd.NodePath) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetNode(path gd.NodePath) gdclass.Node {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(path))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1749,14 +1564,12 @@ func (self class) GetNode(ctx gd.Lifetime, path gd.NodePath) gdclass.Node {
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
 //go:nosplit
-func (self class) GetNodeOrNull(ctx gd.Lifetime, path gd.NodePath) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetNodeOrNull(path gd.NodePath) gdclass.Node {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(path))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1764,13 +1577,11 @@ func (self class) GetNodeOrNull(ctx gd.Lifetime, path gd.NodePath) gdclass.Node 
 Returns this node's parent node, or [code]null[/code] if the node doesn't have a parent.
 */
 //go:nosplit
-func (self class) GetParent(ctx gd.Lifetime) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetParent() gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1782,16 +1593,14 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
 //go:nosplit
-func (self class) FindChild(ctx gd.Lifetime, pattern gd.String, recursive bool, owned bool) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) FindChild(pattern gd.String, recursive bool, owned bool) gdclass.Node {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(pattern))
+	callframe.Arg(frame, discreet.Get(pattern))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1804,32 +1613,29 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 //go:nosplit
-func (self class) FindChildren(ctx gd.Lifetime, pattern gd.String, atype gd.String, recursive bool, owned bool) gd.ArrayOf[gdclass.Node] {
-	var selfPtr = self[0].AsPointer()
+func (self class) FindChildren(pattern gd.String, atype gd.String, recursive bool, owned bool) gd.Array {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(pattern))
-	callframe.Arg(frame, mmm.Get(atype))
+	callframe.Arg(frame, discreet.Get(pattern))
+	callframe.Arg(frame, discreet.Get(atype))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_find_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gdclass.Node](ret)
+	return ret
 }
 /*
 Finds the first ancestor of this node whose [member name] matches [param pattern], returning [code]null[/code] if no match is found. The matching is done through [method String.match]. As such, it is case-sensitive, [code]"*"[/code] matches zero or more characters, and [code]"?"[/code] matches any single character. See also [method find_child] and [method find_children].
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
 //go:nosplit
-func (self class) FindParent(ctx gd.Lifetime, pattern gd.String) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) FindParent(pattern gd.String) gdclass.Node {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(pattern))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(pattern))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1838,11 +1644,10 @@ Returns [code]true[/code] if [param path] points to a valid node and its subname
 */
 //go:nosplit
 func (self class) HasNodeAndResource(path gd.NodePath) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_has_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1889,13 +1694,12 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNodeAndResource(ctx gd.Lifetime, path gd.NodePath) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetNodeAndResource(path gd.NodePath) gd.Array {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(path))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1904,10 +1708,9 @@ Returns [code]true[/code] if this node is currently inside a [SceneTree]. See al
 */
 //go:nosplit
 func (self class) IsInsideTree() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_inside_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_inside_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1917,10 +1720,9 @@ Returns [code]true[/code] if the node is part of the scene currently opened in t
 */
 //go:nosplit
 func (self class) IsPartOfEditedScene() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_part_of_edited_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_part_of_edited_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1930,11 +1732,10 @@ Returns [code]true[/code] if the given [param node] is a direct or indirect chil
 */
 //go:nosplit
 func (self class) IsAncestorOf(node gdclass.Node) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_ancestor_of, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_ancestor_of, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1944,11 +1745,10 @@ Returns [code]true[/code] if the given [param node] occurs later in the scene hi
 */
 //go:nosplit
 func (self class) IsGreaterThan(node gdclass.Node) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_greater_than, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_greater_than, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1957,12 +1757,11 @@ func (self class) IsGreaterThan(node gdclass.Node) bool {
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
 //go:nosplit
-func (self class) GetPath(ctx gd.Lifetime) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPath() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1972,14 +1771,13 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 //go:nosplit
-func (self class) GetPathTo(ctx gd.Lifetime, node gdclass.Node, use_unique_path bool) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPathTo(node gdclass.Node, use_unique_path bool) gd.NodePath {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	callframe.Arg(frame, use_unique_path)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_path_to, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path_to, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1991,12 +1789,11 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 */
 //go:nosplit
 func (self class) AddToGroup(group gd.StringName, persistent bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(group))
+	callframe.Arg(frame, discreet.Get(group))
 	callframe.Arg(frame, persistent)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_add_to_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_to_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2004,11 +1801,10 @@ Removes the node from the given [param group]. Does nothing if the node is not i
 */
 //go:nosplit
 func (self class) RemoveFromGroup(group gd.StringName)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(group))
+	callframe.Arg(frame, discreet.Get(group))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_remove_from_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_from_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2016,11 +1812,10 @@ Returns [code]true[/code] if this node has been added to the given [param group]
 */
 //go:nosplit
 func (self class) IsInGroup(group gd.StringName) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(group))
+	callframe.Arg(frame, discreet.Get(group))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_in_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_in_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2031,12 +1826,11 @@ Moves [param child_node] to the given index. A node's index is the order among i
 */
 //go:nosplit
 func (self class) MoveChild(child_node gdclass.Node, to_index gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(child_node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(child_node[0])[0])
 	callframe.Arg(frame, to_index)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_move_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_move_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2063,32 +1857,28 @@ foreach (string group in GetGroups())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetGroups(ctx gd.Lifetime) gd.ArrayOf[gd.StringName] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetGroups() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gd.StringName](ret)
+	return ret
 }
 //go:nosplit
 func (self class) SetOwner(owner gdclass.Node)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(owner[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(owner[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetOwner(ctx gd.Lifetime) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOwner() gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2098,11 +1888,10 @@ If [param include_internal] is [code]false[/code], returns the index ignoring in
 */
 //go:nosplit
 func (self class) GetIndex(include_internal bool) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2121,10 +1910,9 @@ SplashScreen/Camera2D
 */
 //go:nosplit
 func (self class) PrintTree()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_print_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2141,10 +1929,9 @@ May print, for example:
 */
 //go:nosplit
 func (self class) PrintTreePretty()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_print_tree_pretty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree_pretty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2160,12 +1947,11 @@ TheGame/SplashScreen/Camera2D
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTreeString(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTreeString() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2182,31 +1968,28 @@ May print, for example:
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTreeStringPretty(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTreeStringPretty() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSceneFilePath(scene_file_path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(scene_file_path))
+	callframe.Arg(frame, discreet.Get(scene_file_path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetSceneFilePath(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSceneFilePath() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2215,11 +1998,10 @@ Calls [method Object.notification] with [param what] on this node and all of its
 */
 //go:nosplit
 func (self class) PropagateNotification(what gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_propagate_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2228,13 +2010,12 @@ If [param parent_first] is [code]true[/code], the method is called on this node 
 */
 //go:nosplit
 func (self class) PropagateCall(method gd.StringName, args gd.Array, parent_first bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(method))
-	callframe.Arg(frame, mmm.Get(args))
+	callframe.Arg(frame, discreet.Get(method))
+	callframe.Arg(frame, discreet.Get(args))
 	callframe.Arg(frame, parent_first)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_propagate_call, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_call, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2243,11 +2024,10 @@ If set to [code]true[/code], enables physics (fixed framerate) processing. When 
 */
 //go:nosplit
 func (self class) SetPhysicsProcess(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_physics_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2255,10 +2035,9 @@ Returns the time elapsed (in seconds) since the last physics callback. This valu
 */
 //go:nosplit
 func (self class) GetPhysicsProcessDeltaTime() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_physics_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2268,10 +2047,9 @@ Returns [code]true[/code] if physics processing is enabled (see [method set_phys
 */
 //go:nosplit
 func (self class) IsPhysicsProcessing() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_physics_processing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2281,10 +2059,9 @@ Returns the time elapsed (in seconds) since the last process callback. This valu
 */
 //go:nosplit
 func (self class) GetProcessDeltaTime() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2296,47 +2073,42 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 */
 //go:nosplit
 func (self class) SetProcess(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetProcessPriority(priority gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetProcessPriority() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPhysicsProcessPriority(priority gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPhysicsProcessPriority() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2346,10 +2118,9 @@ Returns [code]true[/code] if processing is enabled (see [method set_process]).
 */
 //go:nosplit
 func (self class) IsProcessing() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_processing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2360,11 +2131,10 @@ If set to [code]true[/code], enables input processing.
 */
 //go:nosplit
 func (self class) SetProcessInput(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2372,10 +2142,9 @@ Returns [code]true[/code] if the node is processing input (see [method set_proce
 */
 //go:nosplit
 func (self class) IsProcessingInput() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_processing_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2386,11 +2155,10 @@ If set to [code]true[/code], enables shortcut processing for this node.
 */
 //go:nosplit
 func (self class) SetProcessShortcutInput(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2398,10 +2166,9 @@ Returns [code]true[/code] if the node is processing shortcuts (see [method set_p
 */
 //go:nosplit
 func (self class) IsProcessingShortcutInput() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_processing_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2412,11 +2179,10 @@ If set to [code]true[/code], enables unhandled input processing. It enables the 
 */
 //go:nosplit
 func (self class) SetProcessUnhandledInput(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2424,10 +2190,9 @@ Returns [code]true[/code] if the node is processing unhandled input (see [method
 */
 //go:nosplit
 func (self class) IsProcessingUnhandledInput() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_processing_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2438,11 +2203,10 @@ If set to [code]true[/code], enables unhandled key input processing.
 */
 //go:nosplit
 func (self class) SetProcessUnhandledKeyInput(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2450,29 +2214,26 @@ Returns [code]true[/code] if the node is processing unhandled key input (see [me
 */
 //go:nosplit
 func (self class) IsProcessingUnhandledKeyInput() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_processing_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetProcessMode(mode classdb.NodeProcessMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetProcessMode() classdb.NodeProcessMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.NodeProcessMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2488,67 +2249,60 @@ If the node is not inside the tree, returns [code]false[/code] no matter the val
 */
 //go:nosplit
 func (self class) CanProcess() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_can_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_can_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetProcessThreadGroup(mode classdb.NodeProcessThreadGroup)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetProcessThreadGroup() classdb.NodeProcessThreadGroup {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.NodeProcessThreadGroup](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetProcessThreadMessages(flags classdb.NodeProcessThreadMessages)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetProcessThreadMessages() classdb.NodeProcessThreadMessages {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.NodeProcessThreadMessages](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetProcessThreadGroupOrder(order gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetProcessThreadGroupOrder() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2558,11 +2312,10 @@ If set to [code]true[/code], the node appears folded in the Scene dock. As a res
 */
 //go:nosplit
 func (self class) SetDisplayFolded(fold bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, fold)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_display_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_display_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2570,10 +2323,9 @@ Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. T
 */
 //go:nosplit
 func (self class) IsDisplayedFolded() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_displayed_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_displayed_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2584,11 +2336,10 @@ If set to [code]true[/code], enables internal processing for this node. Internal
 */
 //go:nosplit
 func (self class) SetProcessInternal(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_process_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2596,10 +2347,9 @@ Returns [code]true[/code] if internal processing is enabled (see [method set_pro
 */
 //go:nosplit
 func (self class) IsProcessingInternal() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_processing_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2610,11 +2360,10 @@ If set to [code]true[/code], enables internal physics for this node. Internal ph
 */
 //go:nosplit
 func (self class) SetPhysicsProcessInternal(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_physics_process_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2622,29 +2371,26 @@ Returns [code]true[/code] if internal physics processing is enabled (see [method
 */
 //go:nosplit
 func (self class) IsPhysicsProcessingInternal() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_physics_processing_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPhysicsInterpolationMode(mode classdb.NodePhysicsInterpolationMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPhysicsInterpolationMode() classdb.NodePhysicsInterpolationMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.NodePhysicsInterpolationMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2655,10 +2401,9 @@ Returns [code]true[/code] if physics interpolation is enabled for this node (see
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolated() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_physics_interpolated, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2670,10 +2415,9 @@ See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolatedAndEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_physics_interpolated_and_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated_and_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2686,27 +2430,24 @@ The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be rec
 */
 //go:nosplit
 func (self class) ResetPhysicsInterpolation()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetAutoTranslateMode(mode classdb.NodeAutoTranslateMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAutoTranslateMode() classdb.NodeAutoTranslateMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.NodeAutoTranslateMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2715,13 +2456,11 @@ func (self class) GetAutoTranslateMode() classdb.NodeAutoTranslateMode {
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
 //go:nosplit
-func (self class) GetWindow(ctx gd.Lifetime) gdclass.Window {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetWindow() gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Window
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Window{classdb.Window(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2729,13 +2468,11 @@ func (self class) GetWindow(ctx gd.Lifetime) gdclass.Window {
 Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
 //go:nosplit
-func (self class) GetLastExclusiveWindow(ctx gd.Lifetime) gdclass.Window {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLastExclusiveWindow() gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Window
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Window{classdb.Window(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2743,13 +2480,11 @@ func (self class) GetLastExclusiveWindow(ctx gd.Lifetime) gdclass.Window {
 Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
 */
 //go:nosplit
-func (self class) GetTree(ctx gd.Lifetime) gdclass.SceneTree {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTree() gdclass.SceneTree {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.SceneTree
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.SceneTree{classdb.SceneTree(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2768,13 +2503,11 @@ The Tween will start automatically on the next process frame or physics frame (d
 [b]Note:[/b] The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
 */
 //go:nosplit
-func (self class) CreateTween(ctx gd.Lifetime) gdclass.Tween {
-	var selfPtr = self[0].AsPointer()
+func (self class) CreateTween() gdclass.Tween {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Tween
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Tween{classdb.Tween(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2783,14 +2516,12 @@ Duplicates the node, returning a new node with all of its properties, signals an
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 //go:nosplit
-func (self class) Duplicate(ctx gd.Lifetime, flags gd.Int) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) Duplicate(flags gd.Int) gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2801,12 +2532,11 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 */
 //go:nosplit
 func (self class) ReplaceBy(node gdclass.Node, keep_groups bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(node[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
 	callframe.Arg(frame, keep_groups)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2814,11 +2544,10 @@ If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packe
 */
 //go:nosplit
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, load_placeholder)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2826,10 +2555,9 @@ Returns [code]true[/code] if this node is an instance load placeholder. See [Ins
 */
 //go:nosplit
 func (self class) GetSceneInstanceLoadPlaceholder() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2839,12 +2567,11 @@ Set to [code]true[/code] to allow all nodes owned by [param node] to be availabl
 */
 //go:nosplit
 func (self class) SetEditableInstance(node gdclass.Node, is_editable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	callframe.Arg(frame, is_editable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_editable_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editable_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2852,11 +2579,10 @@ Returns [code]true[/code] if [param node] has editable children enabled relative
 */
 //go:nosplit
 func (self class) IsEditableInstance(node gdclass.Node) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_editable_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_editable_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2865,13 +2591,11 @@ func (self class) IsEditableInstance(node gdclass.Node) bool {
 Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) GetViewport(ctx gd.Lifetime) gdclass.Viewport {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetViewport() gdclass.Viewport {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Viewport
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Viewport{classdb.Viewport(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2882,10 +2606,9 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 */
 //go:nosplit
 func (self class) QueueFree()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2894,10 +2617,9 @@ Requests [method _ready] to be called again the next time the node enters the tr
 */
 //go:nosplit
 func (self class) RequestReady()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_request_ready, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_request_ready, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2906,10 +2628,9 @@ Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and 
 */
 //go:nosplit
 func (self class) IsNodeReady() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_node_ready, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_node_ready, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2921,12 +2642,11 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 */
 //go:nosplit
 func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, recursive)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2934,10 +2654,9 @@ Returns the peer ID of the multiplayer authority for this node. See [method set_
 */
 //go:nosplit
 func (self class) GetMultiplayerAuthority() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2947,22 +2666,19 @@ Returns [code]true[/code] if the local system is the multiplayer authority of th
 */
 //go:nosplit
 func (self class) IsMultiplayerAuthority() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetMultiplayer(ctx gd.Lifetime) gdclass.MultiplayerAPI {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMultiplayer() gdclass.MultiplayerAPI {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.MultiplayerAPI
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.MultiplayerAPI{classdb.MultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2976,48 +2692,43 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 */
 //go:nosplit
 func (self class) RpcConfig(method gd.StringName, config gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(method))
-	callframe.Arg(frame, mmm.Get(config))
+	callframe.Arg(frame, discreet.Get(method))
+	callframe.Arg(frame, discreet.Get(config))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetEditorDescription(editor_description gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(editor_description))
+	callframe.Arg(frame, discreet.Get(editor_description))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_editor_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editor_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetEditorDescription(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEditorDescription() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUniqueNameInOwner(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUniqueNameInOwner() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_is_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3029,14 +2740,13 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 //go:nosplit
-func (self class) Atr(ctx gd.Lifetime, message gd.String, context gd.StringName) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) Atr(message gd.String, context gd.StringName) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(message))
-	callframe.Arg(frame, mmm.Get(context))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(message))
+	callframe.Arg(frame, discreet.Get(context))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -3049,16 +2759,15 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 //go:nosplit
-func (self class) AtrN(ctx gd.Lifetime, message gd.String, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(message))
-	callframe.Arg(frame, mmm.Get(plural_message))
+	callframe.Arg(frame, discreet.Get(message))
+	callframe.Arg(frame, discreet.Get(plural_message))
 	callframe.Arg(frame, n)
-	callframe.Arg(frame, mmm.Get(context))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(context))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -3067,10 +2776,9 @@ Refreshes the warnings displayed for this node in the Scene dock. Use [method _g
 */
 //go:nosplit
 func (self class) UpdateConfigurationWarnings()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3078,12 +2786,11 @@ Similar to [method call_deferred_thread_group], but for setting properties.
 */
 //go:nosplit
 func (self class) SetDeferredThreadGroup(property gd.StringName, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(property))
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(property))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3091,11 +2798,10 @@ Similar to [method call_deferred_thread_group], but for notifications.
 */
 //go:nosplit
 func (self class) NotifyDeferredThreadGroup(what gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_notify_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3103,12 +2809,11 @@ Similar to [method call_thread_safe], but for setting properties.
 */
 //go:nosplit
 func (self class) SetThreadSafe(property gd.StringName, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(property))
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(property))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3116,70 +2821,59 @@ Similar to [method call_thread_safe], but for notifications.
 */
 //go:nosplit
 func (self class) NotifyThreadSafe(what gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Node.Bind_notify_thread_safe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_thread_safe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self Go) OnReady(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("ready"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("ready"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnRenamed(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("renamed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnTreeEntered(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tree_entered"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnTreeExiting(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tree_exiting"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnTreeExited(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tree_exited"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnChildEnteredTree(cb func(node gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("child_entered_tree"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnChildExitingTree(cb func(node gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("child_exiting_tree"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnChildOrderChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("child_order_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnReplacingBy(cb func(node gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("replacing_by"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnEditorDescriptionChanged(cb func(node gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("editor_description_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -3217,7 +2911,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("Node", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Node", func(ptr gd.Object) any { return classdb.Node(ptr) })}
 type ProcessMode = classdb.NodeProcessMode
 
 const (

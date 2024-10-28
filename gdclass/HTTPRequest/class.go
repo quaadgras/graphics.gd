@@ -2,7 +2,7 @@ package HTTPRequest
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
@@ -174,8 +174,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 func (self Go) Request(url string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Request(gc.String(url), gc.PackedStringSlice(([1][]string{}[0])), 0, gc.String("")))
+	return gd.Error(class(self).Request(gd.NewString(url), gd.NewPackedStringSlice(([1][]string{}[0])), 0, gd.NewString("")))
 }
 
 /*
@@ -183,15 +182,13 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 func (self Go) RequestRaw(url string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).RequestRaw(gc.String(url), gc.PackedStringSlice(([1][]string{}[0])), 0, gc.PackedByteSlice(([1][]byte{}[0]))))
+	return gd.Error(class(self).RequestRaw(gd.NewString(url), gd.NewPackedStringSlice(([1][]string{}[0])), 0, gd.NewPackedByteSlice(([1][]byte{}[0]))))
 }
 
 /*
 Cancels the current request.
 */
 func (self Go) CancelRequest() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).CancelRequest()
 }
 
@@ -199,7 +196,6 @@ func (self Go) CancelRequest() {
 Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method TLSOptions.client].
 */
 func (self Go) SetTlsOptions(client_options gdclass.TLSOptions) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTlsOptions(client_options)
 }
 
@@ -207,7 +203,6 @@ func (self Go) SetTlsOptions(client_options gdclass.TLSOptions) {
 Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.Status].
 */
 func (self Go) GetHttpClientStatus() classdb.HTTPClientStatus {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.HTTPClientStatus(class(self).GetHttpClientStatus())
 }
 
@@ -215,7 +210,6 @@ func (self Go) GetHttpClientStatus() classdb.HTTPClientStatus {
 Returns the number of bytes this HTTPRequest downloaded.
 */
 func (self Go) GetDownloadedBytes() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetDownloadedBytes()))
 }
 
@@ -224,7 +218,6 @@ Returns the response body length.
 [b]Note:[/b] Some Web servers may not send a body length. In this case, the value returned will be [code]-1[/code]. If using chunked transfer encoding, the body length will also be [code]-1[/code].
 */
 func (self Go) GetBodySize() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetBodySize()))
 }
 
@@ -233,8 +226,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Go) SetHttpProxy(host string, port int) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetHttpProxy(gc.String(host), gd.Int(port))
+	class(self).SetHttpProxy(gd.NewString(host), gd.Int(port))
 }
 
 /*
@@ -242,95 +234,71 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Go) SetHttpsProxy(host string, port int) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetHttpsProxy(gc.String(host), gd.Int(port))
+	class(self).SetHttpsProxy(gd.NewString(host), gd.Int(port))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.HTTPRequest
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("HTTPRequest"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HTTPRequest"))
+	return Go{classdb.HTTPRequest(object)}
 }
 
 func (self Go) DownloadFile() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetDownloadFile(gc).String())
+		return string(class(self).GetDownloadFile().String())
 }
 
 func (self Go) SetDownloadFile(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDownloadFile(gc.String(value))
+	class(self).SetDownloadFile(gd.NewString(value))
 }
 
 func (self Go) DownloadChunkSize() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetDownloadChunkSize()))
 }
 
 func (self Go) SetDownloadChunkSize(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDownloadChunkSize(gd.Int(value))
 }
 
 func (self Go) UseThreads() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingThreads())
 }
 
 func (self Go) SetUseThreads(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseThreads(value)
 }
 
 func (self Go) AcceptGzip() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsAcceptingGzip())
 }
 
 func (self Go) SetAcceptGzip(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAcceptGzip(value)
 }
 
 func (self Go) BodySizeLimit() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetBodySizeLimit()))
 }
 
 func (self Go) SetBodySizeLimit(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBodySizeLimit(gd.Int(value))
 }
 
 func (self Go) MaxRedirects() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetMaxRedirects()))
 }
 
 func (self Go) SetMaxRedirects(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaxRedirects(gd.Int(value))
 }
 
 func (self Go) Timeout() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetTimeout()))
 }
 
 func (self Go) SetTimeout(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTimeout(gd.Float(value))
 }
 
@@ -342,14 +310,13 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 */
 //go:nosplit
 func (self class) Request(url gd.String, custom_headers gd.PackedStringArray, method classdb.HTTPClientMethod, request_data gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(url))
-	callframe.Arg(frame, mmm.Get(custom_headers))
+	callframe.Arg(frame, discreet.Get(url))
+	callframe.Arg(frame, discreet.Get(custom_headers))
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, mmm.Get(request_data))
+	callframe.Arg(frame, discreet.Get(request_data))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -360,14 +327,13 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 */
 //go:nosplit
 func (self class) RequestRaw(url gd.String, custom_headers gd.PackedStringArray, method classdb.HTTPClientMethod, request_data_raw gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(url))
-	callframe.Arg(frame, mmm.Get(custom_headers))
+	callframe.Arg(frame, discreet.Get(url))
+	callframe.Arg(frame, discreet.Get(custom_headers))
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, mmm.Get(request_data_raw))
+	callframe.Arg(frame, discreet.Get(request_data_raw))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -377,10 +343,9 @@ Cancels the current request.
 */
 //go:nosplit
 func (self class) CancelRequest()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_cancel_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_cancel_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -388,11 +353,10 @@ Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method
 */
 //go:nosplit
 func (self class) SetTlsOptions(client_options gdclass.TLSOptions)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(client_options[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(client_options[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_tls_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_tls_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -400,106 +364,95 @@ Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.
 */
 //go:nosplit
 func (self class) GetHttpClientStatus() classdb.HTTPClientStatus {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.HTTPClientStatus](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_http_client_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_http_client_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseThreads(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_use_threads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_use_threads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingThreads() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_is_using_threads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_is_using_threads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAcceptGzip(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_accept_gzip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_accept_gzip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsAcceptingGzip() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_is_accepting_gzip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_is_accepting_gzip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBodySizeLimit(bytes gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBodySizeLimit() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMaxRedirects(amount gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_max_redirects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_max_redirects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMaxRedirects() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_max_redirects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_max_redirects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDownloadFile(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_download_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_download_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetDownloadFile(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetDownloadFile() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_download_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_download_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -508,10 +461,9 @@ Returns the number of bytes this HTTPRequest downloaded.
 */
 //go:nosplit
 func (self class) GetDownloadedBytes() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_downloaded_bytes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_downloaded_bytes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -522,48 +474,43 @@ Returns the response body length.
 */
 //go:nosplit
 func (self class) GetBodySize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_body_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_body_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTimeout(timeout gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTimeout() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDownloadChunkSize(chunk_size gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, chunk_size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDownloadChunkSize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_get_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -574,12 +521,11 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpProxy(host gd.String, port gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	callframe.Arg(frame, port)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -588,17 +534,15 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpsProxy(host gd.String, port gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	callframe.Arg(frame, port)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPRequest.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self Go) OnRequestCompleted(cb func(result int, response_code int, headers []string, body []byte)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("request_completed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("request_completed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -618,7 +562,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("HTTPRequest", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("HTTPRequest", func(ptr gd.Object) any { return classdb.HTTPRequest(ptr) })}
 type Result = classdb.HTTPRequestResult
 
 const (

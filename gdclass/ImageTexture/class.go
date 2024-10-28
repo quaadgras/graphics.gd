@@ -2,7 +2,7 @@ package ImageTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A [Texture2D] based on an [Image]. For an image to be displayed, an [ImageTexture] has to be created from it using the [method create_from_image] method:
@@ -46,15 +46,13 @@ type Go [1]classdb.ImageTexture
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
 func (self Go) CreateFromImage(image gdclass.Image) gdclass.ImageTexture {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.ImageTexture(class(self).CreateFromImage(gc, image))
+	return gdclass.ImageTexture(class(self).CreateFromImage(image))
 }
 
 /*
 Returns the format of the texture, one of [enum Image.Format].
 */
 func (self Go) GetFormat() classdb.ImageFormat {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ImageFormat(class(self).GetFormat())
 }
 
@@ -63,7 +61,6 @@ Replaces the texture's data with a new [Image]. This will re-allocate new memory
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
 func (self Go) SetImage(image gdclass.Image) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetImage(image)
 }
 
@@ -73,7 +70,6 @@ Replaces the texture's data with a new [Image].
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
 func (self Go) Update(image gdclass.Image) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Update(image)
 }
 
@@ -81,7 +77,6 @@ func (self Go) Update(image gdclass.Image) {
 Resizes the texture to the specified dimensions.
 */
 func (self Go) SetSizeOverride(size gd.Vector2i) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSizeOverride(size)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -89,31 +84,21 @@ type GD = class
 type class [1]classdb.ImageTexture
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ImageTexture"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageTexture"))
+	return Go{classdb.ImageTexture(object)}
 }
 
 /*
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
 //go:nosplit
-func (self class) CreateFromImage(ctx gd.Lifetime, image gdclass.Image) gdclass.ImageTexture {
+func (self class) CreateFromImage(image gdclass.Image) gdclass.ImageTexture {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(image[0].AsPointer())[0])
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.ImageTexture
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(image[0])[0])
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.ImageTexture{classdb.ImageTexture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -122,10 +107,9 @@ Returns the format of the texture, one of [enum Image.Format].
 */
 //go:nosplit
 func (self class) GetFormat() classdb.ImageFormat {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ImageFormat](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ImageTexture.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -136,11 +120,10 @@ If you want to update the image, but don't need to change its parameters (format
 */
 //go:nosplit
 func (self class) SetImage(image gdclass.Image)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(image[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(image[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ImageTexture.Bind_set_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -150,11 +133,10 @@ Use this method over [method set_image] if you need to update the texture freque
 */
 //go:nosplit
 func (self class) Update(image gdclass.Image)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(image[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(image[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ImageTexture.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -162,11 +144,10 @@ Resizes the texture to the specified dimensions.
 */
 //go:nosplit
 func (self class) SetSizeOverride(size gd.Vector2i)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ImageTexture.Bind_set_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsImageTexture() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -191,4 +172,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsTexture2D(), name)
 	}
 }
-func init() {classdb.Register("ImageTexture", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ImageTexture", func(ptr gd.Object) any { return classdb.ImageTexture(ptr) })}

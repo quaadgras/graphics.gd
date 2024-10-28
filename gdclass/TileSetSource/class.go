@@ -2,7 +2,7 @@ package TileSetSource
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Exposes a set of tiles for a [TileSet] resource.
@@ -29,7 +29,6 @@ type Go [1]classdb.TileSetSource
 Returns how many tiles this atlas source defines (not including alternative tiles).
 */
 func (self Go) GetTilesCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetTilesCount()))
 }
 
@@ -37,7 +36,6 @@ func (self Go) GetTilesCount() int {
 Returns the tile coordinates ID of the tile with index [param index].
 */
 func (self Go) GetTileId(index int) gd.Vector2i {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector2i(class(self).GetTileId(gd.Int(index)))
 }
 
@@ -45,7 +43,6 @@ func (self Go) GetTileId(index int) gd.Vector2i {
 Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
 func (self Go) HasTile(atlas_coords gd.Vector2i) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasTile(atlas_coords))
 }
 
@@ -55,7 +52,6 @@ For [TileSetAtlasSource], this always return at least 1, as the base tile with I
 Returns -1 if there is not tile at the given coords.
 */
 func (self Go) GetAlternativeTilesCount(atlas_coords gd.Vector2i) int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetAlternativeTilesCount(atlas_coords)))
 }
 
@@ -63,7 +59,6 @@ func (self Go) GetAlternativeTilesCount(atlas_coords gd.Vector2i) int {
 Returns the alternative ID for the tile with coordinates ID [param atlas_coords] at index [param index].
 */
 func (self Go) GetAlternativeTileId(atlas_coords gd.Vector2i, index int) int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetAlternativeTileId(atlas_coords, gd.Int(index))))
 }
 
@@ -71,7 +66,6 @@ func (self Go) GetAlternativeTileId(atlas_coords gd.Vector2i, index int) int {
 Returns if the base tile at coordinates [param atlas_coords] has an alternative with ID [param alternative_tile].
 */
 func (self Go) HasAlternativeTile(atlas_coords gd.Vector2i, alternative_tile int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasAlternativeTile(atlas_coords, gd.Int(alternative_tile)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -79,18 +73,9 @@ type GD = class
 type class [1]classdb.TileSetSource
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("TileSetSource"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSetSource"))
+	return Go{classdb.TileSetSource(object)}
 }
 
 /*
@@ -98,10 +83,9 @@ Returns how many tiles this atlas source defines (not including alternative tile
 */
 //go:nosplit
 func (self class) GetTilesCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TileSetSource.Bind_get_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -111,11 +95,10 @@ Returns the tile coordinates ID of the tile with index [param index].
 */
 //go:nosplit
 func (self class) GetTileId(index gd.Int) gd.Vector2i {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TileSetSource.Bind_get_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -125,11 +108,10 @@ Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
 //go:nosplit
 func (self class) HasTile(atlas_coords gd.Vector2i) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TileSetSource.Bind_has_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -141,11 +123,10 @@ Returns -1 if there is not tile at the given coords.
 */
 //go:nosplit
 func (self class) GetAlternativeTilesCount(atlas_coords gd.Vector2i) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TileSetSource.Bind_get_alternative_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -155,12 +136,11 @@ Returns the alternative ID for the tile with coordinates ID [param atlas_coords]
 */
 //go:nosplit
 func (self class) GetAlternativeTileId(atlas_coords gd.Vector2i, index gd.Int) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TileSetSource.Bind_get_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -170,12 +150,11 @@ Returns if the base tile at coordinates [param atlas_coords] has an alternative 
 */
 //go:nosplit
 func (self class) HasAlternativeTile(atlas_coords gd.Vector2i, alternative_tile gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.TileSetSource.Bind_has_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -198,4 +177,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("TileSetSource", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("TileSetSource", func(ptr gd.Object) any { return classdb.TileSetSource(ptr) })}

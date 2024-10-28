@@ -2,7 +2,7 @@ package ScriptCreateDialog
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The [ScriptCreateDialog] creates script files according to a given template for a given scripting language. The standard use is to configure its fields prior to calling one of the [method Window.popup] methods.
@@ -47,26 +47,16 @@ type Go [1]classdb.ScriptCreateDialog
 Prefills required fields to configure the ScriptCreateDialog for use.
 */
 func (self Go) Config(inherits string, path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).Config(gc.String(inherits), gc.String(path), true, true)
+	class(self).Config(gd.NewString(inherits), gd.NewString(path), true, true)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.ScriptCreateDialog
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ScriptCreateDialog"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptCreateDialog"))
+	return Go{classdb.ScriptCreateDialog(object)}
 }
 
 /*
@@ -74,19 +64,17 @@ Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
 func (self class) Config(inherits gd.String, path gd.String, built_in_enabled bool, load_enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(inherits))
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(inherits))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, built_in_enabled)
 	callframe.Arg(frame, load_enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ScriptCreateDialog.Bind_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptCreateDialog.Bind_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self Go) OnScriptCreated(cb func(script gdclass.Script)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("script_created"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), 0)
 }
 
 
@@ -114,4 +102,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsConfirmationDialog(), name)
 	}
 }
-func init() {classdb.Register("ScriptCreateDialog", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ScriptCreateDialog", func(ptr gd.Object) any { return classdb.ScriptCreateDialog(ptr) })}

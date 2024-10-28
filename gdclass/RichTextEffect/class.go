@@ -2,7 +2,7 @@ package RichTextEffect
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A custom effect for a [RichTextLabel], which can be loaded in the [RichTextLabel] inspector or using [method RichTextLabel.install_effect].
@@ -43,14 +43,11 @@ Override this method to modify properties in [param char_fx]. The method must re
 */
 func (Go) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx gdclass.CharFXTransform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var char_fx gdclass.CharFXTransform
-		char_fx[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var char_fx = gdclass.CharFXTransform{discreet.New[classdb.CharFXTransform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(char_fx[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, char_fx)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -58,18 +55,9 @@ type GD = class
 type class [1]classdb.RichTextEffect
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("RichTextEffect"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RichTextEffect"))
+	return Go{classdb.RichTextEffect(object)}
 }
 
 /*
@@ -77,14 +65,11 @@ Override this method to modify properties in [param char_fx]. The method must re
 */
 func (class) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx gdclass.CharFXTransform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var char_fx gdclass.CharFXTransform
-		char_fx[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var char_fx = gdclass.CharFXTransform{discreet.New[classdb.CharFXTransform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(char_fx[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, char_fx)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -108,4 +93,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("RichTextEffect", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("RichTextEffect", func(ptr gd.Object) any { return classdb.RichTextEffect(ptr) })}

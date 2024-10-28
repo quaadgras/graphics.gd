@@ -2,7 +2,7 @@ package EditorScript
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Scripts extending this class and implementing its [method _run] method can be executed from the Script Editor's [b]File > Run[/b] menu option (or by pressing [kbd]Ctrl + Shift + X[/kbd]) while the editor is running. This is useful for adding custom in-editor functionality to Godot. For more complex additions, consider using [EditorPlugin]s instead.
@@ -55,11 +55,8 @@ This method is executed by the Editor when [b]File > Run[/b] is used.
 */
 func (Go) _run(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -67,7 +64,6 @@ impl(self)
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
 func (self Go) AddRootNode(node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddRootNode(node)
 }
 
@@ -75,34 +71,23 @@ func (self Go) AddRootNode(node gdclass.Node) {
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
 func (self Go) GetScene() gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).GetScene(gc))
+	return gdclass.Node(class(self).GetScene())
 }
 
 /*
 Returns the [EditorInterface] singleton instance.
 */
 func (self Go) GetEditorInterface() gdclass.EditorInterface {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.EditorInterface(class(self).GetEditorInterface(gc))
+	return gdclass.EditorInterface(class(self).GetEditorInterface())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorScript
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorScript"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScript"))
+	return Go{classdb.EditorScript(object)}
 }
 
 /*
@@ -110,11 +95,8 @@ This method is executed by the Editor when [b]File > Run[/b] is used.
 */
 func (class) _run(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -123,24 +105,21 @@ Makes [param node] root of the currently opened scene. Only works if the scene i
 */
 //go:nosplit
 func (self class) AddRootNode(node gdclass.Node)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(node[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorScript.Bind_add_root_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_add_root_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
 //go:nosplit
-func (self class) GetScene(ctx gd.Lifetime) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetScene() gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorScript.Bind_get_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -148,13 +127,11 @@ func (self class) GetScene(ctx gd.Lifetime) gdclass.Node {
 Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
-func (self class) GetEditorInterface(ctx gd.Lifetime) gdclass.EditorInterface {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEditorInterface() gdclass.EditorInterface {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorScript.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.EditorInterface
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.EditorInterface{classdb.EditorInterface(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -176,4 +153,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorScript", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorScript", func(ptr gd.Object) any { return classdb.EditorScript(ptr) })}

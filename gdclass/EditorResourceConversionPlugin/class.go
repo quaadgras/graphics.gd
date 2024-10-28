@@ -2,7 +2,7 @@ package EditorResourceConversionPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [EditorResourceConversionPlugin] is invoked when the context menu is brought up for a resource in the editor inspector. Relevant conversion plugins will appear as menu options to convert the given resource to a target type.
@@ -52,12 +52,13 @@ Returns the class name of the target type of [Resource] that this plugin convert
 */
 func (Go) _converts_to(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -66,14 +67,11 @@ Called to determine whether a particular [Resource] can be converted to the targ
 */
 func (Go) _handles(impl func(ptr unsafe.Pointer, resource gdclass.Resource) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -82,14 +80,15 @@ Takes an input [Resource] and converts it to the type given in [method _converts
 */
 func (Go) _convert(impl func(ptr unsafe.Pointer, resource gdclass.Resource) gdclass.Resource, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -97,18 +96,9 @@ type GD = class
 type class [1]classdb.EditorResourceConversionPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorResourceConversionPlugin"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourceConversionPlugin"))
+	return Go{classdb.EditorResourceConversionPlugin(object)}
 }
 
 /*
@@ -116,12 +106,13 @@ Returns the class name of the target type of [Resource] that this plugin convert
 */
 func (class) _converts_to(impl func(ptr unsafe.Pointer) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -130,14 +121,11 @@ Called to determine whether a particular [Resource] can be converted to the targ
 */
 func (class) _handles(impl func(ptr unsafe.Pointer, resource gdclass.Resource) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -146,14 +134,15 @@ Takes an input [Resource] and converts it to the type given in [method _converts
 */
 func (class) _convert(impl func(ptr unsafe.Pointer, resource gdclass.Resource) gdclass.Resource, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -179,4 +168,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorResourceConversionPlugin", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorResourceConversionPlugin", func(ptr gd.Object) any { return classdb.EditorResourceConversionPlugin(ptr) })}

@@ -2,7 +2,7 @@ package PackedScene
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
@@ -91,7 +91,6 @@ type Go [1]classdb.PackedScene
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
 func (self Go) Pack(path gdclass.Node) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Pack(path))
 }
 
@@ -99,15 +98,13 @@ func (self Go) Pack(path gdclass.Node) gd.Error {
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
 func (self Go) Instantiate() gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).Instantiate(gc, 0))
+	return gdclass.Node(class(self).Instantiate(0))
 }
 
 /*
 Returns [code]true[/code] if the scene file has nodes.
 */
 func (self Go) CanInstantiate() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).CanInstantiate())
 }
 
@@ -115,26 +112,16 @@ func (self Go) CanInstantiate() bool {
 Returns the [SceneState] representing the scene file contents.
 */
 func (self Go) GetState() gdclass.SceneState {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.SceneState(class(self).GetState(gc))
+	return gdclass.SceneState(class(self).GetState())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.PackedScene
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("PackedScene"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PackedScene"))
+	return Go{classdb.PackedScene(object)}
 }
 
 /*
@@ -142,11 +129,10 @@ Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. A
 */
 //go:nosplit
 func (self class) Pack(path gdclass.Node) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(path[0])[0])
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PackedScene.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -155,14 +141,12 @@ func (self class) Pack(path gdclass.Node) int64 {
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
 //go:nosplit
-func (self class) Instantiate(ctx gd.Lifetime, edit_state classdb.PackedSceneGenEditState) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) Instantiate(edit_state classdb.PackedSceneGenEditState) gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_state)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PackedScene.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -171,10 +155,9 @@ Returns [code]true[/code] if the scene file has nodes.
 */
 //go:nosplit
 func (self class) CanInstantiate() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PackedScene.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -183,13 +166,11 @@ func (self class) CanInstantiate() bool {
 Returns the [SceneState] representing the scene file contents.
 */
 //go:nosplit
-func (self class) GetState(ctx gd.Lifetime) gdclass.SceneState {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetState() gdclass.SceneState {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PackedScene.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.SceneState
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.SceneState{classdb.SceneState(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -211,7 +192,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("PackedScene", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("PackedScene", func(ptr gd.Object) any { return classdb.PackedScene(ptr) })}
 type GenEditState = classdb.PackedSceneGenEditState
 
 const (

@@ -2,7 +2,7 @@ package LinkButton
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
@@ -29,220 +29,183 @@ type GD = class
 type class [1]classdb.LinkButton
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("LinkButton"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LinkButton"))
+	return Go{classdb.LinkButton(object)}
 }
 
 func (self Go) Text() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetText(gc).String())
+		return string(class(self).GetText().String())
 }
 
 func (self Go) SetText(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetText(gc.String(value))
+	class(self).SetText(gd.NewString(value))
 }
 
 func (self Go) Underline() classdb.LinkButtonUnderlineMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.LinkButtonUnderlineMode(class(self).GetUnderlineMode())
 }
 
 func (self Go) SetUnderline(value classdb.LinkButtonUnderlineMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUnderlineMode(value)
 }
 
 func (self Go) Uri() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetUri(gc).String())
+		return string(class(self).GetUri().String())
 }
 
 func (self Go) SetUri(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetUri(gc.String(value))
+	class(self).SetUri(gd.NewString(value))
 }
 
 func (self Go) TextDirection() classdb.ControlTextDirection {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ControlTextDirection(class(self).GetTextDirection())
 }
 
 func (self Go) SetTextDirection(value classdb.ControlTextDirection) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextDirection(value)
 }
 
 func (self Go) Language() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetLanguage(gc).String())
+		return string(class(self).GetLanguage().String())
 }
 
 func (self Go) SetLanguage(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetLanguage(gc.String(value))
+	class(self).SetLanguage(gd.NewString(value))
 }
 
 func (self Go) StructuredTextBidiOverride() classdb.TextServerStructuredTextParser {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 func (self Go) SetStructuredTextBidiOverride(value classdb.TextServerStructuredTextParser) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
 func (self Go) StructuredTextBidiOverrideOptions() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Array(class(self).GetStructuredTextBidiOverrideOptions(gc))
+		return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
 func (self Go) SetStructuredTextBidiOverrideOptions(value gd.Array) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 
 //go:nosplit
 func (self class) SetText(text gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(text))
+	callframe.Arg(frame, discreet.Get(text))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetText(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetText() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTextDirection(direction classdb.ControlTextDirection)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextDirection() classdb.ControlTextDirection {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ControlTextDirection](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetLanguage(language gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(language))
+	callframe.Arg(frame, discreet.Get(language))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetLanguage(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLanguage() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUri(uri gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(uri))
+	callframe.Arg(frame, discreet.Get(uri))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_uri, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_uri, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetUri(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetUri() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_uri, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_uri, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUnderlineMode(underline_mode classdb.LinkButtonUnderlineMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, underline_mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_underline_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_underline_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetUnderlineMode() classdb.LinkButtonUnderlineMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.LinkButtonUnderlineMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_underline_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_underline_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser classdb.TextServerStructuredTextParser)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() classdb.TextServerStructuredTextParser {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.TextServerStructuredTextParser](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args gd.Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(args))
+	callframe.Arg(frame, discreet.Get(args))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions(ctx gd.Lifetime) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetStructuredTextBidiOverrideOptions() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LinkButton.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -268,7 +231,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsBaseButton(), name)
 	}
 }
-func init() {classdb.Register("LinkButton", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("LinkButton", func(ptr gd.Object) any { return classdb.LinkButton(ptr) })}
 type UnderlineMode = classdb.LinkButtonUnderlineMode
 
 const (

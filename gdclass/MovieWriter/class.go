@@ -2,7 +2,7 @@ package MovieWriter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Godot can record videos with non-real-time simulation. Like the [code]--fixed-fps[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url], this forces the reported [code]delta[/code] in [method Node._process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
@@ -53,12 +53,9 @@ Called when the audio sample rate used for recording the audio is requested by t
 */
 func (Go) _get_audio_mix_rate(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -67,12 +64,9 @@ Called when the audio speaker mode used for recording the audio is requested by 
 */
 func (Go) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) classdb.AudioServerSpeakerMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -87,13 +81,11 @@ func _handles_file(path):
 */
 func (Go) _handles_file(impl func(ptr unsafe.Pointer, path string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -102,15 +94,13 @@ Called once before the engine starts writing video and audio data. [param movie_
 */
 func (Go) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps int, base_path string) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args,0)
 		var fps = gd.UnsafeGet[gd.Int](p_args,1)
-		var base_path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var base_path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,2))
+		defer discreet.End(base_path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, movie_size, int(fps), base_path.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -119,15 +109,12 @@ Called at the end of every rendered frame. The [param frame_image] and [param au
 */
 func (Go) _write_frame(impl func(ptr unsafe.Pointer, frame_image gdclass.Image, audio_frame_block unsafe.Pointer) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var frame_image gdclass.Image
-		frame_image[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var frame_image = gdclass.Image{discreet.New[classdb.Image]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(frame_image[0])
 		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, frame_image, audio_frame_block)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -137,11 +124,8 @@ Called when the engine finishes writing. This occurs when the engine quits by pr
 */
 func (Go) _write_end(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -150,26 +134,16 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
 func (self Go) AddWriter(writer gdclass.MovieWriter) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddWriter(gc, writer)
+	class(self).AddWriter(writer)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.MovieWriter
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MovieWriter"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MovieWriter"))
+	return Go{classdb.MovieWriter(object)}
 }
 
 /*
@@ -177,12 +151,9 @@ Called when the audio sample rate used for recording the audio is requested by t
 */
 func (class) _get_audio_mix_rate(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -191,12 +162,9 @@ Called when the audio speaker mode used for recording the audio is requested by 
 */
 func (class) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) classdb.AudioServerSpeakerMode, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -211,13 +179,10 @@ func _handles_file(path):
 */
 func (class) _handles_file(impl func(ptr unsafe.Pointer, path gd.String) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -226,15 +191,12 @@ Called once before the engine starts writing video and audio data. [param movie_
 */
 func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args,0)
 		var fps = gd.UnsafeGet[gd.Int](p_args,1)
-		var base_path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,2))
+		var base_path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, movie_size, fps, base_path)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -243,15 +205,12 @@ Called at the end of every rendered frame. The [param frame_image] and [param au
 */
 func (class) _write_frame(impl func(ptr unsafe.Pointer, frame_image gdclass.Image, audio_frame_block unsafe.Pointer) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var frame_image gdclass.Image
-		frame_image[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var frame_image = gdclass.Image{discreet.New[classdb.Image]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(frame_image[0])
 		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, frame_image, audio_frame_block)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -261,11 +220,8 @@ Called when the engine finishes writing. This occurs when the engine quits by pr
 */
 func (class) _write_end(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -274,11 +230,11 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
 //go:nosplit
-func (self class) AddWriter(ctx gd.Lifetime, writer gdclass.MovieWriter)  {
+func (self class) AddWriter(writer gdclass.MovieWriter)  {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(writer[0].AsPointer())[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(writer[0])))
 	var r_ret callframe.Nil
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.MovieWriter.Bind_add_writer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MovieWriter.Bind_add_writer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsMovieWriter() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -307,4 +263,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("MovieWriter", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MovieWriter", func(ptr gd.Object) any { return classdb.MovieWriter(ptr) })}

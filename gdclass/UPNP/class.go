@@ -2,7 +2,7 @@ package UPNP
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class can be used to discover compatible [UPNPDevice]s on the local network and execute commands on them, like managing port mappings (for port forwarding/NAT traversal) and querying the local and remote network IP address. Note that methods on this class are synchronous and block the calling thread.
@@ -74,7 +74,6 @@ type Go [1]classdb.UPNP
 Returns the number of discovered [UPNPDevice]s.
 */
 func (self Go) GetDeviceCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetDeviceCount()))
 }
 
@@ -82,15 +81,13 @@ func (self Go) GetDeviceCount() int {
 Returns the [UPNPDevice] at the given [param index].
 */
 func (self Go) GetDevice(index int) gdclass.UPNPDevice {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.UPNPDevice(class(self).GetDevice(gc, gd.Int(index)))
+	return gdclass.UPNPDevice(class(self).GetDevice(gd.Int(index)))
 }
 
 /*
 Adds the given [UPNPDevice] to the list of discovered devices.
 */
 func (self Go) AddDevice(device gdclass.UPNPDevice) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddDevice(device)
 }
 
@@ -98,7 +95,6 @@ func (self Go) AddDevice(device gdclass.UPNPDevice) {
 Sets the device at [param index] from the list of discovered devices to [param device].
 */
 func (self Go) SetDevice(index int, device gdclass.UPNPDevice) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDevice(gd.Int(index), device)
 }
 
@@ -106,7 +102,6 @@ func (self Go) SetDevice(index int, device gdclass.UPNPDevice) {
 Removes the device at [param index] from the list of discovered devices.
 */
 func (self Go) RemoveDevice(index int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveDevice(gd.Int(index))
 }
 
@@ -114,7 +109,6 @@ func (self Go) RemoveDevice(index int) {
 Clears the list of discovered devices.
 */
 func (self Go) ClearDevices() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ClearDevices()
 }
 
@@ -122,8 +116,7 @@ func (self Go) ClearDevices() {
 Returns the default gateway. That is the first discovered [UPNPDevice] that is also a valid IGD (InternetGatewayDevice).
 */
 func (self Go) GetGateway() gdclass.UPNPDevice {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.UPNPDevice(class(self).GetGateway(gc))
+	return gdclass.UPNPDevice(class(self).GetGateway())
 }
 
 /*
@@ -132,16 +125,14 @@ Filters for IGD (InternetGatewayDevice) type devices by default, as those manage
 See [enum UPNPResult] for possible return values.
 */
 func (self Go) Discover() int {
-	gc := gd.GarbageCollector(); _ = gc
-	return int(int(class(self).Discover(gd.Int(2000), gd.Int(2), gc.String("InternetGatewayDevice"))))
+	return int(int(class(self).Discover(gd.Int(2000), gd.Int(2), gd.NewString("InternetGatewayDevice"))))
 }
 
 /*
 Returns the external [IP] address of the default gateway (see [method get_gateway]) as string. Returns an empty string on error.
 */
 func (self Go) QueryExternalAddress() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).QueryExternalAddress(gc).String())
+	return string(class(self).QueryExternalAddress().String())
 }
 
 /*
@@ -153,63 +144,46 @@ The mapping's lease [param duration] can be limited by specifying a duration in 
 See [enum UPNPResult] for possible return values.
 */
 func (self Go) AddPortMapping(port int) int {
-	gc := gd.GarbageCollector(); _ = gc
-	return int(int(class(self).AddPortMapping(gd.Int(port), gd.Int(0), gc.String(""), gc.String("UDP"), gd.Int(0))))
+	return int(int(class(self).AddPortMapping(gd.Int(port), gd.Int(0), gd.NewString(""), gd.NewString("UDP"), gd.Int(0))))
 }
 
 /*
 Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
 */
 func (self Go) DeletePortMapping(port int) int {
-	gc := gd.GarbageCollector(); _ = gc
-	return int(int(class(self).DeletePortMapping(gd.Int(port), gc.String("UDP"))))
+	return int(int(class(self).DeletePortMapping(gd.Int(port), gd.NewString("UDP"))))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.UPNP
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("UPNP"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UPNP"))
+	return Go{classdb.UPNP(object)}
 }
 
 func (self Go) DiscoverMulticastIf() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetDiscoverMulticastIf(gc).String())
+		return string(class(self).GetDiscoverMulticastIf().String())
 }
 
 func (self Go) SetDiscoverMulticastIf(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDiscoverMulticastIf(gc.String(value))
+	class(self).SetDiscoverMulticastIf(gd.NewString(value))
 }
 
 func (self Go) DiscoverLocalPort() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetDiscoverLocalPort()))
 }
 
 func (self Go) SetDiscoverLocalPort(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDiscoverLocalPort(gd.Int(value))
 }
 
 func (self Go) DiscoverIpv6() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsDiscoverIpv6())
 }
 
 func (self Go) SetDiscoverIpv6(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDiscoverIpv6(value)
 }
 
@@ -218,10 +192,9 @@ Returns the number of discovered [UPNPDevice]s.
 */
 //go:nosplit
 func (self class) GetDeviceCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_get_device_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -230,14 +203,12 @@ func (self class) GetDeviceCount() gd.Int {
 Returns the [UPNPDevice] at the given [param index].
 */
 //go:nosplit
-func (self class) GetDevice(ctx gd.Lifetime, index gd.Int) gdclass.UPNPDevice {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetDevice(index gd.Int) gdclass.UPNPDevice {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.UPNPDevice
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.UPNPDevice{classdb.UPNPDevice(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -246,11 +217,10 @@ Adds the given [UPNPDevice] to the list of discovered devices.
 */
 //go:nosplit
 func (self class) AddDevice(device gdclass.UPNPDevice)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(device[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(device[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_add_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -258,12 +228,11 @@ Sets the device at [param index] from the list of discovered devices to [param d
 */
 //go:nosplit
 func (self class) SetDevice(index gd.Int, device gdclass.UPNPDevice)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, mmm.Get(device[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(device[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_set_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -271,11 +240,10 @@ Removes the device at [param index] from the list of discovered devices.
 */
 //go:nosplit
 func (self class) RemoveDevice(index gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_remove_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_remove_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -283,23 +251,20 @@ Clears the list of discovered devices.
 */
 //go:nosplit
 func (self class) ClearDevices()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_clear_devices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_clear_devices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the default gateway. That is the first discovered [UPNPDevice] that is also a valid IGD (InternetGatewayDevice).
 */
 //go:nosplit
-func (self class) GetGateway(ctx gd.Lifetime) gdclass.UPNPDevice {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetGateway() gdclass.UPNPDevice {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_get_gateway, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.UPNPDevice
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_gateway, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.UPNPDevice{classdb.UPNPDevice(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -310,13 +275,12 @@ See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
 func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter gd.String) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, ttl)
-	callframe.Arg(frame, mmm.Get(device_filter))
+	callframe.Arg(frame, discreet.Get(device_filter))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_discover, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_discover, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -325,12 +289,11 @@ func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter gd.String) 
 Returns the external [IP] address of the default gateway (see [method get_gateway]) as string. Returns an empty string on error.
 */
 //go:nosplit
-func (self class) QueryExternalAddress(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) QueryExternalAddress() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -344,15 +307,14 @@ See [enum UPNPResult] for possible return values.
 */
 //go:nosplit
 func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc gd.String, proto gd.String, duration gd.Int) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, port_internal)
-	callframe.Arg(frame, mmm.Get(desc))
-	callframe.Arg(frame, mmm.Get(proto))
+	callframe.Arg(frame, discreet.Get(desc))
+	callframe.Arg(frame, discreet.Get(proto))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -362,69 +324,62 @@ Deletes the port mapping for the given port and protocol combination on the defa
 */
 //go:nosplit
 func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, mmm.Get(proto))
+	callframe.Arg(frame, discreet.Get(proto))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDiscoverMulticastIf(m_if gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(m_if))
+	callframe.Arg(frame, discreet.Get(m_if))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_set_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetDiscoverMulticastIf(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetDiscoverMulticastIf() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_get_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDiscoverLocalPort(port gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_set_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDiscoverLocalPort() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_get_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDiscoverIpv6(ipv6 bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, ipv6)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_set_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsDiscoverIpv6() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UPNP.Bind_is_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_is_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -445,7 +400,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("UPNP", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("UPNP", func(ptr gd.Object) any { return classdb.UPNP(ptr) })}
 type UPNPResult = classdb.UPNPUPNPResult
 
 const (

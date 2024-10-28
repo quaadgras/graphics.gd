@@ -1,16 +1,6 @@
 package golang
 
-import (
-	"unsafe"
-
-	"grow.graphics/gd"
-
-	"grow.graphics/gd/gdclass/Script"
-	"grow.graphics/gd/gdclass/ScriptExtension"
-	"grow.graphics/gd/gdclass/ScriptLanguage"
-)
-
-type GoScript struct {
+/*type GoScript struct {
 	gd.Class[GoScript, ScriptExtension.GD] `gd:"GoScript"`
 }
 
@@ -151,3 +141,4 @@ func (script *GoScript) SetSourceCode(code gd.String) {
 }
 
 func (script *GoScript) UpdateExports() {}
+*/

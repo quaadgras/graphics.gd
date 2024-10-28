@@ -3,7 +3,7 @@ package Performance
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class provides access to a number of different monitors related to performance, such as memory usage, draw calls, and FPS. These are the same as the values displayed in the [b]Monitor[/b] tab in the editor's [b]Debugger[/b] panel. By using the [method get_monitor] method of this class, you can access this data from your code.
@@ -26,8 +26,7 @@ You can add custom monitors using the [method add_custom_monitor] method. Custom
 var self gdclass.Performance
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.Performance)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.Performance)
 	self = *(*gdclass.Performance)(unsafe.Pointer(&obj))
 }
 
@@ -44,7 +43,6 @@ GD.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS
 See [method get_custom_monitor] to query custom performance monitors' values.
 */
 func GetMonitor(monitor classdb.PerformanceMonitor) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).GetMonitor(monitor)))
 }
@@ -102,43 +100,38 @@ The debugger calls the callable to get the value of custom monitor. The callable
 Callables are called with arguments supplied in argument array.
 */
 func AddCustomMonitor(id string, callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gc.StringName(id), callable, ([1]gd.Array{}[0]))
+	class(self).AddCustomMonitor(gd.NewStringName(id), callable, ([1]gd.Array{}[0]))
 }
 
 /*
 Removes the custom monitor with given [param id]. Prints an error if the given [param id] is already absent.
 */
 func RemoveCustomMonitor(id string) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).RemoveCustomMonitor(gc.StringName(id))
+	class(self).RemoveCustomMonitor(gd.NewStringName(id))
 }
 
 /*
 Returns [code]true[/code] if custom monitor with the given [param id] is present, [code]false[/code] otherwise.
 */
 func HasCustomMonitor(id string) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return bool(class(self).HasCustomMonitor(gc.StringName(id)))
+	return bool(class(self).HasCustomMonitor(gd.NewStringName(id)))
 }
 
 /*
 Returns the value of custom monitor with given [param id]. The callable is called to get the value of custom monitor. See also [method has_custom_monitor]. Prints an error if the given [param id] is absent.
 */
 func GetCustomMonitor(id string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Variant(class(self).GetCustomMonitor(gc, gc.StringName(id)))
+	return gd.Variant(class(self).GetCustomMonitor(gd.NewStringName(id)))
 }
 
 /*
 Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [method Time.get_ticks_usec] when the monitor is updated.
 */
 func GetMonitorModificationTime() int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).GetMonitorModificationTime()))
 }
@@ -146,19 +139,14 @@ func GetMonitorModificationTime() int {
 /*
 Returns the names of active custom monitors in an [Array].
 */
-func GetCustomMonitorNames() gd.ArrayOf[gd.StringName] {
-	gc := gd.GarbageCollector(); _ = gc
+func GetCustomMonitorNames() gd.Array {
 	once.Do(singleton)
-	return gd.ArrayOf[gd.StringName](class(self).GetCustomMonitorNames(gc))
+	return gd.Array(class(self).GetCustomMonitorNames())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func GD() class { once.Do(singleton); return self }
 type class [1]classdb.Performance
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 /*
 Returns the value of one of the available built-in monitors. You should provide one of the [enum Monitor] constants as the argument, like this:
@@ -174,11 +162,10 @@ See [method get_custom_monitor] to query custom performance monitors' values.
 */
 //go:nosplit
 func (self class) GetMonitor(monitor classdb.PerformanceMonitor) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, monitor)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_get_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -237,13 +224,12 @@ Callables are called with arguments supplied in argument array.
 */
 //go:nosplit
 func (self class) AddCustomMonitor(id gd.StringName, callable gd.Callable, arguments gd.Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(id))
-	callframe.Arg(frame, mmm.Get(callable))
-	callframe.Arg(frame, mmm.Get(arguments))
+	callframe.Arg(frame, discreet.Get(id))
+	callframe.Arg(frame, discreet.Get(callable))
+	callframe.Arg(frame, discreet.Get(arguments))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -251,11 +237,10 @@ Removes the custom monitor with given [param id]. Prints an error if the given [
 */
 //go:nosplit
 func (self class) RemoveCustomMonitor(id gd.StringName)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(id))
+	callframe.Arg(frame, discreet.Get(id))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_remove_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_remove_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -263,11 +248,10 @@ Returns [code]true[/code] if custom monitor with the given [param id] is present
 */
 //go:nosplit
 func (self class) HasCustomMonitor(id gd.StringName) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(id))
+	callframe.Arg(frame, discreet.Get(id))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_has_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_has_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -276,13 +260,12 @@ func (self class) HasCustomMonitor(id gd.StringName) bool {
 Returns the value of custom monitor with given [param id]. The callable is called to get the value of custom monitor. See also [method has_custom_monitor]. Prints an error if the given [param id] is absent.
 */
 //go:nosplit
-func (self class) GetCustomMonitor(ctx gd.Lifetime, id gd.StringName) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCustomMonitor(id gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(id))
+	callframe.Arg(frame, discreet.Get(id))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -291,10 +274,9 @@ Returns the last tick in which custom monitor was added/removed (in microseconds
 */
 //go:nosplit
 func (self class) GetMonitorModificationTime() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_get_monitor_modification_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor_modification_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -303,21 +285,20 @@ func (self class) GetMonitorModificationTime() gd.Int {
 Returns the names of active custom monitors in an [Array].
 */
 //go:nosplit
-func (self class) GetCustomMonitorNames(ctx gd.Lifetime) gd.ArrayOf[gd.StringName] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCustomMonitorNames() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gd.StringName](ret)
+	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("Performance", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Performance", func(ptr gd.Object) any { return classdb.Performance(ptr) })}
 type Monitor = classdb.PerformanceMonitor
 
 const (

@@ -3,7 +3,7 @@ package PhysicsServer3D
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 PhysicsServer3D is the server responsible for all 3D physics. It can directly create and manipulate all physics objects:
@@ -29,57 +29,46 @@ Physics objects in [PhysicsServer3D] may be created and manipulated independentl
 var self gdclass.PhysicsServer3D
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.PhysicsServer3D)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.PhysicsServer3D)
 	self = *(*gdclass.PhysicsServer3D)(unsafe.Pointer(&obj))
 }
 func WorldBoundaryShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).WorldBoundaryShapeCreate())
 }
 func SeparationRayShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).SeparationRayShapeCreate())
 }
 func SphereShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).SphereShapeCreate())
 }
 func BoxShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).BoxShapeCreate())
 }
 func CapsuleShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).CapsuleShapeCreate())
 }
 func CylinderShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).CylinderShapeCreate())
 }
 func ConvexPolygonShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).ConvexPolygonShapeCreate())
 }
 func ConcavePolygonShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).ConcavePolygonShapeCreate())
 }
 func HeightmapShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).HeightmapShapeCreate())
 }
 func CustomShapeCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).CustomShapeCreate())
 }
@@ -88,7 +77,6 @@ func CustomShapeCreate() gd.RID {
 Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [method shape_get_type].
 */
 func ShapeSetData(shape gd.RID, data gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).ShapeSetData(shape, data)
 }
@@ -98,7 +86,6 @@ Sets the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics.
 */
 func ShapeSetMargin(shape gd.RID, margin float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).ShapeSetMargin(shape, gd.Float(margin))
 }
@@ -107,7 +94,6 @@ func ShapeSetMargin(shape gd.RID, margin float64) {
 Returns the type of shape (see [enum ShapeType] constants).
 */
 func ShapeGetType(shape gd.RID) classdb.PhysicsServer3DShapeType {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return classdb.PhysicsServer3DShapeType(class(self).ShapeGetType(shape))
 }
@@ -116,9 +102,8 @@ func ShapeGetType(shape gd.RID) classdb.PhysicsServer3DShapeType {
 Returns the shape data.
 */
 func ShapeGetData(shape gd.RID) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Variant(class(self).ShapeGetData(gc, shape))
+	return gd.Variant(class(self).ShapeGetData(shape))
 }
 
 /*
@@ -126,7 +111,6 @@ Returns the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics, so will always return [code]0[/code].
 */
 func ShapeGetMargin(shape gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).ShapeGetMargin(shape)))
 }
@@ -135,7 +119,6 @@ func ShapeGetMargin(shape gd.RID) float64 {
 Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [method area_set_space], or to a body with [method body_set_space].
 */
 func SpaceCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).SpaceCreate())
 }
@@ -144,7 +127,6 @@ func SpaceCreate() gd.RID {
 Marks a space as active. It will not have an effect, unless it is assigned to an area or body.
 */
 func SpaceSetActive(space gd.RID, active bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SpaceSetActive(space, active)
 }
@@ -153,7 +135,6 @@ func SpaceSetActive(space gd.RID, active bool) {
 Returns whether the space is active.
 */
 func SpaceIsActive(space gd.RID) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).SpaceIsActive(space))
 }
@@ -162,7 +143,6 @@ func SpaceIsActive(space gd.RID) bool {
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
 func SpaceSetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SpaceSetParam(space, param, gd.Float(value))
 }
@@ -171,7 +151,6 @@ func SpaceSetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter, va
 Returns the value of a space parameter.
 */
 func SpaceGetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SpaceGetParam(space, param)))
 }
@@ -180,9 +159,8 @@ func SpaceGetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter) fl
 Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
 func SpaceGetDirectState(space gd.RID) gdclass.PhysicsDirectSpaceState3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.PhysicsDirectSpaceState3D(class(self).SpaceGetDirectState(gc, space))
+	return gdclass.PhysicsDirectSpaceState3D(class(self).SpaceGetDirectState(space))
 }
 
 /*
@@ -190,7 +168,6 @@ Creates a 3D area object in the physics server, and returns the [RID] that ident
 Use [method area_add_shape] to add shapes to it, use [method area_set_transform] to set its transform, and use [method area_set_space] to add the area to a space. If you want the area to be detectable use [method area_set_monitorable].
 */
 func AreaCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).AreaCreate())
 }
@@ -199,7 +176,6 @@ func AreaCreate() gd.RID {
 Assigns a space to the area.
 */
 func AreaSetSpace(area gd.RID, space gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetSpace(area, space)
 }
@@ -208,7 +184,6 @@ func AreaSetSpace(area gd.RID, space gd.RID) {
 Returns the space assigned to the area.
 */
 func AreaGetSpace(area gd.RID) gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).AreaGetSpace(area))
 }
@@ -217,7 +192,6 @@ func AreaGetSpace(area gd.RID) gd.RID {
 Adds a shape to the area, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
 func AreaAddShape(area gd.RID, shape gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaAddShape(area, shape, gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), false)
 }
@@ -226,7 +200,6 @@ func AreaAddShape(area gd.RID, shape gd.RID) {
 Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [RID].
 */
 func AreaSetShape(area gd.RID, shape_idx int, shape gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetShape(area, gd.Int(shape_idx), shape)
 }
@@ -235,12 +208,10 @@ func AreaSetShape(area gd.RID, shape_idx int, shape gd.RID) {
 Sets the transform matrix for an area shape.
 */
 func AreaSetShapeTransform(area gd.RID, shape_idx int, transform gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetShapeTransform(area, gd.Int(shape_idx), transform)
 }
 func AreaSetShapeDisabled(area gd.RID, shape_idx int, disabled bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetShapeDisabled(area, gd.Int(shape_idx), disabled)
 }
@@ -249,7 +220,6 @@ func AreaSetShapeDisabled(area gd.RID, shape_idx int, disabled bool) {
 Returns the number of shapes assigned to an area.
 */
 func AreaGetShapeCount(area gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).AreaGetShapeCount(area)))
 }
@@ -258,7 +228,6 @@ func AreaGetShapeCount(area gd.RID) int {
 Returns the [RID] of the nth shape of an area.
 */
 func AreaGetShape(area gd.RID, shape_idx int) gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).AreaGetShape(area, gd.Int(shape_idx)))
 }
@@ -267,7 +236,6 @@ func AreaGetShape(area gd.RID, shape_idx int) gd.RID {
 Returns the transform matrix of a shape within an area.
 */
 func AreaGetShapeTransform(area gd.RID, shape_idx int) gd.Transform3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Transform3D(class(self).AreaGetShapeTransform(area, gd.Int(shape_idx)))
 }
@@ -276,7 +244,6 @@ func AreaGetShapeTransform(area gd.RID, shape_idx int) gd.Transform3D {
 Removes a shape from an area. It does not delete the shape, so it can be reassigned later.
 */
 func AreaRemoveShape(area gd.RID, shape_idx int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaRemoveShape(area, gd.Int(shape_idx))
 }
@@ -285,7 +252,6 @@ func AreaRemoveShape(area gd.RID, shape_idx int) {
 Removes all shapes from an area. It does not delete the shapes, so they can be reassigned later.
 */
 func AreaClearShapes(area gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaClearShapes(area)
 }
@@ -294,7 +260,6 @@ func AreaClearShapes(area gd.RID) {
 Assigns the area to one or many physics layers.
 */
 func AreaSetCollisionLayer(area gd.RID, layer int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetCollisionLayer(area, gd.Int(layer))
 }
@@ -303,7 +268,6 @@ func AreaSetCollisionLayer(area gd.RID, layer int) {
 Returns the physics layer or layers an area belongs to.
 */
 func AreaGetCollisionLayer(area gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionLayer(area)))
 }
@@ -312,7 +276,6 @@ func AreaGetCollisionLayer(area gd.RID) int {
 Sets which physics layers the area will monitor.
 */
 func AreaSetCollisionMask(area gd.RID, mask int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetCollisionMask(area, gd.Int(mask))
 }
@@ -321,7 +284,6 @@ func AreaSetCollisionMask(area gd.RID, mask int) {
 Returns the physics layer or layers an area can contact with.
 */
 func AreaGetCollisionMask(area gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionMask(area)))
 }
@@ -330,7 +292,6 @@ func AreaGetCollisionMask(area gd.RID) int {
 Sets the value for an area parameter. A list of available parameters is on the [enum AreaParameter] constants.
 */
 func AreaSetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetParam(area, param, value)
 }
@@ -339,7 +300,6 @@ func AreaSetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter, value
 Sets the transform matrix for an area.
 */
 func AreaSetTransform(area gd.RID, transform gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetTransform(area, transform)
 }
@@ -348,16 +308,14 @@ func AreaSetTransform(area gd.RID, transform gd.Transform3D) {
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
 func AreaGetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Variant(class(self).AreaGetParam(gc, area, param))
+	return gd.Variant(class(self).AreaGetParam(area, param))
 }
 
 /*
 Returns the transform matrix for an area.
 */
 func AreaGetTransform(area gd.RID) gd.Transform3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Transform3D(class(self).AreaGetTransform(area))
 }
@@ -366,7 +324,6 @@ func AreaGetTransform(area gd.RID) gd.Transform3D {
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 func AreaAttachObjectInstanceId(area gd.RID, id int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaAttachObjectInstanceId(area, gd.Int(id))
 }
@@ -375,7 +332,6 @@ func AreaAttachObjectInstanceId(area gd.RID, id int) {
 Gets the instance ID of the object the area is assigned to.
 */
 func AreaGetObjectInstanceId(area gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).AreaGetObjectInstanceId(area)))
 }
@@ -390,7 +346,6 @@ Sets the area's body monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
 func AreaSetMonitorCallback(area gd.RID, callback gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetMonitorCallback(area, callback)
 }
@@ -405,12 +360,10 @@ Sets the area's area monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
 func AreaSetAreaMonitorCallback(area gd.RID, callback gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetAreaMonitorCallback(area, callback)
 }
 func AreaSetMonitorable(area gd.RID, monitorable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetMonitorable(area, monitorable)
 }
@@ -419,7 +372,6 @@ func AreaSetMonitorable(area gd.RID, monitorable bool) {
 Sets object pickable with rays.
 */
 func AreaSetRayPickable(area gd.RID, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AreaSetRayPickable(area, enable)
 }
@@ -429,7 +381,6 @@ Creates a 3D body object in the physics server, and returns the [RID] that ident
 Use [method body_add_shape] to add shapes to it, use [method body_set_state] to set its transform, and use [method body_set_space] to add the body to a space.
 */
 func BodyCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).BodyCreate())
 }
@@ -438,7 +389,6 @@ func BodyCreate() gd.RID {
 Assigns a space to the body (see [method space_create]).
 */
 func BodySetSpace(body gd.RID, space gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetSpace(body, space)
 }
@@ -447,7 +397,6 @@ func BodySetSpace(body gd.RID, space gd.RID) {
 Returns the [RID] of the space assigned to a body.
 */
 func BodyGetSpace(body gd.RID) gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).BodyGetSpace(body))
 }
@@ -456,7 +405,6 @@ func BodyGetSpace(body gd.RID) gd.RID {
 Sets the body mode, from one of the [enum BodyMode] constants.
 */
 func BodySetMode(body gd.RID, mode classdb.PhysicsServer3DBodyMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetMode(body, mode)
 }
@@ -465,7 +413,6 @@ func BodySetMode(body gd.RID, mode classdb.PhysicsServer3DBodyMode) {
 Returns the body mode.
 */
 func BodyGetMode(body gd.RID) classdb.PhysicsServer3DBodyMode {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return classdb.PhysicsServer3DBodyMode(class(self).BodyGetMode(body))
 }
@@ -474,7 +421,6 @@ func BodyGetMode(body gd.RID) classdb.PhysicsServer3DBodyMode {
 Sets the physics layer or layers a body belongs to.
 */
 func BodySetCollisionLayer(body gd.RID, layer int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -483,7 +429,6 @@ func BodySetCollisionLayer(body gd.RID, layer int) {
 Returns the physics layer or layers a body belongs to.
 */
 func BodyGetCollisionLayer(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionLayer(body)))
 }
@@ -492,7 +437,6 @@ func BodyGetCollisionLayer(body gd.RID) int {
 Sets the physics layer or layers a body can collide with.
 */
 func BodySetCollisionMask(body gd.RID, mask int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetCollisionMask(body, gd.Int(mask))
 }
@@ -501,7 +445,6 @@ func BodySetCollisionMask(body gd.RID, mask int) {
 Returns the physics layer or layers a body can collide with.
 */
 func BodyGetCollisionMask(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionMask(body)))
 }
@@ -510,7 +453,6 @@ func BodyGetCollisionMask(body gd.RID) int {
 Sets the body's collision priority.
 */
 func BodySetCollisionPriority(body gd.RID, priority float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetCollisionPriority(body, gd.Float(priority))
 }
@@ -519,7 +461,6 @@ func BodySetCollisionPriority(body gd.RID, priority float64) {
 Returns the body's collision priority.
 */
 func BodyGetCollisionPriority(body gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).BodyGetCollisionPriority(body)))
 }
@@ -528,7 +469,6 @@ func BodyGetCollisionPriority(body gd.RID) float64 {
 Adds a shape to the body, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
 func BodyAddShape(body gd.RID, shape gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyAddShape(body, shape, gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), false)
 }
@@ -537,7 +477,6 @@ func BodyAddShape(body gd.RID, shape gd.RID) {
 Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [RID].
 */
 func BodySetShape(body gd.RID, shape_idx int, shape gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetShape(body, gd.Int(shape_idx), shape)
 }
@@ -546,12 +485,10 @@ func BodySetShape(body gd.RID, shape_idx int, shape gd.RID) {
 Sets the transform matrix for a body shape.
 */
 func BodySetShapeTransform(body gd.RID, shape_idx int, transform gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetShapeTransform(body, gd.Int(shape_idx), transform)
 }
 func BodySetShapeDisabled(body gd.RID, shape_idx int, disabled bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetShapeDisabled(body, gd.Int(shape_idx), disabled)
 }
@@ -560,7 +497,6 @@ func BodySetShapeDisabled(body gd.RID, shape_idx int, disabled bool) {
 Returns the number of shapes assigned to a body.
 */
 func BodyGetShapeCount(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).BodyGetShapeCount(body)))
 }
@@ -569,7 +505,6 @@ func BodyGetShapeCount(body gd.RID) int {
 Returns the [RID] of the nth shape of a body.
 */
 func BodyGetShape(body gd.RID, shape_idx int) gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).BodyGetShape(body, gd.Int(shape_idx)))
 }
@@ -578,7 +513,6 @@ func BodyGetShape(body gd.RID, shape_idx int) gd.RID {
 Returns the transform matrix of a body shape.
 */
 func BodyGetShapeTransform(body gd.RID, shape_idx int) gd.Transform3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Transform3D(class(self).BodyGetShapeTransform(body, gd.Int(shape_idx)))
 }
@@ -587,7 +521,6 @@ func BodyGetShapeTransform(body gd.RID, shape_idx int) gd.Transform3D {
 Removes a shape from a body. The shape is not deleted, so it can be reused afterwards.
 */
 func BodyRemoveShape(body gd.RID, shape_idx int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyRemoveShape(body, gd.Int(shape_idx))
 }
@@ -596,7 +529,6 @@ func BodyRemoveShape(body gd.RID, shape_idx int) {
 Removes all shapes from a body.
 */
 func BodyClearShapes(body gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyClearShapes(body)
 }
@@ -605,7 +537,6 @@ func BodyClearShapes(body gd.RID) {
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 func BodyAttachObjectInstanceId(body gd.RID, id int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyAttachObjectInstanceId(body, gd.Int(id))
 }
@@ -614,7 +545,6 @@ func BodyAttachObjectInstanceId(body gd.RID, id int) {
 Gets the instance ID of the object the area is assigned to.
 */
 func BodyGetObjectInstanceId(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).BodyGetObjectInstanceId(body)))
 }
@@ -624,7 +554,6 @@ If [code]true[/code], the continuous collision detection mode is enabled.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 func BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetEnableContinuousCollisionDetection(body, enable)
 }
@@ -633,7 +562,6 @@ func BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool) {
 If [code]true[/code], the continuous collision detection mode is enabled.
 */
 func BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).BodyIsContinuousCollisionDetectionEnabled(body))
 }
@@ -642,7 +570,6 @@ func BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
 Sets a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 func BodySetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetParam(body, param, value)
 }
@@ -651,16 +578,14 @@ func BodySetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter, value
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 func BodyGetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Variant(class(self).BodyGetParam(gc, body, param))
+	return gd.Variant(class(self).BodyGetParam(body, param))
 }
 
 /*
 Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [method body_set_param].
 */
 func BodyResetMassProperties(body gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyResetMassProperties(body)
 }
@@ -669,7 +594,6 @@ func BodyResetMassProperties(body gd.RID) {
 Sets a body state (see [enum BodyState] constants).
 */
 func BodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetState(body, state, value)
 }
@@ -678,9 +602,8 @@ func BodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, value gd.
 Returns a body state.
 */
 func BodyGetState(body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Variant(class(self).BodyGetState(gc, body, state))
+	return gd.Variant(class(self).BodyGetState(body, state))
 }
 
 /*
@@ -689,7 +612,6 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method body_apply_impulse] at the body's center of mass.
 */
 func BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyApplyCentralImpulse(body, impulse)
 }
@@ -700,7 +622,6 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 func BodyApplyImpulse(body gd.RID, impulse gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyApplyImpulse(body, impulse, gd.Vector3{0, 0, 0})
 }
@@ -710,7 +631,6 @@ Applies a rotational impulse to the body without affecting the position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
 func BodyApplyTorqueImpulse(body gd.RID, impulse gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyApplyTorqueImpulse(body, impulse)
 }
@@ -720,7 +640,6 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method body_apply_force] at the body's center of mass.
 */
 func BodyApplyCentralForce(body gd.RID, force gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyApplyCentralForce(body, force)
 }
@@ -730,7 +649,6 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 func BodyApplyForce(body gd.RID, force gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyApplyForce(body, force, gd.Vector3{0, 0, 0})
 }
@@ -739,7 +657,6 @@ func BodyApplyForce(body gd.RID, force gd.Vector3) {
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 */
 func BodyApplyTorque(body gd.RID, torque gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyApplyTorque(body, torque)
 }
@@ -749,7 +666,6 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method body_add_constant_force] at the body's center of mass.
 */
 func BodyAddConstantCentralForce(body gd.RID, force gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyAddConstantCentralForce(body, force)
 }
@@ -759,7 +675,6 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 func BodyAddConstantForce(body gd.RID, force gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyAddConstantForce(body, force, gd.Vector3{0, 0, 0})
 }
@@ -768,7 +683,6 @@ func BodyAddConstantForce(body gd.RID, force gd.Vector3) {
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]body_set_constant_torque(body, Vector3(0, 0, 0))[/code].
 */
 func BodyAddConstantTorque(body gd.RID, torque gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyAddConstantTorque(body, torque)
 }
@@ -778,7 +692,6 @@ Sets the body's total constant positional forces applied during each physics upd
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
 func BodySetConstantForce(body gd.RID, force gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetConstantForce(body, force)
 }
@@ -788,7 +701,6 @@ Returns the body's total constant positional forces applied during each physics 
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
 func BodyGetConstantForce(body gd.RID) gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).BodyGetConstantForce(body))
 }
@@ -798,7 +710,6 @@ Sets the body's total constant rotational forces applied during each physics upd
 See [method body_add_constant_torque].
 */
 func BodySetConstantTorque(body gd.RID, torque gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetConstantTorque(body, torque)
 }
@@ -808,7 +719,6 @@ Returns the body's total constant rotational forces applied during each physics 
 See [method body_add_constant_torque].
 */
 func BodyGetConstantTorque(body gd.RID) gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).BodyGetConstantTorque(body))
 }
@@ -817,17 +727,14 @@ func BodyGetConstantTorque(body gd.RID) gd.Vector3 {
 Sets an axis velocity. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
 func BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetAxisVelocity(body, axis_velocity)
 }
 func BodySetAxisLock(body gd.RID, axis classdb.PhysicsServer3DBodyAxis, lock bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetAxisLock(body, axis, lock)
 }
 func BodyIsAxisLocked(body gd.RID, axis classdb.PhysicsServer3DBodyAxis) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).BodyIsAxisLocked(body, axis))
 }
@@ -836,7 +743,6 @@ func BodyIsAxisLocked(body gd.RID, axis classdb.PhysicsServer3DBodyAxis) bool {
 Adds a body to the list of bodies exempt from collisions.
 */
 func BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyAddCollisionException(body, excepted_body)
 }
@@ -846,7 +752,6 @@ Removes a body from the list of bodies exempt from collisions.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 func BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodyRemoveCollisionException(body, excepted_body)
 }
@@ -855,7 +760,6 @@ func BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
 Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies. This is enabled by setting the maximum number of contacts reported to a number greater than 0.
 */
 func BodySetMaxContactsReported(body gd.RID, amount int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetMaxContactsReported(body, gd.Int(amount))
 }
@@ -864,7 +768,6 @@ func BodySetMaxContactsReported(body gd.RID, amount int) {
 Returns the maximum contacts that can be reported. See [method body_set_max_contacts_reported].
 */
 func BodyGetMaxContactsReported(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).BodyGetMaxContactsReported(body)))
 }
@@ -874,7 +777,6 @@ Sets whether the body omits the standard force integration. If [param enable] is
 This method is called when the property [member RigidBody3D.custom_integrator] is set.
 */
 func BodySetOmitForceIntegration(body gd.RID, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetOmitForceIntegration(body, enable)
 }
@@ -883,7 +785,6 @@ func BodySetOmitForceIntegration(body gd.RID, enable bool) {
 Returns [code]true[/code] if the body is omitting the standard force integration. See [method body_set_omit_force_integration].
 */
 func BodyIsOmittingForceIntegration(body gd.RID) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).BodyIsOmittingForceIntegration(body))
 }
@@ -895,7 +796,6 @@ The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
 func BodySetStateSyncCallback(body gd.RID, callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetStateSyncCallback(body, callable)
 }
@@ -909,16 +809,14 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
 func BodySetForceIntegrationCallback(body gd.RID, callable gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	class(self).BodySetForceIntegrationCallback(body, callable, gc.Variant(([1]gd.Variant{}[0])))
+	class(self).BodySetForceIntegrationCallback(body, callable, gd.NewVariant(([1]gd.Variant{}[0])))
 }
 
 /*
 Sets the body pickable with rays if [param enable] is set.
 */
 func BodySetRayPickable(body gd.RID, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BodySetRayPickable(body, enable)
 }
@@ -927,7 +825,6 @@ func BodySetRayPickable(body gd.RID, enable bool) {
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
 func BodyTestMotion(body gd.RID, parameters gdclass.PhysicsTestMotionParameters3D) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).BodyTestMotion(body, parameters, ([1]gdclass.PhysicsTestMotionResult3D{}[0])))
 }
@@ -936,16 +833,14 @@ func BodyTestMotion(body gd.RID, parameters gdclass.PhysicsTestMotionParameters3
 Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if the body is destroyed or removed from the physics space.
 */
 func BodyGetDirectState(body gd.RID) gdclass.PhysicsDirectBodyState3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.PhysicsDirectBodyState3D(class(self).BodyGetDirectState(gc, body))
+	return gdclass.PhysicsDirectBodyState3D(class(self).BodyGetDirectState(body))
 }
 
 /*
 Creates a new soft body and returns its internal [RID].
 */
 func SoftBodyCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).SoftBodyCreate())
 }
@@ -954,7 +849,6 @@ func SoftBodyCreate() gd.RID {
 Requests that the physics server updates the rendering server with the latest positions of the given soft body's points through the [param rendering_server_handler] interface.
 */
 func SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler gdclass.PhysicsServer3DRenderingServerHandler) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodyUpdateRenderingServer(body, rendering_server_handler)
 }
@@ -963,7 +857,6 @@ func SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler gdclass
 Assigns a space to the given soft body (see [method space_create]).
 */
 func SoftBodySetSpace(body gd.RID, space gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetSpace(body, space)
 }
@@ -972,7 +865,6 @@ func SoftBodySetSpace(body gd.RID, space gd.RID) {
 Returns the [RID] of the space assigned to the given soft body.
 */
 func SoftBodyGetSpace(body gd.RID) gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).SoftBodyGetSpace(body))
 }
@@ -981,7 +873,6 @@ func SoftBodyGetSpace(body gd.RID) gd.RID {
 Sets the mesh of the given soft body.
 */
 func SoftBodySetMesh(body gd.RID, mesh gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetMesh(body, mesh)
 }
@@ -990,7 +881,6 @@ func SoftBodySetMesh(body gd.RID, mesh gd.RID) {
 Returns the bounds of the given soft body in global coordinates.
 */
 func SoftBodyGetBounds(body gd.RID) gd.AABB {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.AABB(class(self).SoftBodyGetBounds(body))
 }
@@ -999,7 +889,6 @@ func SoftBodyGetBounds(body gd.RID) gd.AABB {
 Sets the physics layer or layers the given soft body belongs to.
 */
 func SoftBodySetCollisionLayer(body gd.RID, layer int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -1008,7 +897,6 @@ func SoftBodySetCollisionLayer(body gd.RID, layer int) {
 Returns the physics layer or layers that the given soft body belongs to.
 */
 func SoftBodyGetCollisionLayer(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetCollisionLayer(body)))
 }
@@ -1017,7 +905,6 @@ func SoftBodyGetCollisionLayer(body gd.RID) int {
 Sets the physics layer or layers the given soft body can collide with.
 */
 func SoftBodySetCollisionMask(body gd.RID, mask int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetCollisionMask(body, gd.Int(mask))
 }
@@ -1026,7 +913,6 @@ func SoftBodySetCollisionMask(body gd.RID, mask int) {
 Returns the physics layer or layers that the given soft body can collide with.
 */
 func SoftBodyGetCollisionMask(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetCollisionMask(body)))
 }
@@ -1035,7 +921,6 @@ func SoftBodyGetCollisionMask(body gd.RID) int {
 Adds the given body to the list of bodies exempt from collisions.
 */
 func SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodyAddCollisionException(body, body_b)
 }
@@ -1044,7 +929,6 @@ func SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) {
 Removes the given body from the list of bodies exempt from collisions.
 */
 func SoftBodyRemoveCollisionException(body gd.RID, body_b gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodyRemoveCollisionException(body, body_b)
 }
@@ -1054,7 +938,6 @@ Sets the given body state for the given body (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 func SoftBodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, variant gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetState(body, state, variant)
 }
@@ -1064,16 +947,14 @@ Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 func SoftBodyGetState(body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Variant(class(self).SoftBodyGetState(gc, body, state))
+	return gd.Variant(class(self).SoftBodyGetState(body, state))
 }
 
 /*
 Sets the global transform of the given soft body.
 */
 func SoftBodySetTransform(body gd.RID, transform gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetTransform(body, transform)
 }
@@ -1082,7 +963,6 @@ func SoftBodySetTransform(body gd.RID, transform gd.Transform3D) {
 Sets whether the given soft body will be pickable when using object picking.
 */
 func SoftBodySetRayPickable(body gd.RID, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetRayPickable(body, enable)
 }
@@ -1091,7 +971,6 @@ func SoftBodySetRayPickable(body gd.RID, enable bool) {
 Sets the simulation precision of the given soft body. Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
 */
 func SoftBodySetSimulationPrecision(body gd.RID, simulation_precision int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetSimulationPrecision(body, gd.Int(simulation_precision))
 }
@@ -1100,7 +979,6 @@ func SoftBodySetSimulationPrecision(body gd.RID, simulation_precision int) {
 Returns the simulation precision of the given soft body.
 */
 func SoftBodyGetSimulationPrecision(body gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetSimulationPrecision(body)))
 }
@@ -1109,7 +987,6 @@ func SoftBodyGetSimulationPrecision(body gd.RID) int {
 Sets the total mass for the given soft body.
 */
 func SoftBodySetTotalMass(body gd.RID, total_mass float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetTotalMass(body, gd.Float(total_mass))
 }
@@ -1118,7 +995,6 @@ func SoftBodySetTotalMass(body gd.RID, total_mass float64) {
 Returns the total mass assigned to the given soft body.
 */
 func SoftBodyGetTotalMass(body gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SoftBodyGetTotalMass(body)))
 }
@@ -1127,7 +1003,6 @@ func SoftBodyGetTotalMass(body gd.RID) float64 {
 Sets the linear stiffness of the given soft body. Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
 func SoftBodySetLinearStiffness(body gd.RID, stiffness float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetLinearStiffness(body, gd.Float(stiffness))
 }
@@ -1136,7 +1011,6 @@ func SoftBodySetLinearStiffness(body gd.RID, stiffness float64) {
 Returns the linear stiffness of the given soft body.
 */
 func SoftBodyGetLinearStiffness(body gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SoftBodyGetLinearStiffness(body)))
 }
@@ -1145,7 +1019,6 @@ func SoftBodyGetLinearStiffness(body gd.RID) float64 {
 Sets the pressure coefficient of the given soft body. Simulates pressure build-up from inside this body. Higher values increase the strength of this effect.
 */
 func SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetPressureCoefficient(body, gd.Float(pressure_coefficient))
 }
@@ -1154,7 +1027,6 @@ func SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient float64) {
 Returns the pressure coefficient of the given soft body.
 */
 func SoftBodyGetPressureCoefficient(body gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SoftBodyGetPressureCoefficient(body)))
 }
@@ -1163,7 +1035,6 @@ func SoftBodyGetPressureCoefficient(body gd.RID) float64 {
 Sets the damping coefficient of the given soft body. Higher values will slow down the body more noticeably when forces are applied.
 */
 func SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetDampingCoefficient(body, gd.Float(damping_coefficient))
 }
@@ -1172,7 +1043,6 @@ func SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient float64) {
 Returns the damping coefficient of the given soft body.
 */
 func SoftBodyGetDampingCoefficient(body gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SoftBodyGetDampingCoefficient(body)))
 }
@@ -1182,7 +1052,6 @@ Sets the drag coefficient of the given soft body. Higher values increase this bo
 [b]Note:[/b] This value is currently unused by Godot's default physics implementation.
 */
 func SoftBodySetDragCoefficient(body gd.RID, drag_coefficient float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodySetDragCoefficient(body, gd.Float(drag_coefficient))
 }
@@ -1191,7 +1060,6 @@ func SoftBodySetDragCoefficient(body gd.RID, drag_coefficient float64) {
 Returns the drag coefficient of the given soft body.
 */
 func SoftBodyGetDragCoefficient(body gd.RID) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SoftBodyGetDragCoefficient(body)))
 }
@@ -1200,7 +1068,6 @@ func SoftBodyGetDragCoefficient(body gd.RID) float64 {
 Moves the given soft body point to a position in global coordinates.
 */
 func SoftBodyMovePoint(body gd.RID, point_index int, global_position gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodyMovePoint(body, gd.Int(point_index), global_position)
 }
@@ -1209,7 +1076,6 @@ func SoftBodyMovePoint(body gd.RID, point_index int, global_position gd.Vector3)
 Returns the current position of the given soft body point in global coordinates.
 */
 func SoftBodyGetPointGlobalPosition(body gd.RID, point_index int) gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).SoftBodyGetPointGlobalPosition(body, gd.Int(point_index)))
 }
@@ -1218,7 +1084,6 @@ func SoftBodyGetPointGlobalPosition(body gd.RID, point_index int) gd.Vector3 {
 Unpins all points of the given soft body.
 */
 func SoftBodyRemoveAllPinnedPoints(body gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodyRemoveAllPinnedPoints(body)
 }
@@ -1228,7 +1093,6 @@ Pins or unpins the given soft body point based on the value of [param pin].
 [b]Note:[/b] Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [method soft_body_move_point].
 */
 func SoftBodyPinPoint(body gd.RID, point_index int, pin bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SoftBodyPinPoint(body, gd.Int(point_index), pin)
 }
@@ -1237,22 +1101,18 @@ func SoftBodyPinPoint(body gd.RID, point_index int, pin bool) {
 Returns whether the given soft body point is pinned.
 */
 func SoftBodyIsPointPinned(body gd.RID, point_index int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).SoftBodyIsPointPinned(body, gd.Int(point_index)))
 }
 func JointCreate() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.RID(class(self).JointCreate())
 }
 func JointClear(joint gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointClear(joint)
 }
 func JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointMakePin(joint, body_A, local_A, body_B, local_B)
 }
@@ -1261,7 +1121,6 @@ func JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID
 Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 func PinJointSetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).PinJointSetParam(joint, param, gd.Float(value))
 }
@@ -1270,7 +1129,6 @@ func PinJointSetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam, 
 Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 func PinJointGetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).PinJointGetParam(joint, param)))
 }
@@ -1279,7 +1137,6 @@ func PinJointGetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam) 
 Sets position of the joint in the local space of body a of the joint.
 */
 func PinJointSetLocalA(joint gd.RID, local_A gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).PinJointSetLocalA(joint, local_A)
 }
@@ -1288,7 +1145,6 @@ func PinJointSetLocalA(joint gd.RID, local_A gd.Vector3) {
 Returns position of the joint in the local space of body a of the joint.
 */
 func PinJointGetLocalA(joint gd.RID) gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).PinJointGetLocalA(joint))
 }
@@ -1297,7 +1153,6 @@ func PinJointGetLocalA(joint gd.RID) gd.Vector3 {
 Sets position of the joint in the local space of body b of the joint.
 */
 func PinJointSetLocalB(joint gd.RID, local_B gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).PinJointSetLocalB(joint, local_B)
 }
@@ -1306,12 +1161,10 @@ func PinJointSetLocalB(joint gd.RID, local_B gd.Vector3) {
 Returns position of the joint in the local space of body b of the joint.
 */
 func PinJointGetLocalB(joint gd.RID) gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Vector3(class(self).PinJointGetLocalB(joint))
 }
 func JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointMakeHinge(joint, body_A, hinge_A, body_B, hinge_B)
 }
@@ -1320,7 +1173,6 @@ func JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B 
 Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
 func HingeJointSetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).HingeJointSetParam(joint, param, gd.Float(value))
 }
@@ -1329,7 +1181,6 @@ func HingeJointSetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointPar
 Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
 func HingeJointGetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).HingeJointGetParam(joint, param)))
 }
@@ -1338,7 +1189,6 @@ func HingeJointGetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointPar
 Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 func HingeJointSetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag, enabled bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).HingeJointSetFlag(joint, flag, enabled)
 }
@@ -1347,12 +1197,10 @@ func HingeJointSetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag,
 Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 func HingeJointGetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).HingeJointGetFlag(joint, flag))
 }
 func JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointMakeSlider(joint, body_A, local_ref_A, body_B, local_ref_B)
 }
@@ -1361,7 +1209,6 @@ func JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, bo
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 func SliderJointSetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SliderJointSetParam(joint, param, gd.Float(value))
 }
@@ -1370,12 +1217,10 @@ func SliderJointSetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointP
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 func SliderJointGetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).SliderJointGetParam(joint, param)))
 }
 func JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointMakeConeTwist(joint, body_A, local_ref_A, body_B, local_ref_B)
 }
@@ -1384,7 +1229,6 @@ func JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D,
 Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 func ConeTwistJointSetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwistJointParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).ConeTwistJointSetParam(joint, param, gd.Float(value))
 }
@@ -1393,7 +1237,6 @@ func ConeTwistJointSetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwist
 Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 func ConeTwistJointGetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwistJointParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).ConeTwistJointGetParam(joint, param)))
 }
@@ -1402,7 +1245,6 @@ func ConeTwistJointGetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwist
 Returns the type of the Joint3D.
 */
 func JointGetType(joint gd.RID) classdb.PhysicsServer3DJointType {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return classdb.PhysicsServer3DJointType(class(self).JointGetType(joint))
 }
@@ -1411,7 +1253,6 @@ func JointGetType(joint gd.RID) classdb.PhysicsServer3DJointType {
 Sets the priority value of the Joint3D.
 */
 func JointSetSolverPriority(joint gd.RID, priority int) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointSetSolverPriority(joint, gd.Int(priority))
 }
@@ -1420,7 +1261,6 @@ func JointSetSolverPriority(joint gd.RID, priority int) {
 Gets the priority value of the Joint3D.
 */
 func JointGetSolverPriority(joint gd.RID) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).JointGetSolverPriority(joint)))
 }
@@ -1429,7 +1269,6 @@ func JointGetSolverPriority(joint gd.RID) int {
 Sets whether the bodies attached to the [Joint3D] will collide with each other.
 */
 func JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointDisableCollisionsBetweenBodies(joint, disable)
 }
@@ -1438,7 +1277,6 @@ func JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
 Returns whether the bodies attached to the [Joint3D] will collide with each other.
 */
 func JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).JointIsDisabledCollisionsBetweenBodies(joint))
 }
@@ -1447,7 +1285,6 @@ func JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
 Make the joint a generic six degrees of freedom (6DOF) joint. Use [method generic_6dof_joint_set_flag] and [method generic_6dof_joint_set_param] to set the joint's flags and parameters respectively.
 */
 func JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).JointMakeGeneric6dof(joint, body_A, local_ref_A, body_B, local_ref_B)
 }
@@ -1456,7 +1293,6 @@ func JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3
 Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
 func Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).Generic6dofJointSetParam(joint, axis, param, gd.Float(value))
 }
@@ -1465,7 +1301,6 @@ func Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.P
 Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
 func Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return float64(float64(class(self).Generic6dofJointGetParam(joint, axis, param)))
 }
@@ -1474,7 +1309,6 @@ func Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.P
 Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
 func Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).Generic6dofJointSetFlag(joint, axis, flag, enable)
 }
@@ -1483,7 +1317,6 @@ func Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.Phy
 Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
 func Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return bool(class(self).Generic6dofJointGetFlag(joint, axis, flag))
 }
@@ -1492,7 +1325,6 @@ func Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.Phy
 Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
 */
 func FreeRid(rid gd.RID) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).FreeRid(rid)
 }
@@ -1501,7 +1333,6 @@ func FreeRid(rid gd.RID) {
 Activates or deactivates the 3D physics engine.
 */
 func SetActive(active bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).SetActive(active)
 }
@@ -1510,7 +1341,6 @@ func SetActive(active bool) {
 Returns information about the current state of the 3D physics engine. See [enum ProcessInfo] for a list of available states.
 */
 func GetProcessInfo(process_info classdb.PhysicsServer3DProcessInfo) int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).GetProcessInfo(process_info)))
 }
@@ -1519,106 +1349,92 @@ func GD() class { once.Do(singleton); return self }
 type class [1]classdb.PhysicsServer3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
 //go:nosplit
 func (self class) WorldBoundaryShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_world_boundary_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_world_boundary_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SeparationRayShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_separation_ray_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_separation_ray_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SphereShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_sphere_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_sphere_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) BoxShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_box_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_box_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) CapsuleShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_capsule_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_capsule_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) CylinderShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_cylinder_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_cylinder_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) ConvexPolygonShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_convex_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_convex_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) ConcavePolygonShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_concave_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_concave_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) HeightmapShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_heightmap_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_heightmap_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) CustomShapeCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_custom_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_custom_shape_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1628,12 +1444,11 @@ Sets the shape data that defines its shape and size. The data to be passed depen
 */
 //go:nosplit
 func (self class) ShapeSetData(shape gd.RID, data gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	callframe.Arg(frame, mmm.Get(data))
+	callframe.Arg(frame, discreet.Get(data))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_shape_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1642,12 +1457,11 @@ Sets the collision margin for the shape.
 */
 //go:nosplit
 func (self class) ShapeSetMargin(shape gd.RID, margin gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, margin)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_shape_set_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_set_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1655,11 +1469,10 @@ Returns the type of shape (see [enum ShapeType] constants).
 */
 //go:nosplit
 func (self class) ShapeGetType(shape gd.RID) classdb.PhysicsServer3DShapeType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[classdb.PhysicsServer3DShapeType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_shape_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1668,13 +1481,12 @@ func (self class) ShapeGetType(shape gd.RID) classdb.PhysicsServer3DShapeType {
 Returns the shape data.
 */
 //go:nosplit
-func (self class) ShapeGetData(ctx gd.Lifetime, shape gd.RID) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) ShapeGetData(shape gd.RID) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_shape_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1684,11 +1496,10 @@ Returns the collision margin for the shape.
 */
 //go:nosplit
 func (self class) ShapeGetMargin(shape gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_shape_get_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1698,10 +1509,9 @@ Creates a space. A space is a collection of parameters for the physics engine th
 */
 //go:nosplit
 func (self class) SpaceCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_space_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1711,12 +1521,11 @@ Marks a space as active. It will not have an effect, unless it is assigned to an
 */
 //go:nosplit
 func (self class) SpaceSetActive(space gd.RID, active bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, active)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_space_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1724,11 +1533,10 @@ Returns whether the space is active.
 */
 //go:nosplit
 func (self class) SpaceIsActive(space gd.RID) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_space_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1738,13 +1546,12 @@ Sets the value for a space parameter. A list of available parameters is on the [
 */
 //go:nosplit
 func (self class) SpaceSetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_space_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1752,12 +1559,11 @@ Returns the value of a space parameter.
 */
 //go:nosplit
 func (self class) SpaceGetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_space_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1766,14 +1572,12 @@ func (self class) SpaceGetParam(space gd.RID, param classdb.PhysicsServer3DSpace
 Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
 //go:nosplit
-func (self class) SpaceGetDirectState(ctx gd.Lifetime, space gd.RID) gdclass.PhysicsDirectSpaceState3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) SpaceGetDirectState(space gd.RID) gdclass.PhysicsDirectSpaceState3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_space_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.PhysicsDirectSpaceState3D
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.PhysicsDirectSpaceState3D{classdb.PhysicsDirectSpaceState3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1783,10 +1587,9 @@ Use [method area_add_shape] to add shapes to it, use [method area_set_transform]
 */
 //go:nosplit
 func (self class) AreaCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1796,12 +1599,11 @@ Assigns a space to the area.
 */
 //go:nosplit
 func (self class) AreaSetSpace(area gd.RID, space gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, space)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1809,11 +1611,10 @@ Returns the space assigned to the area.
 */
 //go:nosplit
 func (self class) AreaGetSpace(area gd.RID) gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1823,14 +1624,13 @@ Adds a shape to the area, along with a transform matrix. Shapes are usually refe
 */
 //go:nosplit
 func (self class) AreaAddShape(area gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, disabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_add_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_add_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1838,13 +1638,12 @@ Substitutes a given area shape by another. The old shape is selected by its inde
 */
 //go:nosplit
 func (self class) AreaSetShape(area gd.RID, shape_idx gd.Int, shape gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
 	callframe.Arg(frame, shape)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1852,24 +1651,22 @@ Sets the transform matrix for an area shape.
 */
 //go:nosplit
 func (self class) AreaSetShapeTransform(area gd.RID, shape_idx gd.Int, transform gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
 	callframe.Arg(frame, transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) AreaSetShapeDisabled(area gd.RID, shape_idx gd.Int, disabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
 	callframe.Arg(frame, disabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_shape_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_shape_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1877,11 +1674,10 @@ Returns the number of shapes assigned to an area.
 */
 //go:nosplit
 func (self class) AreaGetShapeCount(area gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1891,12 +1687,11 @@ Returns the [RID] of the nth shape of an area.
 */
 //go:nosplit
 func (self class) AreaGetShape(area gd.RID, shape_idx gd.Int) gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1906,12 +1701,11 @@ Returns the transform matrix of a shape within an area.
 */
 //go:nosplit
 func (self class) AreaGetShapeTransform(area gd.RID, shape_idx gd.Int) gd.Transform3D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1921,12 +1715,11 @@ Removes a shape from an area. It does not delete the shape, so it can be reassig
 */
 //go:nosplit
 func (self class) AreaRemoveShape(area gd.RID, shape_idx gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_remove_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_remove_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1934,11 +1727,10 @@ Removes all shapes from an area. It does not delete the shapes, so they can be r
 */
 //go:nosplit
 func (self class) AreaClearShapes(area gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1946,12 +1738,11 @@ Assigns the area to one or many physics layers.
 */
 //go:nosplit
 func (self class) AreaSetCollisionLayer(area gd.RID, layer gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, layer)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1959,11 +1750,10 @@ Returns the physics layer or layers an area belongs to.
 */
 //go:nosplit
 func (self class) AreaGetCollisionLayer(area gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1973,12 +1763,11 @@ Sets which physics layers the area will monitor.
 */
 //go:nosplit
 func (self class) AreaSetCollisionMask(area gd.RID, mask gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, mask)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1986,11 +1775,10 @@ Returns the physics layer or layers an area can contact with.
 */
 //go:nosplit
 func (self class) AreaGetCollisionMask(area gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2000,13 +1788,12 @@ Sets the value for an area parameter. A list of available parameters is on the [
 */
 //go:nosplit
 func (self class) AreaSetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2014,26 +1801,24 @@ Sets the transform matrix for an area.
 */
 //go:nosplit
 func (self class) AreaSetTransform(area gd.RID, transform gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
 //go:nosplit
-func (self class) AreaGetParam(ctx gd.Lifetime, area gd.RID, param classdb.PhysicsServer3DAreaParameter) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) AreaGetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2042,11 +1827,10 @@ Returns the transform matrix for an area.
 */
 //go:nosplit
 func (self class) AreaGetTransform(area gd.RID) gd.Transform3D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2056,12 +1840,11 @@ Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area gd.RID, id gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, id)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2069,11 +1852,10 @@ Gets the instance ID of the object the area is assigned to.
 */
 //go:nosplit
 func (self class) AreaGetObjectInstanceId(area gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2089,12 +1871,11 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetMonitorCallback(area gd.RID, callback gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	callframe.Arg(frame, mmm.Get(callback))
+	callframe.Arg(frame, discreet.Get(callback))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2108,22 +1889,20 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	callframe.Arg(frame, mmm.Get(callback))
+	callframe.Arg(frame, discreet.Get(callback))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_area_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_area_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) AreaSetMonitorable(area gd.RID, monitorable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, monitorable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_monitorable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_monitorable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2131,12 +1910,11 @@ Sets object pickable with rays.
 */
 //go:nosplit
 func (self class) AreaSetRayPickable(area gd.RID, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_area_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2145,10 +1923,9 @@ Use [method body_add_shape] to add shapes to it, use [method body_set_state] to 
 */
 //go:nosplit
 func (self class) BodyCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2158,12 +1935,11 @@ Assigns a space to the body (see [method space_create]).
 */
 //go:nosplit
 func (self class) BodySetSpace(body gd.RID, space gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, space)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2171,11 +1947,10 @@ Returns the [RID] of the space assigned to a body.
 */
 //go:nosplit
 func (self class) BodyGetSpace(body gd.RID) gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2185,12 +1960,11 @@ Sets the body mode, from one of the [enum BodyMode] constants.
 */
 //go:nosplit
 func (self class) BodySetMode(body gd.RID, mode classdb.PhysicsServer3DBodyMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2198,11 +1972,10 @@ Returns the body mode.
 */
 //go:nosplit
 func (self class) BodyGetMode(body gd.RID) classdb.PhysicsServer3DBodyMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[classdb.PhysicsServer3DBodyMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2212,12 +1985,11 @@ Sets the physics layer or layers a body belongs to.
 */
 //go:nosplit
 func (self class) BodySetCollisionLayer(body gd.RID, layer gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, layer)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2225,11 +1997,10 @@ Returns the physics layer or layers a body belongs to.
 */
 //go:nosplit
 func (self class) BodyGetCollisionLayer(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2239,12 +2010,11 @@ Sets the physics layer or layers a body can collide with.
 */
 //go:nosplit
 func (self class) BodySetCollisionMask(body gd.RID, mask gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mask)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2252,11 +2022,10 @@ Returns the physics layer or layers a body can collide with.
 */
 //go:nosplit
 func (self class) BodyGetCollisionMask(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2266,12 +2035,11 @@ Sets the body's collision priority.
 */
 //go:nosplit
 func (self class) BodySetCollisionPriority(body gd.RID, priority gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_collision_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_collision_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2279,11 +2047,10 @@ Returns the body's collision priority.
 */
 //go:nosplit
 func (self class) BodyGetCollisionPriority(body gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2293,14 +2060,13 @@ Adds a shape to the body, along with a transform matrix. Shapes are usually refe
 */
 //go:nosplit
 func (self class) BodyAddShape(body gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, disabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_add_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_add_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2308,13 +2074,12 @@ Substitutes a given body shape by another. The old shape is selected by its inde
 */
 //go:nosplit
 func (self class) BodySetShape(body gd.RID, shape_idx gd.Int, shape gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
 	callframe.Arg(frame, shape)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2322,24 +2087,22 @@ Sets the transform matrix for a body shape.
 */
 //go:nosplit
 func (self class) BodySetShapeTransform(body gd.RID, shape_idx gd.Int, transform gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
 	callframe.Arg(frame, transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) BodySetShapeDisabled(body gd.RID, shape_idx gd.Int, disabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
 	callframe.Arg(frame, disabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_shape_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_shape_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2347,11 +2110,10 @@ Returns the number of shapes assigned to a body.
 */
 //go:nosplit
 func (self class) BodyGetShapeCount(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2361,12 +2123,11 @@ Returns the [RID] of the nth shape of a body.
 */
 //go:nosplit
 func (self class) BodyGetShape(body gd.RID, shape_idx gd.Int) gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2376,12 +2137,11 @@ Returns the transform matrix of a body shape.
 */
 //go:nosplit
 func (self class) BodyGetShapeTransform(body gd.RID, shape_idx gd.Int) gd.Transform3D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2391,12 +2151,11 @@ Removes a shape from a body. The shape is not deleted, so it can be reused after
 */
 //go:nosplit
 func (self class) BodyRemoveShape(body gd.RID, shape_idx gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_remove_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_remove_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2404,11 +2163,10 @@ Removes all shapes from a body.
 */
 //go:nosplit
 func (self class) BodyClearShapes(body gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2416,12 +2174,11 @@ Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body gd.RID, id gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, id)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2429,11 +2186,10 @@ Gets the instance ID of the object the area is assigned to.
 */
 //go:nosplit
 func (self class) BodyGetObjectInstanceId(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2444,12 +2200,11 @@ Continuous collision detection tries to predict where a moving body will collide
 */
 //go:nosplit
 func (self class) BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_enable_continuous_collision_detection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_enable_continuous_collision_detection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2457,11 +2212,10 @@ If [code]true[/code], the continuous collision detection mode is enabled.
 */
 //go:nosplit
 func (self class) BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_is_continuous_collision_detection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_is_continuous_collision_detection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2471,27 +2225,25 @@ Sets a body parameter. A list of available parameters is on the [enum BodyParame
 */
 //go:nosplit
 func (self class) BodySetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 //go:nosplit
-func (self class) BodyGetParam(ctx gd.Lifetime, body gd.RID, param classdb.PhysicsServer3DBodyParameter) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) BodyGetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2500,11 +2252,10 @@ Restores the default inertia and center of mass based on shapes to cancel any cu
 */
 //go:nosplit
 func (self class) BodyResetMassProperties(body gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_reset_mass_properties, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_reset_mass_properties, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2512,27 +2263,25 @@ Sets a body state (see [enum BodyState] constants).
 */
 //go:nosplit
 func (self class) BodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns a body state.
 */
 //go:nosplit
-func (self class) BodyGetState(ctx gd.Lifetime, body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) BodyGetState(body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2543,12 +2292,11 @@ This is equivalent to using [method body_apply_impulse] at the body's center of 
 */
 //go:nosplit
 func (self class) BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2558,13 +2306,12 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyImpulse(body gd.RID, impulse gd.Vector3, position gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2573,12 +2320,11 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyTorqueImpulse(body gd.RID, impulse gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2587,12 +2333,11 @@ This is equivalent to using [method body_apply_force] at the body's center of ma
 */
 //go:nosplit
 func (self class) BodyApplyCentralForce(body gd.RID, force gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2601,13 +2346,12 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 */
 //go:nosplit
 func (self class) BodyApplyForce(body gd.RID, force gd.Vector3, position gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_apply_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_apply_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2615,12 +2359,11 @@ Applies a rotational force without affecting position. A force is time dependent
 */
 //go:nosplit
 func (self class) BodyApplyTorque(body gd.RID, torque gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_apply_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_apply_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2629,12 +2372,11 @@ This is equivalent to using [method body_add_constant_force] at the body's cente
 */
 //go:nosplit
 func (self class) BodyAddConstantCentralForce(body gd.RID, force gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2643,13 +2385,12 @@ Adds a constant positioned force to the body that keeps being applied over time 
 */
 //go:nosplit
 func (self class) BodyAddConstantForce(body gd.RID, force gd.Vector3, position gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2657,12 +2398,11 @@ Adds a constant rotational force without affecting position that keeps being app
 */
 //go:nosplit
 func (self class) BodyAddConstantTorque(body gd.RID, torque gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2671,12 +2411,11 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 //go:nosplit
 func (self class) BodySetConstantForce(body gd.RID, force gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2685,11 +2424,10 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 //go:nosplit
 func (self class) BodyGetConstantForce(body gd.RID) gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2700,12 +2438,11 @@ See [method body_add_constant_torque].
 */
 //go:nosplit
 func (self class) BodySetConstantTorque(body gd.RID, torque gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2714,11 +2451,10 @@ See [method body_add_constant_torque].
 */
 //go:nosplit
 func (self class) BodyGetConstantTorque(body gd.RID) gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2728,33 +2464,30 @@ Sets an axis velocity. The velocity in the given vector axis will be set as the 
 */
 //go:nosplit
 func (self class) BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis_velocity)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_axis_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_axis_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) BodySetAxisLock(body gd.RID, axis classdb.PhysicsServer3DBodyAxis, lock bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, lock)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_axis_lock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_axis_lock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) BodyIsAxisLocked(body gd.RID, axis classdb.PhysicsServer3DBodyAxis) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_is_axis_locked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_is_axis_locked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2764,12 +2497,11 @@ Adds a body to the list of bodies exempt from collisions.
 */
 //go:nosplit
 func (self class) BodyAddCollisionException(body gd.RID, excepted_body gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, excepted_body)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2778,12 +2510,11 @@ Continuous collision detection tries to predict where a moving body will collide
 */
 //go:nosplit
 func (self class) BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, excepted_body)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2791,12 +2522,11 @@ Sets the maximum contacts to report. Bodies can keep a log of the contacts with 
 */
 //go:nosplit
 func (self class) BodySetMaxContactsReported(body gd.RID, amount gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, amount)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2804,11 +2534,10 @@ Returns the maximum contacts that can be reported. See [method body_set_max_cont
 */
 //go:nosplit
 func (self class) BodyGetMaxContactsReported(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2819,12 +2548,11 @@ This method is called when the property [member RigidBody3D.custom_integrator] i
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body gd.RID, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_omit_force_integration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_omit_force_integration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2832,11 +2560,10 @@ Returns [code]true[/code] if the body is omitting the standard force integration
 */
 //go:nosplit
 func (self class) BodyIsOmittingForceIntegration(body gd.RID) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_is_omitting_force_integration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_is_omitting_force_integration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2849,12 +2576,11 @@ The function [param callable] must take the following parameters:
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body gd.RID, callable gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, mmm.Get(callable))
+	callframe.Arg(frame, discreet.Get(callable))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_state_sync_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_state_sync_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2867,13 +2593,12 @@ If [param userdata] is [code]null[/code], then [param callable] must take only t
 */
 //go:nosplit
 func (self class) BodySetForceIntegrationCallback(body gd.RID, callable gd.Callable, userdata gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, mmm.Get(callable))
-	callframe.Arg(frame, mmm.Get(userdata))
+	callframe.Arg(frame, discreet.Get(callable))
+	callframe.Arg(frame, discreet.Get(userdata))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_force_integration_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_force_integration_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2881,12 +2606,11 @@ Sets the body pickable with rays if [param enable] is set.
 */
 //go:nosplit
 func (self class) BodySetRayPickable(body gd.RID, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2894,13 +2618,12 @@ Returns [code]true[/code] if a collision would result from moving along a motion
 */
 //go:nosplit
 func (self class) BodyTestMotion(body gd.RID, parameters gdclass.PhysicsTestMotionParameters3D, result gdclass.PhysicsTestMotionResult3D) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, mmm.Get(parameters[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(result[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(parameters[0])[0])
+	callframe.Arg(frame, discreet.Get(result[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_test_motion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_test_motion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2909,14 +2632,12 @@ func (self class) BodyTestMotion(body gd.RID, parameters gdclass.PhysicsTestMoti
 Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if the body is destroyed or removed from the physics space.
 */
 //go:nosplit
-func (self class) BodyGetDirectState(ctx gd.Lifetime, body gd.RID) gdclass.PhysicsDirectBodyState3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) BodyGetDirectState(body gd.RID) gdclass.PhysicsDirectBodyState3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_body_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.PhysicsDirectBodyState3D
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.PhysicsDirectBodyState3D{classdb.PhysicsDirectBodyState3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -2925,10 +2646,9 @@ Creates a new soft body and returns its internal [RID].
 */
 //go:nosplit
 func (self class) SoftBodyCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2938,12 +2658,11 @@ Requests that the physics server updates the rendering server with the latest po
 */
 //go:nosplit
 func (self class) SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler gdclass.PhysicsServer3DRenderingServerHandler)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, mmm.Get(rendering_server_handler[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(rendering_server_handler[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_update_rendering_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_update_rendering_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2951,12 +2670,11 @@ Assigns a space to the given soft body (see [method space_create]).
 */
 //go:nosplit
 func (self class) SoftBodySetSpace(body gd.RID, space gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, space)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2964,11 +2682,10 @@ Returns the [RID] of the space assigned to the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetSpace(body gd.RID) gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2978,12 +2695,11 @@ Sets the mesh of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodySetMesh(body gd.RID, mesh gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mesh)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -2991,11 +2707,10 @@ Returns the bounds of the given soft body in global coordinates.
 */
 //go:nosplit
 func (self class) SoftBodyGetBounds(body gd.RID) gd.AABB {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_bounds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_bounds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3005,12 +2720,11 @@ Sets the physics layer or layers the given soft body belongs to.
 */
 //go:nosplit
 func (self class) SoftBodySetCollisionLayer(body gd.RID, layer gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, layer)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3018,11 +2732,10 @@ Returns the physics layer or layers that the given soft body belongs to.
 */
 //go:nosplit
 func (self class) SoftBodyGetCollisionLayer(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3032,12 +2745,11 @@ Sets the physics layer or layers the given soft body can collide with.
 */
 //go:nosplit
 func (self class) SoftBodySetCollisionMask(body gd.RID, mask gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mask)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3045,11 +2757,10 @@ Returns the physics layer or layers that the given soft body can collide with.
 */
 //go:nosplit
 func (self class) SoftBodyGetCollisionMask(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3059,12 +2770,11 @@ Adds the given body to the list of bodies exempt from collisions.
 */
 //go:nosplit
 func (self class) SoftBodyAddCollisionException(body gd.RID, body_b gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, body_b)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3072,12 +2782,11 @@ Removes the given body from the list of bodies exempt from collisions.
 */
 //go:nosplit
 func (self class) SoftBodyRemoveCollisionException(body gd.RID, body_b gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, body_b)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3086,13 +2795,12 @@ Sets the given body state for the given body (see [enum BodyState] constants).
 */
 //go:nosplit
 func (self class) SoftBodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, variant gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
-	callframe.Arg(frame, mmm.Get(variant))
+	callframe.Arg(frame, discreet.Get(variant))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3100,14 +2808,13 @@ Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 //go:nosplit
-func (self class) SoftBodyGetState(ctx gd.Lifetime, body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) SoftBodyGetState(body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -3116,12 +2823,11 @@ Sets the global transform of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodySetTransform(body gd.RID, transform gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, transform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3129,12 +2835,11 @@ Sets whether the given soft body will be pickable when using object picking.
 */
 //go:nosplit
 func (self class) SoftBodySetRayPickable(body gd.RID, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3142,12 +2847,11 @@ Sets the simulation precision of the given soft body. Increasing this value will
 */
 //go:nosplit
 func (self class) SoftBodySetSimulationPrecision(body gd.RID, simulation_precision gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, simulation_precision)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_simulation_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_simulation_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3155,11 +2859,10 @@ Returns the simulation precision of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetSimulationPrecision(body gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_simulation_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_simulation_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3169,12 +2872,11 @@ Sets the total mass for the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodySetTotalMass(body gd.RID, total_mass gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, total_mass)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_total_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_total_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3182,11 +2884,10 @@ Returns the total mass assigned to the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetTotalMass(body gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_total_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_total_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3196,12 +2897,11 @@ Sets the linear stiffness of the given soft body. Higher values will result in a
 */
 //go:nosplit
 func (self class) SoftBodySetLinearStiffness(body gd.RID, stiffness gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, stiffness)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_linear_stiffness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_linear_stiffness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3209,11 +2909,10 @@ Returns the linear stiffness of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetLinearStiffness(body gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_linear_stiffness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_linear_stiffness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3223,12 +2922,11 @@ Sets the pressure coefficient of the given soft body. Simulates pressure build-u
 */
 //go:nosplit
 func (self class) SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pressure_coefficient)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_pressure_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_pressure_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3236,11 +2934,10 @@ Returns the pressure coefficient of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetPressureCoefficient(body gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_pressure_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_pressure_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3250,12 +2947,11 @@ Sets the damping coefficient of the given soft body. Higher values will slow dow
 */
 //go:nosplit
 func (self class) SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, damping_coefficient)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_damping_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_damping_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3263,11 +2959,10 @@ Returns the damping coefficient of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetDampingCoefficient(body gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_damping_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_damping_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3278,12 +2973,11 @@ Sets the drag coefficient of the given soft body. Higher values increase this bo
 */
 //go:nosplit
 func (self class) SoftBodySetDragCoefficient(body gd.RID, drag_coefficient gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, drag_coefficient)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_set_drag_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_drag_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3291,11 +2985,10 @@ Returns the drag coefficient of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetDragCoefficient(body gd.RID) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_drag_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_drag_coefficient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3305,13 +2998,12 @@ Moves the given soft body point to a position in global coordinates.
 */
 //go:nosplit
 func (self class) SoftBodyMovePoint(body gd.RID, point_index gd.Int, global_position gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
 	callframe.Arg(frame, global_position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_move_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_move_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3319,12 +3011,11 @@ Returns the current position of the given soft body point in global coordinates.
 */
 //go:nosplit
 func (self class) SoftBodyGetPointGlobalPosition(body gd.RID, point_index gd.Int) gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_get_point_global_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_point_global_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3334,11 +3025,10 @@ Unpins all points of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyRemoveAllPinnedPoints(body gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_remove_all_pinned_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_remove_all_pinned_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3347,13 +3037,12 @@ Pins or unpins the given soft body point based on the value of [param pin].
 */
 //go:nosplit
 func (self class) SoftBodyPinPoint(body gd.RID, point_index gd.Int, pin bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
 	callframe.Arg(frame, pin)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_pin_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_pin_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3361,38 +3050,34 @@ Returns whether the given soft body point is pinned.
 */
 //go:nosplit
 func (self class) SoftBodyIsPointPinned(body gd.RID, point_index gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_soft_body_is_point_pinned, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_is_point_pinned, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) JointCreate() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) JointClear(joint gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3400,7 +3085,7 @@ func (self class) JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, 
 	callframe.Arg(frame, body_B)
 	callframe.Arg(frame, local_B)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_make_pin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_pin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3408,13 +3093,12 @@ Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
 func (self class) PinJointSetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_pin_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_pin_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3422,12 +3106,11 @@ Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
 func (self class) PinJointGetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_pin_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_pin_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3437,12 +3120,11 @@ Sets position of the joint in the local space of body a of the joint.
 */
 //go:nosplit
 func (self class) PinJointSetLocalA(joint gd.RID, local_A gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, local_A)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_pin_joint_set_local_a, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_pin_joint_set_local_a, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3450,11 +3132,10 @@ Returns position of the joint in the local space of body a of the joint.
 */
 //go:nosplit
 func (self class) PinJointGetLocalA(joint gd.RID) gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_pin_joint_get_local_a, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_pin_joint_get_local_a, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3464,12 +3145,11 @@ Sets position of the joint in the local space of body b of the joint.
 */
 //go:nosplit
 func (self class) PinJointSetLocalB(joint gd.RID, local_B gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, local_B)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_pin_joint_set_local_b, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_pin_joint_set_local_b, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3477,18 +3157,16 @@ Returns position of the joint in the local space of body b of the joint.
 */
 //go:nosplit
 func (self class) PinJointGetLocalB(joint gd.RID) gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_pin_joint_get_local_b, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_pin_joint_get_local_b, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3496,7 +3174,7 @@ func (self class) JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transfo
 	callframe.Arg(frame, body_B)
 	callframe.Arg(frame, hinge_B)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_make_hinge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_hinge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3504,13 +3182,12 @@ Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
 //go:nosplit
 func (self class) HingeJointSetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_hinge_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_hinge_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3518,12 +3195,11 @@ Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
 //go:nosplit
 func (self class) HingeJointGetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_hinge_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_hinge_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3533,13 +3209,12 @@ Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
 func (self class) HingeJointSetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag, enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_hinge_joint_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_hinge_joint_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3547,19 +3222,17 @@ Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
 func (self class) HingeJointGetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_hinge_joint_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_hinge_joint_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3567,7 +3240,7 @@ func (self class) JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Tr
 	callframe.Arg(frame, body_B)
 	callframe.Arg(frame, local_ref_B)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_make_slider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_slider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3575,13 +3248,12 @@ Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
 func (self class) SliderJointSetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_slider_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_slider_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3589,19 +3261,17 @@ Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
 func (self class) SliderJointGetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_slider_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_slider_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3609,7 +3279,7 @@ func (self class) JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd
 	callframe.Arg(frame, body_B)
 	callframe.Arg(frame, local_ref_B)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_make_cone_twist, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_cone_twist, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3617,13 +3287,12 @@ Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
 func (self class) ConeTwistJointSetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwistJointParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_cone_twist_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_cone_twist_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3631,12 +3300,11 @@ Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
 func (self class) ConeTwistJointGetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwistJointParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_cone_twist_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_cone_twist_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3646,11 +3314,10 @@ Returns the type of the Joint3D.
 */
 //go:nosplit
 func (self class) JointGetType(joint gd.RID) classdb.PhysicsServer3DJointType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[classdb.PhysicsServer3DJointType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3660,12 +3327,11 @@ Sets the priority value of the Joint3D.
 */
 //go:nosplit
 func (self class) JointSetSolverPriority(joint gd.RID, priority gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, priority)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_set_solver_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_set_solver_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3673,11 +3339,10 @@ Gets the priority value of the Joint3D.
 */
 //go:nosplit
 func (self class) JointGetSolverPriority(joint gd.RID) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_get_solver_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_get_solver_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3687,12 +3352,11 @@ Sets whether the bodies attached to the [Joint3D] will collide with each other.
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_disable_collisions_between_bodies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_disable_collisions_between_bodies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3700,11 +3364,10 @@ Returns whether the bodies attached to the [Joint3D] will collide with each othe
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_is_disabled_collisions_between_bodies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_is_disabled_collisions_between_bodies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3714,7 +3377,6 @@ Make the joint a generic six degrees of freedom (6DOF) joint. Use [method generi
 */
 //go:nosplit
 func (self class) JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3722,7 +3384,7 @@ func (self class) JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A 
 	callframe.Arg(frame, body_B)
 	callframe.Arg(frame, local_ref_B)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_joint_make_generic_6dof, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_generic_6dof, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3730,14 +3392,13 @@ Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxis
 */
 //go:nosplit
 func (self class) Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_generic_6dof_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_generic_6dof_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3745,13 +3406,12 @@ Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisPar
 */
 //go:nosplit
 func (self class) Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_generic_6dof_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_generic_6dof_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3761,14 +3421,13 @@ Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag]
 */
 //go:nosplit
 func (self class) Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_generic_6dof_joint_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_generic_6dof_joint_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3776,13 +3435,12 @@ Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] fo
 */
 //go:nosplit
 func (self class) Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_generic_6dof_joint_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_generic_6dof_joint_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3792,11 +3450,10 @@ Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is n
 */
 //go:nosplit
 func (self class) FreeRid(rid gd.RID)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3804,11 +3461,10 @@ Activates or deactivates the 3D physics engine.
 */
 //go:nosplit
 func (self class) SetActive(active bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -3816,11 +3472,10 @@ Returns information about the current state of the 3D physics engine. See [enum 
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info classdb.PhysicsServer3DProcessInfo) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.PhysicsServer3D.Bind_get_process_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_get_process_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3830,7 +3485,7 @@ func (self class) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("PhysicsServer3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("PhysicsServer3D", func(ptr gd.Object) any { return classdb.PhysicsServer3D(ptr) })}
 type JointType = classdb.PhysicsServer3DJointType
 
 const (

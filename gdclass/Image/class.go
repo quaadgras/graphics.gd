@@ -2,7 +2,7 @@ package Image
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
@@ -27,7 +27,6 @@ type Go [1]classdb.Image
 Returns the image's width.
 */
 func (self Go) GetWidth() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetWidth()))
 }
 
@@ -35,7 +34,6 @@ func (self Go) GetWidth() int {
 Returns the image's height.
 */
 func (self Go) GetHeight() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetHeight()))
 }
 
@@ -43,7 +41,6 @@ func (self Go) GetHeight() int {
 Returns the image's size (width and height).
 */
 func (self Go) GetSize() gd.Vector2i {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector2i(class(self).GetSize())
 }
 
@@ -51,7 +48,6 @@ func (self Go) GetSize() gd.Vector2i {
 Returns [code]true[/code] if the image has generated mipmaps.
 */
 func (self Go) HasMipmaps() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasMipmaps())
 }
 
@@ -59,7 +55,6 @@ func (self Go) HasMipmaps() bool {
 Returns the image's format. See [enum Format] constants.
 */
 func (self Go) GetFormat() classdb.ImageFormat {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ImageFormat(class(self).GetFormat())
 }
 
@@ -67,15 +62,13 @@ func (self Go) GetFormat() classdb.ImageFormat {
 Returns a copy of the image's raw data.
 */
 func (self Go) GetData() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).GetData(gc).Bytes())
+	return []byte(class(self).GetData().Bytes())
 }
 
 /*
 Returns size (in bytes) of the image's raw data.
 */
 func (self Go) GetDataSize() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetDataSize()))
 }
 
@@ -83,7 +76,6 @@ func (self Go) GetDataSize() int {
 Converts the image's format. See [enum Format] constants.
 */
 func (self Go) Convert(format classdb.ImageFormat) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Convert(format)
 }
 
@@ -91,7 +83,6 @@ func (self Go) Convert(format classdb.ImageFormat) {
 Returns the number of mipmap levels or 0 if the image has no mipmaps. The largest main level image is not counted as a mipmap level by this method, so if you want to include it you can add 1 to this count.
 */
 func (self Go) GetMipmapCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetMipmapCount()))
 }
 
@@ -99,7 +90,6 @@ func (self Go) GetMipmapCount() int {
 Returns the offset where the image's mipmap with index [param mipmap] is stored in the [member data] dictionary.
 */
 func (self Go) GetMipmapOffset(mipmap int) int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetMipmapOffset(gd.Int(mipmap))))
 }
 
@@ -107,7 +97,6 @@ func (self Go) GetMipmapOffset(mipmap int) int {
 Resizes the image to the nearest power of 2 for the width and height. If [param square] is [code]true[/code] then set width and height to be the same. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
 func (self Go) ResizeToPo2() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ResizeToPo2(false, 1)
 }
 
@@ -115,7 +104,6 @@ func (self Go) ResizeToPo2() {
 Resizes the image to the given [param width] and [param height]. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
 func (self Go) Resize(width int, height int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Resize(gd.Int(width), gd.Int(height), 1)
 }
 
@@ -123,7 +111,6 @@ func (self Go) Resize(width int, height int) {
 Shrinks the image by a factor of 2 on each axis (this divides the pixel count by 4).
 */
 func (self Go) ShrinkX2() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ShrinkX2()
 }
 
@@ -131,7 +118,6 @@ func (self Go) ShrinkX2() {
 Crops the image to the given [param width] and [param height]. If the specified size is larger than the current size, the extra area is filled with black pixels.
 */
 func (self Go) Crop(width int, height int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Crop(gd.Int(width), gd.Int(height))
 }
 
@@ -139,7 +125,6 @@ func (self Go) Crop(width int, height int) {
 Flips the image horizontally.
 */
 func (self Go) FlipX() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).FlipX()
 }
 
@@ -147,7 +132,6 @@ func (self Go) FlipX() {
 Flips the image vertically.
 */
 func (self Go) FlipY() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).FlipY()
 }
 
@@ -156,7 +140,6 @@ Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copi
 It is possible to check if the image has mipmaps by calling [method has_mipmaps] or [method get_mipmap_count]. Calling [method generate_mipmaps] on an image that already has mipmaps will replace existing mipmaps in the image.
 */
 func (self Go) GenerateMipmaps() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).GenerateMipmaps(false))
 }
 
@@ -164,7 +147,6 @@ func (self Go) GenerateMipmaps() gd.Error {
 Removes the image's mipmaps.
 */
 func (self Go) ClearMipmaps() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ClearMipmaps()
 }
 
@@ -172,39 +154,34 @@ func (self Go) ClearMipmaps() {
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 func (self Go) Create(width int, height int, use_mipmaps bool, format classdb.ImageFormat) gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).Create(gc, gd.Int(width), gd.Int(height), use_mipmaps, format))
+	return gdclass.Image(class(self).Create(gd.Int(width), gd.Int(height), use_mipmaps, format))
 }
 
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 func (self Go) CreateEmpty(width int, height int, use_mipmaps bool, format classdb.ImageFormat) gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).CreateEmpty(gc, gd.Int(width), gd.Int(height), use_mipmaps, format))
+	return gdclass.Image(class(self).CreateEmpty(gd.Int(width), gd.Int(height), use_mipmaps, format))
 }
 
 /*
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
 func (self Go) CreateFromData(width int, height int, use_mipmaps bool, format classdb.ImageFormat, data []byte) gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).CreateFromData(gc, gd.Int(width), gd.Int(height), use_mipmaps, format, gc.PackedByteSlice(data)))
+	return gdclass.Image(class(self).CreateFromData(gd.Int(width), gd.Int(height), use_mipmaps, format, gd.NewPackedByteSlice(data)))
 }
 
 /*
 Overwrites data of an existing [Image]. Non-static equivalent of [method create_from_data].
 */
 func (self Go) SetData(width int, height int, use_mipmaps bool, format classdb.ImageFormat, data []byte) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetData(gd.Int(width), gd.Int(height), use_mipmaps, format, gc.PackedByteSlice(data))
+	class(self).SetData(gd.Int(width), gd.Int(height), use_mipmaps, format, gd.NewPackedByteSlice(data))
 }
 
 /*
 Returns [code]true[/code] if the image has no data.
 */
 func (self Go) IsEmpty() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsEmpty())
 }
 
@@ -214,32 +191,28 @@ Loads an image from file [param path]. See [url=$DOCS_URL/tutorials/assets_pipel
 See also [ImageTexture] description for usage examples.
 */
 func (self Go) Load(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Load(gc.String(path)))
+	return gd.Error(class(self).Load(gd.NewString(path)))
 }
 
 /*
 Creates a new [Image] and loads data from the specified file.
 */
 func (self Go) LoadFromFile(path string) gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).LoadFromFile(gc, gc.String(path)))
+	return gdclass.Image(class(self).LoadFromFile(gd.NewString(path)))
 }
 
 /*
 Saves the image as a PNG file to the file at [param path].
 */
 func (self Go) SavePng(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).SavePng(gc.String(path)))
+	return gd.Error(class(self).SavePng(gd.NewString(path)))
 }
 
 /*
 Saves the image as a PNG file to a byte array.
 */
 func (self Go) SavePngToBuffer() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).SavePngToBuffer(gc).Bytes())
+	return []byte(class(self).SavePngToBuffer().Bytes())
 }
 
 /*
@@ -247,8 +220,7 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
 */
 func (self Go) SaveJpg(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).SaveJpg(gc.String(path), gd.Float(0.75)))
+	return gd.Error(class(self).SaveJpg(gd.NewString(path), gd.Float(0.75)))
 }
 
 /*
@@ -256,8 +228,7 @@ Saves the image as a JPEG file to a byte array with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting byte array won't contain the alpha channel.
 */
 func (self Go) SaveJpgToBuffer() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).SaveJpgToBuffer(gc, gd.Float(0.75)).Bytes())
+	return []byte(class(self).SaveJpgToBuffer(gd.Float(0.75)).Bytes())
 }
 
 /*
@@ -265,8 +236,7 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
 */
 func (self Go) SaveExr(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).SaveExr(gc.String(path), false))
+	return gd.Error(class(self).SaveExr(gd.NewString(path), false))
 }
 
 /*
@@ -274,8 +244,7 @@ Saves the image as an EXR file to a byte array. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return an empty byte array when it is called from an exported project.
 */
 func (self Go) SaveExrToBuffer() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).SaveExrToBuffer(gc, false).Bytes())
+	return []byte(class(self).SaveExrToBuffer(false).Bytes())
 }
 
 /*
@@ -283,8 +252,7 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Go) SaveWebp(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).SaveWebp(gc.String(path), false, gd.Float(0.75)))
+	return gd.Error(class(self).SaveWebp(gd.NewString(path), false, gd.Float(0.75)))
 }
 
 /*
@@ -292,15 +260,13 @@ Saves the image as a WebP (Web Picture) file to a byte array. By default it will
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Go) SaveWebpToBuffer() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).SaveWebpToBuffer(gc, false, gd.Float(0.75)).Bytes())
+	return []byte(class(self).SaveWebpToBuffer(false, gd.Float(0.75)).Bytes())
 }
 
 /*
 Returns [constant ALPHA_BLEND] if the image has data for alpha values. Returns [constant ALPHA_BIT] if all the alpha values are stored in a single bit. Returns [constant ALPHA_NONE] if no data for alpha values is found.
 */
 func (self Go) DetectAlpha() classdb.ImageAlphaMode {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ImageAlphaMode(class(self).DetectAlpha())
 }
 
@@ -308,7 +274,6 @@ func (self Go) DetectAlpha() classdb.ImageAlphaMode {
 Returns [code]true[/code] if all the image's pixels have an alpha value of 0. Returns [code]false[/code] if any pixel has an alpha value higher than 0.
 */
 func (self Go) IsInvisible() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsInvisible())
 }
 
@@ -316,7 +281,6 @@ func (self Go) IsInvisible() bool {
 Returns the color channels used by this image, as one of the [enum UsedChannels] constants. If the image is compressed, the original [param source] must be specified.
 */
 func (self Go) DetectUsedChannels() classdb.ImageUsedChannels {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ImageUsedChannels(class(self).DetectUsedChannels(0))
 }
 
@@ -326,7 +290,6 @@ The [param source] parameter helps to pick the best compression method for DXT a
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 func (self Go) Compress(mode classdb.ImageCompressMode) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Compress(mode, 0, 0))
 }
 
@@ -336,7 +299,6 @@ This is an alternative to [method compress] that lets the user supply the channe
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 func (self Go) CompressFromChannels(mode classdb.ImageCompressMode, channels classdb.ImageUsedChannels) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).CompressFromChannels(mode, channels, 0))
 }
 
@@ -345,7 +307,6 @@ Decompresses the image if it is VRAM compressed in a supported format. Returns [
 [b]Note:[/b] The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.
 */
 func (self Go) Decompress() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Decompress())
 }
 
@@ -353,7 +314,6 @@ func (self Go) Decompress() gd.Error {
 Returns [code]true[/code] if the image is compressed.
 */
 func (self Go) IsCompressed() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsCompressed())
 }
 
@@ -361,7 +321,6 @@ func (self Go) IsCompressed() bool {
 Rotates the image in the specified [param direction] by [code]90[/code] degrees. The width and height of the image must be greater than [code]1[/code]. If the width and height are not equal, the image will be resized.
 */
 func (self Go) Rotate90(direction gd.ClockDirection) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Rotate90(direction)
 }
 
@@ -369,7 +328,6 @@ func (self Go) Rotate90(direction gd.ClockDirection) {
 Rotates the image by [code]180[/code] degrees. The width and height of the image must be greater than [code]1[/code].
 */
 func (self Go) Rotate180() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Rotate180()
 }
 
@@ -377,7 +335,6 @@ func (self Go) Rotate180() {
 Blends low-alpha pixels with nearby pixels.
 */
 func (self Go) FixAlphaEdges() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).FixAlphaEdges()
 }
 
@@ -385,7 +342,6 @@ func (self Go) FixAlphaEdges() {
 Multiplies color values with alpha values. Resulting color values for a pixel are [code](color * alpha)/256[/code]. See also [member CanvasItemMaterial.blend_mode].
 */
 func (self Go) PremultiplyAlpha() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PremultiplyAlpha()
 }
 
@@ -393,7 +349,6 @@ func (self Go) PremultiplyAlpha() {
 Converts the raw data from the sRGB colorspace to a linear scale.
 */
 func (self Go) SrgbToLinear() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SrgbToLinear()
 }
 
@@ -401,7 +356,6 @@ func (self Go) SrgbToLinear() {
 Converts the image's data to represent coordinates on a 3D plane. This is used when the image represents a normal map. A normal map can add lots of detail to a 3D surface without increasing the polygon count.
 */
 func (self Go) NormalMapToXy() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).NormalMapToXy()
 }
 
@@ -409,15 +363,13 @@ func (self Go) NormalMapToXy() {
 Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 */
 func (self Go) RgbeToSrgb() gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).RgbeToSrgb(gc))
+	return gdclass.Image(class(self).RgbeToSrgb())
 }
 
 /*
 Converts a bump map to a normal map. A bump map provides a height offset per-pixel, while a normal map provides a normal direction per pixel.
 */
 func (self Go) BumpMapToNormalMap() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).BumpMapToNormalMap(gd.Float(1.0))
 }
 
@@ -426,15 +378,13 @@ Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
 func (self Go) ComputeImageMetrics(compared_image gdclass.Image, use_luma bool) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).ComputeImageMetrics(gc, compared_image, use_luma))
+	return gd.Dictionary(class(self).ComputeImageMetrics(compared_image, use_luma))
 }
 
 /*
 Copies [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Go) BlitRect(src gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).BlitRect(src, src_rect, dst)
 }
 
@@ -442,7 +392,6 @@ func (self Go) BlitRect(src gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i) 
 Blits [param src_rect] area from [param src] image to this image at the coordinates given by [param dst], clipped accordingly to both image bounds. [param src] pixel is copied onto [param dst] if the corresponding [param mask] pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Go) BlitRectMask(src gdclass.Image, mask gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).BlitRectMask(src, mask, src_rect, dst)
 }
 
@@ -450,7 +399,6 @@ func (self Go) BlitRectMask(src gdclass.Image, mask gdclass.Image, src_rect gd.R
 Alpha-blends [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Go) BlendRect(src gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).BlendRect(src, src_rect, dst)
 }
 
@@ -458,7 +406,6 @@ func (self Go) BlendRect(src gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i)
 Alpha-blends [param src_rect] from [param src] image to this image using [param mask] image at coordinates [param dst], clipped accordingly to both image bounds. Alpha channels are required for both [param src] and [param mask]. [param dst] pixels and [param src] pixels will blend if the corresponding mask pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Go) BlendRectMask(src gdclass.Image, mask gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).BlendRectMask(src, mask, src_rect, dst)
 }
 
@@ -466,7 +413,6 @@ func (self Go) BlendRectMask(src gdclass.Image, mask gdclass.Image, src_rect gd.
 Fills the image with [param color].
 */
 func (self Go) Fill(color gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Fill(color)
 }
 
@@ -474,7 +420,6 @@ func (self Go) Fill(color gd.Color) {
 Fills [param rect] with [param color].
 */
 func (self Go) FillRect(rect gd.Rect2i, color gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).FillRect(rect, color)
 }
 
@@ -482,7 +427,6 @@ func (self Go) FillRect(rect gd.Rect2i, color gd.Color) {
 Returns a [Rect2i] enclosing the visible portion of the image, considering each pixel with a non-zero alpha channel as visible.
 */
 func (self Go) GetUsedRect() gd.Rect2i {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Rect2i(class(self).GetUsedRect())
 }
 
@@ -490,15 +434,13 @@ func (self Go) GetUsedRect() gd.Rect2i {
 Returns a new [Image] that is a copy of this [Image]'s area specified with [param region].
 */
 func (self Go) GetRegion(region gd.Rect2i) gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).GetRegion(gc, region))
+	return gdclass.Image(class(self).GetRegion(region))
 }
 
 /*
 Copies [param src] image to this image.
 */
 func (self Go) CopyFrom(src gdclass.Image) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).CopyFrom(src)
 }
 
@@ -507,7 +449,6 @@ Returns the color of the pixel at [param point].
 This is the same as [method get_pixel], but with a [Vector2i] argument instead of two integer arguments.
 */
 func (self Go) GetPixelv(point gd.Vector2i) gd.Color {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Color(class(self).GetPixelv(point))
 }
 
@@ -516,7 +457,6 @@ Returns the color of the pixel at [code](x, y)[/code].
 This is the same as [method get_pixelv], but with two integer arguments instead of a [Vector2i] argument.
 */
 func (self Go) GetPixel(x int, y int) gd.Color {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Color(class(self).GetPixel(gd.Int(x), gd.Int(y)))
 }
 
@@ -542,7 +482,6 @@ img.SetPixelv(new Vector2I(1, 2), Colors.Red); // Sets the color at (1, 2) to re
 This is the same as [method set_pixel], but with a [Vector2i] argument instead of two integer arguments.
 */
 func (self Go) SetPixelv(point gd.Vector2i, color gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPixelv(point, color)
 }
 
@@ -568,7 +507,6 @@ img.SetPixel(1, 2, Colors.Red); // Sets the color at (1, 2) to red.
 This is the same as [method set_pixelv], but with a two integer arguments instead of a [Vector2i] argument.
 */
 func (self Go) SetPixel(x int, y int, color gd.Color) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPixel(gd.Int(x), gd.Int(y), color)
 }
 
@@ -576,7 +514,6 @@ func (self Go) SetPixel(x int, y int, color gd.Color) {
 Adjusts this image's [param brightness], [param contrast], and [param saturation] by the given values. Does not work if the image is compressed (see [method is_compressed]).
 */
 func (self Go) AdjustBcs(brightness float64, contrast float64, saturation float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AdjustBcs(gd.Float(brightness), gd.Float(contrast), gd.Float(saturation))
 }
 
@@ -584,24 +521,21 @@ func (self Go) AdjustBcs(brightness float64, contrast float64, saturation float6
 Loads an image from the binary contents of a PNG file.
 */
 func (self Go) LoadPngFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadPngFromBuffer(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).LoadPngFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
 Loads an image from the binary contents of a JPEG file.
 */
 func (self Go) LoadJpgFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadJpgFromBuffer(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).LoadJpgFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
 Loads an image from the binary contents of a WebP file.
 */
 func (self Go) LoadWebpFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadWebpFromBuffer(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).LoadWebpFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
@@ -609,8 +543,7 @@ Loads an image from the binary contents of a TGA file.
 [b]Note:[/b] This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the [code]module_tga_enabled=no[/code] SCons option.
 */
 func (self Go) LoadTgaFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadTgaFromBuffer(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).LoadTgaFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
@@ -619,8 +552,7 @@ Loads an image from the binary contents of a BMP file.
 [b]Note:[/b] This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the [code]module_bmp_enabled=no[/code] SCons option.
 */
 func (self Go) LoadBmpFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadBmpFromBuffer(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).LoadBmpFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
@@ -629,8 +561,7 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 [b]Note:[/b] This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the [code]module_ktx_enabled=no[/code] SCons option.
 */
 func (self Go) LoadKtxFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadKtxFromBuffer(gc.PackedByteSlice(buffer)))
+	return gd.Error(class(self).LoadKtxFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
@@ -639,8 +570,7 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Go) LoadSvgFromBuffer(buffer []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadSvgFromBuffer(gc.PackedByteSlice(buffer), gd.Float(1.0)))
+	return gd.Error(class(self).LoadSvgFromBuffer(gd.NewPackedByteSlice(buffer), gd.Float(1.0)))
 }
 
 /*
@@ -648,26 +578,16 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Go) LoadSvgFromString(svg_str string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadSvgFromString(gc.String(svg_str), gd.Float(1.0)))
+	return gd.Error(class(self).LoadSvgFromString(gd.NewString(svg_str), gd.Float(1.0)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.Image
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Image"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Image"))
+	return Go{classdb.Image(object)}
 }
 
 /*
@@ -675,10 +595,9 @@ Returns the image's width.
 */
 //go:nosplit
 func (self class) GetWidth() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -688,10 +607,9 @@ Returns the image's height.
 */
 //go:nosplit
 func (self class) GetHeight() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -701,10 +619,9 @@ Returns the image's size (width and height).
 */
 //go:nosplit
 func (self class) GetSize() gd.Vector2i {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -714,10 +631,9 @@ Returns [code]true[/code] if the image has generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -727,10 +643,9 @@ Returns the image's format. See [enum Format] constants.
 */
 //go:nosplit
 func (self class) GetFormat() classdb.ImageFormat {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ImageFormat](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -739,12 +654,11 @@ func (self class) GetFormat() classdb.ImageFormat {
 Returns a copy of the image's raw data.
 */
 //go:nosplit
-func (self class) GetData(ctx gd.Lifetime) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetData() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -753,10 +667,9 @@ Returns size (in bytes) of the image's raw data.
 */
 //go:nosplit
 func (self class) GetDataSize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_data_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_data_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -766,11 +679,10 @@ Converts the image's format. See [enum Format] constants.
 */
 //go:nosplit
 func (self class) Convert(format classdb.ImageFormat)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_convert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_convert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -778,10 +690,9 @@ Returns the number of mipmap levels or 0 if the image has no mipmaps. The larges
 */
 //go:nosplit
 func (self class) GetMipmapCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_mipmap_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_mipmap_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -791,11 +702,10 @@ Returns the offset where the image's mipmap with index [param mipmap] is stored 
 */
 //go:nosplit
 func (self class) GetMipmapOffset(mipmap gd.Int) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mipmap)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_mipmap_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_mipmap_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -805,12 +715,11 @@ Resizes the image to the nearest power of 2 for the width and height. If [param 
 */
 //go:nosplit
 func (self class) ResizeToPo2(square bool, interpolation classdb.ImageInterpolation)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, square)
 	callframe.Arg(frame, interpolation)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_resize_to_po2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_resize_to_po2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -818,13 +727,12 @@ Resizes the image to the given [param width] and [param height]. New pixels are 
 */
 //go:nosplit
 func (self class) Resize(width gd.Int, height gd.Int, interpolation classdb.ImageInterpolation)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, interpolation)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_resize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_resize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -832,10 +740,9 @@ Shrinks the image by a factor of 2 on each axis (this divides the pixel count by
 */
 //go:nosplit
 func (self class) ShrinkX2()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_shrink_x2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_shrink_x2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -843,12 +750,11 @@ Crops the image to the given [param width] and [param height]. If the specified 
 */
 //go:nosplit
 func (self class) Crop(width gd.Int, height gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_crop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_crop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -856,10 +762,9 @@ Flips the image horizontally.
 */
 //go:nosplit
 func (self class) FlipX()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_flip_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_flip_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -867,10 +772,9 @@ Flips the image vertically.
 */
 //go:nosplit
 func (self class) FlipY()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_flip_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_flip_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -879,11 +783,10 @@ It is possible to check if the image has mipmaps by calling [method has_mipmaps]
 */
 //go:nosplit
 func (self class) GenerateMipmaps(renormalize bool) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, renormalize)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -893,26 +796,24 @@ Removes the image's mipmaps.
 */
 //go:nosplit
 func (self class) ClearMipmaps()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_clear_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_clear_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) Create(ctx gd.Lifetime, width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat) gdclass.Image {
+func (self class) Create(width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat) gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.Image.Bind_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -920,16 +821,15 @@ func (self class) Create(ctx gd.Lifetime, width gd.Int, height gd.Int, use_mipma
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) CreateEmpty(ctx gd.Lifetime, width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat) gdclass.Image {
+func (self class) CreateEmpty(width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat) gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.Image.Bind_create_empty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_empty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -937,17 +837,16 @@ func (self class) CreateEmpty(ctx gd.Lifetime, width gd.Int, height gd.Int, use_
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) CreateFromData(ctx gd.Lifetime, width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat, data gd.PackedByteArray) gdclass.Image {
+func (self class) CreateFromData(width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat, data gd.PackedByteArray) gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	callframe.Arg(frame, mmm.Get(data))
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.Image.Bind_create_from_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(data))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_from_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -956,15 +855,14 @@ Overwrites data of an existing [Image]. Non-static equivalent of [method create_
 */
 //go:nosplit
 func (self class) SetData(width gd.Int, height gd.Int, use_mipmaps bool, format classdb.ImageFormat, data gd.PackedByteArray)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	callframe.Arg(frame, mmm.Get(data))
+	callframe.Arg(frame, discreet.Get(data))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -972,10 +870,9 @@ Returns [code]true[/code] if the image has no data.
 */
 //go:nosplit
 func (self class) IsEmpty() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_is_empty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_is_empty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -987,11 +884,10 @@ See also [ImageTexture] description for usage examples.
 */
 //go:nosplit
 func (self class) Load(path gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1000,13 +896,12 @@ func (self class) Load(path gd.String) int64 {
 Creates a new [Image] and loads data from the specified file.
 */
 //go:nosplit
-func (self class) LoadFromFile(ctx gd.Lifetime, path gd.String) gdclass.Image {
+func (self class) LoadFromFile(path gd.String) gdclass.Image {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.Image.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(path))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1015,11 +910,10 @@ Saves the image as a PNG file to the file at [param path].
 */
 //go:nosplit
 func (self class) SavePng(path gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_png, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1028,12 +922,11 @@ func (self class) SavePng(path gd.String) int64 {
 Saves the image as a PNG file to a byte array.
 */
 //go:nosplit
-func (self class) SavePngToBuffer(ctx gd.Lifetime) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) SavePngToBuffer() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_png_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1043,12 +936,11 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 */
 //go:nosplit
 func (self class) SaveJpg(path gd.String, quality gd.Float) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_jpg, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1058,13 +950,12 @@ Saves the image as a JPEG file to a byte array with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting byte array won't contain the alpha channel.
 */
 //go:nosplit
-func (self class) SaveJpgToBuffer(ctx gd.Lifetime, quality gd.Float) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) SaveJpgToBuffer(quality gd.Float) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_jpg_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1074,12 +965,11 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 */
 //go:nosplit
 func (self class) SaveExr(path gd.String, grayscale bool) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, grayscale)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_exr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1089,13 +979,12 @@ Saves the image as an EXR file to a byte array. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return an empty byte array when it is called from an exported project.
 */
 //go:nosplit
-func (self class) SaveExrToBuffer(ctx gd.Lifetime, grayscale bool) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) SaveExrToBuffer(grayscale bool) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, grayscale)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_exr_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1105,13 +994,12 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 */
 //go:nosplit
 func (self class) SaveWebp(path gd.String, lossy bool, quality gd.Float) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, lossy)
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_webp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_webp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1121,14 +1009,13 @@ Saves the image as a WebP (Web Picture) file to a byte array. By default it will
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 //go:nosplit
-func (self class) SaveWebpToBuffer(ctx gd.Lifetime, lossy bool, quality gd.Float) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) SaveWebpToBuffer(lossy bool, quality gd.Float) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, lossy)
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_save_webp_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_webp_to_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1137,10 +1024,9 @@ Returns [constant ALPHA_BLEND] if the image has data for alpha values. Returns [
 */
 //go:nosplit
 func (self class) DetectAlpha() classdb.ImageAlphaMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ImageAlphaMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_detect_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_detect_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1150,10 +1036,9 @@ Returns [code]true[/code] if all the image's pixels have an alpha value of 0. Re
 */
 //go:nosplit
 func (self class) IsInvisible() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_is_invisible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_is_invisible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1163,11 +1048,10 @@ Returns the color channels used by this image, as one of the [enum UsedChannels]
 */
 //go:nosplit
 func (self class) DetectUsedChannels(source classdb.ImageCompressSource) classdb.ImageUsedChannels {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret = callframe.Ret[classdb.ImageUsedChannels](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_detect_used_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_detect_used_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1179,13 +1063,12 @@ For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
 func (self class) Compress(mode classdb.ImageCompressMode, source classdb.ImageCompressSource, astc_format classdb.ImageASTCFormat) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, source)
 	callframe.Arg(frame, astc_format)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1197,13 +1080,12 @@ For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
 func (self class) CompressFromChannels(mode classdb.ImageCompressMode, channels classdb.ImageUsedChannels, astc_format classdb.ImageASTCFormat) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, channels)
 	callframe.Arg(frame, astc_format)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_compress_from_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compress_from_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1214,10 +1096,9 @@ Decompresses the image if it is VRAM compressed in a supported format. Returns [
 */
 //go:nosplit
 func (self class) Decompress() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_decompress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_decompress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1227,10 +1108,9 @@ Returns [code]true[/code] if the image is compressed.
 */
 //go:nosplit
 func (self class) IsCompressed() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_is_compressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_is_compressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1240,11 +1120,10 @@ Rotates the image in the specified [param direction] by [code]90[/code] degrees.
 */
 //go:nosplit
 func (self class) Rotate90(direction gd.ClockDirection)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_rotate_90, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rotate_90, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1252,10 +1131,9 @@ Rotates the image by [code]180[/code] degrees. The width and height of the image
 */
 //go:nosplit
 func (self class) Rotate180()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_rotate_180, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rotate_180, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1263,10 +1141,9 @@ Blends low-alpha pixels with nearby pixels.
 */
 //go:nosplit
 func (self class) FixAlphaEdges()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_fix_alpha_edges, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_fix_alpha_edges, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1274,10 +1151,9 @@ Multiplies color values with alpha values. Resulting color values for a pixel ar
 */
 //go:nosplit
 func (self class) PremultiplyAlpha()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_premultiply_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_premultiply_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1285,10 +1161,9 @@ Converts the raw data from the sRGB colorspace to a linear scale.
 */
 //go:nosplit
 func (self class) SrgbToLinear()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_srgb_to_linear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_srgb_to_linear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1296,23 +1171,20 @@ Converts the image's data to represent coordinates on a 3D plane. This is used w
 */
 //go:nosplit
 func (self class) NormalMapToXy()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_normal_map_to_xy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_normal_map_to_xy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 */
 //go:nosplit
-func (self class) RgbeToSrgb(ctx gd.Lifetime) gdclass.Image {
-	var selfPtr = self[0].AsPointer()
+func (self class) RgbeToSrgb() gdclass.Image {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_rgbe_to_srgb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rgbe_to_srgb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1321,11 +1193,10 @@ Converts a bump map to a normal map. A bump map provides a height offset per-pix
 */
 //go:nosplit
 func (self class) BumpMapToNormalMap(bump_scale gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bump_scale)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_bump_map_to_normal_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_bump_map_to_normal_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1333,14 +1204,13 @@ Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
 //go:nosplit
-func (self class) ComputeImageMetrics(ctx gd.Lifetime, compared_image gdclass.Image, use_luma bool) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) ComputeImageMetrics(compared_image gdclass.Image, use_luma bool) gd.Dictionary {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(compared_image[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(compared_image[0])[0])
 	callframe.Arg(frame, use_luma)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_compute_image_metrics, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compute_image_metrics, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1349,13 +1219,12 @@ Copies [param src_rect] from [param src] image to this image at coordinates [par
 */
 //go:nosplit
 func (self class) BlitRect(src gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(src[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(src[0])[0])
 	callframe.Arg(frame, src_rect)
 	callframe.Arg(frame, dst)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_blit_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blit_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1363,14 +1232,13 @@ Blits [param src_rect] area from [param src] image to this image at the coordina
 */
 //go:nosplit
 func (self class) BlitRectMask(src gdclass.Image, mask gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(src[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(mask[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(src[0])[0])
+	callframe.Arg(frame, discreet.Get(mask[0])[0])
 	callframe.Arg(frame, src_rect)
 	callframe.Arg(frame, dst)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_blit_rect_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blit_rect_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1378,13 +1246,12 @@ Alpha-blends [param src_rect] from [param src] image to this image at coordinate
 */
 //go:nosplit
 func (self class) BlendRect(src gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(src[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(src[0])[0])
 	callframe.Arg(frame, src_rect)
 	callframe.Arg(frame, dst)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_blend_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blend_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1392,14 +1259,13 @@ Alpha-blends [param src_rect] from [param src] image to this image using [param 
 */
 //go:nosplit
 func (self class) BlendRectMask(src gdclass.Image, mask gdclass.Image, src_rect gd.Rect2i, dst gd.Vector2i)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(src[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(mask[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(src[0])[0])
+	callframe.Arg(frame, discreet.Get(mask[0])[0])
 	callframe.Arg(frame, src_rect)
 	callframe.Arg(frame, dst)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_blend_rect_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blend_rect_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1407,11 +1273,10 @@ Fills the image with [param color].
 */
 //go:nosplit
 func (self class) Fill(color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_fill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_fill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1419,12 +1284,11 @@ Fills [param rect] with [param color].
 */
 //go:nosplit
 func (self class) FillRect(rect gd.Rect2i, color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_fill_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_fill_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1432,10 +1296,9 @@ Returns a [Rect2i] enclosing the visible portion of the image, considering each 
 */
 //go:nosplit
 func (self class) GetUsedRect() gd.Rect2i {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1444,14 +1307,12 @@ func (self class) GetUsedRect() gd.Rect2i {
 Returns a new [Image] that is a copy of this [Image]'s area specified with [param region].
 */
 //go:nosplit
-func (self class) GetRegion(ctx gd.Lifetime, region gd.Rect2i) gdclass.Image {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRegion(region gd.Rect2i) gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1460,11 +1321,10 @@ Copies [param src] image to this image.
 */
 //go:nosplit
 func (self class) CopyFrom(src gdclass.Image)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(src[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(src[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_copy_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_copy_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1473,11 +1333,10 @@ This is the same as [method get_pixel], but with a [Vector2i] argument instead o
 */
 //go:nosplit
 func (self class) GetPixelv(point gd.Vector2i) gd.Color {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_pixelv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_pixelv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1488,12 +1347,11 @@ This is the same as [method get_pixelv], but with two integer arguments instead 
 */
 //go:nosplit
 func (self class) GetPixel(x gd.Int, y gd.Int) gd.Color {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_get_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1521,12 +1379,11 @@ This is the same as [method set_pixel], but with a [Vector2i] argument instead o
 */
 //go:nosplit
 func (self class) SetPixelv(point gd.Vector2i, color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_set_pixelv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_pixelv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1552,13 +1409,12 @@ This is the same as [method set_pixelv], but with a two integer arguments instea
 */
 //go:nosplit
 func (self class) SetPixel(x gd.Int, y gd.Int, color gd.Color)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_set_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1566,13 +1422,12 @@ Adjusts this image's [param brightness], [param contrast], and [param saturation
 */
 //go:nosplit
 func (self class) AdjustBcs(brightness gd.Float, contrast gd.Float, saturation gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, brightness)
 	callframe.Arg(frame, contrast)
 	callframe.Arg(frame, saturation)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_adjust_bcs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_adjust_bcs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1580,11 +1435,10 @@ Loads an image from the binary contents of a PNG file.
 */
 //go:nosplit
 func (self class) LoadPngFromBuffer(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_png_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_png_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1594,11 +1448,10 @@ Loads an image from the binary contents of a JPEG file.
 */
 //go:nosplit
 func (self class) LoadJpgFromBuffer(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_jpg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_jpg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1608,11 +1461,10 @@ Loads an image from the binary contents of a WebP file.
 */
 //go:nosplit
 func (self class) LoadWebpFromBuffer(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_webp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_webp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1623,11 +1475,10 @@ Loads an image from the binary contents of a TGA file.
 */
 //go:nosplit
 func (self class) LoadTgaFromBuffer(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_tga_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_tga_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1639,11 +1490,10 @@ Loads an image from the binary contents of a BMP file.
 */
 //go:nosplit
 func (self class) LoadBmpFromBuffer(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_bmp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_bmp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1655,11 +1505,10 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 */
 //go:nosplit
 func (self class) LoadKtxFromBuffer(buffer gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_ktx_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_ktx_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1671,12 +1520,11 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 */
 //go:nosplit
 func (self class) LoadSvgFromBuffer(buffer gd.PackedByteArray, scale gd.Float) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(buffer))
+	callframe.Arg(frame, discreet.Get(buffer))
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_svg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1687,12 +1535,11 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 */
 //go:nosplit
 func (self class) LoadSvgFromString(svg_str gd.String, scale gd.Float) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(svg_str))
+	callframe.Arg(frame, discreet.Get(svg_str))
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Image.Bind_load_svg_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1715,7 +1562,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("Image", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Image", func(ptr gd.Object) any { return classdb.Image(ptr) })}
 type Format = classdb.ImageFormat
 
 const (

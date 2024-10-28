@@ -2,7 +2,7 @@ package JSONRPC
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
@@ -20,8 +20,7 @@ var _ mmm.Lifetime
 */
 type Go [1]classdb.JSONRPC
 func (self Go) SetScope(scope string, target gd.Object) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetScope(gc.String(scope), target)
+	class(self).SetScope(gd.NewString(scope), target)
 }
 
 /*
@@ -30,12 +29,10 @@ To add new supported methods extend the JSONRPC class and call [method process_a
 [param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
 */
 func (self Go) ProcessAction(action gd.Variant) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).ProcessAction(gc, action, false))
+	return gd.Variant(class(self).ProcessAction(action, false))
 }
 func (self Go) ProcessString(action string) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).ProcessString(gc, gc.String(action)).String())
+	return string(class(self).ProcessString(gd.NewString(action)).String())
 }
 
 /*
@@ -45,8 +42,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 func (self Go) MakeRequest(method string, params gd.Variant, id gd.Variant) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).MakeRequest(gc, gc.String(method), params, id))
+	return gd.Dictionary(class(self).MakeRequest(gd.NewString(method), params, id))
 }
 
 /*
@@ -55,8 +51,7 @@ When a server has received and processed a request, it is expected to send a res
 - [param id]: The ID of the request this response is targeted to.
 */
 func (self Go) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).MakeResponse(gc, result, id))
+	return gd.Dictionary(class(self).MakeResponse(result, id))
 }
 
 /*
@@ -65,8 +60,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
 func (self Go) MakeNotification(method string, params gd.Variant) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).MakeNotification(gc, gc.String(method), params))
+	return gd.Dictionary(class(self).MakeNotification(gd.NewString(method), params))
 }
 
 /*
@@ -76,36 +70,25 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param id]: The request this error is a response to.
 */
 func (self Go) MakeResponseError(code int, message string) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).MakeResponseError(gc, gd.Int(code), gc.String(message), gc.Variant(([1]gd.Variant{}[0]))))
+	return gd.Dictionary(class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(([1]gd.Variant{}[0]))))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.JSONRPC
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("JSONRPC"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JSONRPC"))
+	return Go{classdb.JSONRPC(object)}
 }
 
 //go:nosplit
 func (self class) SetScope(scope gd.String, target gd.Object)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(scope))
-	callframe.Arg(frame, mmm.End(target.AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(scope))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(target))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_set_scope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_set_scope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -114,25 +97,23 @@ To add new supported methods extend the JSONRPC class and call [method process_a
 [param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
 */
 //go:nosplit
-func (self class) ProcessAction(ctx gd.Lifetime, action gd.Variant, recurse bool) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) ProcessAction(action gd.Variant, recurse bool) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
+	callframe.Arg(frame, discreet.Get(action))
 	callframe.Arg(frame, recurse)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_process_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) ProcessString(ctx gd.Lifetime, action gd.String) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) ProcessString(action gd.String) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(action))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_process_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(action))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -143,15 +124,14 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 //go:nosplit
-func (self class) MakeRequest(ctx gd.Lifetime, method gd.String, params gd.Variant, id gd.Variant) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant) gd.Dictionary {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(method))
-	callframe.Arg(frame, mmm.Get(params))
-	callframe.Arg(frame, mmm.Get(id))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(method))
+	callframe.Arg(frame, discreet.Get(params))
+	callframe.Arg(frame, discreet.Get(id))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -161,14 +141,13 @@ When a server has received and processed a request, it is expected to send a res
 - [param id]: The ID of the request this response is targeted to.
 */
 //go:nosplit
-func (self class) MakeResponse(ctx gd.Lifetime, result gd.Variant, id gd.Variant) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(result))
-	callframe.Arg(frame, mmm.Get(id))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(result))
+	callframe.Arg(frame, discreet.Get(id))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -178,14 +157,13 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
 //go:nosplit
-func (self class) MakeNotification(ctx gd.Lifetime, method gd.String, params gd.Variant) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) MakeNotification(method gd.String, params gd.Variant) gd.Dictionary {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(method))
-	callframe.Arg(frame, mmm.Get(params))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(method))
+	callframe.Arg(frame, discreet.Get(params))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -196,15 +174,14 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param id]: The request this error is a response to.
 */
 //go:nosplit
-func (self class) MakeResponseError(ctx gd.Lifetime, code gd.Int, message gd.String, id gd.Variant) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Variant) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
-	callframe.Arg(frame, mmm.Get(message))
-	callframe.Arg(frame, mmm.Get(id))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(message))
+	callframe.Arg(frame, discreet.Get(id))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -222,7 +199,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("JSONRPC", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("JSONRPC", func(ptr gd.Object) any { return classdb.JSONRPC(ptr) })}
 type ErrorCode = classdb.JSONRPCErrorCode
 
 const (

@@ -2,7 +2,7 @@ package WebRTCMultiplayerPeer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class constructs a full mesh of [WebRTCPeerConnection] (one connection for each peer) that can be used as a [member MultiplayerAPI.multiplayer_peer].
@@ -30,7 +30,6 @@ Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). 
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Go) CreateServer() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).CreateServer(([1]gd.Array{}[0])))
 }
 
@@ -39,7 +38,6 @@ Initialize the multiplayer peer as a client with the given [param peer_id] (must
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Go) CreateClient(peer_id int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).CreateClient(gd.Int(peer_id), ([1]gd.Array{}[0])))
 }
 
@@ -47,7 +45,6 @@ func (self Go) CreateClient(peer_id int) gd.Error {
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
 func (self Go) CreateMesh(peer_id int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).CreateMesh(gd.Int(peer_id), ([1]gd.Array{}[0])))
 }
 
@@ -56,7 +53,6 @@ Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnec
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
 func (self Go) AddPeer(peer gdclass.WebRTCPeerConnection, peer_id int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).AddPeer(peer, gd.Int(peer_id), gd.Int(1)))
 }
 
@@ -64,7 +60,6 @@ func (self Go) AddPeer(peer gdclass.WebRTCPeerConnection, peer_id int) gd.Error 
 Remove the peer with given [param peer_id] from the mesh. If the peer was connected, and [signal MultiplayerPeer.peer_connected] was emitted for it, then [signal MultiplayerPeer.peer_disconnected] will be emitted.
 */
 func (self Go) RemovePeer(peer_id int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemovePeer(gd.Int(peer_id))
 }
 
@@ -72,7 +67,6 @@ func (self Go) RemovePeer(peer_id int) {
 Returns [code]true[/code] if the given [param peer_id] is in the peers map (it might not be connected though).
 */
 func (self Go) HasPeer(peer_id int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasPeer(gd.Int(peer_id)))
 }
 
@@ -80,34 +74,23 @@ func (self Go) HasPeer(peer_id int) bool {
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
 func (self Go) GetPeer(peer_id int) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).GetPeer(gc, gd.Int(peer_id)))
+	return gd.Dictionary(class(self).GetPeer(gd.Int(peer_id)))
 }
 
 /*
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
 func (self Go) GetPeers() gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).GetPeers(gc))
+	return gd.Dictionary(class(self).GetPeers())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.WebRTCMultiplayerPeer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("WebRTCMultiplayerPeer"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCMultiplayerPeer"))
+	return Go{classdb.WebRTCMultiplayerPeer(object)}
 }
 
 /*
@@ -116,11 +99,10 @@ You can optionally specify a [param channels_config] array of [enum MultiplayerP
 */
 //go:nosplit
 func (self class) CreateServer(channels_config gd.Array) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(channels_config))
+	callframe.Arg(frame, discreet.Get(channels_config))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,12 +113,11 @@ You can optionally specify a [param channels_config] array of [enum MultiplayerP
 */
 //go:nosplit
 func (self class) CreateClient(peer_id gd.Int, channels_config gd.Array) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
-	callframe.Arg(frame, mmm.Get(channels_config))
+	callframe.Arg(frame, discreet.Get(channels_config))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -146,12 +127,11 @@ Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other)
 */
 //go:nosplit
 func (self class) CreateMesh(peer_id gd.Int, channels_config gd.Array) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
-	callframe.Arg(frame, mmm.Get(channels_config))
+	callframe.Arg(frame, discreet.Get(channels_config))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -162,13 +142,12 @@ Three channels will be created for reliable, unreliable, and ordered transport. 
 */
 //go:nosplit
 func (self class) AddPeer(peer gdclass.WebRTCPeerConnection, peer_id gd.Int, unreliable_lifetime gd.Int) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(peer[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(peer[0])[0])
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, unreliable_lifetime)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_add_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_add_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -178,11 +157,10 @@ Remove the peer with given [param peer_id] from the mesh. If the peer was connec
 */
 //go:nosplit
 func (self class) RemovePeer(peer_id gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_remove_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_remove_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -190,11 +168,10 @@ Returns [code]true[/code] if the given [param peer_id] is in the peers map (it m
 */
 //go:nosplit
 func (self class) HasPeer(peer_id gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_has_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_has_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -203,13 +180,12 @@ func (self class) HasPeer(peer_id gd.Int) bool {
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
 //go:nosplit
-func (self class) GetPeer(ctx gd.Lifetime, peer_id gd.Int) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPeer(peer_id gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -217,12 +193,11 @@ func (self class) GetPeer(ctx gd.Lifetime, peer_id gd.Int) gd.Dictionary {
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
 //go:nosplit
-func (self class) GetPeers(ctx gd.Lifetime) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPeers() gd.Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.WebRTCMultiplayerPeer.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -246,4 +221,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsMultiplayerPeer(), name)
 	}
 }
-func init() {classdb.Register("WebRTCMultiplayerPeer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any { return classdb.WebRTCMultiplayerPeer(ptr) })}

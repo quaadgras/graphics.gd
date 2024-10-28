@@ -2,7 +2,7 @@ package GPUParticlesCollisionHeightField3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A real-time heightmap-shaped 3D particle collision shape affecting [GPUParticles3D] nodes.
@@ -32,132 +32,107 @@ type GD = class
 type class [1]classdb.GPUParticlesCollisionHeightField3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("GPUParticlesCollisionHeightField3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticlesCollisionHeightField3D"))
+	return Go{classdb.GPUParticlesCollisionHeightField3D(object)}
 }
 
 func (self Go) Size() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector3(class(self).GetSize())
 }
 
 func (self Go) SetSize(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSize(value)
 }
 
 func (self Go) Resolution() classdb.GPUParticlesCollisionHeightField3DResolution {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.GPUParticlesCollisionHeightField3DResolution(class(self).GetResolution())
 }
 
 func (self Go) SetResolution(value classdb.GPUParticlesCollisionHeightField3DResolution) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetResolution(value)
 }
 
 func (self Go) UpdateMode() classdb.GPUParticlesCollisionHeightField3DUpdateMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.GPUParticlesCollisionHeightField3DUpdateMode(class(self).GetUpdateMode())
 }
 
 func (self Go) SetUpdateMode(value classdb.GPUParticlesCollisionHeightField3DUpdateMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUpdateMode(value)
 }
 
 func (self Go) FollowCameraEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsFollowCameraEnabled())
 }
 
 func (self Go) SetFollowCameraEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFollowCameraEnabled(value)
 }
 
 //go:nosplit
 func (self class) SetSize(size gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSize() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetResolution(resolution classdb.GPUParticlesCollisionHeightField3DResolution)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_set_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetResolution() classdb.GPUParticlesCollisionHeightField3DResolution {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.GPUParticlesCollisionHeightField3DResolution](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUpdateMode(update_mode classdb.GPUParticlesCollisionHeightField3DUpdateMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, update_mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetUpdateMode() classdb.GPUParticlesCollisionHeightField3DUpdateMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.GPUParticlesCollisionHeightField3DUpdateMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFollowCameraEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_set_follow_camera_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_follow_camera_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsFollowCameraEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionHeightField3D.Bind_is_follow_camera_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_is_follow_camera_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -184,7 +159,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsGPUParticlesCollision3D(), name)
 	}
 }
-func init() {classdb.Register("GPUParticlesCollisionHeightField3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("GPUParticlesCollisionHeightField3D", func(ptr gd.Object) any { return classdb.GPUParticlesCollisionHeightField3D(ptr) })}
 type Resolution = classdb.GPUParticlesCollisionHeightField3DResolution
 
 const (

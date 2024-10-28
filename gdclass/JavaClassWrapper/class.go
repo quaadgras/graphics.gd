@@ -3,7 +3,7 @@ package JavaClassWrapper
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The JavaClassWrapper singleton provides a way for the Godot application to send and receive data through the [url=https://developer.android.com/training/articles/perf-jni]Java Native Interface[/url] (JNI).
@@ -23,18 +23,13 @@ The JavaClassWrapper singleton provides a way for the Godot application to send 
 var self gdclass.JavaClassWrapper
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.JavaClassWrapper)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.JavaClassWrapper)
 	self = *(*gdclass.JavaClassWrapper)(unsafe.Pointer(&obj))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func GD() class { once.Do(singleton); return self }
 type class [1]classdb.JavaClassWrapper
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 
 /*
 Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
@@ -46,4 +41,4 @@ func (self class) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("JavaClassWrapper", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("JavaClassWrapper", func(ptr gd.Object) any { return classdb.JavaClassWrapper(ptr) })}

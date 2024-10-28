@@ -2,7 +2,7 @@ package ShaderMaterial
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A material that uses a custom [Shader] program to render visual items (canvas items, meshes, skies, fog), or to process particles. Compared to other materials, [ShaderMaterial] gives deeper control over the generated shader code. For more information, see the shaders documentation index below.
@@ -30,63 +30,47 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
 func (self Go) SetShaderParameter(param string, value gd.Variant) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetShaderParameter(gc.StringName(param), value)
+	class(self).SetShaderParameter(gd.NewStringName(param), value)
 }
 
 /*
 Returns the current value set for this material of a uniform in the shader.
 */
 func (self Go) GetShaderParameter(param string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GetShaderParameter(gc, gc.StringName(param)))
+	return gd.Variant(class(self).GetShaderParameter(gd.NewStringName(param)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.ShaderMaterial
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ShaderMaterial"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderMaterial"))
+	return Go{classdb.ShaderMaterial(object)}
 }
 
 func (self Go) Shader() gdclass.Shader {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Shader(class(self).GetShader(gc))
+		return gdclass.Shader(class(self).GetShader())
 }
 
 func (self Go) SetShader(value gdclass.Shader) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetShader(value)
 }
 
 //go:nosplit
 func (self class) SetShader(shader gdclass.Shader)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(shader[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(shader[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ShaderMaterial.Bind_set_shader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_set_shader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetShader(ctx gd.Lifetime) gdclass.Shader {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetShader() gdclass.Shader {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ShaderMaterial.Bind_get_shader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Shader
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_get_shader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Shader{classdb.Shader(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -97,25 +81,23 @@ Changes the value set for this material of a uniform in the shader.
 */
 //go:nosplit
 func (self class) SetShaderParameter(param gd.StringName, value gd.Variant)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(param))
-	callframe.Arg(frame, mmm.Get(value))
+	callframe.Arg(frame, discreet.Get(param))
+	callframe.Arg(frame, discreet.Get(value))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ShaderMaterial.Bind_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the current value set for this material of a uniform in the shader.
 */
 //go:nosplit
-func (self class) GetShaderParameter(ctx gd.Lifetime, param gd.StringName) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetShaderParameter(param gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(param))
+	callframe.Arg(frame, discreet.Get(param))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ShaderMaterial.Bind_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -139,4 +121,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsMaterial(), name)
 	}
 }
-func init() {classdb.Register("ShaderMaterial", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ShaderMaterial", func(ptr gd.Object) any { return classdb.ShaderMaterial(ptr) })}

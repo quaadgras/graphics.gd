@@ -2,7 +2,7 @@ package VisualShaderNodeTextureParameter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Performs a lookup operation on the texture provided as a uniform for the shader.
@@ -27,161 +27,132 @@ type GD = class
 type class [1]classdb.VisualShaderNodeTextureParameter
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("VisualShaderNodeTextureParameter"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTextureParameter"))
+	return Go{classdb.VisualShaderNodeTextureParameter(object)}
 }
 
 func (self Go) TextureType() classdb.VisualShaderNodeTextureParameterTextureType {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeTextureParameterTextureType(class(self).GetTextureType())
 }
 
 func (self Go) SetTextureType(value classdb.VisualShaderNodeTextureParameterTextureType) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextureType(value)
 }
 
 func (self Go) ColorDefault() classdb.VisualShaderNodeTextureParameterColorDefault {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeTextureParameterColorDefault(class(self).GetColorDefault())
 }
 
 func (self Go) SetColorDefault(value classdb.VisualShaderNodeTextureParameterColorDefault) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetColorDefault(value)
 }
 
 func (self Go) TextureFilter() classdb.VisualShaderNodeTextureParameterTextureFilter {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeTextureParameterTextureFilter(class(self).GetTextureFilter())
 }
 
 func (self Go) SetTextureFilter(value classdb.VisualShaderNodeTextureParameterTextureFilter) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextureFilter(value)
 }
 
 func (self Go) TextureRepeat() classdb.VisualShaderNodeTextureParameterTextureRepeat {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeTextureParameterTextureRepeat(class(self).GetTextureRepeat())
 }
 
 func (self Go) SetTextureRepeat(value classdb.VisualShaderNodeTextureParameterTextureRepeat) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextureRepeat(value)
 }
 
 func (self Go) TextureSource() classdb.VisualShaderNodeTextureParameterTextureSource {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.VisualShaderNodeTextureParameterTextureSource(class(self).GetTextureSource())
 }
 
 func (self Go) SetTextureSource(value classdb.VisualShaderNodeTextureParameterTextureSource) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextureSource(value)
 }
 
 //go:nosplit
 func (self class) SetTextureType(atype classdb.VisualShaderNodeTextureParameterTextureType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextureType() classdb.VisualShaderNodeTextureParameterTextureType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeTextureParameterTextureType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetColorDefault(color classdb.VisualShaderNodeTextureParameterColorDefault)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_set_color_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_color_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetColorDefault() classdb.VisualShaderNodeTextureParameterColorDefault {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeTextureParameterColorDefault](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_get_color_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_color_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTextureFilter(filter classdb.VisualShaderNodeTextureParameterTextureFilter)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextureFilter() classdb.VisualShaderNodeTextureParameterTextureFilter {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeTextureParameterTextureFilter](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTextureRepeat(repeat classdb.VisualShaderNodeTextureParameterTextureRepeat)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, repeat)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextureRepeat() classdb.VisualShaderNodeTextureParameterTextureRepeat {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeTextureParameterTextureRepeat](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTextureSource(source classdb.VisualShaderNodeTextureParameterTextureSource)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_set_texture_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextureSource() classdb.VisualShaderNodeTextureParameterTextureSource {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.VisualShaderNodeTextureParameterTextureSource](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.VisualShaderNodeTextureParameter.Bind_get_texture_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -208,7 +179,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsVisualShaderNodeParameter(), name)
 	}
 }
-func init() {classdb.Register("VisualShaderNodeTextureParameter", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("VisualShaderNodeTextureParameter", func(ptr gd.Object) any { return classdb.VisualShaderNodeTextureParameter(ptr) })}
 type TextureType = classdb.VisualShaderNodeTextureParameterTextureType
 
 const (

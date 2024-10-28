@@ -2,7 +2,7 @@ package Container
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Base class for all GUI containers. A [Container] automatically arranges its child controls in a certain way. This class can be inherited to make custom container types.
@@ -38,12 +38,13 @@ Implement to return a list of allowed horizontal [enum Control.SizeFlags] for ch
 */
 func (Go) _get_allowed_size_flags_horizontal(impl func(ptr unsafe.Pointer) []int32, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedInt32Slice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedInt32Slice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -53,12 +54,13 @@ Implement to return a list of allowed vertical [enum Control.SizeFlags] for chil
 */
 func (Go) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) []int32, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedInt32Slice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedInt32Slice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -66,7 +68,6 @@ func (Go) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) []int32
 Queue resort of the contained children. This is called automatically anyway, but can be called upon request.
 */
 func (self Go) QueueSort() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).QueueSort()
 }
 
@@ -74,7 +75,6 @@ func (self Go) QueueSort() {
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
 func (self Go) FitChildInRect(child gdclass.Control, rect gd.Rect2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).FitChildInRect(child, rect)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -82,18 +82,9 @@ type GD = class
 type class [1]classdb.Container
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Container"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Container"))
+	return Go{classdb.Container(object)}
 }
 
 /*
@@ -102,12 +93,13 @@ Implement to return a list of allowed horizontal [enum Control.SizeFlags] for ch
 */
 func (class) _get_allowed_size_flags_horizontal(impl func(ptr unsafe.Pointer) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -117,12 +109,13 @@ Implement to return a list of allowed vertical [enum Control.SizeFlags] for chil
 */
 func (class) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) gd.PackedInt32Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -131,10 +124,9 @@ Queue resort of the contained children. This is called automatically anyway, but
 */
 //go:nosplit
 func (self class) QueueSort()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Container.Bind_queue_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_queue_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -142,23 +134,20 @@ Fit a child control in a given rect. This is mainly a helper for creating custom
 */
 //go:nosplit
 func (self class) FitChildInRect(child gdclass.Control, rect gd.Rect2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(child[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(child[0])[0])
 	callframe.Arg(frame, rect)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Container.Bind_fit_child_in_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_fit_child_in_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self Go) OnPreSortChildren(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("pre_sort_children"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSortChildren(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("sort_children"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("sort_children"), gd.NewCallable(cb), 0)
 }
 
 
@@ -186,4 +175,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() {classdb.Register("Container", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Container", func(ptr gd.Object) any { return classdb.Container(ptr) })}

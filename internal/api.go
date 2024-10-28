@@ -6,9 +6,9 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
+	"grow.graphics/gd/internal/discreet"
 
 	"runtime.link/api"
-	"grow.graphics/gd/internal/mmm"
 )
 
 // API specification for Godot's GDExtension.
@@ -32,34 +32,34 @@ type API struct {
 	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
 
 	Variants struct {
-		NewCopy                   func(ctx Lifetime, src Variant) Variant
-		NewNil                    func(ctx Lifetime) Variant
+		NewCopy                   func(src Variant) Variant
+		NewNil                    func() Variant
 		Destroy                   func(self Variant)
-		Call                      func(ctx Lifetime, self Variant, method StringName, args ...Variant) (Variant, error)
-		CallStatic                func(ctx Lifetime, vtype VariantType, method StringName, args ...Variant) (Variant, error)
-		Evaluate                  func(ctx Lifetime, operator Operator, a, b Variant) (ret Variant, ok bool)
+		Call                      func(self Variant, method StringName, args ...Variant) (Variant, error)
+		CallStatic                func(vtype VariantType, method StringName, args ...Variant) (Variant, error)
+		Evaluate                  func(operator Operator, a, b Variant) (ret Variant, ok bool)
 		Set                       func(self, key, val Variant) bool
 		SetNamed                  func(self Variant, key StringName, val Variant) bool
 		SetKeyed                  func(self, key, val Variant) bool
 		SetIndexed                func(self Variant, index Int, val Variant) (ok, oob bool)
-		Get                       func(ctx Lifetime, self, key Variant) (Variant, bool)
-		GetNamed                  func(ctx Lifetime, self Variant, key StringName) (Variant, bool)
-		GetKeyed                  func(ctx Lifetime, self, key Variant) (Variant, bool)
-		GetIndexed                func(ctx Lifetime, self Variant, index Int) (val Variant, ok, oob bool)
-		IteratorInitialize        func(ctx Lifetime, self Variant) (Variant, bool)
+		Get                       func(self, key Variant) (Variant, bool)
+		GetNamed                  func(self Variant, key StringName) (Variant, bool)
+		GetKeyed                  func(self, key Variant) (Variant, bool)
+		GetIndexed                func(self Variant, index Int) (val Variant, ok, oob bool)
+		IteratorInitialize        func(self Variant) (Variant, bool)
 		IteratorNext              func(self Variant, iterator Variant) bool
-		IteratorGet               func(ctx Lifetime, self Variant, iterator Variant) (Variant, bool)
+		IteratorGet               func(self Variant, iterator Variant) (Variant, bool)
 		Hash                      func(self Variant) Int
 		RecursiveHash             func(self Variant, count Int) Int
 		HashCompare               func(self, variant Variant) bool
 		Booleanize                func(self Variant) bool
-		Duplicate                 func(ctx Lifetime, self Variant, deep bool) Variant
-		Stringify                 func(ctx Lifetime, self Variant) String
+		Duplicate                 func(self Variant, deep bool) Variant
+		Stringify                 func(self Variant) String
 		GetType                   func(self Variant) VariantType
 		HasMethod                 func(self Variant, method StringName) bool
 		HasMember                 func(self Variant, member StringName) bool
 		HasKey                    func(self Variant, key Variant) (hasKey, valid bool)
-		GetTypeName               func(ctx Lifetime, self VariantType) String
+		GetTypeName               func(self VariantType) String
 		CanConvert                func(self Variant, to VariantType) bool
 		CanConvertStrict          func(self Variant, to VariantType) bool
 		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[[3]uintptr], arg uintptr)
@@ -68,7 +68,7 @@ type API struct {
 		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base uintptr, args callframe.Args, ret uintptr, c int32)
 		GetPointerConstructor     func(vtype VariantType, index int32) func(base uintptr, args callframe.Args)
 		GetPointerDestructor      func(VariantType) func(base uintptr)
-		Construct                 func(ctx Lifetime, t VariantType, args ...Variant) (Variant, error)
+		Construct                 func(t VariantType, args ...Variant) (Variant, error)
 		GetPointerSetter          func(VariantType, StringName) func(base, arg uintptr)
 		GetPointerGetter          func(VariantType, StringName) func(base, ret uintptr)
 		GetPointerIndexedSetter   func(VariantType) func(base uintptr, index Int, arg uintptr)
@@ -76,22 +76,22 @@ type API struct {
 		GetPointerKeyedSetter     func(VariantType) func(base uintptr, key uintptr, arg uintptr)
 		GetPointerKeyedGetter     func(VariantType) func(base uintptr, key uintptr, ret uintptr)
 		GetPointerKeyedChecker    func(VariantType) func(base uintptr, key uintptr) uint32
-		GetConstantValue          func(ctx Lifetime, t VariantType, name StringName) Variant
+		GetConstantValue          func(t VariantType, name StringName) Variant
 		GetPointerUtilityFunction func(name StringName, hash Int) func(ret uintptr, args callframe.Args, c int32)
 	}
 	Strings struct {
-		New        func(Lifetime, string) String
+		New        func(string) String
 		Get        func(String) string
 		SetIndex   func(String, Int, rune)
 		Index      func(String, Int) rune
-		Append     func(Lifetime, String, String) String
+		Append     func(String, String) String
 		AppendRune func(String, rune)
 		Resize     func(String, Int)
 
 		UnsafePointer func(String) unsafe.Pointer
 	}
 	StringNames struct {
-		New func(Lifetime, string) StringName
+		New func(string) StringName
 	}
 	XMLParser struct {
 		OpenBuffer func(Object, []byte) error
@@ -107,52 +107,52 @@ type API struct {
 	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32]
 	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64]
 	PackedStringArray  struct {
-		Index       func(Lifetime, PackedStringArray, Int) String
+		Index       func(PackedStringArray, Int) String
 		SetIndex    func(PackedStringArray, Int, String)
-		CopyAsSlice func(Lifetime, PackedStringArray) []String
+		CopyAsSlice func(PackedStringArray) []String
 	}
 	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
 	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
 	Array              struct {
-		Index    func(Lifetime, Array, Int) Variant
+		Index    func(Array, Int) Variant
 		Set      func(self, from Array)
 		SetIndex func(Array, Int, Variant)
 		SetTyped func(self Array, t VariantType, className StringName, script Object)
 	}
 	Dictionary struct {
-		Index    func(ctx Lifetime, dict Dictionary, key Variant) Variant
+		Index    func(dict Dictionary, key Variant) Variant
 		SetIndex func(dict Dictionary, key, val Variant)
 	}
 	Object struct {
-		MethodBindCall        func(ctx Lifetime, method MethodBind, obj Object, arg ...Variant) (Variant, error)
+		MethodBindCall        func(method MethodBind, obj Object, arg ...Variant) (Variant, error)
 		MethodBindPointerCall func(method MethodBind, obj Object, arg callframe.Args, ret uintptr)
 		Destroy               func(Object)
-		GetSingleton          func(ctx Lifetime, name StringName) Object
+		GetSingleton          func(name StringName) Object
 		GetInstanceBinding    func(Object, ExtensionToken, InstanceBindingType) any
 		SetInstanceBinding    func(Object, ExtensionToken, any, InstanceBindingType)
 		FreeInstanceBinding   func(Object, ExtensionToken)
 		SetInstance           func(Object, StringName, ObjectInterface)
-		GetClassName          func(Lifetime, Object, ExtensionToken) String
+		GetClassName          func(Object, ExtensionToken) String
 		CastTo                func(Object, ClassTag) Object
 		GetInstanceID         func(Object) ObjectID
-		GetInstanceFromID     func(Lifetime, ObjectID) Object
+		GetInstanceFromID     func(ObjectID) Object
 	}
 	RefCounted struct {
-		GetObject func(Lifetime, Object) Object
+		GetObject func(Object) Object
 		SetObject func(Object, Object)
 	}
 	Callables struct {
-		Create func(ctx Lifetime, fn func(...Variant) (Variant, error)) Callable
+		Create func(fn func(...Variant) (Variant, error)) Callable
 		Get    func(Callable) (func(...Variant) (Variant, error), bool)
 	}
 	ClassDB struct {
-		ConstructObject func(Lifetime, StringName) Object
+		ConstructObject func(StringName) Object
 		GetClassTag     func(StringName) ClassTag
 		GetMethodBind   func(class, method StringName, hash Int) MethodBind
 
 		RegisterClass                 func(library ExtensionToken, name, extends StringName, info ClassInterface)
-		RegisterClassMethod           func(ctx Lifetime, library ExtensionToken, class StringName, info Method)
+		RegisterClassMethod           func(library ExtensionToken, class StringName, info Method)
 		RegisterClassIntegerConstant  func(library ExtensionToken, class, enum, name StringName, value int64, bitfield bool)
 		RegisterClassProperty         func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
 		RegisterClassPropertyIndexed  func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName, index int64)
@@ -166,7 +166,7 @@ type API struct {
 		Remove func(plugin StringName)
 	}
 
-	GetLibraryPath func(Lifetime, ExtensionToken) String
+	GetLibraryPath func(ExtensionToken) String
 
 	// The following fields are primarily reserved for internal use within the gd module,
 	// no backwards compatibility is guaranteed for these fields.
@@ -187,7 +187,7 @@ type Packed interface {
 		PackedVector2Array | PackedVector3Array | PackedVector4Array |
 		PackedColorArray
 
-	mmm.ManagedPointer[[2]uintptr]
+	discreet.PointerAny
 	Len() int
 }
 
@@ -336,9 +336,9 @@ type ObjectInterface interface {
 	OnCreate()
 	Set(StringName, Variant) bool
 	Get(StringName) (Variant, bool)
-	GetPropertyList(Lifetime) []PropertyInfo
+	GetPropertyList() []PropertyInfo
 	PropertyCanRevert(StringName) bool
-	PropertyGetRevert(Lifetime, StringName) (Variant, bool)
+	PropertyGetRevert(StringName) (Variant, bool)
 	ValidateProperty(StringName, *PropertyInfo) bool
 	Notification(int32, bool)
 	ToString() (String, bool)
@@ -369,7 +369,7 @@ const (
 
 type Method struct {
 	Name                StringName
-	Call                func(Lifetime, any, ...Variant) (Variant, error)
+	Call                func(any, ...Variant) (Variant, error)
 	PointerCall         func(any, UnsafeArgs, UnsafeBack)
 	MethodFlags         MethodFlags
 	ReturnValueInfo     *PropertyInfo

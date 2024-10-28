@@ -10,9 +10,8 @@ import (
 
 func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 	fmt.Fprintf(file, "func New() Go {\n")
-	fmt.Fprintf(file, "\tgc := gd.GarbageCollector()\n")
-	fmt.Fprintf(file, "\tobject := gc.API.ClassDB.ConstructObject(gc, gc.StringName(%q))\n", class.Name)
-	fmt.Fprintf(file, "\treturn *(*Go)(unsafe.Pointer(&object))\n")
+	fmt.Fprintf(file, "\tobject := gd.Global.ClassDB.ConstructObject(gd.NewStringName(%q))\n", class.Name)
+	fmt.Fprintf(file, "\treturn Go{classdb.%v(object)}\n", class.Name)
 	fmt.Fprintf(file, "}\n")
 }
 
@@ -24,16 +23,12 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 		ptype := classDB.convertTypeSimple("", prop.Type)
 		expert := classDB.convertType("", "", prop.Type)
 		var found bool
-		var gc = ""
 		if prop.Getter != "" {
 			for _, method := range class.Methods {
 				if method.Name == prop.Getter {
 					ptype = classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
 					found = true
 					expert = classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
-					if _, ok := classDB.isPointer(classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)); ok {
-						gc = "gc"
-					}
 					break
 				}
 			}
@@ -59,13 +54,9 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 		} else {
 			fmt.Fprintf(file, "\nfunc (self Go) %s() %s {\n", convertName(prop.Name), ptype)
 		}
-		fmt.Fprintf(file, "\tgc := gd.GarbageCollector(); _ = gc\n")
-		val := fmt.Sprintf("class(self).%s(%s)", convertName(prop.Getter), gc)
+		val := fmt.Sprintf("class(self).%s()", convertName(prop.Getter))
 		if prop.Index != nil {
-			if gc != "" {
-				gc = "gc,"
-			}
-			val = fmt.Sprintf("class(self).%s(%s%d)", convertName(prop.Getter), gc, *prop.Index)
+			val = fmt.Sprintf("class(self).%s(%d)", convertName(prop.Getter), *prop.Index)
 		}
 		fmt.Fprintf(file, "\t\treturn %s(%s)\n", ptype, gdtype.Name(expert).ConvertToGo(val))
 		fmt.Fprintf(file, "}\n")
@@ -101,7 +92,6 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 			} else {
 				fmt.Fprintf(file, "\nfunc (self Go) Set%s(value %s) {\n", convertName(prop.Name), ptype)
 			}
-			fmt.Fprintf(file, "\tgc := gd.GarbageCollector(); _ = gc\n")
 			if prop.Index != nil {
 				fmt.Fprintf(file, "\tclass(self).%s(%d, %s)\n", convertName(prop.Setter), *prop.Index, gdtype.Name(expert).ConvertToSimple("value"))
 			} else {

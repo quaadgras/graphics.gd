@@ -2,7 +2,7 @@ package HingeJoint3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A physics joint that restricts the rotation of a 3D physics body around an axis relative to another physics body. For example, Body A can be a [StaticBody3D] representing a door hinge that a [RigidBody3D] rotates around.
@@ -27,7 +27,6 @@ type Go [1]classdb.HingeJoint3D
 Sets the value of the specified parameter.
 */
 func (self Go) SetParam(param classdb.HingeJoint3DParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetParam(param, gd.Float(value))
 }
 
@@ -35,7 +34,6 @@ func (self Go) SetParam(param classdb.HingeJoint3DParam, value float64) {
 Returns the value of the specified parameter.
 */
 func (self Go) GetParam(param classdb.HingeJoint3DParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetParam(param)))
 }
 
@@ -43,7 +41,6 @@ func (self Go) GetParam(param classdb.HingeJoint3DParam) float64 {
 If [code]true[/code], enables the specified flag.
 */
 func (self Go) SetFlag(flag classdb.HingeJoint3DFlag, enabled bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFlag(flag, enabled)
 }
 
@@ -51,7 +48,6 @@ func (self Go) SetFlag(flag classdb.HingeJoint3DFlag, enabled bool) {
 Returns the value of the specified flag.
 */
 func (self Go) GetFlag(flag classdb.HingeJoint3DFlag) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetFlag(flag))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -59,18 +55,9 @@ type GD = class
 type class [1]classdb.HingeJoint3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("HingeJoint3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HingeJoint3D"))
+	return Go{classdb.HingeJoint3D(object)}
 }
 
 /*
@@ -78,12 +65,11 @@ Sets the value of the specified parameter.
 */
 //go:nosplit
 func (self class) SetParam(param classdb.HingeJoint3DParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HingeJoint3D.Bind_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -91,11 +77,10 @@ Returns the value of the specified parameter.
 */
 //go:nosplit
 func (self class) GetParam(param classdb.HingeJoint3DParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HingeJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -105,12 +90,11 @@ If [code]true[/code], enables the specified flag.
 */
 //go:nosplit
 func (self class) SetFlag(flag classdb.HingeJoint3DFlag, enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HingeJoint3D.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -118,11 +102,10 @@ Returns the value of the specified flag.
 */
 //go:nosplit
 func (self class) GetFlag(flag classdb.HingeJoint3DFlag) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HingeJoint3D.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -147,7 +130,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsJoint3D(), name)
 	}
 }
-func init() {classdb.Register("HingeJoint3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("HingeJoint3D", func(ptr gd.Object) any { return classdb.HingeJoint3D(ptr) })}
 type Param = classdb.HingeJoint3DParam
 
 const (

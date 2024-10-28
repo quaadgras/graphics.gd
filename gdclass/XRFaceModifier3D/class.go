@@ -2,7 +2,7 @@ package XRFaceModifier3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This node applies weights from a [XRFaceTracker] to a mesh with supporting face blend shapes.
@@ -28,75 +28,58 @@ type GD = class
 type class [1]classdb.XRFaceModifier3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("XRFaceModifier3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRFaceModifier3D"))
+	return Go{classdb.XRFaceModifier3D(object)}
 }
 
 func (self Go) FaceTracker() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetFaceTracker(gc).String())
+		return string(class(self).GetFaceTracker().String())
 }
 
 func (self Go) SetFaceTracker(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetFaceTracker(gc.StringName(value))
+	class(self).SetFaceTracker(gd.NewStringName(value))
 }
 
 func (self Go) Target() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetTarget(gc).String())
+		return string(class(self).GetTarget().String())
 }
 
 func (self Go) SetTarget(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetTarget(gc.String(value).NodePath(gc))
+	class(self).SetTarget(gd.NewString(value).NodePath())
 }
 
 //go:nosplit
 func (self class) SetFaceTracker(tracker_name gd.StringName)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(tracker_name))
+	callframe.Arg(frame, discreet.Get(tracker_name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceModifier3D.Bind_set_face_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceModifier3D.Bind_set_face_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetFaceTracker(ctx gd.Lifetime) gd.StringName {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetFaceTracker() gd.StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceModifier3D.Bind_get_face_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.StringName](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceModifier3D.Bind_get_face_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTarget(target gd.NodePath)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(target))
+	callframe.Arg(frame, discreet.Get(target))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceModifier3D.Bind_set_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceModifier3D.Bind_set_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetTarget(ctx gd.Lifetime) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTarget() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceModifier3D.Bind_get_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceModifier3D.Bind_get_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -118,4 +101,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() {classdb.Register("XRFaceModifier3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("XRFaceModifier3D", func(ptr gd.Object) any { return classdb.XRFaceModifier3D(ptr) })}

@@ -2,7 +2,7 @@ package EditorResourceTooltipPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
@@ -44,13 +44,11 @@ Return [code]true[/code] if the plugin is going to handle the given [Resource] [
 */
 func (Go) _handles(impl func(ptr unsafe.Pointer, atype string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var atype = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -70,16 +68,19 @@ func _make_tooltip_for_path(path, metadata, base):
 */
 func (Go) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata gd.Dictionary, base gdclass.Control) gdclass.Control, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var metadata = mmm.Let[gd.Dictionary](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
-		var base gdclass.Control
-		base[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
+		var metadata = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(metadata)
+		var base = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,2)})}
+		defer discreet.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), metadata, base)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -87,26 +88,16 @@ func (Go) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, meta
 Requests a thumbnail for the given [TextureRect]. The thumbnail is created asynchronously by [EditorResourcePreview] and automatically set when available.
 */
 func (self Go) RequestThumbnail(path string, control gdclass.TextureRect) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).RequestThumbnail(gc.String(path), control)
+	class(self).RequestThumbnail(gd.NewString(path), control)
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorResourceTooltipPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorResourceTooltipPlugin"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourceTooltipPlugin"))
+	return Go{classdb.EditorResourceTooltipPlugin(object)}
 }
 
 /*
@@ -114,13 +105,10 @@ Return [code]true[/code] if the plugin is going to handle the given [Resource] [
 */
 func (class) _handles(impl func(ptr unsafe.Pointer, atype gd.String) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var atype = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var atype = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -140,16 +128,17 @@ func _make_tooltip_for_path(path, metadata, base):
 */
 func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String, metadata gd.Dictionary, base gdclass.Control) gdclass.Control, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var metadata = mmm.Let[gd.Dictionary](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
-		var base gdclass.Control
-		base[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,2)}))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var metadata = discreet.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args,1))
+		var base = gdclass.Control{discreet.New[classdb.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args,2)})}
+		defer discreet.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, metadata, base)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -158,12 +147,11 @@ Requests a thumbnail for the given [TextureRect]. The thumbnail is created async
 */
 //go:nosplit
 func (self class) RequestThumbnail(path gd.String, control gdclass.TextureRect)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(control[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(control[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorResourceTooltipPlugin.Bind_request_thumbnail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourceTooltipPlugin.Bind_request_thumbnail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsEditorResourceTooltipPlugin() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -186,4 +174,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorResourceTooltipPlugin", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorResourceTooltipPlugin", func(ptr gd.Object) any { return classdb.EditorResourceTooltipPlugin(ptr) })}

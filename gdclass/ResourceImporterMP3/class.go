@@ -2,7 +2,7 @@ package ResourceImporterMP3
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 MP3 is a lossy audio format, with worse audio quality compared to [ResourceImporterOggVorbis] at a given bitrate.
@@ -27,18 +27,9 @@ type GD = class
 type class [1]classdb.ResourceImporterMP3
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ResourceImporterMP3"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterMP3"))
+	return Go{classdb.ResourceImporterMP3(object)}
 }
 
 func (self class) AsResourceImporterMP3() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -59,4 +50,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResourceImporter(), name)
 	}
 }
-func init() {classdb.Register("ResourceImporterMP3", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ResourceImporterMP3", func(ptr gd.Object) any { return classdb.ResourceImporterMP3(ptr) })}

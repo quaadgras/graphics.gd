@@ -2,7 +2,7 @@ package EngineProfiler
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
@@ -35,13 +35,11 @@ Called when the profiler is enabled/disabled, along with a set of [param options
 */
 func (Go) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var enable = gd.UnsafeGet[bool](p_args,0)
-		var options = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var options = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(options)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, enable, options)
-		gc.End()
 	}
 }
 
@@ -50,12 +48,10 @@ Called when data is added to profiler using [method EngineDebugger.profiler_add_
 */
 func (Go) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var data = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var data = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, data)
-		gc.End()
 	}
 }
 
@@ -64,15 +60,12 @@ Called once every engine iteration when the profiler is active with information 
 */
 func (Go) _tick(impl func(ptr unsafe.Pointer, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var frame_time = gd.UnsafeGet[gd.Float](p_args,0)
 		var process_time = gd.UnsafeGet[gd.Float](p_args,1)
 		var physics_time = gd.UnsafeGet[gd.Float](p_args,2)
 		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, float64(frame_time), float64(process_time), float64(physics_time), float64(physics_frame_time))
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -80,18 +73,9 @@ type GD = class
 type class [1]classdb.EngineProfiler
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EngineProfiler"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EngineProfiler"))
+	return Go{classdb.EngineProfiler(object)}
 }
 
 /*
@@ -99,13 +83,10 @@ Called when the profiler is enabled/disabled, along with a set of [param options
 */
 func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var enable = gd.UnsafeGet[bool](p_args,0)
-		var options = mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var options = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, enable, options)
-		ctx.End()
 	}
 }
 
@@ -114,12 +95,9 @@ Called when data is added to profiler using [method EngineDebugger.profiler_add_
 */
 func (class) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var data = mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var data = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, data)
-		ctx.End()
 	}
 }
 
@@ -128,15 +106,12 @@ Called once every engine iteration when the profiler is active with information 
 */
 func (class) _tick(impl func(ptr unsafe.Pointer, frame_time gd.Float, process_time gd.Float, physics_time gd.Float, physics_frame_time gd.Float) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var frame_time = gd.UnsafeGet[gd.Float](p_args,0)
 		var process_time = gd.UnsafeGet[gd.Float](p_args,1)
 		var physics_time = gd.UnsafeGet[gd.Float](p_args,2)
 		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, frame_time, process_time, physics_time, physics_frame_time)
-		ctx.End()
 	}
 }
 
@@ -162,4 +137,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EngineProfiler", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EngineProfiler", func(ptr gd.Object) any { return classdb.EngineProfiler(ptr) })}

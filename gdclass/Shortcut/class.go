@@ -2,7 +2,7 @@ package Shortcut
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Shortcuts are commonly used for interacting with a [Control] element from an [InputEvent] (also known as hotkeys).
@@ -26,7 +26,6 @@ type Go [1]classdb.Shortcut
 Returns whether [member events] contains an [InputEvent] which is valid.
 */
 func (self Go) HasValidEvent() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasValidEvent())
 }
 
@@ -34,7 +33,6 @@ func (self Go) HasValidEvent() bool {
 Returns whether any [InputEvent] in [member events] equals [param event].
 */
 func (self Go) MatchesEvent(event gdclass.InputEvent) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).MatchesEvent(event))
 }
 
@@ -42,54 +40,40 @@ func (self Go) MatchesEvent(event gdclass.InputEvent) bool {
 Returns the shortcut's first valid [InputEvent] as a [String].
 */
 func (self Go) GetAsText() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetAsText(gc).String())
+	return string(class(self).GetAsText().String())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.Shortcut
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Shortcut"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Shortcut"))
+	return Go{classdb.Shortcut(object)}
 }
 
 func (self Go) Events() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Array(class(self).GetEvents(gc))
+		return gd.Array(class(self).GetEvents())
 }
 
 func (self Go) SetEvents(value gd.Array) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEvents(value)
 }
 
 //go:nosplit
 func (self class) SetEvents(events gd.Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(events))
+	callframe.Arg(frame, discreet.Get(events))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shortcut.Bind_set_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_set_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetEvents(ctx gd.Lifetime) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEvents() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shortcut.Bind_get_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -98,10 +82,9 @@ Returns whether [member events] contains an [InputEvent] which is valid.
 */
 //go:nosplit
 func (self class) HasValidEvent() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shortcut.Bind_has_valid_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_has_valid_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -111,11 +94,10 @@ Returns whether any [InputEvent] in [member events] equals [param event].
 */
 //go:nosplit
 func (self class) MatchesEvent(event gdclass.InputEvent) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(event[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(event[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shortcut.Bind_matches_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_matches_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -124,12 +106,11 @@ func (self class) MatchesEvent(event gdclass.InputEvent) bool {
 Returns the shortcut's first valid [InputEvent] as a [String].
 */
 //go:nosplit
-func (self class) GetAsText(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetAsText() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Shortcut.Bind_get_as_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_as_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -151,4 +132,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("Shortcut", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Shortcut", func(ptr gd.Object) any { return classdb.Shortcut(ptr) })}

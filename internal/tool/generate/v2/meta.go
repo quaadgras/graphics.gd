@@ -123,11 +123,11 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
-		meta, rest, ok := strings.Cut(gdType, ":")
+		/*meta, rest, ok := strings.Cut(gdType, ":")
 		if ok {
 			gdType = rest
-		}
-		return maybeInternal("ArrayOf[" + classDB.convertType(pkg, meta, gdType) + "]")
+		}*/
+		return maybeInternal("Array") // Of[" + classDB.convertType(pkg, meta, gdType) + "]
 	}
 	switch gdType {
 	case "int", "Int":
@@ -218,7 +218,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 func (classDB ClassDB) convertTypeSimple(meta string, gdType string) string {
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
-		return "gd.ArrayOf[" + classDB.convertType("", meta, gdType) + "]"
+		return "gd.Array" // Of[+ classDB.convertType("", meta, gdType) + "]"
 	}
 	switch gdType {
 	case "int", "Int":
@@ -347,12 +347,12 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "classdb.")
 	t = strings.TrimPrefix(t, "gdclass.")
 	if strings.HasPrefix(t, "ArrayOf") {
-		return "uintptr", true
+		return "[1]uintptr", true
 	}
 	switch t {
 	case "String", "StringName", "NodePath",
 		"Dictionary", "Array":
-		return "uintptr", true
+		return "[1]uintptr", true
 	case "Callable", "Signal",
 		"PackedByteArray", "PackedInt32Array",
 		"PackedInt64Array", "PackedFloat32Array",
@@ -365,7 +365,7 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 		return "[3]uintptr", true
 	default:
 		if entry, ok := db[t]; ok && !entry.IsEnum {
-			return "uintptr", true
+			return "[1]uintptr", true
 		}
 		return "", false
 	}

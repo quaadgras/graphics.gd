@@ -2,7 +2,7 @@ package GPUParticlesCollisionSDF3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A baked signed distance field 3D particle collision shape affecting [GPUParticles3D] nodes.
@@ -33,7 +33,6 @@ type Go [1]classdb.GPUParticlesCollisionSDF3D
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Go) SetBakeMaskValue(layer_number int, value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBakeMaskValue(gd.Int(layer_number), value)
 }
 
@@ -41,7 +40,6 @@ func (self Go) SetBakeMaskValue(layer_number int, value bool) {
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Go) GetBakeMaskValue(layer_number int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetBakeMaskValue(gd.Int(layer_number)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -49,162 +47,132 @@ type GD = class
 type class [1]classdb.GPUParticlesCollisionSDF3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("GPUParticlesCollisionSDF3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticlesCollisionSDF3D"))
+	return Go{classdb.GPUParticlesCollisionSDF3D(object)}
 }
 
 func (self Go) Size() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector3(class(self).GetSize())
 }
 
 func (self Go) SetSize(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSize(value)
 }
 
 func (self Go) Resolution() classdb.GPUParticlesCollisionSDF3DResolution {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.GPUParticlesCollisionSDF3DResolution(class(self).GetResolution())
 }
 
 func (self Go) SetResolution(value classdb.GPUParticlesCollisionSDF3DResolution) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetResolution(value)
 }
 
 func (self Go) Thickness() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetThickness()))
 }
 
 func (self Go) SetThickness(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetThickness(gd.Float(value))
 }
 
 func (self Go) BakeMask() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetBakeMask()))
 }
 
 func (self Go) SetBakeMask(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBakeMask(gd.Int(value))
 }
 
 func (self Go) Texture() gdclass.Texture3D {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Texture3D(class(self).GetTexture(gc))
+		return gdclass.Texture3D(class(self).GetTexture())
 }
 
 func (self Go) SetTexture(value gdclass.Texture3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTexture(value)
 }
 
 //go:nosplit
 func (self class) SetSize(size gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSize() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetResolution(resolution classdb.GPUParticlesCollisionSDF3DResolution)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_set_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetResolution() classdb.GPUParticlesCollisionSDF3DResolution {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.GPUParticlesCollisionSDF3DResolution](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTexture(texture gdclass.Texture3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(texture[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(texture[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetTexture(ctx gd.Lifetime) gdclass.Texture3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTexture() gdclass.Texture3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Texture3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Texture3D{classdb.Texture3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetThickness(thickness gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, thickness)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_set_thickness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_thickness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetThickness() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBakeMask(mask gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBakeMask() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -214,12 +182,11 @@ Based on [param value], enables or disables the specified layer in the [member b
 */
 //go:nosplit
 func (self class) SetBakeMaskValue(layer_number gd.Int, value bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -227,11 +194,10 @@ Returns whether or not the specified layer of the [member bake_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetBakeMaskValue(layer_number gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -258,7 +224,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsGPUParticlesCollision3D(), name)
 	}
 }
-func init() {classdb.Register("GPUParticlesCollisionSDF3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("GPUParticlesCollisionSDF3D", func(ptr gd.Object) any { return classdb.GPUParticlesCollisionSDF3D(ptr) })}
 type Resolution = classdb.GPUParticlesCollisionSDF3DResolution
 
 const (

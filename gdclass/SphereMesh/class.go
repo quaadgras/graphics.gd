@@ -2,7 +2,7 @@ package SphereMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Class representing a spherical [PrimitiveMesh].
@@ -27,161 +27,132 @@ type GD = class
 type class [1]classdb.SphereMesh
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("SphereMesh"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SphereMesh"))
+	return Go{classdb.SphereMesh(object)}
 }
 
 func (self Go) Radius() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetRadius()))
 }
 
 func (self Go) SetRadius(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRadius(gd.Float(value))
 }
 
 func (self Go) Height() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetHeight()))
 }
 
 func (self Go) SetHeight(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetHeight(gd.Float(value))
 }
 
 func (self Go) RadialSegments() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetRadialSegments()))
 }
 
 func (self Go) SetRadialSegments(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRadialSegments(gd.Int(value))
 }
 
 func (self Go) Rings() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetRings()))
 }
 
 func (self Go) SetRings(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRings(gd.Int(value))
 }
 
 func (self Go) IsHemisphere() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetIsHemisphere())
 }
 
 func (self Go) SetIsHemisphere(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetIsHemisphere(value)
 }
 
 //go:nosplit
 func (self class) SetRadius(radius gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRadius() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetHeight(height gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetHeight() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRadialSegments(radial_segments gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radial_segments)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_set_radial_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_set_radial_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRadialSegments() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_get_radial_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_get_radial_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRings(rings gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_set_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_set_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRings() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetIsHemisphere(is_hemisphere bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, is_hemisphere)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_set_is_hemisphere, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_set_is_hemisphere, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetIsHemisphere() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SphereMesh.Bind_get_is_hemisphere, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SphereMesh.Bind_get_is_hemisphere, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -208,4 +179,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
-func init() {classdb.Register("SphereMesh", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("SphereMesh", func(ptr gd.Object) any { return classdb.SphereMesh(ptr) })}

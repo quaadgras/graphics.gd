@@ -2,7 +2,7 @@ package Viewport
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
@@ -29,15 +29,13 @@ type Go [1]classdb.Viewport
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 */
 func (self Go) FindWorld2d() gdclass.World2D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.World2D(class(self).FindWorld2d(gc))
+	return gdclass.World2D(class(self).FindWorld2d())
 }
 
 /*
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
 func (self Go) GetFinalTransform() gd.Transform2D {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Transform2D(class(self).GetFinalTransform())
 }
 
@@ -45,7 +43,6 @@ func (self Go) GetFinalTransform() gd.Transform2D {
 Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
 */
 func (self Go) GetScreenTransform() gd.Transform2D {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Transform2D(class(self).GetScreenTransform())
 }
 
@@ -53,7 +50,6 @@ func (self Go) GetScreenTransform() gd.Transform2D {
 Returns the visible rectangle in global screen coordinates.
 */
 func (self Go) GetVisibleRect() gd.Rect2 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Rect2(class(self).GetVisibleRect())
 }
 
@@ -61,7 +57,6 @@ func (self Go) GetVisibleRect() gd.Rect2 {
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
 func (self Go) GetRenderInfo(atype classdb.ViewportRenderInfoType, info classdb.ViewportRenderInfo) int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetRenderInfo(atype, info)))
 }
 
@@ -75,15 +70,13 @@ func _ready():
 [/codeblock]
 */
 func (self Go) GetTexture() gdclass.ViewportTexture {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.ViewportTexture(class(self).GetTexture(gc))
+	return gdclass.ViewportTexture(class(self).GetTexture())
 }
 
 /*
 Returns the viewport's RID from the [RenderingServer].
 */
 func (self Go) GetViewportRid() gd.RID {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.RID(class(self).GetViewportRid())
 }
 
@@ -91,8 +84,7 @@ func (self Go) GetViewportRid() gd.RID {
 Helper method which calls the [code]set_text()[/code] method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
 */
 func (self Go) PushTextInput(text string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).PushTextInput(gc.String(text))
+	class(self).PushTextInput(gd.NewString(text))
 }
 
 /*
@@ -109,7 +101,6 @@ If an earlier method marks the input as handled via [method set_input_as_handled
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 */
 func (self Go) PushInput(event gdclass.InputEvent) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PushInput(event, false)
 }
 
@@ -125,7 +116,6 @@ If none of the methods handle the event and [member physics_object_picking] is [
 [b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
 */
 func (self Go) PushUnhandledInput(event gdclass.InputEvent) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PushUnhandledInput(event, false)
 }
 
@@ -133,7 +123,6 @@ func (self Go) PushUnhandledInput(event gdclass.InputEvent) {
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
 func (self Go) GetMousePosition() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector2(class(self).GetMousePosition())
 }
 
@@ -142,7 +131,6 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 func (self Go) WarpMouse(position gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).WarpMouse(position)
 }
 
@@ -150,7 +138,6 @@ func (self Go) WarpMouse(position gd.Vector2) {
 Force instantly updating the display based on the current mouse cursor position. This includes updating the mouse cursor shape and sending necessary [signal Control.mouse_entered], [signal CollisionObject2D.mouse_entered], [signal CollisionObject3D.mouse_entered] and [signal Window.mouse_entered] signals and their respective [code]mouse_exited[/code] counterparts.
 */
 func (self Go) UpdateMouseCursorState() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).UpdateMouseCursorState()
 }
 
@@ -158,8 +145,7 @@ func (self Go) UpdateMouseCursorState() {
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 func (self Go) GuiGetDragData() gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GuiGetDragData(gc))
+	return gd.Variant(class(self).GuiGetDragData())
 }
 
 /*
@@ -167,7 +153,6 @@ Returns [code]true[/code] if the viewport is currently performing a drag operati
 Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 */
 func (self Go) GuiIsDragging() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GuiIsDragging())
 }
 
@@ -175,7 +160,6 @@ func (self Go) GuiIsDragging() bool {
 Returns [code]true[/code] if the drag operation is successful.
 */
 func (self Go) GuiIsDragSuccessful() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GuiIsDragSuccessful())
 }
 
@@ -183,7 +167,6 @@ func (self Go) GuiIsDragSuccessful() bool {
 Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.
 */
 func (self Go) GuiReleaseFocus() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).GuiReleaseFocus()
 }
 
@@ -191,8 +174,7 @@ func (self Go) GuiReleaseFocus() {
 Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns null.
 */
 func (self Go) GuiGetFocusOwner() gdclass.Control {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Control(class(self).GuiGetFocusOwner(gc))
+	return gdclass.Control(class(self).GuiGetFocusOwner())
 }
 
 /*
@@ -200,8 +182,7 @@ Returns the [Control] that the mouse is currently hovering over in this viewport
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
 func (self Go) GuiGetHoveredControl() gdclass.Control {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Control(class(self).GuiGetHoveredControl(gc))
+	return gdclass.Control(class(self).GuiGetHoveredControl())
 }
 
 /*
@@ -209,7 +190,6 @@ Stops the input from propagating further down the [SceneTree].
 [b]Note:[/b] This does not affect the methods in [Input], only the way events are propagated.
 */
 func (self Go) SetInputAsHandled() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetInputAsHandled()
 }
 
@@ -219,7 +199,6 @@ This is usually done as part of input handling methods like [method Node._input]
 If [member handle_input_locally] is set to [code]false[/code], this method will try finding the first parent viewport that is set to handle input locally, and return its value for [method is_input_handled] instead.
 */
 func (self Go) IsInputHandled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsInputHandled())
 }
 
@@ -227,16 +206,14 @@ func (self Go) IsInputHandled() bool {
 Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
-func (self Go) GetEmbeddedSubwindows() gd.ArrayOf[gdclass.Window] {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.ArrayOf[gdclass.Window](class(self).GetEmbeddedSubwindows(gc))
+func (self Go) GetEmbeddedSubwindows() gd.Array {
+	return gd.Array(class(self).GetEmbeddedSubwindows())
 }
 
 /*
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
 func (self Go) SetCanvasCullMaskBit(layer int, enable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCanvasCullMaskBit(gd.Int(layer), enable)
 }
 
@@ -244,7 +221,6 @@ func (self Go) SetCanvasCullMaskBit(layer int, enable bool) {
 Returns an individual bit on the rendering layer mask.
 */
 func (self Go) GetCanvasCullMaskBit(layer int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetCanvasCullMaskBit(gd.Int(layer)))
 }
 
@@ -252,521 +228,414 @@ func (self Go) GetCanvasCullMaskBit(layer int) bool {
 Returns the currently active 2D camera. Returns null if there are no active cameras.
 */
 func (self Go) GetCamera2d() gdclass.Camera2D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Camera2D(class(self).GetCamera2d(gc))
+	return gdclass.Camera2D(class(self).GetCamera2d())
 }
 
 /*
 Returns the first valid [World3D] for this viewport, searching the [member world_3d] property of itself and any Viewport ancestor.
 */
 func (self Go) FindWorld3d() gdclass.World3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.World3D(class(self).FindWorld3d(gc))
+	return gdclass.World3D(class(self).FindWorld3d())
 }
 
 /*
 Returns the currently active 3D camera.
 */
 func (self Go) GetCamera3d() gdclass.Camera3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Camera3D(class(self).GetCamera3d(gc))
+	return gdclass.Camera3D(class(self).GetCamera3d())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.Viewport
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Viewport"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Viewport"))
+	return Go{classdb.Viewport(object)}
 }
 
 func (self Go) Disable3d() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).Is3dDisabled())
 }
 
 func (self Go) SetDisable3d(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDisable3d(value)
 }
 
 func (self Go) UseXr() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingXr())
 }
 
 func (self Go) SetUseXr(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseXr(value)
 }
 
 func (self Go) OwnWorld3d() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingOwnWorld3d())
 }
 
 func (self Go) SetOwnWorld3d(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseOwnWorld3d(value)
 }
 
 func (self Go) World3d() gdclass.World3D {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.World3D(class(self).GetWorld3d(gc))
+		return gdclass.World3D(class(self).GetWorld3d())
 }
 
 func (self Go) SetWorld3d(value gdclass.World3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetWorld3d(value)
 }
 
 func (self Go) World2d() gdclass.World2D {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.World2D(class(self).GetWorld2d(gc))
+		return gdclass.World2D(class(self).GetWorld2d())
 }
 
 func (self Go) SetWorld2d(value gdclass.World2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetWorld2d(value)
 }
 
 func (self Go) TransparentBg() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).HasTransparentBackground())
 }
 
 func (self Go) SetTransparentBg(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTransparentBackground(value)
 }
 
 func (self Go) HandleInputLocally() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsHandlingInputLocally())
 }
 
 func (self Go) SetHandleInputLocally(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetHandleInputLocally(value)
 }
 
 func (self Go) Snap2dTransformsToPixel() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSnap2dTransformsToPixelEnabled())
 }
 
 func (self Go) SetSnap2dTransformsToPixel(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSnap2dTransformsToPixel(value)
 }
 
 func (self Go) Snap2dVerticesToPixel() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSnap2dVerticesToPixelEnabled())
 }
 
 func (self Go) SetSnap2dVerticesToPixel(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSnap2dVerticesToPixel(value)
 }
 
 func (self Go) Msaa2d() classdb.ViewportMSAA {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportMSAA(class(self).GetMsaa2d())
 }
 
 func (self Go) SetMsaa2d(value classdb.ViewportMSAA) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMsaa2d(value)
 }
 
 func (self Go) Msaa3d() classdb.ViewportMSAA {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportMSAA(class(self).GetMsaa3d())
 }
 
 func (self Go) SetMsaa3d(value classdb.ViewportMSAA) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMsaa3d(value)
 }
 
 func (self Go) ScreenSpaceAa() classdb.ViewportScreenSpaceAA {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
 func (self Go) SetScreenSpaceAa(value classdb.ViewportScreenSpaceAA) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetScreenSpaceAa(value)
 }
 
 func (self Go) UseTaa() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingTaa())
 }
 
 func (self Go) SetUseTaa(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseTaa(value)
 }
 
 func (self Go) UseDebanding() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingDebanding())
 }
 
 func (self Go) SetUseDebanding(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseDebanding(value)
 }
 
 func (self Go) UseOcclusionCulling() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingOcclusionCulling())
 }
 
 func (self Go) SetUseOcclusionCulling(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseOcclusionCulling(value)
 }
 
 func (self Go) MeshLodThreshold() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetMeshLodThreshold()))
 }
 
 func (self Go) SetMeshLodThreshold(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMeshLodThreshold(gd.Float(value))
 }
 
 func (self Go) DebugDraw() classdb.ViewportDebugDraw {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportDebugDraw(class(self).GetDebugDraw())
 }
 
 func (self Go) SetDebugDraw(value classdb.ViewportDebugDraw) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDebugDraw(value)
 }
 
 func (self Go) UseHdr2d() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsUsingHdr2d())
 }
 
 func (self Go) SetUseHdr2d(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUseHdr2d(value)
 }
 
 func (self Go) Scaling3dMode() classdb.ViewportScaling3DMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportScaling3DMode(class(self).GetScaling3dMode())
 }
 
 func (self Go) SetScaling3dMode(value classdb.ViewportScaling3DMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetScaling3dMode(value)
 }
 
 func (self Go) Scaling3dScale() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetScaling3dScale()))
 }
 
 func (self Go) SetScaling3dScale(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetScaling3dScale(gd.Float(value))
 }
 
 func (self Go) TextureMipmapBias() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetTextureMipmapBias()))
 }
 
 func (self Go) SetTextureMipmapBias(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextureMipmapBias(gd.Float(value))
 }
 
 func (self Go) FsrSharpness() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetFsrSharpness()))
 }
 
 func (self Go) SetFsrSharpness(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFsrSharpness(gd.Float(value))
 }
 
 func (self Go) VrsMode() classdb.ViewportVRSMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportVRSMode(class(self).GetVrsMode())
 }
 
 func (self Go) SetVrsMode(value classdb.ViewportVRSMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVrsMode(value)
 }
 
 func (self Go) VrsUpdateMode() classdb.ViewportVRSUpdateMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportVRSUpdateMode(class(self).GetVrsUpdateMode())
 }
 
 func (self Go) SetVrsUpdateMode(value classdb.ViewportVRSUpdateMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVrsUpdateMode(value)
 }
 
 func (self Go) VrsTexture() gdclass.Texture2D {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Texture2D(class(self).GetVrsTexture(gc))
+		return gdclass.Texture2D(class(self).GetVrsTexture())
 }
 
 func (self Go) SetVrsTexture(value gdclass.Texture2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVrsTexture(value)
 }
 
 func (self Go) CanvasItemDefaultTextureFilter() classdb.ViewportDefaultCanvasItemTextureFilter {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportDefaultCanvasItemTextureFilter(class(self).GetDefaultCanvasItemTextureFilter())
 }
 
 func (self Go) SetCanvasItemDefaultTextureFilter(value classdb.ViewportDefaultCanvasItemTextureFilter) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDefaultCanvasItemTextureFilter(value)
 }
 
 func (self Go) CanvasItemDefaultTextureRepeat() classdb.ViewportDefaultCanvasItemTextureRepeat {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportDefaultCanvasItemTextureRepeat(class(self).GetDefaultCanvasItemTextureRepeat())
 }
 
 func (self Go) SetCanvasItemDefaultTextureRepeat(value classdb.ViewportDefaultCanvasItemTextureRepeat) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDefaultCanvasItemTextureRepeat(value)
 }
 
 func (self Go) AudioListenerEnable2d() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsAudioListener2d())
 }
 
 func (self Go) SetAudioListenerEnable2d(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAsAudioListener2d(value)
 }
 
 func (self Go) AudioListenerEnable3d() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsAudioListener3d())
 }
 
 func (self Go) SetAudioListenerEnable3d(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAsAudioListener3d(value)
 }
 
 func (self Go) PhysicsObjectPicking() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetPhysicsObjectPicking())
 }
 
 func (self Go) SetPhysicsObjectPicking(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsObjectPicking(value)
 }
 
 func (self Go) PhysicsObjectPickingSort() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetPhysicsObjectPickingSort())
 }
 
 func (self Go) SetPhysicsObjectPickingSort(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsObjectPickingSort(value)
 }
 
 func (self Go) PhysicsObjectPickingFirstOnly() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetPhysicsObjectPickingFirstOnly())
 }
 
 func (self Go) SetPhysicsObjectPickingFirstOnly(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPhysicsObjectPickingFirstOnly(value)
 }
 
 func (self Go) GuiDisableInput() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsInputDisabled())
 }
 
 func (self Go) SetGuiDisableInput(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDisableInput(value)
 }
 
 func (self Go) GuiSnapControlsToPixels() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSnapControlsToPixelsEnabled())
 }
 
 func (self Go) SetGuiSnapControlsToPixels(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSnapControlsToPixels(value)
 }
 
 func (self Go) GuiEmbedSubwindows() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsEmbeddingSubwindows())
 }
 
 func (self Go) SetGuiEmbedSubwindows(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEmbeddingSubwindows(value)
 }
 
 func (self Go) SdfOversize() classdb.ViewportSDFOversize {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportSDFOversize(class(self).GetSdfOversize())
 }
 
 func (self Go) SetSdfOversize(value classdb.ViewportSDFOversize) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSdfOversize(value)
 }
 
 func (self Go) SdfScale() classdb.ViewportSDFScale {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportSDFScale(class(self).GetSdfScale())
 }
 
 func (self Go) SetSdfScale(value classdb.ViewportSDFScale) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSdfScale(value)
 }
 
 func (self Go) PositionalShadowAtlasSize() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetPositionalShadowAtlasSize()))
 }
 
 func (self Go) SetPositionalShadowAtlasSize(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPositionalShadowAtlasSize(gd.Int(value))
 }
 
 func (self Go) PositionalShadowAtlas16Bits() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetPositionalShadowAtlas16Bits())
 }
 
 func (self Go) SetPositionalShadowAtlas16Bits(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPositionalShadowAtlas16Bits(value)
 }
 
 func (self Go) PositionalShadowAtlasQuad0() classdb.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(0))
 }
 
 func (self Go) SetPositionalShadowAtlasQuad0(value classdb.ViewportPositionalShadowAtlasQuadrantSubdiv) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(0, value)
 }
 
 func (self Go) PositionalShadowAtlasQuad1() classdb.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(1))
 }
 
 func (self Go) SetPositionalShadowAtlasQuad1(value classdb.ViewportPositionalShadowAtlasQuadrantSubdiv) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(1, value)
 }
 
 func (self Go) PositionalShadowAtlasQuad2() classdb.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(2))
 }
 
 func (self Go) SetPositionalShadowAtlasQuad2(value classdb.ViewportPositionalShadowAtlasQuadrantSubdiv) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(2, value)
 }
 
 func (self Go) PositionalShadowAtlasQuad3() classdb.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(3))
 }
 
 func (self Go) SetPositionalShadowAtlasQuad3(value classdb.ViewportPositionalShadowAtlasQuadrantSubdiv) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(3, value)
 }
 
 func (self Go) CanvasTransform() gd.Transform2D {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Transform2D(class(self).GetCanvasTransform())
 }
 
 func (self Go) SetCanvasTransform(value gd.Transform2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCanvasTransform(value)
 }
 
 func (self Go) GlobalCanvasTransform() gd.Transform2D {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Transform2D(class(self).GetGlobalCanvasTransform())
 }
 
 func (self Go) SetGlobalCanvasTransform(value gd.Transform2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetGlobalCanvasTransform(value)
 }
 
 func (self Go) CanvasCullMask() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetCanvasCullMask()))
 }
 
 func (self Go) SetCanvasCullMask(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCanvasCullMask(gd.Int(value))
 }
 
 //go:nosplit
 func (self class) SetWorld2d(world_2d gdclass.World2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(world_2d[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(world_2d[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetWorld2d(ctx gd.Lifetime) gdclass.World2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetWorld2d() gdclass.World2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.World2D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.World2D{classdb.World2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -774,50 +643,44 @@ func (self class) GetWorld2d(ctx gd.Lifetime) gdclass.World2D {
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 */
 //go:nosplit
-func (self class) FindWorld2d(ctx gd.Lifetime) gdclass.World2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) FindWorld2d() gdclass.World2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_find_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.World2D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.World2D{classdb.World2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCanvasTransform(xform gd.Transform2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetCanvasTransform() gd.Transform2D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetGlobalCanvasTransform(xform gd.Transform2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetGlobalCanvasTransform() gd.Transform2D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -827,10 +690,9 @@ Returns the transform from the viewport's coordinate system to the embedder's co
 */
 //go:nosplit
 func (self class) GetFinalTransform() gd.Transform2D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_final_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_final_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -840,10 +702,9 @@ Returns the transform from the Viewport's coordinates to the screen coordinates 
 */
 //go:nosplit
 func (self class) GetScreenTransform() gd.Transform2D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -853,181 +714,162 @@ Returns the visible rectangle in global screen coordinates.
 */
 //go:nosplit
 func (self class) GetVisibleRect() gd.Rect2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_visible_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_visible_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTransparentBackground(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_transparent_background, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_transparent_background, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) HasTransparentBackground() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_has_transparent_background, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_has_transparent_background, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseHdr2d(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_use_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_use_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingHdr2d() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_using_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMsaa2d(msaa classdb.ViewportMSAA)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMsaa2d() classdb.ViewportMSAA {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportMSAA](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMsaa3d(msaa classdb.ViewportMSAA)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMsaa3d() classdb.ViewportMSAA {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportMSAA](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetScreenSpaceAa(screen_space_aa classdb.ViewportScreenSpaceAA)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_space_aa)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetScreenSpaceAa() classdb.ViewportScreenSpaceAA {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportScreenSpaceAA](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseTaa(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_use_taa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_use_taa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingTaa() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_using_taa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_taa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseDebanding(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_use_debanding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_use_debanding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingDebanding() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_using_debanding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_debanding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseOcclusionCulling(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_use_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_use_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingOcclusionCulling() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_using_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDebugDraw(debug_draw classdb.ViewportDebugDraw)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, debug_draw)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_debug_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_debug_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDebugDraw() classdb.ViewportDebugDraw {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportDebugDraw](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_debug_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_debug_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1037,12 +879,11 @@ Returns rendering statistics of the given type. See [enum RenderInfoType] and [e
 */
 //go:nosplit
 func (self class) GetRenderInfo(atype classdb.ViewportRenderInfoType, info classdb.ViewportRenderInfo) gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, info)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_render_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_render_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1057,69 +898,61 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTexture(ctx gd.Lifetime) gdclass.ViewportTexture {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTexture() gdclass.ViewportTexture {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.ViewportTexture
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.ViewportTexture{classdb.ViewportTexture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPhysicsObjectPicking(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_physics_object_picking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_physics_object_picking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPhysicsObjectPicking() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_physics_object_picking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_physics_object_picking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPhysicsObjectPickingSort(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_physics_object_picking_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_physics_object_picking_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPhysicsObjectPickingSort() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_physics_object_picking_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_physics_object_picking_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPhysicsObjectPickingFirstOnly(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_physics_object_picking_first_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_physics_object_picking_first_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPhysicsObjectPickingFirstOnly() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_physics_object_picking_first_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_physics_object_picking_first_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1129,10 +962,9 @@ Returns the viewport's RID from the [RenderingServer].
 */
 //go:nosplit
 func (self class) GetViewportRid() gd.RID {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_viewport_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_viewport_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1142,11 +974,10 @@ Helper method which calls the [code]set_text()[/code] method on the currently fo
 */
 //go:nosplit
 func (self class) PushTextInput(text gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(text))
+	callframe.Arg(frame, discreet.Get(text))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_push_text_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_push_text_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1164,12 +995,11 @@ If none of the methods handle the event and [member physics_object_picking] is [
 */
 //go:nosplit
 func (self class) PushInput(event gdclass.InputEvent, in_local_coords bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(event[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(event[0])[0])
 	callframe.Arg(frame, in_local_coords)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_push_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_push_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1185,12 +1015,11 @@ If none of the methods handle the event and [member physics_object_picking] is [
 */
 //go:nosplit
 func (self class) PushUnhandledInput(event gdclass.InputEvent, in_local_coords bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(event[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(event[0])[0])
 	callframe.Arg(frame, in_local_coords)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_push_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_push_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1198,10 +1027,9 @@ Returns the mouse's position in this [Viewport] using the coordinate system of t
 */
 //go:nosplit
 func (self class) GetMousePosition() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_mouse_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_mouse_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1212,11 +1040,10 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 */
 //go:nosplit
 func (self class) WarpMouse(position gd.Vector2)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1224,22 +1051,20 @@ Force instantly updating the display based on the current mouse cursor position.
 */
 //go:nosplit
 func (self class) UpdateMouseCursorState()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_update_mouse_cursor_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_update_mouse_cursor_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 //go:nosplit
-func (self class) GuiGetDragData(ctx gd.Lifetime) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GuiGetDragData() gd.Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_gui_get_drag_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_drag_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1249,10 +1074,9 @@ Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFI
 */
 //go:nosplit
 func (self class) GuiIsDragging() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_gui_is_dragging, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_is_dragging, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1262,10 +1086,9 @@ Returns [code]true[/code] if the drag operation is successful.
 */
 //go:nosplit
 func (self class) GuiIsDragSuccessful() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_gui_is_drag_successful, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_is_drag_successful, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1275,23 +1098,20 @@ Removes the focus from the currently focused [Control] within this viewport. If 
 */
 //go:nosplit
 func (self class) GuiReleaseFocus()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_gui_release_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_release_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns null.
 */
 //go:nosplit
-func (self class) GuiGetFocusOwner(ctx gd.Lifetime) gdclass.Control {
-	var selfPtr = self[0].AsPointer()
+func (self class) GuiGetFocusOwner() gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_gui_get_focus_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Control
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1300,126 +1120,112 @@ Returns the [Control] that the mouse is currently hovering over in this viewport
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
 //go:nosplit
-func (self class) GuiGetHoveredControl(ctx gd.Lifetime) gdclass.Control {
-	var selfPtr = self[0].AsPointer()
+func (self class) GuiGetHoveredControl() gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_gui_get_hovered_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Control
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Control{classdb.Control(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDisableInput(disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_disable_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_disable_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsInputDisabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_input_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_input_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPositionalShadowAtlasSize(size gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPositionalShadowAtlasSize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPositionalShadowAtlas16Bits(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_positional_shadow_atlas_16_bits, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_positional_shadow_atlas_16_bits, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPositionalShadowAtlas16Bits() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_positional_shadow_atlas_16_bits, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_16_bits, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSnapControlsToPixels(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_snap_controls_to_pixels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_snap_controls_to_pixels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSnapControlsToPixelsEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_snap_controls_to_pixels_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_snap_controls_to_pixels_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSnap2dTransformsToPixel(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_snap_2d_transforms_to_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_snap_2d_transforms_to_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSnap2dTransformsToPixelEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_snap_2d_transforms_to_pixel_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_snap_2d_transforms_to_pixel_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSnap2dVerticesToPixel(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_snap_2d_vertices_to_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_snap_2d_vertices_to_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSnap2dVerticesToPixelEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_snap_2d_vertices_to_pixel_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_snap_2d_vertices_to_pixel_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1429,12 +1235,11 @@ Sets the number of subdivisions to use in the specified quadrant. A higher numbe
 */
 //go:nosplit
 func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int, subdiv classdb.ViewportPositionalShadowAtlasQuadrantSubdiv)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	callframe.Arg(frame, subdiv)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_positional_shadow_atlas_quadrant_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_positional_shadow_atlas_quadrant_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1442,11 +1247,10 @@ Returns the positional shadow atlas quadrant subdivision of the specified quadra
 */
 //go:nosplit
 func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int) classdb.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	var r_ret = callframe.Ret[classdb.ViewportPositionalShadowAtlasQuadrantSubdiv](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_positional_shadow_atlas_quadrant_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_quadrant_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1457,10 +1261,9 @@ Stops the input from propagating further down the [SceneTree].
 */
 //go:nosplit
 func (self class) SetInputAsHandled()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_input_as_handled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_input_as_handled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1470,67 +1273,60 @@ If [member handle_input_locally] is set to [code]false[/code], this method will 
 */
 //go:nosplit
 func (self class) IsInputHandled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_input_handled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_input_handled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetHandleInputLocally(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_handle_input_locally, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_handle_input_locally, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsHandlingInputLocally() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_handling_input_locally, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_handling_input_locally, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDefaultCanvasItemTextureFilter(mode classdb.ViewportDefaultCanvasItemTextureFilter)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDefaultCanvasItemTextureFilter() classdb.ViewportDefaultCanvasItemTextureFilter {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportDefaultCanvasItemTextureFilter](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEmbeddingSubwindows(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_embedding_subwindows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_embedding_subwindows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsEmbeddingSubwindows() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_embedding_subwindows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_embedding_subwindows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1540,30 +1336,27 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
 //go:nosplit
-func (self class) GetEmbeddedSubwindows(ctx gd.Lifetime) gd.ArrayOf[gdclass.Window] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEmbeddedSubwindows() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_embedded_subwindows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_embedded_subwindows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gdclass.Window](ret)
+	return ret
 }
 //go:nosplit
 func (self class) SetCanvasCullMask(mask gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetCanvasCullMask() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1573,12 +1366,11 @@ Set/clear individual bits on the rendering layer mask. This simplifies editing t
 */
 //go:nosplit
 func (self class) SetCanvasCullMaskBit(layer gd.Int, enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_canvas_cull_mask_bit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_canvas_cull_mask_bit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1586,106 +1378,95 @@ Returns an individual bit on the rendering layer mask.
 */
 //go:nosplit
 func (self class) GetCanvasCullMaskBit(layer gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_canvas_cull_mask_bit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_cull_mask_bit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDefaultCanvasItemTextureRepeat(mode classdb.ViewportDefaultCanvasItemTextureRepeat)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDefaultCanvasItemTextureRepeat() classdb.ViewportDefaultCanvasItemTextureRepeat {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportDefaultCanvasItemTextureRepeat](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSdfOversize(oversize classdb.ViewportSDFOversize)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, oversize)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_sdf_oversize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_sdf_oversize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSdfOversize() classdb.ViewportSDFOversize {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportSDFOversize](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_sdf_oversize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_sdf_oversize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSdfScale(scale classdb.ViewportSDFScale)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_sdf_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_sdf_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSdfScale() classdb.ViewportSDFScale {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportSDFScale](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_sdf_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_sdf_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMeshLodThreshold(pixels gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMeshLodThreshold() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAsAudioListener2d(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_as_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_as_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsAudioListener2d() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1694,33 +1475,28 @@ func (self class) IsAudioListener2d() bool {
 Returns the currently active 2D camera. Returns null if there are no active cameras.
 */
 //go:nosplit
-func (self class) GetCamera2d(ctx gd.Lifetime) gdclass.Camera2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCamera2d() gdclass.Camera2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_camera_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Camera2D
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Camera2D{classdb.Camera2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetWorld3d(world_3d gdclass.World3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(world_3d[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(world_3d[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetWorld3d(ctx gd.Lifetime) gdclass.World3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetWorld3d() gdclass.World3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.World3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.World3D{classdb.World3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1728,31 +1504,27 @@ func (self class) GetWorld3d(ctx gd.Lifetime) gdclass.World3D {
 Returns the first valid [World3D] for this viewport, searching the [member world_3d] property of itself and any Viewport ancestor.
 */
 //go:nosplit
-func (self class) FindWorld3d(ctx gd.Lifetime) gdclass.World3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) FindWorld3d() gdclass.World3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_find_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.World3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.World3D{classdb.World3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseOwnWorld3d(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_use_own_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_use_own_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingOwnWorld3d() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_using_own_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_own_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1761,216 +1533,191 @@ func (self class) IsUsingOwnWorld3d() bool {
 Returns the currently active 3D camera.
 */
 //go:nosplit
-func (self class) GetCamera3d(ctx gd.Lifetime) gdclass.Camera3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetCamera3d() gdclass.Camera3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_camera_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Camera3D
-	ret[0].SetPointer(gd.PointerMustAssertInstanceID(ctx, r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Camera3D{classdb.Camera3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAsAudioListener3d(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_as_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_as_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsAudioListener3d() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDisable3d(disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_disable_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_disable_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) Is3dDisabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_3d_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_3d_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUseXr(use bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, use)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_use_xr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_use_xr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsUsingXr() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_is_using_xr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_xr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetScaling3dMode(scaling_3d_mode classdb.ViewportScaling3DMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, scaling_3d_mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetScaling3dMode() classdb.ViewportScaling3DMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportScaling3DMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetScaling3dScale(scale gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetScaling3dScale() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFsrSharpness(fsr_sharpness gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, fsr_sharpness)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFsrSharpness() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mipmap_bias)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextureMipmapBias() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVrsMode(mode classdb.ViewportVRSMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetVrsMode() classdb.ViewportVRSMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportVRSMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVrsUpdateMode(mode classdb.ViewportVRSUpdateMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetVrsUpdateMode() classdb.ViewportVRSUpdateMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ViewportVRSUpdateMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVrsTexture(texture gdclass.Texture2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(texture[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(texture[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_set_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetVrsTexture(ctx gd.Lifetime) gdclass.Texture2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetVrsTexture() gdclass.Texture2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Viewport.Bind_get_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Texture2D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 func (self Go) OnSizeChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("size_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnGuiFocusChanged(cb func(node gdclass.Control)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("gui_focus_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -1990,7 +1737,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("Viewport", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Viewport", func(ptr gd.Object) any { return classdb.Viewport(ptr) })}
 type PositionalShadowAtlasQuadrantSubdiv = classdb.ViewportPositionalShadowAtlasQuadrantSubdiv
 
 const (

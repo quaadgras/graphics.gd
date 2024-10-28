@@ -2,7 +2,7 @@ package MultiplayerSpawner
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
@@ -27,15 +27,13 @@ type Go [1]classdb.MultiplayerSpawner
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
 */
 func (self Go) AddSpawnableScene(path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddSpawnableScene(gc.String(path))
+	class(self).AddSpawnableScene(gd.NewString(path))
 }
 
 /*
 Returns the count of spawnable scene paths.
 */
 func (self Go) GetSpawnableSceneCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetSpawnableSceneCount()))
 }
 
@@ -43,15 +41,13 @@ func (self Go) GetSpawnableSceneCount() int {
 Returns the spawnable scene path by index.
 */
 func (self Go) GetSpawnableScene(index int) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetSpawnableScene(gc, gd.Int(index)).String())
+	return string(class(self).GetSpawnableScene(gd.Int(index)).String())
 }
 
 /*
 Clears all spawnable scenes. Does not despawn existing instances on remote peers.
 */
 func (self Go) ClearSpawnableScenes() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ClearSpawnableScenes()
 }
 
@@ -60,55 +56,39 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
 func (self Go) Spawn() gdclass.Node {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Node(class(self).Spawn(gc, gc.Variant(([1]gd.Variant{}[0]))))
+	return gdclass.Node(class(self).Spawn(gd.NewVariant(([1]gd.Variant{}[0]))))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.MultiplayerSpawner
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MultiplayerSpawner"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerSpawner"))
+	return Go{classdb.MultiplayerSpawner(object)}
 }
 
 func (self Go) SpawnPath() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetSpawnPath(gc).String())
+		return string(class(self).GetSpawnPath().String())
 }
 
 func (self Go) SetSpawnPath(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetSpawnPath(gc.String(value).NodePath(gc))
+	class(self).SetSpawnPath(gd.NewString(value).NodePath())
 }
 
 func (self Go) SpawnLimit() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetSpawnLimit()))
 }
 
 func (self Go) SetSpawnLimit(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSpawnLimit(gd.Int(value))
 }
 
 func (self Go) SpawnFunction() gd.Callable {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Callable(class(self).GetSpawnFunction(gc))
+		return gd.Callable(class(self).GetSpawnFunction())
 }
 
 func (self Go) SetSpawnFunction(value gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSpawnFunction(value)
 }
 
@@ -117,11 +97,10 @@ Adds a scene path to spawnable scenes, making it automatically replicated from t
 */
 //go:nosplit
 func (self class) AddSpawnableScene(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_add_spawnable_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_add_spawnable_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -129,10 +108,9 @@ Returns the count of spawnable scene paths.
 */
 //go:nosplit
 func (self class) GetSpawnableSceneCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_get_spawnable_scene_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawnable_scene_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -141,13 +119,12 @@ func (self class) GetSpawnableSceneCount() gd.Int {
 Returns the spawnable scene path by index.
 */
 //go:nosplit
-func (self class) GetSpawnableScene(ctx gd.Lifetime, index gd.Int) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSpawnableScene(index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_get_spawnable_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawnable_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -156,10 +133,9 @@ Clears all spawnable scenes. Does not despawn existing instances on remote peers
 */
 //go:nosplit
 func (self class) ClearSpawnableScenes()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_clear_spawnable_scenes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_clear_spawnable_scenes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -167,83 +143,73 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
 //go:nosplit
-func (self class) Spawn(ctx gd.Lifetime, data gd.Variant) gdclass.Node {
-	var selfPtr = self[0].AsPointer()
+func (self class) Spawn(data gd.Variant) gdclass.Node {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(data))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_spawn, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Node
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(data))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_spawn, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetSpawnPath(ctx gd.Lifetime) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSpawnPath() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_get_spawn_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSpawnPath(path gd.NodePath)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_set_spawn_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSpawnLimit() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_get_spawn_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSpawnLimit(limit gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, limit)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_set_spawn_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetSpawnFunction(ctx gd.Lifetime) gd.Callable {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSpawnFunction() gd.Callable {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_get_spawn_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Callable](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSpawnFunction(spawn_function gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(spawn_function))
+	callframe.Arg(frame, discreet.Get(spawn_function))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSpawner.Bind_set_spawn_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self Go) OnDespawned(cb func(node gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("despawned"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("despawned"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnSpawned(cb func(node gdclass.Node)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("spawned"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), 0)
 }
 
 
@@ -263,4 +229,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("MultiplayerSpawner", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MultiplayerSpawner", func(ptr gd.Object) any { return classdb.MultiplayerSpawner(ptr) })}

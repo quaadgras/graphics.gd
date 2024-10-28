@@ -2,7 +2,7 @@ package AESContext
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class holds the context information required for encryption and decryption operations with AES (Advanced Encryption Standard). Both AES-ECB and AES-CBC modes are supported.
@@ -94,8 +94,7 @@ type Go [1]classdb.AESContext
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 func (self Go) Start(mode classdb.AESContextMode, key []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Start(mode, gc.PackedByteSlice(key), gc.PackedByteSlice(([1][]byte{}[0]))))
+	return gd.Error(class(self).Start(mode, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice(([1][]byte{}[0]))))
 }
 
 /*
@@ -103,8 +102,7 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
 func (self Go) Update(src []byte) []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).Update(gc, gc.PackedByteSlice(src)).Bytes())
+	return []byte(class(self).Update(gd.NewPackedByteSlice(src)).Bytes())
 }
 
 /*
@@ -112,15 +110,13 @@ Get the current IV state for this context (IV gets updated when calling [method 
 [b]Note:[/b] This function only makes sense when the context is started with [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 func (self Go) GetIvState() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).GetIvState(gc).Bytes())
+	return []byte(class(self).GetIvState().Bytes())
 }
 
 /*
 Close this AES context so it can be started again. See [method start].
 */
 func (self Go) Finish() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Finish()
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -128,18 +124,9 @@ type GD = class
 type class [1]classdb.AESContext
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("AESContext"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AESContext"))
+	return Go{classdb.AESContext(object)}
 }
 
 /*
@@ -147,13 +134,12 @@ Start the AES context in the given [param mode]. A [param key] of either 16 or 3
 */
 //go:nosplit
 func (self class) Start(mode classdb.AESContextMode, key gd.PackedByteArray, iv gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	callframe.Arg(frame, mmm.Get(key))
-	callframe.Arg(frame, mmm.Get(iv))
+	callframe.Arg(frame, discreet.Get(key))
+	callframe.Arg(frame, discreet.Get(iv))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AESContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -163,13 +149,12 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
 //go:nosplit
-func (self class) Update(ctx gd.Lifetime, src gd.PackedByteArray) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) Update(src gd.PackedByteArray) gd.PackedByteArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(src))
+	callframe.Arg(frame, discreet.Get(src))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AESContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -178,12 +163,11 @@ Get the current IV state for this context (IV gets updated when calling [method 
 [b]Note:[/b] This function only makes sense when the context is started with [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) GetIvState(ctx gd.Lifetime) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetIvState() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AESContext.Bind_get_iv_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_get_iv_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -192,10 +176,9 @@ Close this AES context so it can be started again. See [method start].
 */
 //go:nosplit
 func (self class) Finish()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AESContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsAESContext() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -214,7 +197,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("AESContext", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("AESContext", func(ptr gd.Object) any { return classdb.AESContext(ptr) })}
 type Mode = classdb.AESContextMode
 
 const (

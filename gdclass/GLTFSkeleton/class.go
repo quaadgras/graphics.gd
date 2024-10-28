@@ -2,7 +2,7 @@ package GLTFSkeleton
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,158 +13,129 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 type Go [1]classdb.GLTFSkeleton
 func (self Go) GetGodotSkeleton() gdclass.Skeleton3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Skeleton3D(class(self).GetGodotSkeleton(gc))
+	return gdclass.Skeleton3D(class(self).GetGodotSkeleton())
 }
 func (self Go) GetBoneAttachmentCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetBoneAttachmentCount()))
 }
 func (self Go) GetBoneAttachment(idx int) gdclass.BoneAttachment3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.BoneAttachment3D(class(self).GetBoneAttachment(gc, gd.Int(idx)))
+	return gdclass.BoneAttachment3D(class(self).GetBoneAttachment(gd.Int(idx)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.GLTFSkeleton
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("GLTFSkeleton"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFSkeleton"))
+	return Go{classdb.GLTFSkeleton(object)}
 }
 
 func (self Go) Joints() []int32 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []int32(class(self).GetJoints(gc).AsSlice())
+		return []int32(class(self).GetJoints().AsSlice())
 }
 
 func (self Go) SetJoints(value []int32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetJoints(gc.PackedInt32Slice(value))
+	class(self).SetJoints(gd.NewPackedInt32Slice(value))
 }
 
 func (self Go) Roots() []int32 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []int32(class(self).GetRoots(gc).AsSlice())
+		return []int32(class(self).GetRoots().AsSlice())
 }
 
 func (self Go) SetRoots(value []int32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetRoots(gc.PackedInt32Slice(value))
+	class(self).SetRoots(gd.NewPackedInt32Slice(value))
 }
 
-func (self Go) UniqueNames() gd.ArrayOf[gd.String] {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.ArrayOf[gd.String](class(self).GetUniqueNames(gc))
+func (self Go) UniqueNames() gd.Array {
+		return gd.Array(class(self).GetUniqueNames())
 }
 
-func (self Go) SetUniqueNames(value gd.ArrayOf[gd.String]) {
-	gc := gd.GarbageCollector(); _ = gc
+func (self Go) SetUniqueNames(value gd.Array) {
 	class(self).SetUniqueNames(value)
 }
 
 func (self Go) GodotBoneNode() gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Dictionary(class(self).GetGodotBoneNode(gc))
+		return gd.Dictionary(class(self).GetGodotBoneNode())
 }
 
 func (self Go) SetGodotBoneNode(value gd.Dictionary) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetGodotBoneNode(value)
 }
 
 //go:nosplit
-func (self class) GetJoints(ctx gd.Lifetime) gd.PackedInt32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetJoints() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_joints, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_joints, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetJoints(joints gd.PackedInt32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(joints))
+	callframe.Arg(frame, discreet.Get(joints))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_set_joints, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_joints, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetRoots(ctx gd.Lifetime) gd.PackedInt32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRoots() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_roots, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_roots, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRoots(roots gd.PackedInt32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(roots))
+	callframe.Arg(frame, discreet.Get(roots))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_set_roots, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_roots, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetGodotSkeleton(ctx gd.Lifetime) gdclass.Skeleton3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetGodotSkeleton() gdclass.Skeleton3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_godot_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Skeleton3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_godot_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Skeleton3D{classdb.Skeleton3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetUniqueNames(ctx gd.Lifetime) gd.ArrayOf[gd.String] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetUniqueNames() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gd.String](ret)
+	return ret
 }
 //go:nosplit
-func (self class) SetUniqueNames(unique_names gd.ArrayOf[gd.String])  {
-	var selfPtr = self[0].AsPointer()
+func (self class) SetUniqueNames(unique_names gd.Array)  {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(unique_names))
+	callframe.Arg(frame, discreet.Get(unique_names))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_set_unique_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_unique_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns a [Dictionary] that maps skeleton bone indices to the indices of GLTF nodes. This property is unused during import, and only set during export. In a GLTF file, a bone is a node, so Godot converts skeleton bones to GLTF nodes.
 */
 //go:nosplit
-func (self class) GetGodotBoneNode(ctx gd.Lifetime) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetGodotBoneNode() gd.Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -173,32 +144,28 @@ Sets a [Dictionary] that maps skeleton bone indices to the indices of GLTF nodes
 */
 //go:nosplit
 func (self class) SetGodotBoneNode(godot_bone_node gd.Dictionary)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(godot_bone_node))
+	callframe.Arg(frame, discreet.Get(godot_bone_node))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_set_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBoneAttachmentCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_bone_attachment_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_bone_attachment_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetBoneAttachment(ctx gd.Lifetime, idx gd.Int) gdclass.BoneAttachment3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetBoneAttachment(idx gd.Int) gdclass.BoneAttachment3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.GLTFSkeleton.Bind_get_bone_attachment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.BoneAttachment3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_bone_attachment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.BoneAttachment3D{classdb.BoneAttachment3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -220,4 +187,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("GLTFSkeleton", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("GLTFSkeleton", func(ptr gd.Object) any { return classdb.GLTFSkeleton(ptr) })}

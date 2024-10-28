@@ -123,6 +123,12 @@ func work() error {
 		return xray.New(err)
 	}
 	for _, builtin := range spec.BuiltinClasses {
+		if builtin.Name == "StringName" {
+			builtin.Name = "String"
+		}
+		if builtin.Name == "RID" {
+			continue // handled by gdclass/Resource
+		}
 		for _, method := range builtin.Methods {
 			tag := builtin.Name + "." + method.Name
 			if _, ok := tags[tag]; !ok {

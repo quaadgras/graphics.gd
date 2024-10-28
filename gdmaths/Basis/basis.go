@@ -181,7 +181,7 @@ func Euler(e Angle.Euler3D, order gdenums.EulerOrder) XYZ { //gd:Basis.from_eule
 
 // NewBasisRotatedAround constructs a pure rotation basis matrix, rotated around the given axis by angle (in radians).
 // The axis must be a normalized vector.
-func AxisAngle(axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis(Vector3,float)
+func RotatesAxisAngle(axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis(Vector3,float)
 	var rows XYZ
 	var axis_sq = Vector3.New(axis.X*axis.X, axis.Y*axis.Y, axis.Z*axis.Z)
 	var cosine = Angle.Cos(angle)
@@ -222,6 +222,13 @@ func LookingAt(target, up Vector3.XYZ) XYZ { //gd:Basis.looking_at
 	v_x = Vector3.Normalized(v_x)
 	var v_y = Vector3.Cross(v_z, v_x)
 	return XYZ{v_x, v_y, v_z}
+}
+
+// RotatesScales returns the basis from the given rotation Quaternion with the
+// specified scale applied to it. This is equivalent to multiplying the basis
+// with a scaling matrix.
+func RotatesScales(q quaternion, s Vector3.XYZ) XYZ {
+	return Mul(qAsBasis(q), Scales(s))
 }
 
 // Determinant returns the determinant of the basis matrix. If the basis is
@@ -519,7 +526,7 @@ func Orthonormalized(b XYZ) XYZ { //gd:Basis.orthonormalized
 // Rotated returns a copy of the basis rotated around the given axis by the given angle (in radians).
 // The axis must be a normalized vector.
 func Rotated(b XYZ, axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis.rotated
-	return Mul(AxisAngle(axis, angle), b)
+	return Mul(RotatesAxisAngle(axis, angle), b)
 }
 
 // Scaled introduce an additional scaling specified by the given 3D scaling factor.
@@ -696,5 +703,13 @@ func qAsBasis(q quaternion) XYZ {
 		X: Vector3.New(1.0-(yy+zz), xy-wz, xz+wy),
 		Y: Vector3.New(xy+wz, 1.0-(xx+zz), yz-wx),
 		Z: Vector3.New(xz-wy, yz+wx, 1.0-(xx+yy)),
+	}
+}
+
+func Transform(v Vector3.XYZ, m XYZ) Vector3.XYZ { //gd:Basis*(right:Vector3)
+	return Vector3.XYZ{
+		Vector3.Dot(m.X, v),
+		Vector3.Dot(m.Y, v),
+		Vector3.Dot(m.Z, v),
 	}
 }

@@ -2,7 +2,7 @@ package MultiplayerSynchronizer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 By default, [MultiplayerSynchronizer] synchronizes configured properties to all peers.
@@ -29,7 +29,6 @@ type Go [1]classdb.MultiplayerSynchronizer
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
 */
 func (self Go) UpdateVisibility() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).UpdateVisibility(gd.Int(0))
 }
 
@@ -38,7 +37,6 @@ Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
 func (self Go) AddVisibilityFilter(filter gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).AddVisibilityFilter(filter)
 }
 
@@ -46,7 +44,6 @@ func (self Go) AddVisibilityFilter(filter gd.Callable) {
 Removes a peer visibility filter from this synchronizer.
 */
 func (self Go) RemoveVisibilityFilter(filter gd.Callable) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).RemoveVisibilityFilter(filter)
 }
 
@@ -54,7 +51,6 @@ func (self Go) RemoveVisibilityFilter(filter gd.Callable) {
 Sets the visibility of [param peer] to [param visible]. If [param peer] is [code]0[/code], the value of [member public_visibility] will be updated instead.
 */
 func (self Go) SetVisibilityFor(peer int, visible bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVisibilityFor(gd.Int(peer), visible)
 }
 
@@ -62,7 +58,6 @@ func (self Go) SetVisibilityFor(peer int, visible bool) {
 Queries the current visibility for peer [param peer].
 */
 func (self Go) GetVisibilityFor(peer int) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).GetVisibilityFor(gd.Int(peer)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -70,172 +65,140 @@ type GD = class
 type class [1]classdb.MultiplayerSynchronizer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MultiplayerSynchronizer"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerSynchronizer"))
+	return Go{classdb.MultiplayerSynchronizer(object)}
 }
 
 func (self Go) RootPath() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetRootPath(gc).String())
+		return string(class(self).GetRootPath().String())
 }
 
 func (self Go) SetRootPath(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetRootPath(gc.String(value).NodePath(gc))
+	class(self).SetRootPath(gd.NewString(value).NodePath())
 }
 
 func (self Go) ReplicationInterval() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetReplicationInterval()))
 }
 
 func (self Go) SetReplicationInterval(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetReplicationInterval(gd.Float(value))
 }
 
 func (self Go) DeltaInterval() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetDeltaInterval()))
 }
 
 func (self Go) SetDeltaInterval(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDeltaInterval(gd.Float(value))
 }
 
 func (self Go) ReplicationConfig() gdclass.SceneReplicationConfig {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.SceneReplicationConfig(class(self).GetReplicationConfig(gc))
+		return gdclass.SceneReplicationConfig(class(self).GetReplicationConfig())
 }
 
 func (self Go) SetReplicationConfig(value gdclass.SceneReplicationConfig) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetReplicationConfig(value)
 }
 
 func (self Go) VisibilityUpdateMode() classdb.MultiplayerSynchronizerVisibilityUpdateMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.MultiplayerSynchronizerVisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
 }
 
 func (self Go) SetVisibilityUpdateMode(value classdb.MultiplayerSynchronizerVisibilityUpdateMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVisibilityUpdateMode(value)
 }
 
 func (self Go) PublicVisibility() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsVisibilityPublic())
 }
 
 func (self Go) SetPublicVisibility(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVisibilityPublic(value)
 }
 
 //go:nosplit
 func (self class) SetRootPath(path gd.NodePath)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_root_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_root_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetRootPath(ctx gd.Lifetime) gd.NodePath {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRootPath() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_get_root_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.NodePath](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_root_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetReplicationInterval(milliseconds gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, milliseconds)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_replication_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetReplicationInterval() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_get_replication_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_replication_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDeltaInterval(milliseconds gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, milliseconds)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_delta_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_delta_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetDeltaInterval() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_get_delta_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_delta_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetReplicationConfig(config gdclass.SceneReplicationConfig)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(config[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(config[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_replication_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetReplicationConfig(ctx gd.Lifetime) gdclass.SceneReplicationConfig {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetReplicationConfig() gdclass.SceneReplicationConfig {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_get_replication_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.SceneReplicationConfig
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_replication_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.SceneReplicationConfig{classdb.SceneReplicationConfig(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVisibilityUpdateMode(mode classdb.MultiplayerSynchronizerVisibilityUpdateMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_visibility_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetVisibilityUpdateMode() classdb.MultiplayerSynchronizerVisibilityUpdateMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.MultiplayerSynchronizerVisibilityUpdateMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_get_visibility_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_visibility_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -245,28 +208,25 @@ Updates the visibility of [param for_peer] according to visibility filters. If [
 */
 //go:nosplit
 func (self class) UpdateVisibility(for_peer gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, for_peer)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_update_visibility, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_update_visibility, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetVisibilityPublic(visible bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_visibility_public, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_public, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsVisibilityPublic() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_is_visibility_public, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_is_visibility_public, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -277,11 +237,10 @@ Adds a peer visibility filter for this synchronizer.
 */
 //go:nosplit
 func (self class) AddVisibilityFilter(filter gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(filter))
+	callframe.Arg(frame, discreet.Get(filter))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_add_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_add_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -289,11 +248,10 @@ Removes a peer visibility filter from this synchronizer.
 */
 //go:nosplit
 func (self class) RemoveVisibilityFilter(filter gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(filter))
+	callframe.Arg(frame, discreet.Get(filter))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_remove_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_remove_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -301,12 +259,11 @@ Sets the visibility of [param peer] to [param visible]. If [param peer] is [code
 */
 //go:nosplit
 func (self class) SetVisibilityFor(peer gd.Int, visible bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, visible)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_set_visibility_for, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_for, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -314,30 +271,26 @@ Queries the current visibility for peer [param peer].
 */
 //go:nosplit
 func (self class) GetVisibilityFor(peer gd.Int) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerSynchronizer.Bind_get_visibility_for, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_visibility_for, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 func (self Go) OnSynchronized(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("synchronized"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnDeltaSynchronized(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("delta_synchronized"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnVisibilityChanged(cb func(for_peer int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("visibility_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -357,7 +310,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("MultiplayerSynchronizer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return classdb.MultiplayerSynchronizer(ptr) })}
 type VisibilityUpdateMode = classdb.MultiplayerSynchronizerVisibilityUpdateMode
 
 const (

@@ -137,7 +137,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 		fmt.Fprintln(file, `import "sync"`)
 	}
 	fmt.Fprintln(file, `import "reflect"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/internal/mmm"`)
+	fmt.Fprintln(file, `import "grow.graphics/gd/internal/discreet"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/gdclass"`)
@@ -156,7 +156,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 	fmt.Fprintln(file, "var _ gdclass.Engine")
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
-	fmt.Fprintln(file, "var _ mmm.Lifetime")
+	fmt.Fprintln(file, "var _ = discreet.Root")
 	fmt.Fprintln(file)
 	if class.Description != "" {
 		fmt.Fprintln(file, "/*")
@@ -199,8 +199,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 		fmt.Fprintf(file, "var self gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "var once sync.Once\n")
 		fmt.Fprintf(file, "func singleton() {\n")
-		fmt.Fprintf(file, "\tgc := gd.Static\n")
-		fmt.Fprintf(file, "\tobj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.%s)\n", class.Name)
+		fmt.Fprintf(file, "\tobj := gd.Global.Object.GetSingleton(gd.Global.Singletons.%s)\n", class.Name)
 		fmt.Fprintf(file, "\tself = *(*gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
 		fmt.Fprintf(file, "}\n")
 	} else {
@@ -231,9 +230,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 	fmt.Fprintln(file, "func (self class) AsObject() gd.Object { return self[0].AsObject() }")
 	if !singleton {
 		fmt.Fprintln(file, "func (self Go) AsObject() gd.Object { return self[0].AsObject() }")
-		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }\n")
 	}
-	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }\n")
 	if !singleton {
 		classDB.new(file, class)
 	}
@@ -292,7 +289,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 		fmt.Fprintf(file, "}\n")
 	}
 	fmt.Fprintf(file, `func init() {`)
-	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })`, class.Name)
+	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Object) any { return classdb.%[1]s(ptr) })`, class.Name)
 	fmt.Fprintf(file, "}\n")
 	for _, enum := range class.Enums {
 		generateEnum(file, class.Name, enum, "classdb.")

@@ -2,7 +2,7 @@ package CSGMesh3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This CSG node allows you to use any mesh resource as a CSG shape, provided it is closed, does not self-intersect, does not contain internal faces and has no edges that connect to more than two faces. See also [CSGPolygon3D] for drawing 2D extruded polygons to be used as CSG nodes.
@@ -31,77 +31,58 @@ type GD = class
 type class [1]classdb.CSGMesh3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("CSGMesh3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGMesh3D"))
+	return Go{classdb.CSGMesh3D(object)}
 }
 
 func (self Go) Mesh() gdclass.Mesh {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Mesh(class(self).GetMesh(gc))
+		return gdclass.Mesh(class(self).GetMesh())
 }
 
 func (self Go) SetMesh(value gdclass.Mesh) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMesh(value)
 }
 
 func (self Go) Material() gdclass.Material {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Material(class(self).GetMaterial(gc))
+		return gdclass.Material(class(self).GetMaterial())
 }
 
 func (self Go) SetMaterial(value gdclass.Material) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaterial(value)
 }
 
 //go:nosplit
 func (self class) SetMesh(mesh gdclass.Mesh)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(mesh[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(mesh[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CSGMesh3D.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetMesh(ctx gd.Lifetime) gdclass.Mesh {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMesh() gdclass.Mesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CSGMesh3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Mesh
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMaterial(material gdclass.Material)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(material[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(material[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CSGMesh3D.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetMaterial(ctx gd.Lifetime) gdclass.Material {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMaterial() gdclass.Material {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CSGMesh3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Material
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -131,4 +112,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsCSGPrimitive3D(), name)
 	}
 }
-func init() {classdb.Register("CSGMesh3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("CSGMesh3D", func(ptr gd.Object) any { return classdb.CSGMesh3D(ptr) })}

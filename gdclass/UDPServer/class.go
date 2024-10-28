@@ -2,7 +2,7 @@ package UDPServer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A simple server that opens a UDP socket and returns connected [PacketPeerUDP] upon receiving new packets. See also [method PacketPeerUDP.connect_to_host].
@@ -140,15 +140,13 @@ type Go [1]classdb.UDPServer
 Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
 */
 func (self Go) Listen(port int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Listen(gd.Int(port), gc.String("*")))
+	return gd.Error(class(self).Listen(gd.Int(port), gd.NewString("*")))
 }
 
 /*
 Call this method at regular intervals (e.g. inside [method Node._process]) to process new packets. And packet from known address/port pair will be delivered to the appropriate [PacketPeerUDP], any packet received from an unknown address/port pair will be added as a pending connection (see [method is_connection_available], [method take_connection]). The maximum number of pending connection is defined via [member max_pending_connections].
 */
 func (self Go) Poll() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Poll())
 }
 
@@ -156,7 +154,6 @@ func (self Go) Poll() gd.Error {
 Returns [code]true[/code] if a packet with a new address/port combination was received on the socket.
 */
 func (self Go) IsConnectionAvailable() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsConnectionAvailable())
 }
 
@@ -164,7 +161,6 @@ func (self Go) IsConnectionAvailable() bool {
 Returns the local port this server is listening to.
 */
 func (self Go) GetLocalPort() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetLocalPort()))
 }
 
@@ -172,7 +168,6 @@ func (self Go) GetLocalPort() int {
 Returns [code]true[/code] if the socket is open and listening on a port.
 */
 func (self Go) IsListening() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsListening())
 }
 
@@ -180,15 +175,13 @@ func (self Go) IsListening() bool {
 Returns the first pending connection (connected to the appropriate address/port). Will return [code]null[/code] if no new connection is available. See also [method is_connection_available], [method PacketPeerUDP.connect_to_host].
 */
 func (self Go) TakeConnection() gdclass.PacketPeerUDP {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.PacketPeerUDP(class(self).TakeConnection(gc))
+	return gdclass.PacketPeerUDP(class(self).TakeConnection())
 }
 
 /*
 Stops the server, closing the UDP socket if open. Will close all connected [PacketPeerUDP] accepted via [method take_connection] (remote peers will not be notified).
 */
 func (self Go) Stop() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Stop()
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -196,27 +189,16 @@ type GD = class
 type class [1]classdb.UDPServer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("UDPServer"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UDPServer"))
+	return Go{classdb.UDPServer(object)}
 }
 
 func (self Go) MaxPendingConnections() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetMaxPendingConnections()))
 }
 
 func (self Go) SetMaxPendingConnections(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaxPendingConnections(gd.Int(value))
 }
 
@@ -225,12 +207,11 @@ Starts the server by opening a UDP socket listening on the given [param port]. Y
 */
 //go:nosplit
 func (self class) Listen(port gd.Int, bind_address gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, mmm.Get(bind_address))
+	callframe.Arg(frame, discreet.Get(bind_address))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -240,10 +221,9 @@ Call this method at regular intervals (e.g. inside [method Node._process]) to pr
 */
 //go:nosplit
 func (self class) Poll() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -253,10 +233,9 @@ Returns [code]true[/code] if a packet with a new address/port combination was re
 */
 //go:nosplit
 func (self class) IsConnectionAvailable() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -266,10 +245,9 @@ Returns the local port this server is listening to.
 */
 //go:nosplit
 func (self class) GetLocalPort() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -279,10 +257,9 @@ Returns [code]true[/code] if the socket is open and listening on a port.
 */
 //go:nosplit
 func (self class) IsListening() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -291,13 +268,11 @@ func (self class) IsListening() bool {
 Returns the first pending connection (connected to the appropriate address/port). Will return [code]null[/code] if no new connection is available. See also [method is_connection_available], [method PacketPeerUDP.connect_to_host].
 */
 //go:nosplit
-func (self class) TakeConnection(ctx gd.Lifetime) gdclass.PacketPeerUDP {
-	var selfPtr = self[0].AsPointer()
+func (self class) TakeConnection() gdclass.PacketPeerUDP {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.PacketPeerUDP
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.PacketPeerUDP{classdb.PacketPeerUDP(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -306,27 +281,24 @@ Stops the server, closing the UDP socket if open. Will close all connected [Pack
 */
 //go:nosplit
 func (self class) Stop()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetMaxPendingConnections(max_pending_connections gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, max_pending_connections)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_set_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_set_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMaxPendingConnections() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.UDPServer.Bind_get_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_get_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -347,4 +319,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("UDPServer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("UDPServer", func(ptr gd.Object) any { return classdb.UDPServer(ptr) })}

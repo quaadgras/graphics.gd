@@ -2,7 +2,7 @@ package XRHandModifier3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This node uses hand tracking data from an [XRHandTracker] to pose the skeleton of a hand mesh.
@@ -29,74 +29,57 @@ type GD = class
 type class [1]classdb.XRHandModifier3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("XRHandModifier3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRHandModifier3D"))
+	return Go{classdb.XRHandModifier3D(object)}
 }
 
 func (self Go) HandTracker() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetHandTracker(gc).String())
+		return string(class(self).GetHandTracker().String())
 }
 
 func (self Go) SetHandTracker(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetHandTracker(gc.StringName(value))
+	class(self).SetHandTracker(gd.NewStringName(value))
 }
 
 func (self Go) BoneUpdate() classdb.XRHandModifier3DBoneUpdate {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.XRHandModifier3DBoneUpdate(class(self).GetBoneUpdate())
 }
 
 func (self Go) SetBoneUpdate(value classdb.XRHandModifier3DBoneUpdate) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBoneUpdate(value)
 }
 
 //go:nosplit
 func (self class) SetHandTracker(tracker_name gd.StringName)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(tracker_name))
+	callframe.Arg(frame, discreet.Get(tracker_name))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRHandModifier3D.Bind_set_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetHandTracker(ctx gd.Lifetime) gd.StringName {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetHandTracker() gd.StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRHandModifier3D.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.StringName](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update classdb.XRHandModifier3DBoneUpdate)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_update)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRHandModifier3D.Bind_set_bone_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_bone_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetBoneUpdate() classdb.XRHandModifier3DBoneUpdate {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.XRHandModifier3DBoneUpdate](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRHandModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -121,7 +104,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsSkeletonModifier3D(), name)
 	}
 }
-func init() {classdb.Register("XRHandModifier3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("XRHandModifier3D", func(ptr gd.Object) any { return classdb.XRHandModifier3D(ptr) })}
 type BoneUpdate = classdb.XRHandModifier3DBoneUpdate
 
 const (

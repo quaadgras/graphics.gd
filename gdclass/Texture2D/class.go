@@ -2,7 +2,7 @@ package Texture2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite2D] or GUI [Control].
@@ -50,12 +50,9 @@ Called when the [Texture2D]'s width is queried.
 */
 func (Go) _get_width(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -64,12 +61,9 @@ Called when the [Texture2D]'s height is queried.
 */
 func (Go) _get_height(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -78,14 +72,11 @@ Called when a pixel's opaque state in the [Texture2D] is queried at the specifie
 */
 func (Go) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int, y int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var x = gd.UnsafeGet[gd.Int](p_args,0)
 		var y = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(x), int(y))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -94,12 +85,9 @@ Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
 func (Go) _has_alpha(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -109,15 +97,12 @@ Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem],
 */
 func (Go) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, pos gd.Vector2, modulate gd.Color, transpose bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
 		var pos = gd.UnsafeGet[gd.Vector2](p_args,1)
 		var modulate = gd.UnsafeGet[gd.Color](p_args,2)
 		var transpose = gd.UnsafeGet[bool](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, to_canvas_item, pos, modulate, transpose)
-		gc.End()
 	}
 }
 
@@ -127,8 +112,6 @@ Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specifi
 */
 func (Go) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
 		var tile = gd.UnsafeGet[bool](p_args,2)
@@ -136,7 +119,6 @@ func (Go) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect g
 		var transpose = gd.UnsafeGet[bool](p_args,4)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, to_canvas_item, rect, tile, modulate, transpose)
-		gc.End()
 	}
 }
 
@@ -146,8 +128,6 @@ Called when a part of the [Texture2D] specified by [param src_rect]'s coordinate
 */
 func (Go) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
 		var src_rect = gd.UnsafeGet[gd.Rect2](p_args,2)
@@ -156,7 +136,6 @@ func (Go) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID,
 		var clip_uv = gd.UnsafeGet[bool](p_args,5)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
-		gc.End()
 	}
 }
 
@@ -164,7 +143,6 @@ impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 Returns the texture width in pixels.
 */
 func (self Go) GetWidth() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetWidth()))
 }
 
@@ -172,7 +150,6 @@ func (self Go) GetWidth() int {
 Returns the texture height in pixels.
 */
 func (self Go) GetHeight() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetHeight()))
 }
 
@@ -180,7 +157,6 @@ func (self Go) GetHeight() int {
 Returns the texture size in pixels.
 */
 func (self Go) GetSize() gd.Vector2 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector2(class(self).GetSize())
 }
 
@@ -188,7 +164,6 @@ func (self Go) GetSize() gd.Vector2 {
 Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 func (self Go) HasAlpha() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasAlpha())
 }
 
@@ -196,7 +171,6 @@ func (self Go) HasAlpha() bool {
 Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [param position].
 */
 func (self Go) Draw(canvas_item gd.RID, position gd.Vector2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Draw(canvas_item, position, gd.Color{1, 1, 1, 1}, false)
 }
 
@@ -204,7 +178,6 @@ func (self Go) Draw(canvas_item gd.RID, position gd.Vector2) {
 Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 func (self Go) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).DrawRect(canvas_item, rect, tile, gd.Color{1, 1, 1, 1}, false)
 }
 
@@ -212,7 +185,6 @@ func (self Go) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool) {
 Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 func (self Go) DrawRectRegion(canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).DrawRectRegion(canvas_item, rect, src_rect, gd.Color{1, 1, 1, 1}, false, true)
 }
 
@@ -222,34 +194,23 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 [b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused.
 */
 func (self Go) GetImage() gdclass.Image {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Image(class(self).GetImage(gc))
+	return gdclass.Image(class(self).GetImage())
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 func (self Go) CreatePlaceholder() gdclass.Resource {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.Resource(class(self).CreatePlaceholder(gc))
+	return gdclass.Resource(class(self).CreatePlaceholder())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.Texture2D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("Texture2D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture2D"))
+	return Go{classdb.Texture2D(object)}
 }
 
 /*
@@ -257,12 +218,9 @@ Called when the [Texture2D]'s width is queried.
 */
 func (class) _get_width(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -271,12 +229,9 @@ Called when the [Texture2D]'s height is queried.
 */
 func (class) _get_height(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -285,14 +240,11 @@ Called when a pixel's opaque state in the [Texture2D] is queried at the specifie
 */
 func (class) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x gd.Int, y gd.Int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var x = gd.UnsafeGet[gd.Int](p_args,0)
 		var y = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, x, y)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -301,12 +253,9 @@ Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
 func (class) _has_alpha(impl func(ptr unsafe.Pointer) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -316,15 +265,12 @@ Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem],
 */
 func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, pos gd.Vector2, modulate gd.Color, transpose bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
 		var pos = gd.UnsafeGet[gd.Vector2](p_args,1)
 		var modulate = gd.UnsafeGet[gd.Color](p_args,2)
 		var transpose = gd.UnsafeGet[bool](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, to_canvas_item, pos, modulate, transpose)
-		ctx.End()
 	}
 }
 
@@ -334,8 +280,6 @@ Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specifi
 */
 func (class) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
 		var tile = gd.UnsafeGet[bool](p_args,2)
@@ -343,7 +287,6 @@ func (class) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rec
 		var transpose = gd.UnsafeGet[bool](p_args,4)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, to_canvas_item, rect, tile, modulate, transpose)
-		ctx.End()
 	}
 }
 
@@ -353,8 +296,6 @@ Called when a part of the [Texture2D] specified by [param src_rect]'s coordinate
 */
 func (class) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args,0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args,1)
 		var src_rect = gd.UnsafeGet[gd.Rect2](p_args,2)
@@ -363,7 +304,6 @@ func (class) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.R
 		var clip_uv = gd.UnsafeGet[bool](p_args,5)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
-		ctx.End()
 	}
 }
 
@@ -372,10 +312,9 @@ Returns the texture width in pixels.
 */
 //go:nosplit
 func (self class) GetWidth() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -385,10 +324,9 @@ Returns the texture height in pixels.
 */
 //go:nosplit
 func (self class) GetHeight() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -398,10 +336,9 @@ Returns the texture size in pixels.
 */
 //go:nosplit
 func (self class) GetSize() gd.Vector2 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -411,10 +348,9 @@ Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 //go:nosplit
 func (self class) HasAlpha() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_has_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_has_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -424,14 +360,13 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API at the spe
 */
 //go:nosplit
 func (self class) Draw(canvas_item gd.RID, position gd.Vector2, modulate gd.Color, transpose bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, transpose)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -439,7 +374,6 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, rect)
@@ -447,7 +381,7 @@ func (self class) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool, modulat
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, transpose)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -455,7 +389,6 @@ Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRectRegion(canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, rect)
@@ -464,7 +397,7 @@ func (self class) DrawRectRegion(canvas_item gd.RID, rect gd.Rect2, src_rect gd.
 	callframe.Arg(frame, transpose)
 	callframe.Arg(frame, clip_uv)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_draw_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_draw_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -473,13 +406,11 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 [b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused.
 */
 //go:nosplit
-func (self class) GetImage(ctx gd.Lifetime) gdclass.Image {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetImage() gdclass.Image {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Image
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -487,13 +418,11 @@ func (self class) GetImage(ctx gd.Lifetime) gdclass.Image {
 Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder(ctx gd.Lifetime) gdclass.Resource {
-	var selfPtr = self[0].AsPointer()
+func (self class) CreatePlaceholder() gdclass.Resource {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.Texture2D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Resource
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -531,4 +460,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsTexture(), name)
 	}
 }
-func init() {classdb.Register("Texture2D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("Texture2D", func(ptr gd.Object) any { return classdb.Texture2D(ptr) })}

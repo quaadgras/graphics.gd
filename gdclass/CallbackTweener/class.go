@@ -2,7 +2,7 @@ package CallbackTweener
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [CallbackTweener] is used to call a method in a tweening sequence. See [method Tween.tween_callback] for more usage information.
@@ -32,26 +32,16 @@ tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after
 [/codeblock]
 */
 func (self Go) SetDelay(delay float64) gdclass.CallbackTweener {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.CallbackTweener(class(self).SetDelay(gc, gd.Float(delay)))
+	return gdclass.CallbackTweener(class(self).SetDelay(gd.Float(delay)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.CallbackTweener
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("CallbackTweener"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CallbackTweener"))
+	return Go{classdb.CallbackTweener(object)}
 }
 
 /*
@@ -63,14 +53,12 @@ tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetDelay(ctx gd.Lifetime, delay gd.Float) gdclass.CallbackTweener {
-	var selfPtr = self[0].AsPointer()
+func (self class) SetDelay(delay gd.Float) gdclass.CallbackTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CallbackTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.CallbackTweener
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CallbackTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.CallbackTweener{classdb.CallbackTweener(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -92,4 +80,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsTweener(), name)
 	}
 }
-func init() {classdb.Register("CallbackTweener", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("CallbackTweener", func(ptr gd.Object) any { return classdb.CallbackTweener(ptr) })}

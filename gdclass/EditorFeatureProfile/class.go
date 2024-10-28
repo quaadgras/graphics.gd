@@ -2,7 +2,7 @@ package EditorFeatureProfile
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 An editor feature profile can be used to disable specific features of the Godot editor. When disabled, the features won't appear in the editor, which makes the editor less cluttered. This is useful in education settings to reduce confusion or when working in a team. For example, artists and level designers could use a feature profile that disables the script editor to avoid accidentally making changes to files they aren't supposed to edit.
@@ -25,55 +25,48 @@ type Go [1]classdb.EditorFeatureProfile
 If [param disable] is [code]true[/code], disables the class specified by [param class_name]. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Go) SetDisableClass(class_name string, disable bool) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDisableClass(gc.StringName(class_name), disable)
+	class(self).SetDisableClass(gd.NewStringName(class_name), disable)
 }
 
 /*
 Returns [code]true[/code] if the class specified by [param class_name] is disabled. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Go) IsClassDisabled(class_name string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).IsClassDisabled(gc.StringName(class_name)))
+	return bool(class(self).IsClassDisabled(gd.NewStringName(class_name)))
 }
 
 /*
 If [param disable] is [code]true[/code], disables editing for the class specified by [param class_name]. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Go) SetDisableClassEditor(class_name string, disable bool) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDisableClassEditor(gc.StringName(class_name), disable)
+	class(self).SetDisableClassEditor(gd.NewStringName(class_name), disable)
 }
 
 /*
 Returns [code]true[/code] if editing for the class specified by [param class_name] is disabled. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Go) IsClassEditorDisabled(class_name string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).IsClassEditorDisabled(gc.StringName(class_name)))
+	return bool(class(self).IsClassEditorDisabled(gd.NewStringName(class_name)))
 }
 
 /*
 If [param disable] is [code]true[/code], disables editing for [param property] in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 func (self Go) SetDisableClassProperty(class_name string, property string, disable bool) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDisableClassProperty(gc.StringName(class_name), gc.StringName(property), disable)
+	class(self).SetDisableClassProperty(gd.NewStringName(class_name), gd.NewStringName(property), disable)
 }
 
 /*
 Returns [code]true[/code] if [param property] is disabled in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 func (self Go) IsClassPropertyDisabled(class_name string, property string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).IsClassPropertyDisabled(gc.StringName(class_name), gc.StringName(property)))
+	return bool(class(self).IsClassPropertyDisabled(gd.NewStringName(class_name), gd.NewStringName(property)))
 }
 
 /*
 If [param disable] is [code]true[/code], disables the editor feature specified in [param feature]. When a feature is disabled, it will disappear from the editor entirely.
 */
 func (self Go) SetDisableFeature(feature classdb.EditorFeatureProfileFeature, disable bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDisableFeature(feature, disable)
 }
 
@@ -81,7 +74,6 @@ func (self Go) SetDisableFeature(feature classdb.EditorFeatureProfileFeature, di
 Returns [code]true[/code] if the [param feature] is disabled. When a feature is disabled, it will disappear from the editor entirely.
 */
 func (self Go) IsFeatureDisabled(feature classdb.EditorFeatureProfileFeature) bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsFeatureDisabled(feature))
 }
 
@@ -89,8 +81,7 @@ func (self Go) IsFeatureDisabled(feature classdb.EditorFeatureProfileFeature) bo
 Returns the specified [param feature]'s human-readable name.
 */
 func (self Go) GetFeatureName(feature classdb.EditorFeatureProfileFeature) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetFeatureName(gc, feature).String())
+	return string(class(self).GetFeatureName(feature).String())
 }
 
 /*
@@ -98,8 +89,7 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 [b]Note:[/b] Feature profiles created via the user interface are saved in the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Go) SaveToFile(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).SaveToFile(gc.String(path)))
+	return gd.Error(class(self).SaveToFile(gd.NewString(path)))
 }
 
 /*
@@ -107,26 +97,16 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 [b]Note:[/b] Feature profiles created via the user interface are loaded from the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Go) LoadFromFile(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).LoadFromFile(gc.String(path)))
+	return gd.Error(class(self).LoadFromFile(gd.NewString(path)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorFeatureProfile
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorFeatureProfile"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorFeatureProfile"))
+	return Go{classdb.EditorFeatureProfile(object)}
 }
 
 /*
@@ -134,12 +114,11 @@ If [param disable] is [code]true[/code], disables the class specified by [param 
 */
 //go:nosplit
 func (self class) SetDisableClass(class_name gd.StringName, disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(class_name))
+	callframe.Arg(frame, discreet.Get(class_name))
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_set_disable_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -147,11 +126,10 @@ Returns [code]true[/code] if the class specified by [param class_name] is disabl
 */
 //go:nosplit
 func (self class) IsClassDisabled(class_name gd.StringName) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(class_name))
+	callframe.Arg(frame, discreet.Get(class_name))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_is_class_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -161,12 +139,11 @@ If [param disable] is [code]true[/code], disables editing for the class specifie
 */
 //go:nosplit
 func (self class) SetDisableClassEditor(class_name gd.StringName, disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(class_name))
+	callframe.Arg(frame, discreet.Get(class_name))
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_set_disable_class_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -174,11 +151,10 @@ Returns [code]true[/code] if editing for the class specified by [param class_nam
 */
 //go:nosplit
 func (self class) IsClassEditorDisabled(class_name gd.StringName) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(class_name))
+	callframe.Arg(frame, discreet.Get(class_name))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_is_class_editor_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_editor_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -188,13 +164,12 @@ If [param disable] is [code]true[/code], disables editing for [param property] i
 */
 //go:nosplit
 func (self class) SetDisableClassProperty(class_name gd.StringName, property gd.StringName, disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(class_name))
-	callframe.Arg(frame, mmm.Get(property))
+	callframe.Arg(frame, discreet.Get(class_name))
+	callframe.Arg(frame, discreet.Get(property))
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_set_disable_class_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -202,12 +177,11 @@ Returns [code]true[/code] if [param property] is disabled in the class specified
 */
 //go:nosplit
 func (self class) IsClassPropertyDisabled(class_name gd.StringName, property gd.StringName) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(class_name))
-	callframe.Arg(frame, mmm.Get(property))
+	callframe.Arg(frame, discreet.Get(class_name))
+	callframe.Arg(frame, discreet.Get(property))
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_is_class_property_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_property_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -217,12 +191,11 @@ If [param disable] is [code]true[/code], disables the editor feature specified i
 */
 //go:nosplit
 func (self class) SetDisableFeature(feature classdb.EditorFeatureProfileFeature, disable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	callframe.Arg(frame, disable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_set_disable_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -230,11 +203,10 @@ Returns [code]true[/code] if the [param feature] is disabled. When a feature is 
 */
 //go:nosplit
 func (self class) IsFeatureDisabled(feature classdb.EditorFeatureProfileFeature) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_is_feature_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_feature_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -243,13 +215,12 @@ func (self class) IsFeatureDisabled(feature classdb.EditorFeatureProfileFeature)
 Returns the specified [param feature]'s human-readable name.
 */
 //go:nosplit
-func (self class) GetFeatureName(ctx gd.Lifetime, feature classdb.EditorFeatureProfileFeature) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetFeatureName(feature classdb.EditorFeatureProfileFeature) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_get_feature_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_get_feature_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -259,11 +230,10 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 */
 //go:nosplit
 func (self class) SaveToFile(path gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_save_to_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_save_to_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -274,11 +244,10 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 */
 //go:nosplit
 func (self class) LoadFromFile(path gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorFeatureProfile.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -299,7 +268,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorFeatureProfile", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorFeatureProfile", func(ptr gd.Object) any { return classdb.EditorFeatureProfile(ptr) })}
 type Feature = classdb.EditorFeatureProfileFeature
 
 const (

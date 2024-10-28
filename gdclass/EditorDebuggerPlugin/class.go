@@ -2,7 +2,7 @@ package EditorDebuggerPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [EditorDebuggerPlugin] provides functions related to the editor side of the debugger.
@@ -78,12 +78,9 @@ Override this method to be notified whenever a new [EditorDebuggerSession] is cr
 */
 func (Go) _setup_session(impl func(ptr unsafe.Pointer, session_id int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var session_id = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, int(session_id))
-		gc.End()
 	}
 }
 
@@ -92,13 +89,11 @@ Override this method to enable receiving messages from the debugger. If [param c
 */
 func (Go) _has_capture(impl func(ptr unsafe.Pointer, capture string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var capture = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var capture = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(capture)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, capture.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -107,15 +102,14 @@ Override this method to process incoming messages. The [param session_id] is the
 */
 func (Go) _capture(impl func(ptr unsafe.Pointer, message string, data gd.Array, session_id int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var message = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var data = mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var message = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(message)
+		var data = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(data)
 		var session_id = gd.UnsafeGet[gd.Int](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, message.String(), data, int(session_id))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -124,14 +118,11 @@ Override this method to be notified when a breakpoint line has been clicked in t
 */
 func (Go) _goto_script_line(impl func(ptr unsafe.Pointer, script gdclass.Script, line int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var script gdclass.Script
-		script[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var script = gdclass.Script{discreet.New[classdb.Script]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(script[0])
 		var line = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, script, int(line))
-		gc.End()
 	}
 }
 
@@ -140,11 +131,8 @@ Override this method to be notified when all breakpoints are cleared in the edit
 */
 func (Go) _breakpoints_cleared_in_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -153,15 +141,12 @@ Override this method to be notified when a breakpoint is set in the editor.
 */
 func (Go) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script gdclass.Script, line int, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var script gdclass.Script
-		script[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var script = gdclass.Script{discreet.New[classdb.Script]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(script[0])
 		var line = gd.UnsafeGet[gd.Int](p_args,1)
 		var enabled = gd.UnsafeGet[bool](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, script, int(line), enabled)
-		gc.End()
 	}
 }
 
@@ -169,8 +154,7 @@ impl(self, script, int(line), enabled)
 Returns the [EditorDebuggerSession] with the given [param id].
 */
 func (self Go) GetSession(id int) gdclass.EditorDebuggerSession {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.EditorDebuggerSession(class(self).GetSession(gc, gd.Int(id)))
+	return gdclass.EditorDebuggerSession(class(self).GetSession(gd.Int(id)))
 }
 
 /*
@@ -178,26 +162,16 @@ Returns an array of [EditorDebuggerSession] currently available to this debugger
 [b]Note:[/b] Sessions in the array may be inactive, check their state via [method EditorDebuggerSession.is_active].
 */
 func (self Go) GetSessions() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Array(class(self).GetSessions(gc))
+	return gd.Array(class(self).GetSessions())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorDebuggerPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorDebuggerPlugin"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorDebuggerPlugin"))
+	return Go{classdb.EditorDebuggerPlugin(object)}
 }
 
 /*
@@ -205,12 +179,9 @@ Override this method to be notified whenever a new [EditorDebuggerSession] is cr
 */
 func (class) _setup_session(impl func(ptr unsafe.Pointer, session_id gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var session_id = gd.UnsafeGet[gd.Int](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, session_id)
-		ctx.End()
 	}
 }
 
@@ -219,13 +190,10 @@ Override this method to enable receiving messages from the debugger. If [param c
 */
 func (class) _has_capture(impl func(ptr unsafe.Pointer, capture gd.String) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var capture = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var capture = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, capture)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -234,15 +202,12 @@ Override this method to process incoming messages. The [param session_id] is the
 */
 func (class) _capture(impl func(ptr unsafe.Pointer, message gd.String, data gd.Array, session_id gd.Int) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var message = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var data = mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var message = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var data = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
 		var session_id = gd.UnsafeGet[gd.Int](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, message, data, session_id)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -251,14 +216,11 @@ Override this method to be notified when a breakpoint line has been clicked in t
 */
 func (class) _goto_script_line(impl func(ptr unsafe.Pointer, script gdclass.Script, line gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var script gdclass.Script
-		script[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var script = gdclass.Script{discreet.New[classdb.Script]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(script[0])
 		var line = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, script, line)
-		ctx.End()
 	}
 }
 
@@ -267,11 +229,8 @@ Override this method to be notified when all breakpoints are cleared in the edit
 */
 func (class) _breakpoints_cleared_in_tree(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -280,15 +239,12 @@ Override this method to be notified when a breakpoint is set in the editor.
 */
 func (class) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script gdclass.Script, line gd.Int, enabled bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var script gdclass.Script
-		script[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var script = gdclass.Script{discreet.New[classdb.Script]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(script[0])
 		var line = gd.UnsafeGet[gd.Int](p_args,1)
 		var enabled = gd.UnsafeGet[bool](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, script, line, enabled)
-		ctx.End()
 	}
 }
 
@@ -296,14 +252,12 @@ impl(self, script, line, enabled)
 Returns the [EditorDebuggerSession] with the given [param id].
 */
 //go:nosplit
-func (self class) GetSession(ctx gd.Lifetime, id gd.Int) gdclass.EditorDebuggerSession {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSession(id gd.Int) gdclass.EditorDebuggerSession {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorDebuggerPlugin.Bind_get_session, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.EditorDebuggerSession
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_session, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.EditorDebuggerSession{classdb.EditorDebuggerSession(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -312,12 +266,11 @@ Returns an array of [EditorDebuggerSession] currently available to this debugger
 [b]Note:[/b] Sessions in the array may be inactive, check their state via [method EditorDebuggerSession.is_active].
 */
 //go:nosplit
-func (self class) GetSessions(ctx gd.Lifetime) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSessions() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorDebuggerPlugin.Bind_get_sessions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_sessions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -349,4 +302,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorDebuggerPlugin", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorDebuggerPlugin", func(ptr gd.Object) any { return classdb.EditorDebuggerPlugin(ptr) })}

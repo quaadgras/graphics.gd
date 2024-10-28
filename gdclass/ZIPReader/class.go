@@ -2,7 +2,7 @@ package ZIPReader
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class implements a reader that can extract the content of individual files inside a zip archive.
@@ -34,15 +34,13 @@ type Go [1]classdb.ZIPReader
 Opens the zip archive at the given [param path] and reads its file index.
 */
 func (self Go) Open(path string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Open(gc.String(path)))
+	return gd.Error(class(self).Open(gd.NewString(path)))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
 func (self Go) Close() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Close())
 }
 
@@ -51,8 +49,7 @@ Returns the list of names of all files in the loaded archive.
 Must be called after [method open].
 */
 func (self Go) GetFiles() []string {
-	gc := gd.GarbageCollector(); _ = gc
-	return []string(class(self).GetFiles(gc).Strings(gc))
+	return []string(class(self).GetFiles().Strings())
 }
 
 /*
@@ -60,8 +57,7 @@ Loads the whole content of a file in the loaded zip archive into memory and retu
 Must be called after [method open].
 */
 func (self Go) ReadFile(path string) []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).ReadFile(gc, gc.String(path), true).Bytes())
+	return []byte(class(self).ReadFile(gd.NewString(path), true).Bytes())
 }
 
 /*
@@ -69,26 +65,16 @@ Returns [code]true[/code] if the file exists in the loaded zip archive.
 Must be called after [method open].
 */
 func (self Go) FileExists(path string) bool {
-	gc := gd.GarbageCollector(); _ = gc
-	return bool(class(self).FileExists(gc.String(path), true))
+	return bool(class(self).FileExists(gd.NewString(path), true))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.ZIPReader
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ZIPReader"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ZIPReader"))
+	return Go{classdb.ZIPReader(object)}
 }
 
 /*
@@ -96,11 +82,10 @@ Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
 func (self class) Open(path gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ZIPReader.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -110,10 +95,9 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ZIPReader.Bind_close, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_close, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -123,12 +107,11 @@ Returns the list of names of all files in the loaded archive.
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) GetFiles(ctx gd.Lifetime) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetFiles() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ZIPReader.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -137,14 +120,13 @@ Loads the whole content of a file in the loaded zip archive into memory and retu
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) ReadFile(ctx gd.Lifetime, path gd.String, case_sensitive bool) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) ReadFile(path gd.String, case_sensitive bool) gd.PackedByteArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, case_sensitive)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ZIPReader.Bind_read_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_read_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -154,12 +136,11 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) FileExists(path gd.String, case_sensitive bool) bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	callframe.Arg(frame, case_sensitive)
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ZIPReader.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -180,4 +161,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("ZIPReader", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ZIPReader", func(ptr gd.Object) any { return classdb.ZIPReader(ptr) })}

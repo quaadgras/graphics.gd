@@ -2,7 +2,7 @@ package EditorInspector
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This is the control that implements property editing in the editor's Settings dialogs, the Inspector dock, etc. To get the [EditorInspector] used in the editor's Inspector dock, use [method EditorInterface.get_inspector].
@@ -34,46 +34,34 @@ type Go [1]classdb.EditorInspector
 Gets the path of the currently selected property.
 */
 func (self Go) GetSelectedPath() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetSelectedPath(gc).String())
+	return string(class(self).GetSelectedPath().String())
 }
 
 /*
 Returns the object currently selected in this inspector.
 */
 func (self Go) GetEditedObject() gd.Object {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Object(class(self).GetEditedObject(gc))
+	return gd.Object(class(self).GetEditedObject())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorInspector
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorInspector"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorInspector"))
+	return Go{classdb.EditorInspector(object)}
 }
 
 /*
 Gets the path of the currently selected property.
 */
 //go:nosplit
-func (self class) GetSelectedPath(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSelectedPath() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorInspector.Bind_get_selected_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_selected_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -81,67 +69,56 @@ func (self class) GetSelectedPath(ctx gd.Lifetime) gd.String {
 Returns the object currently selected in this inspector.
 */
 //go:nosplit
-func (self class) GetEditedObject(ctx gd.Lifetime) gd.Object {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetEditedObject() gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorInspector.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gd.Object
-	ret.SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
 	frame.Free()
 	return ret
 }
 func (self Go) OnPropertySelected(cb func(property string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("property_selected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnPropertyKeyed(cb func(property string, value gd.Variant, advance bool)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("property_keyed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnPropertyDeleted(cb func(property string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("property_deleted"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnResourceSelected(cb func(resource gdclass.Resource, path string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("resource_selected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnObjectIdSelected(cb func(id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("object_id_selected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnPropertyEdited(cb func(property string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("property_edited"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnPropertyToggled(cb func(property string, checked bool)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("property_toggled"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnEditedObjectChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("edited_object_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnRestartRequested(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("restart_requested"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), 0)
 }
 
 
@@ -169,4 +146,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsScrollContainer(), name)
 	}
 }
-func init() {classdb.Register("EditorInspector", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorInspector", func(ptr gd.Object) any { return classdb.EditorInspector(ptr) })}

@@ -2,7 +2,7 @@ package MainLoop
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [MainLoop] is the abstract base class for a Godot project's game loop. It is inherited by [SceneTree], which is the default game loop implementation used in Godot projects, though it is also possible to write and use one's own [MainLoop] subclass instead of the scene tree.
@@ -89,11 +89,8 @@ Called once during initialization.
 */
 func (Go) _initialize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -103,13 +100,10 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 */
 func (Go) _physics_process(impl func(ptr unsafe.Pointer, delta float64) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, float64(delta))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -119,13 +113,10 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 */
 func (Go) _process(impl func(ptr unsafe.Pointer, delta float64) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, float64(delta))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -134,11 +125,8 @@ Called before the program exits.
 */
 func (Go) _finalize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -146,18 +134,9 @@ type GD = class
 type class [1]classdb.MainLoop
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MainLoop"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MainLoop"))
+	return Go{classdb.MainLoop(object)}
 }
 
 /*
@@ -165,11 +144,8 @@ Called once during initialization.
 */
 func (class) _initialize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -179,13 +155,10 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 */
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -195,13 +168,10 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 */
 func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var delta = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -210,17 +180,13 @@ Called before the program exits.
 */
 func (class) _finalize(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
 func (self Go) OnOnRequestPermissionsResult(cb func(permission string, granted bool)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("on_request_permissions_result"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("on_request_permissions_result"), gd.NewCallable(cb), 0)
 }
 
 
@@ -246,4 +212,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("MainLoop", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MainLoop", func(ptr gd.Object) any { return classdb.MainLoop(ptr) })}

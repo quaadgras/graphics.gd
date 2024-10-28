@@ -6,127 +6,128 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
-
-	"grow.graphics/gd/internal/mmm"
+	"grow.graphics/gd/internal/discreet"
 )
 
-type String mmm.Pointer[API, String, uintptr]
-
-func (s String) StringName(ctx Lifetime) StringName {
+func (s String) StringName() StringName {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(s))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(s).typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
+	callframe.Arg(frame, discreet.Get(s))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	Global.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return mmm.New[StringName](ctx.Lifetime, ctx.API, raw)
+	return discreet.New[StringName](raw)
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
-func (s String) Copy(ctx Lifetime) String {
+func (s String) Copy() String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(s))
-	var ret = callframe.Ret[uintptr](frame)
-	ctx.API.typeset.creation.String[1](ret.Uintptr(), frame.Array(0))
+	callframe.Arg(frame, discreet.Get(s))
+	var ret = callframe.Ret[[1]uintptr](frame)
+	Global.typeset.creation.String[1](ret.Uintptr(), frame.Array(0))
 	var raw = ret.Get()
 	frame.Free()
-	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
+	return discreet.New[String](raw)
 }
 
 func (s String) Free() {
+	ptr, ok := discreet.End(s)
+	if !ok {
+		return
+	}
 	var frame = callframe.New()
-	mmm.API(s).typeset.destruct.String(callframe.Arg(frame, mmm.End(s)).Uintptr())
+	Global.typeset.destruct.String(callframe.Arg(frame, ptr).Uintptr())
 	frame.Free()
 }
 
-func (s *String) Append(ctx Lifetime, other String) {
-	modified := mmm.API(*s).Strings.Append(ctx, *s, other)
-	mmm.End(*s)
+func (s *String) Append(other String) {
+	modified := Global.Strings.Append(*s, other)
+	discreet.End(*s)
 	*s = modified
 }
 
 func (s String) UnsafePointer() unsafe.Pointer {
-	return mmm.API(s).Strings.UnsafePointer(s)
+	return Global.Strings.UnsafePointer(s)
 }
 
 func (s String) Len() int { return int(s.Length()) }
 func (s String) Cap() int { return int(s.Length()) }
 
 func (s String) String() string {
-	if mmm.Get(s) == 0 {
+	if discreet.Get(s) == ([1]uintptr{}) {
 		return ""
 	}
-	return mmm.API(s).Strings.Get(s)
+	return Global.Strings.Get(s)
 }
 
-func (Godot *API) StringFromStringName(ctx Lifetime, s StringName) String {
+func (Godot *API) StringFromStringName(s StringName) String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(s))
-	var r_ret = callframe.Ret[uintptr](frame)
+	callframe.Arg(frame, discreet.Get(s))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Godot.typeset.creation.String[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
+	return discreet.New[String](raw)
 }
 
-func (Godot *API) StringFromNodePath(ctx Lifetime, s NodePath) String {
+func (Godot *API) StringFromNodePath(s NodePath) String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(s))
-	var r_ret = callframe.Ret[uintptr](frame)
+	callframe.Arg(frame, discreet.Get(s))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Godot.typeset.creation.String[3](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return mmm.New[String](ctx.Lifetime, ctx.API, raw)
+	return discreet.New[String](raw)
 }
 
-type StringName mmm.Pointer[API, StringName, uintptr]
-
-func (Godot *API) StringNameFromString(ctx Lifetime, s String) StringName {
+func NewStringNameFromString(s String) StringName {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(s))
-	var r_ret = callframe.Ret[uintptr](frame)
-	Godot.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
+	callframe.Arg(frame, discreet.Get(s))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	Global.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return mmm.New[StringName](ctx.Lifetime, ctx.API, raw)
+	return discreet.New[StringName](raw)
 }
 
 func (s StringName) Free() {
+	ptr, ok := discreet.End(s)
+	if !ok {
+		return
+	}
 	var frame = callframe.New()
-	mmm.API(s).typeset.destruct.StringName(callframe.Arg(frame, mmm.End(s)).Uintptr())
+	Global.typeset.destruct.StringName(callframe.Arg(frame, ptr).Uintptr())
 	frame.Free()
 }
 
 func (s StringName) String() string {
-	if mmm.Get(s) == 0 {
+	if discreet.Get(s) == ([1]uintptr{}) {
 		return ""
 	}
-	ctx := NewLifetime(mmm.API(s))
-	var tmp = mmm.API(s).StringFromStringName(ctx, s)
-	defer ctx.End()
+	var tmp = Global.StringFromStringName(s)
 	return tmp.String()
 }
 
-type NodePath mmm.Pointer[API, NodePath, uintptr]
-
-func (s String) NodePath(ctx Lifetime) NodePath {
+func (s String) NodePath() NodePath {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(s))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(s).typeset.creation.NodePath[2](r_ret.Uintptr(), frame.Array(0))
+	callframe.Arg(frame, discreet.Get(s))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	Global.typeset.creation.NodePath[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return mmm.New[NodePath](ctx.Lifetime, ctx.API, raw)
+	return discreet.New[NodePath](raw)
 }
 
 func (n NodePath) String() string {
-	tmp := NewLifetime(mmm.API(n))
-	defer tmp.End()
-	return tmp.API.StringFromNodePath(tmp, n).String()
+	return Global.StringFromNodePath(n).String()
 }
 
 func (n NodePath) Free() {
+	ptr, ok := discreet.End(n)
+	if !ok {
+		return
+	}
 	var frame = callframe.New()
-	mmm.API(n).typeset.destruct.NodePath(callframe.Arg(frame, mmm.End(n)).Uintptr())
+	Global.typeset.destruct.NodePath(callframe.Arg(frame, ptr).Uintptr())
 	frame.Free()
 }

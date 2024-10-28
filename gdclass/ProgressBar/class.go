@@ -2,7 +2,7 @@ package ProgressBar
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A control used for visual representation of a percentage. Shows fill percentage from right to left.
@@ -28,132 +28,107 @@ type GD = class
 type class [1]classdb.ProgressBar
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ProgressBar"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ProgressBar"))
+	return Go{classdb.ProgressBar(object)}
 }
 
 func (self Go) FillMode() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetFillMode()))
 }
 
 func (self Go) SetFillMode(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFillMode(gd.Int(value))
 }
 
 func (self Go) ShowPercentage() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsPercentageShown())
 }
 
 func (self Go) SetShowPercentage(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetShowPercentage(value)
 }
 
 func (self Go) Indeterminate() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsIndeterminate())
 }
 
 func (self Go) SetIndeterminate(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetIndeterminate(value)
 }
 
 func (self Go) EditorPreviewIndeterminate() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsEditorPreviewIndeterminateEnabled())
 }
 
 func (self Go) SetEditorPreviewIndeterminate(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEditorPreviewIndeterminate(value)
 }
 
 //go:nosplit
 func (self class) SetFillMode(mode gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_set_fill_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_set_fill_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFillMode() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_get_fill_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_get_fill_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetShowPercentage(visible bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_set_show_percentage, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_set_show_percentage, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsPercentageShown() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_is_percentage_shown, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_is_percentage_shown, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetIndeterminate(indeterminate bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, indeterminate)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_set_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_set_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsIndeterminate() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_is_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_is_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetEditorPreviewIndeterminate(preview_indeterminate bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, preview_indeterminate)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_set_editor_preview_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_set_editor_preview_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsEditorPreviewIndeterminateEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ProgressBar.Bind_is_editor_preview_indeterminate_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_is_editor_preview_indeterminate_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -180,7 +155,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRange(), name)
 	}
 }
-func init() {classdb.Register("ProgressBar", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ProgressBar", func(ptr gd.Object) any { return classdb.ProgressBar(ptr) })}
 type FillMode = classdb.ProgressBarFillMode
 
 const (

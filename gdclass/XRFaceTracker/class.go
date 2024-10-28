@@ -2,7 +2,7 @@ package XRFaceTracker
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 An instance of this object represents a tracked face and its corresponding blend shapes. The blend shapes come from the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] standard, and contain extended details and visuals for each blend shape. Additionally the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Tracking Standard Comparison[/url] page documents the relationship between Unified Expressions and other standards.
@@ -26,7 +26,6 @@ type Go [1]classdb.XRFaceTracker
 Returns the requested face blend shape weight.
 */
 func (self Go) GetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetBlendShape(blend_shape)))
 }
 
@@ -34,7 +33,6 @@ func (self Go) GetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry) f
 Sets a face blend shape weight.
 */
 func (self Go) SetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry, weight float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBlendShape(blend_shape, gd.Float(weight))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -42,28 +40,17 @@ type GD = class
 type class [1]classdb.XRFaceTracker
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("XRFaceTracker"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRFaceTracker"))
+	return Go{classdb.XRFaceTracker(object)}
 }
 
 func (self Go) BlendShapes() []float32 {
-	gc := gd.GarbageCollector(); _ = gc
-		return []float32(class(self).GetBlendShapes(gc).AsSlice())
+		return []float32(class(self).GetBlendShapes().AsSlice())
 }
 
 func (self Go) SetBlendShapes(value []float32) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetBlendShapes(gc.PackedFloat32Slice(value))
+	class(self).SetBlendShapes(gd.NewPackedFloat32Slice(value))
 }
 
 /*
@@ -71,11 +58,10 @@ Returns the requested face blend shape weight.
 */
 //go:nosplit
 func (self class) GetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceTracker.Bind_get_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -85,31 +71,28 @@ Sets a face blend shape weight.
 */
 //go:nosplit
 func (self class) SetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry, weight gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape)
 	callframe.Arg(frame, weight)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceTracker.Bind_set_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetBlendShapes(ctx gd.Lifetime) gd.PackedFloat32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetBlendShapes() gd.PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceTracker.Bind_get_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedFloat32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBlendShapes(weights gd.PackedFloat32Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(weights))
+	callframe.Arg(frame, discreet.Get(weights))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) AsXRFaceTracker() GD { return *((*GD)(unsafe.Pointer(&self))) }
@@ -130,7 +113,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsXRTracker(), name)
 	}
 }
-func init() {classdb.Register("XRFaceTracker", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("XRFaceTracker", func(ptr gd.Object) any { return classdb.XRFaceTracker(ptr) })}
 type BlendShapeEntry = classdb.XRFaceTrackerBlendShapeEntry
 
 const (

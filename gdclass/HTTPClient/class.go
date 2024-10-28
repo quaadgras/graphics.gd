@@ -2,7 +2,7 @@ package HTTPClient
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
@@ -34,8 +34,7 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Go) ConnectToHost(host string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).ConnectToHost(gc.String(host), gd.Int(-1), ([1]gdclass.TLSOptions{}[0])))
+	return gd.Error(class(self).ConnectToHost(gd.NewString(host), gd.Int(-1), ([1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -45,8 +44,7 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 func (self Go) RequestRaw(method classdb.HTTPClientMethod, url string, headers []string, body []byte) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).RequestRaw(method, gc.String(url), gc.PackedStringSlice(headers), gc.PackedByteSlice(body)))
+	return gd.Error(class(self).RequestRaw(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewPackedByteSlice(body)))
 }
 
 /*
@@ -71,15 +69,13 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 func (self Go) Request(method classdb.HTTPClientMethod, url string, headers []string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Request(method, gc.String(url), gc.PackedStringSlice(headers), gc.String("")))
+	return gd.Error(class(self).Request(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewString("")))
 }
 
 /*
 Closes the current connection, allowing reuse of this [HTTPClient].
 */
 func (self Go) Close() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Close()
 }
 
@@ -87,7 +83,6 @@ func (self Go) Close() {
 If [code]true[/code], this [HTTPClient] has a response available.
 */
 func (self Go) HasResponse() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasResponse())
 }
 
@@ -95,7 +90,6 @@ func (self Go) HasResponse() bool {
 If [code]true[/code], this [HTTPClient] has a response that is chunked.
 */
 func (self Go) IsResponseChunked() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsResponseChunked())
 }
 
@@ -103,7 +97,6 @@ func (self Go) IsResponseChunked() bool {
 Returns the response's HTTP status code.
 */
 func (self Go) GetResponseCode() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetResponseCode()))
 }
 
@@ -111,8 +104,7 @@ func (self Go) GetResponseCode() int {
 Returns the response headers.
 */
 func (self Go) GetResponseHeaders() []string {
-	gc := gd.GarbageCollector(); _ = gc
-	return []string(class(self).GetResponseHeaders(gc).Strings(gc))
+	return []string(class(self).GetResponseHeaders().Strings())
 }
 
 /*
@@ -126,8 +118,7 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 [/codeblock]
 */
 func (self Go) GetResponseHeadersAsDictionary() gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Dictionary(class(self).GetResponseHeadersAsDictionary(gc))
+	return gd.Dictionary(class(self).GetResponseHeadersAsDictionary())
 }
 
 /*
@@ -136,7 +127,6 @@ Returns the response's body length.
 [b]Note:[/b] This function always returns [code]-1[/code] on the Web platform due to browsers limitations.
 */
 func (self Go) GetResponseBodyLength() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetResponseBodyLength()))
 }
 
@@ -144,15 +134,13 @@ func (self Go) GetResponseBodyLength() int {
 Reads one chunk from the response.
 */
 func (self Go) ReadResponseBodyChunk() []byte {
-	gc := gd.GarbageCollector(); _ = gc
-	return []byte(class(self).ReadResponseBodyChunk(gc).Bytes())
+	return []byte(class(self).ReadResponseBodyChunk().Bytes())
 }
 
 /*
 Returns a [enum Status] constant. Need to call [method poll] in order to get status updates.
 */
 func (self Go) GetStatus() classdb.HTTPClientStatus {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.HTTPClientStatus(class(self).GetStatus())
 }
 
@@ -160,7 +148,6 @@ func (self Go) GetStatus() classdb.HTTPClientStatus {
 This needs to be called in order to have any request processed. Check results with [method get_status].
 */
 func (self Go) Poll() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Poll())
 }
 
@@ -169,8 +156,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Go) SetHttpProxy(host string, port int) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetHttpProxy(gc.String(host), gd.Int(port))
+	class(self).SetHttpProxy(gd.NewString(host), gd.Int(port))
 }
 
 /*
@@ -178,8 +164,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Go) SetHttpsProxy(host string, port int) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetHttpsProxy(gc.String(host), gd.Int(port))
+	class(self).SetHttpsProxy(gd.NewString(host), gd.Int(port))
 }
 
 /*
@@ -216,55 +201,39 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/codeblocks]
 */
 func (self Go) QueryStringFromDict(fields gd.Dictionary) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).QueryStringFromDict(gc, fields).String())
+	return string(class(self).QueryStringFromDict(fields).String())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.HTTPClient
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("HTTPClient"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HTTPClient"))
+	return Go{classdb.HTTPClient(object)}
 }
 
 func (self Go) BlockingModeEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsBlockingModeEnabled())
 }
 
 func (self Go) SetBlockingModeEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBlockingMode(value)
 }
 
 func (self Go) Connection() gdclass.StreamPeer {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.StreamPeer(class(self).GetConnection(gc))
+		return gdclass.StreamPeer(class(self).GetConnection())
 }
 
 func (self Go) SetConnection(value gdclass.StreamPeer) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetConnection(value)
 }
 
 func (self Go) ReadChunkSize() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetReadChunkSize()))
 }
 
 func (self Go) SetReadChunkSize(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetReadChunkSize(gd.Int(value))
 }
 
@@ -274,34 +243,30 @@ If no [param port] is specified (or [code]-1[/code] is used), it is automaticall
 */
 //go:nosplit
 func (self class) ConnectToHost(host gd.String, port gd.Int, tls_options gdclass.TLSOptions) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	callframe.Arg(frame, port)
-	callframe.Arg(frame, mmm.Get(tls_options[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(tls_options[0])[0])
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetConnection(connection gdclass.StreamPeer)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(connection[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(connection[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_set_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetConnection(ctx gd.Lifetime) gdclass.StreamPeer {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetConnection() gdclass.StreamPeer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.StreamPeer
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.StreamPeer{classdb.StreamPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -313,14 +278,13 @@ Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
 func (self class) RequestRaw(method classdb.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.PackedByteArray) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, mmm.Get(url))
-	callframe.Arg(frame, mmm.Get(headers))
-	callframe.Arg(frame, mmm.Get(body))
+	callframe.Arg(frame, discreet.Get(url))
+	callframe.Arg(frame, discreet.Get(headers))
+	callframe.Arg(frame, discreet.Get(body))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -348,14 +312,13 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 */
 //go:nosplit
 func (self class) Request(method classdb.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
-	callframe.Arg(frame, mmm.Get(url))
-	callframe.Arg(frame, mmm.Get(headers))
-	callframe.Arg(frame, mmm.Get(body))
+	callframe.Arg(frame, discreet.Get(url))
+	callframe.Arg(frame, discreet.Get(headers))
+	callframe.Arg(frame, discreet.Get(body))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -365,10 +328,9 @@ Closes the current connection, allowing reuse of this [HTTPClient].
 */
 //go:nosplit
 func (self class) Close()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_close, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_close, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -376,10 +338,9 @@ If [code]true[/code], this [HTTPClient] has a response available.
 */
 //go:nosplit
 func (self class) HasResponse() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_has_response, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_has_response, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -389,10 +350,9 @@ If [code]true[/code], this [HTTPClient] has a response that is chunked.
 */
 //go:nosplit
 func (self class) IsResponseChunked() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_is_response_chunked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_is_response_chunked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -402,10 +362,9 @@ Returns the response's HTTP status code.
 */
 //go:nosplit
 func (self class) GetResponseCode() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_response_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -414,12 +373,11 @@ func (self class) GetResponseCode() gd.Int {
 Returns the response headers.
 */
 //go:nosplit
-func (self class) GetResponseHeaders(ctx gd.Lifetime) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetResponseHeaders() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_response_headers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -434,12 +392,11 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetResponseHeadersAsDictionary(ctx gd.Lifetime) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetResponseHeadersAsDictionary() gd.Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_response_headers_as_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers_as_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -450,10 +407,9 @@ Returns the response's body length.
 */
 //go:nosplit
 func (self class) GetResponseBodyLength() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_response_body_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_body_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -462,49 +418,44 @@ func (self class) GetResponseBodyLength() gd.Int {
 Reads one chunk from the response.
 */
 //go:nosplit
-func (self class) ReadResponseBodyChunk(ctx gd.Lifetime) gd.PackedByteArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) ReadResponseBodyChunk() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_read_response_body_chunk, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedByteArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_read_response_body_chunk, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetReadChunkSize(bytes gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_set_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetReadChunkSize() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBlockingMode(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_set_blocking_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_blocking_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsBlockingModeEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_is_blocking_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_is_blocking_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -514,10 +465,9 @@ Returns a [enum Status] constant. Need to call [method poll] in order to get sta
 */
 //go:nosplit
 func (self class) GetStatus() classdb.HTTPClientStatus {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.HTTPClientStatus](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -527,10 +477,9 @@ This needs to be called in order to have any request processed. Check results wi
 */
 //go:nosplit
 func (self class) Poll() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -541,12 +490,11 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpProxy(host gd.String, port gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	callframe.Arg(frame, port)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -555,12 +503,11 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpsProxy(host gd.String, port gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(host))
+	callframe.Arg(frame, discreet.Get(host))
 	callframe.Arg(frame, port)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -597,13 +544,12 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) QueryStringFromDict(ctx gd.Lifetime, fields gd.Dictionary) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) QueryStringFromDict(fields gd.Dictionary) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(fields))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.HTTPClient.Bind_query_string_from_dict, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	callframe.Arg(frame, discreet.Get(fields))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_query_string_from_dict, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -623,7 +569,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("HTTPClient", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("HTTPClient", func(ptr gd.Object) any { return classdb.HTTPClient(ptr) })}
 type Method = classdb.HTTPClientMethod
 
 const (

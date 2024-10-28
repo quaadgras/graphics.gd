@@ -2,7 +2,7 @@ package AnimationNodeOneShot
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A resource to add to an [AnimationNodeBlendTree]. This animation node will execute a sub-animation and return once it finishes. Blend times for fading in and out can be customized, as well as filters.
@@ -72,279 +72,232 @@ type GD = class
 type class [1]classdb.AnimationNodeOneShot
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("AnimationNodeOneShot"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeOneShot"))
+	return Go{classdb.AnimationNodeOneShot(object)}
 }
 
 func (self Go) MixMode() classdb.AnimationNodeOneShotMixMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.AnimationNodeOneShotMixMode(class(self).GetMixMode())
 }
 
 func (self Go) SetMixMode(value classdb.AnimationNodeOneShotMixMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMixMode(value)
 }
 
 func (self Go) FadeinTime() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetFadeinTime()))
 }
 
 func (self Go) SetFadeinTime(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFadeinTime(gd.Float(value))
 }
 
 func (self Go) FadeinCurve() gdclass.Curve {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Curve(class(self).GetFadeinCurve(gc))
+		return gdclass.Curve(class(self).GetFadeinCurve())
 }
 
 func (self Go) SetFadeinCurve(value gdclass.Curve) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFadeinCurve(value)
 }
 
 func (self Go) FadeoutTime() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetFadeoutTime()))
 }
 
 func (self Go) SetFadeoutTime(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFadeoutTime(gd.Float(value))
 }
 
 func (self Go) FadeoutCurve() gdclass.Curve {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Curve(class(self).GetFadeoutCurve(gc))
+		return gdclass.Curve(class(self).GetFadeoutCurve())
 }
 
 func (self Go) SetFadeoutCurve(value gdclass.Curve) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFadeoutCurve(value)
 }
 
 func (self Go) BreakLoopAtEnd() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsLoopBrokenAtEnd())
 }
 
 func (self Go) SetBreakLoopAtEnd(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetBreakLoopAtEnd(value)
 }
 
 func (self Go) Autorestart() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).HasAutorestart())
 }
 
 func (self Go) SetAutorestart(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAutorestart(value)
 }
 
 func (self Go) AutorestartDelay() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetAutorestartDelay()))
 }
 
 func (self Go) SetAutorestartDelay(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAutorestartDelay(gd.Float(value))
 }
 
 func (self Go) AutorestartRandomDelay() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetAutorestartRandomDelay()))
 }
 
 func (self Go) SetAutorestartRandomDelay(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAutorestartRandomDelay(gd.Float(value))
 }
 
 //go:nosplit
 func (self class) SetFadeinTime(time gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_fadein_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadein_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFadeinTime() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_fadein_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFadeinCurve(curve gdclass.Curve)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(curve[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(curve[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_fadein_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadein_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetFadeinCurve(ctx gd.Lifetime) gdclass.Curve {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetFadeinCurve() gdclass.Curve {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_fadein_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Curve
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFadeoutTime(time gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_fadeout_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadeout_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFadeoutTime() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_fadeout_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFadeoutCurve(curve gdclass.Curve)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(curve[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(curve[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_fadeout_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadeout_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetFadeoutCurve(ctx gd.Lifetime) gdclass.Curve {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetFadeoutCurve() gdclass.Curve {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_fadeout_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Curve
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetBreakLoopAtEnd(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_break_loop_at_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_break_loop_at_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsLoopBrokenAtEnd() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_is_loop_broken_at_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_is_loop_broken_at_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAutorestart(active bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_autorestart, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) HasAutorestart() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_has_autorestart, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_has_autorestart, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAutorestartDelay(time gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_autorestart_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAutorestartDelay() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_autorestart_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAutorestartRandomDelay(time gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_autorestart_random_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart_random_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAutorestartRandomDelay() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_autorestart_random_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_random_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMixMode(mode classdb.AnimationNodeOneShotMixMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_set_mix_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_set_mix_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMixMode() classdb.AnimationNodeOneShotMixMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.AnimationNodeOneShotMixMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AnimationNodeOneShot.Bind_get_mix_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_mix_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,7 +324,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsAnimationNodeSync(), name)
 	}
 }
-func init() {classdb.Register("AnimationNodeOneShot", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("AnimationNodeOneShot", func(ptr gd.Object) any { return classdb.AnimationNodeOneShot(ptr) })}
 type OneShotRequest = classdb.AnimationNodeOneShotOneShotRequest
 
 const (

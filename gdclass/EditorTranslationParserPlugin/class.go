@@ -2,7 +2,7 @@ package EditorTranslationParserPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [EditorTranslationParserPlugin] is invoked when a file is being parsed to extract strings that require translation. To define the parsing and string extraction logic, override the [method _parse_file] method in script.
@@ -110,7 +110,7 @@ To use [EditorTranslationParserPlugin], register it using the [method EditorPlug
 	// EditorTranslationParserPlugin methods that can be overridden by a [Class] that extends it.
 	type EditorTranslationParserPlugin interface {
 		//Override this method to define a custom parsing logic to extract the translatable strings.
-		ParseFile(path string, msgids gd.ArrayOf[gd.String], msgids_context_plural gd.ArrayOf[gd.Array]) 
+		ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array) 
 		//Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 		GetRecognizedExtensions() []string
 	}
@@ -121,16 +121,16 @@ type Go [1]classdb.EditorTranslationParserPlugin
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (Go) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd.ArrayOf[gd.String], msgids_context_plural gd.ArrayOf[gd.Array]) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Go) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd.Array, msgids_context_plural gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var msgids = gd.TypedArray[gd.String](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1)))
-		var msgids_context_plural = gd.TypedArray[gd.Array](mmm.Let[gd.Array](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2)))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
+		var msgids = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(msgids)
+		var msgids_context_plural = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,2))
+		defer discreet.End(msgids_context_plural)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, path.String(), msgids, msgids_context_plural)
-		gc.End()
 	}
 }
 
@@ -139,12 +139,13 @@ Gets the list of file extensions to associate with this parser, e.g. [code]["csv
 */
 func (Go) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -152,33 +153,21 @@ type GD = class
 type class [1]classdb.EditorTranslationParserPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorTranslationParserPlugin"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorTranslationParserPlugin"))
+	return Go{classdb.EditorTranslationParserPlugin(object)}
 }
 
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids gd.ArrayOf[gd.String], msgids_context_plural gd.ArrayOf[gd.Array]) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids gd.Array, msgids_context_plural gd.Array) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var msgids = gd.TypedArray[gd.String](mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1)))
-		var msgids_context_plural = gd.TypedArray[gd.Array](mmm.Let[gd.Array](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,2)))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var msgids = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,1))
+		var msgids_context_plural = discreet.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args,2))
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, path, msgids, msgids_context_plural)
-		ctx.End()
 	}
 }
 
@@ -187,12 +176,13 @@ Gets the list of file extensions to associate with this parser, e.g. [code]["csv
 */
 func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -216,4 +206,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorTranslationParserPlugin", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorTranslationParserPlugin", func(ptr gd.Object) any { return classdb.EditorTranslationParserPlugin(ptr) })}

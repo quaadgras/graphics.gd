@@ -2,7 +2,7 @@ package SliderJoint3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A physics joint that restricts the movement of a 3D physics body along an axis relative to another physics body. For example, Body A could be a [StaticBody3D] representing a piston base, while Body B could be a [RigidBody3D] representing the piston head, moving up and down.
@@ -27,7 +27,6 @@ type Go [1]classdb.SliderJoint3D
 Assigns [param value] to the given parameter (see [enum Param] constants).
 */
 func (self Go) SetParam(param classdb.SliderJoint3DParam, value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetParam(param, gd.Float(value))
 }
 
@@ -35,7 +34,6 @@ func (self Go) SetParam(param classdb.SliderJoint3DParam, value float64) {
 Returns the value of the given parameter (see [enum Param] constants).
 */
 func (self Go) GetParam(param classdb.SliderJoint3DParam) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetParam(param)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -43,18 +41,9 @@ type GD = class
 type class [1]classdb.SliderJoint3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("SliderJoint3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SliderJoint3D"))
+	return Go{classdb.SliderJoint3D(object)}
 }
 
 /*
@@ -62,12 +51,11 @@ Assigns [param value] to the given parameter (see [enum Param] constants).
 */
 //go:nosplit
 func (self class) SetParam(param classdb.SliderJoint3DParam, value gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SliderJoint3D.Bind_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SliderJoint3D.Bind_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -75,11 +63,10 @@ Returns the value of the given parameter (see [enum Param] constants).
 */
 //go:nosplit
 func (self class) GetParam(param classdb.SliderJoint3DParam) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.SliderJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SliderJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -104,7 +91,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsJoint3D(), name)
 	}
 }
-func init() {classdb.Register("SliderJoint3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("SliderJoint3D", func(ptr gd.Object) any { return classdb.SliderJoint3D(ptr) })}
 type Param = classdb.SliderJoint3DParam
 
 const (

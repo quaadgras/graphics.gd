@@ -3,7 +3,7 @@ package NavigationMeshGenerator
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class is responsible for creating and clearing 3D navigation meshes used as [NavigationMesh] resources inside [NavigationRegion3D]. The [NavigationMeshGenerator] has very limited to no use for 2D as the navigation mesh baking process expects 3D node types and 3D source geometry to parse.
@@ -26,8 +26,7 @@ The finalized navigation mesh is then returned and stored inside the [Navigation
 var self gdclass.NavigationMeshGenerator
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.NavigationMeshGenerator)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.NavigationMeshGenerator)
 	self = *(*gdclass.NavigationMeshGenerator)(unsafe.Pointer(&obj))
 }
 
@@ -35,7 +34,6 @@ func singleton() {
 Bakes the [param navigation_mesh] with source geometry collected starting from the [param root_node].
 */
 func Bake(navigation_mesh gdclass.NavigationMesh, root_node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).Bake(navigation_mesh, root_node)
 }
@@ -44,7 +42,6 @@ func Bake(navigation_mesh gdclass.NavigationMesh, root_node gdclass.Node) {
 Removes all polygons and vertices from the provided [param navigation_mesh] resource.
 */
 func Clear(navigation_mesh gdclass.NavigationMesh) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).Clear(navigation_mesh)
 }
@@ -55,7 +52,6 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
 func ParseSourceGeometryData(navigation_mesh gdclass.NavigationMesh, source_geometry_data gdclass.NavigationMeshSourceGeometryData3D, root_node gdclass.Node) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, ([1]gd.Callable{}[0]))
 }
@@ -64,7 +60,6 @@ func ParseSourceGeometryData(navigation_mesh gdclass.NavigationMesh, source_geom
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
 func BakeFromSourceGeometryData(navigation_mesh gdclass.NavigationMesh, source_geometry_data gdclass.NavigationMeshSourceGeometryData3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, ([1]gd.Callable{}[0]))
 }
@@ -73,21 +68,16 @@ func GD() class { once.Do(singleton); return self }
 type class [1]classdb.NavigationMeshGenerator
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
 /*
 Bakes the [param navigation_mesh] with source geometry collected starting from the [param root_node].
 */
 //go:nosplit
 func (self class) Bake(navigation_mesh gdclass.NavigationMesh, root_node gdclass.Node)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(navigation_mesh[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(root_node[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(navigation_mesh[0])[0])
+	callframe.Arg(frame, discreet.Get(root_node[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationMeshGenerator.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -95,11 +85,10 @@ Removes all polygons and vertices from the provided [param navigation_mesh] reso
 */
 //go:nosplit
 func (self class) Clear(navigation_mesh gdclass.NavigationMesh)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(navigation_mesh[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(navigation_mesh[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationMeshGenerator.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -109,14 +98,13 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 //go:nosplit
 func (self class) ParseSourceGeometryData(navigation_mesh gdclass.NavigationMesh, source_geometry_data gdclass.NavigationMeshSourceGeometryData3D, root_node gdclass.Node, callback gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(navigation_mesh[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(source_geometry_data[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(root_node[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(callback))
+	callframe.Arg(frame, discreet.Get(navigation_mesh[0])[0])
+	callframe.Arg(frame, discreet.Get(source_geometry_data[0])[0])
+	callframe.Arg(frame, discreet.Get(root_node[0])[0])
+	callframe.Arg(frame, discreet.Get(callback))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -124,13 +112,12 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 //go:nosplit
 func (self class) BakeFromSourceGeometryData(navigation_mesh gdclass.NavigationMesh, source_geometry_data gdclass.NavigationMeshSourceGeometryData3D, callback gd.Callable)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(navigation_mesh[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(source_geometry_data[0].AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(callback))
+	callframe.Arg(frame, discreet.Get(navigation_mesh[0])[0])
+	callframe.Arg(frame, discreet.Get(source_geometry_data[0])[0])
+	callframe.Arg(frame, discreet.Get(callback))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {
@@ -138,4 +125,4 @@ func (self class) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("NavigationMeshGenerator", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("NavigationMeshGenerator", func(ptr gd.Object) any { return classdb.NavigationMeshGenerator(ptr) })}

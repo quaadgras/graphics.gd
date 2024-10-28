@@ -2,7 +2,7 @@ package ENetPacketPeer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A PacketPeer implementation representing a peer of an [ENetConnection].
@@ -27,7 +27,6 @@ type Go [1]classdb.ENetPacketPeer
 Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 func (self Go) PeerDisconnect() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PeerDisconnect(gd.Int(0))
 }
 
@@ -35,7 +34,6 @@ func (self Go) PeerDisconnect() {
 Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 func (self Go) PeerDisconnectLater() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PeerDisconnectLater(gd.Int(0))
 }
 
@@ -43,7 +41,6 @@ func (self Go) PeerDisconnectLater() {
 Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
 */
 func (self Go) PeerDisconnectNow() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PeerDisconnectNow(gd.Int(0))
 }
 
@@ -51,7 +48,6 @@ func (self Go) PeerDisconnectNow() {
 Sends a ping request to a peer. ENet automatically pings all connected peers at regular intervals, however, this function may be called to ensure more frequent ping requests.
 */
 func (self Go) Ping() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Ping()
 }
 
@@ -59,7 +55,6 @@ func (self Go) Ping() {
 Sets the [param ping_interval] in milliseconds at which pings will be sent to a peer. Pings are used both to monitor the liveness of the connection and also to dynamically adjust the throttle during periods of low traffic so that the throttle has reasonable responsiveness during traffic spikes. The default ping interval is [code]500[/code] milliseconds.
 */
 func (self Go) PingInterval(ping_interval int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).PingInterval(gd.Int(ping_interval))
 }
 
@@ -67,7 +62,6 @@ func (self Go) PingInterval(ping_interval int) {
 Forcefully disconnects a peer. The foreign host represented by the peer is not notified of the disconnection and will timeout on its connection to the local host.
 */
 func (self Go) Reset() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Reset()
 }
 
@@ -75,8 +69,7 @@ func (self Go) Reset() {
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Go) Send(channel int, packet []byte, flags int) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Send(gd.Int(channel), gc.PackedByteSlice(packet), gd.Int(flags)))
+	return gd.Error(class(self).Send(gd.Int(channel), gd.NewPackedByteSlice(packet), gd.Int(flags)))
 }
 
 /*
@@ -87,7 +80,6 @@ When the throttle has a value of [code]0[/code], all unreliable packets are drop
 Intermediate values for the throttle represent intermediate probabilities between 0% and 100% of unreliable packets being sent. The bandwidth limits of the local and foreign hosts are taken into account to determine a sensible limit for the throttle probability above which it should not raise even in the best of conditions.
 */
 func (self Go) ThrottleConfigure(interval int, acceleration int, deceleration int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ThrottleConfigure(gd.Int(interval), gd.Int(acceleration), gd.Int(deceleration))
 }
 
@@ -96,7 +88,6 @@ Sets the timeout parameters for a peer. The timeout parameters control how and w
 The [param timeout] is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached [param timeout_min]. The [param timeout_max] parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
 */
 func (self Go) SetTimeout(timeout int, timeout_min int, timeout_max int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTimeout(gd.Int(timeout), gd.Int(timeout_min), gd.Int(timeout_max))
 }
 
@@ -104,15 +95,13 @@ func (self Go) SetTimeout(timeout int, timeout_min int, timeout_max int) {
 Returns the IP address of this peer.
 */
 func (self Go) GetRemoteAddress() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetRemoteAddress(gc).String())
+	return string(class(self).GetRemoteAddress().String())
 }
 
 /*
 Returns the remote port of this peer.
 */
 func (self Go) GetRemotePort() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetRemotePort()))
 }
 
@@ -120,7 +109,6 @@ func (self Go) GetRemotePort() int {
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 func (self Go) GetStatistic(statistic classdb.ENetPacketPeerPeerStatistic) float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetStatistic(statistic)))
 }
 
@@ -128,7 +116,6 @@ func (self Go) GetStatistic(statistic classdb.ENetPacketPeerPeerStatistic) float
 Returns the current peer state. See [enum PeerState].
 */
 func (self Go) GetState() classdb.ENetPacketPeerPeerState {
-	gc := gd.GarbageCollector(); _ = gc
 	return classdb.ENetPacketPeerPeerState(class(self).GetState())
 }
 
@@ -136,7 +123,6 @@ func (self Go) GetState() classdb.ENetPacketPeerPeerState {
 Returns the number of channels allocated for communication with peer.
 */
 func (self Go) GetChannels() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetChannels()))
 }
 
@@ -144,7 +130,6 @@ func (self Go) GetChannels() int {
 Returns [code]true[/code] if the peer is currently active (i.e. the associated [ENetConnection] is still valid).
 */
 func (self Go) IsActive() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsActive())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -152,18 +137,9 @@ type GD = class
 type class [1]classdb.ENetPacketPeer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ENetPacketPeer"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetPacketPeer"))
+	return Go{classdb.ENetPacketPeer(object)}
 }
 
 /*
@@ -171,11 +147,10 @@ Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNEC
 */
 //go:nosplit
 func (self class) PeerDisconnect(data gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_peer_disconnect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -183,11 +158,10 @@ Request a disconnection from a peer, but only after all queued outgoing packets 
 */
 //go:nosplit
 func (self class) PeerDisconnectLater(data gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_peer_disconnect_later, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_later, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -195,11 +169,10 @@ Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_
 */
 //go:nosplit
 func (self class) PeerDisconnectNow(data gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_peer_disconnect_now, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_now, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -207,10 +180,9 @@ Sends a ping request to a peer. ENet automatically pings all connected peers at 
 */
 //go:nosplit
 func (self class) Ping()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_ping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -218,11 +190,10 @@ Sets the [param ping_interval] in milliseconds at which pings will be sent to a 
 */
 //go:nosplit
 func (self class) PingInterval(ping_interval gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, ping_interval)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_ping_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -230,10 +201,9 @@ Forcefully disconnects a peer. The foreign host represented by the peer is not n
 */
 //go:nosplit
 func (self class) Reset()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -241,13 +211,12 @@ Queues a [param packet] to be sent over the specified [param channel]. See [code
 */
 //go:nosplit
 func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	callframe.Arg(frame, mmm.Get(packet))
+	callframe.Arg(frame, discreet.Get(packet))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -261,13 +230,12 @@ Intermediate values for the throttle represent intermediate probabilities betwee
 */
 //go:nosplit
 func (self class) ThrottleConfigure(interval gd.Int, acceleration gd.Int, deceleration gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	callframe.Arg(frame, acceleration)
 	callframe.Arg(frame, deceleration)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_throttle_configure, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_throttle_configure, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -276,25 +244,23 @@ The [param timeout] is a factor that, multiplied by a value based on the average
 */
 //go:nosplit
 func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, timeout_min)
 	callframe.Arg(frame, timeout_max)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the IP address of this peer.
 */
 //go:nosplit
-func (self class) GetRemoteAddress(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRemoteAddress() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -303,10 +269,9 @@ Returns the remote port of this peer.
 */
 //go:nosplit
 func (self class) GetRemotePort() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -316,11 +281,10 @@ Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 //go:nosplit
 func (self class) GetStatistic(statistic classdb.ENetPacketPeerPeerStatistic) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_get_statistic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_statistic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -330,10 +294,9 @@ Returns the current peer state. See [enum PeerState].
 */
 //go:nosplit
 func (self class) GetState() classdb.ENetPacketPeerPeerState {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ENetPacketPeerPeerState](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -343,10 +306,9 @@ Returns the number of channels allocated for communication with peer.
 */
 //go:nosplit
 func (self class) GetChannels() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -356,10 +318,9 @@ Returns [code]true[/code] if the peer is currently active (i.e. the associated [
 */
 //go:nosplit
 func (self class) IsActive() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.ENetPacketPeer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -382,7 +343,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsPacketPeer(), name)
 	}
 }
-func init() {classdb.Register("ENetPacketPeer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ENetPacketPeer", func(ptr gd.Object) any { return classdb.ENetPacketPeer(ptr) })}
 type PeerState = classdb.ENetPacketPeerPeerState
 
 const (

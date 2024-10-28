@@ -2,7 +2,7 @@ package RegEx
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of [code]ab[0-9][/code] would find any string that is [code]ab[/code] followed by any number from [code]0[/code] to [code]9[/code]. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
@@ -64,15 +64,13 @@ type Go [1]classdb.RegEx
 Creates and compiles a new [RegEx] object.
 */
 func (self Go) CreateFromString(pattern string) gdclass.RegEx {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.RegEx(class(self).CreateFromString(gc, gc.String(pattern)))
+	return gdclass.RegEx(class(self).CreateFromString(gd.NewString(pattern)))
 }
 
 /*
 This method resets the state of the object, as if it was freshly created. Namely, it unassigns the regular expression of this object.
 */
 func (self Go) Clear() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Clear()
 }
 
@@ -80,8 +78,7 @@ func (self Go) Clear() {
 Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If an error is encountered, details are printed to standard output and an error is returned.
 */
 func (self Go) Compile(pattern string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Compile(gc.String(pattern)))
+	return gd.Error(class(self).Compile(gd.NewString(pattern)))
 }
 
 /*
@@ -89,17 +86,15 @@ Searches the text for the compiled pattern. Returns a [RegExMatch] container of 
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 func (self Go) Search(subject string) gdclass.RegExMatch {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.RegExMatch(class(self).Search(gc, gc.String(subject), gd.Int(0), gd.Int(-1)))
+	return gdclass.RegExMatch(class(self).Search(gd.NewString(subject), gd.Int(0), gd.Int(-1)))
 }
 
 /*
 Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
-func (self Go) SearchAll(subject string) gd.ArrayOf[gdclass.RegExMatch] {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.ArrayOf[gdclass.RegExMatch](class(self).SearchAll(gc, gc.String(subject), gd.Int(0), gd.Int(-1)))
+func (self Go) SearchAll(subject string) gd.Array {
+	return gd.Array(class(self).SearchAll(gd.NewString(subject), gd.Int(0), gd.Int(-1)))
 }
 
 /*
@@ -107,15 +102,13 @@ Searches the text for the compiled pattern and replaces it with the specified st
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 func (self Go) Sub(subject string, replacement string) string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).Sub(gc, gc.String(subject), gc.String(replacement), false, gd.Int(0), gd.Int(-1)).String())
+	return string(class(self).Sub(gd.NewString(subject), gd.NewString(replacement), false, gd.Int(0), gd.Int(-1)).String())
 }
 
 /*
 Returns whether this object has a valid search pattern assigned.
 */
 func (self Go) IsValid() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsValid())
 }
 
@@ -123,15 +116,13 @@ func (self Go) IsValid() bool {
 Returns the original search pattern that was compiled.
 */
 func (self Go) GetPattern() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetPattern(gc).String())
+	return string(class(self).GetPattern().String())
 }
 
 /*
 Returns the number of capturing groups in compiled pattern.
 */
 func (self Go) GetGroupCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetGroupCount()))
 }
 
@@ -139,39 +130,28 @@ func (self Go) GetGroupCount() int {
 Returns an array of names of named capturing groups in the compiled pattern. They are ordered by appearance.
 */
 func (self Go) GetNames() []string {
-	gc := gd.GarbageCollector(); _ = gc
-	return []string(class(self).GetNames(gc).Strings(gc))
+	return []string(class(self).GetNames().Strings())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.RegEx
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("RegEx"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RegEx"))
+	return Go{classdb.RegEx(object)}
 }
 
 /*
 Creates and compiles a new [RegEx] object.
 */
 //go:nosplit
-func (self class) CreateFromString(ctx gd.Lifetime, pattern gd.String) gdclass.RegEx {
+func (self class) CreateFromString(pattern gd.String) gdclass.RegEx {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(pattern))
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.RegEx.Bind_create_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.RegEx
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(pattern))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_create_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.RegEx{classdb.RegEx(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -180,10 +160,9 @@ This method resets the state of the object, as if it was freshly created. Namely
 */
 //go:nosplit
 func (self class) Clear()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -191,11 +170,10 @@ Compiles and assign the search pattern to use. Returns [constant OK] if the comp
 */
 //go:nosplit
 func (self class) Compile(pattern gd.String) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(pattern))
+	callframe.Arg(frame, discreet.Get(pattern))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_compile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_compile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -205,16 +183,14 @@ Searches the text for the compiled pattern. Returns a [RegExMatch] container of 
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 //go:nosplit
-func (self class) Search(ctx gd.Lifetime, subject gd.String, offset gd.Int, end gd.Int) gdclass.RegExMatch {
-	var selfPtr = self[0].AsPointer()
+func (self class) Search(subject gd.String, offset gd.Int, end gd.Int) gdclass.RegExMatch {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(subject))
+	callframe.Arg(frame, discreet.Get(subject))
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_search, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.RegExMatch
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_search, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.RegExMatch{classdb.RegExMatch(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -223,34 +199,32 @@ Searches the text for the compiled pattern. Returns an array of [RegExMatch] con
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 //go:nosplit
-func (self class) SearchAll(ctx gd.Lifetime, subject gd.String, offset gd.Int, end gd.Int) gd.ArrayOf[gdclass.RegExMatch] {
-	var selfPtr = self[0].AsPointer()
+func (self class) SearchAll(subject gd.String, offset gd.Int, end gd.Int) gd.Array {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(subject))
+	callframe.Arg(frame, discreet.Get(subject))
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_search_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_search_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gdclass.RegExMatch](ret)
+	return ret
 }
 /*
 Searches the text for the compiled pattern and replaces it with the specified string. Escapes and backreferences such as [code]$1[/code] and [code]$name[/code] are expanded and resolved. By default, only the first instance is replaced, but it can be changed for all instances (global replacement).
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 //go:nosplit
-func (self class) Sub(ctx gd.Lifetime, subject gd.String, replacement gd.String, all bool, offset gd.Int, end gd.Int) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) Sub(subject gd.String, replacement gd.String, all bool, offset gd.Int, end gd.Int) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(subject))
-	callframe.Arg(frame, mmm.Get(replacement))
+	callframe.Arg(frame, discreet.Get(subject))
+	callframe.Arg(frame, discreet.Get(replacement))
 	callframe.Arg(frame, all)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_sub, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_sub, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -259,10 +233,9 @@ Returns whether this object has a valid search pattern assigned.
 */
 //go:nosplit
 func (self class) IsValid() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_is_valid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_is_valid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -271,12 +244,11 @@ func (self class) IsValid() bool {
 Returns the original search pattern that was compiled.
 */
 //go:nosplit
-func (self class) GetPattern(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPattern() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -285,10 +257,9 @@ Returns the number of capturing groups in compiled pattern.
 */
 //go:nosplit
 func (self class) GetGroupCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_get_group_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_get_group_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -297,12 +268,11 @@ func (self class) GetGroupCount() gd.Int {
 Returns an array of names of named capturing groups in the compiled pattern. They are ordered by appearance.
 */
 //go:nosplit
-func (self class) GetNames(ctx gd.Lifetime) gd.PackedStringArray {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetNames() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.RegEx.Bind_get_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedStringArray](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_get_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -322,4 +292,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("RegEx", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("RegEx", func(ptr gd.Object) any { return classdb.RegEx(ptr) })}

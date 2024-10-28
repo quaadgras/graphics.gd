@@ -16,7 +16,7 @@ func main() {
 }
 
 func check(class gdjson.Class, method gdjson.Method, name string, gdtype string) {
-	if gdtype == "Callable" {
+	if gdtype == "Callable" || gdtype == "Signal" {
 		key := (class.Name + "." + method.Name + "." + name)
 		if _, ok := gdjson.Callables[key]; !ok {
 			fmt.Printf("%q\n", key)

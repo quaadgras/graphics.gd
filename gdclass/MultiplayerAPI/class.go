@@ -2,7 +2,7 @@ package MultiplayerAPI
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
@@ -27,7 +27,6 @@ type Go [1]classdb.MultiplayerAPI
 Returns [code]true[/code] if there is a [member multiplayer_peer] set.
 */
 func (self Go) HasMultiplayerPeer() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasMultiplayerPeer())
 }
 
@@ -35,7 +34,6 @@ func (self Go) HasMultiplayerPeer() bool {
 Returns the unique peer ID of this MultiplayerAPI's [member multiplayer_peer].
 */
 func (self Go) GetUniqueId() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetUniqueId()))
 }
 
@@ -43,7 +41,6 @@ func (self Go) GetUniqueId() int {
 Returns [code]true[/code] if this MultiplayerAPI's [member multiplayer_peer] is valid and in server mode (listening for connections).
 */
 func (self Go) IsServer() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsServer())
 }
 
@@ -52,7 +49,6 @@ Returns the sender's peer ID for the RPC currently being executed.
 [b]Note:[/b] This method returns [code]0[/code] when called outside of an RPC. As such, the original peer ID may be lost when code execution is delayed (such as with GDScript's [code]await[/code] keyword).
 */
 func (self Go) GetRemoteSenderId() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetRemoteSenderId()))
 }
 
@@ -61,7 +57,6 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 [b]Note:[/b] This method results in RPCs being called, so they will be executed in the same context of this function (e.g. [code]_process[/code], [code]physics[/code], [Thread]).
 */
 func (self Go) Poll() gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).Poll())
 }
 
@@ -70,8 +65,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 func (self Go) Rpc(peer int, obj gd.Object, method string) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Error(class(self).Rpc(gd.Int(peer), obj, gc.StringName(method), ([1]gd.Array{}[0])))
+	return gd.Error(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), ([1]gd.Array{}[0])))
 }
 
 /*
@@ -79,7 +73,6 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 func (self Go) ObjectConfigurationAdd(obj gd.Object, configuration gd.Variant) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).ObjectConfigurationAdd(obj, configuration))
 }
 
@@ -88,7 +81,6 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 func (self Go) ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant) gd.Error {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Error(class(self).ObjectConfigurationRemove(obj, configuration))
 }
 
@@ -96,59 +88,44 @@ func (self Go) ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
 func (self Go) GetPeers() []int32 {
-	gc := gd.GarbageCollector(); _ = gc
-	return []int32(class(self).GetPeers(gc).AsSlice())
+	return []int32(class(self).GetPeers().AsSlice())
 }
 
 /*
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
 func (self Go) SetDefaultInterface(interface_name string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetDefaultInterface(gc, gc.StringName(interface_name))
+	class(self).SetDefaultInterface(gd.NewStringName(interface_name))
 }
 
 /*
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
 func (self Go) GetDefaultInterface() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetDefaultInterface(gc).String())
+	return string(class(self).GetDefaultInterface().String())
 }
 
 /*
 Returns a new instance of the default MultiplayerAPI.
 */
 func (self Go) CreateDefaultInterface() gdclass.MultiplayerAPI {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.MultiplayerAPI(class(self).CreateDefaultInterface(gc))
+	return gdclass.MultiplayerAPI(class(self).CreateDefaultInterface())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.MultiplayerAPI
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MultiplayerAPI"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPI"))
+	return Go{classdb.MultiplayerAPI(object)}
 }
 
 func (self Go) MultiplayerPeer() gdclass.MultiplayerPeer {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.MultiplayerPeer(class(self).GetMultiplayerPeer(gc))
+		return gdclass.MultiplayerPeer(class(self).GetMultiplayerPeer())
 }
 
 func (self Go) SetMultiplayerPeer(value gdclass.MultiplayerPeer) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMultiplayerPeer(value)
 }
 
@@ -157,32 +134,28 @@ Returns [code]true[/code] if there is a [member multiplayer_peer] set.
 */
 //go:nosplit
 func (self class) HasMultiplayerPeer() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_has_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_has_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetMultiplayerPeer(ctx gd.Lifetime) gdclass.MultiplayerPeer {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMultiplayerPeer() gdclass.MultiplayerPeer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_get_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.MultiplayerPeer
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.MultiplayerPeer{classdb.MultiplayerPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMultiplayerPeer(peer gdclass.MultiplayerPeer)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(peer[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(peer[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_set_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_set_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -190,10 +163,9 @@ Returns the unique peer ID of this MultiplayerAPI's [member multiplayer_peer].
 */
 //go:nosplit
 func (self class) GetUniqueId() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -203,10 +175,9 @@ Returns [code]true[/code] if this MultiplayerAPI's [member multiplayer_peer] is 
 */
 //go:nosplit
 func (self class) IsServer() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -217,10 +188,9 @@ Returns the sender's peer ID for the RPC currently being executed.
 */
 //go:nosplit
 func (self class) GetRemoteSenderId() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_get_remote_sender_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_remote_sender_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -231,10 +201,9 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 */
 //go:nosplit
 func (self class) Poll() int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -245,14 +214,13 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 */
 //go:nosplit
 func (self class) Rpc(peer gd.Int, obj gd.Object, method gd.StringName, arguments gd.Array) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
-	callframe.Arg(frame, mmm.End(obj.AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(method))
-	callframe.Arg(frame, mmm.Get(arguments))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, discreet.Get(method))
+	callframe.Arg(frame, discreet.Get(arguments))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_rpc, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_rpc, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -263,12 +231,11 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 */
 //go:nosplit
 func (self class) ObjectConfigurationAdd(obj gd.Object, configuration gd.Variant) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(obj.AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(configuration))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, discreet.Get(configuration))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_object_configuration_add, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_add, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -279,12 +246,11 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 */
 //go:nosplit
 func (self class) ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant) int64 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.End(obj.AsPointer())[0])
-	callframe.Arg(frame, mmm.Get(configuration))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, discreet.Get(configuration))
 	var r_ret = callframe.Ret[int64](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_object_configuration_remove, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_remove, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -293,12 +259,11 @@ func (self class) ObjectConfigurationRemove(obj gd.Object, configuration gd.Vari
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
 //go:nosplit
-func (self class) GetPeers(ctx gd.Lifetime) gd.PackedInt32Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPeers() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiplayerAPI.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.PackedInt32Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -306,22 +271,22 @@ func (self class) GetPeers(ctx gd.Lifetime) gd.PackedInt32Array {
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
 //go:nosplit
-func (self class) SetDefaultInterface(ctx gd.Lifetime, interface_name gd.StringName)  {
+func (self class) SetDefaultInterface(interface_name gd.StringName)  {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(interface_name))
+	callframe.Arg(frame, discreet.Get(interface_name))
 	var r_ret callframe.Nil
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.MultiplayerAPI.Bind_set_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_set_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
 //go:nosplit
-func (self class) GetDefaultInterface(ctx gd.Lifetime) gd.StringName {
+func (self class) GetDefaultInterface() gd.StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.MultiplayerAPI.Bind_get_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.StringName](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -329,42 +294,36 @@ func (self class) GetDefaultInterface(ctx gd.Lifetime) gd.StringName {
 Returns a new instance of the default MultiplayerAPI.
 */
 //go:nosplit
-func (self class) CreateDefaultInterface(ctx gd.Lifetime) gdclass.MultiplayerAPI {
+func (self class) CreateDefaultInterface() gdclass.MultiplayerAPI {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	ctx.API.Object.MethodBindPointerCall(ctx.API.Methods.MultiplayerAPI.Bind_create_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.MultiplayerAPI
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_create_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.MultiplayerAPI{classdb.MultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 func (self Go) OnPeerConnected(cb func(id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("peer_connected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnPeerDisconnected(cb func(id int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("peer_disconnected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnConnectedToServer(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("connected_to_server"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnConnectionFailed(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("connection_failed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnServerDisconnected(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("server_disconnected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), 0)
 }
 
 
@@ -384,7 +343,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("MultiplayerAPI", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MultiplayerAPI", func(ptr gd.Object) any { return classdb.MultiplayerAPI(ptr) })}
 type RPCMode = classdb.MultiplayerAPIRPCMode
 
 const (

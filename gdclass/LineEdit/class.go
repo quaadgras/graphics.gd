@@ -2,7 +2,7 @@ package LineEdit
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [LineEdit] provides an input field for editing a single line of text. It features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):
@@ -48,7 +48,6 @@ type Go [1]classdb.LineEdit
 Erases the [LineEdit]'s [member text].
 */
 func (self Go) Clear() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Clear()
 }
 
@@ -70,7 +69,6 @@ Select(2, 5); // Will select "lco".
 [/codeblocks]
 */
 func (self Go) Select() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Select(gd.Int(0), gd.Int(-1))
 }
 
@@ -78,7 +76,6 @@ func (self Go) Select() {
 Selects the whole [String].
 */
 func (self Go) SelectAll() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SelectAll()
 }
 
@@ -86,7 +83,6 @@ func (self Go) SelectAll() {
 Clears the current selection.
 */
 func (self Go) Deselect() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Deselect()
 }
 
@@ -94,7 +90,6 @@ func (self Go) Deselect() {
 Returns [code]true[/code] if the user has selected text.
 */
 func (self Go) HasSelection() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).HasSelection())
 }
 
@@ -102,15 +97,13 @@ func (self Go) HasSelection() bool {
 Returns the text inside the selection.
 */
 func (self Go) GetSelectedText() string {
-	gc := gd.GarbageCollector(); _ = gc
-	return string(class(self).GetSelectedText(gc).String())
+	return string(class(self).GetSelectedText().String())
 }
 
 /*
 Returns the selection begin column.
 */
 func (self Go) GetSelectionFromColumn() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetSelectionFromColumn()))
 }
 
@@ -118,7 +111,6 @@ func (self Go) GetSelectionFromColumn() int {
 Returns the selection end column.
 */
 func (self Go) GetSelectionToColumn() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetSelectionToColumn()))
 }
 
@@ -126,7 +118,6 @@ func (self Go) GetSelectionToColumn() int {
 Returns the scroll offset due to [member caret_column], as a number of characters.
 */
 func (self Go) GetScrollOffset() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetScrollOffset()))
 }
 
@@ -134,15 +125,13 @@ func (self Go) GetScrollOffset() float64 {
 Inserts [param text] at the caret. If the resulting value is longer than [member max_length], nothing happens.
 */
 func (self Go) InsertTextAtCaret(text string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).InsertTextAtCaret(gc.String(text))
+	class(self).InsertTextAtCaret(gd.NewString(text))
 }
 
 /*
 Deletes one character at the caret's current position (equivalent to pressing [kbd]Delete[/kbd]).
 */
 func (self Go) DeleteCharAtCaret() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).DeleteCharAtCaret()
 }
 
@@ -150,7 +139,6 @@ func (self Go) DeleteCharAtCaret() {
 Deletes a section of the [member text] going from position [param from_column] to [param to_column]. Both parameters should be within the text's length.
 */
 func (self Go) DeleteText(from_column int, to_column int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).DeleteText(gd.Int(from_column), gd.Int(to_column))
 }
 
@@ -158,7 +146,6 @@ func (self Go) DeleteText(from_column int, to_column int) {
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Go) MenuOption(option int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).MenuOption(gd.Int(option))
 }
 
@@ -206,15 +193,13 @@ public void OnItemPressed(int id)
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Go) GetMenu() gdclass.PopupMenu {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.PopupMenu(class(self).GetMenu(gc))
+	return gdclass.PopupMenu(class(self).GetMenu())
 }
 
 /*
 Returns whether the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided).
 */
 func (self Go) IsMenuVisible() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsMenuVisible())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -222,335 +207,264 @@ type GD = class
 type class [1]classdb.LineEdit
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("LineEdit"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LineEdit"))
+	return Go{classdb.LineEdit(object)}
 }
 
 func (self Go) Text() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetText(gc).String())
+		return string(class(self).GetText().String())
 }
 
 func (self Go) SetText(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetText(gc.String(value))
+	class(self).SetText(gd.NewString(value))
 }
 
 func (self Go) PlaceholderText() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetPlaceholder(gc).String())
+		return string(class(self).GetPlaceholder().String())
 }
 
 func (self Go) SetPlaceholderText(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetPlaceholder(gc.String(value))
+	class(self).SetPlaceholder(gd.NewString(value))
 }
 
 func (self Go) Alignment() gd.HorizontalAlignment {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 func (self Go) SetAlignment(value gd.HorizontalAlignment) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetHorizontalAlignment(value)
 }
 
 func (self Go) MaxLength() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetMaxLength()))
 }
 
 func (self Go) SetMaxLength(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaxLength(gd.Int(value))
 }
 
 func (self Go) Editable() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsEditable())
 }
 
 func (self Go) SetEditable(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetEditable(value)
 }
 
 func (self Go) ExpandToTextLength() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsExpandToTextLengthEnabled())
 }
 
 func (self Go) SetExpandToTextLength(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetExpandToTextLengthEnabled(value)
 }
 
 func (self Go) ContextMenuEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsContextMenuEnabled())
 }
 
 func (self Go) SetContextMenuEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetContextMenuEnabled(value)
 }
 
 func (self Go) VirtualKeyboardEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
 func (self Go) SetVirtualKeyboardEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVirtualKeyboardEnabled(value)
 }
 
 func (self Go) VirtualKeyboardType() classdb.LineEditVirtualKeyboardType {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.LineEditVirtualKeyboardType(class(self).GetVirtualKeyboardType())
 }
 
 func (self Go) SetVirtualKeyboardType(value classdb.LineEditVirtualKeyboardType) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVirtualKeyboardType(value)
 }
 
 func (self Go) ClearButtonEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsClearButtonEnabled())
 }
 
 func (self Go) SetClearButtonEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetClearButtonEnabled(value)
 }
 
 func (self Go) ShortcutKeysEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsShortcutKeysEnabled())
 }
 
 func (self Go) SetShortcutKeysEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetShortcutKeysEnabled(value)
 }
 
 func (self Go) MiddleMousePasteEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsMiddleMousePasteEnabled())
 }
 
 func (self Go) SetMiddleMousePasteEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMiddleMousePasteEnabled(value)
 }
 
 func (self Go) SelectingEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSelectingEnabled())
 }
 
 func (self Go) SetSelectingEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSelectingEnabled(value)
 }
 
 func (self Go) DeselectOnFocusLossEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
 func (self Go) SetDeselectOnFocusLossEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDeselectOnFocusLossEnabled(value)
 }
 
 func (self Go) DragAndDropSelectionEnabled() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
 func (self Go) SetDragAndDropSelectionEnabled(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDragAndDropSelectionEnabled(value)
 }
 
 func (self Go) RightIcon() gdclass.Texture2D {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.Texture2D(class(self).GetRightIcon(gc))
+		return gdclass.Texture2D(class(self).GetRightIcon())
 }
 
 func (self Go) SetRightIcon(value gdclass.Texture2D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRightIcon(value)
 }
 
 func (self Go) Flat() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsFlat())
 }
 
 func (self Go) SetFlat(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFlat(value)
 }
 
 func (self Go) DrawControlChars() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).GetDrawControlChars())
 }
 
 func (self Go) SetDrawControlChars(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetDrawControlChars(value)
 }
 
 func (self Go) SelectAllOnFocus() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSelectAllOnFocus())
 }
 
 func (self Go) SetSelectAllOnFocus(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSelectAllOnFocus(value)
 }
 
 func (self Go) CaretBlink() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsCaretBlinkEnabled())
 }
 
 func (self Go) SetCaretBlink(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCaretBlinkEnabled(value)
 }
 
 func (self Go) CaretBlinkInterval() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetCaretBlinkInterval()))
 }
 
 func (self Go) SetCaretBlinkInterval(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCaretBlinkInterval(gd.Float(value))
 }
 
 func (self Go) CaretColumn() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetCaretColumn()))
 }
 
 func (self Go) SetCaretColumn(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCaretColumn(gd.Int(value))
 }
 
 func (self Go) CaretForceDisplayed() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsCaretForceDisplayed())
 }
 
 func (self Go) SetCaretForceDisplayed(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCaretForceDisplayed(value)
 }
 
 func (self Go) CaretMidGrapheme() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsCaretMidGraphemeEnabled())
 }
 
 func (self Go) SetCaretMidGrapheme(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetCaretMidGraphemeEnabled(value)
 }
 
 func (self Go) Secret() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSecret())
 }
 
 func (self Go) SetSecret(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSecret(value)
 }
 
 func (self Go) SecretCharacter() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetSecretCharacter(gc).String())
+		return string(class(self).GetSecretCharacter().String())
 }
 
 func (self Go) SetSecretCharacter(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetSecretCharacter(gc.String(value))
+	class(self).SetSecretCharacter(gd.NewString(value))
 }
 
 func (self Go) TextDirection() classdb.ControlTextDirection {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.ControlTextDirection(class(self).GetTextDirection())
 }
 
 func (self Go) SetTextDirection(value classdb.ControlTextDirection) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetTextDirection(value)
 }
 
 func (self Go) Language() string {
-	gc := gd.GarbageCollector(); _ = gc
-		return string(class(self).GetLanguage(gc).String())
+		return string(class(self).GetLanguage().String())
 }
 
 func (self Go) SetLanguage(value string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).SetLanguage(gc.String(value))
+	class(self).SetLanguage(gd.NewString(value))
 }
 
 func (self Go) StructuredTextBidiOverride() classdb.TextServerStructuredTextParser {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 func (self Go) SetStructuredTextBidiOverride(value classdb.TextServerStructuredTextParser) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
 func (self Go) StructuredTextBidiOverrideOptions() gd.Array {
-	gc := gd.GarbageCollector(); _ = gc
-		return gd.Array(class(self).GetStructuredTextBidiOverrideOptions(gc))
+		return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
 func (self Go) SetStructuredTextBidiOverrideOptions(value gd.Array) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment gd.HorizontalAlignment)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetHorizontalAlignment() gd.HorizontalAlignment {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.HorizontalAlignment](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -560,10 +474,9 @@ Erases the [LineEdit]'s [member text].
 */
 //go:nosplit
 func (self class) Clear()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -585,12 +498,11 @@ Select(2, 5); // Will select "lco".
 */
 //go:nosplit
 func (self class) Select(from gd.Int, to gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -598,10 +510,9 @@ Selects the whole [String].
 */
 //go:nosplit
 func (self class) SelectAll()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_select_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_select_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -609,10 +520,9 @@ Clears the current selection.
 */
 //go:nosplit
 func (self class) Deselect()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -620,10 +530,9 @@ Returns [code]true[/code] if the user has selected text.
 */
 //go:nosplit
 func (self class) HasSelection() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_has_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_has_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -632,12 +541,11 @@ func (self class) HasSelection() bool {
 Returns the text inside the selection.
 */
 //go:nosplit
-func (self class) GetSelectedText(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSelectedText() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -646,10 +554,9 @@ Returns the selection begin column.
 */
 //go:nosplit
 func (self class) GetSelectionFromColumn() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -659,162 +566,145 @@ Returns the selection end column.
 */
 //go:nosplit
 func (self class) GetSelectionToColumn() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetText(text gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(text))
+	callframe.Arg(frame, discreet.Get(text))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetText(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetText() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) GetDrawControlChars() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDrawControlChars(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetTextDirection(direction classdb.ControlTextDirection)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetTextDirection() classdb.ControlTextDirection {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.ControlTextDirection](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetLanguage(language gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(language))
+	callframe.Arg(frame, discreet.Get(language))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetLanguage(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLanguage() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser classdb.TextServerStructuredTextParser)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() classdb.TextServerStructuredTextParser {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.TextServerStructuredTextParser](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args gd.Array)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(args))
+	callframe.Arg(frame, discreet.Get(args))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions(ctx gd.Lifetime) gd.Array {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetStructuredTextBidiOverrideOptions() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPlaceholder(text gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(text))
+	callframe.Arg(frame, discreet.Get(text))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetPlaceholder(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPlaceholder() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCaretColumn(position gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_caret_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_caret_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetCaretColumn() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -824,124 +714,111 @@ Returns the scroll offset due to [member caret_column], as a number of character
 */
 //go:nosplit
 func (self class) GetScrollOffset() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetExpandToTextLengthEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_expand_to_text_length_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_expand_to_text_length_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsExpandToTextLengthEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_expand_to_text_length_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_expand_to_text_length_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCaretBlinkEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsCaretBlinkEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCaretMidGraphemeEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsCaretMidGraphemeEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCaretForceDisplayed(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_caret_force_displayed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_caret_force_displayed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsCaretForceDisplayed() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_caret_force_displayed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_caret_force_displayed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetCaretBlinkInterval(interval gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetCaretBlinkInterval() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMaxLength(chars gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, chars)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_max_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_max_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMaxLength() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_max_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_max_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -951,11 +828,10 @@ Inserts [param text] at the caret. If the resulting value is longer than [member
 */
 //go:nosplit
 func (self class) InsertTextAtCaret(text gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(text))
+	callframe.Arg(frame, discreet.Get(text))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -963,10 +839,9 @@ Deletes one character at the caret's current position (equivalent to pressing [k
 */
 //go:nosplit
 func (self class) DeleteCharAtCaret()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_delete_char_at_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_delete_char_at_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -974,68 +849,61 @@ Deletes a section of the [member text] going from position [param from_column] t
 */
 //go:nosplit
 func (self class) DeleteText(from_column gd.Int, to_column gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, from_column)
 	callframe.Arg(frame, to_column)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_delete_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_delete_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetEditable(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsEditable() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSecret(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_secret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_secret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSecret() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_secret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_secret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSecretCharacter(character gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(character))
+	callframe.Arg(frame, discreet.Get(character))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_secret_character, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_secret_character, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetSecretCharacter(ctx gd.Lifetime) gd.String {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSecretCharacter() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_secret_character, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.String](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_secret_character, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1044,11 +912,10 @@ Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
 func (self class) MenuOption(option gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1095,13 +962,11 @@ public void OnItemPressed(int id)
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 //go:nosplit
-func (self class) GetMenu(ctx gd.Lifetime) gdclass.PopupMenu {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMenu() gdclass.PopupMenu {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.PopupMenu
-	ret[0].SetPointer(gd.PointerLifetimeBoundTo(ctx, self.AsObject(), r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.PopupMenu{classdb.PopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -1110,258 +975,229 @@ Returns whether the menu is visible. Use this instead of [code]get_menu().visibl
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_menu_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_menu_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetContextMenuEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsContextMenuEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVirtualKeyboardEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsVirtualKeyboardEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetVirtualKeyboardType(atype classdb.LineEditVirtualKeyboardType)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_virtual_keyboard_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_virtual_keyboard_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetVirtualKeyboardType() classdb.LineEditVirtualKeyboardType {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.LineEditVirtualKeyboardType](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_virtual_keyboard_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_virtual_keyboard_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetClearButtonEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_clear_button_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_clear_button_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsClearButtonEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_clear_button_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_clear_button_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetShortcutKeysEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsShortcutKeysEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMiddleMousePasteEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsMiddleMousePasteEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSelectingEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSelectingEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDeselectOnFocusLossEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsDeselectOnFocusLossEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetDragAndDropSelectionEnabled(enable bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsDragAndDropSelectionEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetRightIcon(icon gdclass.Texture2D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(icon[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(icon[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_right_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_right_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetRightIcon(ctx gd.Lifetime) gdclass.Texture2D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetRightIcon() gdclass.Texture2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_get_right_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.Texture2D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_right_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFlat(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_flat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_flat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsFlat() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_set_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_set_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSelectAllOnFocus() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.LineEdit.Bind_is_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_is_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 func (self Go) OnTextChanged(cb func(new_text string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("text_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnTextChangeRejected(cb func(rejected_substring string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("text_change_rejected"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("text_change_rejected"), gd.NewCallable(cb), 0)
 }
 
 
 func (self Go) OnTextSubmitted(cb func(new_text string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("text_submitted"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("text_submitted"), gd.NewCallable(cb), 0)
 }
 
 
@@ -1385,7 +1221,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() {classdb.Register("LineEdit", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("LineEdit", func(ptr gd.Object) any { return classdb.LineEdit(ptr) })}
 type MenuItems = classdb.LineEditMenuItems
 
 const (

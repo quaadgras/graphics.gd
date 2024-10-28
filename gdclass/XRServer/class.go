@@ -3,7 +3,7 @@ package XRServer
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
@@ -22,8 +22,7 @@ The AR/VR server is the heart of our Advanced and Virtual Reality solution and h
 var self gdclass.XRServer
 var once sync.Once
 func singleton() {
-	gc := gd.Static
-	obj := gc.API.Object.GetSingleton(gc, gc.API.Singletons.XRServer)
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.XRServer)
 	self = *(*gdclass.XRServer)(unsafe.Pointer(&obj))
 }
 
@@ -31,7 +30,6 @@ func singleton() {
 Returns the reference frame transform. Mostly used internally and exposed for GDExtension build interfaces.
 */
 func GetReferenceFrame() gd.Transform3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Transform3D(class(self).GetReferenceFrame())
 }
@@ -40,7 +38,6 @@ func GetReferenceFrame() gd.Transform3D {
 Clears the reference frame that was set by previous calls to [method center_on_hmd].
 */
 func ClearReferenceFrame() {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).ClearReferenceFrame()
 }
@@ -54,7 +51,6 @@ For this method to produce usable results, tracking information must be availabl
 You should call this method after a few seconds have passed. For example, when the user requests a realignment of the display holding a designated button on a controller for a short period of time, or when implementing a teleport mechanism.
 */
 func CenterOnHmd(rotation_mode classdb.XRServerRotationMode, keep_height bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).CenterOnHmd(rotation_mode, keep_height)
 }
@@ -63,7 +59,6 @@ func CenterOnHmd(rotation_mode classdb.XRServerRotationMode, keep_height bool) {
 Returns the primary interface's transformation.
 */
 func GetHmdTransform() gd.Transform3D {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return gd.Transform3D(class(self).GetHmdTransform())
 }
@@ -72,7 +67,6 @@ func GetHmdTransform() gd.Transform3D {
 Registers an [XRInterface] object.
 */
 func AddInterface(intf gdclass.XRInterface) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AddInterface(intf)
 }
@@ -81,7 +75,6 @@ func AddInterface(intf gdclass.XRInterface) {
 Returns the number of interfaces currently registered with the AR/VR server. If your project supports multiple AR/VR platforms, you can look through the available interface, and either present the user with a selection or simply try to initialize each interface and use the first one that returns [code]true[/code].
 */
 func GetInterfaceCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	return int(int(class(self).GetInterfaceCount()))
 }
@@ -90,7 +83,6 @@ func GetInterfaceCount() int {
 Removes this [param interface].
 */
 func RemoveInterface(intf gdclass.XRInterface) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).RemoveInterface(intf)
 }
@@ -99,34 +91,30 @@ func RemoveInterface(intf gdclass.XRInterface) {
 Returns the interface registered at the given [param idx] index in the list of interfaces.
 */
 func GetInterface(idx int) gdclass.XRInterface {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.XRInterface(class(self).GetInterface(gc, gd.Int(idx)))
+	return gdclass.XRInterface(class(self).GetInterface(gd.Int(idx)))
 }
 
 /*
 Returns a list of available interfaces the ID and name of each interface.
 */
-func GetInterfaces() gd.ArrayOf[gd.Dictionary] {
-	gc := gd.GarbageCollector(); _ = gc
+func GetInterfaces() gd.Array {
 	once.Do(singleton)
-	return gd.ArrayOf[gd.Dictionary](class(self).GetInterfaces(gc))
+	return gd.Array(class(self).GetInterfaces())
 }
 
 /*
 Finds an interface by its [param name]. For example, if your project uses capabilities of an AR/VR platform, you can find the interface for that platform by name and initialize it.
 */
 func FindInterface(name string) gdclass.XRInterface {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.XRInterface(class(self).FindInterface(gc, gc.String(name)))
+	return gdclass.XRInterface(class(self).FindInterface(gd.NewString(name)))
 }
 
 /*
 Registers a new [XRTracker] that tracks a physical object.
 */
 func AddTracker(tracker gdclass.XRTracker) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).AddTracker(tracker)
 }
@@ -135,7 +123,6 @@ func AddTracker(tracker gdclass.XRTracker) {
 Removes this [param tracker].
 */
 func RemoveTracker(tracker gdclass.XRTracker) {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
 	class(self).RemoveTracker(tracker)
 }
@@ -144,94 +131,78 @@ func RemoveTracker(tracker gdclass.XRTracker) {
 Returns a dictionary of trackers for [param tracker_types].
 */
 func GetTrackers(tracker_types int) gd.Dictionary {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetTrackers(gc, gd.Int(tracker_types)))
+	return gd.Dictionary(class(self).GetTrackers(gd.Int(tracker_types)))
 }
 
 /*
 Returns the positional tracker with the given [param tracker_name].
 */
 func GetTracker(tracker_name string) gdclass.XRTracker {
-	gc := gd.GarbageCollector(); _ = gc
 	once.Do(singleton)
-	return gdclass.XRTracker(class(self).GetTracker(gc, gc.StringName(tracker_name)))
+	return gdclass.XRTracker(class(self).GetTracker(gd.NewStringName(tracker_name)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func GD() class { once.Do(singleton); return self }
 type class [1]classdb.XRServer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
 func WorldScale() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetWorldScale()))
 }
 
 func SetWorldScale(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetWorldScale(gd.Float(value))
 }
 
 func WorldOrigin() gd.Transform3D {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Transform3D(class(self).GetWorldOrigin())
 }
 
 func SetWorldOrigin(value gd.Transform3D) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetWorldOrigin(value)
 }
 
 func PrimaryInterface() gdclass.XRInterface {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.XRInterface(class(self).GetPrimaryInterface(gc))
+		return gdclass.XRInterface(class(self).GetPrimaryInterface())
 }
 
 func SetPrimaryInterface(value gdclass.XRInterface) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPrimaryInterface(value)
 }
 
 //go:nosplit
 func (self class) GetWorldScale() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetWorldScale(scale gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_set_world_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_world_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetWorldOrigin() gd.Transform3D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_world_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetWorldOrigin(world_origin gd.Transform3D)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, world_origin)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_set_world_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_world_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -239,10 +210,9 @@ Returns the reference frame transform. Mostly used internally and exposed for GD
 */
 //go:nosplit
 func (self class) GetReferenceFrame() gd.Transform3D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_reference_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_reference_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -252,10 +222,9 @@ Clears the reference frame that was set by previous calls to [method center_on_h
 */
 //go:nosplit
 func (self class) ClearReferenceFrame()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_clear_reference_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_clear_reference_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -268,12 +237,11 @@ You should call this method after a few seconds have passed. For example, when t
 */
 //go:nosplit
 func (self class) CenterOnHmd(rotation_mode classdb.XRServerRotationMode, keep_height bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation_mode)
 	callframe.Arg(frame, keep_height)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_center_on_hmd, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_center_on_hmd, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -281,10 +249,9 @@ Returns the primary interface's transformation.
 */
 //go:nosplit
 func (self class) GetHmdTransform() gd.Transform3D {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_hmd_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_hmd_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -294,11 +261,10 @@ Registers an [XRInterface] object.
 */
 //go:nosplit
 func (self class) AddInterface(intf gdclass.XRInterface)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(intf[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(intf[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_add_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_add_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -306,10 +272,9 @@ Returns the number of interfaces currently registered with the AR/VR server. If 
 */
 //go:nosplit
 func (self class) GetInterfaceCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -319,25 +284,22 @@ Removes this [param interface].
 */
 //go:nosplit
 func (self class) RemoveInterface(intf gdclass.XRInterface)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(intf[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(intf[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_remove_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_remove_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the interface registered at the given [param idx] index in the list of interfaces.
 */
 //go:nosplit
-func (self class) GetInterface(ctx gd.Lifetime, idx gd.Int) gdclass.XRInterface {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetInterface(idx gd.Int) gdclass.XRInterface {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.XRInterface
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.XRInterface{classdb.XRInterface(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -345,27 +307,24 @@ func (self class) GetInterface(ctx gd.Lifetime, idx gd.Int) gdclass.XRInterface 
 Returns a list of available interfaces the ID and name of each interface.
 */
 //go:nosplit
-func (self class) GetInterfaces(ctx gd.Lifetime) gd.ArrayOf[gd.Dictionary] {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetInterfaces() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Array](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Array](r_ret.Get())
 	frame.Free()
-	return gd.TypedArray[gd.Dictionary](ret)
+	return ret
 }
 /*
 Finds an interface by its [param name]. For example, if your project uses capabilities of an AR/VR platform, you can find the interface for that platform by name and initialize it.
 */
 //go:nosplit
-func (self class) FindInterface(ctx gd.Lifetime, name gd.String) gdclass.XRInterface {
-	var selfPtr = self[0].AsPointer()
+func (self class) FindInterface(name gd.String) gdclass.XRInterface {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.XRInterface
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(name))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.XRInterface{classdb.XRInterface(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -374,11 +333,10 @@ Registers a new [XRTracker] that tracks a physical object.
 */
 //go:nosplit
 func (self class) AddTracker(tracker gdclass.XRTracker)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(tracker[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(tracker[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_add_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_add_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -386,24 +344,22 @@ Removes this [param tracker].
 */
 //go:nosplit
 func (self class) RemoveTracker(tracker gdclass.XRTracker)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(tracker[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(tracker[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_remove_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_remove_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns a dictionary of trackers for [param tracker_types].
 */
 //go:nosplit
-func (self class) GetTrackers(ctx gd.Lifetime, tracker_types gd.Int) gd.Dictionary {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTrackers(tracker_types gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, tracker_types)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_trackers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Dictionary](ctx.Lifetime, ctx.API, r_ret.Get())
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_trackers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -411,70 +367,59 @@ func (self class) GetTrackers(ctx gd.Lifetime, tracker_types gd.Int) gd.Dictiona
 Returns the positional tracker with the given [param tracker_name].
 */
 //go:nosplit
-func (self class) GetTracker(ctx gd.Lifetime, tracker_name gd.StringName) gdclass.XRTracker {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetTracker(tracker_name gd.StringName) gdclass.XRTracker {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(tracker_name))
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.XRTracker
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	callframe.Arg(frame, discreet.Get(tracker_name))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.XRTracker{classdb.XRTracker(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
-func (self class) GetPrimaryInterface(ctx gd.Lifetime) gdclass.XRInterface {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetPrimaryInterface() gdclass.XRInterface {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.XRInterface
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.XRInterface{classdb.XRInterface(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPrimaryInterface(intf gdclass.XRInterface)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(intf[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(intf[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.XRServer.Bind_set_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func OnReferenceFrameChanged(cb func()) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("reference_frame_changed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)
 }
 
 
 func OnInterfaceAdded(cb func(interface_name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("interface_added"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), 0)
 }
 
 
 func OnInterfaceRemoved(cb func(interface_name string)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("interface_removed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), 0)
 }
 
 
 func OnTrackerAdded(cb func(tracker_name string, atype int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tracker_added"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), 0)
 }
 
 
 func OnTrackerUpdated(cb func(tracker_name string, atype int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tracker_updated"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), 0)
 }
 
 
 func OnTrackerRemoved(cb func(tracker_name string, atype int)) {
-	gc := gd.GarbageCollector(); _ = gc
-	self[0].AsObject().Connect(gc.StringName("tracker_removed"), gc.Callable(cb), 0)
+	self[0].AsObject().Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), 0)
 }
 
 
@@ -483,7 +428,7 @@ func (self class) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("XRServer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("XRServer", func(ptr gd.Object) any { return classdb.XRServer(ptr) })}
 type TrackerType = classdb.XRServerTrackerType
 
 const (

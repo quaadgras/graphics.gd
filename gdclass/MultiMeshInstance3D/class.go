@@ -2,7 +2,7 @@ package MultiMeshInstance3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [MultiMeshInstance3D] is a specialized node to instance [GeometryInstance3D]s based on a [MultiMesh] resource.
@@ -29,47 +29,33 @@ type GD = class
 type class [1]classdb.MultiMeshInstance3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("MultiMeshInstance3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiMeshInstance3D"))
+	return Go{classdb.MultiMeshInstance3D(object)}
 }
 
 func (self Go) Multimesh() gdclass.MultiMesh {
-	gc := gd.GarbageCollector(); _ = gc
-		return gdclass.MultiMesh(class(self).GetMultimesh(gc))
+		return gdclass.MultiMesh(class(self).GetMultimesh())
 }
 
 func (self Go) SetMultimesh(value gdclass.MultiMesh) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMultimesh(value)
 }
 
 //go:nosplit
 func (self class) SetMultimesh(multimesh gdclass.MultiMesh)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(multimesh[0].AsPointer())[0])
+	callframe.Arg(frame, discreet.Get(multimesh[0])[0])
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiMeshInstance3D.Bind_set_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
-func (self class) GetMultimesh(ctx gd.Lifetime) gdclass.MultiMesh {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetMultimesh() gdclass.MultiMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.MultiMeshInstance3D.Bind_get_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.MultiMesh
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMeshInstance3D.Bind_get_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.MultiMesh{classdb.MultiMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -95,4 +81,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsGeometryInstance3D(), name)
 	}
 }
-func init() {classdb.Register("MultiMeshInstance3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("MultiMeshInstance3D", func(ptr gd.Object) any { return classdb.MultiMeshInstance3D(ptr) })}

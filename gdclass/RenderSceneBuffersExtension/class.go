@@ -2,7 +2,7 @@ package RenderSceneBuffersExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 This class allows for a RenderSceneBuffer implementation to be made in GDExtension.
@@ -37,13 +37,10 @@ Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
 func (Go) _configure(impl func(ptr unsafe.Pointer, config gdclass.RenderSceneBuffersConfiguration) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var config gdclass.RenderSceneBuffersConfiguration
-		config[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var config = gdclass.RenderSceneBuffersConfiguration{discreet.New[classdb.RenderSceneBuffersConfiguration]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(config[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, config)
-		gc.End()
 	}
 }
 
@@ -52,12 +49,9 @@ Implement this in GDExtension to record a new FSR sharpness value.
 */
 func (Go) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var fsr_sharpness = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, float64(fsr_sharpness))
-		gc.End()
 	}
 }
 
@@ -66,12 +60,9 @@ Implement this in GDExtension to change the texture mipmap bias.
 */
 func (Go) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias float64) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var texture_mipmap_bias = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, float64(texture_mipmap_bias))
-		gc.End()
 	}
 }
 
@@ -80,12 +71,9 @@ Implement this in GDExtension to react to the debanding flag changing.
 */
 func (Go) _set_use_debanding(impl func(ptr unsafe.Pointer, use_debanding bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		var use_debanding = gd.UnsafeGet[bool](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, use_debanding)
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -93,18 +81,9 @@ type GD = class
 type class [1]classdb.RenderSceneBuffersExtension
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("RenderSceneBuffersExtension"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneBuffersExtension"))
+	return Go{classdb.RenderSceneBuffersExtension(object)}
 }
 
 /*
@@ -112,13 +91,10 @@ Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
 func (class) _configure(impl func(ptr unsafe.Pointer, config gdclass.RenderSceneBuffersConfiguration) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var config gdclass.RenderSceneBuffersConfiguration
-		config[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var config = gdclass.RenderSceneBuffersConfiguration{discreet.New[classdb.RenderSceneBuffersConfiguration]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(config[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, config)
-		ctx.End()
 	}
 }
 
@@ -127,12 +103,9 @@ Implement this in GDExtension to record a new FSR sharpness value.
 */
 func (class) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness gd.Float) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var fsr_sharpness = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, fsr_sharpness)
-		ctx.End()
 	}
 }
 
@@ -141,12 +114,9 @@ Implement this in GDExtension to change the texture mipmap bias.
 */
 func (class) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias gd.Float) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var texture_mipmap_bias = gd.UnsafeGet[gd.Float](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, texture_mipmap_bias)
-		ctx.End()
 	}
 }
 
@@ -155,12 +125,9 @@ Implement this in GDExtension to react to the debanding flag changing.
 */
 func (class) _set_use_debanding(impl func(ptr unsafe.Pointer, use_debanding bool) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		var use_debanding = gd.UnsafeGet[bool](p_args,0)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, use_debanding)
-		ctx.End()
 	}
 }
 
@@ -190,4 +157,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRenderSceneBuffers(), name)
 	}
 }
-func init() {classdb.Register("RenderSceneBuffersExtension", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("RenderSceneBuffersExtension", func(ptr gd.Object) any { return classdb.RenderSceneBuffersExtension(ptr) })}

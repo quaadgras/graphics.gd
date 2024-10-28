@@ -2,7 +2,7 @@ package AspectRatioContainer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 A container type that arranges its child controls in a way that preserves their proportions automatically when the container is resized. Useful when a container has a dynamic size and the child nodes must adjust their sizes accordingly without losing their aspect ratios.
@@ -28,132 +28,107 @@ type GD = class
 type class [1]classdb.AspectRatioContainer
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("AspectRatioContainer"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AspectRatioContainer"))
+	return Go{classdb.AspectRatioContainer(object)}
 }
 
 func (self Go) Ratio() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetRatio()))
 }
 
 func (self Go) SetRatio(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetRatio(gd.Float(value))
 }
 
 func (self Go) StretchMode() classdb.AspectRatioContainerStretchMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.AspectRatioContainerStretchMode(class(self).GetStretchMode())
 }
 
 func (self Go) SetStretchMode(value classdb.AspectRatioContainerStretchMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetStretchMode(value)
 }
 
 func (self Go) AlignmentHorizontal() classdb.AspectRatioContainerAlignmentMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.AspectRatioContainerAlignmentMode(class(self).GetAlignmentHorizontal())
 }
 
 func (self Go) SetAlignmentHorizontal(value classdb.AspectRatioContainerAlignmentMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAlignmentHorizontal(value)
 }
 
 func (self Go) AlignmentVertical() classdb.AspectRatioContainerAlignmentMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.AspectRatioContainerAlignmentMode(class(self).GetAlignmentVertical())
 }
 
 func (self Go) SetAlignmentVertical(value classdb.AspectRatioContainerAlignmentMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetAlignmentVertical(value)
 }
 
 //go:nosplit
 func (self class) SetRatio(ratio gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_set_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetRatio() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_get_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetStretchMode(stretch_mode classdb.AspectRatioContainerStretchMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch_mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_set_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetStretchMode() classdb.AspectRatioContainerStretchMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.AspectRatioContainerStretchMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAlignmentHorizontal(alignment_horizontal classdb.AspectRatioContainerAlignmentMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment_horizontal)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_set_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAlignmentHorizontal() classdb.AspectRatioContainerAlignmentMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.AspectRatioContainerAlignmentMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_get_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetAlignmentVertical(alignment_vertical classdb.AspectRatioContainerAlignmentMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment_vertical)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_set_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetAlignmentVertical() classdb.AspectRatioContainerAlignmentMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.AspectRatioContainerAlignmentMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.AspectRatioContainer.Bind_get_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -180,7 +155,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsContainer(), name)
 	}
 }
-func init() {classdb.Register("AspectRatioContainer", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("AspectRatioContainer", func(ptr gd.Object) any { return classdb.AspectRatioContainer(ptr) })}
 type StretchMode = classdb.AspectRatioContainerStretchMode
 
 const (

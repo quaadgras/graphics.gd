@@ -2,7 +2,7 @@ package ResourceFormatSaver
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 The engine can save resources when you do it from the editor, or when you use the [ResourceSaver] singleton. This is accomplished thanks to multiple [ResourceFormatSaver]s, each handling its own format and called automatically by the engine.
@@ -42,16 +42,14 @@ Returns [constant OK] on success, or an [enum Error] constant in case of failure
 */
 func (Go) _save(impl func(ptr unsafe.Pointer, resource gdclass.Resource, path string, flags int) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String(), int(flags))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -60,14 +58,12 @@ Sets a new UID for the resource at the given [param path]. Returns [constant OK]
 */
 func (Go) _set_uid(impl func(ptr unsafe.Pointer, path string, uid int) gd.Error, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
 		var uid = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), int(uid))
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -76,14 +72,11 @@ Returns whether the given resource object can be saved by this saver.
 */
 func (Go) _recognize(impl func(ptr unsafe.Pointer, resource gdclass.Resource) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -92,14 +85,15 @@ Returns the list of extensions available for saving the resource object, provide
 */
 func (Go) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource gdclass.Resource) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -109,15 +103,13 @@ If this method is not implemented, the default behavior returns whether the path
 */
 func (Go) _recognize_path(impl func(ptr unsafe.Pointer, resource gdclass.Resource, path string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -125,18 +117,9 @@ type GD = class
 type class [1]classdb.ResourceFormatSaver
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("ResourceFormatSaver"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceFormatSaver"))
+	return Go{classdb.ResourceFormatSaver(object)}
 }
 
 /*
@@ -145,16 +128,13 @@ Returns [constant OK] on success, or an [enum Error] constant in case of failure
 */
 func (class) _save(impl func(ptr unsafe.Pointer, resource gdclass.Resource, path gd.String, flags gd.Int) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
 		var flags = gd.UnsafeGet[gd.Int](p_args,2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path, flags)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -163,14 +143,11 @@ Sets a new UID for the resource at the given [param path]. Returns [constant OK]
 */
 func (class) _set_uid(impl func(ptr unsafe.Pointer, path gd.String, uid gd.Int) int64, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
 		var uid = gd.UnsafeGet[gd.Int](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, uid)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -179,14 +156,11 @@ Returns whether the given resource object can be saved by this saver.
 */
 func (class) _recognize(impl func(ptr unsafe.Pointer, resource gdclass.Resource) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -195,14 +169,15 @@ Returns the list of extensions available for saving the resource object, provide
 */
 func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource gdclass.Resource) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -212,15 +187,12 @@ If this method is not implemented, the default behavior returns whether the path
 */
 func (class) _recognize_path(impl func(ptr unsafe.Pointer, resource gdclass.Resource, path gd.String) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -250,4 +222,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("ResourceFormatSaver", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("ResourceFormatSaver", func(ptr gd.Object) any { return classdb.ResourceFormatSaver(ptr) })}

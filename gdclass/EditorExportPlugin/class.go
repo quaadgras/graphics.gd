@@ -2,7 +2,7 @@ package EditorExportPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
@@ -51,7 +51,7 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 		//- [code]option[/code]: A dictionary with the structure documented by [method Object.get_property_list], but all keys are optional.
 		//- [code]default_value[/code]: The default value for this option.
 		//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
-		GetExportOptions(platform gdclass.EditorExportPlatform) gd.ArrayOf[gd.Dictionary]
+		GetExportOptions(platform gdclass.EditorExportPlatform) gd.Array
 		//Return a [Dictionary] of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
 		//[codeblock]
 		//class MyExportPlugin extends EditorExportPlugin:
@@ -116,14 +116,14 @@ Calling [method skip] inside this callback will make the file not included in th
 */
 func (Go) _export_file(impl func(ptr unsafe.Pointer, path string, atype string, features []string) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,0))
-		var atype = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
-		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,2))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		defer discreet.End(path)
+		var atype = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(atype)
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,2))
+		defer discreet.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
-impl(self, path.String(), atype.String(), features.Strings(gc))
-		gc.End()
+impl(self, path.String(), atype.String(), features.Strings())
 	}
 }
 
@@ -132,15 +132,14 @@ Virtual method to be overridden by the user. It is called when the export starts
 */
 func (Go) _export_begin(impl func(ptr unsafe.Pointer, features []string, is_debug bool, path string, flags int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,0))
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,0))
+		defer discreet.End(features)
 		var is_debug = gd.UnsafeGet[bool](p_args,1)
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,2))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,2))
+		defer discreet.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
-impl(self, features.Strings(gc), is_debug, path.String(), int(flags))
-		gc.End()
+impl(self, features.Strings(), is_debug, path.String(), int(flags))
 	}
 }
 
@@ -149,11 +148,8 @@ Virtual method to be overridden by the user. Called when the export is finished.
 */
 func (Go) _export_end(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -163,15 +159,13 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 */
 func (Go) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, features []string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,1))
+		defer discreet.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, platform, features.Strings(gc))
+		ret := impl(self, platform, features.Strings())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -182,15 +176,17 @@ Implementing this method is required if [method _begin_customize_resources] retu
 */
 func (Go) _customize_resource(impl func(ptr unsafe.Pointer, resource gdclass.Resource, path string) gdclass.Resource, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String())
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -200,15 +196,13 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 */
 func (Go) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, features []string) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var features = mmm.Let[gd.PackedStringArray](gc.Lifetime, gc.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,1))
+		defer discreet.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, platform, features.Strings(gc))
+		ret := impl(self, platform, features.Strings())
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -218,15 +212,17 @@ Implementing this method is required if [method _begin_customize_scenes] returns
 */
 func (Go) _customize_scene(impl func(ptr unsafe.Pointer, scene gdclass.Node, path string) gdclass.Node, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var scene gdclass.Node
-		scene[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var scene = gdclass.Node{discreet.New[classdb.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(scene[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene, path.String())
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		gc.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -236,12 +232,9 @@ Implementing this method is required if [method _begin_customize_resources] retu
 */
 func (Go) _get_customization_configuration_hash(impl func(ptr unsafe.Pointer) int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
-		gc.End()
 	}
 }
 
@@ -250,11 +243,8 @@ This is called when the customization process for scenes ends.
 */
 func (Go) _end_customize_scenes(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -263,11 +253,8 @@ This is called when the customization process for resources ends.
 */
 func (Go) _end_customize_resources(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		gc.End()
 	}
 }
 
@@ -278,16 +265,17 @@ Each element in the return value is a [Dictionary] with the following keys:
 - [code]default_value[/code]: The default value for this option.
 - [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 */
-func (Go) _get_export_options(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Go) _get_export_options(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -313,14 +301,15 @@ class MyExportPlugin extends EditorExportPlugin:
 */
 func (Go) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		gc.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -329,14 +318,11 @@ Return [code]true[/code], if the result of [method _get_export_options] has chan
 */
 func (Go) _should_update_export_options(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -346,15 +332,17 @@ Check the requirements for the given [param option] and return a non-empty warni
 */
 func (Go) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, option string) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var option = mmm.Let[gd.String](gc.Lifetime, gc.API, gd.UnsafeGet[uintptr](p_args,1))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
+		var option = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		defer discreet.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, option.String())
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -363,15 +351,16 @@ Return a [PackedStringArray] of additional features this preset, for the given [
 */
 func (Go) _get_export_features(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -381,12 +370,13 @@ Implementing this method is required.
 */
 func (Go) _get_name(impl func(ptr unsafe.Pointer) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -395,14 +385,11 @@ Return [code]true[/code] if the plugin supports the given [param platform].
 */
 func (Go) _supports_platform(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
 		gd.UnsafeSet(p_back, ret)
-		gc.End()
 	}
 }
 
@@ -413,15 +400,16 @@ For more information see [url=https://developer.android.com/build/dependencies?a
 */
 func (Go) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -433,15 +421,16 @@ For more information see [url=https://docs.gradle.org/current/userguide/dependen
 */
 func (Go) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -452,15 +441,16 @@ Virtual method to be overridden by the user. This is called to retrieve the loca
 */
 func (Go) _get_android_libraries(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) []string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.PackedStringSlice(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewPackedStringSlice(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -470,15 +460,16 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (Go) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -488,15 +479,16 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (Go) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -506,15 +498,16 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (Go) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) string, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		gc := gd.NewLifetime(api)
-		class.SetTemporary(gc)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](gc.Lifetime, gc.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(gc.String(ret)))
-		gc.End()
+ptr, ok := discreet.End(gd.NewString(ret))
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -524,16 +517,14 @@ Adds a shared object or a directory containing only shared objects with the give
 In case of a directory code-sign will error if you place non code object in directory.
 */
 func (self Go) AddSharedObject(path string, tags []string, target string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddSharedObject(gc.String(path), gc.PackedStringSlice(tags), gc.String(target))
+	class(self).AddSharedObject(gd.NewString(path), gd.NewPackedStringSlice(tags), gd.NewString(target))
 }
 
 /*
 Adds a static lib from the given [param path] to the iOS project.
 */
 func (self Go) AddIosProjectStaticLib(path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosProjectStaticLib(gc.String(path))
+	class(self).AddIosProjectStaticLib(gd.NewString(path))
 }
 
 /*
@@ -542,16 +533,14 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 [param file] will not be imported, so consider using [method _customize_resource] to remap imported resources.
 */
 func (self Go) AddFile(path string, file []byte, remap bool) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddFile(gc.String(path), gc.PackedByteSlice(file), remap)
+	class(self).AddFile(gd.NewString(path), gd.NewPackedByteSlice(file), remap)
 }
 
 /*
 Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
 */
 func (self Go) AddIosFramework(path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosFramework(gc.String(path))
+	class(self).AddIosFramework(gd.NewString(path))
 }
 
 /*
@@ -560,40 +549,35 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 [b]Note:[/b] This method should not be used for System libraries as they are already present on the device.
 */
 func (self Go) AddIosEmbeddedFramework(path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosEmbeddedFramework(gc.String(path))
+	class(self).AddIosEmbeddedFramework(gd.NewString(path))
 }
 
 /*
 Adds content for iOS Property List files.
 */
 func (self Go) AddIosPlistContent(plist_content string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosPlistContent(gc.String(plist_content))
+	class(self).AddIosPlistContent(gd.NewString(plist_content))
 }
 
 /*
 Adds linker flags for the iOS export.
 */
 func (self Go) AddIosLinkerFlags(flags string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosLinkerFlags(gc.String(flags))
+	class(self).AddIosLinkerFlags(gd.NewString(flags))
 }
 
 /*
 Adds an iOS bundle file from the given [param path] to the exported project.
 */
 func (self Go) AddIosBundleFile(path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosBundleFile(gc.String(path))
+	class(self).AddIosBundleFile(gd.NewString(path))
 }
 
 /*
 Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 func (self Go) AddIosCppCode(code string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddIosCppCode(gc.String(code))
+	class(self).AddIosCppCode(gd.NewString(code))
 }
 
 /*
@@ -601,15 +585,13 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 [b]Note:[/b] This is useful only for macOS exports.
 */
 func (self Go) AddMacosPluginFile(path string) {
-	gc := gd.GarbageCollector(); _ = gc
-	class(self).AddMacosPluginFile(gc.String(path))
+	class(self).AddMacosPluginFile(gd.NewString(path))
 }
 
 /*
 To be called inside [method _export_file]. Skips the current file, so it's not included in the export.
 */
 func (self Go) Skip() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).Skip()
 }
 
@@ -617,26 +599,16 @@ func (self Go) Skip() {
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 func (self Go) GetOption(name string) gd.Variant {
-	gc := gd.GarbageCollector(); _ = gc
-	return gd.Variant(class(self).GetOption(gc, gc.StringName(name)))
+	return gd.Variant(class(self).GetOption(gd.NewStringName(name)))
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.EditorExportPlugin
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("EditorExportPlugin"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlugin"))
+	return Go{classdb.EditorExportPlugin(object)}
 }
 
 /*
@@ -645,14 +617,11 @@ Calling [method skip] inside this callback will make the file not included in th
 */
 func (class) _export_file(impl func(ptr unsafe.Pointer, path gd.String, atype gd.String, features gd.PackedStringArray) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,0))
-		var atype = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
-		var features = mmm.Let[gd.PackedStringArray](ctx.Lifetime, ctx.API, gd.UnsafeGet[[2]uintptr](p_args,2))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,0))
+		var atype = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,2))
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, path, atype, features)
-		ctx.End()
 	}
 }
 
@@ -661,15 +630,12 @@ Virtual method to be overridden by the user. It is called when the export starts
 */
 func (class) _export_begin(impl func(ptr unsafe.Pointer, features gd.PackedStringArray, is_debug bool, path gd.String, flags gd.Int) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var features = mmm.Let[gd.PackedStringArray](ctx.Lifetime, ctx.API, gd.UnsafeGet[[2]uintptr](p_args,0))
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,0))
 		var is_debug = gd.UnsafeGet[bool](p_args,1)
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,2))
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,2))
 		var flags = gd.UnsafeGet[gd.Int](p_args,3)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self, features, is_debug, path, flags)
-		ctx.End()
 	}
 }
 
@@ -678,11 +644,8 @@ Virtual method to be overridden by the user. Called when the export is finished.
 */
 func (class) _export_end(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -692,15 +655,12 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 */
 func (class) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, features gd.PackedStringArray) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var features = mmm.Let[gd.PackedStringArray](ctx.Lifetime, ctx.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -711,15 +671,16 @@ Implementing this method is required if [method _begin_customize_resources] retu
 */
 func (class) _customize_resource(impl func(ptr unsafe.Pointer, resource gdclass.Resource, path gd.String) gdclass.Resource, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var resource gdclass.Resource
-		resource[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var resource = gdclass.Resource{discreet.New[classdb.Resource]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(resource[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -729,15 +690,12 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 */
 func (class) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, features gd.PackedStringArray) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var features = mmm.Let[gd.PackedStringArray](ctx.Lifetime, ctx.API, gd.UnsafeGet[[2]uintptr](p_args,1))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
+		var features = discreet.New[gd.PackedStringArray](gd.UnsafeGet[[2]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -747,15 +705,16 @@ Implementing this method is required if [method _begin_customize_scenes] returns
 */
 func (class) _customize_scene(impl func(ptr unsafe.Pointer, scene gdclass.Node, path gd.String) gdclass.Node, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var scene gdclass.Node
-		scene[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var path = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var scene = gdclass.Node{discreet.New[classdb.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(scene[0])
+		var path = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene, path)
-		gd.UnsafeSet(p_back, mmm.End(ret[0].AsPointer()))
-		ctx.End()
+ptr, ok := discreet.End(ret[0])
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -765,12 +724,9 @@ Implementing this method is required if [method _begin_customize_resources] retu
 */
 func (class) _get_customization_configuration_hash(impl func(ptr unsafe.Pointer) gd.Int, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -779,11 +735,8 @@ This is called when the customization process for scenes ends.
 */
 func (class) _end_customize_scenes(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -792,11 +745,8 @@ This is called when the customization process for resources ends.
 */
 func (class) _end_customize_resources(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 impl(self)
-		ctx.End()
 	}
 }
 
@@ -807,16 +757,17 @@ Each element in the return value is a [Dictionary] with the following keys:
 - [code]default_value[/code]: The default value for this option.
 - [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 */
-func (class) _get_export_options(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) gd.ArrayOf[gd.Dictionary], api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_export_options(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) gd.Array, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		gd.UnsafeSet(p_back, mmm.End(ret.Array()))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -842,14 +793,15 @@ class MyExportPlugin extends EditorExportPlugin:
 */
 func (class) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) gd.Dictionary, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -858,14 +810,11 @@ Return [code]true[/code], if the result of [method _get_export_options] has chan
 */
 func (class) _should_update_export_options(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -875,15 +824,16 @@ Check the requirements for the given [param option] and return a non-empty warni
 */
 func (class) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, option gd.String) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
-		var option = mmm.Let[gd.String](ctx.Lifetime, ctx.API, gd.UnsafeGet[uintptr](p_args,1))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
+		var option = discreet.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args,1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, option)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -892,15 +842,16 @@ Return a [PackedStringArray] of additional features this preset, for the given [
 */
 func (class) _get_export_features(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -910,12 +861,13 @@ Implementing this method is required.
 */
 func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -924,14 +876,11 @@ Return [code]true[/code] if the plugin supports the given [param platform].
 */
 func (class) _supports_platform(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform) bool, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
 		gd.UnsafeSet(p_back, ret)
-		ctx.End()
 	}
 }
 
@@ -942,15 +891,16 @@ For more information see [url=https://developer.android.com/build/dependencies?a
 */
 func (class) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -962,15 +912,16 @@ For more information see [url=https://docs.gradle.org/current/userguide/dependen
 */
 func (class) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -981,15 +932,16 @@ Virtual method to be overridden by the user. This is called to retrieve the loca
 */
 func (class) _get_android_libraries(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -999,15 +951,16 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1017,15 +970,16 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (class) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1035,15 +989,16 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (class) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform gdclass.EditorExportPlatform, debug bool) gd.String, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		ctx := gd.NewLifetime(api)
-		class.SetTemporary(ctx)
-		var platform gdclass.EditorExportPlatform
-		platform[0].SetPointer(mmm.Let[gd.Pointer](ctx.Lifetime, ctx.API, [2]uintptr{gd.UnsafeGet[uintptr](p_args,0)}))
+		var platform = gdclass.EditorExportPlatform{discreet.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args,0)})}
+		defer discreet.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args,1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
-		gd.UnsafeSet(p_back, mmm.End(ret))
-		ctx.End()
+ptr, ok := discreet.End(ret)
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1054,13 +1009,12 @@ In case of a directory code-sign will error if you place non code object in dire
 */
 //go:nosplit
 func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, target gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(tags))
-	callframe.Arg(frame, mmm.Get(target))
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(tags))
+	callframe.Arg(frame, discreet.Get(target))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_shared_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_shared_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1068,11 +1022,10 @@ Adds a static lib from the given [param path] to the iOS project.
 */
 //go:nosplit
 func (self class) AddIosProjectStaticLib(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1082,13 +1035,12 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 */
 //go:nosplit
 func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
-	callframe.Arg(frame, mmm.Get(file))
+	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, discreet.Get(file))
 	callframe.Arg(frame, remap)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1096,11 +1048,10 @@ Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking
 */
 //go:nosplit
 func (self class) AddIosFramework(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_framework, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_framework, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1110,11 +1061,10 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 */
 //go:nosplit
 func (self class) AddIosEmbeddedFramework(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1122,11 +1072,10 @@ Adds content for iOS Property List files.
 */
 //go:nosplit
 func (self class) AddIosPlistContent(plist_content gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(plist_content))
+	callframe.Arg(frame, discreet.Get(plist_content))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_plist_content, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_plist_content, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1134,11 +1083,10 @@ Adds linker flags for the iOS export.
 */
 //go:nosplit
 func (self class) AddIosLinkerFlags(flags gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(flags))
+	callframe.Arg(frame, discreet.Get(flags))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_linker_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_linker_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1146,11 +1094,10 @@ Adds an iOS bundle file from the given [param path] to the exported project.
 */
 //go:nosplit
 func (self class) AddIosBundleFile(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_bundle_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_bundle_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1158,11 +1105,10 @@ Adds a C++ code to the iOS export. The final code is created from the code appen
 */
 //go:nosplit
 func (self class) AddIosCppCode(code gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(code))
+	callframe.Arg(frame, discreet.Get(code))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_ios_cpp_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_cpp_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1171,11 +1117,10 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 */
 //go:nosplit
 func (self class) AddMacosPluginFile(path gd.String)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(path))
+	callframe.Arg(frame, discreet.Get(path))
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_add_macos_plugin_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_macos_plugin_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
@@ -1183,23 +1128,21 @@ To be called inside [method _export_file]. Skips the current file, so it's not i
 */
 //go:nosplit
 func (self class) Skip()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_skip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_skip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 /*
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 //go:nosplit
-func (self class) GetOption(ctx gd.Lifetime, name gd.StringName) gd.Variant {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetOption(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, mmm.Get(name))
+	callframe.Arg(frame, discreet.Get(name))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = mmm.New[gd.Variant](ctx.Lifetime, ctx.API, r_ret.Get())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = discreet.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1265,4 +1208,4 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorExportPlugin", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("EditorExportPlugin", func(ptr gd.Object) any { return classdb.EditorExportPlugin(ptr) })}

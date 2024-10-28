@@ -2,7 +2,7 @@ package CharacterBody3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/mmm"
+import "grow.graphics/gd/internal/discreet"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ mmm.Lifetime
+var _ = discreet.Root
 
 /*
 [CharacterBody3D] is a specialized class for physics bodies that are meant to be user-controlled. They are not affected by physics at all, but they affect other physics bodies in their path. They are mainly used to provide high-level API to move objects with wall and slope detection ([method move_and_slide] method) in addition to the general collision detection provided by [method PhysicsBody3D.move_and_collide]. This makes it useful for highly configurable physics bodies that must move in specific ways and collide with the world, as is often the case with user-controlled characters.
@@ -32,7 +32,6 @@ When the body touches a moving platform, the platform's velocity is automaticall
 Returns [code]true[/code] if the body collided, otherwise, returns [code]false[/code].
 */
 func (self Go) MoveAndSlide() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).MoveAndSlide())
 }
 
@@ -40,7 +39,6 @@ func (self Go) MoveAndSlide() bool {
 Allows to manually apply a snap to the floor regardless of the body's velocity. This function does nothing when [method is_on_floor] returns [code]true[/code].
 */
 func (self Go) ApplyFloorSnap() {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).ApplyFloorSnap()
 }
 
@@ -48,7 +46,6 @@ func (self Go) ApplyFloorSnap() {
 Returns [code]true[/code] if the body collided with the floor on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "floor" or not.
 */
 func (self Go) IsOnFloor() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsOnFloor())
 }
 
@@ -56,7 +53,6 @@ func (self Go) IsOnFloor() bool {
 Returns [code]true[/code] if the body collided only with the floor on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "floor" or not.
 */
 func (self Go) IsOnFloorOnly() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsOnFloorOnly())
 }
 
@@ -64,7 +60,6 @@ func (self Go) IsOnFloorOnly() bool {
 Returns [code]true[/code] if the body collided with the ceiling on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "ceiling" or not.
 */
 func (self Go) IsOnCeiling() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsOnCeiling())
 }
 
@@ -72,7 +67,6 @@ func (self Go) IsOnCeiling() bool {
 Returns [code]true[/code] if the body collided only with the ceiling on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "ceiling" or not.
 */
 func (self Go) IsOnCeilingOnly() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsOnCeilingOnly())
 }
 
@@ -80,7 +74,6 @@ func (self Go) IsOnCeilingOnly() bool {
 Returns [code]true[/code] if the body collided with a wall on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "wall" or not.
 */
 func (self Go) IsOnWall() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsOnWall())
 }
 
@@ -88,7 +81,6 @@ func (self Go) IsOnWall() bool {
 Returns [code]true[/code] if the body collided only with a wall on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "wall" or not.
 */
 func (self Go) IsOnWallOnly() bool {
-	gc := gd.GarbageCollector(); _ = gc
 	return bool(class(self).IsOnWallOnly())
 }
 
@@ -97,7 +89,6 @@ Returns the collision normal of the floor at the last collision point. Only vali
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 func (self Go) GetFloorNormal() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetFloorNormal())
 }
 
@@ -106,7 +97,6 @@ Returns the collision normal of the wall at the last collision point. Only valid
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 func (self Go) GetWallNormal() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetWallNormal())
 }
 
@@ -114,7 +104,6 @@ func (self Go) GetWallNormal() gd.Vector3 {
 Returns the last motion applied to the [CharacterBody3D] during the last call to [method move_and_slide]. The movement can be split into multiple motions when sliding occurs, and this method return the last one, which is useful to retrieve the current direction of the movement.
 */
 func (self Go) GetLastMotion() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetLastMotion())
 }
 
@@ -122,7 +111,6 @@ func (self Go) GetLastMotion() gd.Vector3 {
 Returns the travel (position delta) that occurred during the last call to [method move_and_slide].
 */
 func (self Go) GetPositionDelta() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetPositionDelta())
 }
 
@@ -130,7 +118,6 @@ func (self Go) GetPositionDelta() gd.Vector3 {
 Returns the current real velocity since the last call to [method move_and_slide]. For example, when you climb a slope, you will move diagonally even though the velocity is horizontal. This method returns the diagonal movement, as opposed to [member velocity] which returns the requested velocity.
 */
 func (self Go) GetRealVelocity() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetRealVelocity())
 }
 
@@ -138,7 +125,6 @@ func (self Go) GetRealVelocity() gd.Vector3 {
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
 func (self Go) GetFloorAngle() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 	return float64(float64(class(self).GetFloorAngle(gd.Vector3{0, 1, 0})))
 }
 
@@ -146,7 +132,6 @@ func (self Go) GetFloorAngle() float64 {
 Returns the linear velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 func (self Go) GetPlatformVelocity() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetPlatformVelocity())
 }
 
@@ -154,7 +139,6 @@ func (self Go) GetPlatformVelocity() gd.Vector3 {
 Returns the angular velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 func (self Go) GetPlatformAngularVelocity() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 	return gd.Vector3(class(self).GetPlatformAngularVelocity())
 }
 
@@ -162,7 +146,6 @@ func (self Go) GetPlatformAngularVelocity() gd.Vector3 {
 Returns the number of times the body collided and changed direction during the last call to [method move_and_slide].
 */
 func (self Go) GetSlideCollisionCount() int {
-	gc := gd.GarbageCollector(); _ = gc
 	return int(int(class(self).GetSlideCollisionCount()))
 }
 
@@ -170,183 +153,142 @@ func (self Go) GetSlideCollisionCount() int {
 Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [method move_and_slide]. Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_collision_count] - 1).
 */
 func (self Go) GetSlideCollision(slide_idx int) gdclass.KinematicCollision3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.KinematicCollision3D(class(self).GetSlideCollision(gc, gd.Int(slide_idx)))
+	return gdclass.KinematicCollision3D(class(self).GetSlideCollision(gd.Int(slide_idx)))
 }
 
 /*
 Returns a [KinematicCollision3D], which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 */
 func (self Go) GetLastSlideCollision() gdclass.KinematicCollision3D {
-	gc := gd.GarbageCollector(); _ = gc
-	return gdclass.KinematicCollision3D(class(self).GetLastSlideCollision(gc))
+	return gdclass.KinematicCollision3D(class(self).GetLastSlideCollision())
 }
 // GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type GD = class
 type class [1]classdb.CharacterBody3D
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-
-
-//go:nosplit
-func (self *Go) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
-
-
-//go:nosplit
-func (self *class) SetPointer(ptr gd.Pointer) { self[0].SetPointer(ptr) }
 func New() Go {
-	gc := gd.GarbageCollector()
-	object := gc.API.ClassDB.ConstructObject(gc, gc.StringName("CharacterBody3D"))
-	return *(*Go)(unsafe.Pointer(&object))
+	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CharacterBody3D"))
+	return Go{classdb.CharacterBody3D(object)}
 }
 
 func (self Go) MotionMode() classdb.CharacterBody3DMotionMode {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.CharacterBody3DMotionMode(class(self).GetMotionMode())
 }
 
 func (self Go) SetMotionMode(value classdb.CharacterBody3DMotionMode) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMotionMode(value)
 }
 
 func (self Go) UpDirection() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector3(class(self).GetUpDirection())
 }
 
 func (self Go) SetUpDirection(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetUpDirection(value)
 }
 
 func (self Go) SlideOnCeiling() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsSlideOnCeilingEnabled())
 }
 
 func (self Go) SetSlideOnCeiling(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSlideOnCeilingEnabled(value)
 }
 
 func (self Go) Velocity() gd.Vector3 {
-	gc := gd.GarbageCollector(); _ = gc
 		return gd.Vector3(class(self).GetVelocity())
 }
 
 func (self Go) SetVelocity(value gd.Vector3) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetVelocity(value)
 }
 
 func (self Go) MaxSlides() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetMaxSlides()))
 }
 
 func (self Go) SetMaxSlides(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetMaxSlides(gd.Int(value))
 }
 
 func (self Go) WallMinSlideAngle() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetWallMinSlideAngle()))
 }
 
 func (self Go) SetWallMinSlideAngle(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetWallMinSlideAngle(gd.Float(value))
 }
 
 func (self Go) FloorStopOnSlope() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsFloorStopOnSlopeEnabled())
 }
 
 func (self Go) SetFloorStopOnSlope(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFloorStopOnSlopeEnabled(value)
 }
 
 func (self Go) FloorConstantSpeed() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsFloorConstantSpeedEnabled())
 }
 
 func (self Go) SetFloorConstantSpeed(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFloorConstantSpeedEnabled(value)
 }
 
 func (self Go) FloorBlockOnWall() bool {
-	gc := gd.GarbageCollector(); _ = gc
 		return bool(class(self).IsFloorBlockOnWallEnabled())
 }
 
 func (self Go) SetFloorBlockOnWall(value bool) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFloorBlockOnWallEnabled(value)
 }
 
 func (self Go) FloorMaxAngle() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetFloorMaxAngle()))
 }
 
 func (self Go) SetFloorMaxAngle(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFloorMaxAngle(gd.Float(value))
 }
 
 func (self Go) FloorSnapLength() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetFloorSnapLength()))
 }
 
 func (self Go) SetFloorSnapLength(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetFloorSnapLength(gd.Float(value))
 }
 
 func (self Go) PlatformOnLeave() classdb.CharacterBody3DPlatformOnLeave {
-	gc := gd.GarbageCollector(); _ = gc
 		return classdb.CharacterBody3DPlatformOnLeave(class(self).GetPlatformOnLeave())
 }
 
 func (self Go) SetPlatformOnLeave(value classdb.CharacterBody3DPlatformOnLeave) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPlatformOnLeave(value)
 }
 
 func (self Go) PlatformFloorLayers() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetPlatformFloorLayers()))
 }
 
 func (self Go) SetPlatformFloorLayers(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPlatformFloorLayers(gd.Int(value))
 }
 
 func (self Go) PlatformWallLayers() int {
-	gc := gd.GarbageCollector(); _ = gc
 		return int(int(class(self).GetPlatformWallLayers()))
 }
 
 func (self Go) SetPlatformWallLayers(value int) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetPlatformWallLayers(gd.Int(value))
 }
 
 func (self Go) SafeMargin() float64 {
-	gc := gd.GarbageCollector(); _ = gc
 		return float64(float64(class(self).GetSafeMargin()))
 }
 
 func (self Go) SetSafeMargin(value float64) {
-	gc := gd.GarbageCollector(); _ = gc
 	class(self).SetSafeMargin(gd.Float(value))
 }
 
@@ -358,10 +300,9 @@ Returns [code]true[/code] if the body collided, otherwise, returns [code]false[/
 */
 //go:nosplit
 func (self class) MoveAndSlide() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_move_and_slide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_move_and_slide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,293 +312,262 @@ Allows to manually apply a snap to the floor regardless of the body's velocity. 
 */
 //go:nosplit
 func (self class) ApplyFloorSnap()  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_apply_floor_snap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_apply_floor_snap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetVelocity(velocity gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetVelocity() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSafeMargin(margin gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_safe_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_safe_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetSafeMargin() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_safe_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_safe_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) IsFloorStopOnSlopeEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_floor_stop_on_slope_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_floor_stop_on_slope_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFloorStopOnSlopeEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_floor_stop_on_slope_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_floor_stop_on_slope_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetFloorConstantSpeedEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_floor_constant_speed_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_floor_constant_speed_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsFloorConstantSpeedEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_floor_constant_speed_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_floor_constant_speed_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFloorBlockOnWallEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_floor_block_on_wall_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_floor_block_on_wall_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsFloorBlockOnWallEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_floor_block_on_wall_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_floor_block_on_wall_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetSlideOnCeilingEnabled(enabled bool)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_slide_on_ceiling_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_slide_on_ceiling_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) IsSlideOnCeilingEnabled() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_slide_on_ceiling_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_slide_on_ceiling_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPlatformFloorLayers(exclude_layer gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, exclude_layer)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPlatformFloorLayers() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPlatformWallLayers(exclude_layer gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, exclude_layer)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPlatformWallLayers() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) GetMaxSlides() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_max_slides, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_max_slides, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetMaxSlides(max_slides gd.Int)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, max_slides)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_max_slides, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_max_slides, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFloorMaxAngle() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFloorMaxAngle(radians gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetFloorSnapLength() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetFloorSnapLength(floor_snap_length gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, floor_snap_length)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetWallMinSlideAngle() gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetWallMinSlideAngle(radians gd.Float)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetUpDirection() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_up_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_up_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetUpDirection(up_direction gd.Vector3)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, up_direction)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_up_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_up_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) SetMotionMode(mode classdb.CharacterBody3DMotionMode)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_motion_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_motion_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetMotionMode() classdb.CharacterBody3DMotionMode {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.CharacterBody3DMotionMode](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_motion_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_motion_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 //go:nosplit
 func (self class) SetPlatformOnLeave(on_leave_apply_velocity classdb.CharacterBody3DPlatformOnLeave)  {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, on_leave_apply_velocity)
 	var r_ret callframe.Nil
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_set_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_set_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 //go:nosplit
 func (self class) GetPlatformOnLeave() classdb.CharacterBody3DPlatformOnLeave {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[classdb.CharacterBody3DPlatformOnLeave](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -667,10 +577,9 @@ Returns [code]true[/code] if the body collided with the floor on the last call o
 */
 //go:nosplit
 func (self class) IsOnFloor() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_on_floor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_on_floor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -680,10 +589,9 @@ Returns [code]true[/code] if the body collided only with the floor on the last c
 */
 //go:nosplit
 func (self class) IsOnFloorOnly() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_on_floor_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_on_floor_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -693,10 +601,9 @@ Returns [code]true[/code] if the body collided with the ceiling on the last call
 */
 //go:nosplit
 func (self class) IsOnCeiling() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_on_ceiling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_on_ceiling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -706,10 +613,9 @@ Returns [code]true[/code] if the body collided only with the ceiling on the last
 */
 //go:nosplit
 func (self class) IsOnCeilingOnly() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_on_ceiling_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_on_ceiling_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -719,10 +625,9 @@ Returns [code]true[/code] if the body collided with a wall on the last call of [
 */
 //go:nosplit
 func (self class) IsOnWall() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_on_wall, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_on_wall, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -732,10 +637,9 @@ Returns [code]true[/code] if the body collided only with a wall on the last call
 */
 //go:nosplit
 func (self class) IsOnWallOnly() bool {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_is_on_wall_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_is_on_wall_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -746,10 +650,9 @@ Returns the collision normal of the floor at the last collision point. Only vali
 */
 //go:nosplit
 func (self class) GetFloorNormal() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_floor_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -760,10 +663,9 @@ Returns the collision normal of the wall at the last collision point. Only valid
 */
 //go:nosplit
 func (self class) GetWallNormal() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_wall_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_wall_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -773,10 +675,9 @@ Returns the last motion applied to the [CharacterBody3D] during the last call to
 */
 //go:nosplit
 func (self class) GetLastMotion() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_last_motion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_last_motion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -786,10 +687,9 @@ Returns the travel (position delta) that occurred during the last call to [metho
 */
 //go:nosplit
 func (self class) GetPositionDelta() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_position_delta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_position_delta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -799,10 +699,9 @@ Returns the current real velocity since the last call to [method move_and_slide]
 */
 //go:nosplit
 func (self class) GetRealVelocity() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_real_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_real_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -812,11 +711,10 @@ Returns the floor's collision angle at the last collision point according to [pa
 */
 //go:nosplit
 func (self class) GetFloorAngle(up_direction gd.Vector3) gd.Float {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	callframe.Arg(frame, up_direction)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_floor_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_floor_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -826,10 +724,9 @@ Returns the linear velocity of the platform at the last collision point. Only va
 */
 //go:nosplit
 func (self class) GetPlatformVelocity() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_platform_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -839,10 +736,9 @@ Returns the angular velocity of the platform at the last collision point. Only v
 */
 //go:nosplit
 func (self class) GetPlatformAngularVelocity() gd.Vector3 {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_platform_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -852,10 +748,9 @@ Returns the number of times the body collided and changed direction during the l
 */
 //go:nosplit
 func (self class) GetSlideCollisionCount() gd.Int {
-	var selfPtr = self[0].AsPointer()
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_slide_collision_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_slide_collision_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -864,14 +759,12 @@ func (self class) GetSlideCollisionCount() gd.Int {
 Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [method move_and_slide]. Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_collision_count] - 1).
 */
 //go:nosplit
-func (self class) GetSlideCollision(ctx gd.Lifetime, slide_idx gd.Int) gdclass.KinematicCollision3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetSlideCollision(slide_idx gd.Int) gdclass.KinematicCollision3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, slide_idx)
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_slide_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.KinematicCollision3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_slide_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.KinematicCollision3D{classdb.KinematicCollision3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -879,13 +772,11 @@ func (self class) GetSlideCollision(ctx gd.Lifetime, slide_idx gd.Int) gdclass.K
 Returns a [KinematicCollision3D], which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 */
 //go:nosplit
-func (self class) GetLastSlideCollision(ctx gd.Lifetime) gdclass.KinematicCollision3D {
-	var selfPtr = self[0].AsPointer()
+func (self class) GetLastSlideCollision() gdclass.KinematicCollision3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
-	mmm.API(selfPtr).Object.MethodBindPointerCall(mmm.API(selfPtr).Methods.CharacterBody3D.Bind_get_last_slide_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret gdclass.KinematicCollision3D
-	ret[0].SetPointer(gd.PointerWithOwnershipTransferredToGo(ctx,r_ret.Get()))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_last_slide_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = gdclass.KinematicCollision3D{classdb.KinematicCollision3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
@@ -911,7 +802,7 @@ func (self Go) Virtual(name string) reflect.Value {
 	default: return gd.VirtualByName(self.AsPhysicsBody3D(), name)
 	}
 }
-func init() {classdb.Register("CharacterBody3D", func(ptr gd.Pointer) any {var class class; class[0].SetPointer(ptr); return class })}
+func init() {classdb.Register("CharacterBody3D", func(ptr gd.Object) any { return classdb.CharacterBody3D(ptr) })}
 type MotionMode = classdb.CharacterBody3DMotionMode
 
 const (
