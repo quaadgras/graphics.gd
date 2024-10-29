@@ -100,20 +100,20 @@ type API struct {
 		StoreBuffer func(Object, []byte)
 		GetBuffer   func(Object, []byte) int
 	}
-	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
-	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
-	PackedFloat32Array PackedFunctionsFor[PackedFloat32Array, float32]
-	PackedFloat64Array PackedFunctionsFor[PackedFloat64Array, float64]
-	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32]
-	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64]
+	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte, PackedByteArrayPointerType]
+	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color, PackedColorArrayPointerType]
+	PackedFloat32Array PackedFunctionsFor[PackedFloat32Array, float32, PackedFloat32ArrayPointerType]
+	PackedFloat64Array PackedFunctionsFor[PackedFloat64Array, float64, PackedFloat64ArrayPointerType]
+	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32, PackedInt32ArrayPointerType]
+	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64, PackedInt64ArrayPointerType]
 	PackedStringArray  struct {
 		Index       func(PackedStringArray, Int) String
 		SetIndex    func(PackedStringArray, Int, String)
 		CopyAsSlice func(PackedStringArray) []String
 	}
-	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
-	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
-	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
+	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2, PackedVector2ArrayPointerType]
+	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3, PackedVector3ArrayPointerType]
+	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4, PackedVector4ArrayPointerType]
 	Array              struct {
 		Index    func(Array, Int) Variant
 		Set      func(self, from Array)
@@ -181,17 +181,17 @@ type API struct {
 	Singletons singletons
 }
 
-type Packed interface {
+type Packed[T any, P discreet.PointerType] interface {
 	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
 		PackedFloat64Array | PackedStringArray |
 		PackedVector2Array | PackedVector3Array | PackedVector4Array |
 		PackedColorArray
 
-	discreet.PointerAny
+	discreet.Pointer[T, [2]uintptr, P]
 	Len() int
 }
 
-type PackedFunctionsFor[T Packed, V any] struct {
+type PackedFunctionsFor[T Packed[T, P], V any, P discreet.PointerType] struct {
 	Index         func(T, Int) V
 	SetIndex      func(T, Int, V)
 	CopyAsSlice   func(T) []V

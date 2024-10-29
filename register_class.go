@@ -64,8 +64,8 @@ If the Struct implements an OnRegister(Lifetime) method, it will
 be called on a temporary instance when the class is registered.
 */
 func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
-	var classType = reflect.TypeOf([0]Struct{}).Elem()
-	var superType = reflect.TypeOf([0]Parent{}).Elem()
+	var classType = reflect.TypeFor[Struct]()
+	var superType = reflect.TypeFor[Parent]()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
@@ -75,10 +75,10 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
 
 	var tool = false
 	switch {
-	case superType.Implements(reflect.TypeOf([0]interface{ AsScript() Script.Go }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsEditorPlugin() EditorPlugin.Go }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() ScriptLanguage.Go }{}).Elem()),
-		classType.Implements(reflect.TypeOf([0]Tool{}).Elem()):
+	case superType.Implements(reflect.TypeFor[interface{ AsScript() Script.Go }]()),
+		superType.Implements(reflect.TypeFor[interface{ AsEditorPlugin() EditorPlugin.Go }]()),
+		superType.Implements(reflect.TypeFor[interface{ AsScriptLanguage() ScriptLanguage.Go }]()),
+		classType.Implements(reflect.TypeFor[Tool]()):
 		tool = true
 	}
 
@@ -112,7 +112,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
 	type onRegister interface {
 		OnRegister()
 	}
-	if reflect.PointerTo(classType).Implements(reflect.TypeOf([0]onRegister{}).Elem()) {
+	if reflect.PointerTo(classType).Implements(reflect.TypeFor[onRegister]()) {
 		impl := reflect.New(classType).Interface().(onRegister)
 		impl.OnRegister()
 	}

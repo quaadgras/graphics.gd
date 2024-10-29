@@ -32,18 +32,6 @@ func (p pinner) Free() { mmm.API(p).Unpin(); mmm.End(p) }
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer
 
-var background = internal.NewContext(&internal.Global)
-
-// Link returns a handle to the [API] and the global [ClassDB].
-// The [bool] return value is [true] if the API has been
-// linked with Godot successfully.
-func Link() (internal.Lifetime, bool) {
-	if dlsymGD == nil {
-		return background, false
-	}
-	return background, true
-}
-
 func init() {
 	internal.Global = api.Import[internal.API](stub.API, "", errors.New("gdextension not linked"))
 }

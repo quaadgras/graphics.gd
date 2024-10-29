@@ -3,11 +3,32 @@
 // Usually, the Go runtime attempts to scan all pointers within a program and as such,
 // the more pointers in use, the more overhead there will be to scan them.
 //
-// When working with static pointers allocated outside of the runtime, there is no benefit
-// in having the Go runtime scan all these pointers. The naive approach would be to use a
-// uintptr instead of a typed pointer but this can easily lead right into unsafe and undefined
-// behavior as well as memory leaks. Instead we can have our own independant garbage collector
-// that is aware of these pointers and can manage them accordingly.
+// When working with fixed pointers allocated outside of the runtime, the naive approach
+// would be to use a uintptr instead of a typed pointer but this can easily lead right
+// into unsafe and undefined behavior as well as memory leaks. [runtime.SetFinalizer] is
+// another option, except, this requires additional allocations and overhead that makes it
+// unsuitable for scenarios where thousands of pointers are in use.
+//
+// Pointers exclusively managed through this package are protected against double frees,
+// use-after-free and leaks. Runtime panics will be raised if any unsafe use is detected.
+//
+// The following constructors are available:
+//
+//	Tmp(ptr) // panics-on-use after two garbage collection cycles.
+//	Let(ptr) // like [Tmp], but [End] operations on this pointer always return false.
+//	New(ptr) // panics-on-use after the next garbage collection cycle, if it is no longer reachable through [Root].
+//	Bad(ptr) // unsafe.Pointer equivalent, zero overhead, but provides no protection.
+//
+// The following methods are available:
+//
+//	End(X) (ptr, bool) // returns true on the first call to [End], false on all subsequent calls, GC-related metadata is marked for reuse.
+//	Set(&X, ptr) // sets the underlying pointer to a new value, applies to all copies of the pointer.
+//	Age(X)    // converts a [Tmp] pointer to a [New] pointer.
+//	Pin(ptr) // panics-on-use only after [Free] is called.
+//	Use(ptr) // refreshes a [Tmp] or [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
+//
+// [MarkAndSweep] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
+// will eventually have their [Free] method called but this
 package discreet
 
 import (
@@ -138,13 +159,6 @@ func mark(now uintptr, locked bool, rvalue reflect.Value) {
 // Shape of up to [3]uintptr's, suitable for supporting fat pointers.
 type Shape interface {
 	[1]uintptr | [2]uintptr | [3]uintptr
-}
-
-// Methods must include a Free implementation that will be
-// called exactly once at some pointer after the pointer is
-// no longer reachable.
-type Methods[T any] interface {
-	Free(T)
 }
 
 // PointerNamed that is invisible to the Go runtime. The discreet package manages it instead.
@@ -290,8 +304,8 @@ func Get[T Pointer[T, P, N], P Shape, N PointerType](ptr T) P {
 		rev uintptr
 		ptr P
 	})(ptr)
-	if p.ptr == [1]P{}[0] {
-		return [1]P{}[0]
+	if p.rev == 0 {
+		return p.ptr
 	}
 	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
 	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
@@ -377,4 +391,18 @@ func (s *atomicSlice[T]) Index(i uintptr) *T {
 		return end
 	}
 	return old[i]
+}
+
+// Bad returns an [unsafe.Pointer] equivalent to [Pointer], zero overhead, but it provides no protections on use.
+func Bad[T Pointer[T, P, N], P Shape, N PointerType](ptr P) T {
+	var result struct {
+		_ [0]N
+
+		address[P, N]
+
+		rev uintptr
+		ptr P
+	}
+	result.ptr = ptr
+	return T(result)
 }
